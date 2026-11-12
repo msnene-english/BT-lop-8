@@ -1,875 +1,1746 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reading Practice - MS Chí Nên ULIS</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-/* ================= CSS VARIABLES ================= */
-:root {
-  --pink: #FF9A9E; --purple: #A18CD1; --yellow: #FDCB6E; --teal: #00C9A7;
-  --blue: #A1C4FD; --orange: #FF9F43; --correct: #00D26A; --wrong: #FF4757;
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.8);
-  --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  --text-main: #2d1b6e;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
-body { min-height: 100vh; overflow-x: hidden; background: #fdfbfb; color: var(--text-main); }
-
-/* ================= BACKGROUND ANIMATION ================= */
-.bg-gradient {
-  position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 30%, #ffecd2 60%, #fcb69f 100%);
-  background-size: 400% 400%; animation: gradientMove 15s ease infinite;
-}
-@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-.bg-pattern { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-.float-icon { position: absolute; font-size: 2.5rem; animation: floatUp linear infinite; opacity: 0.3; user-select: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0.1; } 50% { opacity: 0.4; } 100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0.1; } }
-
-/* ================= SPLIT SCREEN LAYOUT ================= */
-.wrapper {
-  position: relative; z-index: 2; display: flex; gap: 20px;
-  max-width: 1400px; margin: 0 auto; padding: 20px; height: 100vh;
-}
-.left-pane, .right-pane {
-  flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px;
-  border-radius: 24px;
-}
-/* Scrollbar styling */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); border-radius: 10px; }
-::-webkit-scrollbar-thumb { background: rgba(161, 140, 209, 0.6); border-radius: 10px; }
-
-@media (max-width: 900px) {
-  .wrapper { flex-direction: column; height: auto; }
-  .left-pane, .right-pane { overflow-y: visible; max-height: none; }
-}
-
-/* ================= HEADER & GLASSMORPHISM ================= */
-.glass-panel {
-  background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border: 2px solid var(--glass-border); border-radius: 20px;
-  box-shadow: var(--shadow); margin-bottom: 24px; padding: 24px;
-}
-.quiz-header { text-align: center; margin-bottom: 20px; padding: 15px; }
-.quiz-header h1 { font-size: 1.6rem; font-weight: 900; color: #5a3a8a; text-shadow: 0 2px 4px rgba(255,255,255,0.8); text-transform: uppercase; }
-.quiz-header p { font-size: 0.95rem; font-weight: 800; color: #8854C0; margin-top: 5px; background: rgba(255,255,255,0.5); display: inline-block; padding: 5px 15px; border-radius: 50px;}
-
-/* ================= READING PASSAGES ================= */
-.passage-title { font-size: 1.3rem; font-weight: 900; color: #ff6b81; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.passage-text { font-size: 1.1rem; line-height: 1.8; color: #2f3542; margin-bottom: 15px; font-weight: 600; text-align: justify; }
-.blank-box { display: inline-block; min-width: 60px; height: 26px; border-bottom: 3px dashed #A18CD1; margin: 0 5px; text-align: center; font-weight: 800; color: #5a3a8a; }
-.trans-btn {
-  background: linear-gradient(135deg, #A18CD1, #FF9A9E); color: white; border: none;
-  border-radius: 12px; padding: 8px 16px; font-size: 0.9rem; font-weight: 800;
-  cursor: pointer; box-shadow: 0 4px 10px rgba(161, 140, 209, 0.4); transition: transform 0.2s;
-  margin-bottom: 10px; display: inline-flex; align-items: center; gap: 6px;
-}
-.trans-btn:hover { transform: scale(1.05); }
-.trans-content {
-  display: none; background: rgba(255, 243, 224, 0.85); border-left: 5px solid #ff9800;
-  padding: 12px 16px; border-radius: 8px; font-size: 1rem; color: #d35400; font-weight: 700;
-  margin-bottom: 20px; line-height: 1.6; animation: fadeIn 0.3s ease;
-}
-
-/* ================= GLOSSARY ================= */
-.glossary-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(255,255,255,0.7); border-radius: 12px; overflow: hidden; }
-.glossary-table th { background: linear-gradient(90deg, #A18CD1, #FF9A9E); color: white; padding: 12px; text-align: left; font-weight: 800; }
-.glossary-table td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 700; color: #4a4a4a; }
-.glossary-table tr:last-child td { border-bottom: none; }
-.g-word { color: #2e86de; font-weight: 900; }
-.g-pos { color: #8395a7; font-style: italic; font-size: 0.9rem; }
-
-/* ================= QUIZ CARDS ================= */
-.q-num {
-  display: inline-block; background: linear-gradient(135deg, #FDCB6E, #FF9F43);
-  color: white; font-weight: 900; font-size: 0.95rem; border-radius: 50px;
-  padding: 6px 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(253, 203, 110, 0.3);
-}
-.q-text { font-size: 1.15rem; font-weight: 800; color: #2d1b6e; line-height: 1.6; margin-bottom: 18px; }
-
-.options { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.opt-btn {
-  background: rgba(255, 255, 255, 0.9); border: 2px solid transparent; border-radius: 18px;
-  padding: 16px 20px; font-size: 1.1rem; font-weight: 800; color: #3d1a78;
-  cursor: pointer; text-align: left; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 6px 0 #d4b8ff, 0 8px 16px rgba(136,84,192,0.1); display: block; width: 100%;
-}
-.opt-btn:hover:not(:disabled) {
-  transform: translateY(-4px); box-shadow: 0 10px 0 #c4a0f0, 0 12px 20px rgba(136,84,192,0.2);
-  background: #fbf8ff; border-color: #d4b8ff;
-}
-.opt-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #c4a0f0; }
-.opt-btn.correct {
-  background: linear-gradient(135deg, #d4fff0, #b8ffe0) !important; color: #00873e !important;
-  box-shadow: 0 6px 0 #00a854, 0 8px 16px rgba(0,210,106,0.2) !important; transform: scale(1.02) !important; border: 2px solid var(--correct);
-}
-.opt-btn.wrong {
-  background: linear-gradient(135deg, #ffe0e3, #ffd0d4) !important; color: #c0002a !important;
-  box-shadow: 0 6px 0 #ff2244, 0 8px 16px rgba(255,71,87,0.2) !important; border: 2px solid var(--wrong);
-  animation: shake 0.4s ease;
-}
-.opt-btn:disabled { cursor: default; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
-
-/* ================= EXPLANATIONS (STRICT COLORS) ================= */
-.explanation {
-  display: none; margin-top: 20px; background: rgba(255,255,255,0.95);
-  border-radius: 16px; padding: 20px; font-size: 1.05rem; line-height: 1.7;
-  box-shadow: inset 0 0 0 2px #A18CD1, 0 8px 24px rgba(0,0,0,0.08); animation: fadeIn 0.4s ease;
-}
-.explanation.show { display: block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
-
-.expl-title { font-weight: 900; color: #8854C0; font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed #e0d4f7; padding-bottom: 8px; }
-.expl-row { margin: 8px 0; color: #2c3e50; font-weight: 600; }
-/* REQUIRED CSS CLASSES FOR EXPLANATION */
-.p-word { color: #0984e3; font-weight: 900; background: #eaf2f8; padding: 2px 6px; border-radius: 4px; display: inline-block; }
-.p-mean { color: #d35400; font-weight: 800; }
-.p-grammar { text-decoration: underline; text-decoration-color: #e74c3c; text-decoration-thickness: 3px; font-weight: 900; color: #c0392b; }
-.hl-green { color: #00b894; font-weight: 900; display: inline-block; }
-.hl-red { color: #d63031; font-weight: 800; text-decoration: line-through; display: inline-block; }
-.quote-box { background: #f1f2f6; border-left: 4px solid #7bed9f; padding: 10px 15px; border-radius: 0 8px 8px 0; font-style: italic; margin-top: 10px; }
-
-/* ================= MODALS & SUBMIT ================= */
-.submit-wrap { text-align: center; margin-top: 20px; padding: 20px; }
-.submit-btn {
-  background: linear-gradient(135deg, #f9ca24, #f0932b); color: white; border: none;
-  border-radius: 50px; padding: 16px 40px; font-size: 1.2rem; font-weight: 900;
-  cursor: pointer; box-shadow: 0 8px 0 #c87000, 0 15px 30px rgba(249,202,36,0.4);
-  transition: all 0.2s; text-transform: uppercase; width: 100%; max-width: 400px;
-}
-.submit-btn:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 12px 0 #c87000, 0 20px 40px rgba(249,202,36,0.5); }
-.submit-btn:active { transform: scale(0.98) translateY(2px); box-shadow: 0 2px 0 #c87000; }
-
-#customModal {
-  position:fixed; inset:0; z-index:9999; display:none; align-items:center; justify-content:center;
-  background:rgba(5,2,15,0.85); backdrop-filter:blur(10px);
-}
-#customModal.show { display: flex; }
-.pw-card {
-  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
-  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:40px; 
-  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
-  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
-  animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-@keyframes modalPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.pw-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572); }
-.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
-.pw-title { font-family:'Nunito', sans-serif; font-size:1.6rem; font-weight:900; color:#F0C040; margin-bottom:6px; letter-spacing:1px; text-transform: uppercase; }
-.pw-sub   { font-size:1rem; color:rgba(200,200,212,0.8); margin-bottom:24px; font-weight: 700;}
-.pw-input {
-  width:100%; padding:15px 20px; border-radius:12px; border:2px solid rgba(240,192,64,0.4); 
-  background:rgba(255,255,255,0.1); color:#FFE082; font-size:1.1rem; font-family:'Nunito', sans-serif; font-weight: bold;
-  outline:none; text-align:center; transition:all .3s;
-}
-.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 4px rgba(240,192,64,0.2); background:rgba(255,255,255,0.2);}
-.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 4px rgba(255,71,87,0.25); animation:shake .4s ease; }
-.pw-btn {
-  width:100%; padding:16px; margin-top:16px; border-radius:12px; border:none;
-  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
-  color:#fff; font-size:1.1rem; font-weight:900; font-family:'Nunito', sans-serif;
-  cursor:pointer; letter-spacing:1px; transition:transform .2s;
-}
-.pw-btn:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
-.pw-err { color:#ff8a9a; font-size:0.95rem; margin-top:10px; display:none; font-weight:800; }
-.result-gif { width: 100%; max-width: 280px; border-radius: 16px; margin: 15px auto; display: block; border: 3px solid #F0C040; }
-.result-score { font-size: 3.5rem; font-weight: 900; color: #00D26A; margin-bottom: 5px; text-shadow: 0 0 20px rgba(0,210,106,0.4); }
-
-/* Confetti */
-.confetti { position: fixed; width: 10px; height: 10px; z-index: 9999; pointer-events: none; animation: fall linear forwards; }
-@keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
-</style>
-</head>
-<body>
-
-<div class="bg-gradient"></div>
-<div class="bg-pattern" id="bgPattern"></div>
-
-<div class="wrapper">
-  <div class="left-pane">
-    <div class="glass-panel quiz-header">
-      <h1>🚀 Tiếng Anh Cực Vui 🚀</h1>
-      <p>Giáo viên tạo: MS Chí Nên ULIS</p>
-    </div>
-
-    <div class="glass-panel">
-      <div class="passage-title">📱 Passage 1: New School App</div>
-      <div class="passage-text">
-        Hello students,<br><br>
-        We are excited to tell you about our new school app. This app helps you <span class="blank-box">13</span> with your teachers and classmates more easily. You can send a messenger, <span class="blank-box">14</span> file and join group chats. The app is free, but you need to <span class="blank-box">15</span> it first. If you have any questions, please ask your teacher <span class="blank-box">16</span> help.<br><br>
-        Thank you!
-      </div>
-      <button class="trans-btn" onclick="toggleTrans('trans1')">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content" id="trans1">
-        Chào các em học sinh,<br><br>
-        Chúng tôi rất vui mừng thông báo cho các em về ứng dụng trường học mới của chúng ta. Ứng dụng này giúp các em (13) <strong>kết nối</strong> với giáo viên và bạn cùng lớp dễ dàng hơn. Các em có thể gửi tin nhắn, (14) <strong>chia sẻ</strong> tệp tin và tham gia các nhóm chat. Ứng dụng này miễn phí, nhưng các em cần phải (15) <strong>cài đặt</strong> nó trước tiên. Nếu các em có bất kỳ câu hỏi nào, vui lòng nhờ giáo viên (16) <strong>giúp đỡ</strong>.<br><br>
-        Cảm ơn các em!
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <div class="passage-title">💬 Passage 2: Ways of Communication</div>
-      <div class="passage-text">
-        There are a wide range of ways in which we communicate. Here are some major ways of communication. Spoken or <span class="blank-box">19</span> communication, which includes face-to-face or telephone conversations, news and stories on the radio or television.<br><br>
-        Non-verbal communication, which covers <span class="blank-box">20</span>, how we dress or act, where we stand, and even our scent. There are many subtle ways that we communicate (sometimes unintentionally) with others. For example, the tone of voice can give clues to mood or emotional state <span class="blank-box">21</span> hand signals or facial gestures. <br><br>
-        Written communication, which includes letters, emails, social media, books, <span class="blank-box">22</span>, the Internet and other media. Until recently, several writers and publishers were very powerful when it came to communicating the written word. Today, we can all write and publish our ideas online, which has led to an explosion of information and communication possibilities. <br><br>
-        Visualizations, which <span class="blank-box">23</span> graphs, charts, maps, logos, pictures, and many other visual objects to communicate messages. In the future, it is expected that communication technology <span class="blank-box">24</span>, making it easier for people to connect worldwide.
-      </div>
-      <button class="trans-btn" onclick="toggleTrans('trans2')">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content" id="trans2">
-        Có rất nhiều cách để chúng ta giao tiếp. Dưới đây là một số cách giao tiếp chính. Giao tiếp bằng lời nói hoặc (19) <strong>bằng lời (verbal)</strong>, bao gồm các cuộc trò chuyện trực tiếp hoặc qua điện thoại, tin tức và câu chuyện trên đài phát thanh hoặc truyền hình.<br><br>
-        Giao tiếp phi ngôn ngữ, bao gồm (20) <strong>ngôn ngữ cơ thể</strong>, cách chúng ta ăn mặc hoặc hành động, vị trí chúng ta đứng, và thậm chí cả mùi hương của chúng ta. Có nhiều cách tinh tế mà chúng ta giao tiếp (đôi khi là vô tình) với người khác. Ví dụ, giọng điệu có thể đưa ra manh mối về tâm trạng hoặc trạng thái cảm xúc (21) <strong>trong khi</strong> tín hiệu tay hoặc cử chỉ khuôn mặt cũng vậy.<br><br>
-        Giao tiếp bằng văn bản, bao gồm thư từ, email, mạng xã hội, sách, (22) <strong>tạp chí</strong>, Internet và các phương tiện truyền thông khác. Cho đến gần đây, một số nhà văn và nhà xuất bản rất có quyền lực khi nói đến việc truyền đạt bằng văn bản. Ngày nay, tất cả chúng ta đều có thể viết và xuất bản ý tưởng của mình trực tuyến, điều này đã dẫn đến sự bùng nổ thông tin và khả năng giao tiếp.<br><br>
-        Trực quan hóa, phương pháp (23) <strong>sử dụng</strong> biểu đồ, đồ thị, bản đồ, logo, hình ảnh và nhiều đối tượng thị giác khác để truyền tải thông điệp. Trong tương lai, người ta dự đoán rằng công nghệ giao tiếp (24) <strong>sẽ tiến bộ nhanh chóng</strong>, giúp mọi người trên toàn thế giới kết nối dễ dàng hơn.
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <div class="passage-title">🪐 Passage 3: Mars Exploration Rovers</div>
-      <div class="passage-text">
-        The Mars Exploration Rovers were two robotic vehicles that explored the surface of Mars. Scientists wanted them to figure out whether water had ever existed on the planet. The rovers also searched for other traces of life on Mars. The National Aeronautics and Space Administration (NASA) designed and built the rovers, named Spirit and Opportunity. NASA launched Spirit on June 10, and Opportunity on July 7, 2003. Spirit touched down on January 3, 2004. Three weeks later, Opportunity landed on the opposite side of the planet.<br><br>
-        The rovers had six wheels that allowed them to move in many directions. They also had cameras and many instruments for examining the rocks, soil, and dust on the planet. Scientists on Earth sent commands to the rovers to tell them where to go and what to do. The rovers sent signals back to the scientists through computers and large antennas on Earth.<br><br>
-        Each rover was designed to last for about 90 days. However, they worked so well that their mission was extended. In 2010, Spirit stopped sending signals, but Opportunity continued to operate until 2018. NASA officially declared the Opportunity mission to be ended in February 2019.
-      </div>
-      <button class="trans-btn" onclick="toggleTrans('trans3')">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content" id="trans3">
-        Mars Exploration Rovers là hai phương tiện rô-bốt đã khám phá bề mặt sao Hỏa. Các nhà khoa học muốn chúng tìm ra liệu nước đã từng tồn tại trên hành tinh này hay chưa. Các tàu thám hiểm cũng tìm kiếm những dấu vết sự sống khác trên sao Hỏa. Cơ quan Hàng không và Vũ trụ Quốc gia (NASA) đã thiết kế và chế tạo các tàu thám hiểm mang tên Spirit và Opportunity. NASA phóng Spirit vào ngày 10/6 và Opportunity vào ngày 7/7 năm 2003. Spirit hạ cánh vào ngày 3/1/2004. Ba tuần sau, Opportunity hạ cánh ở phía đối diện của hành tinh.<br><br>
-        Các tàu thám hiểm có sáu bánh xe cho phép chúng di chuyển theo nhiều hướng. Chúng cũng có máy ảnh và nhiều công cụ để kiểm tra đá, đất và bụi trên hành tinh. Các nhà khoa học trên Trái đất đã gửi lệnh cho các tàu thám hiểm để cho chúng biết phải đi đâu và làm gì. Các tàu thám hiểm đã gửi tín hiệu trở lại cho các nhà khoa học thông qua máy tính và ăng-ten lớn trên Trái đất.<br><br>
-        Mỗi chiếc tàu được thiết kế để hoạt động trong khoảng 90 ngày. Tuy nhiên, chúng đã làm việc quá tốt đến mức nhiệm vụ của chúng đã được kéo dài. Năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục hoạt động cho đến năm 2018. NASA chính thức tuyên bố sứ mệnh Opportunity kết thúc vào tháng 2/2019.
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <div class="passage-title">🧑‍🚀 Passage 4: Space Safety</div>
-      <div class="passage-text">
-        There are a few things you can do to stay safe if you visit another planet in the future. First, you should always wear your space suit, even inside buildings, <span class="blank-box">37</span>. Second, stay close to your team and use your radio to communicate. You must not take off your helmet to speak <span class="blank-box">38</span>. If you see any strange plants or animals, do not touch them. Some of them may be dangerous <span class="blank-box">39</span>. Finally, always follow your guide's instructions and return to the spaceship on time <span class="blank-box">40</span>.
-      </div>
-      <button class="trans-btn" onclick="toggleTrans('trans4')">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content" id="trans4">
-        Có một vài điều bạn có thể làm để giữ an toàn nếu bạn đến thăm một hành tinh khác trong tương lai. Đầu tiên, bạn nên luôn mặc bộ đồ vũ trụ của mình, ngay cả khi ở trong các tòa nhà, (37) <strong>nếu không bạn có thể hít phải thứ gì đó nguy hiểm</strong>. Thứ hai, hãy ở gần đội của bạn và sử dụng bộ đàm để giao tiếp. Bạn không được cởi mũ bảo hiểm ra để nói chuyện (38) <strong>bởi vì bạn có thể nói chuyện qua bộ đàm của mình</strong>. Nếu bạn nhìn thấy bất kỳ loại thực vật hay động vật kỳ lạ nào, đừng chạm vào chúng. Một số trong chúng có thể nguy hiểm (39) <strong>vì chúng có thể làm bạn bị thương</strong>. Cuối cùng, hãy luôn làm theo hướng dẫn của người hướng dẫn và quay trở lại tàu vũ trụ đúng giờ (40) <strong>nếu không bạn có thể bị lạc</strong>.
-      </div>
-    </div>
-
-    <div class="glass-panel">
-      <div class="passage-title">📚 Bảng Từ Vựng Học Thuật (Glossary)</div>
-      <table class="glossary-table">
-        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-        <tr><td><span class="g-word">Communicate</span></td><td><span class="g-pos">verb</span></td><td>giao tiếp, liên lạc</td></tr>
-        <tr><td><span class="g-word">Non-verbal</span></td><td><span class="g-pos">adj</span></td><td>phi ngôn ngữ (cử chỉ, nét mặt)</td></tr>
-        <tr><td><span class="g-word">Unintentionally</span></td><td><span class="g-pos">adv</span></td><td>một cách vô tình, không cố ý</td></tr>
-        <tr><td><span class="g-word">Visualization</span></td><td><span class="g-pos">noun</span></td><td>sự trực quan hóa, hình ảnh hóa</td></tr>
-        <tr><td><span class="g-word">Exploration</span></td><td><span class="g-pos">noun</span></td><td>sự thám hiểm, thăm dò</td></tr>
-        <tr><td><span class="g-word">Surface</span></td><td><span class="g-pos">noun</span></td><td>bề mặt</td></tr>
-        <tr><td><span class="g-word">Exist</span></td><td><span class="g-pos">verb</span></td><td>tồn tại</td></tr>
-        <tr><td><span class="g-word">Trace</span></td><td><span class="g-pos">noun</span></td><td>dấu vết, tàn tích</td></tr>
-        <tr><td><span class="g-word">Instrument</span></td><td><span class="g-pos">noun</span></td><td>công cụ, nhạc cụ, thiết bị</td></tr>
-        <tr><td><span class="g-word">Extend</span></td><td><span class="g-pos">verb</span></td><td>mở rộng, kéo dài (thời gian)</td></tr>
-      </table>
-    </div>
-
-  </div> <div class="right-pane" id="quizContainer">
-    </div>
-</div>
-
-<div id="customModal">
-  <div class="pw-card" id="nameModalView">
-    <span class="pw-crest">📝</span>
-    <div class="pw-title">NHẬP TÊN CỦA BẠN</div>
-    <div class="pw-sub">Hãy cho cô biết ai đang làm bài nhé!</div>
-    <input type="text" class="pw-input" id="nameInput" placeholder="VD: Thiên Tài Toán Học..." autocomplete="off" />
-    <button class="pw-btn" onclick="submitName()">HOÀN THÀNH</button>
-    <div class="pw-err" id="nameErr">Vui lòng nhập tên của bạn!</div>
-  </div>
-
-  <div class="pw-card" id="resultModalView" style="display: none;">
-    <div class="pw-title" id="resTitle">🌟 THIÊN TÀI!</div>
-    <img id="resGif" class="result-gif" src="" alt="Result Meme">
-    <div class="result-score" id="resScore">0/0</div>
-    <div class="pw-sub" id="resMsg" style="color: #FFE082;"></div>
-    <button class="pw-btn" onclick="location.reload()">LÀM LẠI BÀI</button>
-  </div>
-</div>
-
-<script>
-// ================= BACKGROUND EMOJIS =================
-const emojis = ['🚀', '🪐', '👽', '📱', '💬', '🌏', '🛰️', '🧑‍🚀', '📖', '✨'];
-const bgPattern = document.getElementById('bgPattern');
-for(let i=0; i<30; i++) {
-  const el = document.createElement('div');
-  el.className = 'float-icon';
-  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  el.style.left = Math.random() * 100 + 'vw';
-  el.style.animationDuration = (10 + Math.random() * 20) + 's';
-  el.style.animationDelay = (Math.random() * 10) + 's';
-  bgPattern.appendChild(el);
-}
-
-// ================= TOGGLE TRANSLATION =================
-function toggleTrans(id) {
-  const el = document.getElementById(id);
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
-}
-
-// ================= AUDIO API =================
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let actx = null;
-function getACtx() { if (!actx) actx = new AudioCtx(); return actx; }
-
-function playDing() {
-  const ctx = getACtx(); const o = ctx.createOscillator(), g = ctx.createGain();
-  o.connect(g); g.connect(ctx.destination);
-  o.type = 'sine'; o.frequency.setValueAtTime(880, ctx.currentTime);
-  o.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.1);
-  g.gain.setValueAtTime(0.5, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-  o.start(); o.stop(ctx.currentTime + 0.4);
-}
-function playBuzz() {
-  const ctx = getACtx();
-  [250, 150].forEach((freq, i) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sawtooth'; o.frequency.value = freq;
-    g.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.15); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.15);
-    o.start(ctx.currentTime + i * 0.15); o.stop(ctx.currentTime + i * 0.15 + 0.15);
-  });
-}
-
-// ================= CONFETTI =================
-function spawnConfetti(x, y) {
-  const colors = ['#00D26A', '#FDCB6E', '#FF9A9E', '#A1C4FD', '#A18CD1'];
-  for (let i = 0; i < 30; i++) {
-    const el = document.createElement('div'); el.className = 'confetti';
-    el.style.left = (x - 30 + Math.random() * 60) + 'px'; el.style.top = (y - 30 + Math.random() * 60) + 'px';
-    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    el.style.animationDuration = (1 + Math.random() * 1.5) + 's';
-    document.body.appendChild(el); setTimeout(() => el.remove(), 2500);
-  }
-}
-
-// ================= DATA =================
-const quizData = [
-  // Passage 1
-  {
-    num: 13,
-    question: "This app helps you (13)_______ with your teachers...",
-    options: [
-      {text: "connect", correct: true},
-      {text: "connecting", correct: false},
-      {text: "to connecting", correct: false},
-      {text: "connects", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ứng dụng này giúp bạn (13) _____ với giáo viên...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">A. connect</span>: <span class="p-mean">kết nối.</span> ✅ Đúng cấu trúc.</div>
-      <div class="expl-row"><span class="hl-red">B, C, D</span>: <span class="p-mean">Sai cấu trúc động từ.</span></div>
-      <div class="expl-row">🔍 <strong>Ngữ pháp:</strong> <span class="p-grammar">help + somebody + (to) V-inf</span> (giúp ai làm gì). Sau "help you" cần một động từ nguyên thể không "to" hoặc có "to". Ở đây "connect" là nguyên thể.</div>
-      <div class="quote-box">"This app helps you <span class="p-word">connect</span> with your teachers and classmates more easily."<br>👉 <span class="p-mean">Ứng dụng này giúp bạn kết nối với giáo viên và bạn cùng lớp dễ dàng hơn.</span></div>
-    `
-  },
-  {
-    num: 14,
-    question: "You can send a messenger, (14) _______ file and join group chats.",
-    options: [
-      {text: "drive", correct: false},
-      {text: "delete", correct: false},
-      {text: "share", correct: true},
-      {text: "print", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Bạn có thể gửi tin nhắn, (14) _____ tệp tin và tham gia nhóm chat.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. drive</span>: <span class="p-mean">lái xe.</span> ❌ Không hợp nghĩa.</div>
-      <div class="expl-row"><span class="hl-red">B. delete</span>: <span class="p-mean">xóa.</span> ❌ Không hợp logic ứng dụng trò chuyện.</div>
-      <div class="expl-row"><span class="hl-green">C. share</span>: <span class="p-mean">chia sẻ.</span> ✅ Đúng. Chia sẻ tệp tin là tính năng chính.</div>
-      <div class="expl-row"><span class="hl-red">D. print</span>: <span class="p-mean">in.</span> ❌ Không hợp.</div>
-      <div class="quote-box">"You can send a messenger, <span class="p-word">share</span> file and join group chats."<br>👉 <span class="p-mean">Bạn có thể gửi tin nhắn, chia sẻ tệp tin và tham gia nhóm chat.</span></div>
-    `
-  },
-  {
-    num: 15,
-    question: "The app is free, but you need to (15)________ it first.",
-    options: [
-      {text: "buy", correct: false},
-      {text: "install", correct: true},
-      {text: "turn of", correct: false},
-      {text: "open", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ứng dụng này miễn phí, nhưng bạn cần phải (15) _____ nó trước.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. buy</span>: <span class="p-mean">mua.</span> ❌ Sai vì app đã được nói là miễn phí (free).</div>
-      <div class="expl-row"><span class="hl-green">B. install</span>: <span class="p-mean">cài đặt.</span> ✅ Đúng. Muốn dùng app thì phải cài đặt.</div>
-      <div class="expl-row"><span class="hl-red">C. turn of</span>: <span class="p-mean">tắt (sai chính tả turn off).</span> ❌ Sai.</div>
-      <div class="expl-row"><span class="hl-red">D. open</span>: <span class="p-mean">mở.</span> ❌ Phải cài đặt trước mới mở được.</div>
-      <div class="quote-box">"The app is free, but you need to <span class="p-word">install</span> it first."<br>👉 <span class="p-mean">Ứng dụng miễn phí, nhưng bạn cần cài đặt nó trước.</span></div>
-    `
-  },
-  {
-    num: 16,
-    question: "If you have any questions, please ask your teacher (16) _______help.",
-    options: [
-      {text: "to", correct: false},
-      {text: "for", correct: true},
-      {text: "of", correct: false},
-      {text: "by", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Nếu bạn có bất kỳ câu hỏi nào, vui lòng nhờ giáo viên (16) _____ giúp đỡ.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">B. for</span>: <span class="p-mean">cho/để.</span> ✅ Đúng giới từ.</div>
-      <div class="expl-row"><span class="hl-red">A, C, D</span>: <span class="p-mean">Các giới từ không phù hợp.</span></div>
-      <div class="expl-row">🔍 <strong>Ngữ pháp:</strong> Cụm động từ cố định <span class="p-grammar">ask somebody FOR something</span>: yêu cầu ai đó giúp đỡ/cho cái gì.</div>
-      <div class="quote-box">"If you have any questions, please ask your teacher <span class="p-word">for</span> help."<br>👉 <span class="p-mean">Nếu bạn có câu hỏi, hãy nhờ giáo viên giúp đỡ.</span></div>
-    `
-  },
-  // Passage 2
-  {
-    num: 19,
-    question: "Spoken or (19) _____communication, which includes face-to-face...",
-    options: [
-      {text: "written", correct: false},
-      {text: "verbal", correct: true},
-      {text: "physical", correct: false},
-      {text: "visual", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp bằng lời nói hoặc (19) _____, bao gồm...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. written</span>: <span class="p-mean">bằng văn bản.</span> ❌ Nó thuộc nhóm khác.</div>
-      <div class="expl-row"><span class="hl-green">B. verbal</span>: <span class="p-mean">bằng lời nói.</span> ✅ Đúng. Spoken = Verbal.</div>
-      <div class="expl-row"><span class="hl-red">C. physical</span>: <span class="p-mean">thể chất.</span> ❌ Không hợp.</div>
-      <div class="expl-row"><span class="hl-red">D. visual</span>: <span class="p-mean">trực quan.</span> ❌ Sẽ được nhắc đến ở cuối bài.</div>
-      <div class="quote-box">"Spoken or <span class="p-word">verbal</span> communication..."<br>👉 <span class="p-mean">Giao tiếp bằng lời nói hoặc ngôn ngữ (verbal)...</span></div>
-    `
-  },
-  {
-    num: 20,
-    question: "Non-verbal communication, which covers (20) _______, how we dress or act...",
-    options: [
-      {text: "spoken language", correct: false},
-      {text: "foreign language", correct: false},
-      {text: "sign language", correct: false},
-      {text: "body language", correct: true}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp phi ngôn ngữ, bao gồm (20) _____, cách chúng ta ăn mặc hoặc hành động...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A, B.</span>: <span class="p-mean">ngôn ngữ nói / ngoại ngữ.</span> ❌ Thuộc về giao tiếp có lời (verbal).</div>
-      <div class="expl-row"><span class="hl-red">C. sign language</span>: <span class="p-mean">ngôn ngữ ký hiệu.</span> ❌ Thường được xếp riêng cho người khiếm thính.</div>
-      <div class="expl-row"><span class="hl-green">D. body language</span>: <span class="p-mean">ngôn ngữ cơ thể.</span> ✅ Đúng. Đi kèm với cách ăn mặc, hành động (act), vị trí đứng.</div>
-      <div class="quote-box">"Non-verbal communication, which covers <span class="p-word">body language</span>..."<br>👉 <span class="p-mean">Giao tiếp phi ngôn ngữ bao gồm ngôn ngữ cơ thể...</span></div>
-    `
-  },
-  {
-    num: 21,
-    question: "the tone of voice can give clues to mood or emotional state (21) ________ hand signals or facial gestures.",
-    options: [
-      {text: "while", correct: true},
-      {text: "so", correct: false},
-      {text: "during", correct: false},
-      {text: "when", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> giọng điệu có thể đưa ra manh mối về tâm trạng (21) _____ tín hiệu tay hoặc cử chỉ khuôn mặt...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">A. while</span>: <span class="p-mean">trong khi.</span> ✅ Đúng. Dùng để nối/đối chiếu 2 vế diễn ra song song (giọng điệu so với tín hiệu tay).</div>
-      <div class="expl-row"><span class="hl-red">B. so</span>: <span class="p-mean">vì vậy.</span> ❌ Không chỉ nguyên nhân kết quả ở đây.</div>
-      <div class="expl-row"><span class="hl-red">C. during</span>: <span class="p-mean">trong suốt.</span> ❌ Theo sau during phải là danh từ chỉ thời gian.</div>
-      <div class="expl-row"><span class="hl-red">D. when</span>: <span class="p-mean">khi.</span> ❌ Không hợp ngữ cảnh bằng 'while'.</div>
-      <div class="quote-box">"...emotional state <span class="p-word">while</span> hand signals or facial gestures..."<br>👉 <span class="p-mean">...trạng thái cảm xúc trong khi tín hiệu tay hoặc cử chỉ khuôn mặt (làm điều tương tự).</span></div>
-    `
-  },
-  {
-    num: 22,
-    question: "Written communication, which includes letters, emails, social media, books, (22) _______, the Internet...",
-    options: [
-      {text: "talks", correct: false},
-      {text: "paintings", correct: false},
-      {text: "recordings", correct: false},
-      {text: "magazines", correct: true}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp bằng văn bản, bao gồm thư, email, mạng xã hội, sách, (22) _____...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. talks</span>: <span class="p-mean">cuộc trò chuyện.</span> ❌ Thuộc giao tiếp bằng lời.</div>
-      <div class="expl-row"><span class="hl-red">B. paintings</span>: <span class="p-mean">bức tranh.</span> ❌ Thuộc giao tiếp trực quan (visual).</div>
-      <div class="expl-row"><span class="hl-red">C. recordings</span>: <span class="p-mean">bản ghi âm.</span> ❌ Thuộc âm thanh.</div>
-      <div class="expl-row"><span class="hl-green">D. magazines</span>: <span class="p-mean">tạp chí.</span> ✅ Đúng. Tạp chí chứa văn bản (Written communication).</div>
-      <div class="quote-box">"Written communication, which includes letters... books, <span class="p-word">magazines</span>..."<br>👉 <span class="p-mean">Giao tiếp bằng văn bản bao gồm thư... sách, tạp chí...</span></div>
-    `
-  },
-  {
-    num: 23,
-    question: "Visualizations, which (23) ________ graphs, charts, maps, logos, pictures...",
-    options: [
-      {text: "draws", correct: false},
-      {text: "affects", correct: false},
-      {text: "uses", correct: true},
-      {text: "communicates", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Trực quan hóa, phương pháp (23) _____ biểu đồ, đồ thị, bản đồ, logo...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. draws</span>: <span class="p-mean">vẽ.</span> ❌ Khái niệm trực quan hóa không chỉ là vẽ.</div>
-      <div class="expl-row"><span class="hl-red">B. affects</span>: <span class="p-mean">ảnh hưởng.</span> ❌ Sai nghĩa.</div>
-      <div class="expl-row"><span class="hl-green">C. uses</span>: <span class="p-mean">sử dụng.</span> ✅ Đúng. Nó SỬ DỤNG các biểu đồ để truyền đạt.</div>
-      <div class="expl-row"><span class="hl-red">D. communicates</span>: <span class="p-mean">giao tiếp.</span> ❌ Sai cấu trúc (không dùng communicate + đồ vật).</div>
-      <div class="quote-box">"Visualizations, which <span class="p-word">uses</span> graphs, charts, maps..."<br>👉 <span class="p-mean">Trực quan hóa, phương pháp sử dụng biểu đồ, đồ thị...</span></div>
-    `
-  },
-  {
-    num: 24,
-    question: "In the future, it is expected that communication technology (24) __________, making it easier...",
-    options: [
-      {text: "will advance rapidly", correct: true},
-      {text: "advanced slowly", correct: false},
-      {text: "is advancing now", correct: false},
-      {text: "to advance soon", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Trong tương lai, người ta dự đoán công nghệ giao tiếp (24) _____, giúp mọi người dễ dàng...</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">A. will advance rapidly</span>: <span class="p-mean">sẽ tiến bộ nhanh chóng.</span> ✅ Đúng thì Tương lai đơn.</div>
-      <div class="expl-row"><span class="hl-red">B, C.</span>: <span class="p-mean">Sai thì.</span> ❌ Có dấu hiệu "In the future" (Trong tương lai) nên không dùng quá khứ hay hiện tại tiếp diễn.</div>
-      <div class="expl-row"><span class="hl-red">D. to advance soon</span>: <span class="p-mean">Sai ngữ pháp sau mệnh đề that.</span></div>
-      <div class="quote-box">"In the future, it is expected that communication technology <span class="p-word">will advance rapidly</span>..."<br>👉 <span class="p-mean">Trong tương lai, người ta dự đoán công nghệ sẽ phát triển nhanh chóng...</span></div>
-    `
-  },
-  // Passage 3
-  {
-    num: 31,
-    question: "What is the main idea of the passage?",
-    options: [
-      {text: "The challenges of sending humans to Mars.", correct: false},
-      {text: "The discoveries made by the Mars Exploration Rovers.", correct: false},
-      {text: "The design, mission, and achievements of the Mars rovers.", correct: true},
-      {text: "The history of NASA’s space missions.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ý chính của đoạn văn là gì?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. Thử thách gửi con người...</span> ❌ Không nhắc đến con người, chỉ nhắc robot.</div>
-      <div class="expl-row"><span class="hl-red">B. Những khám phá...</span> ❌ Chỉ là một phần nhỏ.</div>
-      <div class="expl-row"><span class="hl-green">C. Thiết kế, nhiệm vụ và thành tựu của tàu thám hiểm sao Hỏa.</span> ✅ Đúng bao quát toàn bài (Đoạn 1: Nhiệm vụ, Đoạn 2: Thiết kế/Chức năng, Đoạn 3: Thành tựu hoạt động lâu dài).</div>
-      <div class="expl-row"><span class="hl-red">D. Lịch sử NASA...</span> ❌ Quá rộng.</div>
-      <div class="quote-box">Bài đọc tập trung vào 2 tàu Spirit và Opportunity từ lúc phóng đến lúc kết thúc sứ mệnh.</div>
-    `
-  },
-  {
-    num: 32,
-    question: "Which of the following is NOT mentioned as a feature of the rovers?",
-    options: [
-      {text: "Having six wheels for movement.", correct: false},
-      {text: "Carrying cameras and instruments.", correct: false},
-      {text: "Being able to repair themselves.", correct: true},
-      {text: "Sending signals back to Earth.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Điều nào KHÔNG được nhắc đến như một tính năng của tàu thám hiểm?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. Có 6 bánh xe.</span> ❌ Đoạn 2 có nói: "The rovers had six wheels..."</div>
-      <div class="expl-row"><span class="hl-red">B. Mang theo camera.</span> ❌ Đoạn 2 có nói: "They also had cameras..."</div>
-      <div class="expl-row"><span class="hl-red">D. Gửi tín hiệu về Trái đất.</span> ❌ Đoạn 2 có nói: "The rovers sent signals back..."</div>
-      <div class="expl-row"><span class="hl-green">C. Khả năng tự sửa chữa.</span> ✅ Đúng là KHÔNG có trong bài đọc.</div>
-      <div class="quote-box">Không có câu nào nhắc đến việc "repair themselves" (tự sửa chữa).</div>
-    `
-  },
-  {
-    num: 33,
-    question: "The word “extended” in paragraph 3 is CLOSEST in meaning to _______.",
-    options: [
-      {text: "improved", correct: false},
-      {text: "continued", correct: true},
-      {text: "delayed", correct: false},
-      {text: "shortened", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Từ "extended" ở đoạn 3 có nghĩa GẦN NHẤT với từ nào?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="p-word">Extend</span> (v): kéo dài, mở rộng.</div>
-      <div class="expl-row"><span class="hl-red">A. improved</span>: <span class="p-mean">cải thiện.</span></div>
-      <div class="expl-row"><span class="hl-green">B. continued</span>: <span class="p-mean">tiếp tục (được làm cho dài hơn).</span> ✅ Gần nghĩa nhất trong ngữ cảnh "sứ mệnh được kéo dài".</div>
-      <div class="expl-row"><span class="hl-red">C. delayed</span>: <span class="p-mean">trì hoãn.</span></div>
-      <div class="expl-row"><span class="hl-red">D. shortened</span>: <span class="p-mean">rút ngắn (Từ trái nghĩa).</span></div>
-      <div class="quote-box">"...their mission was <span class="p-word">extended</span>."<br>👉 <span class="p-mean">...nhiệm vụ của chúng đã được kéo dài (tiếp tục lâu hơn dự kiến).</span></div>
-    `
-  },
-  {
-    num: 34,
-    question: "Which of the following is TRUE according to the passage?",
-    options: [
-      {text: "Spirit was launched after Opportunity.", correct: false},
-      {text: "Both rovers landed on Mars at the same time.", correct: false},
-      {text: "Opportunity operated longer than Spirit.", correct: true},
-      {text: "The mission ended in 2010.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Điều nào ĐÚNG theo đoạn văn?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. Spirit phóng sau Opportunity.</span> ❌ Sai, Spirit phóng 10/6, Opp. phóng 7/7 (phóng sau).</div>
-      <div class="expl-row"><span class="hl-red">B. Hạ cánh cùng lúc.</span> ❌ Sai, cách nhau 3 tuần.</div>
-      <div class="expl-row"><span class="hl-green">C. Opportunity hoạt động lâu hơn Spirit.</span> ✅ Đúng. Spirit dừng năm 2010, Opp. dừng năm 2018.</div>
-      <div class="expl-row"><span class="hl-red">D. Sứ mệnh kết thúc năm 2010.</span> ❌ Sai, đến 2019 mới chính thức kết thúc hoàn toàn.</div>
-      <div class="quote-box">"In 2010, Spirit stopped sending signals, but Opportunity continued to operate until 2018."<br>👉 <span class="p-mean">Năm 2010 Spirit ngừng hoạt động, nhưng Opportunity tiếp tục đến 2018.</span></div>
-    `
-  },
-  {
-    num: 35,
-    question: "The word “officially” in paragraph 3 is OPPOSITE in meaning to _______.",
-    options: [
-      {text: "informally", correct: true},
-      {text: "legally", correct: false},
-      {text: "correctly", correct: false},
-      {text: "publicly", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Từ "officially" TRÁI NGHĨA với từ nào?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="p-word">Officially</span> (adv): một cách chính thức, trịnh trọng.</div>
-      <div class="expl-row"><span class="hl-green">A. informally</span>: <span class="p-mean">không chính thức.</span> ✅ Trái nghĩa hoàn toàn.</div>
-      <div class="expl-row"><span class="hl-red">B. legally</span>: <span class="p-mean">hợp pháp.</span></div>
-      <div class="expl-row"><span class="hl-red">C. correctly</span>: <span class="p-mean">chính xác.</span></div>
-      <div class="expl-row"><span class="hl-red">D. publicly</span>: <span class="p-mean">công khai.</span></div>
-      <div class="quote-box">NASA <span class="p-word">officially</span> declared...<br>👉 <span class="p-mean">NASA chính thức tuyên bố...</span></div>
-    `
-  },
-  {
-    num: 36,
-    question: "Why did NASA extend the mission of the rovers?",
-    options: [
-      {text: "Because they discovered water on Mars.", correct: false},
-      {text: "Because the rovers were still working well.", correct: true},
-      {text: "Because new rovers were not ready.", correct: false},
-      {text: "Because the mission was too expensive to end.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Tại sao NASA gia hạn nhiệm vụ của các tàu thám hiểm?</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-red">A. Vì phát hiện ra nước.</span> ❌ Bài không khẳng định điều này.</div>
-      <div class="expl-row"><span class="hl-green">B. Vì chúng vẫn làm việc tốt.</span> ✅ Đúng.</div>
-      <div class="expl-row"><span class="hl-red">C, D</span>: <span class="p-mean">Không có thông tin trong bài.</span></div>
-      <div class="quote-box">"...they worked so well that their mission was extended."<br>👉 <span class="p-mean">...chúng làm việc quá tốt đến nỗi nhiệm vụ được kéo dài.</span></div>
-    `
-  },
-  // Passage 4
-  {
-    num: 37,
-    question: "First, you should always wear your space suit, even inside buildings, (37) _________.",
-    options: [
-      {text: "because they could hurt you.", correct: false},
-      {text: "or you might get lost.", correct: false},
-      {text: "because you can talk through your radio.", correct: false},
-      {text: "or you might breathe something dangerous.", correct: true}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Đầu tiên, bạn nên luôn mặc bộ đồ vũ trụ... (37) _____.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row">Câu tiếp theo trong bài là "The air might not be safe to breathe" (Không khí có thể không an toàn để hít thở).</div>
-      <div class="expl-row"><span class="hl-green">D. or you might breathe something dangerous.</span>: <span class="p-mean">nếu không bạn có thể hít phải thứ nguy hiểm.</span> ✅ Rất hợp lý với câu nối tiếp.</div>
-      <div class="quote-box">"...always wear your space suit... <span class="p-word">or you might breathe something dangerous</span>. The air might not be safe to breathe."</div>
-    `
-  },
-  {
-    num: 38,
-    question: "You must not take off your helmet to speak (38) _________.",
-    options: [
-      {text: "because they could hurt you.", correct: false},
-      {text: "or you might get lost.", correct: false},
-      {text: "because you can talk through your radio.", correct: true},
-      {text: "or you might breathe something dangerous.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Bạn không được cởi mũ bảo hiểm ra để nói chuyện (38) _____.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row">Câu trước đó là: "...use your radio to communicate." (Sử dụng bộ đàm để giao tiếp).</div>
-      <div class="expl-row"><span class="hl-green">C. because you can talk through your radio.</span>: <span class="p-mean">vì bạn có thể nói chuyện qua bộ đàm.</span> ✅ Cực kỳ khớp logic.</div>
-      <div class="quote-box">"You must not take off your helmet to speak <span class="p-word">because you can talk through your radio</span>."</div>
-    `
-  },
-  {
-    num: 39,
-    question: "If you see any strange plants or animals, do not touch them. Some of them may be dangerous (39) _________.",
-    options: [
-      {text: "because they could hurt you.", correct: true},
-      {text: "or you might get lost.", correct: false},
-      {text: "because you can talk through your radio.", correct: false},
-      {text: "or you might breathe something dangerous.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Đừng chạm vào động thực vật lạ. Chúng có thể nguy hiểm (39) _____.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">A. because they could hurt you.</span>: <span class="p-mean">bởi vì chúng có thể làm bạn bị thương.</span> ✅ Giải thích lý do vì sao chúng "dangerous" (nguy hiểm) và tại sao "do not touch them".</div>
-      <div class="quote-box">"Some of them may be dangerous <span class="p-word">because they could hurt you</span>."</div>
-    `
-  },
-  {
-    num: 40,
-    question: "Finally, always follow your guide's instructions and return to the spaceship on time (40) _________.",
-    options: [
-      {text: "because they could hurt you.", correct: false},
-      {text: "or you might get lost.", correct: true},
-      {text: "because you can talk through your radio.", correct: false},
-      {text: "or you might breathe something dangerous.", correct: false}
-    ],
-    explanation: `
-      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Cuối cùng, luôn làm theo hướng dẫn và quay lại tàu đúng giờ (40) _____.</div>
-      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
-      <div class="expl-row"><span class="hl-green">B. or you might get lost.</span>: <span class="p-mean">nếu không bạn có thể bị lạc.</span> ✅ Đây là hậu quả nếu không đi theo người hướng dẫn.</div>
-      <div class="quote-box">"...return to the spaceship on time <span class="p-word">or you might get lost</span>."</div>
-    `
-  }
-];
-
-// ================= SHUFFLE ALGORITHM =================
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-// ================= RENDER QUIZ =================
-let answeredCount = 0;
-let correctCount = 0;
-const totalQ = quizData.length;
-
-function renderQuiz() {
-  const container = document.getElementById('quizContainer');
-  quizData.forEach((data, index) => {
-    // Shuffle options
-    const shuffledOptions = shuffle([...data.options]);
-    
-    const card = document.createElement('div');
-    card.className = 'glass-panel';
-    
-    let optionsHtml = '';
-    shuffledOptions.forEach(opt => {
-      optionsHtml += `<button class="opt-btn" data-correct="${opt.correct}" onclick="handleAnswer(this, event, ${index})">${opt.text}</button>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">Question ${data.num}</div>
-      <div class="q-text">${data.question}</div>
-      <div class="options">${optionsHtml}</div>
-      <div class="explanation" id="expl_${index}">
-        <div class="expl-title">💡 Giải thích chi tiết từ MS Chí Nên</div>
-        ${data.explanation}
-      </div>
-    `;
-    container.appendChild(card);
-  });
-
-  // Add submit button at the bottom
-  const submitDiv = document.createElement('div');
-  submitDiv.className = 'submit-wrap';
-  submitDiv.innerHTML = `<button class="submit-btn" onclick="showNameModal()">🎯 Nộp Bài Tính Điểm</button>`;
-  container.appendChild(submitDiv);
-}
-
-// ================= HANDLE ANSWER =================
-function handleAnswer(btn, event, index) {
-  const card = btn.closest('.glass-panel');
-  const allBtns = card.querySelectorAll('.opt-btn');
-  
-  // Prevent double clicking
-  if(allBtns[0].disabled) return;
-  allBtns.forEach(b => b.disabled = true);
-  
-  const isCorrect = btn.getAttribute('data-correct') === 'true';
-  if(isCorrect) {
-    btn.classList.add('correct');
-    playDing();
-    correctCount++;
-    // Confetti from mouse click position
-    spawnConfetti(event.clientX, event.clientY);
-  } else {
-    btn.classList.add('wrong');
-    playBuzz();
-    // Highlight correct answer automatically
-    allBtns.forEach(b => {
-      if(b.getAttribute('data-correct') === 'true') {
-        b.classList.add('correct');
-        b.style.opacity = '0.7';
-      }
-    });
-  }
-  
-  // Show explanation
-  document.getElementById(`expl_${index}`).classList.add('show');
-  answeredCount++;
-}
-
-// ================= MODAL LOGIC =================
-function showNameModal() {
-  if(answeredCount < totalQ) {
-    if(!confirm(`Em mới làm ${answeredCount}/${totalQ} câu. Có chắc chắn muốn nộp bài sớm không?`)) return;
-  }
-  document.getElementById('customModal').classList.add('show');
-  document.getElementById('nameModalView').style.display = 'block';
-  document.getElementById('resultModalView').style.display = 'none';
-}
-
-function submitName() {
-  const name = document.getElementById('nameInput').value.trim();
-  const err = document.getElementById('nameErr');
-  const input = document.getElementById('nameInput');
-  
-  if(!name) {
-    input.classList.remove('error'); void input.offsetWidth; input.classList.add('error');
-    err.style.display = 'block'; setTimeout(() => input.classList.remove('error'), 400);
-    return;
-  }
-  
-  // Setup Results
-  document.getElementById('nameModalView').style.display = 'none';
-  document.getElementById('resultModalView').style.display = 'block';
-  
-  const percent = totalQ > 0 ? (correctCount / totalQ) : 0;
-  let title = '', msg = '', gif = '';
-  
-  if(percent === 1) {
-    title = `🌟 THIÊN TÀI! ${name} 🌟`;
-    msg = "Xuất sắc tuyệt đối! Em là cao thủ Tiếng Anh thực sự! 👑";
-    gif = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Minions Cheer
-    setInterval(() => spawnConfetti(Math.random() * window.innerWidth, 100), 500); // Continuous confetti
-  } else if(percent >= 0.6) {
-    title = `🎉 RẤT TỐT, ${name}!`;
-    msg = "Thành tích rất ấn tượng! Cố gắng thêm chút nữa là hoàn hảo nhé! ✨";
-    gif = "https://media.giphy.com/media/nXXU1DVGVAD60/giphy.gif"; // DiCaprio Clap
-  } else {
-    title = `💪 CỐ LÊN NHÉ, ${name}!`;
-    msg = "Đừng buồn, hãy đọc kỹ phần giải thích của cô để làm tốt hơn ở lần sau! 🌈";
-    gif = "https://media.giphy.com/media/qQdL532nCG9ko/giphy.gif"; // Funny sad/crying
-  }
-  
-  document.getElementById('resTitle').innerHTML = title;
-  document.getElementById('resScore').innerHTML = `${correctCount} / ${totalQ}`;
-  document.getElementById('resMsg').innerHTML = msg;
-  document.getElementById('resGif').src = gif;
-}
-
-// Enter key support for Name Input
-document.getElementById('nameInput').addEventListener('keydown', e => {
-  if(e.key === 'Enter') submitName();
-});
-
-// Initialize
-renderQuiz();
-</script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reading Practice - MS Chí Nên ULIS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= CSS VARIABLES ================= */
+
+:root {
+
+  --pink: #FF9A9E; --purple: #A18CD1; --yellow: #FDCB6E; --teal: #00C9A7;
+
+  --blue: #A1C4FD; --orange: #FF9F43; --correct: #00D26A; --wrong: #FF4757;
+
+  --glass-bg: rgba(255, 255, 255, 0.65);
+
+  --glass-border: rgba(255, 255, 255, 0.8);
+
+  --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+
+  --text-main: #2d1b6e;
+
+}
+
+
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+
+body { min-height: 100vh; overflow-x: hidden; background: #fdfbfb; color: var(--text-main); }
+
+
+
+/* ================= BACKGROUND ANIMATION ================= */
+
+.bg-gradient {
+
+  position: fixed; inset: 0; z-index: 0;
+
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 30%, #ffecd2 60%, #fcb69f 100%);
+
+  background-size: 400% 400%; animation: gradientMove 15s ease infinite;
+
+}
+
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+
+
+.bg-pattern { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+
+.float-icon { position: absolute; font-size: 2.5rem; animation: floatUp linear infinite; opacity: 0.3; user-select: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0.1; } 50% { opacity: 0.4; } 100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0.1; } }
+
+
+
+/* ================= SPLIT SCREEN LAYOUT ================= */
+
+.wrapper {
+
+  position: relative; z-index: 2; display: flex; gap: 20px;
+
+  max-width: 1400px; margin: 0 auto; padding: 20px; height: 100vh;
+
+}
+
+.left-pane, .right-pane {
+
+  flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px;
+
+  border-radius: 24px;
+
+}
+
+/* Scrollbar styling */
+
+::-webkit-scrollbar { width: 8px; }
+
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+::-webkit-scrollbar-thumb { background: rgba(161, 140, 209, 0.6); border-radius: 10px; }
+
+
+
+@media (max-width: 900px) {
+
+  .wrapper { flex-direction: column; height: auto; }
+
+  .left-pane, .right-pane { overflow-y: visible; max-height: none; }
+
+}
+
+
+
+/* ================= HEADER & GLASSMORPHISM ================= */
+
+.glass-panel {
+
+  background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+
+  border: 2px solid var(--glass-border); border-radius: 20px;
+
+  box-shadow: var(--shadow); margin-bottom: 24px; padding: 24px;
+
+}
+
+.quiz-header { text-align: center; margin-bottom: 20px; padding: 15px; }
+
+.quiz-header h1 { font-size: 1.6rem; font-weight: 900; color: #5a3a8a; text-shadow: 0 2px 4px rgba(255,255,255,0.8); text-transform: uppercase; }
+
+.quiz-header p { font-size: 0.95rem; font-weight: 800; color: #8854C0; margin-top: 5px; background: rgba(255,255,255,0.5); display: inline-block; padding: 5px 15px; border-radius: 50px;}
+
+
+
+/* ================= READING PASSAGES ================= */
+
+.passage-title { font-size: 1.3rem; font-weight: 900; color: #ff6b81; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+.passage-text { font-size: 1.1rem; line-height: 1.8; color: #2f3542; margin-bottom: 15px; font-weight: 600; text-align: justify; }
+
+.blank-box { display: inline-block; min-width: 60px; height: 26px; border-bottom: 3px dashed #A18CD1; margin: 0 5px; text-align: center; font-weight: 800; color: #5a3a8a; }
+
+.trans-btn {
+
+  background: linear-gradient(135deg, #A18CD1, #FF9A9E); color: white; border: none;
+
+  border-radius: 12px; padding: 8px 16px; font-size: 0.9rem; font-weight: 800;
+
+  cursor: pointer; box-shadow: 0 4px 10px rgba(161, 140, 209, 0.4); transition: transform 0.2s;
+
+  margin-bottom: 10px; display: inline-flex; align-items: center; gap: 6px;
+
+}
+
+.trans-btn:hover { transform: scale(1.05); }
+
+.trans-content {
+
+  display: none; background: rgba(255, 243, 224, 0.85); border-left: 5px solid #ff9800;
+
+  padding: 12px 16px; border-radius: 8px; font-size: 1rem; color: #d35400; font-weight: 700;
+
+  margin-bottom: 20px; line-height: 1.6; animation: fadeIn 0.3s ease;
+
+}
+
+
+
+/* ================= GLOSSARY ================= */
+
+.glossary-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(255,255,255,0.7); border-radius: 12px; overflow: hidden; }
+
+.glossary-table th { background: linear-gradient(90deg, #A18CD1, #FF9A9E); color: white; padding: 12px; text-align: left; font-weight: 800; }
+
+.glossary-table td { padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 700; color: #4a4a4a; }
+
+.glossary-table tr:last-child td { border-bottom: none; }
+
+.g-word { color: #2e86de; font-weight: 900; }
+
+.g-pos { color: #8395a7; font-style: italic; font-size: 0.9rem; }
+
+
+
+/* ================= QUIZ CARDS ================= */
+
+.q-num {
+
+  display: inline-block; background: linear-gradient(135deg, #FDCB6E, #FF9F43);
+
+  color: white; font-weight: 900; font-size: 0.95rem; border-radius: 50px;
+
+  padding: 6px 16px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(253, 203, 110, 0.3);
+
+}
+
+.q-text { font-size: 1.15rem; font-weight: 800; color: #2d1b6e; line-height: 1.6; margin-bottom: 18px; }
+
+
+
+.options { display: grid; grid-template-columns: 1fr; gap: 14px; }
+
+.opt-btn {
+
+  background: rgba(255, 255, 255, 0.9); border: 2px solid transparent; border-radius: 18px;
+
+  padding: 16px 20px; font-size: 1.1rem; font-weight: 800; color: #3d1a78;
+
+  cursor: pointer; text-align: left; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  box-shadow: 0 6px 0 #d4b8ff, 0 8px 16px rgba(136,84,192,0.1); display: block; width: 100%;
+
+}
+
+.opt-btn:hover:not(:disabled) {
+
+  transform: translateY(-4px); box-shadow: 0 10px 0 #c4a0f0, 0 12px 20px rgba(136,84,192,0.2);
+
+  background: #fbf8ff; border-color: #d4b8ff;
+
+}
+
+.opt-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #c4a0f0; }
+
+.opt-btn.correct {
+
+  background: linear-gradient(135deg, #d4fff0, #b8ffe0) !important; color: #00873e !important;
+
+  box-shadow: 0 6px 0 #00a854, 0 8px 16px rgba(0,210,106,0.2) !important; transform: scale(1.02) !important; border: 2px solid var(--correct);
+
+}
+
+.opt-btn.wrong {
+
+  background: linear-gradient(135deg, #ffe0e3, #ffd0d4) !important; color: #c0002a !important;
+
+  box-shadow: 0 6px 0 #ff2244, 0 8px 16px rgba(255,71,87,0.2) !important; border: 2px solid var(--wrong);
+
+  animation: shake 0.4s ease;
+
+}
+
+.opt-btn:disabled { cursor: default; }
+
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+
+
+
+/* ================= EXPLANATIONS (STRICT COLORS) ================= */
+
+.explanation {
+
+  display: none; margin-top: 20px; background: rgba(255,255,255,0.95);
+
+  border-radius: 16px; padding: 20px; font-size: 1.05rem; line-height: 1.7;
+
+  box-shadow: inset 0 0 0 2px #A18CD1, 0 8px 24px rgba(0,0,0,0.08); animation: fadeIn 0.4s ease;
+
+}
+
+.explanation.show { display: block; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
+
+
+
+.expl-title { font-weight: 900; color: #8854C0; font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed #e0d4f7; padding-bottom: 8px; }
+
+.expl-row { margin: 8px 0; color: #2c3e50; font-weight: 600; }
+
+/* REQUIRED CSS CLASSES FOR EXPLANATION */
+
+.p-word { color: #0984e3; font-weight: 900; background: #eaf2f8; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+
+.p-mean { color: #d35400; font-weight: 800; }
+
+.p-grammar { text-decoration: underline; text-decoration-color: #e74c3c; text-decoration-thickness: 3px; font-weight: 900; color: #c0392b; }
+
+.hl-green { color: #00b894; font-weight: 900; display: inline-block; }
+
+.hl-red { color: #d63031; font-weight: 800; text-decoration: line-through; display: inline-block; }
+
+.quote-box { background: #f1f2f6; border-left: 4px solid #7bed9f; padding: 10px 15px; border-radius: 0 8px 8px 0; font-style: italic; margin-top: 10px; }
+
+
+
+/* ================= MODALS & SUBMIT ================= */
+
+.submit-wrap { text-align: center; margin-top: 20px; padding: 20px; }
+
+.submit-btn {
+
+  background: linear-gradient(135deg, #f9ca24, #f0932b); color: white; border: none;
+
+  border-radius: 50px; padding: 16px 40px; font-size: 1.2rem; font-weight: 900;
+
+  cursor: pointer; box-shadow: 0 8px 0 #c87000, 0 15px 30px rgba(249,202,36,0.4);
+
+  transition: all 0.2s; text-transform: uppercase; width: 100%; max-width: 400px;
+
+}
+
+.submit-btn:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 12px 0 #c87000, 0 20px 40px rgba(249,202,36,0.5); }
+
+.submit-btn:active { transform: scale(0.98) translateY(2px); box-shadow: 0 2px 0 #c87000; }
+
+
+
+#customModal {
+
+  position:fixed; inset:0; z-index:9999; display:none; align-items:center; justify-content:center;
+
+  background:rgba(5,2,15,0.85); backdrop-filter:blur(10px);
+
+}
+
+#customModal.show { display: flex; }
+
+.pw-card {
+
+  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+
+  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:40px; 
+
+  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+
+  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+
+  animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+}
+
+@keyframes modalPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.pw-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572); }
+
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+
+.pw-title { font-family:'Nunito', sans-serif; font-size:1.6rem; font-weight:900; color:#F0C040; margin-bottom:6px; letter-spacing:1px; text-transform: uppercase; }
+
+.pw-sub   { font-size:1rem; color:rgba(200,200,212,0.8); margin-bottom:24px; font-weight: 700;}
+
+.pw-input {
+
+  width:100%; padding:15px 20px; border-radius:12px; border:2px solid rgba(240,192,64,0.4); 
+
+  background:rgba(255,255,255,0.1); color:#FFE082; font-size:1.1rem; font-family:'Nunito', sans-serif; font-weight: bold;
+
+  outline:none; text-align:center; transition:all .3s;
+
+}
+
+.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 4px rgba(240,192,64,0.2); background:rgba(255,255,255,0.2);}
+
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 4px rgba(255,71,87,0.25); animation:shake .4s ease; }
+
+.pw-btn {
+
+  width:100%; padding:16px; margin-top:16px; border-radius:12px; border:none;
+
+  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+
+  color:#fff; font-size:1.1rem; font-weight:900; font-family:'Nunito', sans-serif;
+
+  cursor:pointer; letter-spacing:1px; transition:transform .2s;
+
+}
+
+.pw-btn:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+
+.pw-err { color:#ff8a9a; font-size:0.95rem; margin-top:10px; display:none; font-weight:800; }
+
+.result-gif { width: 100%; max-width: 280px; border-radius: 16px; margin: 15px auto; display: block; border: 3px solid #F0C040; }
+
+.result-score { font-size: 3.5rem; font-weight: 900; color: #00D26A; margin-bottom: 5px; text-shadow: 0 0 20px rgba(0,210,106,0.4); }
+
+
+
+/* Confetti */
+
+.confetti { position: fixed; width: 10px; height: 10px; z-index: 9999; pointer-events: none; animation: fall linear forwards; }
+
+@keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="bg-gradient"></div>
+
+<div class="bg-pattern" id="bgPattern"></div>
+
+
+
+<div class="wrapper">
+
+  <div class="left-pane">
+
+    <div class="glass-panel quiz-header">
+
+      <h1>🚀 Tiếng Anh Cực Vui 🚀</h1>
+
+      <p>Giáo viên tạo: MS Chí Nên ULIS</p>
+
+    </div>
+
+
+
+    <div class="glass-panel">
+
+      <div class="passage-title">📱 Passage 1: New School App</div>
+
+      <div class="passage-text">
+
+        Hello students,<br><br>
+
+        We are excited to tell you about our new school app. This app helps you <span class="blank-box">13</span> with your teachers and classmates more easily. You can send a messenger, <span class="blank-box">14</span> file and join group chats. The app is free, but you need to <span class="blank-box">15</span> it first. If you have any questions, please ask your teacher <span class="blank-box">16</span> help.<br><br>
+
+        Thank you!
+
+      </div>
+
+      <button class="trans-btn" onclick="toggleTrans('trans1')">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content" id="trans1">
+
+        Chào các em học sinh,<br><br>
+
+        Chúng tôi rất vui mừng thông báo cho các em về ứng dụng trường học mới của chúng ta. Ứng dụng này giúp các em (13) <strong>kết nối</strong> với giáo viên và bạn cùng lớp dễ dàng hơn. Các em có thể gửi tin nhắn, (14) <strong>chia sẻ</strong> tệp tin và tham gia các nhóm chat. Ứng dụng này miễn phí, nhưng các em cần phải (15) <strong>cài đặt</strong> nó trước tiên. Nếu các em có bất kỳ câu hỏi nào, vui lòng nhờ giáo viên (16) <strong>giúp đỡ</strong>.<br><br>
+
+        Cảm ơn các em!
+
+      </div>
+
+    </div>
+
+
+
+    <div class="glass-panel">
+
+      <div class="passage-title">💬 Passage 2: Ways of Communication</div>
+
+      <div class="passage-text">
+
+        There are a wide range of ways in which we communicate. Here are some major ways of communication. Spoken or <span class="blank-box">19</span> communication, which includes face-to-face or telephone conversations, news and stories on the radio or television.<br><br>
+
+        Non-verbal communication, which covers <span class="blank-box">20</span>, how we dress or act, where we stand, and even our scent. There are many subtle ways that we communicate (sometimes unintentionally) with others. For example, the tone of voice can give clues to mood or emotional state <span class="blank-box">21</span> hand signals or facial gestures. <br><br>
+
+        Written communication, which includes letters, emails, social media, books, <span class="blank-box">22</span>, the Internet and other media. Until recently, several writers and publishers were very powerful when it came to communicating the written word. Today, we can all write and publish our ideas online, which has led to an explosion of information and communication possibilities. <br><br>
+
+        Visualizations, which <span class="blank-box">23</span> graphs, charts, maps, logos, pictures, and many other visual objects to communicate messages. In the future, it is expected that communication technology <span class="blank-box">24</span>, making it easier for people to connect worldwide.
+
+      </div>
+
+      <button class="trans-btn" onclick="toggleTrans('trans2')">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content" id="trans2">
+
+        Có rất nhiều cách để chúng ta giao tiếp. Dưới đây là một số cách giao tiếp chính. Giao tiếp bằng lời nói hoặc (19) <strong>bằng lời (verbal)</strong>, bao gồm các cuộc trò chuyện trực tiếp hoặc qua điện thoại, tin tức và câu chuyện trên đài phát thanh hoặc truyền hình.<br><br>
+
+        Giao tiếp phi ngôn ngữ, bao gồm (20) <strong>ngôn ngữ cơ thể</strong>, cách chúng ta ăn mặc hoặc hành động, vị trí chúng ta đứng, và thậm chí cả mùi hương của chúng ta. Có nhiều cách tinh tế mà chúng ta giao tiếp (đôi khi là vô tình) với người khác. Ví dụ, giọng điệu có thể đưa ra manh mối về tâm trạng hoặc trạng thái cảm xúc (21) <strong>trong khi</strong> tín hiệu tay hoặc cử chỉ khuôn mặt cũng vậy.<br><br>
+
+        Giao tiếp bằng văn bản, bao gồm thư từ, email, mạng xã hội, sách, (22) <strong>tạp chí</strong>, Internet và các phương tiện truyền thông khác. Cho đến gần đây, một số nhà văn và nhà xuất bản rất có quyền lực khi nói đến việc truyền đạt bằng văn bản. Ngày nay, tất cả chúng ta đều có thể viết và xuất bản ý tưởng của mình trực tuyến, điều này đã dẫn đến sự bùng nổ thông tin và khả năng giao tiếp.<br><br>
+
+        Trực quan hóa, phương pháp (23) <strong>sử dụng</strong> biểu đồ, đồ thị, bản đồ, logo, hình ảnh và nhiều đối tượng thị giác khác để truyền tải thông điệp. Trong tương lai, người ta dự đoán rằng công nghệ giao tiếp (24) <strong>sẽ tiến bộ nhanh chóng</strong>, giúp mọi người trên toàn thế giới kết nối dễ dàng hơn.
+
+      </div>
+
+    </div>
+
+
+
+    <div class="glass-panel">
+
+      <div class="passage-title">🪐 Passage 3: Mars Exploration Rovers</div>
+
+      <div class="passage-text">
+
+        The Mars Exploration Rovers were two robotic vehicles that explored the surface of Mars. Scientists wanted them to figure out whether water had ever existed on the planet. The rovers also searched for other traces of life on Mars. The National Aeronautics and Space Administration (NASA) designed and built the rovers, named Spirit and Opportunity. NASA launched Spirit on June 10, and Opportunity on July 7, 2003. Spirit touched down on January 3, 2004. Three weeks later, Opportunity landed on the opposite side of the planet.<br><br>
+
+        The rovers had six wheels that allowed them to move in many directions. They also had cameras and many instruments for examining the rocks, soil, and dust on the planet. Scientists on Earth sent commands to the rovers to tell them where to go and what to do. The rovers sent signals back to the scientists through computers and large antennas on Earth.<br><br>
+
+        Each rover was designed to last for about 90 days. However, they worked so well that their mission was extended. In 2010, Spirit stopped sending signals, but Opportunity continued to operate until 2018. NASA officially declared the Opportunity mission to be ended in February 2019.
+
+      </div>
+
+      <button class="trans-btn" onclick="toggleTrans('trans3')">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content" id="trans3">
+
+        Mars Exploration Rovers là hai phương tiện rô-bốt đã khám phá bề mặt sao Hỏa. Các nhà khoa học muốn chúng tìm ra liệu nước đã từng tồn tại trên hành tinh này hay chưa. Các tàu thám hiểm cũng tìm kiếm những dấu vết sự sống khác trên sao Hỏa. Cơ quan Hàng không và Vũ trụ Quốc gia (NASA) đã thiết kế và chế tạo các tàu thám hiểm mang tên Spirit và Opportunity. NASA phóng Spirit vào ngày 10/6 và Opportunity vào ngày 7/7 năm 2003. Spirit hạ cánh vào ngày 3/1/2004. Ba tuần sau, Opportunity hạ cánh ở phía đối diện của hành tinh.<br><br>
+
+        Các tàu thám hiểm có sáu bánh xe cho phép chúng di chuyển theo nhiều hướng. Chúng cũng có máy ảnh và nhiều công cụ để kiểm tra đá, đất và bụi trên hành tinh. Các nhà khoa học trên Trái đất đã gửi lệnh cho các tàu thám hiểm để cho chúng biết phải đi đâu và làm gì. Các tàu thám hiểm đã gửi tín hiệu trở lại cho các nhà khoa học thông qua máy tính và ăng-ten lớn trên Trái đất.<br><br>
+
+        Mỗi chiếc tàu được thiết kế để hoạt động trong khoảng 90 ngày. Tuy nhiên, chúng đã làm việc quá tốt đến mức nhiệm vụ của chúng đã được kéo dài. Năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục hoạt động cho đến năm 2018. NASA chính thức tuyên bố sứ mệnh Opportunity kết thúc vào tháng 2/2019.
+
+      </div>
+
+    </div>
+
+
+
+    <div class="glass-panel">
+
+      <div class="passage-title">🧑‍🚀 Passage 4: Space Safety</div>
+
+      <div class="passage-text">
+
+        There are a few things you can do to stay safe if you visit another planet in the future. First, you should always wear your space suit, even inside buildings, <span class="blank-box">37</span>. Second, stay close to your team and use your radio to communicate. You must not take off your helmet to speak <span class="blank-box">38</span>. If you see any strange plants or animals, do not touch them. Some of them may be dangerous <span class="blank-box">39</span>. Finally, always follow your guide's instructions and return to the spaceship on time <span class="blank-box">40</span>.
+
+      </div>
+
+      <button class="trans-btn" onclick="toggleTrans('trans4')">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content" id="trans4">
+
+        Có một vài điều bạn có thể làm để giữ an toàn nếu bạn đến thăm một hành tinh khác trong tương lai. Đầu tiên, bạn nên luôn mặc bộ đồ vũ trụ của mình, ngay cả khi ở trong các tòa nhà, (37) <strong>nếu không bạn có thể hít phải thứ gì đó nguy hiểm</strong>. Thứ hai, hãy ở gần đội của bạn và sử dụng bộ đàm để giao tiếp. Bạn không được cởi mũ bảo hiểm ra để nói chuyện (38) <strong>bởi vì bạn có thể nói chuyện qua bộ đàm của mình</strong>. Nếu bạn nhìn thấy bất kỳ loại thực vật hay động vật kỳ lạ nào, đừng chạm vào chúng. Một số trong chúng có thể nguy hiểm (39) <strong>vì chúng có thể làm bạn bị thương</strong>. Cuối cùng, hãy luôn làm theo hướng dẫn của người hướng dẫn và quay trở lại tàu vũ trụ đúng giờ (40) <strong>nếu không bạn có thể bị lạc</strong>.
+
+      </div>
+
+    </div>
+
+
+
+    <div class="glass-panel">
+
+      <div class="passage-title">📚 Bảng Từ Vựng Học Thuật (Glossary)</div>
+
+      <table class="glossary-table">
+
+        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+        <tr><td><span class="g-word">Communicate</span></td><td><span class="g-pos">verb</span></td><td>giao tiếp, liên lạc</td></tr>
+
+        <tr><td><span class="g-word">Non-verbal</span></td><td><span class="g-pos">adj</span></td><td>phi ngôn ngữ (cử chỉ, nét mặt)</td></tr>
+
+        <tr><td><span class="g-word">Unintentionally</span></td><td><span class="g-pos">adv</span></td><td>một cách vô tình, không cố ý</td></tr>
+
+        <tr><td><span class="g-word">Visualization</span></td><td><span class="g-pos">noun</span></td><td>sự trực quan hóa, hình ảnh hóa</td></tr>
+
+        <tr><td><span class="g-word">Exploration</span></td><td><span class="g-pos">noun</span></td><td>sự thám hiểm, thăm dò</td></tr>
+
+        <tr><td><span class="g-word">Surface</span></td><td><span class="g-pos">noun</span></td><td>bề mặt</td></tr>
+
+        <tr><td><span class="g-word">Exist</span></td><td><span class="g-pos">verb</span></td><td>tồn tại</td></tr>
+
+        <tr><td><span class="g-word">Trace</span></td><td><span class="g-pos">noun</span></td><td>dấu vết, tàn tích</td></tr>
+
+        <tr><td><span class="g-word">Instrument</span></td><td><span class="g-pos">noun</span></td><td>công cụ, nhạc cụ, thiết bị</td></tr>
+
+        <tr><td><span class="g-word">Extend</span></td><td><span class="g-pos">verb</span></td><td>mở rộng, kéo dài (thời gian)</td></tr>
+
+      </table>
+
+    </div>
+
+
+
+  </div> <div class="right-pane" id="quizContainer">
+
+    </div>
+
+</div>
+
+
+
+<div id="customModal">
+
+  <div class="pw-card" id="nameModalView">
+
+    <span class="pw-crest">📝</span>
+
+    <div class="pw-title">NHẬP TÊN CỦA BẠN</div>
+
+    <div class="pw-sub">Hãy cho cô biết ai đang làm bài nhé!</div>
+
+    <input type="text" class="pw-input" id="nameInput" placeholder="VD: Thiên Tài Toán Học..." autocomplete="off" />
+
+    <button class="pw-btn" onclick="submitName()">HOÀN THÀNH</button>
+
+    <div class="pw-err" id="nameErr">Vui lòng nhập tên của bạn!</div>
+
+  </div>
+
+
+
+  <div class="pw-card" id="resultModalView" style="display: none;">
+
+    <div class="pw-title" id="resTitle">🌟 THIÊN TÀI!</div>
+
+    <img id="resGif" class="result-gif" src="" alt="Result Meme">
+
+    <div class="result-score" id="resScore">0/0</div>
+
+    <div class="pw-sub" id="resMsg" style="color: #FFE082;"></div>
+
+    <button class="pw-btn" onclick="location.reload()">LÀM LẠI BÀI</button>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+// ================= BACKGROUND EMOJIS =================
+
+const emojis = ['🚀', '🪐', '👽', '📱', '💬', '🌏', '🛰️', '🧑‍🚀', '📖', '✨'];
+
+const bgPattern = document.getElementById('bgPattern');
+
+for(let i=0; i<30; i++) {
+
+  const el = document.createElement('div');
+
+  el.className = 'float-icon';
+
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+  el.style.left = Math.random() * 100 + 'vw';
+
+  el.style.animationDuration = (10 + Math.random() * 20) + 's';
+
+  el.style.animationDelay = (Math.random() * 10) + 's';
+
+  bgPattern.appendChild(el);
+
+}
+
+
+
+// ================= TOGGLE TRANSLATION =================
+
+function toggleTrans(id) {
+
+  const el = document.getElementById(id);
+
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+
+}
+
+
+
+// ================= AUDIO API =================
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+
+let actx = null;
+
+function getACtx() { if (!actx) actx = new AudioCtx(); return actx; }
+
+
+
+function playDing() {
+
+  const ctx = getACtx(); const o = ctx.createOscillator(), g = ctx.createGain();
+
+  o.connect(g); g.connect(ctx.destination);
+
+  o.type = 'sine'; o.frequency.setValueAtTime(880, ctx.currentTime);
+
+  o.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.1);
+
+  g.gain.setValueAtTime(0.5, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+
+  o.start(); o.stop(ctx.currentTime + 0.4);
+
+}
+
+function playBuzz() {
+
+  const ctx = getACtx();
+
+  [250, 150].forEach((freq, i) => {
+
+    const o = ctx.createOscillator(), g = ctx.createGain();
+
+    o.connect(g); g.connect(ctx.destination);
+
+    o.type = 'sawtooth'; o.frequency.value = freq;
+
+    g.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.15); g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.15 + 0.15);
+
+    o.start(ctx.currentTime + i * 0.15); o.stop(ctx.currentTime + i * 0.15 + 0.15);
+
+  });
+
+}
+
+
+
+// ================= CONFETTI =================
+
+function spawnConfetti(x, y) {
+
+  const colors = ['#00D26A', '#FDCB6E', '#FF9A9E', '#A1C4FD', '#A18CD1'];
+
+  for (let i = 0; i < 30; i++) {
+
+    const el = document.createElement('div'); el.className = 'confetti';
+
+    el.style.left = (x - 30 + Math.random() * 60) + 'px'; el.style.top = (y - 30 + Math.random() * 60) + 'px';
+
+    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    el.style.animationDuration = (1 + Math.random() * 1.5) + 's';
+
+    document.body.appendChild(el); setTimeout(() => el.remove(), 2500);
+
+  }
+
+}
+
+
+
+// ================= DATA =================
+
+const quizData = [
+
+  // Passage 1
+
+  {
+
+    num: 13,
+
+    question: "This app helps you (13)_______ with your teachers...",
+
+    options: [
+
+      {text: "connect", correct: true},
+
+      {text: "connecting", correct: false},
+
+      {text: "to connecting", correct: false},
+
+      {text: "connects", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ứng dụng này giúp bạn (13) _____ với giáo viên...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">A. connect</span>: <span class="p-mean">kết nối.</span> ✅ Đúng cấu trúc.</div>
+
+      <div class="expl-row"><span class="hl-red">B, C, D</span>: <span class="p-mean">Sai cấu trúc động từ.</span></div>
+
+      <div class="expl-row">🔍 <strong>Ngữ pháp:</strong> <span class="p-grammar">help + somebody + (to) V-inf</span> (giúp ai làm gì). Sau "help you" cần một động từ nguyên thể không "to" hoặc có "to". Ở đây "connect" là nguyên thể.</div>
+
+      <div class="quote-box">"This app helps you <span class="p-word">connect</span> with your teachers and classmates more easily."<br>👉 <span class="p-mean">Ứng dụng này giúp bạn kết nối với giáo viên và bạn cùng lớp dễ dàng hơn.</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 14,
+
+    question: "You can send a messenger, (14) _______ file and join group chats.",
+
+    options: [
+
+      {text: "drive", correct: false},
+
+      {text: "delete", correct: false},
+
+      {text: "share", correct: true},
+
+      {text: "print", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Bạn có thể gửi tin nhắn, (14) _____ tệp tin và tham gia nhóm chat.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. drive</span>: <span class="p-mean">lái xe.</span> ❌ Không hợp nghĩa.</div>
+
+      <div class="expl-row"><span class="hl-red">B. delete</span>: <span class="p-mean">xóa.</span> ❌ Không hợp logic ứng dụng trò chuyện.</div>
+
+      <div class="expl-row"><span class="hl-green">C. share</span>: <span class="p-mean">chia sẻ.</span> ✅ Đúng. Chia sẻ tệp tin là tính năng chính.</div>
+
+      <div class="expl-row"><span class="hl-red">D. print</span>: <span class="p-mean">in.</span> ❌ Không hợp.</div>
+
+      <div class="quote-box">"You can send a messenger, <span class="p-word">share</span> file and join group chats."<br>👉 <span class="p-mean">Bạn có thể gửi tin nhắn, chia sẻ tệp tin và tham gia nhóm chat.</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 15,
+
+    question: "The app is free, but you need to (15)________ it first.",
+
+    options: [
+
+      {text: "buy", correct: false},
+
+      {text: "install", correct: true},
+
+      {text: "turn of", correct: false},
+
+      {text: "open", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ứng dụng này miễn phí, nhưng bạn cần phải (15) _____ nó trước.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. buy</span>: <span class="p-mean">mua.</span> ❌ Sai vì app đã được nói là miễn phí (free).</div>
+
+      <div class="expl-row"><span class="hl-green">B. install</span>: <span class="p-mean">cài đặt.</span> ✅ Đúng. Muốn dùng app thì phải cài đặt.</div>
+
+      <div class="expl-row"><span class="hl-red">C. turn of</span>: <span class="p-mean">tắt (sai chính tả turn off).</span> ❌ Sai.</div>
+
+      <div class="expl-row"><span class="hl-red">D. open</span>: <span class="p-mean">mở.</span> ❌ Phải cài đặt trước mới mở được.</div>
+
+      <div class="quote-box">"The app is free, but you need to <span class="p-word">install</span> it first."<br>👉 <span class="p-mean">Ứng dụng miễn phí, nhưng bạn cần cài đặt nó trước.</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 16,
+
+    question: "If you have any questions, please ask your teacher (16) _______help.",
+
+    options: [
+
+      {text: "to", correct: false},
+
+      {text: "for", correct: true},
+
+      {text: "of", correct: false},
+
+      {text: "by", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Nếu bạn có bất kỳ câu hỏi nào, vui lòng nhờ giáo viên (16) _____ giúp đỡ.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">B. for</span>: <span class="p-mean">cho/để.</span> ✅ Đúng giới từ.</div>
+
+      <div class="expl-row"><span class="hl-red">A, C, D</span>: <span class="p-mean">Các giới từ không phù hợp.</span></div>
+
+      <div class="expl-row">🔍 <strong>Ngữ pháp:</strong> Cụm động từ cố định <span class="p-grammar">ask somebody FOR something</span>: yêu cầu ai đó giúp đỡ/cho cái gì.</div>
+
+      <div class="quote-box">"If you have any questions, please ask your teacher <span class="p-word">for</span> help."<br>👉 <span class="p-mean">Nếu bạn có câu hỏi, hãy nhờ giáo viên giúp đỡ.</span></div>
+
+    `
+
+  },
+
+  // Passage 2
+
+  {
+
+    num: 19,
+
+    question: "Spoken or (19) _____communication, which includes face-to-face...",
+
+    options: [
+
+      {text: "written", correct: false},
+
+      {text: "verbal", correct: true},
+
+      {text: "physical", correct: false},
+
+      {text: "visual", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp bằng lời nói hoặc (19) _____, bao gồm...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. written</span>: <span class="p-mean">bằng văn bản.</span> ❌ Nó thuộc nhóm khác.</div>
+
+      <div class="expl-row"><span class="hl-green">B. verbal</span>: <span class="p-mean">bằng lời nói.</span> ✅ Đúng. Spoken = Verbal.</div>
+
+      <div class="expl-row"><span class="hl-red">C. physical</span>: <span class="p-mean">thể chất.</span> ❌ Không hợp.</div>
+
+      <div class="expl-row"><span class="hl-red">D. visual</span>: <span class="p-mean">trực quan.</span> ❌ Sẽ được nhắc đến ở cuối bài.</div>
+
+      <div class="quote-box">"Spoken or <span class="p-word">verbal</span> communication..."<br>👉 <span class="p-mean">Giao tiếp bằng lời nói hoặc ngôn ngữ (verbal)...</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 20,
+
+    question: "Non-verbal communication, which covers (20) _______, how we dress or act...",
+
+    options: [
+
+      {text: "spoken language", correct: false},
+
+      {text: "foreign language", correct: false},
+
+      {text: "sign language", correct: false},
+
+      {text: "body language", correct: true}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp phi ngôn ngữ, bao gồm (20) _____, cách chúng ta ăn mặc hoặc hành động...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A, B.</span>: <span class="p-mean">ngôn ngữ nói / ngoại ngữ.</span> ❌ Thuộc về giao tiếp có lời (verbal).</div>
+
+      <div class="expl-row"><span class="hl-red">C. sign language</span>: <span class="p-mean">ngôn ngữ ký hiệu.</span> ❌ Thường được xếp riêng cho người khiếm thính.</div>
+
+      <div class="expl-row"><span class="hl-green">D. body language</span>: <span class="p-mean">ngôn ngữ cơ thể.</span> ✅ Đúng. Đi kèm với cách ăn mặc, hành động (act), vị trí đứng.</div>
+
+      <div class="quote-box">"Non-verbal communication, which covers <span class="p-word">body language</span>..."<br>👉 <span class="p-mean">Giao tiếp phi ngôn ngữ bao gồm ngôn ngữ cơ thể...</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 21,
+
+    question: "the tone of voice can give clues to mood or emotional state (21) ________ hand signals or facial gestures.",
+
+    options: [
+
+      {text: "while", correct: true},
+
+      {text: "so", correct: false},
+
+      {text: "during", correct: false},
+
+      {text: "when", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> giọng điệu có thể đưa ra manh mối về tâm trạng (21) _____ tín hiệu tay hoặc cử chỉ khuôn mặt...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">A. while</span>: <span class="p-mean">trong khi.</span> ✅ Đúng. Dùng để nối/đối chiếu 2 vế diễn ra song song (giọng điệu so với tín hiệu tay).</div>
+
+      <div class="expl-row"><span class="hl-red">B. so</span>: <span class="p-mean">vì vậy.</span> ❌ Không chỉ nguyên nhân kết quả ở đây.</div>
+
+      <div class="expl-row"><span class="hl-red">C. during</span>: <span class="p-mean">trong suốt.</span> ❌ Theo sau during phải là danh từ chỉ thời gian.</div>
+
+      <div class="expl-row"><span class="hl-red">D. when</span>: <span class="p-mean">khi.</span> ❌ Không hợp ngữ cảnh bằng 'while'.</div>
+
+      <div class="quote-box">"...emotional state <span class="p-word">while</span> hand signals or facial gestures..."<br>👉 <span class="p-mean">...trạng thái cảm xúc trong khi tín hiệu tay hoặc cử chỉ khuôn mặt (làm điều tương tự).</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 22,
+
+    question: "Written communication, which includes letters, emails, social media, books, (22) _______, the Internet...",
+
+    options: [
+
+      {text: "talks", correct: false},
+
+      {text: "paintings", correct: false},
+
+      {text: "recordings", correct: false},
+
+      {text: "magazines", correct: true}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Giao tiếp bằng văn bản, bao gồm thư, email, mạng xã hội, sách, (22) _____...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. talks</span>: <span class="p-mean">cuộc trò chuyện.</span> ❌ Thuộc giao tiếp bằng lời.</div>
+
+      <div class="expl-row"><span class="hl-red">B. paintings</span>: <span class="p-mean">bức tranh.</span> ❌ Thuộc giao tiếp trực quan (visual).</div>
+
+      <div class="expl-row"><span class="hl-red">C. recordings</span>: <span class="p-mean">bản ghi âm.</span> ❌ Thuộc âm thanh.</div>
+
+      <div class="expl-row"><span class="hl-green">D. magazines</span>: <span class="p-mean">tạp chí.</span> ✅ Đúng. Tạp chí chứa văn bản (Written communication).</div>
+
+      <div class="quote-box">"Written communication, which includes letters... books, <span class="p-word">magazines</span>..."<br>👉 <span class="p-mean">Giao tiếp bằng văn bản bao gồm thư... sách, tạp chí...</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 23,
+
+    question: "Visualizations, which (23) ________ graphs, charts, maps, logos, pictures...",
+
+    options: [
+
+      {text: "draws", correct: false},
+
+      {text: "affects", correct: false},
+
+      {text: "uses", correct: true},
+
+      {text: "communicates", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Trực quan hóa, phương pháp (23) _____ biểu đồ, đồ thị, bản đồ, logo...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. draws</span>: <span class="p-mean">vẽ.</span> ❌ Khái niệm trực quan hóa không chỉ là vẽ.</div>
+
+      <div class="expl-row"><span class="hl-red">B. affects</span>: <span class="p-mean">ảnh hưởng.</span> ❌ Sai nghĩa.</div>
+
+      <div class="expl-row"><span class="hl-green">C. uses</span>: <span class="p-mean">sử dụng.</span> ✅ Đúng. Nó SỬ DỤNG các biểu đồ để truyền đạt.</div>
+
+      <div class="expl-row"><span class="hl-red">D. communicates</span>: <span class="p-mean">giao tiếp.</span> ❌ Sai cấu trúc (không dùng communicate + đồ vật).</div>
+
+      <div class="quote-box">"Visualizations, which <span class="p-word">uses</span> graphs, charts, maps..."<br>👉 <span class="p-mean">Trực quan hóa, phương pháp sử dụng biểu đồ, đồ thị...</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 24,
+
+    question: "In the future, it is expected that communication technology (24) __________, making it easier...",
+
+    options: [
+
+      {text: "will advance rapidly", correct: true},
+
+      {text: "advanced slowly", correct: false},
+
+      {text: "is advancing now", correct: false},
+
+      {text: "to advance soon", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Trong tương lai, người ta dự đoán công nghệ giao tiếp (24) _____, giúp mọi người dễ dàng...</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">A. will advance rapidly</span>: <span class="p-mean">sẽ tiến bộ nhanh chóng.</span> ✅ Đúng thì Tương lai đơn.</div>
+
+      <div class="expl-row"><span class="hl-red">B, C.</span>: <span class="p-mean">Sai thì.</span> ❌ Có dấu hiệu "In the future" (Trong tương lai) nên không dùng quá khứ hay hiện tại tiếp diễn.</div>
+
+      <div class="expl-row"><span class="hl-red">D. to advance soon</span>: <span class="p-mean">Sai ngữ pháp sau mệnh đề that.</span></div>
+
+      <div class="quote-box">"In the future, it is expected that communication technology <span class="p-word">will advance rapidly</span>..."<br>👉 <span class="p-mean">Trong tương lai, người ta dự đoán công nghệ sẽ phát triển nhanh chóng...</span></div>
+
+    `
+
+  },
+
+  // Passage 3
+
+  {
+
+    num: 31,
+
+    question: "What is the main idea of the passage?",
+
+    options: [
+
+      {text: "The challenges of sending humans to Mars.", correct: false},
+
+      {text: "The discoveries made by the Mars Exploration Rovers.", correct: false},
+
+      {text: "The design, mission, and achievements of the Mars rovers.", correct: true},
+
+      {text: "The history of NASA’s space missions.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Ý chính của đoạn văn là gì?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. Thử thách gửi con người...</span> ❌ Không nhắc đến con người, chỉ nhắc robot.</div>
+
+      <div class="expl-row"><span class="hl-red">B. Những khám phá...</span> ❌ Chỉ là một phần nhỏ.</div>
+
+      <div class="expl-row"><span class="hl-green">C. Thiết kế, nhiệm vụ và thành tựu của tàu thám hiểm sao Hỏa.</span> ✅ Đúng bao quát toàn bài (Đoạn 1: Nhiệm vụ, Đoạn 2: Thiết kế/Chức năng, Đoạn 3: Thành tựu hoạt động lâu dài).</div>
+
+      <div class="expl-row"><span class="hl-red">D. Lịch sử NASA...</span> ❌ Quá rộng.</div>
+
+      <div class="quote-box">Bài đọc tập trung vào 2 tàu Spirit và Opportunity từ lúc phóng đến lúc kết thúc sứ mệnh.</div>
+
+    `
+
+  },
+
+  {
+
+    num: 32,
+
+    question: "Which of the following is NOT mentioned as a feature of the rovers?",
+
+    options: [
+
+      {text: "Having six wheels for movement.", correct: false},
+
+      {text: "Carrying cameras and instruments.", correct: false},
+
+      {text: "Being able to repair themselves.", correct: true},
+
+      {text: "Sending signals back to Earth.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Điều nào KHÔNG được nhắc đến như một tính năng của tàu thám hiểm?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. Có 6 bánh xe.</span> ❌ Đoạn 2 có nói: "The rovers had six wheels..."</div>
+
+      <div class="expl-row"><span class="hl-red">B. Mang theo camera.</span> ❌ Đoạn 2 có nói: "They also had cameras..."</div>
+
+      <div class="expl-row"><span class="hl-red">D. Gửi tín hiệu về Trái đất.</span> ❌ Đoạn 2 có nói: "The rovers sent signals back..."</div>
+
+      <div class="expl-row"><span class="hl-green">C. Khả năng tự sửa chữa.</span> ✅ Đúng là KHÔNG có trong bài đọc.</div>
+
+      <div class="quote-box">Không có câu nào nhắc đến việc "repair themselves" (tự sửa chữa).</div>
+
+    `
+
+  },
+
+  {
+
+    num: 33,
+
+    question: "The word “extended” in paragraph 3 is CLOSEST in meaning to _______.",
+
+    options: [
+
+      {text: "improved", correct: false},
+
+      {text: "continued", correct: true},
+
+      {text: "delayed", correct: false},
+
+      {text: "shortened", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Từ "extended" ở đoạn 3 có nghĩa GẦN NHẤT với từ nào?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="p-word">Extend</span> (v): kéo dài, mở rộng.</div>
+
+      <div class="expl-row"><span class="hl-red">A. improved</span>: <span class="p-mean">cải thiện.</span></div>
+
+      <div class="expl-row"><span class="hl-green">B. continued</span>: <span class="p-mean">tiếp tục (được làm cho dài hơn).</span> ✅ Gần nghĩa nhất trong ngữ cảnh "sứ mệnh được kéo dài".</div>
+
+      <div class="expl-row"><span class="hl-red">C. delayed</span>: <span class="p-mean">trì hoãn.</span></div>
+
+      <div class="expl-row"><span class="hl-red">D. shortened</span>: <span class="p-mean">rút ngắn (Từ trái nghĩa).</span></div>
+
+      <div class="quote-box">"...their mission was <span class="p-word">extended</span>."<br>👉 <span class="p-mean">...nhiệm vụ của chúng đã được kéo dài (tiếp tục lâu hơn dự kiến).</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 34,
+
+    question: "Which of the following is TRUE according to the passage?",
+
+    options: [
+
+      {text: "Spirit was launched after Opportunity.", correct: false},
+
+      {text: "Both rovers landed on Mars at the same time.", correct: false},
+
+      {text: "Opportunity operated longer than Spirit.", correct: true},
+
+      {text: "The mission ended in 2010.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Điều nào ĐÚNG theo đoạn văn?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. Spirit phóng sau Opportunity.</span> ❌ Sai, Spirit phóng 10/6, Opp. phóng 7/7 (phóng sau).</div>
+
+      <div class="expl-row"><span class="hl-red">B. Hạ cánh cùng lúc.</span> ❌ Sai, cách nhau 3 tuần.</div>
+
+      <div class="expl-row"><span class="hl-green">C. Opportunity hoạt động lâu hơn Spirit.</span> ✅ Đúng. Spirit dừng năm 2010, Opp. dừng năm 2018.</div>
+
+      <div class="expl-row"><span class="hl-red">D. Sứ mệnh kết thúc năm 2010.</span> ❌ Sai, đến 2019 mới chính thức kết thúc hoàn toàn.</div>
+
+      <div class="quote-box">"In 2010, Spirit stopped sending signals, but Opportunity continued to operate until 2018."<br>👉 <span class="p-mean">Năm 2010 Spirit ngừng hoạt động, nhưng Opportunity tiếp tục đến 2018.</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 35,
+
+    question: "The word “officially” in paragraph 3 is OPPOSITE in meaning to _______.",
+
+    options: [
+
+      {text: "informally", correct: true},
+
+      {text: "legally", correct: false},
+
+      {text: "correctly", correct: false},
+
+      {text: "publicly", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Từ "officially" TRÁI NGHĨA với từ nào?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="p-word">Officially</span> (adv): một cách chính thức, trịnh trọng.</div>
+
+      <div class="expl-row"><span class="hl-green">A. informally</span>: <span class="p-mean">không chính thức.</span> ✅ Trái nghĩa hoàn toàn.</div>
+
+      <div class="expl-row"><span class="hl-red">B. legally</span>: <span class="p-mean">hợp pháp.</span></div>
+
+      <div class="expl-row"><span class="hl-red">C. correctly</span>: <span class="p-mean">chính xác.</span></div>
+
+      <div class="expl-row"><span class="hl-red">D. publicly</span>: <span class="p-mean">công khai.</span></div>
+
+      <div class="quote-box">NASA <span class="p-word">officially</span> declared...<br>👉 <span class="p-mean">NASA chính thức tuyên bố...</span></div>
+
+    `
+
+  },
+
+  {
+
+    num: 36,
+
+    question: "Why did NASA extend the mission of the rovers?",
+
+    options: [
+
+      {text: "Because they discovered water on Mars.", correct: false},
+
+      {text: "Because the rovers were still working well.", correct: true},
+
+      {text: "Because new rovers were not ready.", correct: false},
+
+      {text: "Because the mission was too expensive to end.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Tại sao NASA gia hạn nhiệm vụ của các tàu thám hiểm?</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-red">A. Vì phát hiện ra nước.</span> ❌ Bài không khẳng định điều này.</div>
+
+      <div class="expl-row"><span class="hl-green">B. Vì chúng vẫn làm việc tốt.</span> ✅ Đúng.</div>
+
+      <div class="expl-row"><span class="hl-red">C, D</span>: <span class="p-mean">Không có thông tin trong bài.</span></div>
+
+      <div class="quote-box">"...they worked so well that their mission was extended."<br>👉 <span class="p-mean">...chúng làm việc quá tốt đến nỗi nhiệm vụ được kéo dài.</span></div>
+
+    `
+
+  },
+
+  // Passage 4
+
+  {
+
+    num: 37,
+
+    question: "First, you should always wear your space suit, even inside buildings, (37) _________.",
+
+    options: [
+
+      {text: "because they could hurt you.", correct: false},
+
+      {text: "or you might get lost.", correct: false},
+
+      {text: "because you can talk through your radio.", correct: false},
+
+      {text: "or you might breathe something dangerous.", correct: true}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Đầu tiên, bạn nên luôn mặc bộ đồ vũ trụ... (37) _____.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row">Câu tiếp theo trong bài là "The air might not be safe to breathe" (Không khí có thể không an toàn để hít thở).</div>
+
+      <div class="expl-row"><span class="hl-green">D. or you might breathe something dangerous.</span>: <span class="p-mean">nếu không bạn có thể hít phải thứ nguy hiểm.</span> ✅ Rất hợp lý với câu nối tiếp.</div>
+
+      <div class="quote-box">"...always wear your space suit... <span class="p-word">or you might breathe something dangerous</span>. The air might not be safe to breathe."</div>
+
+    `
+
+  },
+
+  {
+
+    num: 38,
+
+    question: "You must not take off your helmet to speak (38) _________.",
+
+    options: [
+
+      {text: "because they could hurt you.", correct: false},
+
+      {text: "or you might get lost.", correct: false},
+
+      {text: "because you can talk through your radio.", correct: true},
+
+      {text: "or you might breathe something dangerous.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Bạn không được cởi mũ bảo hiểm ra để nói chuyện (38) _____.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row">Câu trước đó là: "...use your radio to communicate." (Sử dụng bộ đàm để giao tiếp).</div>
+
+      <div class="expl-row"><span class="hl-green">C. because you can talk through your radio.</span>: <span class="p-mean">vì bạn có thể nói chuyện qua bộ đàm.</span> ✅ Cực kỳ khớp logic.</div>
+
+      <div class="quote-box">"You must not take off your helmet to speak <span class="p-word">because you can talk through your radio</span>."</div>
+
+    `
+
+  },
+
+  {
+
+    num: 39,
+
+    question: "If you see any strange plants or animals, do not touch them. Some of them may be dangerous (39) _________.",
+
+    options: [
+
+      {text: "because they could hurt you.", correct: true},
+
+      {text: "or you might get lost.", correct: false},
+
+      {text: "because you can talk through your radio.", correct: false},
+
+      {text: "or you might breathe something dangerous.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Đừng chạm vào động thực vật lạ. Chúng có thể nguy hiểm (39) _____.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">A. because they could hurt you.</span>: <span class="p-mean">bởi vì chúng có thể làm bạn bị thương.</span> ✅ Giải thích lý do vì sao chúng "dangerous" (nguy hiểm) và tại sao "do not touch them".</div>
+
+      <div class="quote-box">"Some of them may be dangerous <span class="p-word">because they could hurt you</span>."</div>
+
+    `
+
+  },
+
+  {
+
+    num: 40,
+
+    question: "Finally, always follow your guide's instructions and return to the spaceship on time (40) _________.",
+
+    options: [
+
+      {text: "because they could hurt you.", correct: false},
+
+      {text: "or you might get lost.", correct: true},
+
+      {text: "because you can talk through your radio.", correct: false},
+
+      {text: "or you might breathe something dangerous.", correct: false}
+
+    ],
+
+    explanation: `
+
+      <div class="expl-row">🌍 <strong>Dịch câu hỏi:</strong> Cuối cùng, luôn làm theo hướng dẫn và quay lại tàu đúng giờ (40) _____.</div>
+
+      <div class="expl-row">💡 <strong>Phân tích:</strong></div>
+
+      <div class="expl-row"><span class="hl-green">B. or you might get lost.</span>: <span class="p-mean">nếu không bạn có thể bị lạc.</span> ✅ Đây là hậu quả nếu không đi theo người hướng dẫn.</div>
+
+      <div class="quote-box">"...return to the spaceship on time <span class="p-word">or you might get lost</span>."</div>
+
+    `
+
+  }
+
+];
+
+
+
+// ================= SHUFFLE ALGORITHM =================
+
+function shuffle(array) {
+
+  for (let i = array.length - 1; i > 0; i--) {
+
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [array[i], array[j]] = [array[j], array[i]];
+
+  }
+
+  return array;
+
+}
+
+
+
+// ================= RENDER QUIZ =================
+
+let answeredCount = 0;
+
+let correctCount = 0;
+
+const totalQ = quizData.length;
+
+
+
+function renderQuiz() {
+
+  const container = document.getElementById('quizContainer');
+
+  quizData.forEach((data, index) => {
+
+    // Shuffle options
+
+    const shuffledOptions = shuffle([...data.options]);
+
+    
+
+    const card = document.createElement('div');
+
+    card.className = 'glass-panel';
+
+    
+
+    let optionsHtml = '';
+
+    shuffledOptions.forEach(opt => {
+
+      optionsHtml += `<button class="opt-btn" data-correct="${opt.correct}" onclick="handleAnswer(this, event, ${index})">${opt.text}</button>`;
+
+    });
+
+
+
+    card.innerHTML = `
+
+      <div class="q-num">Question ${data.num}</div>
+
+      <div class="q-text">${data.question}</div>
+
+      <div class="options">${optionsHtml}</div>
+
+      <div class="explanation" id="expl_${index}">
+
+        <div class="expl-title">💡 Giải thích chi tiết từ MS Chí Nên</div>
+
+        ${data.explanation}
+
+      </div>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+
+
+
+  // Add submit button at the bottom
+
+  const submitDiv = document.createElement('div');
+
+  submitDiv.className = 'submit-wrap';
+
+  submitDiv.innerHTML = `<button class="submit-btn" onclick="showNameModal()">🎯 Nộp Bài Tính Điểm</button>`;
+
+  container.appendChild(submitDiv);
+
+}
+
+
+
+// ================= HANDLE ANSWER =================
+
+function handleAnswer(btn, event, index) {
+
+  const card = btn.closest('.glass-panel');
+
+  const allBtns = card.querySelectorAll('.opt-btn');
+
+  
+
+  // Prevent double clicking
+
+  if(allBtns[0].disabled) return;
+
+  allBtns.forEach(b => b.disabled = true);
+
+  
+
+  const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+  if(isCorrect) {
+
+    btn.classList.add('correct');
+
+    playDing();
+
+    correctCount++;
+
+    // Confetti from mouse click position
+
+    spawnConfetti(event.clientX, event.clientY);
+
+  } else {
+
+    btn.classList.add('wrong');
+
+    playBuzz();
+
+    // Highlight correct answer automatically
+
+    allBtns.forEach(b => {
+
+      if(b.getAttribute('data-correct') === 'true') {
+
+        b.classList.add('correct');
+
+        b.style.opacity = '0.7';
+
+      }
+
+    });
+
+  }
+
+  
+
+  // Show explanation
+
+  document.getElementById(`expl_${index}`).classList.add('show');
+
+  answeredCount++;
+
+}
+
+
+
+// ================= MODAL LOGIC =================
+
+function showNameModal() {
+
+  if(answeredCount < totalQ) {
+
+    if(!confirm(`Em mới làm ${answeredCount}/${totalQ} câu. Có chắc chắn muốn nộp bài sớm không?`)) return;
+
+  }
+
+  document.getElementById('customModal').classList.add('show');
+
+  document.getElementById('nameModalView').style.display = 'block';
+
+  document.getElementById('resultModalView').style.display = 'none';
+
+}
+
+
+
+function submitName() {
+
+  const name = document.getElementById('nameInput').value.trim();
+
+  const err = document.getElementById('nameErr');
+
+  const input = document.getElementById('nameInput');
+
+  
+
+  if(!name) {
+
+    input.classList.remove('error'); void input.offsetWidth; input.classList.add('error');
+
+    err.style.display = 'block'; setTimeout(() => input.classList.remove('error'), 400);
+
+    return;
+
+  }
+
+  
+
+  // Setup Results
+
+  document.getElementById('nameModalView').style.display = 'none';
+
+  document.getElementById('resultModalView').style.display = 'block';
+
+  
+
+  const percent = totalQ > 0 ? (correctCount / totalQ) : 0;
+
+  let title = '', msg = '', gif = '';
+
+  
+
+  if(percent === 1) {
+
+    title = `🌟 THIÊN TÀI! ${name} 🌟`;
+
+    msg = "Xuất sắc tuyệt đối! Em là cao thủ Tiếng Anh thực sự! 👑";
+
+    gif = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Minions Cheer
+
+    setInterval(() => spawnConfetti(Math.random() * window.innerWidth, 100), 500); // Continuous confetti
+
+  } else if(percent >= 0.6) {
+
+    title = `🎉 RẤT TỐT, ${name}!`;
+
+    msg = "Thành tích rất ấn tượng! Cố gắng thêm chút nữa là hoàn hảo nhé! ✨";
+
+    gif = "https://media.giphy.com/media/nXXU1DVGVAD60/giphy.gif"; // DiCaprio Clap
+
+  } else {
+
+    title = `💪 CỐ LÊN NHÉ, ${name}!`;
+
+    msg = "Đừng buồn, hãy đọc kỹ phần giải thích của cô để làm tốt hơn ở lần sau! 🌈";
+
+    gif = "https://media.giphy.com/media/qQdL532nCG9ko/giphy.gif"; // Funny sad/crying
+
+  }
+
+  
+
+  document.getElementById('resTitle').innerHTML = title;
+
+  document.getElementById('resScore').innerHTML = `${correctCount} / ${totalQ}`;
+
+  document.getElementById('resMsg').innerHTML = msg;
+
+  document.getElementById('resGif').src = gif;
+
+}
+
+
+
+// Enter key support for Name Input
+
+document.getElementById('nameInput').addEventListener('keydown', e => {
+
+  if(e.key === 'Enter') submitName();
+
+});
+
+
+
+// Initialize
+
+renderQuiz();
+
+</script>
+
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -877,40 +1748,43 @@ renderQuiz();
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 
@@ -924,5 +1798,6 @@ renderQuiz();
     setTimeout(unlockNow, 600);
 })();
 </script>
-</body>
+</body>
+
 </html>

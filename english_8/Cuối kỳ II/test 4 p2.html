@@ -1,821 +1,1638 @@
-I have enhanced every single question explanation to follow the **"SIÊU CHI TIẾT"** structure:  
-✅ Dịch câu hỏi  
-✅ Phân tích cả 4 đáp án (nghĩa + loại từ)  
-✅ Giải thích đáp án đúng (cấu trúc/collocation/ngữ cảnh)  
-✅ Giải thích 3 đáp án sai (lỗi ngữ pháp, sai nghĩa, bẫy)
-
-All 20 questions now include this level of detail, with colorful highlighting using `<span class='hl-green'>`, `<span class='hl-red'>`, `<span class='p-word'>`, etc. The quiz still features the animated floating emoji background, split-screen reading, timer, confetti, sound effects, and name-based result with meme.
-
-Enter password: **comaianulis** to start.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>MS Chí Nên ULIS | Science & Safety Adventure</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            background: radial-gradient(circle at 30% 10%, #0f0c2c, #03001c);
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        .floating-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .bubble {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.2;
-            animation: floatUp 20s linear infinite;
-            filter: blur(1px);
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.2; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0.5; }
-        }
-        .moving-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(125deg, #1e1a5e, #2a1e5e, #3a2a6e, #2a1e5e);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            z-index: -1;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .quiz-app {
-            display: none;
-            position: relative;
-            z-index: 2;
-            padding: 1.5rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .split-layout {
-            display: flex;
-            gap: 1.8rem;
-            flex-wrap: wrap;
-        }
-
-        .reading-panel, .exercises-panel {
-            background: rgba(255, 248, 235, 0.2);
-            backdrop-filter: blur(16px);
-            border-radius: 48px;
-            padding: 1.5rem;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,215,150,0.4);
-            height: 85vh;
-            overflow-y: auto;
-            transition: all 0.3s;
-        }
-        .reading-panel { flex: 1.2; min-width: 280px; }
-        .exercises-panel { flex: 1; min-width: 360px; }
-
-        .card-reading, .question-block {
-            background: rgba(255, 250, 240, 0.9);
-            border-radius: 32px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .card-reading:hover, .question-block:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
-
-        .section-title {
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFD966, #FF9F4A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.75rem;
-        }
-
-        .btn-translate {
-            background: #ffb347cc;
-            backdrop-filter: blur(4px);
-            border: none;
-            border-radius: 40px;
-            padding: 0.4rem 1rem;
-            font-weight: bold;
-            color: #2d1b00;
-            cursor: pointer;
-            margin: 0.5rem 0;
-            transition: all 0.2s;
-        }
-        .btn-translate:hover {
-            background: #ffa01e;
-            transform: scale(1.02);
-        }
-        .translation-text {
-            background: #fff5e6;
-            padding: 0.8rem;
-            border-radius: 20px;
-            margin-top: 0.6rem;
-            display: none;
-            border-left: 8px solid #f5a623;
-            font-size: 0.9rem;
-        }
-
-        .glossary-table {
-            background: #fef8e7dd;
-            border-radius: 24px;
-            padding: 0.8rem;
-            font-size: 0.85rem;
-            backdrop-filter: blur(4px);
-        }
-        .glossary-table th, .glossary-table td {
-            padding: 0.4rem;
-            text-align: left;
-        }
-
-        .question-text {
-            font-weight: 800;
-            font-size: 1.2rem;
-            margin-bottom: 0.75rem;
-            color: #2c3e66;
-            border-left: 5px solid #ff9f4a;
-            padding-left: 12px;
-        }
-
-        .answers-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 12px 0;
-        }
-        .ans-btn {
-            background: #ffedd5;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1rem;
-            color: #3b2c1f;
-            box-shadow: 0 5px 0 #b97f10;
-            cursor: pointer;
-            transition: all 0.1s linear;
-            flex: 1 0 auto;
-            text-align: center;
-        }
-        .ans-btn:hover {
-            transform: scale(1.02);
-            background: #ffe2a4;
-        }
-        .ans-btn.correct-selected {
-            background: #00D26A;
-            color: white;
-            box-shadow: 0 5px 0 #1f7a3e;
-        }
-        .ans-btn.wrong-selected {
-            background: #FF4757;
-            color: white;
-            box-shadow: 0 5px 0 #a1222e;
-            animation: shake 0.2s ease-in-out 0s 2;
-        }
-        @keyframes shake {
-            0%,100%{ transform: translateX(0);}
-            25%{ transform: translateX(-5px);}
-            75%{ transform: translateX(5px);}
-        }
-
-        .explanation {
-            background: #f0f9ffdd;
-            border-radius: 24px;
-            padding: 14px;
-            margin-top: 12px;
-            font-size: 0.95rem;
-            border-left: 8px solid #5f9eff;
-            backdrop-filter: blur(4px);
-            line-height: 1.5;
-        }
-        .timer-bar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            background: #00000077;
-            backdrop-filter: blur(10px);
-            border-radius: 60px;
-            padding: 8px 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .timer-display {
-            font-size: 2rem;
-            font-weight: 800;
-            font-family: monospace;
-            background: #0b0e1ecc;
-            padding: 0 18px;
-            border-radius: 50px;
-            color: #f5d742;
-            letter-spacing: 2px;
-        }
-        .btn-primary {
-            background: #ffb347;
-            border: none;
-            border-radius: 60px;
-            padding: 8px 24px;
-            font-weight: bold;
-            box-shadow: 0 4px 0 #a55307;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-        .btn-primary:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #a55307;
-        }
-
-        .modal-password {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-card {
-            background: rgba(255,255,245,0.95);
-            border-radius: 60px;
-            padding: 2rem;
-            text-align: center;
-            width: 340px;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
-        }
-        .error-msg {
-            color: #e74c3c;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .shake-input {
-            animation: shake 0.2s;
-        }
-        .hl-green { background-color: #c8f0d1; color: #006633; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block; margin: 2px 0;}
-        .hl-red { background-color: #ffe0e0; color: #cc0000; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block;}
-        .p-word { color: #2c6e9e; font-weight: 800; background: #e3f0fa; padding: 0 4px; border-radius: 12px;}
-        .p-grammar { text-decoration: underline; color: #b34e7a; font-weight: bold; background: #ffe6f0; padding: 0 4px; border-radius: 12px;}
-        .p-mean { color: #c25b1a; font-weight: 700; background: #fff0e0; padding: 0 4px; border-radius: 12px;}
-
-        .result-modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(12px);
-            z-index: 1100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .result-content {
-            background: #fffaf0;
-            border-radius: 48px;
-            max-width: 480px;
-            width: 90%;
-            padding: 2rem;
-            text-align: center;
-            animation: popIn 0.3s ease;
-        }
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .result-meme {
-            max-width: 100%;
-            border-radius: 28px;
-            margin: 15px 0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #ffefcf; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #f39c12; border-radius: 10px; }
-        button { cursor: pointer; }
-    </style>
-</head>
-<body>
-<div class="moving-gradient"></div>
-<div class="floating-bg" id="floatingBg"></div>
-
-<div id="passwordModal" class="modal-password">
-    <div class="modal-card">
-        <h2>🔐 <span style="color:#ff8800;">Lab Security</span></h2>
-        <p style="margin:15px 0;">Nhập mật khẩu để vào bài thi</p>
-        <input type="password" id="passInput" placeholder="********" style="padding:12px;border-radius:60px;border:1px solid #ffb347; width:100%; font-size:1rem;">
-        <button id="submitPass" style="margin-top:20px; background:#ffb347; border:none; border-radius:60px; padding:10px 24px; font-weight:bold;">Mở khóa 🔓</button>
-        <div id="passError" class="error-msg"></div>
-    </div>
-</div>
-
-<div class="quiz-app" id="quizApp">
-    <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 10px; flex-wrap:wrap; gap:10px;">
-        <div><span style="font-weight:800; background: #f5b042cc; padding: 4px 16px; border-radius: 40px;">🎓 MS Chí Nên - ULIS</span></div>
-        <div class="timer-bar">
-            <button id="startTimerBtn" class="btn-primary">⏱️ BẮT ĐẦU</button>
-            <button id="pauseTimerBtn" class="btn-primary" style="background:#7f8c8d;">⏸️ Tạm dừng</button>
-            <button id="resumeTimerBtn" class="btn-primary" style="background:#2ecc71;">▶️ Tiếp tục</button>
-            <div class="timer-display" id="timerDisplay">10:00</div>
-        </div>
-    </div>
-    <div class="split-layout">
-        <div class="reading-panel">
-            <div class="card-reading">
-                <h3 class="section-title">📖 Lab Safety Notice</h3>
-                <div>To ensure a safe and productive environment for everyone, please (13) ____ the following rules:<br>
-                - Always wear coats, safety glasses, and gloves when working with chemicals.<br>
-                - Read the labels (14) ____ before use; pay attention to warnings.<br>
-                - Turn off all equipment when not (15) ____ use.<br>
-                - In case of fire, leave (16) ____ lab immediately and call emergency services.
-                </div>
-                <button class="btn-translate" data-target="trans1">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
-                <div id="trans1" class="translation-text">Để đảm bảo môi trường an toàn và hiệu quả cho mọi người, vui lòng <span class='p-word'>tuân thủ</span> các quy tắc sau: Luôn mặc áo choàng, đeo kính an toàn và găng tay khi làm việc với hóa chất. Đọc nhãn <span class='p-word'>cẩn thận</span> trước khi sử dụng; chú ý cảnh báo. Tắt tất cả thiết bị khi không <span class='p-word'>sử dụng</span>. Trong trường hợp hỏa hoạn, rời khỏi <span class='p-word'>phòng thí nghiệm</span> ngay lập tức và gọi dịch vụ khẩn cấp.</div>
-            </div>
-            <div class="card-reading">
-                <h3 class="section-title">🧪 Science in Schools</h3>
-                <div>Why should we teach science to (19) _____ in schools? Why do many schools teach STEM subjects? One reason is every day children can see the benefits of science and technology around them, so they can be (20) _____ the role that science plays in their everyday life. Secondly, when children learn science, they will learn to think in (21) _____, to search for the answers and to give reasons. In other words, students can (22) _____ both knowledge of science as well as critical thinking and problem-solving skills. These will be important in their future work and studies. Moreover, if children learn science at an early age, they (23) _____ more ready to get involved in science-related fields when they (24) _____.</div>
-                <button class="btn-translate" data-target="trans2">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
-                <div id="trans2" class="translation-text">Tại sao chúng ta nên dạy khoa học cho <span class='p-word'>trẻ em</span> ở trường? ... Một lý do là hàng ngày trẻ em có thể thấy lợi ích của khoa học, vì vậy chúng có thể <span class='p-word'>nhận thức được</span> vai trò của khoa học. Khi trẻ học khoa học, chúng học cách tư duy theo <span class='p-word'>phương pháp khoa học</span>... học sinh có thể <span class='p-word'>đạt được</span> cả kiến thức khoa học cũng như tư duy phản biện. Nếu trẻ học khoa học sớm, chúng <span class='p-word'>sẽ</span> sẵn sàng tham gia lĩnh vực liên quan khi <span class='p-word'>lớn lên</span>.</div>
-            </div>
-            <div class="card-reading">
-                <h3 class="section-title">🛸 Kepler Mission</h3>
-                <div>Nobody knows how many planets there are in our galaxy and whether there is life on other planets. And the Kelper has the mission to find the answer to those questions.<br>In 2009, NASA launched the Kelper space telescope to find planets that support life. It has discovered five new Earth-sized planets beyond our solar system so far... The simplest requirement for a planet to have life is water (not frozen or gas), so the distance from the planet’s sun and therefore temperature is important. The planet also needs a certain amount of air. If a planet is as small as Mars (half the size of Earth), it can’t hold on to air molecules because of weak gravity. If a planet is four times bigger than Earth – Neptune size – it has very strong gravity and too much air. Therefore, the size of those planets also matter.</div>
-                <button class="btn-translate" data-target="trans3">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
-                <div id="trans3" class="translation-text">Không ai biết có bao nhiêu hành tinh trong dải ngân hà... Kepler có sứ mệnh tìm câu trả lời. Năm 2009, NASA phóng kính viễn vọng Kepler để tìm hành tinh có sự sống. Nó đã phát hiện năm hành tinh mới có kích thước bằng Trái Đất... Yêu cầu đơn giản nhất cho sự sống là nước, khoảng cách từ mặt trời quyết định nhiệt độ. Hành tinh cũng cần không khí. Kích thước rất quan trọng: quá nhỏ thì trọng lực yếu, không giữ được không khí; quá lớn thì trọng lực mạnh và quá nhiều khí.</div>
-            </div>
-            <div class="card-reading">
-                <h3 class="section-title">💬 Teen Chat</h3>
-                <div>Nowadays, teenagers seem to communicate with their peers (37) ________ than in person. They chat with their friends using messaging applications and instant messages. They chat about almost everything, (38) ________. Their conversations tend to be short, but (39) ________. Many teenagers prefer this way of communicating to talking face to face. They say that it is more convenient and they can do many things while chatting. (40) ________ with several friends and playing their favourite games at the same time.</div>
-                <button class="btn-translate" data-target="trans4">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
-                <div id="trans4" class="translation-text">Ngày nay, thanh thiếu niên dường như giao tiếp với bạn bè qua <span class='p-word'>thiết bị điện tử nhiều hơn</span> là trực tiếp. Họ nhắn tin về hầu hết mọi thứ, <span class='p-word'>từ bài tập, trò chơi đến xu hướng âm nhạc</span>. Cuộc trò chuyện ngắn nhưng <span class='p-word'>có thể kéo dài hàng giờ</span>. Họ có thể <span class='p-word'>trao đổi trên mạng xã hội</span> với nhiều bạn và chơi game cùng lúc.</div>
-            </div>
-            <div class="glossary-table">
-                <h4>📚 TỪ VỰNG ACADEMIC (B1-C2)</h4>
-                <table style="width:100%"><tr><th>Từ</th><th>Loại</th><th>Nghĩa</th></tr>
-                <tr><td><span class='p-word'>obey</span></td><td>v</td><td>tuân theo</td></tr>
-                <tr><td><span class='p-word'>laboratory</span></td><td>n</td><td>phòng thí nghiệm</td></tr>
-                <tr><td><span class='p-word'>critical thinking</span></td><td>n</td><td>tư duy phản biện</td></tr>
-                <tr><td><span class='p-word'>galaxy</span></td><td>n</td><td>thiên hà</td></tr>
-                <tr><td><span class='p-word'>telescope</span></td><td>n</td><td>kính viễn vọng</td></tr>
-                <tr><td><span class='p-word'>gravity</span></td><td>n</td><td>trọng lực</td></tr>
-                <tr><td><span class='p-word'>peers</span></td><td>n</td><td>bạn đồng trang lứa</td></tr>
-                <tr><td><span class='p-word'>electronic devices</span></td><td>n</td><td>thiết bị điện tử</td></tr>
-                <tr><td><span class='p-word'>mission</span></td><td>n</td><td>sứ mệnh</td></tr>
-                <tr><td><span class='p-word'>aware of</span></td><td>adj</td><td>nhận thức về</td></tr>
-                <tr><td><span class='p-word'>grow up</span></td><td>phr v</td><td>lớn lên</td></tr>
-                </table>
-            </div>
-        </div>
-        <div class="exercises-panel" id="exercisesContainer"></div>
-    </div>
-    <div style="margin-top: 20px; text-align: center;"><button id="submitFinalBtn" style="background: linear-gradient(95deg,#ff9800,#ffbb4d); border: none; padding: 14px 30px; border-radius: 60px; font-weight:800; font-size:1.2rem; box-shadow:0 8px 0 #b4620a;">🎯 NỘP BÀI & XEM KẾT QUẢ</button></div>
-</div>
-
-<script>
-    // Password: ASCII array for "comaianulis"
-    const correctPassArr = [99,111,109,97,105,97,110,117,108,105,115];
-    const correctPassword = String.fromCharCode(...correctPassArr);
-    const passInput = document.getElementById('passInput');
-    const submitBtn = document.getElementById('submitPass');
-    const passError = document.getElementById('passError');
-    const modal = document.getElementById('passwordModal');
-    const quizApp = document.getElementById('quizApp');
-    function checkPass() {
-        if (passInput.value === correctPassword) {
-            modal.style.display = 'none';
-            quizApp.style.display = 'block';
-            createFloatingBubbles();
-        } else {
-            passError.innerText = '❌ Sai mật khẩu! Hãy thử lại.';
-            passInput.classList.add('shake-input');
-            setTimeout(()=> passInput.classList.remove('shake-input'),500);
-            passInput.value = '';
-        }
-    }
-    submitBtn.addEventListener('click', checkPass);
-    passInput.addEventListener('keypress', e => { if(e.key === 'Enter') checkPass(); });
-    
-    function createFloatingBubbles() {
-        const container = document.getElementById('floatingBg');
-        const icons = ['🔬','🧪','🚀','🪐','⭐','🧫','📡','🧑‍🔬','⚛️','🧴','📖','💬'];
-        for(let i=0;i<45;i++) {
-            let bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.innerText = icons[Math.floor(Math.random()*icons.length)];
-            let size = Math.random() * 2 + 1.2;
-            bubble.style.fontSize = `${size}rem`;
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.animationDuration = `${15 + Math.random() * 20}s`;
-            bubble.style.animationDelay = `${Math.random() * 10}s`;
-            bubble.style.opacity = 0.1 + Math.random() * 0.3;
-            container.appendChild(bubble);
-        }
-    }
-    
-    // ---------- DETAILED QUESTIONS (SIÊU CHI TIẾT) ----------
-    const questionsData = [
-        { id:13, text:"Question 13: Please (13) ____ the following rules.", options:["obey","listen","break","form"], correct:"obey",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Vui lòng ____ các quy tắc sau.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. obey</span> (v): tuân theo, vâng lời.<br>
-          <span class='p-word'>B. listen</span> (v): nghe.<br>
-          <span class='p-word'>C. break</span> (v): phá vỡ, làm hỏng.<br>
-          <span class='p-word'>D. form</span> (v): hình thành, tạo thành.<br><br>
-          <strong>✅ Tại sao chọn A?</strong><br>
-          "obey the rules" là collocation cố định trong tiếng Anh, có nghĩa "tuân theo nội quy". Trong văn bản thông báo an toàn, người đọc được yêu cầu tuân thủ các quy tắc.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>listen</span>: cần giới từ "to" (listen to the rules) mới đúng, nhưng thiếu "to" nên sai cấu trúc.<br>
-          - <span class='hl-red'>break</span>: trái nghĩa với yêu cầu tuân thủ, mang nghĩa tiêu cực (phá vỡ quy tắc).<br>
-          - <span class='hl-red'>form</span>: không đi với "rules" trong ngữ cảnh này (form rules = tạo ra quy tắc, không phù hợp).<br>
-          <strong>🔍 Dẫn chứng trong bài:</strong> "please obey the following rules" → vui lòng <span class='hl-green'>tuân theo</span> các quy tắc sau.` },
-        { id:14, text:"Question 14: Read the labels (14) ____ before use.", options:["careful","carefully","care","carelessly"], correct:"carefully",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Đọc nhãn ____ trước khi sử dụng.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. careful</span> (adj): cẩn thận.<br>
-          <span class='p-word'>B. carefully</span> (adv): một cách cẩn thận.<br>
-          <span class='p-word'>C. care</span> (n/v): sự chăm sóc / quan tâm.<br>
-          <span class='p-word'>D. carelessly</span> (adv): một cách bất cẩn.<br><br>
-          <strong>✅ Tại sao chọn B?</strong><br>
-          Động từ "read" cần được bổ nghĩa bởi trạng từ. "carefully" (cẩn thận) là trạng từ chỉ cách thức, phù hợp với ý nghĩa cần đọc kỹ nhãn để tránh nguy hiểm.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>careful</span>: là tính từ, không thể đứng sau động từ "read" để bổ nghĩa trực tiếp.<br>
-          - <span class='hl-red'>care</span>: danh từ hoặc động từ nguyên mẫu, không phù hợp vị trí.<br>
-          - <span class='hl-red'>carelessly</span>: trạng từ nhưng mang nghĩa ngược (bất cẩn), gây nguy hiểm, trái với cảnh báo an toàn.` },
-        { id:15, text:"Question 15: when not (15) ____ use.", options:["under","for","at","in"], correct:"in",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> tắt tất cả thiết bị khi không ____ sử dụng.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. under</span>: dưới<br>
-          <span class='p-word'>B. for</span>: cho, vì<br>
-          <span class='p-word'>C. at</span>: tại<br>
-          <span class='p-word'>D. in</span>: trong<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          Thành ngữ cố định: <span class='p-grammar'>"in use"</span> = đang được sử dụng. "when not in use" = khi không sử dụng.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>under use</span>, <span class='hl-red'>for use</span>, <span class='hl-red'>at use</span> không phải là cụm từ chuẩn trong tiếng Anh. Chỉ có "in use" mới mang nghĩa chính xác.` },
-        { id:16, text:"Question 16: leave (16) ____ lab immediately.", options:["X (no article)","the","an","a"], correct:"the",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> rời khỏi ____ phòng thí nghiệm ngay lập tức.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. X (không mạo từ)</span><br>
-          <span class='p-word'>B. the</span>: mạo từ xác định<br>
-          <span class='p-word'>C. an</span>: mạo từ không xác định (trước nguyên âm)<br>
-          <span class='p-word'>D. a</span>: mạo từ không xác định (trước phụ âm)<br><br>
-          <strong>✅ Tại sao chọn B?</strong><br>
-          "lab" là phòng thí nghiệm cụ thể đã được đề cập trong ngữ cảnh (phòng thí nghiệm nơi đang làm việc). Dùng mạo từ xác định "the" để chỉ đối tượng xác định.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>không mạo từ</span>: danh từ số ít đếm được khi không xác định phải có mạo từ, nếu bỏ sẽ sai ngữ pháp.<br>
-          - <span class='hl-red'>an / a</span>: dùng cho danh từ chưa xác định, nhưng ở đây người đọc và người nói đều biết rõ phòng thí nghiệm nào, nên dùng "the".` },
-        { id:19, text:"Question 19: teach science to (19) _____ in schools?", options:["adults","children","teachers","workers"], correct:"children",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Tại sao nên dạy khoa học cho ____ ở trường?<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. adults</span> (n): người lớn<br>
-          <span class='p-word'>B. children</span> (n): trẻ em<br>
-          <span class='p-word'>C. teachers</span> (n): giáo viên<br>
-          <span class='p-word'>D. workers</span> (n): công nhân<br><br>
-          <strong>✅ Tại sao chọn B?</strong><br>
-          Đoạn văn sau đó nói: "every day children can see the benefits..." → chính trẻ em là đối tượng được nhắc đến. Nội dung xoay quanh lợi ích của việc dạy khoa học cho trẻ em.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>adults</span>: bài viết tập trung vào trường học và trẻ em, không nói về người lớn.<br>
-          - <span class='hl-red'>teachers</span>: dạy khoa học cho giáo viên không hợp lý.<br>
-          - <span class='hl-red'>workers</span>: không phù hợp ngữ cảnh.` },
-        { id:20, text:"Question 20: they can be (20) _____ the role that science plays.", options:["successful in","addicted to","famous for","aware of"], correct:"aware of",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> chúng có thể ____ vai trò mà khoa học đóng góp.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. successful in</span>: thành công trong<br>
-          <span class='p-word'>B. addicted to</span>: nghiện<br>
-          <span class='p-word'>C. famous for</span>: nổi tiếng vì<br>
-          <span class='p-word'>D. aware of</span>: nhận thức về<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          "be aware of" = nhận thức rõ về điều gì. Trẻ em thấy lợi ích khoa học nên chúng <span class='hl-green'>nhận thức được</span> vai trò của nó. Đây là cụm từ phổ biến.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>successful in</span>: sai nghĩa, không đi với "role".<br>
-          - <span class='hl-red'>addicted to</span>: mang nghĩa tiêu cực (nghiện), không phù hợp.<br>
-          - <span class='hl-red'>famous for</span>: nổi tiếng vì, không hợp lý.` },
-        { id:21, text:"Question 21: think in (21) _____", options:["a scientific way","science way","a scientific ways","a way of scientific"], correct:"a scientific way",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> suy nghĩ theo ____<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. a scientific way</span>: một cách khoa học (cụm danh từ số ít)<br>
-          <span class='p-word'>B. science way</span>: sai cấu trúc<br>
-          <span class='p-word'>C. a scientific ways</span>: sai số nhiều với "a"<br>
-          <span class='p-word'>D. a way of scientific</span>: thiếu danh từ "science"<br><br>
-          <strong>✅ Tại sao chọn A?</strong><br>
-          "think in a scientific way" là cách diễn đạt chuẩn: suy nghĩ theo phương pháp khoa học. Cấu trúc: "in + a/an + adj + way".<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>science way</span>: thiếu mạo từ và tính từ, không đúng ngữ pháp.<br>
-          - <span class='hl-red'>a scientific ways</span>: mâu thuẫn giữa "a" (số ít) và "ways" (số nhiều).<br>
-          - <span class='hl-red'>a way of scientific</span>: thiếu danh từ "science" (phải là a way of science).` },
-        { id:22, text:"Question 22: students can (22) _____ both knowledge", options:["mark","create","serve","gain"], correct:"gain",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> học sinh có thể ____ cả kiến thức<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. mark</span> (v): đánh dấu, cho điểm<br>
-          <span class='p-word'>B. create</span> (v): tạo ra<br>
-          <span class='p-word'>C. serve</span> (v): phục vụ<br>
-          <span class='p-word'>D. gain</span> (v): đạt được, thu được<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          Collocation phổ biến: <span class='hl-green'>"gain knowledge"</span> = thu nhận kiến thức. Phù hợp với ngữ cảnh học sinh học tập.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>mark</span>: không đi với knowledge (mark knowledge là sai).<br>
-          - <span class='hl-red'>create</span>: tạo ra kiến thức? không tự nhiên, kiến thức thường được "acquire/gain".<br>
-          - <span class='hl-red'>serve</span>: phục vụ kiến thức → vô nghĩa.` },
-        { id:23, text:"Question 23: they (23) _____ more ready to get involved", options:["are","would be","will be","were"], correct:"will be",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> chúng ____ sẵn sàng hơn để tham gia<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. are</span>: thì hiện tại đơn<br>
-          <span class='p-word'>B. would be</span>: động từ khuyết thiếu ở quá khứ<br>
-          <span class='p-word'>C. will be</span>: tương lai đơn<br>
-          <span class='p-word'>D. were</span>: quá khứ đơn (to be)<br><br>
-          <strong>✅ Tại sao chọn C?</strong><br>
-          Câu điều kiện loại 1: "If children learn (hiện tại), they <span class='p-grammar'>will be</span> (tương lai) more ready..." Diễn tả khả năng xảy ra ở tương lai nếu điều kiện được đáp ứng.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>are</span>: không phù hợp với cấu trúc điều kiện (if + hiện tại, mệnh đề chính tương lai).<br>
-          - <span class='hl-red'>would be</span>: dùng cho câu điều kiện loại 2 (giả định không có thật), không đúng.<br>
-          - <span class='hl-red'>were</span>: quá khứ đơn, không đúng.` },
-        { id:24, text:"Question 24: when they (24) _____", options:["get up","stand up","grow up","make up"], correct:"grow up",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> khi chúng ____<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. get up</span>: thức dậy<br>
-          <span class='p-word'>B. stand up</span>: đứng lên<br>
-          <span class='p-word'>C. grow up</span>: lớn lên, trưởng thành<br>
-          <span class='p-word'>D. make up</span>: trang điểm, bịa chuyện, làm lành<br><br>
-          <strong>✅ Tại sao chọn C?</strong><br>
-          "when they grow up" = khi chúng lớn lên. Phù hợp với ngữ cảnh trẻ em học khoa học sớm sẽ sẵn sàng tham gia lĩnh vực khoa học khi trưởng thành.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>get up</span>: sai nghĩa.<br>
-          - <span class='hl-red'>stand up</span>: sai nghĩa.<br>
-          - <span class='hl-red'>make up</span>: không phù hợp.` },
-        { id:31, text:"Question 31: What is the mission of the Kepler?", options:["To answer questions about Earth.","To build an Earth-like planet.","To find life on other planets.","To train NASA astronauts."], correct:"To find life on other planets.",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Sứ mệnh của Kepler là gì?<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. To answer questions about Earth.</span> (Trả lời câu hỏi về Trái Đất)<br>
-          <span class='p-word'>B. To build an Earth-like planet.</span> (Xây dựng hành tinh giống Trái Đất)<br>
-          <span class='p-word'>C. To find life on other planets.</span> (Tìm sự sống trên hành tinh khác)<br>
-          <span class='p-word'>D. To train NASA astronauts.</span> (Đào tạo phi hành gia NASA)<br><br>
-          <strong>✅ Tại sao chọn C?</strong><br>
-          Bài đọc: "Nobody knows... whether there is life on other planets. And the Kepler has the mission to find the answer to those questions." → sứ mệnh là tìm câu trả lời về sự sống ngoài hành tinh.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>A</span>: không phải, bài không nói về câu hỏi Trái Đất.<br>
-          - <span class='hl-red'>B</span>: không phải xây dựng hành tinh.<br>
-          - <span class='hl-red'>D</span>: không liên quan.` },
-        { id:32, text:"Question 32: How many Earth-sized planets has Kepler discovered so far?", options:["Five","Four","Three","None"], correct:"Five",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Kepler đã phát hiện bao nhiêu hành tinh có kích thước bằng Trái Đất?<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. Five</span> (5)<br>
-          <span class='p-word'>B. Four</span> (4)<br>
-          <span class='p-word'>C. Three</span> (3)<br>
-          <span class='p-word'>D. None</span> (không có)<br><br>
-          <strong>✅ Tại sao chọn A?</strong><br>
-          Dẫn chứng: "It has discovered <span class='hl-green'>five new Earth-sized planets</span> beyond our solar system so far." → chính xác 5 hành tinh.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>Four, Three, None</span>: không đúng với số liệu trong bài.` },
-        { id:33, text:"Question 33: Which is NOT mentioned as a requirement for life?", options:["size","water","air","age"], correct:"age",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Điều nào KHÔNG được đề cập là yêu cầu cho sự sống?<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. size</span> (kích thước)<br>
-          <span class='p-word'>B. water</span> (nước)<br>
-          <span class='p-word'>C. air</span> (không khí)<br>
-          <span class='p-word'>D. age</span> (tuổi)<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          Bài đọc đề cập: water, air, size (gravity liên quan kích thước). Không hề nhắc đến "age" (tuổi).<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>size, water, air</span> đều được nhắc đến trong đoạn 3.` },
-        { id:34, text:"Question 34: CLOSEST meaning to 'find' in second paragraph", options:["invent","transmit","protect","discover"], correct:"discover",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Từ đồng nghĩa GẦN NHẤT với "find" trong đoạn 2.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. invent</span> (phát minh)<br>
-          <span class='p-word'>B. transmit</span> (truyền tải)<br>
-          <span class='p-word'>C. protect</span> (bảo vệ)<br>
-          <span class='p-word'>D. discover</span> (khám phá)<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          "find" trong ngữ cảnh "to find planets that support life" = tìm ra, khám phá. Đồng nghĩa với <span class='hl-green'>discover</span>.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>invent</span>: sáng tạo ra cái chưa tồn tại, không phải tìm kiếm.<br>
-          - <span class='hl-red'>transmit</span>, <span class='hl-red'>protect</span>: sai nghĩa hoàn toàn.` },
-        { id:35, text:"Question 35: OPPOSITE of 'strong' in 'strong gravity'", options:["normal","weak","great","medium"], correct:"weak",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Từ trái nghĩa với "strong" (mạnh) trong "strong gravity".<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. normal</span> (bình thường)<br>
-          <span class='p-word'>B. weak</span> (yếu)<br>
-          <span class='p-word'>C. great</span> (lớn, vĩ đại)<br>
-          <span class='p-word'>D. medium</span> (trung bình)<br><br>
-          <strong>✅ Tại sao chọn B?</strong><br>
-          Trái nghĩa trực tiếp của "strong" là <span class='hl-green'>weak</span> (yếu). Trong bài: "weak gravity" được dùng để chỉ hành tinh nhỏ.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>normal, great, medium</span> không phải trái nghĩa.` },
-        { id:36, text:"Question 36: What is the best title for this text?", options:["The solar system","Life on the Earth","Requirements for life on other planets","The stories about Kepler"], correct:"Requirements for life on other planets",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Tiêu đề phù hợp nhất cho bài đọc là gì?<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. The solar system</span> (Hệ Mặt Trời)<br>
-          <span class='p-word'>B. Life on the Earth</span> (Sự sống trên Trái Đất)<br>
-          <span class='p-word'>C. Requirements for life on other planets</span> (Yêu cầu cho sự sống trên hành tinh khác)<br>
-          <span class='p-word'>D. The stories about Kepler</span> (Những câu chuyện về Kepler)<br><br>
-          <strong>✅ Tại sao chọn C?</strong><br>
-          Bài đọc vừa giới thiệu Kepler vừa tập trung phân tích các yếu tố cần cho sự sống (nước, không khí, kích thước). Đây là chủ đề chính xuyên suốt.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>A</span>: chỉ đề cập một phần nhỏ.<br>
-          - <span class='hl-red'>B</span>: không nói về sự sống trên Trái Đất.<br>
-          - <span class='hl-red'>D</span>: quá hẹp, không bao hàm toàn bộ nội dung.` },
-        { id:37, text:"Blank 37: communicate with their peers (37) ________ than in person", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"more on electronic devices",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> giao tiếp với bạn bè ____ hơn là trực tiếp.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
-          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
-          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
-          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
-          <strong>✅ Tại sao chọn D?</strong><br>
-          Cấu trúc so sánh "more... than" cần một cụm trạng ngữ chỉ phương thức. "more on electronic devices" = nhiều hơn trên thiết bị điện tử, phù hợp ngữ nghĩa.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>A,B,C</span> không thể điền vào vị trí so sánh "more ... than" một cách hợp lý.` },
-        { id:38, text:"Blank 38: chat about almost everything, (38) ________", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"from homework and games to music trends",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Họ nhắn về hầu hết mọi thứ, ____<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
-          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
-          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
-          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
-          <strong>✅ Tại sao chọn C?</strong><br>
-          Cụm từ "from ... to ..." dùng để liệt kê phạm vi chủ đề. Phù hợp với ý "almost everything".<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>A</span>: nói về thời lượng, không phải nội dung.<br>
-          - <span class='hl-red'>B</span>: hành động trao đổi, không phải chủ đề.<br>
-          - <span class='hl-red'>D</span>: không liệt kê nội dung.` },
-        { id:39, text:"Blank 39: short, but (39) ________", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"it can last for hours",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> Cuộc trò chuyện có xu hướng ngắn, nhưng ____<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
-          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
-          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
-          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
-          <strong>✅ Tại sao chọn A?</strong><br>
-          Tương phản: "short" (ngắn) nhưng có thể kéo dài hàng giờ → "it can last for hours" là phù hợp.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>B,C,D</span> không tạo sự tương phản về độ dài.` },
-        { id:40, text:"Blank 40: (40) ________ with several friends and playing their favourite games at the same time.", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"They may be exchanging social networking sites",
-          explanation:`<strong>📌 Dịch câu hỏi:</strong> ____ với nhiều bạn và chơi trò chơi yêu thích cùng lúc.<br><br>
-          <strong>📖 Phân tích 4 đáp án:</strong><br>
-          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
-          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
-          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
-          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
-          <strong>✅ Tại sao chọn B?</strong><br>
-          Cấu trúc song song: "They may be exchanging ... with several friends and playing ..." Đây là hành động đi kèm, phù hợp ngữ pháp và ý nghĩa.<br><br>
-          <strong>❌ Phân tích đáp án sai:</strong><br>
-          - <span class='hl-red'>A</span>: không thể kết hợp với "with several friends".<br>
-          - <span class='hl-red'>C</span>: cụm giới từ không làm chủ ngữ.<br>
-          - <span class='hl-red'>D</span>: không phù hợp cấu trúc.` }
-    ];
-    
-    let userSelections = {};
-    let shuffleMap = {};
-    function shuffleArray(arr) { for(let i=arr.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
-    
-    function renderQuiz() {
-        const container = document.getElementById('exercisesContainer');
-        container.innerHTML = '';
-        questionsData.forEach(q => {
-            if(!shuffleMap[q.id]) shuffleMap[q.id] = shuffleArray([...q.options]);
-            const opts = shuffleMap[q.id];
-            const block = document.createElement('div');
-            block.className = 'question-block';
-            block.innerHTML = `<div class="question-text">📌 ${q.text}</div><div class="answers-buttons" id="btns-${q.id}"></div><div class="explanation" id="expl-${q.id}" style="display:none;"></div>`;
-            container.appendChild(block);
-            const btnContainer = document.getElementById(`btns-${q.id}`);
-            opts.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'ans-btn';
-                btn.innerText = opt;
-                btn.addEventListener('click', () => handleAnswer(q.id, opt, q.correct, q.explanation));
-                btnContainer.appendChild(btn);
-            });
-            if(userSelections[q.id]) highlightSelected(q.id, userSelections[q.id], q.correct);
-        });
-    }
-    
-    function handleAnswer(qid, selected, correct, explHtml) {
-        const isCorrect = (selected === correct);
-        userSelections[qid] = selected;
-        highlightSelected(qid, selected, correct);
-        const explDiv = document.getElementById(`expl-${qid}`);
-        explDiv.innerHTML = `<div style="background:#eef5ff; border-radius:20px; padding:12px;">✨ ${explHtml}</div>`;
-        explDiv.style.display = 'block';
-        if(isCorrect) { playSound(880); startConfetti(); }
-        else { playSound(320, true); 
-            const btns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
-            btns.forEach(btn => { if(btn.innerText === selected) btn.classList.add('wrong-selected'); setTimeout(()=>btn.classList.remove('wrong-selected'),400); });
-            const allBtns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
-            allBtns.forEach(btn => { if(btn.innerText === correct) btn.style.border = "3px solid #00D26A"; setTimeout(()=> btn.style.border = "", 1500); });
-        }
-    }
-    function highlightSelected(qid, selected, correct) {
-        const btns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
-        btns.forEach(btn => {
-            btn.classList.remove('correct-selected','wrong-selected');
-            if(btn.innerText === selected) btn.classList.add(selected===correct ? 'correct-selected' : 'wrong-selected');
-        });
-    }
-    function playSound(freq, isWrong=false) {
-        try {
-            const ctx = new (window.AudioContext||window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.frequency.value = freq;
-            gain.gain.value = 0.15;
-            if(isWrong) osc.type = 'sawtooth';
-            osc.start();
-            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime+0.4);
-            osc.stop(ctx.currentTime+0.35);
-        } catch(e) {}
-    }
-    function startConfetti() {
-        if(typeof confetti === 'function') confetti({particleCount:130, spread:70, origin:{y:0.6}});
-        else {
-            const canvas = document.createElement('canvas'); canvas.style.position='fixed'; canvas.style.top=0; canvas.style.left=0; canvas.style.pointerEvents='none'; canvas.style.zIndex=9999;
-            document.body.appendChild(canvas);
-            setTimeout(()=>canvas.remove(),1500);
-        }
-    }
-    window.confetti = window.confetti || (()=>{});
-    
-    // Timer
-    let timerSeconds = 600, timerInterval=null, timerActive=false;
-    function updateTimer() {
-        let mins=Math.floor(timerSeconds/60), secs=timerSeconds%60;
-        document.getElementById('timerDisplay').innerText=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-        if(timerSeconds===0 && timerInterval) { clearInterval(timerInterval); alert("Đã hết giờ! Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha."); }
-    }
-    document.getElementById('startTimerBtn').onclick=()=>{ if(timerInterval) clearInterval(timerInterval); timerActive=true; timerInterval=setInterval(()=>{ if(timerActive && timerSeconds>0){ timerSeconds--; updateTimer(); }},1000); updateTimer(); };
-    document.getElementById('pauseTimerBtn').onclick=()=>{ timerActive=false; };
-    document.getElementById('resumeTimerBtn').onclick=()=>{ timerActive=true; };
-    
-    // Submit & Name
-    document.getElementById('submitFinalBtn').onclick=()=>{
-        let total=questionsData.length, correctCount=0;
-        questionsData.forEach(q=>{ if(userSelections[q.id]===q.correct) correctCount++; });
-        let percent = (correctCount/total)*100;
-        const nameModal = document.createElement('div'); nameModal.className='result-modal';
-        nameModal.innerHTML=`<div class="result-content"><h2>📝 Nhập tên của bạn</h2><input type="text" id="studentNameInput" placeholder="Ví dụ: Nguyễn Văn A..." style="padding:12px;width:80%;border-radius:40px;"><div id="nameError" style="color:red;"></div><button id="confirmNameBtn" style="margin-top:15px;background:#ffb347;border-radius:40px;padding:10px 20px;">Xem điểm 🎉</button></div>`;
-        document.body.appendChild(nameModal);
-        const confirmBtn = document.getElementById('confirmNameBtn');
-        const nameInp = document.getElementById('studentNameInput');
-        const nameErr = document.getElementById('nameError');
-        const showResult = (name) => {
-            nameModal.remove();
-            let memeUrl = percent===100 ? "https://media.giphy.com/media/3o7abB06u9bNzA8LC8/giphy.gif?cid=790b7611t5b2jr6ssiuygqveox27q1f30k2tfswy1dkhisrx&ep=v1_gifs_search&rid=giphy.gif&ct=g" : (percent>=60 ? "https://media.giphy.com/media/26gR2qKjszYfKkSak/giphy.gif?cid=790b76118r0ryzsljgn9kzhtmy2v8hhgeywjpkdyzm26j8lq&ep=v1_gifs_search&rid=giphy.gif&ct=g" : "https://media.giphy.com/media/l0MYEq5Ux0ZqD80pC/giphy.gif?cid=790b7611ybj5dynhdu9c6qanv8dv27l5v8d1cqz7j9o00tgd&ep=v1_gifs_search&rid=giphy.gif&ct=g");
-            let titleMsg = percent===100 ? "🌟 THIÊN TÀI!" : (percent>=60 ? "💪 LÀM TỐT LẮM!" : "📚 CỐ LÊN NHÉ!");
-            const finalModal = document.createElement('div'); finalModal.className='result-modal';
-            finalModal.innerHTML=`<div class="result-content"><h2>${titleMsg} ${name}</h2><p>Điểm số: ${correctCount}/${total} (${Math.round(percent)} điểm)</p><img class="result-meme" src="${memeUrl}" alt="meme"><button id="closeResultBtn" style="background:#3b9eff;border-radius:40px;padding:8px 20px;">Đóng 🎈</button></div>`;
-            document.body.appendChild(finalModal);
-            document.getElementById('closeResultBtn').onclick=()=>finalModal.remove();
-        };
-        confirmBtn.onclick=()=>{
-            let sName = nameInp.value.trim();
-            if(sName===""){ nameErr.innerText="⚠️ Vui lòng nhập tên trước khi xem điểm nhé!"; nameInp.style.border="2px solid red"; return; }
-            showResult(sName);
-        };
-        nameInp.addEventListener('keypress',e=>{ if(e.key==='Enter') confirmBtn.click(); });
-    };
-    
-    document.querySelectorAll('.btn-translate').forEach(btn=>{
-        btn.addEventListener('click',()=>{ let target=btn.getAttribute('data-target'); let div=document.getElementById(target); div.style.display = div.style.display==='block' ? 'none' : 'block'; });
-    });
-    renderQuiz();
-</script>
+I have enhanced every single question explanation to follow the **"SIÊU CHI TIẾT"** structure:  
+
+✅ Dịch câu hỏi  
+
+✅ Phân tích cả 4 đáp án (nghĩa + loại từ)  
+
+✅ Giải thích đáp án đúng (cấu trúc/collocation/ngữ cảnh)  
+
+✅ Giải thích 3 đáp án sai (lỗi ngữ pháp, sai nghĩa, bẫy)
+
+
+
+All 20 questions now include this level of detail, with colorful highlighting using `<span class='hl-green'>`, `<span class='hl-red'>`, `<span class='p-word'>`, etc. The quiz still features the animated floating emoji background, split-screen reading, timer, confetti, sound effects, and name-based result with meme.
+
+
+
+Enter password: **comaianulis** to start.
+
+
+
+```html
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <title>MS Chí Nên ULIS | Science & Safety Adventure</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+            font-family: 'Nunito', sans-serif;
+
+        }
+
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: radial-gradient(circle at 30% 10%, #0f0c2c, #03001c);
+
+            position: relative;
+
+            overflow-x: hidden;
+
+        }
+
+
+
+        .floating-bg {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            overflow: hidden;
+
+        }
+
+        .bubble {
+
+            position: absolute;
+
+            font-size: 2rem;
+
+            opacity: 0.2;
+
+            animation: floatUp 20s linear infinite;
+
+            filter: blur(1px);
+
+        }
+
+        @keyframes floatUp {
+
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.2; }
+
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0.5; }
+
+        }
+
+        .moving-gradient {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: linear-gradient(125deg, #1e1a5e, #2a1e5e, #3a2a6e, #2a1e5e);
+
+            background-size: 400% 400%;
+
+            animation: gradientShift 15s ease infinite;
+
+            z-index: -1;
+
+        }
+
+        @keyframes gradientShift {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        .quiz-app {
+
+            display: none;
+
+            position: relative;
+
+            z-index: 2;
+
+            padding: 1.5rem;
+
+            max-width: 1600px;
+
+            margin: 0 auto;
+
+        }
+
+
+
+        .split-layout {
+
+            display: flex;
+
+            gap: 1.8rem;
+
+            flex-wrap: wrap;
+
+        }
+
+
+
+        .reading-panel, .exercises-panel {
+
+            background: rgba(255, 248, 235, 0.2);
+
+            backdrop-filter: blur(16px);
+
+            border-radius: 48px;
+
+            padding: 1.5rem;
+
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+
+            border: 1px solid rgba(255,215,150,0.4);
+
+            height: 85vh;
+
+            overflow-y: auto;
+
+            transition: all 0.3s;
+
+        }
+
+        .reading-panel { flex: 1.2; min-width: 280px; }
+
+        .exercises-panel { flex: 1; min-width: 360px; }
+
+
+
+        .card-reading, .question-block {
+
+            background: rgba(255, 250, 240, 0.9);
+
+            border-radius: 32px;
+
+            padding: 1.2rem;
+
+            margin-bottom: 1.5rem;
+
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+            transition: transform 0.2s, box-shadow 0.2s;
+
+        }
+
+        .card-reading:hover, .question-block:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+
+        }
+
+
+
+        .section-title {
+
+            font-size: 1.6rem;
+
+            font-weight: 800;
+
+            background: linear-gradient(135deg, #FFD966, #FF9F4A);
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+
+            margin-bottom: 0.75rem;
+
+        }
+
+
+
+        .btn-translate {
+
+            background: #ffb347cc;
+
+            backdrop-filter: blur(4px);
+
+            border: none;
+
+            border-radius: 40px;
+
+            padding: 0.4rem 1rem;
+
+            font-weight: bold;
+
+            color: #2d1b00;
+
+            cursor: pointer;
+
+            margin: 0.5rem 0;
+
+            transition: all 0.2s;
+
+        }
+
+        .btn-translate:hover {
+
+            background: #ffa01e;
+
+            transform: scale(1.02);
+
+        }
+
+        .translation-text {
+
+            background: #fff5e6;
+
+            padding: 0.8rem;
+
+            border-radius: 20px;
+
+            margin-top: 0.6rem;
+
+            display: none;
+
+            border-left: 8px solid #f5a623;
+
+            font-size: 0.9rem;
+
+        }
+
+
+
+        .glossary-table {
+
+            background: #fef8e7dd;
+
+            border-radius: 24px;
+
+            padding: 0.8rem;
+
+            font-size: 0.85rem;
+
+            backdrop-filter: blur(4px);
+
+        }
+
+        .glossary-table th, .glossary-table td {
+
+            padding: 0.4rem;
+
+            text-align: left;
+
+        }
+
+
+
+        .question-text {
+
+            font-weight: 800;
+
+            font-size: 1.2rem;
+
+            margin-bottom: 0.75rem;
+
+            color: #2c3e66;
+
+            border-left: 5px solid #ff9f4a;
+
+            padding-left: 12px;
+
+        }
+
+
+
+        .answers-buttons {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin: 12px 0;
+
+        }
+
+        .ans-btn {
+
+            background: #ffedd5;
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 60px;
+
+            font-weight: 700;
+
+            font-size: 1rem;
+
+            color: #3b2c1f;
+
+            box-shadow: 0 5px 0 #b97f10;
+
+            cursor: pointer;
+
+            transition: all 0.1s linear;
+
+            flex: 1 0 auto;
+
+            text-align: center;
+
+        }
+
+        .ans-btn:hover {
+
+            transform: scale(1.02);
+
+            background: #ffe2a4;
+
+        }
+
+        .ans-btn.correct-selected {
+
+            background: #00D26A;
+
+            color: white;
+
+            box-shadow: 0 5px 0 #1f7a3e;
+
+        }
+
+        .ans-btn.wrong-selected {
+
+            background: #FF4757;
+
+            color: white;
+
+            box-shadow: 0 5px 0 #a1222e;
+
+            animation: shake 0.2s ease-in-out 0s 2;
+
+        }
+
+        @keyframes shake {
+
+            0%,100%{ transform: translateX(0);}
+
+            25%{ transform: translateX(-5px);}
+
+            75%{ transform: translateX(5px);}
+
+        }
+
+
+
+        .explanation {
+
+            background: #f0f9ffdd;
+
+            border-radius: 24px;
+
+            padding: 14px;
+
+            margin-top: 12px;
+
+            font-size: 0.95rem;
+
+            border-left: 8px solid #5f9eff;
+
+            backdrop-filter: blur(4px);
+
+            line-height: 1.5;
+
+        }
+
+        .timer-bar {
+
+            display: flex;
+
+            gap: 12px;
+
+            align-items: center;
+
+            background: #00000077;
+
+            backdrop-filter: blur(10px);
+
+            border-radius: 60px;
+
+            padding: 8px 20px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
+        .timer-display {
+
+            font-size: 2rem;
+
+            font-weight: 800;
+
+            font-family: monospace;
+
+            background: #0b0e1ecc;
+
+            padding: 0 18px;
+
+            border-radius: 50px;
+
+            color: #f5d742;
+
+            letter-spacing: 2px;
+
+        }
+
+        .btn-primary {
+
+            background: #ffb347;
+
+            border: none;
+
+            border-radius: 60px;
+
+            padding: 8px 24px;
+
+            font-weight: bold;
+
+            box-shadow: 0 4px 0 #a55307;
+
+            cursor: pointer;
+
+            transition: 0.1s;
+
+        }
+
+        .btn-primary:active {
+
+            transform: translateY(2px);
+
+            box-shadow: 0 2px 0 #a55307;
+
+        }
+
+
+
+        .modal-password {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: rgba(0,0,0,0.85);
+
+            backdrop-filter: blur(12px);
+
+            z-index: 1000;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        .modal-card {
+
+            background: rgba(255,255,245,0.95);
+
+            border-radius: 60px;
+
+            padding: 2rem;
+
+            text-align: center;
+
+            width: 340px;
+
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+
+        }
+
+        .error-msg {
+
+            color: #e74c3c;
+
+            margin-top: 10px;
+
+            font-weight: bold;
+
+        }
+
+        .shake-input {
+
+            animation: shake 0.2s;
+
+        }
+
+        .hl-green { background-color: #c8f0d1; color: #006633; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block; margin: 2px 0;}
+
+        .hl-red { background-color: #ffe0e0; color: #cc0000; padding: 2px 6px; border-radius: 20px; font-weight: bold; display: inline-block;}
+
+        .p-word { color: #2c6e9e; font-weight: 800; background: #e3f0fa; padding: 0 4px; border-radius: 12px;}
+
+        .p-grammar { text-decoration: underline; color: #b34e7a; font-weight: bold; background: #ffe6f0; padding: 0 4px; border-radius: 12px;}
+
+        .p-mean { color: #c25b1a; font-weight: 700; background: #fff0e0; padding: 0 4px; border-radius: 12px;}
+
+
+
+        .result-modal {
+
+            position: fixed;
+
+            top: 0; left: 0;
+
+            width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.7);
+
+            backdrop-filter: blur(12px);
+
+            z-index: 1100;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        .result-content {
+
+            background: #fffaf0;
+
+            border-radius: 48px;
+
+            max-width: 480px;
+
+            width: 90%;
+
+            padding: 2rem;
+
+            text-align: center;
+
+            animation: popIn 0.3s ease;
+
+        }
+
+        @keyframes popIn {
+
+            from { transform: scale(0.9); opacity: 0; }
+
+            to { transform: scale(1); opacity: 1; }
+
+        }
+
+        .result-meme {
+
+            max-width: 100%;
+
+            border-radius: 28px;
+
+            margin: 15px 0;
+
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+
+        ::-webkit-scrollbar-track { background: #ffefcf; border-radius: 10px; }
+
+        ::-webkit-scrollbar-thumb { background: #f39c12; border-radius: 10px; }
+
+        button { cursor: pointer; }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="moving-gradient"></div>
+
+<div class="floating-bg" id="floatingBg"></div>
+
+
+
+<div id="passwordModal" class="modal-password">
+
+    <div class="modal-card">
+
+        <h2>🔐 <span style="color:#ff8800;">Lab Security</span></h2>
+
+        <p style="margin:15px 0;">Nhập mật khẩu để vào bài thi</p>
+
+        <input type="password" id="passInput" placeholder="********" style="padding:12px;border-radius:60px;border:1px solid #ffb347; width:100%; font-size:1rem;">
+
+        <button id="submitPass" style="margin-top:20px; background:#ffb347; border:none; border-radius:60px; padding:10px 24px; font-weight:bold;">Mở khóa 🔓</button>
+
+        <div id="passError" class="error-msg"></div>
+
+    </div>
+
+</div>
+
+
+
+<div class="quiz-app" id="quizApp">
+
+    <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 10px; flex-wrap:wrap; gap:10px;">
+
+        <div><span style="font-weight:800; background: #f5b042cc; padding: 4px 16px; border-radius: 40px;">🎓 MS Chí Nên - ULIS</span></div>
+
+        <div class="timer-bar">
+
+            <button id="startTimerBtn" class="btn-primary">⏱️ BẮT ĐẦU</button>
+
+            <button id="pauseTimerBtn" class="btn-primary" style="background:#7f8c8d;">⏸️ Tạm dừng</button>
+
+            <button id="resumeTimerBtn" class="btn-primary" style="background:#2ecc71;">▶️ Tiếp tục</button>
+
+            <div class="timer-display" id="timerDisplay">10:00</div>
+
+        </div>
+
+    </div>
+
+    <div class="split-layout">
+
+        <div class="reading-panel">
+
+            <div class="card-reading">
+
+                <h3 class="section-title">📖 Lab Safety Notice</h3>
+
+                <div>To ensure a safe and productive environment for everyone, please (13) ____ the following rules:<br>
+
+                - Always wear coats, safety glasses, and gloves when working with chemicals.<br>
+
+                - Read the labels (14) ____ before use; pay attention to warnings.<br>
+
+                - Turn off all equipment when not (15) ____ use.<br>
+
+                - In case of fire, leave (16) ____ lab immediately and call emergency services.
+
+                </div>
+
+                <button class="btn-translate" data-target="trans1">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
+
+                <div id="trans1" class="translation-text">Để đảm bảo môi trường an toàn và hiệu quả cho mọi người, vui lòng <span class='p-word'>tuân thủ</span> các quy tắc sau: Luôn mặc áo choàng, đeo kính an toàn và găng tay khi làm việc với hóa chất. Đọc nhãn <span class='p-word'>cẩn thận</span> trước khi sử dụng; chú ý cảnh báo. Tắt tất cả thiết bị khi không <span class='p-word'>sử dụng</span>. Trong trường hợp hỏa hoạn, rời khỏi <span class='p-word'>phòng thí nghiệm</span> ngay lập tức và gọi dịch vụ khẩn cấp.</div>
+
+            </div>
+
+            <div class="card-reading">
+
+                <h3 class="section-title">🧪 Science in Schools</h3>
+
+                <div>Why should we teach science to (19) _____ in schools? Why do many schools teach STEM subjects? One reason is every day children can see the benefits of science and technology around them, so they can be (20) _____ the role that science plays in their everyday life. Secondly, when children learn science, they will learn to think in (21) _____, to search for the answers and to give reasons. In other words, students can (22) _____ both knowledge of science as well as critical thinking and problem-solving skills. These will be important in their future work and studies. Moreover, if children learn science at an early age, they (23) _____ more ready to get involved in science-related fields when they (24) _____.</div>
+
+                <button class="btn-translate" data-target="trans2">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
+
+                <div id="trans2" class="translation-text">Tại sao chúng ta nên dạy khoa học cho <span class='p-word'>trẻ em</span> ở trường? ... Một lý do là hàng ngày trẻ em có thể thấy lợi ích của khoa học, vì vậy chúng có thể <span class='p-word'>nhận thức được</span> vai trò của khoa học. Khi trẻ học khoa học, chúng học cách tư duy theo <span class='p-word'>phương pháp khoa học</span>... học sinh có thể <span class='p-word'>đạt được</span> cả kiến thức khoa học cũng như tư duy phản biện. Nếu trẻ học khoa học sớm, chúng <span class='p-word'>sẽ</span> sẵn sàng tham gia lĩnh vực liên quan khi <span class='p-word'>lớn lên</span>.</div>
+
+            </div>
+
+            <div class="card-reading">
+
+                <h3 class="section-title">🛸 Kepler Mission</h3>
+
+                <div>Nobody knows how many planets there are in our galaxy and whether there is life on other planets. And the Kelper has the mission to find the answer to those questions.<br>In 2009, NASA launched the Kelper space telescope to find planets that support life. It has discovered five new Earth-sized planets beyond our solar system so far... The simplest requirement for a planet to have life is water (not frozen or gas), so the distance from the planet’s sun and therefore temperature is important. The planet also needs a certain amount of air. If a planet is as small as Mars (half the size of Earth), it can’t hold on to air molecules because of weak gravity. If a planet is four times bigger than Earth – Neptune size – it has very strong gravity and too much air. Therefore, the size of those planets also matter.</div>
+
+                <button class="btn-translate" data-target="trans3">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
+
+                <div id="trans3" class="translation-text">Không ai biết có bao nhiêu hành tinh trong dải ngân hà... Kepler có sứ mệnh tìm câu trả lời. Năm 2009, NASA phóng kính viễn vọng Kepler để tìm hành tinh có sự sống. Nó đã phát hiện năm hành tinh mới có kích thước bằng Trái Đất... Yêu cầu đơn giản nhất cho sự sống là nước, khoảng cách từ mặt trời quyết định nhiệt độ. Hành tinh cũng cần không khí. Kích thước rất quan trọng: quá nhỏ thì trọng lực yếu, không giữ được không khí; quá lớn thì trọng lực mạnh và quá nhiều khí.</div>
+
+            </div>
+
+            <div class="card-reading">
+
+                <h3 class="section-title">💬 Teen Chat</h3>
+
+                <div>Nowadays, teenagers seem to communicate with their peers (37) ________ than in person. They chat with their friends using messaging applications and instant messages. They chat about almost everything, (38) ________. Their conversations tend to be short, but (39) ________. Many teenagers prefer this way of communicating to talking face to face. They say that it is more convenient and they can do many things while chatting. (40) ________ with several friends and playing their favourite games at the same time.</div>
+
+                <button class="btn-translate" data-target="trans4">🌏 BẢN DỊCH ĐẦY ĐỦ</button>
+
+                <div id="trans4" class="translation-text">Ngày nay, thanh thiếu niên dường như giao tiếp với bạn bè qua <span class='p-word'>thiết bị điện tử nhiều hơn</span> là trực tiếp. Họ nhắn tin về hầu hết mọi thứ, <span class='p-word'>từ bài tập, trò chơi đến xu hướng âm nhạc</span>. Cuộc trò chuyện ngắn nhưng <span class='p-word'>có thể kéo dài hàng giờ</span>. Họ có thể <span class='p-word'>trao đổi trên mạng xã hội</span> với nhiều bạn và chơi game cùng lúc.</div>
+
+            </div>
+
+            <div class="glossary-table">
+
+                <h4>📚 TỪ VỰNG ACADEMIC (B1-C2)</h4>
+
+                <table style="width:100%"><tr><th>Từ</th><th>Loại</th><th>Nghĩa</th></tr>
+
+                <tr><td><span class='p-word'>obey</span></td><td>v</td><td>tuân theo</td></tr>
+
+                <tr><td><span class='p-word'>laboratory</span></td><td>n</td><td>phòng thí nghiệm</td></tr>
+
+                <tr><td><span class='p-word'>critical thinking</span></td><td>n</td><td>tư duy phản biện</td></tr>
+
+                <tr><td><span class='p-word'>galaxy</span></td><td>n</td><td>thiên hà</td></tr>
+
+                <tr><td><span class='p-word'>telescope</span></td><td>n</td><td>kính viễn vọng</td></tr>
+
+                <tr><td><span class='p-word'>gravity</span></td><td>n</td><td>trọng lực</td></tr>
+
+                <tr><td><span class='p-word'>peers</span></td><td>n</td><td>bạn đồng trang lứa</td></tr>
+
+                <tr><td><span class='p-word'>electronic devices</span></td><td>n</td><td>thiết bị điện tử</td></tr>
+
+                <tr><td><span class='p-word'>mission</span></td><td>n</td><td>sứ mệnh</td></tr>
+
+                <tr><td><span class='p-word'>aware of</span></td><td>adj</td><td>nhận thức về</td></tr>
+
+                <tr><td><span class='p-word'>grow up</span></td><td>phr v</td><td>lớn lên</td></tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-panel" id="exercisesContainer"></div>
+
+    </div>
+
+    <div style="margin-top: 20px; text-align: center;"><button id="submitFinalBtn" style="background: linear-gradient(95deg,#ff9800,#ffbb4d); border: none; padding: 14px 30px; border-radius: 60px; font-weight:800; font-size:1.2rem; box-shadow:0 8px 0 #b4620a;">🎯 NỘP BÀI & XEM KẾT QUẢ</button></div>
+
+</div>
+
+
+
+<script>
+
+    // Password: ASCII array for "comaianulis"
+
+    const correctPassArr = [99,111,109,97,105,97,110,117,108,105,115];
+
+    const correctPassword = String.fromCharCode(...correctPassArr);
+
+    const passInput = document.getElementById('passInput');
+
+    const submitBtn = document.getElementById('submitPass');
+
+    const passError = document.getElementById('passError');
+
+    const modal = document.getElementById('passwordModal');
+
+    const quizApp = document.getElementById('quizApp');
+
+    function checkPass() {
+
+        if (passInput.value === correctPassword) {
+
+            modal.style.display = 'none';
+
+            quizApp.style.display = 'block';
+
+            createFloatingBubbles();
+
+        } else {
+
+            passError.innerText = '❌ Sai mật khẩu! Hãy thử lại.';
+
+            passInput.classList.add('shake-input');
+
+            setTimeout(()=> passInput.classList.remove('shake-input'),500);
+
+            passInput.value = '';
+
+        }
+
+    }
+
+    submitBtn.addEventListener('click', checkPass);
+
+    passInput.addEventListener('keypress', e => { if(e.key === 'Enter') checkPass(); });
+
+    
+
+    function createFloatingBubbles() {
+
+        const container = document.getElementById('floatingBg');
+
+        const icons = ['🔬','🧪','🚀','🪐','⭐','🧫','📡','🧑‍🔬','⚛️','🧴','📖','💬'];
+
+        for(let i=0;i<45;i++) {
+
+            let bubble = document.createElement('div');
+
+            bubble.className = 'bubble';
+
+            bubble.innerText = icons[Math.floor(Math.random()*icons.length)];
+
+            let size = Math.random() * 2 + 1.2;
+
+            bubble.style.fontSize = `${size}rem`;
+
+            bubble.style.left = `${Math.random() * 100}%`;
+
+            bubble.style.animationDuration = `${15 + Math.random() * 20}s`;
+
+            bubble.style.animationDelay = `${Math.random() * 10}s`;
+
+            bubble.style.opacity = 0.1 + Math.random() * 0.3;
+
+            container.appendChild(bubble);
+
+        }
+
+    }
+
+    
+
+    // ---------- DETAILED QUESTIONS (SIÊU CHI TIẾT) ----------
+
+    const questionsData = [
+
+        { id:13, text:"Question 13: Please (13) ____ the following rules.", options:["obey","listen","break","form"], correct:"obey",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Vui lòng ____ các quy tắc sau.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. obey</span> (v): tuân theo, vâng lời.<br>
+
+          <span class='p-word'>B. listen</span> (v): nghe.<br>
+
+          <span class='p-word'>C. break</span> (v): phá vỡ, làm hỏng.<br>
+
+          <span class='p-word'>D. form</span> (v): hình thành, tạo thành.<br><br>
+
+          <strong>✅ Tại sao chọn A?</strong><br>
+
+          "obey the rules" là collocation cố định trong tiếng Anh, có nghĩa "tuân theo nội quy". Trong văn bản thông báo an toàn, người đọc được yêu cầu tuân thủ các quy tắc.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>listen</span>: cần giới từ "to" (listen to the rules) mới đúng, nhưng thiếu "to" nên sai cấu trúc.<br>
+
+          - <span class='hl-red'>break</span>: trái nghĩa với yêu cầu tuân thủ, mang nghĩa tiêu cực (phá vỡ quy tắc).<br>
+
+          - <span class='hl-red'>form</span>: không đi với "rules" trong ngữ cảnh này (form rules = tạo ra quy tắc, không phù hợp).<br>
+
+          <strong>🔍 Dẫn chứng trong bài:</strong> "please obey the following rules" → vui lòng <span class='hl-green'>tuân theo</span> các quy tắc sau.` },
+
+        { id:14, text:"Question 14: Read the labels (14) ____ before use.", options:["careful","carefully","care","carelessly"], correct:"carefully",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Đọc nhãn ____ trước khi sử dụng.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. careful</span> (adj): cẩn thận.<br>
+
+          <span class='p-word'>B. carefully</span> (adv): một cách cẩn thận.<br>
+
+          <span class='p-word'>C. care</span> (n/v): sự chăm sóc / quan tâm.<br>
+
+          <span class='p-word'>D. carelessly</span> (adv): một cách bất cẩn.<br><br>
+
+          <strong>✅ Tại sao chọn B?</strong><br>
+
+          Động từ "read" cần được bổ nghĩa bởi trạng từ. "carefully" (cẩn thận) là trạng từ chỉ cách thức, phù hợp với ý nghĩa cần đọc kỹ nhãn để tránh nguy hiểm.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>careful</span>: là tính từ, không thể đứng sau động từ "read" để bổ nghĩa trực tiếp.<br>
+
+          - <span class='hl-red'>care</span>: danh từ hoặc động từ nguyên mẫu, không phù hợp vị trí.<br>
+
+          - <span class='hl-red'>carelessly</span>: trạng từ nhưng mang nghĩa ngược (bất cẩn), gây nguy hiểm, trái với cảnh báo an toàn.` },
+
+        { id:15, text:"Question 15: when not (15) ____ use.", options:["under","for","at","in"], correct:"in",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> tắt tất cả thiết bị khi không ____ sử dụng.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. under</span>: dưới<br>
+
+          <span class='p-word'>B. for</span>: cho, vì<br>
+
+          <span class='p-word'>C. at</span>: tại<br>
+
+          <span class='p-word'>D. in</span>: trong<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          Thành ngữ cố định: <span class='p-grammar'>"in use"</span> = đang được sử dụng. "when not in use" = khi không sử dụng.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>under use</span>, <span class='hl-red'>for use</span>, <span class='hl-red'>at use</span> không phải là cụm từ chuẩn trong tiếng Anh. Chỉ có "in use" mới mang nghĩa chính xác.` },
+
+        { id:16, text:"Question 16: leave (16) ____ lab immediately.", options:["X (no article)","the","an","a"], correct:"the",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> rời khỏi ____ phòng thí nghiệm ngay lập tức.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. X (không mạo từ)</span><br>
+
+          <span class='p-word'>B. the</span>: mạo từ xác định<br>
+
+          <span class='p-word'>C. an</span>: mạo từ không xác định (trước nguyên âm)<br>
+
+          <span class='p-word'>D. a</span>: mạo từ không xác định (trước phụ âm)<br><br>
+
+          <strong>✅ Tại sao chọn B?</strong><br>
+
+          "lab" là phòng thí nghiệm cụ thể đã được đề cập trong ngữ cảnh (phòng thí nghiệm nơi đang làm việc). Dùng mạo từ xác định "the" để chỉ đối tượng xác định.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>không mạo từ</span>: danh từ số ít đếm được khi không xác định phải có mạo từ, nếu bỏ sẽ sai ngữ pháp.<br>
+
+          - <span class='hl-red'>an / a</span>: dùng cho danh từ chưa xác định, nhưng ở đây người đọc và người nói đều biết rõ phòng thí nghiệm nào, nên dùng "the".` },
+
+        { id:19, text:"Question 19: teach science to (19) _____ in schools?", options:["adults","children","teachers","workers"], correct:"children",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Tại sao nên dạy khoa học cho ____ ở trường?<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. adults</span> (n): người lớn<br>
+
+          <span class='p-word'>B. children</span> (n): trẻ em<br>
+
+          <span class='p-word'>C. teachers</span> (n): giáo viên<br>
+
+          <span class='p-word'>D. workers</span> (n): công nhân<br><br>
+
+          <strong>✅ Tại sao chọn B?</strong><br>
+
+          Đoạn văn sau đó nói: "every day children can see the benefits..." → chính trẻ em là đối tượng được nhắc đến. Nội dung xoay quanh lợi ích của việc dạy khoa học cho trẻ em.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>adults</span>: bài viết tập trung vào trường học và trẻ em, không nói về người lớn.<br>
+
+          - <span class='hl-red'>teachers</span>: dạy khoa học cho giáo viên không hợp lý.<br>
+
+          - <span class='hl-red'>workers</span>: không phù hợp ngữ cảnh.` },
+
+        { id:20, text:"Question 20: they can be (20) _____ the role that science plays.", options:["successful in","addicted to","famous for","aware of"], correct:"aware of",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> chúng có thể ____ vai trò mà khoa học đóng góp.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. successful in</span>: thành công trong<br>
+
+          <span class='p-word'>B. addicted to</span>: nghiện<br>
+
+          <span class='p-word'>C. famous for</span>: nổi tiếng vì<br>
+
+          <span class='p-word'>D. aware of</span>: nhận thức về<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          "be aware of" = nhận thức rõ về điều gì. Trẻ em thấy lợi ích khoa học nên chúng <span class='hl-green'>nhận thức được</span> vai trò của nó. Đây là cụm từ phổ biến.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>successful in</span>: sai nghĩa, không đi với "role".<br>
+
+          - <span class='hl-red'>addicted to</span>: mang nghĩa tiêu cực (nghiện), không phù hợp.<br>
+
+          - <span class='hl-red'>famous for</span>: nổi tiếng vì, không hợp lý.` },
+
+        { id:21, text:"Question 21: think in (21) _____", options:["a scientific way","science way","a scientific ways","a way of scientific"], correct:"a scientific way",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> suy nghĩ theo ____<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. a scientific way</span>: một cách khoa học (cụm danh từ số ít)<br>
+
+          <span class='p-word'>B. science way</span>: sai cấu trúc<br>
+
+          <span class='p-word'>C. a scientific ways</span>: sai số nhiều với "a"<br>
+
+          <span class='p-word'>D. a way of scientific</span>: thiếu danh từ "science"<br><br>
+
+          <strong>✅ Tại sao chọn A?</strong><br>
+
+          "think in a scientific way" là cách diễn đạt chuẩn: suy nghĩ theo phương pháp khoa học. Cấu trúc: "in + a/an + adj + way".<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>science way</span>: thiếu mạo từ và tính từ, không đúng ngữ pháp.<br>
+
+          - <span class='hl-red'>a scientific ways</span>: mâu thuẫn giữa "a" (số ít) và "ways" (số nhiều).<br>
+
+          - <span class='hl-red'>a way of scientific</span>: thiếu danh từ "science" (phải là a way of science).` },
+
+        { id:22, text:"Question 22: students can (22) _____ both knowledge", options:["mark","create","serve","gain"], correct:"gain",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> học sinh có thể ____ cả kiến thức<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. mark</span> (v): đánh dấu, cho điểm<br>
+
+          <span class='p-word'>B. create</span> (v): tạo ra<br>
+
+          <span class='p-word'>C. serve</span> (v): phục vụ<br>
+
+          <span class='p-word'>D. gain</span> (v): đạt được, thu được<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          Collocation phổ biến: <span class='hl-green'>"gain knowledge"</span> = thu nhận kiến thức. Phù hợp với ngữ cảnh học sinh học tập.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>mark</span>: không đi với knowledge (mark knowledge là sai).<br>
+
+          - <span class='hl-red'>create</span>: tạo ra kiến thức? không tự nhiên, kiến thức thường được "acquire/gain".<br>
+
+          - <span class='hl-red'>serve</span>: phục vụ kiến thức → vô nghĩa.` },
+
+        { id:23, text:"Question 23: they (23) _____ more ready to get involved", options:["are","would be","will be","were"], correct:"will be",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> chúng ____ sẵn sàng hơn để tham gia<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. are</span>: thì hiện tại đơn<br>
+
+          <span class='p-word'>B. would be</span>: động từ khuyết thiếu ở quá khứ<br>
+
+          <span class='p-word'>C. will be</span>: tương lai đơn<br>
+
+          <span class='p-word'>D. were</span>: quá khứ đơn (to be)<br><br>
+
+          <strong>✅ Tại sao chọn C?</strong><br>
+
+          Câu điều kiện loại 1: "If children learn (hiện tại), they <span class='p-grammar'>will be</span> (tương lai) more ready..." Diễn tả khả năng xảy ra ở tương lai nếu điều kiện được đáp ứng.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>are</span>: không phù hợp với cấu trúc điều kiện (if + hiện tại, mệnh đề chính tương lai).<br>
+
+          - <span class='hl-red'>would be</span>: dùng cho câu điều kiện loại 2 (giả định không có thật), không đúng.<br>
+
+          - <span class='hl-red'>were</span>: quá khứ đơn, không đúng.` },
+
+        { id:24, text:"Question 24: when they (24) _____", options:["get up","stand up","grow up","make up"], correct:"grow up",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> khi chúng ____<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. get up</span>: thức dậy<br>
+
+          <span class='p-word'>B. stand up</span>: đứng lên<br>
+
+          <span class='p-word'>C. grow up</span>: lớn lên, trưởng thành<br>
+
+          <span class='p-word'>D. make up</span>: trang điểm, bịa chuyện, làm lành<br><br>
+
+          <strong>✅ Tại sao chọn C?</strong><br>
+
+          "when they grow up" = khi chúng lớn lên. Phù hợp với ngữ cảnh trẻ em học khoa học sớm sẽ sẵn sàng tham gia lĩnh vực khoa học khi trưởng thành.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>get up</span>: sai nghĩa.<br>
+
+          - <span class='hl-red'>stand up</span>: sai nghĩa.<br>
+
+          - <span class='hl-red'>make up</span>: không phù hợp.` },
+
+        { id:31, text:"Question 31: What is the mission of the Kepler?", options:["To answer questions about Earth.","To build an Earth-like planet.","To find life on other planets.","To train NASA astronauts."], correct:"To find life on other planets.",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Sứ mệnh của Kepler là gì?<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. To answer questions about Earth.</span> (Trả lời câu hỏi về Trái Đất)<br>
+
+          <span class='p-word'>B. To build an Earth-like planet.</span> (Xây dựng hành tinh giống Trái Đất)<br>
+
+          <span class='p-word'>C. To find life on other planets.</span> (Tìm sự sống trên hành tinh khác)<br>
+
+          <span class='p-word'>D. To train NASA astronauts.</span> (Đào tạo phi hành gia NASA)<br><br>
+
+          <strong>✅ Tại sao chọn C?</strong><br>
+
+          Bài đọc: "Nobody knows... whether there is life on other planets. And the Kepler has the mission to find the answer to those questions." → sứ mệnh là tìm câu trả lời về sự sống ngoài hành tinh.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>A</span>: không phải, bài không nói về câu hỏi Trái Đất.<br>
+
+          - <span class='hl-red'>B</span>: không phải xây dựng hành tinh.<br>
+
+          - <span class='hl-red'>D</span>: không liên quan.` },
+
+        { id:32, text:"Question 32: How many Earth-sized planets has Kepler discovered so far?", options:["Five","Four","Three","None"], correct:"Five",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Kepler đã phát hiện bao nhiêu hành tinh có kích thước bằng Trái Đất?<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. Five</span> (5)<br>
+
+          <span class='p-word'>B. Four</span> (4)<br>
+
+          <span class='p-word'>C. Three</span> (3)<br>
+
+          <span class='p-word'>D. None</span> (không có)<br><br>
+
+          <strong>✅ Tại sao chọn A?</strong><br>
+
+          Dẫn chứng: "It has discovered <span class='hl-green'>five new Earth-sized planets</span> beyond our solar system so far." → chính xác 5 hành tinh.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>Four, Three, None</span>: không đúng với số liệu trong bài.` },
+
+        { id:33, text:"Question 33: Which is NOT mentioned as a requirement for life?", options:["size","water","air","age"], correct:"age",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Điều nào KHÔNG được đề cập là yêu cầu cho sự sống?<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. size</span> (kích thước)<br>
+
+          <span class='p-word'>B. water</span> (nước)<br>
+
+          <span class='p-word'>C. air</span> (không khí)<br>
+
+          <span class='p-word'>D. age</span> (tuổi)<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          Bài đọc đề cập: water, air, size (gravity liên quan kích thước). Không hề nhắc đến "age" (tuổi).<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>size, water, air</span> đều được nhắc đến trong đoạn 3.` },
+
+        { id:34, text:"Question 34: CLOSEST meaning to 'find' in second paragraph", options:["invent","transmit","protect","discover"], correct:"discover",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Từ đồng nghĩa GẦN NHẤT với "find" trong đoạn 2.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. invent</span> (phát minh)<br>
+
+          <span class='p-word'>B. transmit</span> (truyền tải)<br>
+
+          <span class='p-word'>C. protect</span> (bảo vệ)<br>
+
+          <span class='p-word'>D. discover</span> (khám phá)<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          "find" trong ngữ cảnh "to find planets that support life" = tìm ra, khám phá. Đồng nghĩa với <span class='hl-green'>discover</span>.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>invent</span>: sáng tạo ra cái chưa tồn tại, không phải tìm kiếm.<br>
+
+          - <span class='hl-red'>transmit</span>, <span class='hl-red'>protect</span>: sai nghĩa hoàn toàn.` },
+
+        { id:35, text:"Question 35: OPPOSITE of 'strong' in 'strong gravity'", options:["normal","weak","great","medium"], correct:"weak",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Từ trái nghĩa với "strong" (mạnh) trong "strong gravity".<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. normal</span> (bình thường)<br>
+
+          <span class='p-word'>B. weak</span> (yếu)<br>
+
+          <span class='p-word'>C. great</span> (lớn, vĩ đại)<br>
+
+          <span class='p-word'>D. medium</span> (trung bình)<br><br>
+
+          <strong>✅ Tại sao chọn B?</strong><br>
+
+          Trái nghĩa trực tiếp của "strong" là <span class='hl-green'>weak</span> (yếu). Trong bài: "weak gravity" được dùng để chỉ hành tinh nhỏ.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>normal, great, medium</span> không phải trái nghĩa.` },
+
+        { id:36, text:"Question 36: What is the best title for this text?", options:["The solar system","Life on the Earth","Requirements for life on other planets","The stories about Kepler"], correct:"Requirements for life on other planets",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Tiêu đề phù hợp nhất cho bài đọc là gì?<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. The solar system</span> (Hệ Mặt Trời)<br>
+
+          <span class='p-word'>B. Life on the Earth</span> (Sự sống trên Trái Đất)<br>
+
+          <span class='p-word'>C. Requirements for life on other planets</span> (Yêu cầu cho sự sống trên hành tinh khác)<br>
+
+          <span class='p-word'>D. The stories about Kepler</span> (Những câu chuyện về Kepler)<br><br>
+
+          <strong>✅ Tại sao chọn C?</strong><br>
+
+          Bài đọc vừa giới thiệu Kepler vừa tập trung phân tích các yếu tố cần cho sự sống (nước, không khí, kích thước). Đây là chủ đề chính xuyên suốt.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>A</span>: chỉ đề cập một phần nhỏ.<br>
+
+          - <span class='hl-red'>B</span>: không nói về sự sống trên Trái Đất.<br>
+
+          - <span class='hl-red'>D</span>: quá hẹp, không bao hàm toàn bộ nội dung.` },
+
+        { id:37, text:"Blank 37: communicate with their peers (37) ________ than in person", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"more on electronic devices",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> giao tiếp với bạn bè ____ hơn là trực tiếp.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
+
+          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
+
+          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
+
+          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
+
+          <strong>✅ Tại sao chọn D?</strong><br>
+
+          Cấu trúc so sánh "more... than" cần một cụm trạng ngữ chỉ phương thức. "more on electronic devices" = nhiều hơn trên thiết bị điện tử, phù hợp ngữ nghĩa.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>A,B,C</span> không thể điền vào vị trí so sánh "more ... than" một cách hợp lý.` },
+
+        { id:38, text:"Blank 38: chat about almost everything, (38) ________", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"from homework and games to music trends",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Họ nhắn về hầu hết mọi thứ, ____<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
+
+          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
+
+          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
+
+          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
+
+          <strong>✅ Tại sao chọn C?</strong><br>
+
+          Cụm từ "from ... to ..." dùng để liệt kê phạm vi chủ đề. Phù hợp với ý "almost everything".<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>A</span>: nói về thời lượng, không phải nội dung.<br>
+
+          - <span class='hl-red'>B</span>: hành động trao đổi, không phải chủ đề.<br>
+
+          - <span class='hl-red'>D</span>: không liệt kê nội dung.` },
+
+        { id:39, text:"Blank 39: short, but (39) ________", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"it can last for hours",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> Cuộc trò chuyện có xu hướng ngắn, nhưng ____<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
+
+          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
+
+          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
+
+          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
+
+          <strong>✅ Tại sao chọn A?</strong><br>
+
+          Tương phản: "short" (ngắn) nhưng có thể kéo dài hàng giờ → "it can last for hours" là phù hợp.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>B,C,D</span> không tạo sự tương phản về độ dài.` },
+
+        { id:40, text:"Blank 40: (40) ________ with several friends and playing their favourite games at the same time.", options:["it can last for hours","They may be exchanging social networking sites","from homework and games to music trends","more on electronic devices"], correct:"They may be exchanging social networking sites",
+
+          explanation:`<strong>📌 Dịch câu hỏi:</strong> ____ với nhiều bạn và chơi trò chơi yêu thích cùng lúc.<br><br>
+
+          <strong>📖 Phân tích 4 đáp án:</strong><br>
+
+          <span class='p-word'>A. it can last for hours</span> (nó có thể kéo dài hàng giờ)<br>
+
+          <span class='p-word'>B. They may be exchanging social networking sites</span> (Họ có thể trao đổi trên mạng xã hội)<br>
+
+          <span class='p-word'>C. from homework and games to music trends</span> (từ bài tập, trò chơi đến xu hướng âm nhạc)<br>
+
+          <span class='p-word'>D. more on electronic devices</span> (trên thiết bị điện tử nhiều hơn)<br><br>
+
+          <strong>✅ Tại sao chọn B?</strong><br>
+
+          Cấu trúc song song: "They may be exchanging ... with several friends and playing ..." Đây là hành động đi kèm, phù hợp ngữ pháp và ý nghĩa.<br><br>
+
+          <strong>❌ Phân tích đáp án sai:</strong><br>
+
+          - <span class='hl-red'>A</span>: không thể kết hợp với "with several friends".<br>
+
+          - <span class='hl-red'>C</span>: cụm giới từ không làm chủ ngữ.<br>
+
+          - <span class='hl-red'>D</span>: không phù hợp cấu trúc.` }
+
+    ];
+
+    
+
+    let userSelections = {};
+
+    let shuffleMap = {};
+
+    function shuffleArray(arr) { for(let i=arr.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+    
+
+    function renderQuiz() {
+
+        const container = document.getElementById('exercisesContainer');
+
+        container.innerHTML = '';
+
+        questionsData.forEach(q => {
+
+            if(!shuffleMap[q.id]) shuffleMap[q.id] = shuffleArray([...q.options]);
+
+            const opts = shuffleMap[q.id];
+
+            const block = document.createElement('div');
+
+            block.className = 'question-block';
+
+            block.innerHTML = `<div class="question-text">📌 ${q.text}</div><div class="answers-buttons" id="btns-${q.id}"></div><div class="explanation" id="expl-${q.id}" style="display:none;"></div>`;
+
+            container.appendChild(block);
+
+            const btnContainer = document.getElementById(`btns-${q.id}`);
+
+            opts.forEach(opt => {
+
+                const btn = document.createElement('button');
+
+                btn.className = 'ans-btn';
+
+                btn.innerText = opt;
+
+                btn.addEventListener('click', () => handleAnswer(q.id, opt, q.correct, q.explanation));
+
+                btnContainer.appendChild(btn);
+
+            });
+
+            if(userSelections[q.id]) highlightSelected(q.id, userSelections[q.id], q.correct);
+
+        });
+
+    }
+
+    
+
+    function handleAnswer(qid, selected, correct, explHtml) {
+
+        const isCorrect = (selected === correct);
+
+        userSelections[qid] = selected;
+
+        highlightSelected(qid, selected, correct);
+
+        const explDiv = document.getElementById(`expl-${qid}`);
+
+        explDiv.innerHTML = `<div style="background:#eef5ff; border-radius:20px; padding:12px;">✨ ${explHtml}</div>`;
+
+        explDiv.style.display = 'block';
+
+        if(isCorrect) { playSound(880); startConfetti(); }
+
+        else { playSound(320, true); 
+
+            const btns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
+
+            btns.forEach(btn => { if(btn.innerText === selected) btn.classList.add('wrong-selected'); setTimeout(()=>btn.classList.remove('wrong-selected'),400); });
+
+            const allBtns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
+
+            allBtns.forEach(btn => { if(btn.innerText === correct) btn.style.border = "3px solid #00D26A"; setTimeout(()=> btn.style.border = "", 1500); });
+
+        }
+
+    }
+
+    function highlightSelected(qid, selected, correct) {
+
+        const btns = document.querySelectorAll(`#btns-${qid} .ans-btn`);
+
+        btns.forEach(btn => {
+
+            btn.classList.remove('correct-selected','wrong-selected');
+
+            if(btn.innerText === selected) btn.classList.add(selected===correct ? 'correct-selected' : 'wrong-selected');
+
+        });
+
+    }
+
+    function playSound(freq, isWrong=false) {
+
+        try {
+
+            const ctx = new (window.AudioContext||window.webkitAudioContext)();
+
+            const osc = ctx.createOscillator();
+
+            const gain = ctx.createGain();
+
+            osc.connect(gain); gain.connect(ctx.destination);
+
+            osc.frequency.value = freq;
+
+            gain.gain.value = 0.15;
+
+            if(isWrong) osc.type = 'sawtooth';
+
+            osc.start();
+
+            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime+0.4);
+
+            osc.stop(ctx.currentTime+0.35);
+
+        } catch(e) {}
+
+    }
+
+    function startConfetti() {
+
+        if(typeof confetti === 'function') confetti({particleCount:130, spread:70, origin:{y:0.6}});
+
+        else {
+
+            const canvas = document.createElement('canvas'); canvas.style.position='fixed'; canvas.style.top=0; canvas.style.left=0; canvas.style.pointerEvents='none'; canvas.style.zIndex=9999;
+
+            document.body.appendChild(canvas);
+
+            setTimeout(()=>canvas.remove(),1500);
+
+        }
+
+    }
+
+    window.confetti = window.confetti || (()=>{});
+
+    
+
+    // Timer
+
+    let timerSeconds = 600, timerInterval=null, timerActive=false;
+
+    function updateTimer() {
+
+        let mins=Math.floor(timerSeconds/60), secs=timerSeconds%60;
+
+        document.getElementById('timerDisplay').innerText=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+
+        if(timerSeconds===0 && timerInterval) { clearInterval(timerInterval); alert("Đã hết giờ! Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha."); }
+
+    }
+
+    document.getElementById('startTimerBtn').onclick=()=>{ if(timerInterval) clearInterval(timerInterval); timerActive=true; timerInterval=setInterval(()=>{ if(timerActive && timerSeconds>0){ timerSeconds--; updateTimer(); }},1000); updateTimer(); };
+
+    document.getElementById('pauseTimerBtn').onclick=()=>{ timerActive=false; };
+
+    document.getElementById('resumeTimerBtn').onclick=()=>{ timerActive=true; };
+
+    
+
+    // Submit & Name
+
+    document.getElementById('submitFinalBtn').onclick=()=>{
+
+        let total=questionsData.length, correctCount=0;
+
+        questionsData.forEach(q=>{ if(userSelections[q.id]===q.correct) correctCount++; });
+
+        let percent = (correctCount/total)*100;
+
+        const nameModal = document.createElement('div'); nameModal.className='result-modal';
+
+        nameModal.innerHTML=`<div class="result-content"><h2>📝 Nhập tên của bạn</h2><input type="text" id="studentNameInput" placeholder="Ví dụ: Nguyễn Văn A..." style="padding:12px;width:80%;border-radius:40px;"><div id="nameError" style="color:red;"></div><button id="confirmNameBtn" style="margin-top:15px;background:#ffb347;border-radius:40px;padding:10px 20px;">Xem điểm 🎉</button></div>`;
+
+        document.body.appendChild(nameModal);
+
+        const confirmBtn = document.getElementById('confirmNameBtn');
+
+        const nameInp = document.getElementById('studentNameInput');
+
+        const nameErr = document.getElementById('nameError');
+
+        const showResult = (name) => {
+
+            nameModal.remove();
+
+            let memeUrl = percent===100 ? "https://media.giphy.com/media/3o7abB06u9bNzA8LC8/giphy.gif?cid=790b7611t5b2jr6ssiuygqveox27q1f30k2tfswy1dkhisrx&ep=v1_gifs_search&rid=giphy.gif&ct=g" : (percent>=60 ? "https://media.giphy.com/media/26gR2qKjszYfKkSak/giphy.gif?cid=790b76118r0ryzsljgn9kzhtmy2v8hhgeywjpkdyzm26j8lq&ep=v1_gifs_search&rid=giphy.gif&ct=g" : "https://media.giphy.com/media/l0MYEq5Ux0ZqD80pC/giphy.gif?cid=790b7611ybj5dynhdu9c6qanv8dv27l5v8d1cqz7j9o00tgd&ep=v1_gifs_search&rid=giphy.gif&ct=g");
+
+            let titleMsg = percent===100 ? "🌟 THIÊN TÀI!" : (percent>=60 ? "💪 LÀM TỐT LẮM!" : "📚 CỐ LÊN NHÉ!");
+
+            const finalModal = document.createElement('div'); finalModal.className='result-modal';
+
+            finalModal.innerHTML=`<div class="result-content"><h2>${titleMsg} ${name}</h2><p>Điểm số: ${correctCount}/${total} (${Math.round(percent)} điểm)</p><img class="result-meme" src="${memeUrl}" alt="meme"><button id="closeResultBtn" style="background:#3b9eff;border-radius:40px;padding:8px 20px;">Đóng 🎈</button></div>`;
+
+            document.body.appendChild(finalModal);
+
+            document.getElementById('closeResultBtn').onclick=()=>finalModal.remove();
+
+        };
+
+        confirmBtn.onclick=()=>{
+
+            let sName = nameInp.value.trim();
+
+            if(sName===""){ nameErr.innerText="⚠️ Vui lòng nhập tên trước khi xem điểm nhé!"; nameInp.style.border="2px solid red"; return; }
+
+            showResult(sName);
+
+        };
+
+        nameInp.addEventListener('keypress',e=>{ if(e.key==='Enter') confirmBtn.click(); });
+
+    };
+
+    
+
+    document.querySelectorAll('.btn-translate').forEach(btn=>{
+
+        btn.addEventListener('click',()=>{ let target=btn.getAttribute('data-target'); let div=document.getElementById(target); div.style.display = div.style.display==='block' ? 'none' : 'block'; });
+
+    });
+
+    renderQuiz();
+
+</script>
+
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -823,40 +1640,43 @@ Enter password: **comaianulis** to start.
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 
@@ -870,6 +1690,8 @@ Enter password: **comaianulis** to start.
     setTimeout(unlockNow, 600);
 })();
 </script>
-</body>
-</html>
+</body>
+
+</html>
+
 ```

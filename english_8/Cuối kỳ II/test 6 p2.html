@@ -1,967 +1,1930 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ĐỀ THI ĐỌC HIỂU TIẾNG ANH | MS Chí Nên ULIS</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary-pastel: #A0C4FF; --secondary-pastel: #BDB2FF; --accent-pastel: #FFC6FF;
-  --gold: #f0c040; --correct: #00D26A; --wrong: #FF4757;
-  --glass-bg: rgba(25, 10, 45, 0.45); --glass-border: rgba(255, 255, 255, 0.15);
-  --text-main: #f8f9fa; --text-muted: #dcdde1;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Nunito', sans-serif; min-height: 100vh; background: #0f0c29; color: var(--text-main); overflow-x: hidden; }
-
-/* ===== BACKGROUND ANIMATION & SVG PATTERN ===== */
-.bg-gradient {
-  position: fixed; inset: 0; z-index: -2;
-  background: linear-gradient(-45deg, #1e1335, #3a1c71, #d76d77, #ffaf7b, #3a1c71);
-  background-size: 400% 400%; animation: gradientBG 15s ease infinite;
-}
-@keyframes gradientBG { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-
-.svg-pattern {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;
-  background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 0, transparent 60%);
-}
-.emoji-float { position: absolute; font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); animation: floatUp var(--dur) linear infinite; opacity: 0.6; }
-@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; } }
-
-/* ===== GIAO DIỆN MÀN HÌNH KHÓA ===== */
-#passwordModal {
-  position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
-  background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
-}
-.pw-card {
-  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
-  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
-  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
-  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
-}
-.pw-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572); }
-.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
-.pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
-.pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
-.pw-input {
-  width:100%; padding:13px 20px; border-radius:12px; border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
-  color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif; outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
-}
-.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
-.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
-.pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
-.pw-btn {
-  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
-  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
-  color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif; cursor:pointer; letter-spacing:.5px; transition:transform .2s;
-}
-.pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
-.pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 15%,45%,75%{transform:translateX(-6px)} 30%,60%,90%{transform:translateX(6px)} }
-
-/* ===== MAIN LAYOUT & HEADER ===== */
-#mainContent { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
-header {
-  text-align: center; padding: 16px; background: var(--glass-bg); backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border); border-radius: 18px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-}
-.header-icon { font-size: 2.2rem; margin-bottom: 5px; }
-.test-name { font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); text-shadow: 0 0 10px rgba(240,192,64,0.5); }
-.teacher-tag { display: inline-block; margin-top: 8px; padding: 4px 14px; background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.4); border-radius: 20px; font-size: 0.85rem; color: var(--gold); font-weight: bold;}
-
-.score-bar {
-  display: flex; align-items: center; justify-content: space-around; background: var(--glass-bg); backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px; margin-bottom: 20px; font-weight: 800; font-size: 1.1rem; color: var(--secondary-pastel);
-}
-
-/* ===== SPLIT SCREEN (BỐ CỤC 50/50) ===== */
-.split-block {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;
-  background: transparent; align-items: start;
-}
-.left-pane, .right-pane {
-  background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
-  border-radius: 20px; padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  max-height: 80vh; overflow-y: auto;
-}
-.left-pane::-webkit-scrollbar, .right-pane::-webkit-scrollbar { width: 6px; }
-.left-pane::-webkit-scrollbar-thumb, .right-pane::-webkit-scrollbar-thumb { background: var(--secondary-pastel); border-radius: 4px; }
-
-/* ===== READING PASSAGE STYLES ===== */
-.reading-title { font-size: 1.4rem; font-weight: 900; color: var(--accent-pastel); margin-bottom: 16px; text-align: center; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px dashed rgba(255,198,255,0.3); padding-bottom: 10px;}
-.passage-para { font-size: 1.15rem; line-height: 1.7; margin-bottom: 12px; text-align: justify; }
-.trans-btn {
-  background: rgba(160, 196, 255, 0.15); border: 1px solid rgba(160, 196, 255, 0.4); border-radius: 8px;
-  padding: 6px 12px; color: var(--primary-pastel); font-size: 0.9rem; font-weight: bold; cursor: pointer;
-  margin-bottom: 16px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;
-}
-.trans-btn:hover { background: rgba(160, 196, 255, 0.3); transform: translateX(5px); }
-.trans-content {
-  display: none; background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--primary-pastel);
-  padding: 12px 16px; margin-bottom: 20px; border-radius: 0 8px 8px 0; font-style: italic; color: #e1e8f0; line-height: 1.6;
-}
-
-/* GLOSSARY TABLE */
-.glossary-wrap { margin-top: 24px; border-top: 2px solid rgba(255,255,255,0.1); padding-top: 16px; }
-.glossary-title { font-size: 1.1rem; font-weight: 800; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;}
-.glossary-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-.glossary-table th { background: rgba(240,192,64,0.15); color: var(--gold); padding: 10px; text-align: left; border-bottom: 1px solid rgba(240,192,64,0.3); }
-.glossary-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.glossary-table tr:last-child td { border-bottom: none; }
-.g-word { color: var(--accent-pastel); font-weight: bold; }
-.g-pos { color: #a29bfe; font-style: italic; font-size: 0.9rem;}
-
-/* ===== QUESTION CARDS ===== */
-.q-card { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.q-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.q-text { font-size: 1.15rem; font-weight: 700; margin-bottom: 14px; line-height: 1.5;}
-.q-num { display: inline-block; background: var(--secondary-pastel); color: #1a0533; padding: 2px 10px; border-radius: 6px; margin-right: 8px; font-weight: 900; }
-.options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-.opt-btn {
-  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); border-radius: 12px;
-  padding: 14px 18px; color: var(--text-main); font-size: 1.05rem; font-family: 'Nunito', sans-serif; font-weight: 600;
-  text-align: left; cursor: pointer; transition: all 0.25s; line-height: 1.4;
-}
-.opt-btn:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: var(--secondary-pastel); transform: translateX(4px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.opt-btn.correct { background: linear-gradient(135deg, #00b09b, #96c93d) !important; border-color: #00ff88 !important; color: #fff !important; font-weight: 800; box-shadow: 0 4px 20px rgba(0,210,106,0.4) !important; }
-.opt-btn.wrong { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; border-color: #ff6b81 !important; color: #fff !important; animation: shake 0.4s ease; box-shadow: 0 4px 20px rgba(255,71,87,0.4) !important; }
-
-/* ===== EXPLANATION BOX (CHUẨN CSS CLASSES MỚI) ===== */
-.explanation {
-  display: none; margin-top: 16px; background: rgba(10, 5, 20, 0.7); border-left: 5px solid var(--secondary-pastel);
-  border-radius: 10px; padding: 20px; font-size: 1.05rem; line-height: 1.7; color: #e1e8f0; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-  animation: slideDown 0.3s ease;
-}
-@keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
-.explanation.show { display: block; }
-.ex-title { font-size: 1.15rem; font-weight: 900; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px dashed rgba(240,192,64,0.3); padding-bottom: 6px;}
-
-/* Classes bắt buộc cho giải thích */
-.ex-step { color: var(--accent-pastel); font-weight: 800; margin-top: 14px; margin-bottom: 6px; font-size: 1.1rem; display: block;}
-.p-word { color: #4facfe; font-weight: 900; }
-.p-mean { color: #e67e22; font-style: italic; font-weight: 700; }
-.p-grammar { text-decoration: underline; text-decoration-color: #ff4757; text-decoration-thickness: 2px; font-weight: 900; color: #f1c40f; }
-.hl-green { color: #00D26A; font-weight: 900; }
-.hl-red { color: #FF4757; text-decoration: line-through; font-weight: bold; }
-.ex-quote { background: rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 8px; border-left: 3px solid #3498db; margin: 10px 0; font-family: monospace; font-size: 1rem; color: #81ecec;}
-.ex-trans-quote { background: rgba(46, 204, 113, 0.1); padding: 10px 14px; border-radius: 8px; border-left: 3px solid #2ecc71; margin-bottom: 10px; font-weight: 600; color: #a8e6cf;}
-
-/* ===== SUBMIT & MODALS ===== */
-.submit-wrap { text-align: center; margin: 40px 0; }
-.submit-btn {
-  padding: 18px 48px; background: linear-gradient(135deg, #FF9A9E, #FECFEF); border: 3px solid #fff; border-radius: 30px;
-  color: #333; font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 900; cursor: pointer;
-  box-shadow: 0 10px 30px rgba(255,154,158,0.5); transition: all 0.3s;
-}
-.submit-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(255,154,158,0.7); }
-
-#nameModal, #resultModal {
-  position: fixed; inset: 0; z-index: 9998; display: none; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-}
-#nameModal.show, #resultModal.show { display: flex; }
-.modal-content { background: var(--glass-bg); border: 2px solid var(--accent-pastel); border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 0 60px rgba(255,198,255,0.3); }
-.modal-content h3 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.5rem; margin-bottom: 12px; }
-#nameInput { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid var(--secondary-pastel); background: rgba(255,255,255,0.1); color: #fff; font-size: 1.1rem; outline: none; text-align: center; margin-bottom: 16px;}
-#nameInput:focus { border-color: var(--gold); }
-.confirm-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #00C9A7, #845EC2); border: none; border-radius: 12px; color: #fff; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
-.confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(132,94,194,0.5); }
-
-.res-score { font-size: 3.5rem; font-weight: 900; color: var(--correct); text-shadow: 0 0 20px rgba(0,210,106,0.5); margin: 10px 0; }
-.res-comment { font-size: 1.2rem; color: var(--accent-pastel); margin-bottom: 20px; font-weight: bold; }
-#memeImg { width: 100%; max-width: 280px; border-radius: 16px; margin: 0 auto 20px; display: block; border: 4px solid var(--gold); box-shadow: 0 8px 24px rgba(0,0,0,0.4);}
-
-/* Confetti */
-.confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; z-index: 9999; animation: fall linear forwards; }
-@keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
-
-/* Responsive */
-@media(max-width: 960px) {
-  .split-block { grid-template-columns: 1fr; }
-  .left-pane, .right-pane { max-height: none; }
-}
-</style>
-</head>
-<body>
-
-<div class="bg-gradient"></div>
-<div class="svg-pattern" id="emojiContainer"></div>
-
-<div id="passwordModal">
-  <div class="pw-card">
-    <span class="pw-crest">🔒</span>
-    <div class="pw-title">BẢO MẬT</div>
-    <div class="pw-sub">Vui lòng nhập mật khẩu</div>
-    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
-    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
-    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
-  </div>
-</div>
-
-<div id="nameModal">
-  <div class="modal-content">
-    <div style="font-size:3rem;margin-bottom:10px">🧙‍♂️</div>
-    <h3>Tên chiến binh của bạn?</h3>
-    <input type="text" id="nameInput" placeholder="VD: Nguyễn Văn A..." maxlength="50">
-    <div id="nameError" style="color:#ff6b81; font-weight:bold; margin-bottom:10px; display:none;">⚠️ Vui lòng nhập tên!</div>
-    <button class="confirm-btn" onclick="confirmName()">✨ XEM BẢNG PHONG THẦN!</button>
-  </div>
-</div>
-
-<div id="resultModal">
-  <div class="modal-content">
-    <h3 id="resultTitle"></h3>
-    <div class="res-score" id="resultScore"></div>
-    <div class="res-comment" id="resultComment"></div>
-    <img id="memeImg" src="" alt="Result Meme">
-    <button class="confirm-btn" onclick="document.getElementById('resultModal').classList.remove('show')">🔮 ĐÓNG</button>
-  </div>
-</div>
-
-<div id="mainContent">
-  <header>
-    <div class="header-icon">📚🌟✨</div>
-    <div class="test-name">ĐỀ THI ĐỌC HIỂU TIẾNG ANH CHUYÊN SÂU</div>
-    <span class="teacher-tag">👩‍🏫 Giáo viên tạo: MS Chí Nên ULIS</span>
-  </header>
-
-  <div class="score-bar">
-    <div>✅ Đúng: <span style="color:var(--correct)" id="correctCount">0</span></div>
-    <div>📝 Đã làm: <span style="color:var(--gold)" id="answeredCount">0</span> / 20</div>
-    <div>🎯 Điểm: <span style="color:var(--accent-pastel)" id="scoreDisplay">0</span></div>
-  </div>
-
-  <div id="quizContainer"></div>
-
-  <div class="submit-wrap">
-    <button class="submit-btn" onclick="openNameModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
-  </div>
-</div>
-
-<script>
-// ===== EMOJI BACKGROUND =====
-const emojis = ['🚀', '🌍', '📱', '👽', '🚌', '🪐', '👾', '🎫'];
-const container = document.getElementById('emojiContainer');
-for(let i=0; i<30; i++) {
-  const el = document.createElement('div');
-  el.className = 'emoji-float';
-  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  el.style.left = `${Math.random() * 100}vw`;
-  el.style.setProperty('--dur', `${15 + Math.random() * 20}s`);
-  el.style.animationDelay = `${-Math.random() * 20}s`;
-  el.style.fontSize = `${1.5 + Math.random() * 2}rem`;
-  container.appendChild(el);
-}
-
-// ===== MÀN HÌNH KHÓA (Pass: comaianulis) =====
-const _k = [99,111,109,97,105,97,110,117,108,105,115];
-const _pw = _k.map(c => String.fromCharCode(c)).join('');
-
-function checkPassword() {
-  const inp = document.getElementById('pwInput');
-  const err = document.getElementById('pwErr');
-  if (inp.value === _pw) {
-    document.getElementById('passwordModal').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    buildQuiz();
-  } else {
-    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
-    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
-  }
-}
-document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
-
-// ===== AUDIO API =====
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-function getCtx(){ if(!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
-function playCorrect() {
-  const ctx = getCtx();
-  [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sine'; o.frequency.value = freq;
-    const t = ctx.currentTime + i * 0.1;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.05); g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    o.start(t); o.stop(t + 0.3);
-  });
-}
-function playWrong() {
-  const ctx = getCtx();
-  [200, 150].forEach((freq, i) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sawtooth'; o.frequency.value = freq;
-    const t = ctx.currentTime + i * 0.2;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.05); g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    o.start(t); o.stop(t + 0.3);
-  });
-}
-
-// ===== CONFETTI =====
-function launchConfetti() {
-  const colors = ['#00D26A', '#f0c040', '#A0C4FF', '#FFC6FF'];
-  for(let i=0; i<50; i++) {
-    const c = document.createElement('div');
-    c.className = 'confetti';
-    c.style.left = Math.random() * 100 + 'vw';
-    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
-    c.style.animationDelay = (Math.random() * 0.5) + 's';
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 4000);
-  }
-}
-
-// ===== TOGGLE TRANSLATION =====
-function toggleTrans(btn) {
-  const content = btn.nextElementSibling;
-  if(content.style.display === 'block') {
-    content.style.display = 'none';
-    btn.innerHTML = 'Mở dịch đoạn này 🌟';
-  } else {
-    content.style.display = 'block';
-    btn.innerHTML = 'Đóng bản dịch 🙈';
-  }
-}
-
-// ===== SHUFFLE =====
-function shuffle(arr){
-  const a = [...arr];
-  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
-  return a;
-}
-
-// ===== DATA DE THI =====
-const quizData = [
-  {
-    reading: `
-      <div class="reading-title">🚌 PASSAGE 1: PUBLIC TRANSPORT ANNOUNCEMENT</div>
-      
-      <p class="passage-para">Welcome to City Bus Service! To have a safe trip, please (13) ____ these rules:</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Chào mừng đến với Dịch vụ Xe buýt Thành phố! Để có một chuyến đi an toàn, vui lòng (13) ____ những quy tắc này:</div>
-
-      <p class="passage-para">● Always have your ticket ready (14) ____ checking.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">● Luôn chuẩn bị sẵn vé của bạn (14) ____ việc kiểm tra.</div>
-
-      <p class="passage-para">● Listen to (15) ____ announcements for important news.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">● Lắng nghe (15) ____ các thông báo để biết tin tức quan trọng.</div>
-
-      <p class="passage-para">● If you see (16) ____ bags left alone, tell the staff right away.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">● Nếu bạn thấy (16) ____ chiếc túi nào bị bỏ lại một mình, hãy báo ngay cho nhân viên.</div>
-
-      <div class="glossary-wrap">
-        <div class="glossary-title">📖 Academic Vocabulary</div>
-        <table class="glossary-table">
-          <tr><th>Word</th><th>Meaning</th></tr>
-          <tr><td><span class="g-word">Announcement</span> <span class="g-pos">(n)</span></td><td>Thông báo công khai</td></tr>
-          <tr><td><span class="g-word">Service</span> <span class="g-pos">(n)</span></td><td>Dịch vụ phục vụ</td></tr>
-          <tr><td><span class="g-word">Staff</span> <span class="g-pos">(n)</span></td><td>Nhân viên, cán bộ</td></tr>
-          <tr><td><span class="g-word">Ready</span> <span class="g-pos">(adj)</span></td><td>Sẵn sàng, chuẩn bị xong</td></tr>
-          <tr><td><span class="g-word">Rule</span> <span class="g-pos">(n)</span></td><td>Quy tắc, luật lệ</td></tr>
-        </table>
-      </div>
-    `,
-    questions: [
-      {
-        id: 13, text: "Question 13: To have a safe trip, please (13) ____ these rules:",
-        options: [
-          {l: "ignore", c: false}, {l: "follow", c: true}, {l: "break", c: false}, {l: "forget", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 13</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Để có một chuyến đi an toàn, vui lòng ____ những quy tắc này:</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">ignore</span>: <span class="p-mean">phớt lờ, bỏ qua</span> <span class="hl-red">❌ Sai vì đi xe buýt an toàn không thể làm trái luật.</span></p>
-          <p>B. <span class="p-word">follow</span>: <span class="p-mean">tuân theo, làm theo</span> <span class="hl-green">✅ Đúng vì "follow the rules" (tuân thủ quy tắc) là sự kết hợp từ (collocation) hoàn hảo.</span></p>
-          <p>C. <span class="p-word">break</span>: <span class="p-mean">phá vỡ, vi phạm</span> <span class="hl-red">❌ Sai nghĩa hoàn toàn (phá luật).</span></p>
-          <p>D. <span class="p-word">forget</span>: <span class="p-mean">quên</span> <span class="hl-red">❌ Sai nghĩa (quên luật).</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"To have a safe trip, please follow these rules:"</div>
-          <div class="ex-trans-quote">👉 Dịch: "Để có một chuyến đi an toàn, vui lòng <strong>tuân thủ</strong> những quy tắc này:"</div>
-        `
-      },
-      {
-        id: 14, text: "Question 14: Always have your ticket ready (14) ____ checking.",
-        options: [
-          {l: "with", c: false}, {l: "to", c: false}, {l: "for", c: true}, {l: "of", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 14</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Luôn chuẩn bị sẵn vé của bạn ____ việc kiểm tra.</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">with</span>: <span class="p-mean">với</span> <span class="hl-red">❌ Sai ngữ pháp trong cấu trúc này.</span></p>
-          <p>B. <span class="p-word">to</span>: <span class="p-mean">tới / để</span> <span class="hl-red">❌ Sai vì "to" đi với Động từ nguyên thể (to check), ở đây "checking" là Danh động từ.</span></p>
-          <p>C. <span class="p-word">for</span>: <span class="p-mean">cho, để dành cho</span> <span class="hl-green">✅ Đúng ngữ pháp. <span class="p-grammar">Ready for + Noun/V-ing</span> (sẵn sàng cho việc gì).</span></p>
-          <p>D. <span class="p-word">of</span>: <span class="p-mean">của</span> <span class="hl-red">❌ Sai ngữ pháp.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"Always have your ticket ready for checking"</div>
-          <div class="ex-trans-quote">👉 Dịch: "Luôn chuẩn bị sẵn vé của bạn <strong>cho</strong> việc kiểm tra."</div>
-        `
-      },
-      {
-        id: 15, text: "Question 15: Listen to (15) ____ announcements for important news.",
-        options: [
-          {l: "a", c: false}, {l: "an", c: false}, {l: "that", c: false}, {l: "the", c: true}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 15</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Lắng nghe ____ các thông báo để biết tin tức quan trọng.</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A/B. <span class="p-word">a / an</span>: <span class="p-mean">một</span> <span class="hl-red">❌ Sai ngữ pháp vì "announcements" là danh từ số nhiều, "a/an" chỉ đi với số ít.</span></p>
-          <p>C. <span class="p-word">that</span>: <span class="p-mean">đó</span> <span class="hl-red">❌ Sai ngữ pháp vì "that" chỉ đi với danh từ số ít (that announcement).</span></p>
-          <p>D. <span class="p-word">the</span>: <span class="p-mean">các, những (mạo từ xác định)</span> <span class="hl-green">✅ Đúng. Đi được với danh từ số nhiều để chỉ những thông báo cụ thể trên xe buýt.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"Listen to the announcements for important news"</div>
-          <div class="ex-trans-quote">👉 Dịch: "Lắng nghe <strong>những</strong> thông báo (cụ thể trên xe) để biết tin tức quan trọng."</div>
-        `
-      },
-      {
-        id: 16, text: "Question 16: If you see (16) ____ bags left alone, tell the staff right away.",
-        options: [
-          {l: "any", c: true}, {l: "much", c: false}, {l: "many", c: false}, {l: "a lot", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 16</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Nếu bạn thấy ____ chiếc túi nào bị bỏ lại một mình, hãy báo ngay cho nhân viên.</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">any</span>: <span class="p-mean">bất kỳ</span> <span class="hl-green">✅ Đúng. Trong câu điều kiện "If...", ta dùng <span class="p-grammar">any</span> mang nghĩa "bất kỳ (cái nào/người nào)".</span></p>
-          <p>B. <span class="p-word">much</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Sai vì "much" đi với danh từ KHÔNG đếm được. "Bags" đếm được.</span></p>
-          <p>C. <span class="p-word">many</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Về ngữ pháp thì được, nhưng xét ngữ nghĩa an ninh: chỉ cần thấy "BẤT KỲ" chiếc túi nào (dù 1 cái) cũng phải báo, không đợi "nhiều" cái mới báo.</span></p>
-          <p>D. <span class="p-word">a lot</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Thiếu giới từ "of" (a lot of bags).</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"If you see any bags left alone..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Nếu bạn thấy <strong>bất kỳ</strong> chiếc túi nào bị bỏ lại một mình..."</div>
-        `
-      }
-    ]
-  },
-  {
-    reading: `
-      <div class="reading-title">👽 PASSAGE 2: ARE THERE ANY ALIENS OUT THERE?</div>
-      
-      <p class="passage-para">For years we Earthlings have wondered (19) _____ we are alone in the universe or we've got company in the shape of aliens. People have claimed to have met aliens, seen UFOs and some people even say they've been abducted by extraterrestrials. But what do we really know about them - if they (20) ____ at all?</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Trong nhiều năm, người Trái Đất chúng ta đã tự hỏi (19) _____ liệu chúng ta có đơn độc trong vũ trụ hay chúng ta có bạn đồng hành dưới hình dạng người ngoài hành tinh hay không. Mọi người đã tuyên bố rằng từng gặp người ngoài hành tinh, nhìn thấy UFO và một số người thậm chí nói rằng họ đã bị người ngoài hành tinh bắt cóc. Nhưng chúng ta thực sự biết gì về họ - nếu họ (20) ____ thực sự?</div>
-
-      <p class="passage-para">Ever since we realized there (21)_____ be something out there our imaginations have created thousands of bizarre creatures. But at the moment no one knows what an alien might look like. Even if we do ever come (22) ____ aliens in space, most scientists agree they probably won't look like little green men.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Kể từ khi chúng ta nhận ra (21)_____ có thể có thứ gì đó ngoài kia, trí tưởng tượng của chúng ta đã tạo ra hàng ngàn sinh vật kỳ dị. Nhưng hiện tại không ai biết một người ngoài hành tinh trông như thế nào. Thậm chí nếu chúng ta từng tình cờ (22) ____ người ngoài hành tinh trong không gian, hầu hết các nhà khoa học đồng ý rằng họ có thể sẽ không giống những người đàn ông nhỏ màu xanh lá cây.</div>
-
-      <p class="passage-para">(23) ______aliens exist, experts reckon they're probably very small and (24)_____ a bug. Over the years thousands of people have been convinced that we Earthlings have been visited by aliens from other civilizations.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">(23) ______người ngoài hành tinh tồn tại, các chuyên gia nhận định họ có thể rất nhỏ và (24)_____ một con bọ. Trong nhiều năm qua, hàng nghìn người đã tin chắc rằng người Trái Đất chúng ta đã được các nền văn minh khác ghé thăm.</div>
-
-      <div class="glossary-wrap">
-        <div class="glossary-title">📖 Academic Vocabulary</div>
-        <table class="glossary-table">
-          <tr><th>Word</th><th>Meaning</th></tr>
-          <tr><td><span class="g-word">Earthling</span> <span class="g-pos">(n)</span></td><td>Người Trái Đất</td></tr>
-          <tr><td><span class="g-word">Abduct</span> <span class="g-pos">(v)</span></td><td>Bắt cóc</td></tr>
-          <tr><td><span class="g-word">Extraterrestrial</span> <span class="g-pos">(n/adj)</span></td><td>Người ngoài hành tinh, ngoài Trái đất</td></tr>
-          <tr><td><span class="g-word">Bizarre</span> <span class="g-pos">(adj)</span></td><td>Kỳ lạ, kỳ dị</td></tr>
-          <tr><td><span class="g-word">Civilization</span> <span class="g-pos">(n)</span></td><td>Nền văn minh</td></tr>
-          <tr><td><span class="g-word">Convinced</span> <span class="g-pos">(adj)</span></td><td>Bị thuyết phục, tin chắc</td></tr>
-          <tr><td><span class="g-word">Reckon</span> <span class="g-pos">(v)</span></td><td>Cho rằng, nhận định</td></tr>
-        </table>
-      </div>
-    `,
-    questions: [
-      {
-        id: 19, text: "Question 19: For years we Earthlings have wondered (19) _____ we are alone in the universe or we've got company...",
-        options: [
-          {l: "when", c: false}, {l: "where", c: false}, {l: "whether", c: true}, {l: "whereas", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 19</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Trong nhiều năm, người Trái Đất chúng ta đã tự hỏi ____ liệu chúng ta có đơn độc trong vũ trụ hay (or) chúng ta có bạn đồng hành...</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">when</span>: <span class="p-mean">khi nào</span> <span class="hl-red">❌ Sai ngữ pháp và nghĩa.</span></p>
-          <p>B. <span class="p-word">where</span>: <span class="p-mean">ở đâu</span> <span class="hl-red">❌ Sai ngữ pháp và nghĩa.</span></p>
-          <p>C. <span class="p-word">whether</span>: <span class="p-mean">liệu rằng</span> <span class="hl-green">✅ Đúng. Cấu trúc ngữ pháp kinh điển: <span class="p-grammar">whether... or...</span> (liệu rằng... hay là...).</span></p>
-          <p>D. <span class="p-word">whereas</span>: <span class="p-mean">trong khi đó</span> <span class="hl-red">❌ Sai cấu trúc.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"...have wondered whether we are alone... or we've got company"</div>
-          <div class="ex-trans-quote">👉 Dịch: "...đã tự hỏi <strong>liệu rằng</strong> chúng ta có đơn độc... <strong>hay là</strong> chúng ta có bạn đồng hành"</div>
-        `
-      },
-      {
-        id: 20, text: "Question 20: But what do we really know about them - if they (20) ____ at all?",
-        options: [
-          {l: "exist", c: true}, {l: "happen", c: false}, {l: "live", c: false}, {l: "survive", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 20</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Nhưng chúng ta thực sự biết gì về họ - nếu họ thực sự ____?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">exist</span>: <span class="p-mean">tồn tại</span> <span class="hl-green">✅ Đúng. Đang bàn về việc người ngoài hành tinh CÓ THẬT hay không (tồn tại hay không).</span></p>
-          <p>B. <span class="p-word">happen</span>: <span class="p-mean">xảy ra</span> <span class="hl-red">❌ Người không thể "xảy ra".</span></p>
-          <p>C. <span class="p-word">live</span>: <span class="p-mean">sống</span> <span class="hl-red">❌ Sai vì "live" dùng để chỉ việc cư ngụ ở đâu đó, không lột tả được nghi vấn cốt lõi là họ "có thật không".</span></p>
-          <p>D. <span class="p-word">survive</span>: <span class="p-mean">sinh tồn, sống sót</span> <span class="hl-red">❌ Không đúng ngữ cảnh vì không có thảm họa nào được nhắc tới để "sống sót".</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"...what do we really know about them - if they exist at all?"</div>
-          <div class="ex-trans-quote">👉 Dịch: "...chúng ta thực sự biết gì về họ - nếu như họ thực sự có <strong>tồn tại</strong>?"</div>
-        `
-      },
-      {
-        id: 21, text: "Question 21: Ever since we realized there (21)_____ be something out there...",
-        options: [
-          {l: "can", c: false}, {l: "must", c: false}, {l: "may", c: false}, {l: "might", c: true}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 21</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Kể từ khi chúng ta nhận ra ____ có thứ gì đó ngoài kia...</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">can</span>: <span class="p-mean">có thể (nói về khả năng chung chung)</span> <span class="hl-red">❌ Ít dùng để dự đoán tính chắc chắn yếu trong quá khứ kéo dài đến nay.</span></p>
-          <p>B. <span class="p-word">must</span>: <span class="p-mean">chắc chắn (dự đoán 100%)</span> <span class="hl-red">❌ Sai vì con người vẫn chưa chắc chắn có người ngoài hành tinh.</span></p>
-          <p>C. <span class="p-word">may</span>: <span class="p-mean">có lẽ (50%)</span> <span class="hl-red">❌ Động từ phía trước là "realized" (Quá khứ), theo luật hòa hợp thì, nên lùi thì "may" xuống "might".</span></p>
-          <p>D. <span class="p-word">might</span>: <span class="p-mean">có lẽ (khả năng thấp, dạng lùi thì của may)</span> <span class="hl-green">✅ Đúng. Diễn tả một sự suy đoán có tính không chắc chắn và hòa hợp thì với động từ "realized".</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"Ever since we realized there might be something out there..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Kể từ khi chúng ta nhận ra <strong>có lẽ</strong> có thứ gì đó ngoài kia..."</div>
-        `
-      },
-      {
-        id: 22, text: "Question 22: Even if we do ever come (22) ____ aliens in space...",
-        options: [
-          {l: "over", c: false}, {l: "through", c: false}, {l: "across", c: true}, {l: "along", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 22</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Thậm chí nếu chúng ta từng tình cờ bắt gặp ____ người ngoài hành tinh trong không gian...</p>
-          <span class="ex-step">2. Phân tích 4 đáp án (Phrasal verbs với "Come"):</span>
-          <p>A. <span class="p-word">come over</span>: <span class="p-mean">ghé thăm nhà ai đó</span> <span class="hl-red">❌ Sai nghĩa.</span></p>
-          <p>B. <span class="p-word">come through</span>: <span class="p-mean">vượt qua khó khăn</span> <span class="hl-red">❌ Sai nghĩa.</span></p>
-          <p>C. <span class="p-word">come across</span>: <span class="p-mean">tình cờ gặp (ai/cái gì)</span> <span class="hl-green">✅ Đúng. Cụm động từ <span class="p-grammar">come across sb/sth</span> hoàn toàn phù hợp ngữ cảnh "tình cờ chạm trán người ngoài hành tinh".</span></p>
-          <p>D. <span class="p-word">come along</span>: <span class="p-mean">đi cùng, xuất hiện</span> <span class="hl-red">❌ Sai vì "come along" không đi trực tiếp với tân ngữ (aliens).</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"Even if we do ever come across aliens in space..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Thậm chí nếu chúng ta từng <strong>tình cờ gặp</strong> người ngoài hành tinh trong không gian..."</div>
-        `
-      },
-      {
-        id: 23, text: "Question 23: (23) ______aliens exist, experts reckon they're probably very small...",
-        options: [
-          {l: "Although", c: false}, {l: "If", c: true}, {l: "Because", c: false}, {l: "Since", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 23</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>____ người ngoài hành tinh tồn tại, các chuyên gia nhận định họ có thể rất nhỏ...</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">Although</span>: <span class="p-mean">Mặc dù</span> <span class="hl-red">❌ Sai ngữ cảnh (Mặc dù tồn tại thì họ nhỏ -> không logic).</span></p>
-          <p>B. <span class="p-word">If</span>: <span class="p-mean">Nếu</span> <span class="hl-green">✅ Đúng. Câu điều kiện loại 1: Đưa ra một giả định có thể xảy ra ở hiện tại/tương lai (NẾU họ có thật, thì hình dạng của họ là...).</span></p>
-          <p>C. <span class="p-word">Because</span>: <span class="p-mean">Bởi vì</span> <span class="hl-red">❌ Sai vì con người chưa khẳng định được là có tồn tại.</span></p>
-          <p>D. <span class="p-word">Since</span>: <span class="p-mean">Bởi vì / Kể từ khi</span> <span class="hl-red">❌ Giống ý C, sai logic.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"If aliens exist, experts reckon they're probably very small..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "<strong>Nếu</strong> người ngoài hành tinh tồn tại, các chuyên gia cho rằng họ có thể rất nhỏ..."</div>
-        `
-      },
-      {
-        id: 24, text: "Question 24: ...experts reckon they're probably very small and (24)_____ a bug.",
-        options: [
-          {l: "look something like", c: true}, {l: "look anything like", c: false}, {l: "look like something", c: false}, {l: "look like anything", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 24</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>...các chuyên gia nhận định họ có thể rất nhỏ và ____ một con bọ.</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">look something like</span>: <span class="p-mean">trông hơi giống / có vẻ giống</span> <span class="hl-green">✅ Đúng. Cụm từ cố định <span class="p-grammar">look something like + Noun</span> dùng để so sánh sự tương đồng một cách ước chừng.</span></p>
-          <p>B. <span class="p-word">look anything like</span>: <span class="p-mean">chẳng giống chút nào</span> <span class="hl-red">❌ Cụm "anything like" thường dùng trong câu phủ định/nghi vấn (do not look anything like...).</span></p>
-          <p>C/D. <span class="p-word">look like something / anything</span>: <span class="p-mean">trông giống cái gì đó</span> <span class="hl-red">❌ Sai cấu trúc từ vựng tiếng Anh bản xứ. Khi muốn so sánh cụ thể với "a bug" thì phải đẩy "something" lên trước chữ "like".</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"...and look something like a bug."</div>
-          <div class="ex-trans-quote">👉 Dịch: "...và <strong>trông hơi giống</strong> một con bọ."</div>
-        `
-      }
-    ]
-  },
-  {
-    reading: `
-      <div class="reading-title">📱 PASSAGE 3: STAYING SAFE</div>
-      
-      <p class="passage-para">When you ask more people about the benefits of apps on their smartphone, they say they use them to play games, surf the net, keep in touch with people and organize social events. But Jenny Harlow, a scientist from London, has got an app that does something much more important: it warns her when she is in danger. The app is called Safety Tips and it gives users real-time earthquake and tsunami warnings.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Khi bạn hỏi mọi người về lợi ích của các ứng dụng trên điện thoại thông minh, họ nói rằng họ sử dụng chúng để chơi game, lướt net, giữ liên lạc và tổ chức các sự kiện xã hội. Nhưng Jenny Harlow, một nhà khoa học từ London, có một ứng dụng làm được điều quan trọng hơn nhiều: nó cảnh báo cô khi cô gặp nguy hiểm. Ứng dụng có tên là Safety Tips và nó cung cấp cho người dùng cảnh báo động đất và sóng thần theo thời gian thực.</div>
-
-      <p class="passage-para">The Japan Tourist Agency had the idea for the app after the 2011 earthquake in Japan, when many foreign tourists in the country were confused about what was happening and what they should do. Jenny was on a business trip to Japan when the earthquake struck. 'Although there are a lot of earthquakes in Japan, it was the first time I experienced one. All the warnings and information on the internet, radio and TV were in Japanese, and I couldn't understand. It was really confusing and I didn't know what to do.' She had to rely on Japanese colleagues to help her.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Cơ quan Du lịch Nhật Bản có ý tưởng cho ứng dụng này sau trận động đất năm 2011 ở Nhật Bản, khi nhiều du khách nước ngoài tại nước này bối rối về những gì đang xảy ra và họ nên làm gì. Jenny đang đi công tác ở Nhật Bản thì trận động đất xảy ra. 'Mặc dù có rất nhiều trận động đất ở Nhật Bản, nhưng đây là lần đầu tiên tôi trải qua. Tất cả các cảnh báo và thông tin trên mạng, radio và TV đều bằng tiếng Nhật, và tôi không thể hiểu. Thật sự rất bối rối và tôi không biết phải làm gì.' Cô đã phải dựa vào các đồng nghiệp người Nhật để giúp đỡ.</div>
-
-      <p class="passage-para">The Safety Tips app sends an alert to users when a major earthquake happens, and also tells them if a tsunami is likely to arrive at the coast. The app gives lots of tips about what to do, where to go and how to stay safe, as well as a list of useful Japanese phrases such as 'Is this an earthquake?' and 'Is it safe here?' Importantly, all the information is in English, and there are plans to add other languages.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Ứng dụng Safety Tips gửi cảnh báo đến người dùng khi có một trận động đất lớn xảy ra, và cũng thông báo cho họ nếu một cơn sóng thần có khả năng ập vào bờ. Ứng dụng cung cấp nhiều mẹo về những việc cần làm, nơi cần đi và cách giữ an toàn, cũng như danh sách các cụm từ tiếng Nhật hữu ích như 'Đây có phải là động đất không?' và 'Ở đây có an toàn không?' Quan trọng là, tất cả thông tin đều bằng tiếng Anh, và có kế hoạch thêm các ngôn ngữ khác.</div>
-
-      <div class="glossary-wrap">
-        <div class="glossary-title">📖 Academic Vocabulary</div>
-        <table class="glossary-table">
-          <tr><th>Word</th><th>Meaning</th></tr>
-          <tr><td><span class="g-word">Real-time</span> <span class="g-pos">(adj)</span></td><td>Thời gian thực (ngay lập tức)</td></tr>
-          <tr><td><span class="g-word">Tsunami</span> <span class="g-pos">(n)</span></td><td>Sóng thần</td></tr>
-          <tr><td><span class="g-word">Confused</span> <span class="g-pos">(adj)</span></td><td>Bối rối, hoang mang</td></tr>
-          <tr><td><span class="g-word">Struck (Strike)</span> <span class="g-pos">(v)</span></td><td>Đánh, ập đến (thiên tai)</td></tr>
-          <tr><td><span class="g-word">Rely on</span> <span class="g-pos">(v)</span></td><td>Dựa vào, phụ thuộc vào</td></tr>
-          <tr><td><span class="g-word">Alert</span> <span class="g-pos">(n)</span></td><td>Sự cảnh báo</td></tr>
-          <tr><td><span class="g-word">Colleague</span> <span class="g-pos">(n)</span></td><td>Đồng nghiệp</td></tr>
-        </table>
-      </div>
-    `,
-    questions: [
-      {
-        id: 31, text: "Question 31: What is the main purpose of the Safety Tips app?",
-        options: [
-          {l: "To help users organize social events", c: false}, {l: "To teach Japanese language", c: false}, {l: "To help users play games and surf the net", c: false}, {l: "To provide real-time earthquake and tsunami warnings", c: true}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 31</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Mục đích chính của ứng dụng Safety Tips là gì?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-mean">Để giúp người dùng tổ chức các sự kiện xã hội.</span> <span class="hl-red">❌ Sai (đây là chức năng của các app thông thường).</span></p>
-          <p>B. <span class="p-mean">Để dạy tiếng Nhật.</span> <span class="hl-red">❌ Sai (app có vài câu mẫu câu chứ không dạy học).</span></p>
-          <p>C. <span class="p-mean">Để giúp chơi game và lướt web.</span> <span class="hl-red">❌ Sai.</span></p>
-          <p>D. <span class="p-mean">Để cung cấp cảnh báo động đất và sóng thần theo thời gian thực.</span> <span class="hl-green">✅ Đúng.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 1):</span>
-          <div class="ex-quote">"The app is called Safety Tips and it gives users real-time earthquake and tsunami warnings."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Ứng dụng tên là Safety Tips và nó <strong>cung cấp cảnh báo động đất và sóng thần theo thời gian thực</strong>."</div>
-        `
-      },
-      {
-        id: 32, text: "Question 32: Which word has the same meaning as \"confused\" in the text?",
-        options: [
-          {l: "alerted", c: false}, {l: "uncertain", c: true}, {l: "safe", c: false}, {l: "simple", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 32</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Từ nào có cùng ý nghĩa với từ "confused" (bối rối) trong văn bản?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">alerted</span>: <span class="p-mean">được báo động</span> <span class="hl-red">❌ Sai.</span></p>
-          <p>B. <span class="p-word">uncertain</span>: <span class="p-mean">không chắc chắn, hoang mang</span> <span class="hl-green">✅ Đúng. <span class="p-grammar">Confused = Uncertain</span> (bối rối vì không biết chuyện gì đang xảy ra).</span></p>
-          <p>C. <span class="p-word">safe</span>: <span class="p-mean">an toàn</span> <span class="hl-red">❌ Trái nghĩa.</span></p>
-          <p>D. <span class="p-word">simple</span>: <span class="p-mean">đơn giản</span> <span class="hl-red">❌ Sai.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
-          <div class="ex-quote">"...tourists in the country were confused about what was happening and what they should do."</div>
-          <div class="ex-trans-quote">👉 Dịch: "...du khách trong nước đã <strong>bối rối (không chắc chắn)</strong> về những gì đang xảy ra và họ nên làm gì."</div>
-        `
-      },
-      {
-        id: 33, text: "Question 33: Which word is the OPPOSITE of “major” as used in the text?",
-        options: [
-          {l: "dangerous", c: false}, {l: "minor", c: true}, {l: "helpful", c: false}, {l: "important", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 33</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Từ nào TRÁI NGHĨA với "major" (chính, lớn) được dùng trong văn bản?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-word">dangerous</span>: <span class="p-mean">nguy hiểm</span> <span class="hl-red">❌ Sai.</span></p>
-          <p>B. <span class="p-word">minor</span>: <span class="p-mean">nhỏ, thứ yếu</span> <span class="hl-green">✅ Đúng. Cặp từ trái nghĩa kinh điển: <span class="p-grammar">Major (Lớn) >< Minor (Nhỏ)</span>.</span></p>
-          <p>C. <span class="p-word">helpful</span>: <span class="p-mean">hữu ích</span> <span class="hl-red">❌ Sai.</span></p>
-          <p>D. <span class="p-word">important</span>: <span class="p-mean">quan trọng</span> <span class="hl-red">❌ Đây là từ đồng nghĩa, không phải trái nghĩa.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 3):</span>
-          <div class="ex-quote">"...when a major earthquake happens..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "...khi một trận động đất <strong>lớn (major)</strong> xảy ra..."</div>
-        `
-      },
-      {
-        id: 34, text: "Question 34: Which of the following is NOT TRUE according to the text?",
-        options: [
-          {l: "The Safety Tips app was created after the 2011 earthquake in Japan.", c: false}, {l: "Jenny understood Japanese warnings during the earthquake.", c: true}, {l: "The app provides earthquake and tsunami alerts in English.", c: false}, {l: "Jenny plans to use the app on her next trip to Japan.", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 34</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Điều nào sau đây là KHÔNG ĐÚNG theo văn bản?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-mean">Safety Tips được tạo ra SAU trận động đất 2011 ở Nhật.</span> <span class="hl-red">❌ Câu này ĐÚNG với bài đọc (Japan Tourist Agency had the idea... after the 2011 earthquake).</span></p>
-          <p>B. <span class="p-mean">Jenny ĐÃ HIỂU các cảnh báo tiếng Nhật trong trận động đất.</span> <span class="hl-green">✅ Chọn B vì câu này SAI SỰ THẬT (Cô ấy không hiểu tiếng Nhật).</span></p>
-          <p>C. <span class="p-mean">App cung cấp cảnh báo bằng tiếng Anh.</span> <span class="hl-red">❌ Câu này ĐÚNG (Importantly, all the information is in English).</span></p>
-          <p>D. <span class="p-mean">Jenny lên kế hoạch dùng app trong chuyến đi Nhật tiếp theo.</span> <span class="hl-red">❌ Câu này ĐÚNG (I'm coming to Japan again next year and I will definitely watch out for alerts).</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
-          <div class="ex-quote">"All the warnings... were in Japanese, and I couldn't understand."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Tất cả các cảnh báo... đều bằng tiếng Nhật, và tôi <strong>không thể hiểu được</strong>."</div>
-        `
-      },
-      {
-        id: 35, text: "Question 35: Why did Jenny find the 2011 earthquake confusing?",
-        options: [
-          {l: "She didn’t know earthquakes were common in Japan.", c: false}, {l: "She wasn’t in Japan during the earthquake.", c: false}, {l: "She didn’t have a smartphone to get alerts.", c: false}, {l: "The warnings were in Japanese, which she couldn't understand.", c: true}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 35</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Tại sao Jenny lại thấy trận động đất năm 2011 thật bối rối?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-mean">Cô ấy không biết động đất phổ biến ở Nhật.</span> <span class="hl-red">❌ Sai, cô ấy biết (Although there are a lot of earthquakes in Japan...).</span></p>
-          <p>B. <span class="p-mean">Cô ấy không ở Nhật lúc đó.</span> <span class="hl-red">❌ Sai, cô ấy đang đi công tác ở Nhật.</span></p>
-          <p>C. <span class="p-mean">Cô ấy không có smartphone.</span> <span class="hl-red">❌ Không được đề cập trong bài.</span></p>
-          <p>D. <span class="p-mean">Các cảnh báo bằng tiếng Nhật, thứ mà cô ấy không thể hiểu.</span> <span class="hl-green">✅ Đúng. Ngôn ngữ rào cản chính là lý do khiến cô ấy bối rối.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
-          <div class="ex-quote">"All the warnings... were in Japanese, and I couldn't understand. It was really confusing and I didn't know what to do."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Tất cả các cảnh báo... đều <strong>bằng tiếng Nhật, và tôi không thể hiểu được</strong>. Điều đó thật sự <strong>gây bối rối</strong> và tôi không biết phải làm gì."</div>
-        `
-      },
-      {
-        id: 36, text: "Question 36: What does the Safety Tips app provide besides earthquake and tsunami alerts?",
-        options: [
-          {l: "Weather forecasts for Japan", c: false}, {l: "Social event organization tools", c: false}, {l: "A list of helpful Japanese phrases", c: true}, {l: "Directions for downloading other apps", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 36</div>
-          <span class="ex-step">1. Dịch câu hỏi:</span>
-          <p>Ngoài cảnh báo động đất và sóng thần, ứng dụng Safety Tips còn cung cấp gì nữa?</p>
-          <span class="ex-step">2. Phân tích 4 đáp án:</span>
-          <p>A. <span class="p-mean">Dự báo thời tiết cho Nhật Bản.</span> <span class="hl-red">❌ Không đề cập.</span></p>
-          <p>B. <span class="p-mean">Công cụ tổ chức sự kiện xã hội.</span> <span class="hl-red">❌ Đây là tính năng của các app chung chung khác ở đầu bài.</span></p>
-          <p>C. <span class="p-mean">Một danh sách các cụm từ tiếng Nhật hữu ích.</span> <span class="hl-green">✅ Đúng.</span></p>
-          <p>D. <span class="p-mean">Hướng dẫn tải các app khác.</span> <span class="hl-red">❌ Không đề cập.</span></p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 3):</span>
-          <div class="ex-quote">"...as well as a list of useful Japanese phrases such as 'Is this an earthquake?'"</div>
-          <div class="ex-trans-quote">👉 Dịch: "...cũng như <strong>một danh sách các cụm từ tiếng Nhật hữu ích</strong> như 'Đây có phải là động đất không?'"</div>
-        `
-      }
-    ]
-  },
-  {
-    reading: `
-      <div class="reading-title">💻 PASSAGE 4: COMPUTERS</div>
-      
-      <p class="passage-para">Computers are helpful in many ways. First, they are fast. They can work with information even more quickly than a person. (37) ______. Third, they can keep information for a long time. They do not forget things that the common people do. (38) ______. They are not perfect, (39) _____. Recently, it is important to know about computers. There are a number of things to learn. Some companies have classes at work. In addition, most universities offer day and night course offers in Computer Science. Another way to learn is from a book, or from a friend. After a few hours of practice, (40) _____. You may not be an expert, but you can have fun.</p>
-      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
-      <div class="trans-content">Máy tính hữu ích theo nhiều cách. Đầu tiên, chúng rất nhanh. Chúng có thể xử lý thông tin nhanh hơn con người rất nhiều. (37) ______. Thứ ba, chúng có thể lưu trữ thông tin trong một thời gian dài. Chúng không quên mọi thứ như người bình thường. (38) ______. Chúng không hoàn hảo, (39) _____. Gần đây, việc hiểu biết về máy tính trở nên quan trọng. Có một số điều cần học. Một số công ty có các lớp học tại nơi làm việc. Ngoài ra, hầu hết các trường đại học đều cung cấp các khóa học ngày và đêm về Khoa học Máy tính. Một cách học khác là từ sách, hoặc từ một người bạn. Sau vài giờ thực hành, (40) _____. Bạn có thể không phải là một chuyên gia, nhưng bạn có thể tận hưởng niềm vui.</div>
-
-      <div class="glossary-wrap">
-        <div class="glossary-title">📖 Academic Vocabulary</div>
-        <table class="glossary-table">
-          <tr><th>Word</th><th>Meaning</th></tr>
-          <tr><td><span class="g-word">Helpful</span> <span class="g-pos">(adj)</span></td><td>Hữu ích</td></tr>
-          <tr><td><span class="g-word">Information</span> <span class="g-pos">(n)</span></td><td>Thông tin, dữ liệu</td></tr>
-          <tr><td><span class="g-word">Perfect</span> <span class="g-pos">(adj)</span></td><td>Hoàn hảo</td></tr>
-          <tr><td><span class="g-word">Recently</span> <span class="g-pos">(adv)</span></td><td>Gần đây</td></tr>
-          <tr><td><span class="g-word">University</span> <span class="g-pos">(n)</span></td><td>Trường đại học</td></tr>
-          <tr><td><span class="g-word">Expert</span> <span class="g-pos">(n)</span></td><td>Chuyên gia</td></tr>
-          <tr><td><span class="g-word">Make mistakes</span> <span class="g-pos">(v)</span></td><td>Phạm sai lầm</td></tr>
-        </table>
-      </div>
-    `,
-    questions: [
-      {
-        id: 37, text: "Question 37: First, they are fast. They can work with information even more quickly than a person. (37) ______.",
-        options: [
-          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: true}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 37</div>
-          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
-          <p>Câu trước đang liệt kê ý số 1 bắt đầu bằng chữ <span class="p-grammar">"First"</span> (Đầu tiên). Câu phía sau liền kề lại bắt đầu bằng <span class="p-grammar">"Third"</span> (Thứ ba).</p>
-          <span class="ex-step">2. Chọn đáp án:</span>
-          <p>Đương nhiên ô trống (37) phải là ý số 2 bắt đầu bằng chữ <span class="hl-green">"Second"</span> để nối tiếp tính logic của mạch văn liệt kê.</p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"...quickly than a person. Second, computers can work with a lot of information at the same time. Third, they can keep..."</div>
-          <div class="ex-trans-quote">👉 Dịch: "...nhanh hơn con người. <strong>Thứ hai, máy tính có thể làm việc với rất nhiều thông tin cùng lúc.</strong> Thứ ba, chúng có thể lưu giữ..."</div>
-        `
-      },
-      {
-        id: 38, text: "Question 38: They do not forget things that the common people do. (38) ______.",
-        options: [
-          {l: "A - Moreover, computers are almost always correct", c: true}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 38</div>
-          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
-          <p>Câu phía trước nói về việc "Chúng không hay quên như con người". Việc KHÔNG QUÊN dẫn đến kết quả là điều gì?</p>
-          <span class="ex-step">2. Chọn đáp án:</span>
-          <p>Đó là sự chính xác (không quên nên không sai). Đáp án A dùng từ nối <span class="p-grammar">Moreover (Hơn nữa)</span> để bổ sung thêm ưu điểm tuyệt đối này.</p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"They do not forget things that the common people do. Moreover, computers are almost always correct."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Chúng không quên mọi thứ như người bình thường. <strong>Hơn nữa, máy tính hầu như luôn luôn chính xác.</strong>"</div>
-        `
-      },
-      {
-        id: 39, text: "Question 39: They are not perfect, (39) _____.",
-        options: [
-          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: true}, {l: "D - you can work with computers", c: false}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 39</div>
-          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
-          <p>Câu bắt đầu bằng "They are not perfect" (Chúng không hoàn hảo). Sau dấu phẩy là một mệnh đề tương phản để vớt vát lại ưu điểm.</p>
-          <span class="ex-step">2. Chọn đáp án:</span>
-          <p>Đáp án C bắt đầu bằng liên từ <span class="p-grammar">"but" (nhưng)</span> thể hiện sự tương phản hoàn hảo: "Không hoàn hảo 100%, NHƯNG chúng thường không mắc lỗi".</p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"They are not perfect, but they usually do not make mistakes."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Chúng không hoàn hảo, <strong>nhưng chúng thường không phạm sai lầm.</strong>"</div>
-        `
-      },
-      {
-        id: 40, text: "Question 40: After a few hours of practice, (40) _____. You may not be an expert, but you can have fun.",
-        options: [
-          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: true}
-        ],
-        explanation: `
-          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 40</div>
-          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
-          <p>Mệnh đề trạng ngữ "After a few hours of practice" (Sau một vài giờ thực hành) đòi hỏi một mệnh đề chính chỉ kết quả của việc thực hành đó.</p>
-          <span class="ex-step">2. Chọn đáp án:</span>
-          <p>Thực hành xong thì kết quả là: bạn có thể "work with computers" (làm việc với máy tính). Đáp án D ráp vào tạo thành câu hoàn chỉnh và logic với câu chốt "bạn có thể không là chuyên gia nhưng sẽ thấy vui".</p>
-          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
-          <div class="ex-quote">"After a few hours of practice, you can work with computers."</div>
-          <div class="ex-trans-quote">👉 Dịch: "Sau vài giờ thực hành, <strong>bạn có thể làm việc với máy tính.</strong>"</div>
-        `
-      }
-    ]
-  }
-];
-
-// ===== BUILD UI =====
-function buildQuiz() {
-  const container = document.getElementById('quizContainer');
-  container.innerHTML = '';
-  
-  quizData.forEach((block) => {
-    // Wrap in split-screen format
-    const splitBlock = document.createElement('div');
-    splitBlock.className = 'split-block';
-
-    // Left pane (Reading)
-    const leftPane = document.createElement('div');
-    leftPane.className = 'left-pane';
-    leftPane.innerHTML = block.reading;
-
-    // Right pane (Questions)
-    const rightPane = document.createElement('div');
-    rightPane.className = 'right-pane';
-    
-    block.questions.forEach(q => {
-      const qCard = document.createElement('div');
-      qCard.className = 'q-card';
-      qCard.id = `qcard-${q.id}`;
-
-      // Shuffle options safely
-      const shuffled = shuffle(q.options);
-
-      qCard.innerHTML = `
-        <div class="q-text"><span class="q-num">${q.id}</span>${q.text.replace(`Question ${q.id}:`, '')}</div>
-        <div class="options-grid" id="opts-${q.id}">
-          ${shuffled.map((opt, i) => `
-            <button class="opt-btn" id="opt-${q.id}-${i}"
-              onclick="checkAnswer(${q.id}, ${opt.c}, this)"
-              data-correct="${opt.c}">
-              ${opt.l}
-            </button>
-          `).join('')}
-        </div>
-        <div class="explanation" id="exp-${q.id}">
-          ${q.explanation}
-        </div>
-      `;
-      rightPane.appendChild(qCard);
-    });
-
-    splitBlock.appendChild(leftPane);
-    splitBlock.appendChild(rightPane);
-    container.appendChild(splitBlock);
-  });
-}
-
-// ===== CHECK ANSWER LOGIC =====
-const answered = {};
-function checkAnswer(qId, isCorrect, btn) {
-  if (answered[qId]) return;
-  answered[qId] = true;
-  
-  // Disable all
-  const btns = document.querySelectorAll(`#opts-${qId} .opt-btn`);
-  btns.forEach(b => {
-    b.disabled = true;
-    if (b.dataset.correct === 'true') {
-      b.classList.add('correct'); // Auto highlight correct
-    }
-  });
-
-  if (isCorrect) {
-    btn.classList.add('correct');
-    correctCount++;
-    playCorrect();
-    launchConfetti();
-  } else {
-    btn.classList.add('wrong');
-    playWrong();
-  }
-
-  // Show explanation
-  document.getElementById(`exp-${qId}`).classList.add('show');
-  
-  // Update Score
-  answeredCount++;
-  document.getElementById('correctCount').textContent = correctCount;
-  document.getElementById('answeredCount').textContent = answeredCount;
-  document.getElementById('scoreDisplay').textContent = ((correctCount / 20) * 10).toFixed(1);
-}
-
-// ===== SUBMIT LOGIC =====
-function openNameModal() {
-  document.getElementById('nameModal').classList.add('show');
-  document.getElementById('nameInput').focus();
-}
-
-function confirmName() {
-  const name = document.getElementById('nameInput').value.trim();
-  const err = document.getElementById('nameError');
-  if (!name) {
-    err.style.display = 'block';
-    return;
-  }
-  err.style.display = 'none';
-  document.getElementById('nameModal').classList.remove('show');
-  
-  // Prepare Result
-  const pct = correctCount / 20;
-  let title, comment, meme;
-
-  if (pct === 1) {
-    title = `🌟 THIÊN TÀI XUẤT CHÚNG!`;
-    comment = `Tuyệt đỉnh ${name}! Em làm bài xuất sắc 100%. MS Chí Nên rất tự hào về em! 🏆✨`;
-    meme = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif";
-  } else if (pct >= 0.6) {
-    title = `👏 RẤT TỐT ${name.toUpperCase()}!`;
-    comment = `Em đã làm bài rất cẩn thận! Tiếp tục phát huy nhé! 💪`;
-    meme = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif";
-  } else {
-    title = `😢 CỐ LÊN NHÉ ${name.toUpperCase()}!`;
-    comment = `Đừng buồn! Em hãy đọc thật kỹ phần Giải thích chi tiết để tiến bộ hơn nhé! 🦉`;
-    meme = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
-  }
-
-  document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultScore').textContent = `${correctCount}/20`;
-  document.getElementById('resultComment').textContent = comment;
-  document.getElementById('memeImg').src = meme;
-  document.getElementById('resultModal').classList.add('show');
-}
-</script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ĐỀ THI ĐỌC HIỂU TIẾNG ANH | MS Chí Nên ULIS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+
+  --primary-pastel: #A0C4FF; --secondary-pastel: #BDB2FF; --accent-pastel: #FFC6FF;
+
+  --gold: #f0c040; --correct: #00D26A; --wrong: #FF4757;
+
+  --glass-bg: rgba(25, 10, 45, 0.45); --glass-border: rgba(255, 255, 255, 0.15);
+
+  --text-main: #f8f9fa; --text-muted: #dcdde1;
+
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Nunito', sans-serif; min-height: 100vh; background: #0f0c29; color: var(--text-main); overflow-x: hidden; }
+
+
+
+/* ===== BACKGROUND ANIMATION & SVG PATTERN ===== */
+
+.bg-gradient {
+
+  position: fixed; inset: 0; z-index: -2;
+
+  background: linear-gradient(-45deg, #1e1335, #3a1c71, #d76d77, #ffaf7b, #3a1c71);
+
+  background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+
+}
+
+@keyframes gradientBG { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+
+
+.svg-pattern {
+
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;
+
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 0, transparent 60%);
+
+}
+
+.emoji-float { position: absolute; font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); animation: floatUp var(--dur) linear infinite; opacity: 0.6; }
+
+@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; } }
+
+
+
+/* ===== GIAO DIỆN MÀN HÌNH KHÓA ===== */
+
+#passwordModal {
+
+  position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+
+  background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
+
+}
+
+.pw-card {
+
+  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+
+  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
+
+  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+
+  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+
+}
+
+.pw-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572); }
+
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+
+.pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
+
+.pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
+
+.pw-input {
+
+  width:100%; padding:13px 20px; border-radius:12px; border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
+
+  color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif; outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
+
+}
+
+.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
+
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
+
+.pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
+
+.pw-btn {
+
+  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+
+  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+
+  color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif; cursor:pointer; letter-spacing:.5px; transition:transform .2s;
+
+}
+
+.pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+
+.pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
+
+@keyframes shake { 0%,100%{transform:translateX(0)} 15%,45%,75%{transform:translateX(-6px)} 30%,60%,90%{transform:translateX(6px)} }
+
+
+
+/* ===== MAIN LAYOUT & HEADER ===== */
+
+#mainContent { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+
+header {
+
+  text-align: center; padding: 16px; background: var(--glass-bg); backdrop-filter: blur(16px);
+
+  border: 1px solid var(--glass-border); border-radius: 18px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+
+}
+
+.header-icon { font-size: 2.2rem; margin-bottom: 5px; }
+
+.test-name { font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); text-shadow: 0 0 10px rgba(240,192,64,0.5); }
+
+.teacher-tag { display: inline-block; margin-top: 8px; padding: 4px 14px; background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.4); border-radius: 20px; font-size: 0.85rem; color: var(--gold); font-weight: bold;}
+
+
+
+.score-bar {
+
+  display: flex; align-items: center; justify-content: space-around; background: var(--glass-bg); backdrop-filter: blur(12px);
+
+  border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px; margin-bottom: 20px; font-weight: 800; font-size: 1.1rem; color: var(--secondary-pastel);
+
+}
+
+
+
+/* ===== SPLIT SCREEN (BỐ CỤC 50/50) ===== */
+
+.split-block {
+
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;
+
+  background: transparent; align-items: start;
+
+}
+
+.left-pane, .right-pane {
+
+  background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
+
+  border-radius: 20px; padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+
+  max-height: 80vh; overflow-y: auto;
+
+}
+
+.left-pane::-webkit-scrollbar, .right-pane::-webkit-scrollbar { width: 6px; }
+
+.left-pane::-webkit-scrollbar-thumb, .right-pane::-webkit-scrollbar-thumb { background: var(--secondary-pastel); border-radius: 4px; }
+
+
+
+/* ===== READING PASSAGE STYLES ===== */
+
+.reading-title { font-size: 1.4rem; font-weight: 900; color: var(--accent-pastel); margin-bottom: 16px; text-align: center; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px dashed rgba(255,198,255,0.3); padding-bottom: 10px;}
+
+.passage-para { font-size: 1.15rem; line-height: 1.7; margin-bottom: 12px; text-align: justify; }
+
+.trans-btn {
+
+  background: rgba(160, 196, 255, 0.15); border: 1px solid rgba(160, 196, 255, 0.4); border-radius: 8px;
+
+  padding: 6px 12px; color: var(--primary-pastel); font-size: 0.9rem; font-weight: bold; cursor: pointer;
+
+  margin-bottom: 16px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;
+
+}
+
+.trans-btn:hover { background: rgba(160, 196, 255, 0.3); transform: translateX(5px); }
+
+.trans-content {
+
+  display: none; background: rgba(255, 255, 255, 0.05); border-left: 4px solid var(--primary-pastel);
+
+  padding: 12px 16px; margin-bottom: 20px; border-radius: 0 8px 8px 0; font-style: italic; color: #e1e8f0; line-height: 1.6;
+
+}
+
+
+
+/* GLOSSARY TABLE */
+
+.glossary-wrap { margin-top: 24px; border-top: 2px solid rgba(255,255,255,0.1); padding-top: 16px; }
+
+.glossary-title { font-size: 1.1rem; font-weight: 800; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;}
+
+.glossary-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+
+.glossary-table th { background: rgba(240,192,64,0.15); color: var(--gold); padding: 10px; text-align: left; border-bottom: 1px solid rgba(240,192,64,0.3); }
+
+.glossary-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.glossary-table tr:last-child td { border-bottom: none; }
+
+.g-word { color: var(--accent-pastel); font-weight: bold; }
+
+.g-pos { color: #a29bfe; font-style: italic; font-size: 0.9rem;}
+
+
+
+/* ===== QUESTION CARDS ===== */
+
+.q-card { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+.q-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.q-text { font-size: 1.15rem; font-weight: 700; margin-bottom: 14px; line-height: 1.5;}
+
+.q-num { display: inline-block; background: var(--secondary-pastel); color: #1a0533; padding: 2px 10px; border-radius: 6px; margin-right: 8px; font-weight: 900; }
+
+.options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+.opt-btn {
+
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); border-radius: 12px;
+
+  padding: 14px 18px; color: var(--text-main); font-size: 1.05rem; font-family: 'Nunito', sans-serif; font-weight: 600;
+
+  text-align: left; cursor: pointer; transition: all 0.25s; line-height: 1.4;
+
+}
+
+.opt-btn:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: var(--secondary-pastel); transform: translateX(4px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+.opt-btn.correct { background: linear-gradient(135deg, #00b09b, #96c93d) !important; border-color: #00ff88 !important; color: #fff !important; font-weight: 800; box-shadow: 0 4px 20px rgba(0,210,106,0.4) !important; }
+
+.opt-btn.wrong { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; border-color: #ff6b81 !important; color: #fff !important; animation: shake 0.4s ease; box-shadow: 0 4px 20px rgba(255,71,87,0.4) !important; }
+
+
+
+/* ===== EXPLANATION BOX (CHUẨN CSS CLASSES MỚI) ===== */
+
+.explanation {
+
+  display: none; margin-top: 16px; background: rgba(10, 5, 20, 0.7); border-left: 5px solid var(--secondary-pastel);
+
+  border-radius: 10px; padding: 20px; font-size: 1.05rem; line-height: 1.7; color: #e1e8f0; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+
+  animation: slideDown 0.3s ease;
+
+}
+
+@keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+
+.explanation.show { display: block; }
+
+.ex-title { font-size: 1.15rem; font-weight: 900; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px dashed rgba(240,192,64,0.3); padding-bottom: 6px;}
+
+
+
+/* Classes bắt buộc cho giải thích */
+
+.ex-step { color: var(--accent-pastel); font-weight: 800; margin-top: 14px; margin-bottom: 6px; font-size: 1.1rem; display: block;}
+
+.p-word { color: #4facfe; font-weight: 900; }
+
+.p-mean { color: #e67e22; font-style: italic; font-weight: 700; }
+
+.p-grammar { text-decoration: underline; text-decoration-color: #ff4757; text-decoration-thickness: 2px; font-weight: 900; color: #f1c40f; }
+
+.hl-green { color: #00D26A; font-weight: 900; }
+
+.hl-red { color: #FF4757; text-decoration: line-through; font-weight: bold; }
+
+.ex-quote { background: rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 8px; border-left: 3px solid #3498db; margin: 10px 0; font-family: monospace; font-size: 1rem; color: #81ecec;}
+
+.ex-trans-quote { background: rgba(46, 204, 113, 0.1); padding: 10px 14px; border-radius: 8px; border-left: 3px solid #2ecc71; margin-bottom: 10px; font-weight: 600; color: #a8e6cf;}
+
+
+
+/* ===== SUBMIT & MODALS ===== */
+
+.submit-wrap { text-align: center; margin: 40px 0; }
+
+.submit-btn {
+
+  padding: 18px 48px; background: linear-gradient(135deg, #FF9A9E, #FECFEF); border: 3px solid #fff; border-radius: 30px;
+
+  color: #333; font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 900; cursor: pointer;
+
+  box-shadow: 0 10px 30px rgba(255,154,158,0.5); transition: all 0.3s;
+
+}
+
+.submit-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(255,154,158,0.7); }
+
+
+
+#nameModal, #resultModal {
+
+  position: fixed; inset: 0; z-index: 9998; display: none; align-items: center; justify-content: center;
+
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+
+}
+
+#nameModal.show, #resultModal.show { display: flex; }
+
+.modal-content { background: var(--glass-bg); border: 2px solid var(--accent-pastel); border-radius: 24px; padding: 40px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 0 60px rgba(255,198,255,0.3); }
+
+.modal-content h3 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.5rem; margin-bottom: 12px; }
+
+#nameInput { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid var(--secondary-pastel); background: rgba(255,255,255,0.1); color: #fff; font-size: 1.1rem; outline: none; text-align: center; margin-bottom: 16px;}
+
+#nameInput:focus { border-color: var(--gold); }
+
+.confirm-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #00C9A7, #845EC2); border: none; border-radius: 12px; color: #fff; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+
+.confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(132,94,194,0.5); }
+
+
+
+.res-score { font-size: 3.5rem; font-weight: 900; color: var(--correct); text-shadow: 0 0 20px rgba(0,210,106,0.5); margin: 10px 0; }
+
+.res-comment { font-size: 1.2rem; color: var(--accent-pastel); margin-bottom: 20px; font-weight: bold; }
+
+#memeImg { width: 100%; max-width: 280px; border-radius: 16px; margin: 0 auto 20px; display: block; border: 4px solid var(--gold); box-shadow: 0 8px 24px rgba(0,0,0,0.4);}
+
+
+
+/* Confetti */
+
+.confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; z-index: 9999; animation: fall linear forwards; }
+
+@keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+
+
+
+/* Responsive */
+
+@media(max-width: 960px) {
+
+  .split-block { grid-template-columns: 1fr; }
+
+  .left-pane, .right-pane { max-height: none; }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="bg-gradient"></div>
+
+<div class="svg-pattern" id="emojiContainer"></div>
+
+
+
+<div id="passwordModal">
+
+  <div class="pw-card">
+
+    <span class="pw-crest">🔒</span>
+
+    <div class="pw-title">BẢO MẬT</div>
+
+    <div class="pw-sub">Vui lòng nhập mật khẩu</div>
+
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+
+  </div>
+
+</div>
+
+
+
+<div id="nameModal">
+
+  <div class="modal-content">
+
+    <div style="font-size:3rem;margin-bottom:10px">🧙‍♂️</div>
+
+    <h3>Tên chiến binh của bạn?</h3>
+
+    <input type="text" id="nameInput" placeholder="VD: Nguyễn Văn A..." maxlength="50">
+
+    <div id="nameError" style="color:#ff6b81; font-weight:bold; margin-bottom:10px; display:none;">⚠️ Vui lòng nhập tên!</div>
+
+    <button class="confirm-btn" onclick="confirmName()">✨ XEM BẢNG PHONG THẦN!</button>
+
+  </div>
+
+</div>
+
+
+
+<div id="resultModal">
+
+  <div class="modal-content">
+
+    <h3 id="resultTitle"></h3>
+
+    <div class="res-score" id="resultScore"></div>
+
+    <div class="res-comment" id="resultComment"></div>
+
+    <img id="memeImg" src="" alt="Result Meme">
+
+    <button class="confirm-btn" onclick="document.getElementById('resultModal').classList.remove('show')">🔮 ĐÓNG</button>
+
+  </div>
+
+</div>
+
+
+
+<div id="mainContent">
+
+  <header>
+
+    <div class="header-icon">📚🌟✨</div>
+
+    <div class="test-name">ĐỀ THI ĐỌC HIỂU TIẾNG ANH CHUYÊN SÂU</div>
+
+    <span class="teacher-tag">👩‍🏫 Giáo viên tạo: MS Chí Nên ULIS</span>
+
+  </header>
+
+
+
+  <div class="score-bar">
+
+    <div>✅ Đúng: <span style="color:var(--correct)" id="correctCount">0</span></div>
+
+    <div>📝 Đã làm: <span style="color:var(--gold)" id="answeredCount">0</span> / 20</div>
+
+    <div>🎯 Điểm: <span style="color:var(--accent-pastel)" id="scoreDisplay">0</span></div>
+
+  </div>
+
+
+
+  <div id="quizContainer"></div>
+
+
+
+  <div class="submit-wrap">
+
+    <button class="submit-btn" onclick="openNameModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+// ===== EMOJI BACKGROUND =====
+
+const emojis = ['🚀', '🌍', '📱', '👽', '🚌', '🪐', '👾', '🎫'];
+
+const container = document.getElementById('emojiContainer');
+
+for(let i=0; i<30; i++) {
+
+  const el = document.createElement('div');
+
+  el.className = 'emoji-float';
+
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+  el.style.left = `${Math.random() * 100}vw`;
+
+  el.style.setProperty('--dur', `${15 + Math.random() * 20}s`);
+
+  el.style.animationDelay = `${-Math.random() * 20}s`;
+
+  el.style.fontSize = `${1.5 + Math.random() * 2}rem`;
+
+  container.appendChild(el);
+
+}
+
+
+
+// ===== MÀN HÌNH KHÓA (Pass: comaianulis) =====
+
+const _k = [99,111,109,97,105,97,110,117,108,105,115];
+
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+
+
+function checkPassword() {
+
+  const inp = document.getElementById('pwInput');
+
+  const err = document.getElementById('pwErr');
+
+  if (inp.value === _pw) {
+
+    document.getElementById('passwordModal').style.display = 'none';
+
+    document.getElementById('mainContent').style.display = 'block';
+
+    buildQuiz();
+
+  } else {
+
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+
+  }
+
+}
+
+document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+
+
+
+// ===== AUDIO API =====
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+
+let audioCtx;
+
+function getCtx(){ if(!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
+
+function playCorrect() {
+
+  const ctx = getCtx();
+
+  [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+
+    const o = ctx.createOscillator(), g = ctx.createGain();
+
+    o.connect(g); g.connect(ctx.destination);
+
+    o.type = 'sine'; o.frequency.value = freq;
+
+    const t = ctx.currentTime + i * 0.1;
+
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.05); g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+
+    o.start(t); o.stop(t + 0.3);
+
+  });
+
+}
+
+function playWrong() {
+
+  const ctx = getCtx();
+
+  [200, 150].forEach((freq, i) => {
+
+    const o = ctx.createOscillator(), g = ctx.createGain();
+
+    o.connect(g); g.connect(ctx.destination);
+
+    o.type = 'sawtooth'; o.frequency.value = freq;
+
+    const t = ctx.currentTime + i * 0.2;
+
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.3, t + 0.05); g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+
+    o.start(t); o.stop(t + 0.3);
+
+  });
+
+}
+
+
+
+// ===== CONFETTI =====
+
+function launchConfetti() {
+
+  const colors = ['#00D26A', '#f0c040', '#A0C4FF', '#FFC6FF'];
+
+  for(let i=0; i<50; i++) {
+
+    const c = document.createElement('div');
+
+    c.className = 'confetti';
+
+    c.style.left = Math.random() * 100 + 'vw';
+
+    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+
+    document.body.appendChild(c);
+
+    setTimeout(() => c.remove(), 4000);
+
+  }
+
+}
+
+
+
+// ===== TOGGLE TRANSLATION =====
+
+function toggleTrans(btn) {
+
+  const content = btn.nextElementSibling;
+
+  if(content.style.display === 'block') {
+
+    content.style.display = 'none';
+
+    btn.innerHTML = 'Mở dịch đoạn này 🌟';
+
+  } else {
+
+    content.style.display = 'block';
+
+    btn.innerHTML = 'Đóng bản dịch 🙈';
+
+  }
+
+}
+
+
+
+// ===== SHUFFLE =====
+
+function shuffle(arr){
+
+  const a = [...arr];
+
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
+
+  return a;
+
+}
+
+
+
+// ===== DATA DE THI =====
+
+const quizData = [
+
+  {
+
+    reading: `
+
+      <div class="reading-title">🚌 PASSAGE 1: PUBLIC TRANSPORT ANNOUNCEMENT</div>
+
+      
+
+      <p class="passage-para">Welcome to City Bus Service! To have a safe trip, please (13) ____ these rules:</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Chào mừng đến với Dịch vụ Xe buýt Thành phố! Để có một chuyến đi an toàn, vui lòng (13) ____ những quy tắc này:</div>
+
+
+
+      <p class="passage-para">● Always have your ticket ready (14) ____ checking.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">● Luôn chuẩn bị sẵn vé của bạn (14) ____ việc kiểm tra.</div>
+
+
+
+      <p class="passage-para">● Listen to (15) ____ announcements for important news.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">● Lắng nghe (15) ____ các thông báo để biết tin tức quan trọng.</div>
+
+
+
+      <p class="passage-para">● If you see (16) ____ bags left alone, tell the staff right away.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">● Nếu bạn thấy (16) ____ chiếc túi nào bị bỏ lại một mình, hãy báo ngay cho nhân viên.</div>
+
+
+
+      <div class="glossary-wrap">
+
+        <div class="glossary-title">📖 Academic Vocabulary</div>
+
+        <table class="glossary-table">
+
+          <tr><th>Word</th><th>Meaning</th></tr>
+
+          <tr><td><span class="g-word">Announcement</span> <span class="g-pos">(n)</span></td><td>Thông báo công khai</td></tr>
+
+          <tr><td><span class="g-word">Service</span> <span class="g-pos">(n)</span></td><td>Dịch vụ phục vụ</td></tr>
+
+          <tr><td><span class="g-word">Staff</span> <span class="g-pos">(n)</span></td><td>Nhân viên, cán bộ</td></tr>
+
+          <tr><td><span class="g-word">Ready</span> <span class="g-pos">(adj)</span></td><td>Sẵn sàng, chuẩn bị xong</td></tr>
+
+          <tr><td><span class="g-word">Rule</span> <span class="g-pos">(n)</span></td><td>Quy tắc, luật lệ</td></tr>
+
+        </table>
+
+      </div>
+
+    `,
+
+    questions: [
+
+      {
+
+        id: 13, text: "Question 13: To have a safe trip, please (13) ____ these rules:",
+
+        options: [
+
+          {l: "ignore", c: false}, {l: "follow", c: true}, {l: "break", c: false}, {l: "forget", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 13</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Để có một chuyến đi an toàn, vui lòng ____ những quy tắc này:</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">ignore</span>: <span class="p-mean">phớt lờ, bỏ qua</span> <span class="hl-red">❌ Sai vì đi xe buýt an toàn không thể làm trái luật.</span></p>
+
+          <p>B. <span class="p-word">follow</span>: <span class="p-mean">tuân theo, làm theo</span> <span class="hl-green">✅ Đúng vì "follow the rules" (tuân thủ quy tắc) là sự kết hợp từ (collocation) hoàn hảo.</span></p>
+
+          <p>C. <span class="p-word">break</span>: <span class="p-mean">phá vỡ, vi phạm</span> <span class="hl-red">❌ Sai nghĩa hoàn toàn (phá luật).</span></p>
+
+          <p>D. <span class="p-word">forget</span>: <span class="p-mean">quên</span> <span class="hl-red">❌ Sai nghĩa (quên luật).</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"To have a safe trip, please follow these rules:"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Để có một chuyến đi an toàn, vui lòng <strong>tuân thủ</strong> những quy tắc này:"</div>
+
+        `
+
+      },
+
+      {
+
+        id: 14, text: "Question 14: Always have your ticket ready (14) ____ checking.",
+
+        options: [
+
+          {l: "with", c: false}, {l: "to", c: false}, {l: "for", c: true}, {l: "of", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 14</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Luôn chuẩn bị sẵn vé của bạn ____ việc kiểm tra.</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">with</span>: <span class="p-mean">với</span> <span class="hl-red">❌ Sai ngữ pháp trong cấu trúc này.</span></p>
+
+          <p>B. <span class="p-word">to</span>: <span class="p-mean">tới / để</span> <span class="hl-red">❌ Sai vì "to" đi với Động từ nguyên thể (to check), ở đây "checking" là Danh động từ.</span></p>
+
+          <p>C. <span class="p-word">for</span>: <span class="p-mean">cho, để dành cho</span> <span class="hl-green">✅ Đúng ngữ pháp. <span class="p-grammar">Ready for + Noun/V-ing</span> (sẵn sàng cho việc gì).</span></p>
+
+          <p>D. <span class="p-word">of</span>: <span class="p-mean">của</span> <span class="hl-red">❌ Sai ngữ pháp.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"Always have your ticket ready for checking"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Luôn chuẩn bị sẵn vé của bạn <strong>cho</strong> việc kiểm tra."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 15, text: "Question 15: Listen to (15) ____ announcements for important news.",
+
+        options: [
+
+          {l: "a", c: false}, {l: "an", c: false}, {l: "that", c: false}, {l: "the", c: true}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 15</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Lắng nghe ____ các thông báo để biết tin tức quan trọng.</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A/B. <span class="p-word">a / an</span>: <span class="p-mean">một</span> <span class="hl-red">❌ Sai ngữ pháp vì "announcements" là danh từ số nhiều, "a/an" chỉ đi với số ít.</span></p>
+
+          <p>C. <span class="p-word">that</span>: <span class="p-mean">đó</span> <span class="hl-red">❌ Sai ngữ pháp vì "that" chỉ đi với danh từ số ít (that announcement).</span></p>
+
+          <p>D. <span class="p-word">the</span>: <span class="p-mean">các, những (mạo từ xác định)</span> <span class="hl-green">✅ Đúng. Đi được với danh từ số nhiều để chỉ những thông báo cụ thể trên xe buýt.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"Listen to the announcements for important news"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Lắng nghe <strong>những</strong> thông báo (cụ thể trên xe) để biết tin tức quan trọng."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 16, text: "Question 16: If you see (16) ____ bags left alone, tell the staff right away.",
+
+        options: [
+
+          {l: "any", c: true}, {l: "much", c: false}, {l: "many", c: false}, {l: "a lot", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 16</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Nếu bạn thấy ____ chiếc túi nào bị bỏ lại một mình, hãy báo ngay cho nhân viên.</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">any</span>: <span class="p-mean">bất kỳ</span> <span class="hl-green">✅ Đúng. Trong câu điều kiện "If...", ta dùng <span class="p-grammar">any</span> mang nghĩa "bất kỳ (cái nào/người nào)".</span></p>
+
+          <p>B. <span class="p-word">much</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Sai vì "much" đi với danh từ KHÔNG đếm được. "Bags" đếm được.</span></p>
+
+          <p>C. <span class="p-word">many</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Về ngữ pháp thì được, nhưng xét ngữ nghĩa an ninh: chỉ cần thấy "BẤT KỲ" chiếc túi nào (dù 1 cái) cũng phải báo, không đợi "nhiều" cái mới báo.</span></p>
+
+          <p>D. <span class="p-word">a lot</span>: <span class="p-mean">nhiều</span> <span class="hl-red">❌ Thiếu giới từ "of" (a lot of bags).</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"If you see any bags left alone..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Nếu bạn thấy <strong>bất kỳ</strong> chiếc túi nào bị bỏ lại một mình..."</div>
+
+        `
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    reading: `
+
+      <div class="reading-title">👽 PASSAGE 2: ARE THERE ANY ALIENS OUT THERE?</div>
+
+      
+
+      <p class="passage-para">For years we Earthlings have wondered (19) _____ we are alone in the universe or we've got company in the shape of aliens. People have claimed to have met aliens, seen UFOs and some people even say they've been abducted by extraterrestrials. But what do we really know about them - if they (20) ____ at all?</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Trong nhiều năm, người Trái Đất chúng ta đã tự hỏi (19) _____ liệu chúng ta có đơn độc trong vũ trụ hay chúng ta có bạn đồng hành dưới hình dạng người ngoài hành tinh hay không. Mọi người đã tuyên bố rằng từng gặp người ngoài hành tinh, nhìn thấy UFO và một số người thậm chí nói rằng họ đã bị người ngoài hành tinh bắt cóc. Nhưng chúng ta thực sự biết gì về họ - nếu họ (20) ____ thực sự?</div>
+
+
+
+      <p class="passage-para">Ever since we realized there (21)_____ be something out there our imaginations have created thousands of bizarre creatures. But at the moment no one knows what an alien might look like. Even if we do ever come (22) ____ aliens in space, most scientists agree they probably won't look like little green men.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Kể từ khi chúng ta nhận ra (21)_____ có thể có thứ gì đó ngoài kia, trí tưởng tượng của chúng ta đã tạo ra hàng ngàn sinh vật kỳ dị. Nhưng hiện tại không ai biết một người ngoài hành tinh trông như thế nào. Thậm chí nếu chúng ta từng tình cờ (22) ____ người ngoài hành tinh trong không gian, hầu hết các nhà khoa học đồng ý rằng họ có thể sẽ không giống những người đàn ông nhỏ màu xanh lá cây.</div>
+
+
+
+      <p class="passage-para">(23) ______aliens exist, experts reckon they're probably very small and (24)_____ a bug. Over the years thousands of people have been convinced that we Earthlings have been visited by aliens from other civilizations.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">(23) ______người ngoài hành tinh tồn tại, các chuyên gia nhận định họ có thể rất nhỏ và (24)_____ một con bọ. Trong nhiều năm qua, hàng nghìn người đã tin chắc rằng người Trái Đất chúng ta đã được các nền văn minh khác ghé thăm.</div>
+
+
+
+      <div class="glossary-wrap">
+
+        <div class="glossary-title">📖 Academic Vocabulary</div>
+
+        <table class="glossary-table">
+
+          <tr><th>Word</th><th>Meaning</th></tr>
+
+          <tr><td><span class="g-word">Earthling</span> <span class="g-pos">(n)</span></td><td>Người Trái Đất</td></tr>
+
+          <tr><td><span class="g-word">Abduct</span> <span class="g-pos">(v)</span></td><td>Bắt cóc</td></tr>
+
+          <tr><td><span class="g-word">Extraterrestrial</span> <span class="g-pos">(n/adj)</span></td><td>Người ngoài hành tinh, ngoài Trái đất</td></tr>
+
+          <tr><td><span class="g-word">Bizarre</span> <span class="g-pos">(adj)</span></td><td>Kỳ lạ, kỳ dị</td></tr>
+
+          <tr><td><span class="g-word">Civilization</span> <span class="g-pos">(n)</span></td><td>Nền văn minh</td></tr>
+
+          <tr><td><span class="g-word">Convinced</span> <span class="g-pos">(adj)</span></td><td>Bị thuyết phục, tin chắc</td></tr>
+
+          <tr><td><span class="g-word">Reckon</span> <span class="g-pos">(v)</span></td><td>Cho rằng, nhận định</td></tr>
+
+        </table>
+
+      </div>
+
+    `,
+
+    questions: [
+
+      {
+
+        id: 19, text: "Question 19: For years we Earthlings have wondered (19) _____ we are alone in the universe or we've got company...",
+
+        options: [
+
+          {l: "when", c: false}, {l: "where", c: false}, {l: "whether", c: true}, {l: "whereas", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 19</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Trong nhiều năm, người Trái Đất chúng ta đã tự hỏi ____ liệu chúng ta có đơn độc trong vũ trụ hay (or) chúng ta có bạn đồng hành...</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">when</span>: <span class="p-mean">khi nào</span> <span class="hl-red">❌ Sai ngữ pháp và nghĩa.</span></p>
+
+          <p>B. <span class="p-word">where</span>: <span class="p-mean">ở đâu</span> <span class="hl-red">❌ Sai ngữ pháp và nghĩa.</span></p>
+
+          <p>C. <span class="p-word">whether</span>: <span class="p-mean">liệu rằng</span> <span class="hl-green">✅ Đúng. Cấu trúc ngữ pháp kinh điển: <span class="p-grammar">whether... or...</span> (liệu rằng... hay là...).</span></p>
+
+          <p>D. <span class="p-word">whereas</span>: <span class="p-mean">trong khi đó</span> <span class="hl-red">❌ Sai cấu trúc.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"...have wondered whether we are alone... or we've got company"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...đã tự hỏi <strong>liệu rằng</strong> chúng ta có đơn độc... <strong>hay là</strong> chúng ta có bạn đồng hành"</div>
+
+        `
+
+      },
+
+      {
+
+        id: 20, text: "Question 20: But what do we really know about them - if they (20) ____ at all?",
+
+        options: [
+
+          {l: "exist", c: true}, {l: "happen", c: false}, {l: "live", c: false}, {l: "survive", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 20</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Nhưng chúng ta thực sự biết gì về họ - nếu họ thực sự ____?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">exist</span>: <span class="p-mean">tồn tại</span> <span class="hl-green">✅ Đúng. Đang bàn về việc người ngoài hành tinh CÓ THẬT hay không (tồn tại hay không).</span></p>
+
+          <p>B. <span class="p-word">happen</span>: <span class="p-mean">xảy ra</span> <span class="hl-red">❌ Người không thể "xảy ra".</span></p>
+
+          <p>C. <span class="p-word">live</span>: <span class="p-mean">sống</span> <span class="hl-red">❌ Sai vì "live" dùng để chỉ việc cư ngụ ở đâu đó, không lột tả được nghi vấn cốt lõi là họ "có thật không".</span></p>
+
+          <p>D. <span class="p-word">survive</span>: <span class="p-mean">sinh tồn, sống sót</span> <span class="hl-red">❌ Không đúng ngữ cảnh vì không có thảm họa nào được nhắc tới để "sống sót".</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"...what do we really know about them - if they exist at all?"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...chúng ta thực sự biết gì về họ - nếu như họ thực sự có <strong>tồn tại</strong>?"</div>
+
+        `
+
+      },
+
+      {
+
+        id: 21, text: "Question 21: Ever since we realized there (21)_____ be something out there...",
+
+        options: [
+
+          {l: "can", c: false}, {l: "must", c: false}, {l: "may", c: false}, {l: "might", c: true}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 21</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Kể từ khi chúng ta nhận ra ____ có thứ gì đó ngoài kia...</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">can</span>: <span class="p-mean">có thể (nói về khả năng chung chung)</span> <span class="hl-red">❌ Ít dùng để dự đoán tính chắc chắn yếu trong quá khứ kéo dài đến nay.</span></p>
+
+          <p>B. <span class="p-word">must</span>: <span class="p-mean">chắc chắn (dự đoán 100%)</span> <span class="hl-red">❌ Sai vì con người vẫn chưa chắc chắn có người ngoài hành tinh.</span></p>
+
+          <p>C. <span class="p-word">may</span>: <span class="p-mean">có lẽ (50%)</span> <span class="hl-red">❌ Động từ phía trước là "realized" (Quá khứ), theo luật hòa hợp thì, nên lùi thì "may" xuống "might".</span></p>
+
+          <p>D. <span class="p-word">might</span>: <span class="p-mean">có lẽ (khả năng thấp, dạng lùi thì của may)</span> <span class="hl-green">✅ Đúng. Diễn tả một sự suy đoán có tính không chắc chắn và hòa hợp thì với động từ "realized".</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"Ever since we realized there might be something out there..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Kể từ khi chúng ta nhận ra <strong>có lẽ</strong> có thứ gì đó ngoài kia..."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 22, text: "Question 22: Even if we do ever come (22) ____ aliens in space...",
+
+        options: [
+
+          {l: "over", c: false}, {l: "through", c: false}, {l: "across", c: true}, {l: "along", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 22</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Thậm chí nếu chúng ta từng tình cờ bắt gặp ____ người ngoài hành tinh trong không gian...</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án (Phrasal verbs với "Come"):</span>
+
+          <p>A. <span class="p-word">come over</span>: <span class="p-mean">ghé thăm nhà ai đó</span> <span class="hl-red">❌ Sai nghĩa.</span></p>
+
+          <p>B. <span class="p-word">come through</span>: <span class="p-mean">vượt qua khó khăn</span> <span class="hl-red">❌ Sai nghĩa.</span></p>
+
+          <p>C. <span class="p-word">come across</span>: <span class="p-mean">tình cờ gặp (ai/cái gì)</span> <span class="hl-green">✅ Đúng. Cụm động từ <span class="p-grammar">come across sb/sth</span> hoàn toàn phù hợp ngữ cảnh "tình cờ chạm trán người ngoài hành tinh".</span></p>
+
+          <p>D. <span class="p-word">come along</span>: <span class="p-mean">đi cùng, xuất hiện</span> <span class="hl-red">❌ Sai vì "come along" không đi trực tiếp với tân ngữ (aliens).</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"Even if we do ever come across aliens in space..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Thậm chí nếu chúng ta từng <strong>tình cờ gặp</strong> người ngoài hành tinh trong không gian..."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 23, text: "Question 23: (23) ______aliens exist, experts reckon they're probably very small...",
+
+        options: [
+
+          {l: "Although", c: false}, {l: "If", c: true}, {l: "Because", c: false}, {l: "Since", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 23</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>____ người ngoài hành tinh tồn tại, các chuyên gia nhận định họ có thể rất nhỏ...</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">Although</span>: <span class="p-mean">Mặc dù</span> <span class="hl-red">❌ Sai ngữ cảnh (Mặc dù tồn tại thì họ nhỏ -> không logic).</span></p>
+
+          <p>B. <span class="p-word">If</span>: <span class="p-mean">Nếu</span> <span class="hl-green">✅ Đúng. Câu điều kiện loại 1: Đưa ra một giả định có thể xảy ra ở hiện tại/tương lai (NẾU họ có thật, thì hình dạng của họ là...).</span></p>
+
+          <p>C. <span class="p-word">Because</span>: <span class="p-mean">Bởi vì</span> <span class="hl-red">❌ Sai vì con người chưa khẳng định được là có tồn tại.</span></p>
+
+          <p>D. <span class="p-word">Since</span>: <span class="p-mean">Bởi vì / Kể từ khi</span> <span class="hl-red">❌ Giống ý C, sai logic.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"If aliens exist, experts reckon they're probably very small..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "<strong>Nếu</strong> người ngoài hành tinh tồn tại, các chuyên gia cho rằng họ có thể rất nhỏ..."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 24, text: "Question 24: ...experts reckon they're probably very small and (24)_____ a bug.",
+
+        options: [
+
+          {l: "look something like", c: true}, {l: "look anything like", c: false}, {l: "look like something", c: false}, {l: "look like anything", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 24</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>...các chuyên gia nhận định họ có thể rất nhỏ và ____ một con bọ.</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">look something like</span>: <span class="p-mean">trông hơi giống / có vẻ giống</span> <span class="hl-green">✅ Đúng. Cụm từ cố định <span class="p-grammar">look something like + Noun</span> dùng để so sánh sự tương đồng một cách ước chừng.</span></p>
+
+          <p>B. <span class="p-word">look anything like</span>: <span class="p-mean">chẳng giống chút nào</span> <span class="hl-red">❌ Cụm "anything like" thường dùng trong câu phủ định/nghi vấn (do not look anything like...).</span></p>
+
+          <p>C/D. <span class="p-word">look like something / anything</span>: <span class="p-mean">trông giống cái gì đó</span> <span class="hl-red">❌ Sai cấu trúc từ vựng tiếng Anh bản xứ. Khi muốn so sánh cụ thể với "a bug" thì phải đẩy "something" lên trước chữ "like".</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"...and look something like a bug."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...và <strong>trông hơi giống</strong> một con bọ."</div>
+
+        `
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    reading: `
+
+      <div class="reading-title">📱 PASSAGE 3: STAYING SAFE</div>
+
+      
+
+      <p class="passage-para">When you ask more people about the benefits of apps on their smartphone, they say they use them to play games, surf the net, keep in touch with people and organize social events. But Jenny Harlow, a scientist from London, has got an app that does something much more important: it warns her when she is in danger. The app is called Safety Tips and it gives users real-time earthquake and tsunami warnings.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Khi bạn hỏi mọi người về lợi ích của các ứng dụng trên điện thoại thông minh, họ nói rằng họ sử dụng chúng để chơi game, lướt net, giữ liên lạc và tổ chức các sự kiện xã hội. Nhưng Jenny Harlow, một nhà khoa học từ London, có một ứng dụng làm được điều quan trọng hơn nhiều: nó cảnh báo cô khi cô gặp nguy hiểm. Ứng dụng có tên là Safety Tips và nó cung cấp cho người dùng cảnh báo động đất và sóng thần theo thời gian thực.</div>
+
+
+
+      <p class="passage-para">The Japan Tourist Agency had the idea for the app after the 2011 earthquake in Japan, when many foreign tourists in the country were confused about what was happening and what they should do. Jenny was on a business trip to Japan when the earthquake struck. 'Although there are a lot of earthquakes in Japan, it was the first time I experienced one. All the warnings and information on the internet, radio and TV were in Japanese, and I couldn't understand. It was really confusing and I didn't know what to do.' She had to rely on Japanese colleagues to help her.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Cơ quan Du lịch Nhật Bản có ý tưởng cho ứng dụng này sau trận động đất năm 2011 ở Nhật Bản, khi nhiều du khách nước ngoài tại nước này bối rối về những gì đang xảy ra và họ nên làm gì. Jenny đang đi công tác ở Nhật Bản thì trận động đất xảy ra. 'Mặc dù có rất nhiều trận động đất ở Nhật Bản, nhưng đây là lần đầu tiên tôi trải qua. Tất cả các cảnh báo và thông tin trên mạng, radio và TV đều bằng tiếng Nhật, và tôi không thể hiểu. Thật sự rất bối rối và tôi không biết phải làm gì.' Cô đã phải dựa vào các đồng nghiệp người Nhật để giúp đỡ.</div>
+
+
+
+      <p class="passage-para">The Safety Tips app sends an alert to users when a major earthquake happens, and also tells them if a tsunami is likely to arrive at the coast. The app gives lots of tips about what to do, where to go and how to stay safe, as well as a list of useful Japanese phrases such as 'Is this an earthquake?' and 'Is it safe here?' Importantly, all the information is in English, and there are plans to add other languages.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Ứng dụng Safety Tips gửi cảnh báo đến người dùng khi có một trận động đất lớn xảy ra, và cũng thông báo cho họ nếu một cơn sóng thần có khả năng ập vào bờ. Ứng dụng cung cấp nhiều mẹo về những việc cần làm, nơi cần đi và cách giữ an toàn, cũng như danh sách các cụm từ tiếng Nhật hữu ích như 'Đây có phải là động đất không?' và 'Ở đây có an toàn không?' Quan trọng là, tất cả thông tin đều bằng tiếng Anh, và có kế hoạch thêm các ngôn ngữ khác.</div>
+
+
+
+      <div class="glossary-wrap">
+
+        <div class="glossary-title">📖 Academic Vocabulary</div>
+
+        <table class="glossary-table">
+
+          <tr><th>Word</th><th>Meaning</th></tr>
+
+          <tr><td><span class="g-word">Real-time</span> <span class="g-pos">(adj)</span></td><td>Thời gian thực (ngay lập tức)</td></tr>
+
+          <tr><td><span class="g-word">Tsunami</span> <span class="g-pos">(n)</span></td><td>Sóng thần</td></tr>
+
+          <tr><td><span class="g-word">Confused</span> <span class="g-pos">(adj)</span></td><td>Bối rối, hoang mang</td></tr>
+
+          <tr><td><span class="g-word">Struck (Strike)</span> <span class="g-pos">(v)</span></td><td>Đánh, ập đến (thiên tai)</td></tr>
+
+          <tr><td><span class="g-word">Rely on</span> <span class="g-pos">(v)</span></td><td>Dựa vào, phụ thuộc vào</td></tr>
+
+          <tr><td><span class="g-word">Alert</span> <span class="g-pos">(n)</span></td><td>Sự cảnh báo</td></tr>
+
+          <tr><td><span class="g-word">Colleague</span> <span class="g-pos">(n)</span></td><td>Đồng nghiệp</td></tr>
+
+        </table>
+
+      </div>
+
+    `,
+
+    questions: [
+
+      {
+
+        id: 31, text: "Question 31: What is the main purpose of the Safety Tips app?",
+
+        options: [
+
+          {l: "To help users organize social events", c: false}, {l: "To teach Japanese language", c: false}, {l: "To help users play games and surf the net", c: false}, {l: "To provide real-time earthquake and tsunami warnings", c: true}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 31</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Mục đích chính của ứng dụng Safety Tips là gì?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-mean">Để giúp người dùng tổ chức các sự kiện xã hội.</span> <span class="hl-red">❌ Sai (đây là chức năng của các app thông thường).</span></p>
+
+          <p>B. <span class="p-mean">Để dạy tiếng Nhật.</span> <span class="hl-red">❌ Sai (app có vài câu mẫu câu chứ không dạy học).</span></p>
+
+          <p>C. <span class="p-mean">Để giúp chơi game và lướt web.</span> <span class="hl-red">❌ Sai.</span></p>
+
+          <p>D. <span class="p-mean">Để cung cấp cảnh báo động đất và sóng thần theo thời gian thực.</span> <span class="hl-green">✅ Đúng.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 1):</span>
+
+          <div class="ex-quote">"The app is called Safety Tips and it gives users real-time earthquake and tsunami warnings."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Ứng dụng tên là Safety Tips và nó <strong>cung cấp cảnh báo động đất và sóng thần theo thời gian thực</strong>."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 32, text: "Question 32: Which word has the same meaning as \"confused\" in the text?",
+
+        options: [
+
+          {l: "alerted", c: false}, {l: "uncertain", c: true}, {l: "safe", c: false}, {l: "simple", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 32</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Từ nào có cùng ý nghĩa với từ "confused" (bối rối) trong văn bản?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">alerted</span>: <span class="p-mean">được báo động</span> <span class="hl-red">❌ Sai.</span></p>
+
+          <p>B. <span class="p-word">uncertain</span>: <span class="p-mean">không chắc chắn, hoang mang</span> <span class="hl-green">✅ Đúng. <span class="p-grammar">Confused = Uncertain</span> (bối rối vì không biết chuyện gì đang xảy ra).</span></p>
+
+          <p>C. <span class="p-word">safe</span>: <span class="p-mean">an toàn</span> <span class="hl-red">❌ Trái nghĩa.</span></p>
+
+          <p>D. <span class="p-word">simple</span>: <span class="p-mean">đơn giản</span> <span class="hl-red">❌ Sai.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
+
+          <div class="ex-quote">"...tourists in the country were confused about what was happening and what they should do."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...du khách trong nước đã <strong>bối rối (không chắc chắn)</strong> về những gì đang xảy ra và họ nên làm gì."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 33, text: "Question 33: Which word is the OPPOSITE of “major” as used in the text?",
+
+        options: [
+
+          {l: "dangerous", c: false}, {l: "minor", c: true}, {l: "helpful", c: false}, {l: "important", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 33</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Từ nào TRÁI NGHĨA với "major" (chính, lớn) được dùng trong văn bản?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-word">dangerous</span>: <span class="p-mean">nguy hiểm</span> <span class="hl-red">❌ Sai.</span></p>
+
+          <p>B. <span class="p-word">minor</span>: <span class="p-mean">nhỏ, thứ yếu</span> <span class="hl-green">✅ Đúng. Cặp từ trái nghĩa kinh điển: <span class="p-grammar">Major (Lớn) >< Minor (Nhỏ)</span>.</span></p>
+
+          <p>C. <span class="p-word">helpful</span>: <span class="p-mean">hữu ích</span> <span class="hl-red">❌ Sai.</span></p>
+
+          <p>D. <span class="p-word">important</span>: <span class="p-mean">quan trọng</span> <span class="hl-red">❌ Đây là từ đồng nghĩa, không phải trái nghĩa.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 3):</span>
+
+          <div class="ex-quote">"...when a major earthquake happens..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...khi một trận động đất <strong>lớn (major)</strong> xảy ra..."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 34, text: "Question 34: Which of the following is NOT TRUE according to the text?",
+
+        options: [
+
+          {l: "The Safety Tips app was created after the 2011 earthquake in Japan.", c: false}, {l: "Jenny understood Japanese warnings during the earthquake.", c: true}, {l: "The app provides earthquake and tsunami alerts in English.", c: false}, {l: "Jenny plans to use the app on her next trip to Japan.", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 34</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Điều nào sau đây là KHÔNG ĐÚNG theo văn bản?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-mean">Safety Tips được tạo ra SAU trận động đất 2011 ở Nhật.</span> <span class="hl-red">❌ Câu này ĐÚNG với bài đọc (Japan Tourist Agency had the idea... after the 2011 earthquake).</span></p>
+
+          <p>B. <span class="p-mean">Jenny ĐÃ HIỂU các cảnh báo tiếng Nhật trong trận động đất.</span> <span class="hl-green">✅ Chọn B vì câu này SAI SỰ THẬT (Cô ấy không hiểu tiếng Nhật).</span></p>
+
+          <p>C. <span class="p-mean">App cung cấp cảnh báo bằng tiếng Anh.</span> <span class="hl-red">❌ Câu này ĐÚNG (Importantly, all the information is in English).</span></p>
+
+          <p>D. <span class="p-mean">Jenny lên kế hoạch dùng app trong chuyến đi Nhật tiếp theo.</span> <span class="hl-red">❌ Câu này ĐÚNG (I'm coming to Japan again next year and I will definitely watch out for alerts).</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
+
+          <div class="ex-quote">"All the warnings... were in Japanese, and I couldn't understand."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Tất cả các cảnh báo... đều bằng tiếng Nhật, và tôi <strong>không thể hiểu được</strong>."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 35, text: "Question 35: Why did Jenny find the 2011 earthquake confusing?",
+
+        options: [
+
+          {l: "She didn’t know earthquakes were common in Japan.", c: false}, {l: "She wasn’t in Japan during the earthquake.", c: false}, {l: "She didn’t have a smartphone to get alerts.", c: false}, {l: "The warnings were in Japanese, which she couldn't understand.", c: true}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 35</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Tại sao Jenny lại thấy trận động đất năm 2011 thật bối rối?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-mean">Cô ấy không biết động đất phổ biến ở Nhật.</span> <span class="hl-red">❌ Sai, cô ấy biết (Although there are a lot of earthquakes in Japan...).</span></p>
+
+          <p>B. <span class="p-mean">Cô ấy không ở Nhật lúc đó.</span> <span class="hl-red">❌ Sai, cô ấy đang đi công tác ở Nhật.</span></p>
+
+          <p>C. <span class="p-mean">Cô ấy không có smartphone.</span> <span class="hl-red">❌ Không được đề cập trong bài.</span></p>
+
+          <p>D. <span class="p-mean">Các cảnh báo bằng tiếng Nhật, thứ mà cô ấy không thể hiểu.</span> <span class="hl-green">✅ Đúng. Ngôn ngữ rào cản chính là lý do khiến cô ấy bối rối.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 2):</span>
+
+          <div class="ex-quote">"All the warnings... were in Japanese, and I couldn't understand. It was really confusing and I didn't know what to do."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Tất cả các cảnh báo... đều <strong>bằng tiếng Nhật, và tôi không thể hiểu được</strong>. Điều đó thật sự <strong>gây bối rối</strong> và tôi không biết phải làm gì."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 36, text: "Question 36: What does the Safety Tips app provide besides earthquake and tsunami alerts?",
+
+        options: [
+
+          {l: "Weather forecasts for Japan", c: false}, {l: "Social event organization tools", c: false}, {l: "A list of helpful Japanese phrases", c: true}, {l: "Directions for downloading other apps", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 36</div>
+
+          <span class="ex-step">1. Dịch câu hỏi:</span>
+
+          <p>Ngoài cảnh báo động đất và sóng thần, ứng dụng Safety Tips còn cung cấp gì nữa?</p>
+
+          <span class="ex-step">2. Phân tích 4 đáp án:</span>
+
+          <p>A. <span class="p-mean">Dự báo thời tiết cho Nhật Bản.</span> <span class="hl-red">❌ Không đề cập.</span></p>
+
+          <p>B. <span class="p-mean">Công cụ tổ chức sự kiện xã hội.</span> <span class="hl-red">❌ Đây là tính năng của các app chung chung khác ở đầu bài.</span></p>
+
+          <p>C. <span class="p-mean">Một danh sách các cụm từ tiếng Nhật hữu ích.</span> <span class="hl-green">✅ Đúng.</span></p>
+
+          <p>D. <span class="p-mean">Hướng dẫn tải các app khác.</span> <span class="hl-red">❌ Không đề cập.</span></p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa (Đoạn 3):</span>
+
+          <div class="ex-quote">"...as well as a list of useful Japanese phrases such as 'Is this an earthquake?'"</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...cũng như <strong>một danh sách các cụm từ tiếng Nhật hữu ích</strong> như 'Đây có phải là động đất không?'"</div>
+
+        `
+
+      }
+
+    ]
+
+  },
+
+  {
+
+    reading: `
+
+      <div class="reading-title">💻 PASSAGE 4: COMPUTERS</div>
+
+      
+
+      <p class="passage-para">Computers are helpful in many ways. First, they are fast. They can work with information even more quickly than a person. (37) ______. Third, they can keep information for a long time. They do not forget things that the common people do. (38) ______. They are not perfect, (39) _____. Recently, it is important to know about computers. There are a number of things to learn. Some companies have classes at work. In addition, most universities offer day and night course offers in Computer Science. Another way to learn is from a book, or from a friend. After a few hours of practice, (40) _____. You may not be an expert, but you can have fun.</p>
+
+      <button class="trans-btn" onclick="toggleTrans(this)">Mở dịch đoạn này 🌟</button>
+
+      <div class="trans-content">Máy tính hữu ích theo nhiều cách. Đầu tiên, chúng rất nhanh. Chúng có thể xử lý thông tin nhanh hơn con người rất nhiều. (37) ______. Thứ ba, chúng có thể lưu trữ thông tin trong một thời gian dài. Chúng không quên mọi thứ như người bình thường. (38) ______. Chúng không hoàn hảo, (39) _____. Gần đây, việc hiểu biết về máy tính trở nên quan trọng. Có một số điều cần học. Một số công ty có các lớp học tại nơi làm việc. Ngoài ra, hầu hết các trường đại học đều cung cấp các khóa học ngày và đêm về Khoa học Máy tính. Một cách học khác là từ sách, hoặc từ một người bạn. Sau vài giờ thực hành, (40) _____. Bạn có thể không phải là một chuyên gia, nhưng bạn có thể tận hưởng niềm vui.</div>
+
+
+
+      <div class="glossary-wrap">
+
+        <div class="glossary-title">📖 Academic Vocabulary</div>
+
+        <table class="glossary-table">
+
+          <tr><th>Word</th><th>Meaning</th></tr>
+
+          <tr><td><span class="g-word">Helpful</span> <span class="g-pos">(adj)</span></td><td>Hữu ích</td></tr>
+
+          <tr><td><span class="g-word">Information</span> <span class="g-pos">(n)</span></td><td>Thông tin, dữ liệu</td></tr>
+
+          <tr><td><span class="g-word">Perfect</span> <span class="g-pos">(adj)</span></td><td>Hoàn hảo</td></tr>
+
+          <tr><td><span class="g-word">Recently</span> <span class="g-pos">(adv)</span></td><td>Gần đây</td></tr>
+
+          <tr><td><span class="g-word">University</span> <span class="g-pos">(n)</span></td><td>Trường đại học</td></tr>
+
+          <tr><td><span class="g-word">Expert</span> <span class="g-pos">(n)</span></td><td>Chuyên gia</td></tr>
+
+          <tr><td><span class="g-word">Make mistakes</span> <span class="g-pos">(v)</span></td><td>Phạm sai lầm</td></tr>
+
+        </table>
+
+      </div>
+
+    `,
+
+    questions: [
+
+      {
+
+        id: 37, text: "Question 37: First, they are fast. They can work with information even more quickly than a person. (37) ______.",
+
+        options: [
+
+          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: true}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 37</div>
+
+          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
+
+          <p>Câu trước đang liệt kê ý số 1 bắt đầu bằng chữ <span class="p-grammar">"First"</span> (Đầu tiên). Câu phía sau liền kề lại bắt đầu bằng <span class="p-grammar">"Third"</span> (Thứ ba).</p>
+
+          <span class="ex-step">2. Chọn đáp án:</span>
+
+          <p>Đương nhiên ô trống (37) phải là ý số 2 bắt đầu bằng chữ <span class="hl-green">"Second"</span> để nối tiếp tính logic của mạch văn liệt kê.</p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"...quickly than a person. Second, computers can work with a lot of information at the same time. Third, they can keep..."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "...nhanh hơn con người. <strong>Thứ hai, máy tính có thể làm việc với rất nhiều thông tin cùng lúc.</strong> Thứ ba, chúng có thể lưu giữ..."</div>
+
+        `
+
+      },
+
+      {
+
+        id: 38, text: "Question 38: They do not forget things that the common people do. (38) ______.",
+
+        options: [
+
+          {l: "A - Moreover, computers are almost always correct", c: true}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 38</div>
+
+          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
+
+          <p>Câu phía trước nói về việc "Chúng không hay quên như con người". Việc KHÔNG QUÊN dẫn đến kết quả là điều gì?</p>
+
+          <span class="ex-step">2. Chọn đáp án:</span>
+
+          <p>Đó là sự chính xác (không quên nên không sai). Đáp án A dùng từ nối <span class="p-grammar">Moreover (Hơn nữa)</span> để bổ sung thêm ưu điểm tuyệt đối này.</p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"They do not forget things that the common people do. Moreover, computers are almost always correct."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Chúng không quên mọi thứ như người bình thường. <strong>Hơn nữa, máy tính hầu như luôn luôn chính xác.</strong>"</div>
+
+        `
+
+      },
+
+      {
+
+        id: 39, text: "Question 39: They are not perfect, (39) _____.",
+
+        options: [
+
+          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: true}, {l: "D - you can work with computers", c: false}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 39</div>
+
+          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
+
+          <p>Câu bắt đầu bằng "They are not perfect" (Chúng không hoàn hảo). Sau dấu phẩy là một mệnh đề tương phản để vớt vát lại ưu điểm.</p>
+
+          <span class="ex-step">2. Chọn đáp án:</span>
+
+          <p>Đáp án C bắt đầu bằng liên từ <span class="p-grammar">"but" (nhưng)</span> thể hiện sự tương phản hoàn hảo: "Không hoàn hảo 100%, NHƯNG chúng thường không mắc lỗi".</p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"They are not perfect, but they usually do not make mistakes."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Chúng không hoàn hảo, <strong>nhưng chúng thường không phạm sai lầm.</strong>"</div>
+
+        `
+
+      },
+
+      {
+
+        id: 40, text: "Question 40: After a few hours of practice, (40) _____. You may not be an expert, but you can have fun.",
+
+        options: [
+
+          {l: "A - Moreover, computers are almost always correct", c: false}, {l: "B - Second, computers can work with a lot of information at the same time", c: false}, {l: "C - but they usually do not make mistakes", c: false}, {l: "D - you can work with computers", c: true}
+
+        ],
+
+        explanation: `
+
+          <div class="ex-title">🔮 GIẢI THÍCH CHI TIẾT — CÂU 40</div>
+
+          <span class="ex-step">1. Phân tích Ngữ cảnh:</span>
+
+          <p>Mệnh đề trạng ngữ "After a few hours of practice" (Sau một vài giờ thực hành) đòi hỏi một mệnh đề chính chỉ kết quả của việc thực hành đó.</p>
+
+          <span class="ex-step">2. Chọn đáp án:</span>
+
+          <p>Thực hành xong thì kết quả là: bạn có thể "work with computers" (làm việc với máy tính). Đáp án D ráp vào tạo thành câu hoàn chỉnh và logic với câu chốt "bạn có thể không là chuyên gia nhưng sẽ thấy vui".</p>
+
+          <span class="ex-step">3. Trích dẫn & Dịch nghĩa:</span>
+
+          <div class="ex-quote">"After a few hours of practice, you can work with computers."</div>
+
+          <div class="ex-trans-quote">👉 Dịch: "Sau vài giờ thực hành, <strong>bạn có thể làm việc với máy tính.</strong>"</div>
+
+        `
+
+      }
+
+    ]
+
+  }
+
+];
+
+
+
+// ===== BUILD UI =====
+
+function buildQuiz() {
+
+  const container = document.getElementById('quizContainer');
+
+  container.innerHTML = '';
+
+  
+
+  quizData.forEach((block) => {
+
+    // Wrap in split-screen format
+
+    const splitBlock = document.createElement('div');
+
+    splitBlock.className = 'split-block';
+
+
+
+    // Left pane (Reading)
+
+    const leftPane = document.createElement('div');
+
+    leftPane.className = 'left-pane';
+
+    leftPane.innerHTML = block.reading;
+
+
+
+    // Right pane (Questions)
+
+    const rightPane = document.createElement('div');
+
+    rightPane.className = 'right-pane';
+
+    
+
+    block.questions.forEach(q => {
+
+      const qCard = document.createElement('div');
+
+      qCard.className = 'q-card';
+
+      qCard.id = `qcard-${q.id}`;
+
+
+
+      // Shuffle options safely
+
+      const shuffled = shuffle(q.options);
+
+
+
+      qCard.innerHTML = `
+
+        <div class="q-text"><span class="q-num">${q.id}</span>${q.text.replace(`Question ${q.id}:`, '')}</div>
+
+        <div class="options-grid" id="opts-${q.id}">
+
+          ${shuffled.map((opt, i) => `
+
+            <button class="opt-btn" id="opt-${q.id}-${i}"
+
+              onclick="checkAnswer(${q.id}, ${opt.c}, this)"
+
+              data-correct="${opt.c}">
+
+              ${opt.l}
+
+            </button>
+
+          `).join('')}
+
+        </div>
+
+        <div class="explanation" id="exp-${q.id}">
+
+          ${q.explanation}
+
+        </div>
+
+      `;
+
+      rightPane.appendChild(qCard);
+
+    });
+
+
+
+    splitBlock.appendChild(leftPane);
+
+    splitBlock.appendChild(rightPane);
+
+    container.appendChild(splitBlock);
+
+  });
+
+}
+
+
+
+// ===== CHECK ANSWER LOGIC =====
+
+const answered = {};
+
+function checkAnswer(qId, isCorrect, btn) {
+
+  if (answered[qId]) return;
+
+  answered[qId] = true;
+
+  
+
+  // Disable all
+
+  const btns = document.querySelectorAll(`#opts-${qId} .opt-btn`);
+
+  btns.forEach(b => {
+
+    b.disabled = true;
+
+    if (b.dataset.correct === 'true') {
+
+      b.classList.add('correct'); // Auto highlight correct
+
+    }
+
+  });
+
+
+
+  if (isCorrect) {
+
+    btn.classList.add('correct');
+
+    correctCount++;
+
+    playCorrect();
+
+    launchConfetti();
+
+  } else {
+
+    btn.classList.add('wrong');
+
+    playWrong();
+
+  }
+
+
+
+  // Show explanation
+
+  document.getElementById(`exp-${qId}`).classList.add('show');
+
+  
+
+  // Update Score
+
+  answeredCount++;
+
+  document.getElementById('correctCount').textContent = correctCount;
+
+  document.getElementById('answeredCount').textContent = answeredCount;
+
+  document.getElementById('scoreDisplay').textContent = ((correctCount / 20) * 10).toFixed(1);
+
+}
+
+
+
+// ===== SUBMIT LOGIC =====
+
+function openNameModal() {
+
+  document.getElementById('nameModal').classList.add('show');
+
+  document.getElementById('nameInput').focus();
+
+}
+
+
+
+function confirmName() {
+
+  const name = document.getElementById('nameInput').value.trim();
+
+  const err = document.getElementById('nameError');
+
+  if (!name) {
+
+    err.style.display = 'block';
+
+    return;
+
+  }
+
+  err.style.display = 'none';
+
+  document.getElementById('nameModal').classList.remove('show');
+
+  
+
+  // Prepare Result
+
+  const pct = correctCount / 20;
+
+  let title, comment, meme;
+
+
+
+  if (pct === 1) {
+
+    title = `🌟 THIÊN TÀI XUẤT CHÚNG!`;
+
+    comment = `Tuyệt đỉnh ${name}! Em làm bài xuất sắc 100%. MS Chí Nên rất tự hào về em! 🏆✨`;
+
+    meme = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif";
+
+  } else if (pct >= 0.6) {
+
+    title = `👏 RẤT TỐT ${name.toUpperCase()}!`;
+
+    comment = `Em đã làm bài rất cẩn thận! Tiếp tục phát huy nhé! 💪`;
+
+    meme = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif";
+
+  } else {
+
+    title = `😢 CỐ LÊN NHÉ ${name.toUpperCase()}!`;
+
+    comment = `Đừng buồn! Em hãy đọc thật kỹ phần Giải thích chi tiết để tiến bộ hơn nhé! 🦉`;
+
+    meme = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
+
+  }
+
+
+
+  document.getElementById('resultTitle').textContent = title;
+
+  document.getElementById('resultScore').textContent = `${correctCount}/20`;
+
+  document.getElementById('resultComment').textContent = comment;
+
+  document.getElementById('memeImg').src = meme;
+
+  document.getElementById('resultModal').classList.add('show');
+
+}
+
+</script>
+
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -969,40 +1932,43 @@ function confirmName() {
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 
@@ -1016,5 +1982,6 @@ function confirmName() {
     setTimeout(unlockNow, 600);
 })();
 </script>
-</body>
+</body>
+
 </html>

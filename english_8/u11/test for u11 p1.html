@@ -1204,11 +1204,15 @@ function submitTest() {
   if (pct >= 60) launchConfetti();
 }
 </script>
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -1216,40 +1220,43 @@ function submitTest() {
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 

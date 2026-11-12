@@ -1,961 +1,1918 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test For Unit 12 - MS Chí Nên ULIS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #8854C0;
-            --secondary: #FDCB6E;
-            --accent: #00C9A7;
-            --correct: #00D26A;
-            --wrong: #FF4757;
-            --text-dark: #2C3E50;
-            --card-bg: rgba(255, 255, 255, 0.95);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #8854C0);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--text-dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Moving Universe Pattern Background */
-        .universe-bg {
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 300%;
-            pointer-events: none;
-            z-index: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' fill-opacity='0.2' d='M10,10 L12,15 L10,20 L8,15 Z M50,40 L53,48 L50,56 L47,48 Z M80,20 A5,5 0 1,1 80,30 A5,5 0 1,1 80,20 Z M20,80 Q25,75 30,80 Q25,85 20,80 Z M85,85 L88,90 L85,95 L82,90 Z'/%3E%3C/svg%3E");
-            animation: floatUp 40s linear infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes floatUp {
-            from { transform: translateY(0); }
-            to { transform: translateY(-33.33%); }
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
-        }
-
-        .teacher-name {
-            font-size: 1rem;
-            color: var(--primary);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--text-dark);
-            text-shadow: 2px 2px 0px var(--secondary);
-        }
-
-        .part-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            background: var(--primary);
-            padding: 15px 25px;
-            border-radius: 15px;
-            margin: 40px 0 20px 0;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .question {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .question u {
-            text-decoration: underline;
-            text-decoration-color: var(--wrong);
-            text-decoration-thickness: 3px;
-        }
-
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .btn-option {
-            background: #fff;
-            border: 3px solid #e0e0e0;
-            padding: 15px 20px;
-            font-size: 1.08rem;
-            font-weight: 700;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 0 #e0e0e0;
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-option:hover:not(:disabled) {
-            transform: scale(1.02) translateY(-2px);
-            border-color: var(--secondary);
-            box-shadow: 0 8px 0 var(--secondary);
-        }
-
-        .btn-option:active:not(:disabled) {
-            transform: scale(0.98) translateY(4px);
-            box-shadow: 0 2px 0 var(--secondary);
-        }
-
-        .btn-option.correct {
-            background: var(--correct);
-            color: #fff;
-            border-color: #00b35a;
-            box-shadow: 0 6px 0 #00b35a;
-        }
-
-        .btn-option.wrong {
-            background: var(--wrong);
-            color: #fff;
-            border-color: #d63031;
-            box-shadow: 0 6px 0 #d63031;
-        }
-
-        .btn-option:disabled {
-            cursor: not-allowed;
-            opacity: 0.9;
-        }
-
-        /* Shake Animation */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-        .shake { animation: shake 0.4s ease-in-out; }
-
-        .explanation {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f0f4f8;
-            border-left: 6px solid var(--primary);
-            border-radius: 10px;
-            font-size: 1rem;
-            line-height: 1.6;
-            animation: slideDown 0.4s ease-out;
-        }
-
-        .explanation.show { display: block; }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .exp-step { margin-bottom: 12px; }
-        .exp-title { font-weight: 800; color: var(--primary); }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            background: var(--correct);
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 900;
-            padding: 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 10px 0 #00b35a;
-            margin-top: 40px;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 0 #00b35a;
-        }
-
-        .submit-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 0 #00b35a;
-        }
-
-        /* Modal Score */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #fff;
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .score-text { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
-        .praise-text { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
-
-        .confetti {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            z-index: 50;
-            pointer-events: none;
-        }
-
-        @media (max-width: 768px) {
-            .options { grid-template-columns: 1fr; }
-            .title { font-size: 2rem; }
-        }
-    </style>
-</head>
-<body>
-    <div class="universe-bg"></div>
-    <div class="container">
-        <div class="header">
-            <div class="teacher-name">Giáo viên tạo: MS Chí Nên ULIS</div>
-            <h1 class="title">TEST FOR UNIT 12</h1>
-        </div>
-        
-        <div id="quiz-container"></div>
-        
-        <button class="submit-btn" onclick="submitQuiz()">Nộp bài ngay! 🚀</button>
-    </div>
-
-    <div class="modal" id="scoreModal">
-        <div class="modal-content">
-            <h2 style="font-size: 2.5rem; color: #333;">KẾT QUẢ CỦA BẠN</h2>
-            <div class="score-text" id="finalScore">0 / 40</div>
-            <div class="praise-text" id="praiseText">Tuyệt vời!</div>
-            <button class="submit-btn" style="margin-top: 20px;" onclick="location.reload()">Làm lại bài 🔄</button>
-        </div>
-    </div>
-
-<script>
-// --- AUDIO SYSTEM (Web Audio API) ---
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-
-function initAudio() {
-    if (!audioCtx) audioCtx = new AudioContext();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playSound(type) {
-    initAudio();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    if (type === 'correct') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.5);
-    } else {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.2);
-    }
-}
-
-// --- CONFETTI SYSTEM ---
-function createConfetti(rect) {
-    const colors = ['#FF4757', '#00D26A', '#FDCB6E', '#8854C0', '#00C9A7'];
-    for (let i = 0; i < 40; i++) {
-        const conf = document.createElement('div');
-        conf.className = 'confetti';
-        conf.style.left = (rect.left + rect.width / 2) + window.scrollX + 'px';
-        conf.style.top = (rect.top + rect.height / 2) + window.scrollY + 'px';
-        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-        document.body.appendChild(conf);
-
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = 50 + Math.random() * 100;
-        const tx = Math.cos(angle) * velocity;
-        const ty = Math.sin(angle) * velocity - 100; 
-
-        conf.animate([
-            { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
-            { transform: `translate(${tx}px, ${ty}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-        ], { duration: 1000, easing: 'cubic-bezier(.25,.8,.25,1)' });
-
-        setTimeout(() => conf.remove(), 1000);
-    }
-}
-
-// --- QUIZ DATA ---
-const rawData = [
-    {
-        partTitle: "I. Choose the word whose underlined part is pronounced differently from the others.",
-        questions: [
-            {
-                q: "1. a. <u>a</u>ccommodate / b. <u>a</u>dventure / c. <u>a</u>lien / d. <u>a</u>ppropriate",
-                options: ["accommodate", "adventure", "alien", "appropriate"],
-                correct: "alien",
-                exp: {
-                    t: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
-                    o: "A. accommodate (v): cung cấp chỗ ở (âm /ə/)<br>B. adventure (n): cuộc phiêu lưu (âm /ə/)<br>C. alien (n): người ngoài hành tinh (âm /eɪ/)<br>D. appropriate (adj): thích hợp (âm /ə/)",
-                    r: "Đáp án đúng là <b>C. alien</b> vì âm gạch chân 'a' phát âm là /eɪ/.",
-                    w: "Các đáp án A, B, D đều có âm 'a' được phát âm là âm schwa /ə/."
-                }
-            },
-            {
-                q: "2. a. <u>U</u>FO / b. J<u>u</u>piter / c. Nept<u>u</u>ne / d. f<u>u</u>ture",
-                options: ["UFO", "Jupiter", "Neptune", "future"],
-                correct: "Jupiter",
-                exp: {
-                    t: "Chọn từ có phần gạch chân phát âm khác.",
-                    o: "A. UFO (n): đĩa bay, vật thể bay không xác định (âm /ju:/)<br>B. Jupiter (n): sao Mộc (âm /u:/)<br>C. Neptune (n): sao Hải Vương (âm /ju:/)<br>D. future (n): tương lai (âm /ju:/)",
-                    r: "Đáp án đúng là <b>B. Jupiter</b> vì âm 'u' được phát âm là /u:/.",
-                    w: "Các đáp án A, C, D đều phát âm âm 'u' là /ju:/ (âm 'iu')."
-                }
-            },
-            {
-                q: "3. a. sau<u>c</u>er / b. <u>c</u>rew / c. Mer<u>c</u>ury / d. ac<u>c</u>ommodate",
-                options: ["saucer", "crew", "Mercury", "accommodate"],
-                correct: "saucer",
-                exp: {
-                    t: "Chọn từ có phần gạch chân phát âm khác.",
-                    o: "A. saucer (n): đĩa hứng nước (âm /s/)<br>B. crew (n): phi hành đoàn (âm /k/)<br>C. Mercury (n): sao Thủy (âm /k/)<br>D. accommodate (v): cung cấp chỗ (âm /k/)",
-                    r: "Đáp án đúng là <b>A. saucer</b> vì chữ 'c' đi với 'e' nên phát âm là /s/.",
-                    w: "Các đáp án B, C, D đều có chữ 'c' phát âm là /k/ (âm cứng)."
-                }
-            },
-            {
-                q: "4. a. cl<u>i</u>mate / b. s<u>i</u>ghting / c. m<u>i</u>ght / d. al<u>i</u>ens",
-                options: ["climate", "sighting", "might", "aliens"],
-                correct: "aliens",
-                exp: {
-                    t: "Chọn từ có phần gạch chân phát âm khác.",
-                    o: "A. climate (n): khí hậu (âm /aɪ/)<br>B. sighting (n): sự nhìn thấy (âm /aɪ/)<br>C. might (v): có thể (âm /aɪ/)<br>D. aliens (n): người ngoài hành tinh (âm /i/ hoặc /j/)",
-                    r: "Đáp án đúng là <b>D. aliens</b> vì chữ 'i' phát âm là /i/ (âm ngắn).",
-                    w: "Các đáp án A, B, C đều có chữ 'i' phát âm là /aɪ/ (âm 'ai')."
-                }
-            },
-            {
-                q: "5. a. br<u>ea</u>the / b. <u>ea</u>rth / c. s<u>ea</u> / d. m<u>ea</u>ningful",
-                options: ["breathe", "earth", "sea", "meaningful"],
-                correct: "earth",
-                exp: {
-                    t: "Chọn từ có phần gạch chân phát âm khác.",
-                    o: "A. breathe (v): hít thở (âm /i:/)<br>B. earth (n): trái đất (âm /ɜ:/)<br>C. sea (n): biển (âm /i:/)<br>D. meaningful (adj): có ý nghĩa (âm /i:/)",
-                    r: "Đáp án đúng là <b>B. earth</b> vì 'ea' đi với 'r' phát âm thành /ɜ:/ (âm ơ dài).",
-                    w: "Các đáp án A, C, D đều có 'ea' phát âm là /i:/ (âm i dài)."
-                }
-            }
-        ]
-    },
-    {
-        partTitle: "II. Choose the word that has different stress pattern.",
-        questions: [
-            {
-                q: "1. a. surface / b. UFO / c. alien / d. weightless",
-                options: ["surface", "UFO", "alien", "weightless"],
-                correct: "UFO",
-                exp: {
-                    t: "Chọn từ có trọng âm khác với các từ còn lại.",
-                    o: "A. surface (n): bề mặt (nhấn âm 1)<br>B. UFO (n): đĩa bay (nhấn âm 3 - từ viết tắt đọc từng chữ U-F-O)<br>C. alien (n): người ngoài hành tinh (nhấn âm 1)<br>D. weightless (adj): không trọng lượng (nhấn âm 1)",
-                    r: "Đáp án đúng là <b>B. UFO</b> vì trọng âm rơi vào âm tiết thứ 3 (chữ O).",
-                    w: "Các đáp án A, C, D đều có trọng âm rơi vào âm tiết thứ 1."
-                }
-            },
-            {
-                q: "2. a. temperature / b. Jupiter / c. Mercury / d. adventure",
-                options: ["temperature", "Jupiter", "Mercury", "adventure"],
-                correct: "adventure",
-                exp: {
-                    t: "Chọn từ có trọng âm khác.",
-                    o: "A. temperature (n): nhiệt độ (nhấn âm 1)<br>B. Jupiter (n): sao Mộc (nhấn âm 1)<br>C. Mercury (n): sao Thủy (nhấn âm 1)<br>D. adventure (n): chuyến phiêu lưu (nhấn âm 2)",
-                    r: "Đáp án đúng là <b>D. adventure</b> vì trọng âm rơi vào âm tiết 2.",
-                    w: "Các đáp án A, B, C đều có trọng âm rơi vào âm tiết 1."
-                }
-            },
-            {
-                q: "3. a. atmosphere / b. powerful / c. condition / d. astronaut",
-                options: ["atmosphere", "powerful", "condition", "astronaut"],
-                correct: "condition",
-                exp: {
-                    t: "Chọn từ có trọng âm khác.",
-                    o: "A. atmosphere (n): bầu khí quyển (nhấn âm 1)<br>B. powerful (adj): mạnh mẽ (nhấn âm 1)<br>C. condition (n): điều kiện (nhấn âm 2)<br>D. astronaut (n): phi hành gia (nhấn âm 1)",
-                    r: "Đáp án đúng là <b>C. condition</b> vì các từ kết thúc bằng đuôi '-ion' có trọng âm rơi vào âm ngay trước nó (âm 2).",
-                    w: "Các đáp án A, B, D đều có trọng âm rơi vào âm tiết 1."
-                }
-            },
-            {
-                q: "4. a. imaginary / b. possibility / c. particular / d. behaviour",
-                options: ["imaginary", "possibility", "particular", "behaviour"],
-                correct: "possibility",
-                exp: {
-                    t: "Chọn từ có trọng âm khác.",
-                    o: "A. imaginary (adj): tưởng tượng (nhấn âm 2)<br>B. possibility (n): khả năng (nhấn âm 3)<br>C. particular (adj): cụ thể (nhấn âm 2)<br>D. behaviour (n): hành vi (nhấn âm 2)",
-                    r: "Đáp án đúng là <b>B. possibility</b> vì đuôi '-ity' làm trọng âm rơi vào âm tiết liền trước nó (si -> âm 3).",
-                    w: "Các đáp án A, C, D đều nhấn âm 2."
-                }
-            },
-            {
-                q: "5. a. similarly / b. discovery / c. accommodate / d. unsuitable",
-                options: ["similarly", "discovery", "accommodate", "unsuitable"],
-                correct: "similarly",
-                exp: {
-                    t: "Chọn từ có trọng âm khác.",
-                    o: "A. similarly (adv): tương tự (nhấn âm 1)<br>B. discovery (n): sự khám phá (nhấn âm 2)<br>C. accommodate (v): cung cấp chỗ (nhấn âm 2)<br>D. unsuitable (adj): không phù hợp (nhấn âm 2 - gốc suitable nhấn âm 1, thêm un- không đổi trọng âm từ gốc, nhưng so với toàn từ là âm 2)",
-                    r: "Đáp án đúng là <b>A. similarly</b> vì trọng âm rơi vào âm tiết 1.",
-                    w: "Các đáp án B, C, D đều có trọng âm chính ở âm tiết thứ 2."
-                }
-            }
-        ]
-    },
-    {
-        partTitle: "III. Complete each sentence with a suitable word. (Gap Fill)",
-        questions: [
-            {
-                q: "1. Trang asked _______ people would live on Mars in the next 20 years.",
-                options: ["if / whether", "that", "what", "which"],
-                correct: "if / whether",
-                exp: {
-                    t: "Trang đã hỏi liệu con người có sống trên sao Hỏa trong 20 năm tới không.",
-                    o: "A. if / whether (liên từ): liệu rằng (dùng trong câu gián tiếp dạng Yes/No)<br>B. that (liên từ): rằng<br>C. what (đại từ): cái gì<br>D. which (đại từ): cái nào",
-                    r: "Đáp án đúng là <b>A. if / whether</b> vì đây là câu tường thuật dạng câu hỏi Yes/No question (Would people live...?). Cấu trúc: S + asked + if/whether + Clause.",
-                    w: "Các đáp án khác sai cấu trúc câu tường thuật câu hỏi nghi vấn."
-                }
-            },
-            {
-                q: "2. _______ is the furthest planet from the sun.",
-                options: ["Neptune", "Venus", "Mars", "Earth"],
-                correct: "Neptune",
-                exp: {
-                    t: "... là hành tinh xa mặt trời nhất.",
-                    o: "A. Neptune (n): sao Hải Vương<br>B. Venus (n): sao Kim<br>C. Mars (n): sao Hỏa<br>D. Earth (n): trái đất",
-                    r: "Đáp án đúng là <b>A. Neptune</b> vì theo kiến thức thiên văn thực tế, sao Hải Vương là hành tinh thứ 8 và xa nhất trong hệ Mặt Trời.",
-                    w: "Các hành tinh khác đều nằm gần mặt trời hơn Neptune."
-                }
-            },
-            {
-                q: "3. Earth is the only _______ in the solar system that has life.",
-                options: ["planet", "star", "galaxy", "moon"],
-                correct: "planet",
-                exp: {
-                    t: "Trái Đất là ... duy nhất trong hệ mặt trời có sự sống.",
-                    o: "A. planet (n): hành tinh<br>B. star (n): ngôi sao (như mặt trời)<br>C. galaxy (n): dải ngân hà<br>D. moon (n): mặt trăng / vệ tinh tự nhiên",
-                    r: "Đáp án đúng là <b>A. planet</b>. Trái Đất được phân loại là một 'hành tinh'.",
-                    w: "Trái Đất không phải là ngôi sao, dải ngân hà hay vệ tinh."
-                }
-            },
-            {
-                q: "4. The European Space Agency launched a _______ carrying a spacecraft destined for Jupiter.",
-                options: ["rocket", "plane", "car", "boat"],
-                correct: "rocket",
-                exp: {
-                    t: "Cơ quan Vũ trụ Châu Âu đã phóng một ... mang theo tàu vũ trụ có đích đến là sao Mộc.",
-                    o: "A. rocket (n): tên lửa<br>B. plane (n): máy bay<br>C. car (n): ô tô<br>D. boat (n): thuyền",
-                    r: "Đáp án đúng là <b>A. rocket</b> vì người ta dùng 'tên lửa' (rocket) để phóng (launch) tàu vũ trụ (spacecraft) ra ngoài không gian.",
-                    w: "Máy bay, ô tô, tàu thuyền không dùng để bay vào vũ trụ."
-                }
-            },
-            {
-                q: "5. Vostok 1 was the first _______ to carry a human, Yuri A. Gagarin, into space.",
-                options: ["spaceship / spacecraft", "alien", "telescope", "planet"],
-                correct: "spaceship / spacecraft",
-                exp: {
-                    t: "Vostok 1 là ... đầu tiên mang con người, Yuri A. Gagarin, vào không gian.",
-                    o: "A. spaceship / spacecraft (n): tàu vũ trụ<br>B. alien (n): người ngoài hành tinh<br>C. telescope (n): kính viễn vọng<br>D. planet (n): hành tinh",
-                    r: "Đáp án đúng là <b>A. spaceship / spacecraft</b>. Vostok 1 là tên của tàu vũ trụ lịch sử của Nga.",
-                    w: "Vostok 1 không phải là người ngoài hành tinh, kính viễn vọng hay hành tinh."
-                }
-            },
-            {
-                q: "6. The Sun is just one of more than 200 billion stars in the Milky Way _______.",
-                options: ["galaxy", "universe", "planet", "atmosphere"],
-                correct: "galaxy",
-                exp: {
-                    t: "Mặt Trời chỉ là một trong hơn 200 tỷ ngôi sao trong ... dải ngân hà Milky Way.",
-                    o: "A. galaxy (n): thiên hà, dải ngân hà<br>B. universe (n): vũ trụ<br>C. planet (n): hành tinh<br>D. atmosphere (n): khí quyển",
-                    r: "Đáp án đúng là <b>A. galaxy</b>. 'Milky Way' là tên riêng của Thiên hà (Galaxy) chứa hệ mặt trời của chúng ta.",
-                    w: "Vũ trụ (universe) chứa rất nhiều thiên hà. Planet và atmosphere sai hoàn toàn về quy mô."
-                }
-            },
-            {
-                q: "7. He wanted to know _______ humans couldn't live on Mercury or Venus.",
-                options: ["why", "what", "who", "whom"],
-                correct: "why",
-                exp: {
-                    t: "Anh ấy muốn biết ... con người không thể sống trên sao Thủy hoặc sao Kim.",
-                    o: "A. why (trạng từ nghi vấn): tại sao<br>B. what (đại từ): cái gì<br>C. who (đại từ): ai<br>D. whom (đại từ): người nào (tân ngữ)",
-                    r: "Đáp án đúng là <b>A. why</b> (tại sao) tạo thành câu tường thuật chỉ nguyên nhân. Anh ấy tò mò về lý do (tại sao).",
-                    w: "Lắp các từ khác vào câu sẽ không tạo ra nghĩa hợp lý."
-                }
-            },
-            {
-                q: "8. I always enjoy looking at Jupiter through my _______.",
-                options: ["telescope", "glasses", "window", "mirror"],
-                correct: "telescope",
-                exp: {
-                    t: "Tôi luôn thích ngắm sao Mộc qua ... của mình.",
-                    o: "A. telescope (n): kính viễn vọng<br>B. glasses (n): kính cận/viễn thông thường<br>C. window (n): cửa sổ<br>D. mirror (n): cái gương",
-                    r: "Đáp án đúng là <b>A. telescope</b>. Để ngắm các hành tinh xa xôi như sao Mộc, người ta bắt buộc phải dùng kính viễn vọng.",
-                    w: "Mắt thường qua kính cận hay cửa sổ không thể quan sát chi tiết được sao Mộc."
-                }
-            },
-            {
-                q: "9. People imagine Earth-like planets and _______ creatures living on them.",
-                options: ["alien", "human", "animal", "normal"],
-                correct: "alien",
-                exp: {
-                    t: "Mọi người tưởng tượng về các hành tinh giống Trái Đất và các sinh vật ... sống trên đó.",
-                    o: "A. alien (adj/n): (thuộc về) người ngoài hành tinh, xa lạ<br>B. human (n/adj): con người<br>C. animal (n/adj): động vật<br>D. normal (adj): bình thường",
-                    r: "Đáp án đúng là <b>A. alien</b>. Sinh vật sống trên hành tinh khác được gọi chung là 'alien creatures' (sinh vật ngoài hành tinh).",
-                    w: "Human và animal là các khái niệm của Trái Đất, không phù hợp ngữ cảnh tưởng tượng về hành tinh khác."
-                }
-            },
-            {
-                q: "10. Asteroids, also known as 'minor planets', are numerous in the _______ space.",
-                options: ["outer", "inner", "upper", "lower"],
-                correct: "outer",
-                exp: {
-                    t: "Các tiểu hành tinh, còn được gọi là 'hành tinh nhỏ', có rất nhiều trong không gian ...",
-                    o: "A. outer (adj): bên ngoài (outer space = ngoài vũ trụ)<br>B. inner (adj): bên trong<br>C. upper (adj): phía trên<br>D. lower (adj): phía dưới",
-                    r: "Đáp án đúng là <b>A. outer</b>. Cụm từ cố định 'outer space' mang nghĩa là không gian vũ trụ bên ngoài bầu khí quyển Trái Đất.",
-                    w: "Không ai dùng inner/upper/lower đi với space trong ngữ cảnh vũ trụ học."
-                }
-            }
-        ]
-    },
-    {
-        partTitle: "IV. Choose the best answer a, b, c or d to complete the sentence.",
-        questions: [
-            {
-                q: "1. Venus is very similar ______ Earth in terms of size and surface gravity.",
-                options: ["with", "to", "from", "of"],
-                correct: "to",
-                exp: {
-                    t: "Sao Kim rất giống ______ Trái Đất về kích thước và trọng lực bề mặt.",
-                    o: "A. with (giới từ): với<br>B. to (giới từ): tới, với<br>C. from (giới từ): từ<br>D. of (giới từ): của",
-                    r: "Đáp án đúng là <b>B. to</b>. Cấu trúc cố định (Collocation): 'similar + to' (giống với cái gì đó).",
-                    w: "Không dùng similar with, from hay of."
-                }
-            },
-            {
-                q: "2. There's no water on Mars even though scientists have found traces ______ it.",
-                options: ["on", "with", "for", "of"],
-                correct: "of",
-                exp: {
-                    t: "Không có nước trên sao Hỏa mặc dù các nhà khoa học đã tìm thấy dấu vết ______ nó.",
-                    o: "A. on (giới từ): trên<br>B. with (giới từ): với<br>C. for (giới từ): cho<br>D. of (giới từ): của",
-                    r: "Đáp án đúng là <b>D. of</b>. Cụm từ cố định: 'traces of something' (dấu vết của cái gì). Ở đây là traces of it (nước).",
-                    w: "Không dùng traces đi với on, with, hay for trong ngữ cảnh này."
-                }
-            },
-            {
-                q: "3. Scientists discovered earth-sized exoplanets that could be potentially ______ for life.",
-                options: ["habitable", "available", "unsuitable", "possible"],
-                correct: "habitable",
-                exp: {
-                    t: "Các nhà khoa học đã phát hiện ra các ngoại hành tinh có kích thước bằng trái đất có khả năng ______ cho sự sống.",
-                    o: "A. habitable (adj): có thể ở được, sống được<br>B. available (adj): có sẵn<br>C. unsuitable (adj): không phù hợp<br>D. possible (adj): có thể",
-                    r: "Đáp án đúng là <b>A. habitable</b>. Từ vựng chuyên ngành: 'habitable for life' (có điều kiện thích hợp cho sự sống).",
-                    w: "Available (có sẵn) không hợp nghĩa. Unsuitable (không hợp) thì ngược nghĩa (vì họ đang kỳ vọng có sự sống). Possible for life không tự nhiên bằng habitable."
-                }
-            },
-            {
-                q: "4. What happens if the spaceship ______ on the way to Mars?",
-                options: ["stands for", "turns up", "breaks down", "takes over"],
-                correct: "breaks down",
-                exp: {
-                    t: "Điều gì xảy ra nếu con tàu vũ trụ ______ trên đường đến sao Hỏa?",
-                    o: "A. stands for (phrasal verb): viết tắt cho, đại diện cho<br>B. turns up (phrasal verb): xuất hiện, vặn to<br>C. breaks down (phrasal verb): hỏng hóc, chết máy<br>D. takes over (phrasal verb): tiếp quản",
-                    r: "Đáp án đúng là <b>C. breaks down</b>. Tàu vũ trụ là một cỗ máy, nên rủi ro lớn nhất trên đường đi là bị hỏng hóc (break down).",
-                    w: "Các cụm động từ còn lại không hợp ngữ cảnh hư hỏng máy móc."
-                }
-            },
-            {
-                q: "5. Blue stars are by far the biggest and brightest stars in the ______ .",
-                options: ["galaxy", "trace", "planet", "gravity"],
-                correct: "galaxy",
-                exp: {
-                    t: "Các ngôi sao xanh cho đến nay là những ngôi sao lớn nhất và sáng nhất trong ______ .",
-                    o: "A. galaxy (n): thiên hà<br>B. trace (n): dấu vết<br>C. planet (n): hành tinh<br>D. gravity (n): trọng lực",
-                    r: "Đáp án đúng là <b>A. galaxy</b>. Sao (stars) tồn tại trong các thiên hà (galaxy).",
-                    w: "Hành tinh (planet) quay quanh sao chứ sao không nằm trong hành tinh. Trace và gravity hoàn toàn sai nghĩa."
-                }
-            },
-            {
-                q: "6. When do you think the first human ______ walk on the surface of Mars?",
-                options: ["must", "should", "would", "might"],
-                correct: "might",
-                exp: {
-                    t: "Bạn nghĩ khi nào con người đầu tiên ______ đi bộ trên bề mặt sao Hỏa?",
-                    o: "A. must (modal verb): phải<br>B. should (modal verb): nên<br>C. would (modal verb): sẽ (quá khứ của will / giả định)<br>D. might (modal verb): có thể (chỉ khả năng trong tương lai)",
-                    r: "Đáp án đúng là <b>D. might</b>. Câu hỏi về một sự việc chưa chắc chắn trong tương lai (dự đoán khả năng), dùng 'might' là phù hợp nhất.",
-                    w: "Must/Should chỉ sự bắt buộc/lời khuyên (không hợp). Would dùng trong giả định hoặc quá khứ."
-                }
-            },
-            {
-                q: "7. When you look up at the moon, do you ever wonder ______ it would be like to live there?",
-                options: ["whether", "what", "why", "that"],
-                correct: "what",
-                exp: {
-                    t: "Khi bạn nhìn lên mặt trăng, bạn có bao giờ tự hỏi sống ở đó sẽ như ______ không?",
-                    o: "A. whether (liên từ): liệu rằng<br>B. what (đại từ): thế nào / cái gì<br>C. why (trạng từ): tại sao<br>D. that (liên từ): rằng",
-                    r: "Đáp án đúng là <b>B. what</b>. Cấu trúc cố định: 'what it is like' hoặc 'what it would be like' (điều đó sẽ như thế nào).",
-                    w: "Không có cấu trúc 'whether/why/that it would be like'."
-                }
-            },
-            {
-                q: "8. I asked Tim ______ in UFOs and aliens.",
-                options: ["whether he believe", "that did he believe", "if he believed", "what he believed"],
-                correct: "if he believed",
-                exp: {
-                    t: "Tôi đã hỏi Tim ______ vào đĩa bay và người ngoài hành tinh.",
-                    o: "A. whether he believe (sai ngữ pháp vì chia động từ believe sai ở quá khứ/hiện tại)<br>B. that did he believe (sai cấu trúc tường thuật)<br>C. if he believed (đúng cấu trúc câu tường thuật Yes/No, đã lùi thì)<br>D. what he believed (không hợp nghĩa: hỏi Tim tin 'cái gì' vào UFO? -> Sai)",
-                    r: "Đáp án đúng là <b>C. if he believed</b>. Câu gốc: 'Do you believe in...?' -> Tường thuật: asked + Object + if/whether + S + V(lùi thì).",
-                    w: "A sai thì. B sai vì không mượn trợ động từ 'did' trong câu tường thuật. D sai nghĩa."
-                }
-            },
-            {
-                q: "9. She wanted to know if I was going to meet Judy at the station ______ .",
-                options: ["a day before", "tomorrow", "the previous day", "the following day"],
-                correct: "the following day",
-                exp: {
-                    t: "Cô ấy muốn biết liệu tôi có định gặp Judy ở nhà ga vào ______ không.",
-                    o: "A. a day before: ngày hôm trước (sai quy tắc lùi thì)<br>B. tomorrow: ngày mai (chưa chuyển đổi từ trực tiếp sang gián tiếp)<br>C. the previous day: ngày hôm trước (không khớp với 'was going to' - tương lai trong quá khứ)<br>D. the following day: ngày hôm sau (từ lùi của tomorrow)",
-                    r: "Đáp án đúng là <b>D. the following day</b>. Vì động từ chính là 'was going to' (dự định làm gì ở tương lai), nên trạng từ thời gian phải là 'the following day' (chuyển từ tomorrow).",
-                    w: "A, C dùng cho quá khứ hoàn thành. B vi phạm quy tắc tường thuật."
-                }
-            },
-            {
-                q: "10. 'Do you think aliens really exist on other planets?' - '______ Scientists have not yet been able to find evidence of life on any other planet.'",
-                options: ["I'm sure about it.", "I don't like aliens.", "I doubt it.", "I don't think about it."],
-                correct: "I doubt it.",
-                exp: {
-                    t: "'Bạn có nghĩ người ngoài hành tinh thực sự tồn tại trên các hành tinh khác không?' - '______ Các nhà khoa học vẫn chưa thể tìm thấy bằng chứng về sự sống trên bất kỳ hành tinh nào khác.'",
-                    o: "A. I'm sure about it: Tôi chắc chắn về điều đó. (Trái với vế sau)<br>B. I don't like aliens: Tôi không thích người ngoài hành tinh. (Không liên quan)<br>C. I doubt it: Tôi nghi ngờ điều đó / Tôi không nghĩ vậy.<br>D. I don't think about it: Tôi không nghĩ về nó.",
-                    r: "Đáp án đúng là <b>C. I doubt it.</b> Vì câu sau giải thích 'chưa có bằng chứng khoa học', nên người nói thể hiện sự hoài nghi (doubt).",
-                    w: "Đáp án A ngược logic. B, D lảng tránh trọng tâm câu hỏi Yes/No."
-                }
-            }
-        ]
-    },
-    {
-        partTitle: "V. Choose the underlined word or phrase, A, B, C or D that needs correcting.",
-        questions: [
-            {
-                q: "1. When will humans <u>be able to</u> travel from <u>one planet</u> to <u>other</u> <u>easily</u>?",
-                options: ["be able to", "one planet", "other", "easily"],
-                correct: "other",
-                exp: {
-                    t: "Khi nào con người có thể đi lại từ hành tinh này sang hành tinh khác một cách dễ dàng?",
-                    o: "A. be able to (có thể - đúng ngữ pháp sau will)<br>B. one planet (một hành tinh - đúng)<br>C. other (khác - sai ngữ pháp trong ngữ cảnh này)<br>D. easily (dễ dàng - trạng từ bổ nghĩa cho travel - đúng)",
-                    r: "Đáp án đúng là <b>C. other</b>. Lỗi sai ở cách dùng từ. Cụm chuẩn là 'from one planet to <b>another</b>' (từ hành tinh này sang một hành tinh khác số ít).",
-                    w: "'Other' không thể đứng một mình thay cho danh từ đếm được số ít, phải dùng 'another' (an + other)."
-                }
-            },
-            {
-                q: "2. In 2001, <u>at least</u> 15 people, <u>include</u> two police officers saw UFOs in New <u>Jersey</u>.",
-                options: ["at least", "include", "saw UFOs in", "Jersey"],
-                correct: "include",
-                exp: {
-                    t: "Năm 2001, ít nhất 15 người, bao gồm cả hai sĩ quan cảnh sát đã nhìn thấy đĩa bay ở New Jersey.",
-                    o: "A. at least (ít nhất - đúng)<br>B. include (bao gồm - động từ nguyên thể - sai)<br>C. saw UFOs in (động từ chính chia QKĐ - đúng)<br>D. Jersey (tên riêng - đúng)",
-                    r: "Đáp án đúng là <b>B. include</b>. Chữ này đóng vai trò như một giới từ hoặc phân từ hiện tại bổ nghĩa cho '15 people', phải sửa thành <b>including</b> (bao gồm).",
-                    w: "Động từ chính của câu là 'saw'. Không thể dùng 'include' (V-nguyên thể) ở đây vì sẽ tạo ra lỗi hai động từ chính không nối với nhau."
-                }
-            },
-            {
-                q: "3. He <u>wanted to know</u> why <u>didn't I</u> believe there <u>was</u> intelligent life <u>on</u> other planets.",
-                options: ["wanted to know", "didn't I", "was", "on"],
-                correct: "didn't I",
-                exp: {
-                    t: "Anh ấy muốn biết tại sao tôi không tin rằng có sự sống thông minh trên các hành tinh khác.",
-                    o: "A. wanted to know (muốn biết - đúng)<br>B. didn't I (sai cấu trúc tường thuật)<br>C. was (động từ lùi thì - đúng)<br>D. on (giới từ on planets - đúng)",
-                    r: "Đáp án đúng là <b>B. didn't I</b>. Trong câu tường thuật (Reported Speech) với từ để hỏi (why), mệnh đề theo sau phải chuyển về dạng khẳng định (S + V), KHÔNG được đảo ngữ. Sửa thành: <b>I didn't</b>.",
-                    w: "Các phần gạch chân còn lại hoàn toàn đúng ngữ pháp."
-                }
-            },
-            {
-                q: "4. Scientists <u>believe that</u> several <u>billion</u> years ago Mars <u>was</u> very <u>similarity to</u> Earth.",
-                options: ["believe that", "billion", "was", "similarity to"],
-                correct: "similarity to",
-                exp: {
-                    t: "Các nhà khoa học tin rằng vài tỷ năm trước Sao Hỏa rất giống Trái Đất.",
-                    o: "A. believe that (tin rằng - đúng)<br>B. billion (tỷ - không có 's' sau số đếm - đúng)<br>C. was (chia quá khứ cho số ít - đúng)<br>D. similarity to (danh từ + to - sai vị trí loại từ)",
-                    r: "Đáp án đúng là <b>D. similarity to</b>. Sau động từ tobe 'was' và trạng từ chỉ mức độ 'very', ta cần một tính từ (Adjective). Sửa danh từ 'similarity' thành tính từ <b>similar</b>. Cụm đúng: was very <b>similar to</b>.",
-                    w: "Các lỗi sai ngữ pháp không nằm ở A, B, C."
-                }
-            },
-            {
-                q: "5. <u>Because</u> it is <u>so</u> close <u>from</u> the sun, Mercury is hard to study <u>from</u> Earth.",
-                options: ["Because", "so", "from (1)", "from (2)"],
-                correct: "from (1)",
-                exp: {
-                    t: "Bởi vì nó quá gần mặt trời, Sao Thủy rất khó để nghiên cứu từ Trái Đất.",
-                    o: "A. Because (bởi vì - đúng)<br>B. so (quá - đúng)<br>C. from (giới từ - sai collocation)<br>D. from (nghiên cứu 'từ' Trái đất - đúng)",
-                    r: "Đáp án đúng là <b>C. from (vị trí số 1)</b>. Cụm từ cố định của tính từ 'close' là 'close <b>to</b>' (gần với cái gì). Không dùng 'close from'.",
-                    w: "Sửa 'from' thứ nhất thành 'to'. Các từ còn lại dùng đúng."
-                }
-            },
-            {
-                q: "6. We asked our teacher <u>whether</u> he <u>can postpone</u> the exam until <u>the next Monday</u>.",
-                options: ["whether", "can postpone", "until", "the next Monday"],
-                correct: "can postpone",
-                exp: {
-                    t: "Chúng tôi đã hỏi giáo viên của mình liệu thầy có thể hoãn kỳ thi cho đến thứ Hai tuần sau không.",
-                    o: "A. whether (liên từ liệu rằng - đúng)<br>B. can postpone (có thể hoãn - sai thì)<br>C. until (cho đến khi - đúng)<br>D. the next Monday (thứ Hai tuần sau - đúng)",
-                    r: "Đáp án đúng là <b>B. can postpone</b>. Động từ tường thuật ở quá khứ 'asked', do đó động từ trong mệnh đề phụ bắt buộc phải lùi thì. 'Can' phải lùi thành <b>could</b>. Sửa thành: <b>could postpone</b>.",
-                    w: "A, C, D đều tuân thủ đúng quy tắc ngữ pháp."
-                }
-            },
-            {
-                q: "7. Mars is <u>widely</u> considered <u>to be</u> the most <u>promised</u> planet for life <u>in</u> our solar system.",
-                options: ["widely", "to be", "promised", "in"],
-                correct: "promised",
-                exp: {
-                    t: "Sao Hỏa được coi rộng rãi là hành tinh đầy hứa hẹn nhất cho sự sống trong hệ mặt trời của chúng ta.",
-                    o: "A. widely (trạng từ - đúng)<br>B. to be (động từ - đúng, cấu trúc be considered to be)<br>C. promised (phân từ 2 - sai loại từ/nghĩa)<br>D. in (giới từ - đúng)",
-                    r: "Đáp án đúng là <b>C. promised</b>. Để miêu tả tính chất 'đầy hứa hẹn, có triển vọng' của một vật, ta dùng tính từ chủ động (V-ing) là <b>promising</b>. Sửa thành: <b>promising</b>.",
-                    w: "'Promised' (được hứa hẹn) thường dùng cho người hoặc lời hứa cụ thể, không dùng miêu tả bản chất sự vật trong ngữ cảnh này."
-                }
-            },
-            {
-                q: "8. Scientists <u>discovered</u> that there <u>were</u> many <u>crater</u> on the surface of <u>the Moon</u>.",
-                options: ["discovered", "were", "crater", "the Moon"],
-                correct: "crater",
-                exp: {
-                    t: "Các nhà khoa học phát hiện ra rằng có rất nhiều miệng núi lửa trên bề mặt Mặt Trăng.",
-                    o: "A. discovered (quá khứ đơn - đúng)<br>B. were (quá khứ số nhiều - đúng vì đi với many)<br>C. crater (danh từ đếm được số ít - sai)<br>D. the Moon (tên riêng duy nhất cần 'the' - đúng)",
-                    r: "Đáp án đúng là <b>C. crater</b>. Sau lượng từ 'many' (nhiều), danh từ đếm được bắt buộc phải ở dạng số nhiều. Sửa thành: <b>craters</b>.",
-                    w: "Các từ còn lại đều đúng quy tắc ngữ pháp."
-                }
-            },
-            {
-                q: "9. Some people <u>believe</u> that UFOs are <u>actual</u> vehicles <u>from</u> other planets, <u>flown</u> by alien visitors.",
-                options: ["believe", "actual", "from", "flown"],
-                correct: "actual",
-                exp: {
-                    t: "Một số người tin rằng đĩa bay thực chất là các phương tiện từ các hành tinh khác, được điều khiển bởi người ngoài hành tinh.",
-                    o: "A. believe (tin - đúng thì HTĐ)<br>B. actual (tính từ - sai cách dùng)<br>C. from (giới từ - đúng)<br>D. flown (phân từ 2 rút gọn mệnh đề - đúng)",
-                    r: "Đáp án đúng là <b>B. actual</b>. Dựa theo key chuẩn của bài tập, ở vị trí này cần một trạng từ để nhấn mạnh bản chất thực sự của sự vật, bổ nghĩa cho tobe 'are' -> sửa thành <b>actually</b> (UFOs are actually vehicles).",
-                    w: "Dù cấu trúc 'actual vehicles' (Adj + Noun) về mặt lý thuyết ngữ pháp không sai, nhưng trong văn phong giao tiếp tiếng Anh, người ta chuộng dùng trạng từ 'actually' để đính chính/nhấn mạnh sự thật."
-                }
-            },
-            {
-                q: "10. Many people <u>are wondering</u> <u>where</u> life <u>exists on</u> other planets <u>and moons</u>.",
-                options: ["are wondering", "where", "exists on", "and moons"],
-                correct: "where",
-                exp: {
-                    t: "Nhiều người đang tự hỏi liệu sự sống có tồn tại trên các hành tinh và mặt trăng khác hay không.",
-                    o: "A. are wondering (thì HTTD - đúng)<br>B. where (từ để hỏi: ở đâu - sai logic)<br>C. exists on (tồn tại trên - đúng)<br>D. and moons (và các mặt trăng - đúng)",
-                    r: "Đáp án đúng là <b>B. where</b>. Xét về ý nghĩa, người ta đang băn khoăn về KHẢ NĂNG tồn tại (liệu có hay không), chứ không phải hỏi địa điểm cụ thể khi mà mệnh đề sau đã có sẵn địa điểm là 'on other planets'. Phải sửa 'where' thành <b>if / whether</b>.",
-                    w: "Dùng 'where' khiến câu bị lặp ý địa điểm và sai logic hoàn toàn."
-                }
-            }
-        ]
-    }
-];
-
-// --- RENDER LOGIC ---
-const quizContainer = document.getElementById('quiz-container');
-let currentScore = 0;
-const totalQuestions = 40;
-let answeredQuestions = 0;
-
-function shuffleArray(array) {
-    let newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-}
-
-function renderQuiz() {
-    let html = '';
-    let globalQIndex = 0;
-
-    rawData.forEach((part) => {
-        html += `<div class="part-title">${part.partTitle}</div>`;
-        
-        part.questions.forEach((qData) => {
-            let displayQ = qData.q;
-            
-            html += `
-            <div class="card" id="q-card-${globalQIndex}">
-                <div class="question">${displayQ}</div>
-                <div class="options" id="options-${globalQIndex}">
-            `;
-
-            // Auto Shuffle Options
-            const shuffledOptions = shuffleArray(qData.options);
-
-            shuffledOptions.forEach((opt) => {
-                // FIXED BUG: Thêm lệnh replace để làm sạch dấu nháy đơn, tránh làm gãy chuỗi JS
-                const safeOpt = opt.replace(/'/g, "\\'");
-                const safeCorrect = qData.correct.replace(/'/g, "\\'");
-                
-                html += `<button class="btn-option" onclick="checkAnswer(this, ${globalQIndex}, '${safeOpt}', '${safeCorrect}')">${opt}</button>`;
-            });
-
-            html += `
-                </div>
-                <div class="explanation" id="exp-${globalQIndex}">
-                    <div class="exp-step"><span class="exp-title">1. Dịch nghĩa:</span> ${qData.exp.t}</div>
-                    <div class="exp-step"><span class="exp-title">2. Phân tích đáp án:</span><br>${qData.exp.o}</div>
-                    <div class="exp-step"><span class="exp-title">3. Tại sao Đúng?</span><br> ${qData.exp.r}</div>
-                    <div class="exp-step" style="color: var(--wrong);"><span class="exp-title">4. Tại sao Sai?</span><br> ${qData.exp.w}</div>
-                </div>
-            </div>`;
-            globalQIndex++;
-        });
-    });
-
-    quizContainer.innerHTML = html;
-}
-
-function checkAnswer(btn, qIndex, selectedOpt, correctOpt) {
-    const parent = document.getElementById(`options-${qIndex}`);
-    const buttons = parent.querySelectorAll('.btn-option');
-    
-    // Disable all buttons in this question
-    buttons.forEach(b => b.disabled = true);
-
-    const isCorrect = selectedOpt === correctOpt;
-
-    if (isCorrect) {
-        btn.classList.add('correct');
-        playSound('correct');
-        const rect = btn.getBoundingClientRect();
-        createConfetti(rect);
-        currentScore++;
-    } else {
-        btn.classList.add('wrong');
-        btn.classList.add('shake');
-        playSound('wrong');
-        
-        // Highlight correct answer
-        buttons.forEach(b => {
-            // Cũng cần thay thế nháy đơn để so sánh text content cho chuẩn
-            if (b.innerText.replace(/'/g, "\\'") === correctOpt) {
-                b.classList.add('correct');
-                b.style.opacity = '0.7';
-            }
-        });
-    }
-
-    // Show explanation immediately
-    document.getElementById(`exp-${qIndex}`).classList.add('show');
-    answeredQuestions++;
-}
-
-function submitQuiz() {
-    if(answeredQuestions < totalQuestions) {
-        if(!confirm(`Bạn mới làm được ${answeredQuestions}/${totalQuestions} câu. Bạn có chắc chắn muốn nộp bài sớm không?`)) {
-            return;
-        }
-    }
-
-    const modal = document.getElementById('scoreModal');
-    const scoreText = document.getElementById('finalScore');
-    const praiseText = document.getElementById('praiseText');
-
-    scoreText.innerText = `${currentScore} / ${totalQuestions}`;
-    
-    const percentage = currentScore / totalQuestions;
-    if(percentage === 1) praiseText.innerText = "Điểm tuyệt đối! Em là một thiên tài vũ trụ! 🚀🛸";
-    else if(percentage >= 0.8) praiseText.innerText = "Xuất sắc! Kiến thức của em bay cao như tên lửa! 🚀";
-    else if(percentage >= 0.5) praiseText.innerText = "Khá lắm! Hãy cố gắng thêm một chút nữa nhé! ⭐";
-    else praiseText.innerText = "Đừng buồn, hãy đọc kỹ phần giải thích chi tiết để tiến bộ hơn nha! 💪";
-
-    modal.style.display = 'flex';
-    playSound('correct');
-    createConfetti(document.body.getBoundingClientRect());
-}
-
-// Init
-window.onload = renderQuiz;
-
-</script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Test For Unit 12 - MS Chí Nên ULIS</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+
+            --primary: #8854C0;
+
+            --secondary: #FDCB6E;
+
+            --accent: #00C9A7;
+
+            --correct: #00D26A;
+
+            --wrong: #FF4757;
+
+            --text-dark: #2C3E50;
+
+            --card-bg: rgba(255, 255, 255, 0.95);
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: 'Quicksand', sans-serif;
+
+        }
+
+
+
+        body {
+
+            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #8854C0);
+
+            background-size: 400% 400%;
+
+            animation: gradientBG 15s ease infinite;
+
+            color: var(--text-dark);
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+
+            position: relative;
+
+        }
+
+
+
+        /* Moving Universe Pattern Background */
+
+        .universe-bg {
+
+            position: fixed;
+
+            top: -100%;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 300%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' fill-opacity='0.2' d='M10,10 L12,15 L10,20 L8,15 Z M50,40 L53,48 L50,56 L47,48 Z M80,20 A5,5 0 1,1 80,30 A5,5 0 1,1 80,20 Z M20,80 Q25,75 30,80 Q25,85 20,80 Z M85,85 L88,90 L85,95 L82,90 Z'/%3E%3C/svg%3E");
+
+            animation: floatUp 40s linear infinite;
+
+        }
+
+
+
+        @keyframes gradientBG {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        @keyframes floatUp {
+
+            from { transform: translateY(0); }
+
+            to { transform: translateY(-33.33%); }
+
+        }
+
+
+
+        .container {
+
+            max-width: 900px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
+            position: relative;
+
+            z-index: 1;
+
+        }
+
+
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+            background: var(--card-bg);
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
+
+        }
+
+
+
+        .teacher-name {
+
+            font-size: 1rem;
+
+            color: var(--primary);
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .title {
+
+            font-size: 2.5rem;
+
+            font-weight: 900;
+
+            color: var(--text-dark);
+
+            text-shadow: 2px 2px 0px var(--secondary);
+
+        }
+
+
+
+        .part-title {
+
+            font-size: 1.5rem;
+
+            font-weight: 800;
+
+            color: #fff;
+
+            background: var(--primary);
+
+            padding: 15px 25px;
+
+            border-radius: 15px;
+
+            margin: 40px 0 20px 0;
+
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+
+            text-align: center;
+
+        }
+
+
+
+        .card {
+
+            background: var(--card-bg);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+
+            transition: transform 0.3s;
+
+        }
+
+
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+        }
+
+
+
+        .question {
+
+            font-size: 1.15rem;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        .question u {
+
+            text-decoration: underline;
+
+            text-decoration-color: var(--wrong);
+
+            text-decoration-thickness: 3px;
+
+        }
+
+
+
+        .options {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+
+        .btn-option {
+
+            background: #fff;
+
+            border: 3px solid #e0e0e0;
+
+            padding: 15px 20px;
+
+            font-size: 1.08rem;
+
+            font-weight: 700;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            box-shadow: 0 6px 0 #e0e0e0;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+
+        .btn-option:hover:not(:disabled) {
+
+            transform: scale(1.02) translateY(-2px);
+
+            border-color: var(--secondary);
+
+            box-shadow: 0 8px 0 var(--secondary);
+
+        }
+
+
+
+        .btn-option:active:not(:disabled) {
+
+            transform: scale(0.98) translateY(4px);
+
+            box-shadow: 0 2px 0 var(--secondary);
+
+        }
+
+
+
+        .btn-option.correct {
+
+            background: var(--correct);
+
+            color: #fff;
+
+            border-color: #00b35a;
+
+            box-shadow: 0 6px 0 #00b35a;
+
+        }
+
+
+
+        .btn-option.wrong {
+
+            background: var(--wrong);
+
+            color: #fff;
+
+            border-color: #d63031;
+
+            box-shadow: 0 6px 0 #d63031;
+
+        }
+
+
+
+        .btn-option:disabled {
+
+            cursor: not-allowed;
+
+            opacity: 0.9;
+
+        }
+
+
+
+        /* Shake Animation */
+
+        @keyframes shake {
+
+            0%, 100% { transform: translateX(0); }
+
+            20%, 60% { transform: translateX(-5px); }
+
+            40%, 80% { transform: translateX(5px); }
+
+        }
+
+        .shake { animation: shake 0.4s ease-in-out; }
+
+
+
+        .explanation {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #f0f4f8;
+
+            border-left: 6px solid var(--primary);
+
+            border-radius: 10px;
+
+            font-size: 1rem;
+
+            line-height: 1.6;
+
+            animation: slideDown 0.4s ease-out;
+
+        }
+
+
+
+        .explanation.show { display: block; }
+
+
+
+        @keyframes slideDown {
+
+            from { opacity: 0; transform: translateY(-10px); }
+
+            to { opacity: 1; transform: translateY(0); }
+
+        }
+
+
+
+        .exp-step { margin-bottom: 12px; }
+
+        .exp-title { font-weight: 800; color: var(--primary); }
+
+
+
+        .submit-btn {
+
+            display: block;
+
+            width: 100%;
+
+            background: var(--correct);
+
+            color: #fff;
+
+            font-size: 1.5rem;
+
+            font-weight: 900;
+
+            padding: 20px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            box-shadow: 0 10px 0 #00b35a;
+
+            margin-top: 40px;
+
+            margin-bottom: 50px;
+
+            text-transform: uppercase;
+
+            transition: all 0.2s;
+
+        }
+
+
+
+        .submit-btn:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 15px 0 #00b35a;
+
+        }
+
+
+
+        .submit-btn:active {
+
+            transform: translateY(5px);
+
+            box-shadow: 0 0 0 #00b35a;
+
+        }
+
+
+
+        /* Modal Score */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.8);
+
+            z-index: 100;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+        .modal-content {
+
+            background: #fff;
+
+            padding: 40px;
+
+            border-radius: 30px;
+
+            text-align: center;
+
+            max-width: 500px;
+
+            width: 90%;
+
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        }
+
+        @keyframes popIn {
+
+            0% { transform: scale(0.5); opacity: 0; }
+
+            100% { transform: scale(1); opacity: 1; }
+
+        }
+
+        .score-text { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
+
+        .praise-text { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+
+
+        .confetti {
+
+            position: absolute;
+
+            width: 12px;
+
+            height: 12px;
+
+            z-index: 50;
+
+            pointer-events: none;
+
+        }
+
+
+
+        @media (max-width: 768px) {
+
+            .options { grid-template-columns: 1fr; }
+
+            .title { font-size: 2rem; }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="universe-bg"></div>
+
+    <div class="container">
+
+        <div class="header">
+
+            <div class="teacher-name">Giáo viên tạo: MS Chí Nên ULIS</div>
+
+            <h1 class="title">TEST FOR UNIT 12</h1>
+
+        </div>
+
+        
+
+        <div id="quiz-container"></div>
+
+        
+
+        <button class="submit-btn" onclick="submitQuiz()">Nộp bài ngay! 🚀</button>
+
+    </div>
+
+
+
+    <div class="modal" id="scoreModal">
+
+        <div class="modal-content">
+
+            <h2 style="font-size: 2.5rem; color: #333;">KẾT QUẢ CỦA BẠN</h2>
+
+            <div class="score-text" id="finalScore">0 / 40</div>
+
+            <div class="praise-text" id="praiseText">Tuyệt vời!</div>
+
+            <button class="submit-btn" style="margin-top: 20px;" onclick="location.reload()">Làm lại bài 🔄</button>
+
+        </div>
+
+    </div>
+
+
+
+<script>
+
+// --- AUDIO SYSTEM (Web Audio API) ---
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+let audioCtx;
+
+
+
+function initAudio() {
+
+    if (!audioCtx) audioCtx = new AudioContext();
+
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+}
+
+
+
+function playSound(type) {
+
+    initAudio();
+
+    const osc = audioCtx.createOscillator();
+
+    const gainNode = audioCtx.createGain();
+
+    osc.connect(gainNode);
+
+    gainNode.connect(audioCtx.destination);
+
+
+
+    if (type === 'correct') {
+
+        osc.type = 'sine';
+
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+        osc.start();
+
+        osc.stop(audioCtx.currentTime + 0.5);
+
+    } else {
+
+        osc.type = 'sawtooth';
+
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+
+        osc.start();
+
+        osc.stop(audioCtx.currentTime + 0.2);
+
+    }
+
+}
+
+
+
+// --- CONFETTI SYSTEM ---
+
+function createConfetti(rect) {
+
+    const colors = ['#FF4757', '#00D26A', '#FDCB6E', '#8854C0', '#00C9A7'];
+
+    for (let i = 0; i < 40; i++) {
+
+        const conf = document.createElement('div');
+
+        conf.className = 'confetti';
+
+        conf.style.left = (rect.left + rect.width / 2) + window.scrollX + 'px';
+
+        conf.style.top = (rect.top + rect.height / 2) + window.scrollY + 'px';
+
+        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+
+        document.body.appendChild(conf);
+
+
+
+        const angle = Math.random() * Math.PI * 2;
+
+        const velocity = 50 + Math.random() * 100;
+
+        const tx = Math.cos(angle) * velocity;
+
+        const ty = Math.sin(angle) * velocity - 100; 
+
+
+
+        conf.animate([
+
+            { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+
+            { transform: `translate(${tx}px, ${ty}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+
+        ], { duration: 1000, easing: 'cubic-bezier(.25,.8,.25,1)' });
+
+
+
+        setTimeout(() => conf.remove(), 1000);
+
+    }
+
+}
+
+
+
+// --- QUIZ DATA ---
+
+const rawData = [
+
+    {
+
+        partTitle: "I. Choose the word whose underlined part is pronounced differently from the others.",
+
+        questions: [
+
+            {
+
+                q: "1. a. <u>a</u>ccommodate / b. <u>a</u>dventure / c. <u>a</u>lien / d. <u>a</u>ppropriate",
+
+                options: ["accommodate", "adventure", "alien", "appropriate"],
+
+                correct: "alien",
+
+                exp: {
+
+                    t: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+
+                    o: "A. accommodate (v): cung cấp chỗ ở (âm /ə/)<br>B. adventure (n): cuộc phiêu lưu (âm /ə/)<br>C. alien (n): người ngoài hành tinh (âm /eɪ/)<br>D. appropriate (adj): thích hợp (âm /ə/)",
+
+                    r: "Đáp án đúng là <b>C. alien</b> vì âm gạch chân 'a' phát âm là /eɪ/.",
+
+                    w: "Các đáp án A, B, D đều có âm 'a' được phát âm là âm schwa /ə/."
+
+                }
+
+            },
+
+            {
+
+                q: "2. a. <u>U</u>FO / b. J<u>u</u>piter / c. Nept<u>u</u>ne / d. f<u>u</u>ture",
+
+                options: ["UFO", "Jupiter", "Neptune", "future"],
+
+                correct: "Jupiter",
+
+                exp: {
+
+                    t: "Chọn từ có phần gạch chân phát âm khác.",
+
+                    o: "A. UFO (n): đĩa bay, vật thể bay không xác định (âm /ju:/)<br>B. Jupiter (n): sao Mộc (âm /u:/)<br>C. Neptune (n): sao Hải Vương (âm /ju:/)<br>D. future (n): tương lai (âm /ju:/)",
+
+                    r: "Đáp án đúng là <b>B. Jupiter</b> vì âm 'u' được phát âm là /u:/.",
+
+                    w: "Các đáp án A, C, D đều phát âm âm 'u' là /ju:/ (âm 'iu')."
+
+                }
+
+            },
+
+            {
+
+                q: "3. a. sau<u>c</u>er / b. <u>c</u>rew / c. Mer<u>c</u>ury / d. ac<u>c</u>ommodate",
+
+                options: ["saucer", "crew", "Mercury", "accommodate"],
+
+                correct: "saucer",
+
+                exp: {
+
+                    t: "Chọn từ có phần gạch chân phát âm khác.",
+
+                    o: "A. saucer (n): đĩa hứng nước (âm /s/)<br>B. crew (n): phi hành đoàn (âm /k/)<br>C. Mercury (n): sao Thủy (âm /k/)<br>D. accommodate (v): cung cấp chỗ (âm /k/)",
+
+                    r: "Đáp án đúng là <b>A. saucer</b> vì chữ 'c' đi với 'e' nên phát âm là /s/.",
+
+                    w: "Các đáp án B, C, D đều có chữ 'c' phát âm là /k/ (âm cứng)."
+
+                }
+
+            },
+
+            {
+
+                q: "4. a. cl<u>i</u>mate / b. s<u>i</u>ghting / c. m<u>i</u>ght / d. al<u>i</u>ens",
+
+                options: ["climate", "sighting", "might", "aliens"],
+
+                correct: "aliens",
+
+                exp: {
+
+                    t: "Chọn từ có phần gạch chân phát âm khác.",
+
+                    o: "A. climate (n): khí hậu (âm /aɪ/)<br>B. sighting (n): sự nhìn thấy (âm /aɪ/)<br>C. might (v): có thể (âm /aɪ/)<br>D. aliens (n): người ngoài hành tinh (âm /i/ hoặc /j/)",
+
+                    r: "Đáp án đúng là <b>D. aliens</b> vì chữ 'i' phát âm là /i/ (âm ngắn).",
+
+                    w: "Các đáp án A, B, C đều có chữ 'i' phát âm là /aɪ/ (âm 'ai')."
+
+                }
+
+            },
+
+            {
+
+                q: "5. a. br<u>ea</u>the / b. <u>ea</u>rth / c. s<u>ea</u> / d. m<u>ea</u>ningful",
+
+                options: ["breathe", "earth", "sea", "meaningful"],
+
+                correct: "earth",
+
+                exp: {
+
+                    t: "Chọn từ có phần gạch chân phát âm khác.",
+
+                    o: "A. breathe (v): hít thở (âm /i:/)<br>B. earth (n): trái đất (âm /ɜ:/)<br>C. sea (n): biển (âm /i:/)<br>D. meaningful (adj): có ý nghĩa (âm /i:/)",
+
+                    r: "Đáp án đúng là <b>B. earth</b> vì 'ea' đi với 'r' phát âm thành /ɜ:/ (âm ơ dài).",
+
+                    w: "Các đáp án A, C, D đều có 'ea' phát âm là /i:/ (âm i dài)."
+
+                }
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        partTitle: "II. Choose the word that has different stress pattern.",
+
+        questions: [
+
+            {
+
+                q: "1. a. surface / b. UFO / c. alien / d. weightless",
+
+                options: ["surface", "UFO", "alien", "weightless"],
+
+                correct: "UFO",
+
+                exp: {
+
+                    t: "Chọn từ có trọng âm khác với các từ còn lại.",
+
+                    o: "A. surface (n): bề mặt (nhấn âm 1)<br>B. UFO (n): đĩa bay (nhấn âm 3 - từ viết tắt đọc từng chữ U-F-O)<br>C. alien (n): người ngoài hành tinh (nhấn âm 1)<br>D. weightless (adj): không trọng lượng (nhấn âm 1)",
+
+                    r: "Đáp án đúng là <b>B. UFO</b> vì trọng âm rơi vào âm tiết thứ 3 (chữ O).",
+
+                    w: "Các đáp án A, C, D đều có trọng âm rơi vào âm tiết thứ 1."
+
+                }
+
+            },
+
+            {
+
+                q: "2. a. temperature / b. Jupiter / c. Mercury / d. adventure",
+
+                options: ["temperature", "Jupiter", "Mercury", "adventure"],
+
+                correct: "adventure",
+
+                exp: {
+
+                    t: "Chọn từ có trọng âm khác.",
+
+                    o: "A. temperature (n): nhiệt độ (nhấn âm 1)<br>B. Jupiter (n): sao Mộc (nhấn âm 1)<br>C. Mercury (n): sao Thủy (nhấn âm 1)<br>D. adventure (n): chuyến phiêu lưu (nhấn âm 2)",
+
+                    r: "Đáp án đúng là <b>D. adventure</b> vì trọng âm rơi vào âm tiết 2.",
+
+                    w: "Các đáp án A, B, C đều có trọng âm rơi vào âm tiết 1."
+
+                }
+
+            },
+
+            {
+
+                q: "3. a. atmosphere / b. powerful / c. condition / d. astronaut",
+
+                options: ["atmosphere", "powerful", "condition", "astronaut"],
+
+                correct: "condition",
+
+                exp: {
+
+                    t: "Chọn từ có trọng âm khác.",
+
+                    o: "A. atmosphere (n): bầu khí quyển (nhấn âm 1)<br>B. powerful (adj): mạnh mẽ (nhấn âm 1)<br>C. condition (n): điều kiện (nhấn âm 2)<br>D. astronaut (n): phi hành gia (nhấn âm 1)",
+
+                    r: "Đáp án đúng là <b>C. condition</b> vì các từ kết thúc bằng đuôi '-ion' có trọng âm rơi vào âm ngay trước nó (âm 2).",
+
+                    w: "Các đáp án A, B, D đều có trọng âm rơi vào âm tiết 1."
+
+                }
+
+            },
+
+            {
+
+                q: "4. a. imaginary / b. possibility / c. particular / d. behaviour",
+
+                options: ["imaginary", "possibility", "particular", "behaviour"],
+
+                correct: "possibility",
+
+                exp: {
+
+                    t: "Chọn từ có trọng âm khác.",
+
+                    o: "A. imaginary (adj): tưởng tượng (nhấn âm 2)<br>B. possibility (n): khả năng (nhấn âm 3)<br>C. particular (adj): cụ thể (nhấn âm 2)<br>D. behaviour (n): hành vi (nhấn âm 2)",
+
+                    r: "Đáp án đúng là <b>B. possibility</b> vì đuôi '-ity' làm trọng âm rơi vào âm tiết liền trước nó (si -> âm 3).",
+
+                    w: "Các đáp án A, C, D đều nhấn âm 2."
+
+                }
+
+            },
+
+            {
+
+                q: "5. a. similarly / b. discovery / c. accommodate / d. unsuitable",
+
+                options: ["similarly", "discovery", "accommodate", "unsuitable"],
+
+                correct: "similarly",
+
+                exp: {
+
+                    t: "Chọn từ có trọng âm khác.",
+
+                    o: "A. similarly (adv): tương tự (nhấn âm 1)<br>B. discovery (n): sự khám phá (nhấn âm 2)<br>C. accommodate (v): cung cấp chỗ (nhấn âm 2)<br>D. unsuitable (adj): không phù hợp (nhấn âm 2 - gốc suitable nhấn âm 1, thêm un- không đổi trọng âm từ gốc, nhưng so với toàn từ là âm 2)",
+
+                    r: "Đáp án đúng là <b>A. similarly</b> vì trọng âm rơi vào âm tiết 1.",
+
+                    w: "Các đáp án B, C, D đều có trọng âm chính ở âm tiết thứ 2."
+
+                }
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        partTitle: "III. Complete each sentence with a suitable word. (Gap Fill)",
+
+        questions: [
+
+            {
+
+                q: "1. Trang asked _______ people would live on Mars in the next 20 years.",
+
+                options: ["if / whether", "that", "what", "which"],
+
+                correct: "if / whether",
+
+                exp: {
+
+                    t: "Trang đã hỏi liệu con người có sống trên sao Hỏa trong 20 năm tới không.",
+
+                    o: "A. if / whether (liên từ): liệu rằng (dùng trong câu gián tiếp dạng Yes/No)<br>B. that (liên từ): rằng<br>C. what (đại từ): cái gì<br>D. which (đại từ): cái nào",
+
+                    r: "Đáp án đúng là <b>A. if / whether</b> vì đây là câu tường thuật dạng câu hỏi Yes/No question (Would people live...?). Cấu trúc: S + asked + if/whether + Clause.",
+
+                    w: "Các đáp án khác sai cấu trúc câu tường thuật câu hỏi nghi vấn."
+
+                }
+
+            },
+
+            {
+
+                q: "2. _______ is the furthest planet from the sun.",
+
+                options: ["Neptune", "Venus", "Mars", "Earth"],
+
+                correct: "Neptune",
+
+                exp: {
+
+                    t: "... là hành tinh xa mặt trời nhất.",
+
+                    o: "A. Neptune (n): sao Hải Vương<br>B. Venus (n): sao Kim<br>C. Mars (n): sao Hỏa<br>D. Earth (n): trái đất",
+
+                    r: "Đáp án đúng là <b>A. Neptune</b> vì theo kiến thức thiên văn thực tế, sao Hải Vương là hành tinh thứ 8 và xa nhất trong hệ Mặt Trời.",
+
+                    w: "Các hành tinh khác đều nằm gần mặt trời hơn Neptune."
+
+                }
+
+            },
+
+            {
+
+                q: "3. Earth is the only _______ in the solar system that has life.",
+
+                options: ["planet", "star", "galaxy", "moon"],
+
+                correct: "planet",
+
+                exp: {
+
+                    t: "Trái Đất là ... duy nhất trong hệ mặt trời có sự sống.",
+
+                    o: "A. planet (n): hành tinh<br>B. star (n): ngôi sao (như mặt trời)<br>C. galaxy (n): dải ngân hà<br>D. moon (n): mặt trăng / vệ tinh tự nhiên",
+
+                    r: "Đáp án đúng là <b>A. planet</b>. Trái Đất được phân loại là một 'hành tinh'.",
+
+                    w: "Trái Đất không phải là ngôi sao, dải ngân hà hay vệ tinh."
+
+                }
+
+            },
+
+            {
+
+                q: "4. The European Space Agency launched a _______ carrying a spacecraft destined for Jupiter.",
+
+                options: ["rocket", "plane", "car", "boat"],
+
+                correct: "rocket",
+
+                exp: {
+
+                    t: "Cơ quan Vũ trụ Châu Âu đã phóng một ... mang theo tàu vũ trụ có đích đến là sao Mộc.",
+
+                    o: "A. rocket (n): tên lửa<br>B. plane (n): máy bay<br>C. car (n): ô tô<br>D. boat (n): thuyền",
+
+                    r: "Đáp án đúng là <b>A. rocket</b> vì người ta dùng 'tên lửa' (rocket) để phóng (launch) tàu vũ trụ (spacecraft) ra ngoài không gian.",
+
+                    w: "Máy bay, ô tô, tàu thuyền không dùng để bay vào vũ trụ."
+
+                }
+
+            },
+
+            {
+
+                q: "5. Vostok 1 was the first _______ to carry a human, Yuri A. Gagarin, into space.",
+
+                options: ["spaceship / spacecraft", "alien", "telescope", "planet"],
+
+                correct: "spaceship / spacecraft",
+
+                exp: {
+
+                    t: "Vostok 1 là ... đầu tiên mang con người, Yuri A. Gagarin, vào không gian.",
+
+                    o: "A. spaceship / spacecraft (n): tàu vũ trụ<br>B. alien (n): người ngoài hành tinh<br>C. telescope (n): kính viễn vọng<br>D. planet (n): hành tinh",
+
+                    r: "Đáp án đúng là <b>A. spaceship / spacecraft</b>. Vostok 1 là tên của tàu vũ trụ lịch sử của Nga.",
+
+                    w: "Vostok 1 không phải là người ngoài hành tinh, kính viễn vọng hay hành tinh."
+
+                }
+
+            },
+
+            {
+
+                q: "6. The Sun is just one of more than 200 billion stars in the Milky Way _______.",
+
+                options: ["galaxy", "universe", "planet", "atmosphere"],
+
+                correct: "galaxy",
+
+                exp: {
+
+                    t: "Mặt Trời chỉ là một trong hơn 200 tỷ ngôi sao trong ... dải ngân hà Milky Way.",
+
+                    o: "A. galaxy (n): thiên hà, dải ngân hà<br>B. universe (n): vũ trụ<br>C. planet (n): hành tinh<br>D. atmosphere (n): khí quyển",
+
+                    r: "Đáp án đúng là <b>A. galaxy</b>. 'Milky Way' là tên riêng của Thiên hà (Galaxy) chứa hệ mặt trời của chúng ta.",
+
+                    w: "Vũ trụ (universe) chứa rất nhiều thiên hà. Planet và atmosphere sai hoàn toàn về quy mô."
+
+                }
+
+            },
+
+            {
+
+                q: "7. He wanted to know _______ humans couldn't live on Mercury or Venus.",
+
+                options: ["why", "what", "who", "whom"],
+
+                correct: "why",
+
+                exp: {
+
+                    t: "Anh ấy muốn biết ... con người không thể sống trên sao Thủy hoặc sao Kim.",
+
+                    o: "A. why (trạng từ nghi vấn): tại sao<br>B. what (đại từ): cái gì<br>C. who (đại từ): ai<br>D. whom (đại từ): người nào (tân ngữ)",
+
+                    r: "Đáp án đúng là <b>A. why</b> (tại sao) tạo thành câu tường thuật chỉ nguyên nhân. Anh ấy tò mò về lý do (tại sao).",
+
+                    w: "Lắp các từ khác vào câu sẽ không tạo ra nghĩa hợp lý."
+
+                }
+
+            },
+
+            {
+
+                q: "8. I always enjoy looking at Jupiter through my _______.",
+
+                options: ["telescope", "glasses", "window", "mirror"],
+
+                correct: "telescope",
+
+                exp: {
+
+                    t: "Tôi luôn thích ngắm sao Mộc qua ... của mình.",
+
+                    o: "A. telescope (n): kính viễn vọng<br>B. glasses (n): kính cận/viễn thông thường<br>C. window (n): cửa sổ<br>D. mirror (n): cái gương",
+
+                    r: "Đáp án đúng là <b>A. telescope</b>. Để ngắm các hành tinh xa xôi như sao Mộc, người ta bắt buộc phải dùng kính viễn vọng.",
+
+                    w: "Mắt thường qua kính cận hay cửa sổ không thể quan sát chi tiết được sao Mộc."
+
+                }
+
+            },
+
+            {
+
+                q: "9. People imagine Earth-like planets and _______ creatures living on them.",
+
+                options: ["alien", "human", "animal", "normal"],
+
+                correct: "alien",
+
+                exp: {
+
+                    t: "Mọi người tưởng tượng về các hành tinh giống Trái Đất và các sinh vật ... sống trên đó.",
+
+                    o: "A. alien (adj/n): (thuộc về) người ngoài hành tinh, xa lạ<br>B. human (n/adj): con người<br>C. animal (n/adj): động vật<br>D. normal (adj): bình thường",
+
+                    r: "Đáp án đúng là <b>A. alien</b>. Sinh vật sống trên hành tinh khác được gọi chung là 'alien creatures' (sinh vật ngoài hành tinh).",
+
+                    w: "Human và animal là các khái niệm của Trái Đất, không phù hợp ngữ cảnh tưởng tượng về hành tinh khác."
+
+                }
+
+            },
+
+            {
+
+                q: "10. Asteroids, also known as 'minor planets', are numerous in the _______ space.",
+
+                options: ["outer", "inner", "upper", "lower"],
+
+                correct: "outer",
+
+                exp: {
+
+                    t: "Các tiểu hành tinh, còn được gọi là 'hành tinh nhỏ', có rất nhiều trong không gian ...",
+
+                    o: "A. outer (adj): bên ngoài (outer space = ngoài vũ trụ)<br>B. inner (adj): bên trong<br>C. upper (adj): phía trên<br>D. lower (adj): phía dưới",
+
+                    r: "Đáp án đúng là <b>A. outer</b>. Cụm từ cố định 'outer space' mang nghĩa là không gian vũ trụ bên ngoài bầu khí quyển Trái Đất.",
+
+                    w: "Không ai dùng inner/upper/lower đi với space trong ngữ cảnh vũ trụ học."
+
+                }
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        partTitle: "IV. Choose the best answer a, b, c or d to complete the sentence.",
+
+        questions: [
+
+            {
+
+                q: "1. Venus is very similar ______ Earth in terms of size and surface gravity.",
+
+                options: ["with", "to", "from", "of"],
+
+                correct: "to",
+
+                exp: {
+
+                    t: "Sao Kim rất giống ______ Trái Đất về kích thước và trọng lực bề mặt.",
+
+                    o: "A. with (giới từ): với<br>B. to (giới từ): tới, với<br>C. from (giới từ): từ<br>D. of (giới từ): của",
+
+                    r: "Đáp án đúng là <b>B. to</b>. Cấu trúc cố định (Collocation): 'similar + to' (giống với cái gì đó).",
+
+                    w: "Không dùng similar with, from hay of."
+
+                }
+
+            },
+
+            {
+
+                q: "2. There's no water on Mars even though scientists have found traces ______ it.",
+
+                options: ["on", "with", "for", "of"],
+
+                correct: "of",
+
+                exp: {
+
+                    t: "Không có nước trên sao Hỏa mặc dù các nhà khoa học đã tìm thấy dấu vết ______ nó.",
+
+                    o: "A. on (giới từ): trên<br>B. with (giới từ): với<br>C. for (giới từ): cho<br>D. of (giới từ): của",
+
+                    r: "Đáp án đúng là <b>D. of</b>. Cụm từ cố định: 'traces of something' (dấu vết của cái gì). Ở đây là traces of it (nước).",
+
+                    w: "Không dùng traces đi với on, with, hay for trong ngữ cảnh này."
+
+                }
+
+            },
+
+            {
+
+                q: "3. Scientists discovered earth-sized exoplanets that could be potentially ______ for life.",
+
+                options: ["habitable", "available", "unsuitable", "possible"],
+
+                correct: "habitable",
+
+                exp: {
+
+                    t: "Các nhà khoa học đã phát hiện ra các ngoại hành tinh có kích thước bằng trái đất có khả năng ______ cho sự sống.",
+
+                    o: "A. habitable (adj): có thể ở được, sống được<br>B. available (adj): có sẵn<br>C. unsuitable (adj): không phù hợp<br>D. possible (adj): có thể",
+
+                    r: "Đáp án đúng là <b>A. habitable</b>. Từ vựng chuyên ngành: 'habitable for life' (có điều kiện thích hợp cho sự sống).",
+
+                    w: "Available (có sẵn) không hợp nghĩa. Unsuitable (không hợp) thì ngược nghĩa (vì họ đang kỳ vọng có sự sống). Possible for life không tự nhiên bằng habitable."
+
+                }
+
+            },
+
+            {
+
+                q: "4. What happens if the spaceship ______ on the way to Mars?",
+
+                options: ["stands for", "turns up", "breaks down", "takes over"],
+
+                correct: "breaks down",
+
+                exp: {
+
+                    t: "Điều gì xảy ra nếu con tàu vũ trụ ______ trên đường đến sao Hỏa?",
+
+                    o: "A. stands for (phrasal verb): viết tắt cho, đại diện cho<br>B. turns up (phrasal verb): xuất hiện, vặn to<br>C. breaks down (phrasal verb): hỏng hóc, chết máy<br>D. takes over (phrasal verb): tiếp quản",
+
+                    r: "Đáp án đúng là <b>C. breaks down</b>. Tàu vũ trụ là một cỗ máy, nên rủi ro lớn nhất trên đường đi là bị hỏng hóc (break down).",
+
+                    w: "Các cụm động từ còn lại không hợp ngữ cảnh hư hỏng máy móc."
+
+                }
+
+            },
+
+            {
+
+                q: "5. Blue stars are by far the biggest and brightest stars in the ______ .",
+
+                options: ["galaxy", "trace", "planet", "gravity"],
+
+                correct: "galaxy",
+
+                exp: {
+
+                    t: "Các ngôi sao xanh cho đến nay là những ngôi sao lớn nhất và sáng nhất trong ______ .",
+
+                    o: "A. galaxy (n): thiên hà<br>B. trace (n): dấu vết<br>C. planet (n): hành tinh<br>D. gravity (n): trọng lực",
+
+                    r: "Đáp án đúng là <b>A. galaxy</b>. Sao (stars) tồn tại trong các thiên hà (galaxy).",
+
+                    w: "Hành tinh (planet) quay quanh sao chứ sao không nằm trong hành tinh. Trace và gravity hoàn toàn sai nghĩa."
+
+                }
+
+            },
+
+            {
+
+                q: "6. When do you think the first human ______ walk on the surface of Mars?",
+
+                options: ["must", "should", "would", "might"],
+
+                correct: "might",
+
+                exp: {
+
+                    t: "Bạn nghĩ khi nào con người đầu tiên ______ đi bộ trên bề mặt sao Hỏa?",
+
+                    o: "A. must (modal verb): phải<br>B. should (modal verb): nên<br>C. would (modal verb): sẽ (quá khứ của will / giả định)<br>D. might (modal verb): có thể (chỉ khả năng trong tương lai)",
+
+                    r: "Đáp án đúng là <b>D. might</b>. Câu hỏi về một sự việc chưa chắc chắn trong tương lai (dự đoán khả năng), dùng 'might' là phù hợp nhất.",
+
+                    w: "Must/Should chỉ sự bắt buộc/lời khuyên (không hợp). Would dùng trong giả định hoặc quá khứ."
+
+                }
+
+            },
+
+            {
+
+                q: "7. When you look up at the moon, do you ever wonder ______ it would be like to live there?",
+
+                options: ["whether", "what", "why", "that"],
+
+                correct: "what",
+
+                exp: {
+
+                    t: "Khi bạn nhìn lên mặt trăng, bạn có bao giờ tự hỏi sống ở đó sẽ như ______ không?",
+
+                    o: "A. whether (liên từ): liệu rằng<br>B. what (đại từ): thế nào / cái gì<br>C. why (trạng từ): tại sao<br>D. that (liên từ): rằng",
+
+                    r: "Đáp án đúng là <b>B. what</b>. Cấu trúc cố định: 'what it is like' hoặc 'what it would be like' (điều đó sẽ như thế nào).",
+
+                    w: "Không có cấu trúc 'whether/why/that it would be like'."
+
+                }
+
+            },
+
+            {
+
+                q: "8. I asked Tim ______ in UFOs and aliens.",
+
+                options: ["whether he believe", "that did he believe", "if he believed", "what he believed"],
+
+                correct: "if he believed",
+
+                exp: {
+
+                    t: "Tôi đã hỏi Tim ______ vào đĩa bay và người ngoài hành tinh.",
+
+                    o: "A. whether he believe (sai ngữ pháp vì chia động từ believe sai ở quá khứ/hiện tại)<br>B. that did he believe (sai cấu trúc tường thuật)<br>C. if he believed (đúng cấu trúc câu tường thuật Yes/No, đã lùi thì)<br>D. what he believed (không hợp nghĩa: hỏi Tim tin 'cái gì' vào UFO? -> Sai)",
+
+                    r: "Đáp án đúng là <b>C. if he believed</b>. Câu gốc: 'Do you believe in...?' -> Tường thuật: asked + Object + if/whether + S + V(lùi thì).",
+
+                    w: "A sai thì. B sai vì không mượn trợ động từ 'did' trong câu tường thuật. D sai nghĩa."
+
+                }
+
+            },
+
+            {
+
+                q: "9. She wanted to know if I was going to meet Judy at the station ______ .",
+
+                options: ["a day before", "tomorrow", "the previous day", "the following day"],
+
+                correct: "the following day",
+
+                exp: {
+
+                    t: "Cô ấy muốn biết liệu tôi có định gặp Judy ở nhà ga vào ______ không.",
+
+                    o: "A. a day before: ngày hôm trước (sai quy tắc lùi thì)<br>B. tomorrow: ngày mai (chưa chuyển đổi từ trực tiếp sang gián tiếp)<br>C. the previous day: ngày hôm trước (không khớp với 'was going to' - tương lai trong quá khứ)<br>D. the following day: ngày hôm sau (từ lùi của tomorrow)",
+
+                    r: "Đáp án đúng là <b>D. the following day</b>. Vì động từ chính là 'was going to' (dự định làm gì ở tương lai), nên trạng từ thời gian phải là 'the following day' (chuyển từ tomorrow).",
+
+                    w: "A, C dùng cho quá khứ hoàn thành. B vi phạm quy tắc tường thuật."
+
+                }
+
+            },
+
+            {
+
+                q: "10. 'Do you think aliens really exist on other planets?' - '______ Scientists have not yet been able to find evidence of life on any other planet.'",
+
+                options: ["I'm sure about it.", "I don't like aliens.", "I doubt it.", "I don't think about it."],
+
+                correct: "I doubt it.",
+
+                exp: {
+
+                    t: "'Bạn có nghĩ người ngoài hành tinh thực sự tồn tại trên các hành tinh khác không?' - '______ Các nhà khoa học vẫn chưa thể tìm thấy bằng chứng về sự sống trên bất kỳ hành tinh nào khác.'",
+
+                    o: "A. I'm sure about it: Tôi chắc chắn về điều đó. (Trái với vế sau)<br>B. I don't like aliens: Tôi không thích người ngoài hành tinh. (Không liên quan)<br>C. I doubt it: Tôi nghi ngờ điều đó / Tôi không nghĩ vậy.<br>D. I don't think about it: Tôi không nghĩ về nó.",
+
+                    r: "Đáp án đúng là <b>C. I doubt it.</b> Vì câu sau giải thích 'chưa có bằng chứng khoa học', nên người nói thể hiện sự hoài nghi (doubt).",
+
+                    w: "Đáp án A ngược logic. B, D lảng tránh trọng tâm câu hỏi Yes/No."
+
+                }
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        partTitle: "V. Choose the underlined word or phrase, A, B, C or D that needs correcting.",
+
+        questions: [
+
+            {
+
+                q: "1. When will humans <u>be able to</u> travel from <u>one planet</u> to <u>other</u> <u>easily</u>?",
+
+                options: ["be able to", "one planet", "other", "easily"],
+
+                correct: "other",
+
+                exp: {
+
+                    t: "Khi nào con người có thể đi lại từ hành tinh này sang hành tinh khác một cách dễ dàng?",
+
+                    o: "A. be able to (có thể - đúng ngữ pháp sau will)<br>B. one planet (một hành tinh - đúng)<br>C. other (khác - sai ngữ pháp trong ngữ cảnh này)<br>D. easily (dễ dàng - trạng từ bổ nghĩa cho travel - đúng)",
+
+                    r: "Đáp án đúng là <b>C. other</b>. Lỗi sai ở cách dùng từ. Cụm chuẩn là 'from one planet to <b>another</b>' (từ hành tinh này sang một hành tinh khác số ít).",
+
+                    w: "'Other' không thể đứng một mình thay cho danh từ đếm được số ít, phải dùng 'another' (an + other)."
+
+                }
+
+            },
+
+            {
+
+                q: "2. In 2001, <u>at least</u> 15 people, <u>include</u> two police officers saw UFOs in New <u>Jersey</u>.",
+
+                options: ["at least", "include", "saw UFOs in", "Jersey"],
+
+                correct: "include",
+
+                exp: {
+
+                    t: "Năm 2001, ít nhất 15 người, bao gồm cả hai sĩ quan cảnh sát đã nhìn thấy đĩa bay ở New Jersey.",
+
+                    o: "A. at least (ít nhất - đúng)<br>B. include (bao gồm - động từ nguyên thể - sai)<br>C. saw UFOs in (động từ chính chia QKĐ - đúng)<br>D. Jersey (tên riêng - đúng)",
+
+                    r: "Đáp án đúng là <b>B. include</b>. Chữ này đóng vai trò như một giới từ hoặc phân từ hiện tại bổ nghĩa cho '15 people', phải sửa thành <b>including</b> (bao gồm).",
+
+                    w: "Động từ chính của câu là 'saw'. Không thể dùng 'include' (V-nguyên thể) ở đây vì sẽ tạo ra lỗi hai động từ chính không nối với nhau."
+
+                }
+
+            },
+
+            {
+
+                q: "3. He <u>wanted to know</u> why <u>didn't I</u> believe there <u>was</u> intelligent life <u>on</u> other planets.",
+
+                options: ["wanted to know", "didn't I", "was", "on"],
+
+                correct: "didn't I",
+
+                exp: {
+
+                    t: "Anh ấy muốn biết tại sao tôi không tin rằng có sự sống thông minh trên các hành tinh khác.",
+
+                    o: "A. wanted to know (muốn biết - đúng)<br>B. didn't I (sai cấu trúc tường thuật)<br>C. was (động từ lùi thì - đúng)<br>D. on (giới từ on planets - đúng)",
+
+                    r: "Đáp án đúng là <b>B. didn't I</b>. Trong câu tường thuật (Reported Speech) với từ để hỏi (why), mệnh đề theo sau phải chuyển về dạng khẳng định (S + V), KHÔNG được đảo ngữ. Sửa thành: <b>I didn't</b>.",
+
+                    w: "Các phần gạch chân còn lại hoàn toàn đúng ngữ pháp."
+
+                }
+
+            },
+
+            {
+
+                q: "4. Scientists <u>believe that</u> several <u>billion</u> years ago Mars <u>was</u> very <u>similarity to</u> Earth.",
+
+                options: ["believe that", "billion", "was", "similarity to"],
+
+                correct: "similarity to",
+
+                exp: {
+
+                    t: "Các nhà khoa học tin rằng vài tỷ năm trước Sao Hỏa rất giống Trái Đất.",
+
+                    o: "A. believe that (tin rằng - đúng)<br>B. billion (tỷ - không có 's' sau số đếm - đúng)<br>C. was (chia quá khứ cho số ít - đúng)<br>D. similarity to (danh từ + to - sai vị trí loại từ)",
+
+                    r: "Đáp án đúng là <b>D. similarity to</b>. Sau động từ tobe 'was' và trạng từ chỉ mức độ 'very', ta cần một tính từ (Adjective). Sửa danh từ 'similarity' thành tính từ <b>similar</b>. Cụm đúng: was very <b>similar to</b>.",
+
+                    w: "Các lỗi sai ngữ pháp không nằm ở A, B, C."
+
+                }
+
+            },
+
+            {
+
+                q: "5. <u>Because</u> it is <u>so</u> close <u>from</u> the sun, Mercury is hard to study <u>from</u> Earth.",
+
+                options: ["Because", "so", "from (1)", "from (2)"],
+
+                correct: "from (1)",
+
+                exp: {
+
+                    t: "Bởi vì nó quá gần mặt trời, Sao Thủy rất khó để nghiên cứu từ Trái Đất.",
+
+                    o: "A. Because (bởi vì - đúng)<br>B. so (quá - đúng)<br>C. from (giới từ - sai collocation)<br>D. from (nghiên cứu 'từ' Trái đất - đúng)",
+
+                    r: "Đáp án đúng là <b>C. from (vị trí số 1)</b>. Cụm từ cố định của tính từ 'close' là 'close <b>to</b>' (gần với cái gì). Không dùng 'close from'.",
+
+                    w: "Sửa 'from' thứ nhất thành 'to'. Các từ còn lại dùng đúng."
+
+                }
+
+            },
+
+            {
+
+                q: "6. We asked our teacher <u>whether</u> he <u>can postpone</u> the exam until <u>the next Monday</u>.",
+
+                options: ["whether", "can postpone", "until", "the next Monday"],
+
+                correct: "can postpone",
+
+                exp: {
+
+                    t: "Chúng tôi đã hỏi giáo viên của mình liệu thầy có thể hoãn kỳ thi cho đến thứ Hai tuần sau không.",
+
+                    o: "A. whether (liên từ liệu rằng - đúng)<br>B. can postpone (có thể hoãn - sai thì)<br>C. until (cho đến khi - đúng)<br>D. the next Monday (thứ Hai tuần sau - đúng)",
+
+                    r: "Đáp án đúng là <b>B. can postpone</b>. Động từ tường thuật ở quá khứ 'asked', do đó động từ trong mệnh đề phụ bắt buộc phải lùi thì. 'Can' phải lùi thành <b>could</b>. Sửa thành: <b>could postpone</b>.",
+
+                    w: "A, C, D đều tuân thủ đúng quy tắc ngữ pháp."
+
+                }
+
+            },
+
+            {
+
+                q: "7. Mars is <u>widely</u> considered <u>to be</u> the most <u>promised</u> planet for life <u>in</u> our solar system.",
+
+                options: ["widely", "to be", "promised", "in"],
+
+                correct: "promised",
+
+                exp: {
+
+                    t: "Sao Hỏa được coi rộng rãi là hành tinh đầy hứa hẹn nhất cho sự sống trong hệ mặt trời của chúng ta.",
+
+                    o: "A. widely (trạng từ - đúng)<br>B. to be (động từ - đúng, cấu trúc be considered to be)<br>C. promised (phân từ 2 - sai loại từ/nghĩa)<br>D. in (giới từ - đúng)",
+
+                    r: "Đáp án đúng là <b>C. promised</b>. Để miêu tả tính chất 'đầy hứa hẹn, có triển vọng' của một vật, ta dùng tính từ chủ động (V-ing) là <b>promising</b>. Sửa thành: <b>promising</b>.",
+
+                    w: "'Promised' (được hứa hẹn) thường dùng cho người hoặc lời hứa cụ thể, không dùng miêu tả bản chất sự vật trong ngữ cảnh này."
+
+                }
+
+            },
+
+            {
+
+                q: "8. Scientists <u>discovered</u> that there <u>were</u> many <u>crater</u> on the surface of <u>the Moon</u>.",
+
+                options: ["discovered", "were", "crater", "the Moon"],
+
+                correct: "crater",
+
+                exp: {
+
+                    t: "Các nhà khoa học phát hiện ra rằng có rất nhiều miệng núi lửa trên bề mặt Mặt Trăng.",
+
+                    o: "A. discovered (quá khứ đơn - đúng)<br>B. were (quá khứ số nhiều - đúng vì đi với many)<br>C. crater (danh từ đếm được số ít - sai)<br>D. the Moon (tên riêng duy nhất cần 'the' - đúng)",
+
+                    r: "Đáp án đúng là <b>C. crater</b>. Sau lượng từ 'many' (nhiều), danh từ đếm được bắt buộc phải ở dạng số nhiều. Sửa thành: <b>craters</b>.",
+
+                    w: "Các từ còn lại đều đúng quy tắc ngữ pháp."
+
+                }
+
+            },
+
+            {
+
+                q: "9. Some people <u>believe</u> that UFOs are <u>actual</u> vehicles <u>from</u> other planets, <u>flown</u> by alien visitors.",
+
+                options: ["believe", "actual", "from", "flown"],
+
+                correct: "actual",
+
+                exp: {
+
+                    t: "Một số người tin rằng đĩa bay thực chất là các phương tiện từ các hành tinh khác, được điều khiển bởi người ngoài hành tinh.",
+
+                    o: "A. believe (tin - đúng thì HTĐ)<br>B. actual (tính từ - sai cách dùng)<br>C. from (giới từ - đúng)<br>D. flown (phân từ 2 rút gọn mệnh đề - đúng)",
+
+                    r: "Đáp án đúng là <b>B. actual</b>. Dựa theo key chuẩn của bài tập, ở vị trí này cần một trạng từ để nhấn mạnh bản chất thực sự của sự vật, bổ nghĩa cho tobe 'are' -> sửa thành <b>actually</b> (UFOs are actually vehicles).",
+
+                    w: "Dù cấu trúc 'actual vehicles' (Adj + Noun) về mặt lý thuyết ngữ pháp không sai, nhưng trong văn phong giao tiếp tiếng Anh, người ta chuộng dùng trạng từ 'actually' để đính chính/nhấn mạnh sự thật."
+
+                }
+
+            },
+
+            {
+
+                q: "10. Many people <u>are wondering</u> <u>where</u> life <u>exists on</u> other planets <u>and moons</u>.",
+
+                options: ["are wondering", "where", "exists on", "and moons"],
+
+                correct: "where",
+
+                exp: {
+
+                    t: "Nhiều người đang tự hỏi liệu sự sống có tồn tại trên các hành tinh và mặt trăng khác hay không.",
+
+                    o: "A. are wondering (thì HTTD - đúng)<br>B. where (từ để hỏi: ở đâu - sai logic)<br>C. exists on (tồn tại trên - đúng)<br>D. and moons (và các mặt trăng - đúng)",
+
+                    r: "Đáp án đúng là <b>B. where</b>. Xét về ý nghĩa, người ta đang băn khoăn về KHẢ NĂNG tồn tại (liệu có hay không), chứ không phải hỏi địa điểm cụ thể khi mà mệnh đề sau đã có sẵn địa điểm là 'on other planets'. Phải sửa 'where' thành <b>if / whether</b>.",
+
+                    w: "Dùng 'where' khiến câu bị lặp ý địa điểm và sai logic hoàn toàn."
+
+                }
+
+            }
+
+        ]
+
+    }
+
+];
+
+
+
+// --- RENDER LOGIC ---
+
+const quizContainer = document.getElementById('quiz-container');
+
+let currentScore = 0;
+
+const totalQuestions = 40;
+
+let answeredQuestions = 0;
+
+
+
+function shuffleArray(array) {
+
+    let newArray = [...array];
+
+    for (let i = newArray.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+
+    }
+
+    return newArray;
+
+}
+
+
+
+function renderQuiz() {
+
+    let html = '';
+
+    let globalQIndex = 0;
+
+
+
+    rawData.forEach((part) => {
+
+        html += `<div class="part-title">${part.partTitle}</div>`;
+
+        
+
+        part.questions.forEach((qData) => {
+
+            let displayQ = qData.q;
+
+            
+
+            html += `
+
+            <div class="card" id="q-card-${globalQIndex}">
+
+                <div class="question">${displayQ}</div>
+
+                <div class="options" id="options-${globalQIndex}">
+
+            `;
+
+
+
+            // Auto Shuffle Options
+
+            const shuffledOptions = shuffleArray(qData.options);
+
+
+
+            shuffledOptions.forEach((opt) => {
+
+                // FIXED BUG: Thêm lệnh replace để làm sạch dấu nháy đơn, tránh làm gãy chuỗi JS
+
+                const safeOpt = opt.replace(/'/g, "\\'");
+
+                const safeCorrect = qData.correct.replace(/'/g, "\\'");
+
+                
+
+                html += `<button class="btn-option" onclick="checkAnswer(this, ${globalQIndex}, '${safeOpt}', '${safeCorrect}')">${opt}</button>`;
+
+            });
+
+
+
+            html += `
+
+                </div>
+
+                <div class="explanation" id="exp-${globalQIndex}">
+
+                    <div class="exp-step"><span class="exp-title">1. Dịch nghĩa:</span> ${qData.exp.t}</div>
+
+                    <div class="exp-step"><span class="exp-title">2. Phân tích đáp án:</span><br>${qData.exp.o}</div>
+
+                    <div class="exp-step"><span class="exp-title">3. Tại sao Đúng?</span><br> ${qData.exp.r}</div>
+
+                    <div class="exp-step" style="color: var(--wrong);"><span class="exp-title">4. Tại sao Sai?</span><br> ${qData.exp.w}</div>
+
+                </div>
+
+            </div>`;
+
+            globalQIndex++;
+
+        });
+
+    });
+
+
+
+    quizContainer.innerHTML = html;
+
+}
+
+
+
+function checkAnswer(btn, qIndex, selectedOpt, correctOpt) {
+
+    const parent = document.getElementById(`options-${qIndex}`);
+
+    const buttons = parent.querySelectorAll('.btn-option');
+
+    
+
+    // Disable all buttons in this question
+
+    buttons.forEach(b => b.disabled = true);
+
+
+
+    const isCorrect = selectedOpt === correctOpt;
+
+
+
+    if (isCorrect) {
+
+        btn.classList.add('correct');
+
+        playSound('correct');
+
+        const rect = btn.getBoundingClientRect();
+
+        createConfetti(rect);
+
+        currentScore++;
+
+    } else {
+
+        btn.classList.add('wrong');
+
+        btn.classList.add('shake');
+
+        playSound('wrong');
+
+        
+
+        // Highlight correct answer
+
+        buttons.forEach(b => {
+
+            // Cũng cần thay thế nháy đơn để so sánh text content cho chuẩn
+
+            if (b.innerText.replace(/'/g, "\\'") === correctOpt) {
+
+                b.classList.add('correct');
+
+                b.style.opacity = '0.7';
+
+            }
+
+        });
+
+    }
+
+
+
+    // Show explanation immediately
+
+    document.getElementById(`exp-${qIndex}`).classList.add('show');
+
+    answeredQuestions++;
+
+}
+
+
+
+function submitQuiz() {
+
+    if(answeredQuestions < totalQuestions) {
+
+        if(!confirm(`Bạn mới làm được ${answeredQuestions}/${totalQuestions} câu. Bạn có chắc chắn muốn nộp bài sớm không?`)) {
+
+            return;
+
+        }
+
+    }
+
+
+
+    const modal = document.getElementById('scoreModal');
+
+    const scoreText = document.getElementById('finalScore');
+
+    const praiseText = document.getElementById('praiseText');
+
+
+
+    scoreText.innerText = `${currentScore} / ${totalQuestions}`;
+
+    
+
+    const percentage = currentScore / totalQuestions;
+
+    if(percentage === 1) praiseText.innerText = "Điểm tuyệt đối! Em là một thiên tài vũ trụ! 🚀🛸";
+
+    else if(percentage >= 0.8) praiseText.innerText = "Xuất sắc! Kiến thức của em bay cao như tên lửa! 🚀";
+
+    else if(percentage >= 0.5) praiseText.innerText = "Khá lắm! Hãy cố gắng thêm một chút nữa nhé! ⭐";
+
+    else praiseText.innerText = "Đừng buồn, hãy đọc kỹ phần giải thích chi tiết để tiến bộ hơn nha! 💪";
+
+
+
+    modal.style.display = 'flex';
+
+    playSound('correct');
+
+    createConfetti(document.body.getBoundingClientRect());
+
+}
+
+
+
+// Init
+
+window.onload = renderQuiz;
+
+
+
+</script>
+
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -963,40 +1920,43 @@ window.onload = renderQuiz;
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 
@@ -1010,5 +1970,6 @@ window.onload = renderQuiz;
     setTimeout(unlockNow, 600);
 })();
 </script>
-</body>
+</body>
+
 </html>

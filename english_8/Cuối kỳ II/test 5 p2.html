@@ -1,1211 +1,2418 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Test - MS Chí Nên ULIS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #8854C0;
-            --secondary: #FDCB6E;
-            --tertiary: #00C9A7;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --text-dark: #2D3436;
-            --correct: #00D26A;
-            --wrong: #FF4757;
-            --font-main: 'Nunito', sans-serif;
-            --font-heading: 'Quicksand', sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-main);
-            color: var(--text-dark);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            /* Dynamic background set via JS, but base fallback here */
-            background: linear-gradient(-45deg, #FF9A9E, #FECFEF, #A1C4FD, #C2E9FB);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #bg-pattern {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            background-repeat: repeat;
-            animation: floatPattern 40s linear infinite;
-        }
-
-        @keyframes floatPattern {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
-        }
-
-        /* Authentication Modal */
-        #auth-modal, #name-modal, #result-modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .modal-content {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 3rem;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            border: 2px solid #fff;
-        }
-
-        .modal-content h2 {
-            font-family: var(--font-heading);
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-        }
-
-        .input-group input {
-            padding: 15px 20px;
-            font-size: 1.2rem;
-            border: 3px solid #eee;
-            border-radius: 15px;
-            width: 100%;
-            font-family: var(--font-main);
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--tertiary);
-            box-shadow: 0 0 15px rgba(0, 201, 167, 0.3);
-        }
-
-        .btn-submit {
-            margin-top: 1.5rem;
-            padding: 12px 30px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: white;
-            background: var(--primary);
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #5f3a8a;
-            transition: 0.1s;
-        }
-
-        .btn-submit:active {
-            transform: translateY(6px);
-            box-shadow: none;
-        }
-
-        .shake {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-            border-color: var(--wrong) !important;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-
-        /* Main App Layout */
-        #app-container {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-        }
-
-        header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            padding: 10px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--glass-border);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            z-index: 10;
-        }
-
-        .header-title {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .timer-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #timer-display {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--wrong);
-            background: white;
-            padding: 5px 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 0 #d1d8e0;
-        }
-
-        .split-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .left-pane, .right-pane {
-            flex: 1;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .right-pane {
-            flex: 1.2;
-            scroll-behavior: smooth;
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-
-        /* Typography & Content Layout */
-        h3.section-title {
-            font-family: var(--font-heading);
-            color: var(--primary);
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            border-bottom: 2px dashed #ccc;
-            padding-bottom: 10px;
-        }
-
-        .passage {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            background: rgba(255,255,255,0.6);
-            padding: 20px;
-            border-radius: 15px;
-        }
-
-        .btn-translate {
-            background: var(--secondary);
-            color: #553c00;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 0 #d4a034;
-            transition: 0.1s;
-        }
-        .btn-translate:active { transform: translateY(4px); box-shadow: none; }
-
-        .translation-box {
-            display: none;
-            background: #fff;
-            padding: 15px;
-            border-left: 5px solid var(--tertiary);
-            border-radius: 0 10px 10px 0;
-            margin-top: 15px;
-            font-size: 1.05rem;
-            color: #444;
-        }
-
-        .glossary-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .glossary-table th, .glossary-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .glossary-table th {
-            background: var(--primary);
-            color: white;
-            font-family: var(--font-heading);
-        }
-
-        /* Quiz UI */
-        .question-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            border: 2px solid transparent;
-            transition: 0.3s;
-        }
-
-        .question-card:hover {
-            border-color: var(--secondary);
-            transform: translateY(-2px);
-        }
-
-        .q-text {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .option-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 15px 20px;
-            font-size: 1.08rem;
-            font-family: var(--font-main);
-            font-weight: 600;
-            color: #2D3436;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 0 #d1d8e0;
-            text-align: center;
-        }
-
-        .option-btn:hover {
-            transform: scale(1.02);
-            border-color: var(--tertiary);
-        }
-
-        .option-btn:active {
-            transform: translateY(6px);
-            box-shadow: none;
-        }
-
-        .option-btn.correct {
-            background: var(--correct);
-            color: white;
-            border-color: var(--correct);
-            box-shadow: 0 6px 0 #00994d;
-        }
-
-        .option-btn.wrong {
-            background: var(--wrong);
-            color: white;
-            border-color: var(--wrong);
-            box-shadow: 0 6px 0 #c82333;
-        }
-
-        .option-btn:disabled {
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        /* Explanation Box */
-        .explanation-box {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #fdfbf7;
-            border: 2px dashed var(--primary);
-            border-radius: 15px;
-            font-size: 1rem;
-            line-height: 1.7;
-            animation: slideDown 0.4s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Syntax Highlighting required by Prompt */
-        .p-word { color: #0984e3; font-weight: bold; }
-        .p-phonetic { background: #e8dbfc; color: #6c5ce7; padding: 2px 6px; border-radius: 6px; font-family: monospace; }
-        .p-mean { color: #d63031; font-weight: bold; }
-        .p-grammar { color: #d63031; text-decoration: underline; font-weight: bold; }
-        .hl-green { color: #00b894; font-weight: bold; }
-        .hl-red { color: #d63031; font-weight: bold; }
-
-        .submit-area {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .btn-finish {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
-            color: white;
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-family: var(--font-heading);
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 8px 0 #c23b3b;
-            transition: 0.2s;
-        }
-
-        .btn-finish:hover { transform: scale(1.05); }
-        .btn-finish:active { transform: translateY(8px); box-shadow: none; }
-
-        /* Results Modal Specific */
-        #result-meme {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 15px;
-            margin: 15px auto;
-            display: block;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        #result-text {
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-
-    <div id="bg-pattern"></div>
-
-    <div id="auth-modal">
-        <div class="modal-content">
-            <h2>🔒 Nhập Mật Khẩu Để Làm Bài</h2>
-            <div class="input-group">
-                <input type="password" id="pwd-input" placeholder="Nhập mật khẩu bí mật...">
-            </div>
-            <p id="pwd-error" style="color: red; margin-top: 10px; display: none; font-weight: bold;">Sai mật khẩu rồi bạn ơi!</p>
-            <button class="btn-submit" onclick="checkAuth()">Mở Khóa Bài Thi 🚀</button>
-        </div>
-    </div>
-
-    <div id="app-container">
-        <header>
-            <div class="header-title">Giáo viên tạo: MS Chí Nên ULIS 🌸</div>
-            <div class="timer-container">
-                <button class="btn-translate" id="btn-timer-toggle" onclick="toggleTimer()">BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
-                <div id="timer-display">10:00</div>
-            </div>
-        </header>
-
-        <div class="split-container">
-            <div class="left-pane" id="reading-pane">
-                <h3 class="section-title">📖 Reading Passages</h3>
-                
-                <div class="passage">
-                    <strong>What to do if someone is Drowning While Swimming</strong><br><br>
-                    1. Call for help immediately or tell a (13) ______.<br>
-                    2. Do not jump (14) ______ the water unless you are trained.<br>
-                    3. Throw something that floats to the person (like (15) ______ life jacket).<br>
-                    4. If the person is out of the water, (16) ______ if they are breathing and do CPR if you can.<br>
-                    5. Stay with them until help arrives.
-                    
-                    <button class="btn-translate" onclick="toggleTranslation('trans1')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans1">
-                        <strong>Phải làm gì nếu có người đang đuối nước khi bơi</strong><br>
-                        1. Gọi giúp đỡ ngay lập tức hoặc báo cho nhân viên cứu hộ.<br>
-                        2. Không nhảy xuống nước trừ khi bạn đã được huấn luyện.<br>
-                        3. Ném vật gì đó nổi được cho người đó (như áo phao).<br>
-                        4. Nếu người đó đã ra khỏi nước, hãy kiểm tra xem họ có thở không và thực hiện hô hấp nhân tạo (CPR) nếu bạn có thể.<br>
-                        5. Ở lại với họ cho đến khi có sự trợ giúp.
-                    </div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td><span class="p-word">drowning</span></td><td><span class="p-phonetic">/ˈdraʊnɪŋ/</span> (n)</td><td><span class="p-mean">sự đuối nước</span></td></tr>
-                        <tr><td><span class="p-word">immediately</span></td><td><span class="p-phonetic">/ɪˈmiːdiətli/</span> (adv)</td><td><span class="p-mean">ngay lập tức</span></td></tr>
-                        <tr><td><span class="p-word">trained</span></td><td><span class="p-phonetic">/treɪnd/</span> (adj)</td><td><span class="p-mean">được huấn luyện</span></td></tr>
-                        <tr><td><span class="p-word">float</span></td><td><span class="p-phonetic">/fləʊt/</span> (v)</td><td><span class="p-mean">nổi</span></td></tr>
-                        <tr><td><span class="p-word">CPR</span></td><td><span class="p-phonetic">/ˌsiː piː ˈɑː(r)/</span> (n)</td><td><span class="p-mean">Hô hấp nhân tạo</span></td></tr>
-                    </table>
-                </div>
-
-                <div class="passage">
-                    Electronic devices have become an essential part of modern life. They (19) ______ items like smartphones, computers, tablets, and smartwatches. These devices help people (20) ______ with others, access information quickly, and entertain themselves with games and videos. 
-                    <button class="btn-translate" onclick="toggleTranslation('trans2a')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans2a">
-                        Các thiết bị điện tử đã trở thành một phần thiết yếu của cuộc sống hiện đại. Chúng bao gồm các thiết bị như điện thoại thông minh, máy tính, máy tính bảng và đồng hồ thông minh. Những thiết bị này giúp con người giao tiếp với người khác, truy cập thông tin nhanh chóng và giải trí bằng trò chơi và video.
-                    </div>
-                    <br><br>
-                    In education, electronic devices are useful tools for learning. Students can use them to research topics, complete homework, and collaborate with classmates online. Teachers can also use electronic devices to present lessons in an interactive way.
-                    <button class="btn-translate" onclick="toggleTranslation('trans2b')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans2b">
-                        Trong giáo dục, thiết bị điện tử là công cụ hữu ích cho việc học tập. Học sinh có thể sử dụng chúng để nghiên cứu các chủ đề, hoàn thành bài tập về nhà và cộng tác với các bạn cùng lớp trực tuyến. Giáo viên cũng có thể sử dụng thiết bị điện tử để trình bày bài học một cách tương tác.
-                    </div>
-                    <br><br>
-                    However, excessive use of electronic devices can lead to problems. Spending too much time on screens may affect health, (21) ______, causing eye strain and reducing physical activity. It is important (22)___________. Setting limits on screen time and taking regular breaks can help prevent negative effects. Parents and teachers can guide young people on (23) ______. Electronic devices offer many benefits, but it is important to balance their use with other activities. In conclusion, electronic devices (24) ______ today's world, and understanding how to use them properly is important for everyone.
-                    <button class="btn-translate" onclick="toggleTranslation('trans2c')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans2c">
-                        Tuy nhiên, việc sử dụng quá nhiều thiết bị điện tử có thể dẫn đến các vấn đề. Dành quá nhiều thời gian trên màn hình có thể ảnh hưởng đến sức khỏe, ví dụ, gây mỏi mắt và giảm hoạt động thể chất. Điều quan trọng là sử dụng các thiết bị điện tử một cách phù hợp. Đặt giới hạn về thời gian sử dụng màn hình và nghỉ ngơi thường xuyên có thể giúp ngăn ngừa các tác động tiêu cực. Cha mẹ và giáo viên có thể hướng dẫn những người trẻ tuổi về cách sử dụng các thiết bị này một cách khôn ngoan. Thiết bị điện tử mang lại nhiều lợi ích, nhưng điều quan trọng là phải cân bằng việc sử dụng chúng với các hoạt động khác. Tóm lại, các thiết bị điện tử đóng vai trò quan trọng trong thế giới ngày nay và hiểu cách sử dụng chúng đúng cách là điều quan trọng đối với mọi người.
-                    </div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td><span class="p-word">essential</span></td><td><span class="p-phonetic">/ɪˈsenʃl/</span> (adj)</td><td><span class="p-mean">thiết yếu, quan trọng</span></td></tr>
-                        <tr><td><span class="p-word">collaborate</span></td><td><span class="p-phonetic">/kəˈlæbəreɪt/</span> (v)</td><td><span class="p-mean">hợp tác, cộng tác</span></td></tr>
-                        <tr><td><span class="p-word">interactive</span></td><td><span class="p-phonetic">/ˌɪntərˈæktɪv/</span> (adj)</td><td><span class="p-mean">có tính tương tác</span></td></tr>
-                        <tr><td><span class="p-word">excessive</span></td><td><span class="p-phonetic">/ɪkˈsesɪv/</span> (adj)</td><td><span class="p-mean">thái quá, quá mức</span></td></tr>
-                        <tr><td><span class="p-word">strain</span></td><td><span class="p-phonetic">/streɪn/</span> (n)</td><td><span class="p-mean">sự căng thẳng (mỏi mắt)</span></td></tr>
-                    </table>
-                </div>
-
-                <div class="passage">
-                    In October 2024, Typhoon Yagi made landfall in Ha Noi, causing significant damage to the city. This powerful storm brought strong winds and heavy rain, leading to widespread flooding in many districts. It was one of the worst storms the capital city had experienced in recent years. Thousands of people were evacuated from low-lying areas to prevent further harm from rising water levels.
-                    <button class="btn-translate" onclick="toggleTranslation('trans3a')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans3a">
-                        Vào tháng 10 năm 2024, Bão Yagi đổ bộ vào Hà Nội, gây ra thiệt hại đáng kể cho thành phố. Cơn bão mạnh này mang theo gió lớn và mưa to, dẫn đến lũ lụt trên diện rộng ở nhiều quận huyện. Đây là một trong những cơn bão tồi tệ nhất mà thủ đô từng trải qua trong những năm gần đây. Hàng ngàn người đã được sơ tán khỏi các vùng trũng thấp để ngăn ngừa thiệt hại thêm do mực nước dâng cao.
-                    </div>
-                    <br><br>
-                    During the storm, many roads in the city were flooded, making transportation difficult. Schools and businesses were closed to ensure the safety of the public. The government acted quickly by providing emergency shelters and organizing rescue teams. Many people in affected areas received food and water supplies from these teams.
-                    <button class="btn-translate" onclick="toggleTranslation('trans3b')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans3b">
-                        Trong cơn bão, nhiều tuyến đường trong thành phố bị ngập, gây khó khăn cho việc đi lại. Các trường học và doanh nghiệp đã đóng cửa để đảm bảo an toàn cho công chúng. Chính phủ đã hành động nhanh chóng bằng cách cung cấp các nơi trú ẩn khẩn cấp và tổ chức các đội cứu hộ. Nhiều người ở các khu vực bị ảnh hưởng đã nhận được thực phẩm và nước uống từ các đội này.
-                    </div>
-                    <br><br>
-                    Despite the challenges, the damage could have been worse if there had not been early warnings. The authorities issued alerts days before the storm arrived, allowing people to prepare and evacuate on time. This quick response helped save lives and minimize damage to properties.
-                    <br>
-                    In conclusion, Typhoon Yagi in 2024 had a major impact on Ha Noi, but thanks to early preparations and quick action by the government, the city was able to recover quickly.
-                    <button class="btn-translate" onclick="toggleTranslation('trans3c')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans3c">
-                        Bất chấp những thách thức, thiệt hại có thể tồi tệ hơn nếu không có cảnh báo sớm. Các nhà chức trách đã đưa ra cảnh báo nhiều ngày trước khi cơn bão đến, cho phép người dân chuẩn bị và sơ tán kịp thời. Phản ứng nhanh chóng này đã giúp cứu sống nhiều người và giảm thiểu thiệt hại về tài sản.<br>
-                        Tóm lại, bão Yagi năm 2024 đã có tác động lớn đến Hà Nội, nhưng nhờ sự chuẩn bị sớm và hành động nhanh chóng của chính phủ, thành phố đã có thể phục hồi nhanh chóng.
-                    </div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td><span class="p-word">landfall</span></td><td><span class="p-phonetic">/ˈlændfɔːl/</span> (n)</td><td><span class="p-mean">sự đổ bộ (vào đất liền)</span></td></tr>
-                        <tr><td><span class="p-word">evacuate</span></td><td><span class="p-phonetic">/ɪˈvækjueɪt/</span> (v)</td><td><span class="p-mean">sơ tán</span></td></tr>
-                        <tr><td><span class="p-word">low-lying</span></td><td><span class="p-phonetic">/ˌləʊ ˈlaɪɪŋ/</span> (adj)</td><td><span class="p-mean">trũng thấp</span></td></tr>
-                        <tr><td><span class="p-word">authorities</span></td><td><span class="p-phonetic">/ɔːˈθɒrətiz/</span> (n)</td><td><span class="p-mean">nhà chức trách, chính quyền</span></td></tr>
-                        <tr><td><span class="p-word">minimize</span></td><td><span class="p-phonetic">/ˈmɪnɪmaɪz/</span> (v)</td><td><span class="p-mean">giảm thiểu tối đa</span></td></tr>
-                    </table>
-                </div>
-
-                <div class="passage">
-                    The Mars Exploration Rovers were two robotic vehicles that explored the surface of Mars. Scientists wanted them to figure out whether water had ever existed on the planet. The rovers also searched for other traces of life on Mars. The National Aeronautics and Space Administration (NASA) designed and built the rovers, named Spirit and Opportunity. (37)______. Spirit touched down on January 3, 2004. Three weeks later, Opportunity landed on the opposite side of the planet.
-                    <button class="btn-translate" onclick="toggleTranslation('trans4a')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans4a">
-                        Tàu Thám hiểm Sao Hỏa là hai phương tiện robot đã khám phá bề mặt Sao Hỏa. Các nhà khoa học muốn chúng tìm ra liệu nước có từng tồn tại trên hành tinh này hay không. Các tàu thăm dò cũng tìm kiếm những dấu vết sự sống khác trên Sao Hỏa. Cơ quan Hàng không và Vũ trụ Quốc gia (NASA) đã thiết kế và chế tạo các tàu thăm dò, mang tên Spirit và Opportunity. NASA đã phóng Spirit vào ngày 10 tháng 6 và Opportunity vào ngày 7 tháng 7 năm 2003. Spirit hạ cánh vào ngày 3 tháng 1 năm 2004. Ba tuần sau, Opportunity hạ cánh ở phía đối diện của hành tinh.
-                    </div>
-                    <br><br>
-                    The rovers had six wheels that allowed them (38)________. They also had cameras and many instruments for examining the rocks, soil, and dust on the planet. Scientists on Earth sent commands to the rovers to tell them where to go and what to do. (39)_________. 
-                    <button class="btn-translate" onclick="toggleTranslation('trans4b')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans4b">
-                        Các tàu thăm dò có sáu bánh xe cho phép chúng di chuyển theo nhiều hướng. Chúng cũng có camera và nhiều công cụ để kiểm tra đá, đất và bụi trên hành tinh. Các nhà khoa học trên Trái đất đã gửi lệnh cho các tàu thăm dò để nói cho chúng biết phải đi đâu và làm gì. Các tàu thăm dò đã gửi tín hiệu trở lại cho các nhà khoa học thông qua máy tính và ăng-ten lớn trên Trái đất.
-                    </div>
-                    <br><br>
-                    Each rover was designed to last for about 90 days. However, they worked so well that their mission was extended. In 2010 Spirit stopped sending signals, but Opportunity continued (40)________. NASA officially declared the Opportunity mission to be ended in February 2019.
-                    <button class="btn-translate" onclick="toggleTranslation('trans4c')">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-box" id="trans4c">
-                        Mỗi tàu thăm dò được thiết kế để tồn tại trong khoảng 90 ngày. Tuy nhiên, chúng đã hoạt động tốt đến mức sứ mệnh của chúng được kéo dài. Vào năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục hoạt động cho đến năm 2018. NASA chính thức tuyên bố sứ mệnh Opportunity kết thúc vào tháng 2 năm 2019.
-                    </div>
-                    
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td><span class="p-word">exploration</span></td><td><span class="p-phonetic">/ˌekspləˈreɪʃn/</span> (n)</td><td><span class="p-mean">sự thám hiểm</span></td></tr>
-                        <tr><td><span class="p-word">surface</span></td><td><span class="p-phonetic">/ˈsɜːfɪs/</span> (n)</td><td><span class="p-mean">bề mặt</span></td></tr>
-                        <tr><td><span class="p-word">trace</span></td><td><span class="p-phonetic">/treɪs/</span> (n)</td><td><span class="p-mean">dấu vết</span></td></tr>
-                        <tr><td><span class="p-word">instrument</span></td><td><span class="p-phonetic">/ˈɪnstrəmənt/</span> (n)</td><td><span class="p-mean">dụng cụ, thiết bị</span></td></tr>
-                        <tr><td><span class="p-word">declare</span></td><td><span class="p-phonetic">/dɪˈkleə(r)/</span> (v)</td><td><span class="p-mean">tuyên bố</span></td></tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="right-pane" id="quiz-pane">
-                <h3 class="section-title">✍️ Interactive Exercises</h3>
-                <div id="quiz-container">
-                    </div>
-                
-                <div class="submit-area">
-                    <button class="btn-finish" onclick="openNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="name-modal" style="display: none;">
-        <div class="modal-content">
-            <h2>Hé lộ điểm số nào! 🎉</h2>
-            <div class="input-group">
-                <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A..." onkeypress="handleNameEnter(event)">
-            </div>
-            <p id="name-error" style="color: red; margin-top: 10px; display: none; font-weight: bold;">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</p>
-            <button class="btn-submit" onclick="submitQuiz()">Xem Điểm Của Mình ✨</button>
-        </div>
-    </div>
-
-    <div id="result-modal" style="display: none;">
-        <div class="modal-content">
-            <h2 id="result-title">Kết Quả</h2>
-            <img id="result-meme" src="" alt="Meme cảm xúc">
-            <p id="result-text"></p>
-            <button class="btn-submit" onclick="location.reload()">Làm Lại Từ Đầu 🔄</button>
-        </div>
-    </div>
-
-    <script>
-        // --- SECURITY LOGIC ---
-        // Expected pwd: "comaianulis" -> [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115]
-        const secretHash = [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115];
-        
-        function checkAuth() {
-            const input = document.getElementById('pwd-input');
-            const errorMsg = document.getElementById('pwd-error');
-            const val = input.value;
-            
-            let isCorrect = val.length === secretHash.length;
-            if(isCorrect) {
-                for(let i=0; i<val.length; i++){
-                    if(val.charCodeAt(i) !== secretHash[i]) {
-                        isCorrect = false;
-                        break;
-                    }
-                }
-            }
-
-            if(isCorrect) {
-                document.getElementById('auth-modal').style.display = 'none';
-                document.getElementById('app-container').style.display = 'flex';
-                initQuiz();
-            } else {
-                input.classList.remove('shake');
-                void input.offsetWidth; // trigger reflow
-                input.classList.add('shake');
-                errorMsg.style.display = 'block';
-                playBuzz();
-            }
-        }
-
-        document.getElementById('pwd-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkAuth();
-        });
-
-        // --- AUDIO ENGINE ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playDing() {
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-            osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); // Slide to A6
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
-        }
-
-        function playBuzz() {
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
-        }
-
-        // --- CONFETTI ENGINE ---
-        function shootConfetti() {
-            for(let i=0; i<50; i++) {
-                const conf = document.createElement('div');
-                conf.style.position = 'fixed';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.top = '-10px';
-                conf.style.width = Math.random() * 10 + 5 + 'px';
-                conf.style.height = conf.style.width;
-                conf.style.backgroundColor = ['#00D26A', '#FDCB6E', '#8854C0', '#00C9A7', '#FF4757'][Math.floor(Math.random()*5)];
-                conf.style.zIndex = '9999';
-                conf.style.pointerEvents = 'none';
-                conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                document.body.appendChild(conf);
-
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = 5 + Math.random() * 10;
-                let x = parseFloat(conf.style.left);
-                let y = -10;
-                let opacity = 1;
-
-                function animate() {
-                    y += velocity;
-                    x += Math.sin(angle) * 2;
-                    opacity -= 0.02;
-                    conf.style.top = y + 'px';
-                    conf.style.left = x + 'vw';
-                    conf.style.opacity = opacity;
-                    conf.style.transform = `rotate(${y * 2}deg)`;
-
-                    if(opacity > 0) requestAnimationFrame(animate);
-                    else conf.remove();
-                }
-                animate();
-            }
-        }
-
-        // --- DYNAMIC BACKGROUND & THEME ---
-        function setDynamicTheme() {
-            // Emulating user's past request for "cute cats and flowers" mixed with Gamification elements
-            const svgContent = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" opacity="0.6">
-                    <text x="30" y="50" font-size="40" style="animation: bounce 2s infinite">🌸</text>
-                    <text x="150" y="100" font-size="50">🐱</text>
-                    <text x="80" y="200" font-size="35">🚀</text>
-                    <text x="220" y="250" font-size="45">🌟</text>
-                    <text x="10" y="280" font-size="40">🌊</text>
-                </svg>
-            `;
-            const encodedSVG = "data:image/svg+xml;utf8," + encodeURIComponent(svgContent);
-            document.getElementById('bg-pattern').style.backgroundImage = `url('${encodedSVG}')`;
-        }
-        setDynamicTheme();
-
-        // --- TIMER LOGIC ---
-        let timerInterval;
-        let timeLeft = 600; // 10 minutes
-        let isRunning = false;
-
-        function toggleTimer() {
-            const btn = document.getElementById('btn-timer-toggle');
-            if(!isRunning) {
-                isRunning = true;
-                btn.innerText = "TẠM DỪNG TÍNH GIỜ";
-                timerInterval = setInterval(() => {
-                    timeLeft--;
-                    let m = Math.floor(timeLeft / 60);
-                    let s = timeLeft % 60;
-                    document.getElementById('timer-display').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                    if(timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        alert("⏰ Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.");
-                        btn.style.display = 'none';
-                    }
-                }, 1000);
-            } else {
-                isRunning = false;
-                btn.innerText = "TIẾP TỤC TÍNH GIỜ";
-                clearInterval(timerInterval);
-            }
-        }
-
-        // --- UI TOGGLES ---
-        function toggleTranslation(id) {
-            const el = document.getElementById(id);
-            if(el.style.display === 'block') el.style.display = 'none';
-            else el.style.display = 'block';
-        }
-
-        // --- QUIZ DATA & LOGIC ---
-        const quizData = [
-            // Drowning
-            {
-                q: "Question 13: Call for help immediately or tell a (13) ______.",
-                options: ["lifeguard", "worker", "firefighter", "policeman"],
-                ans: "lifeguard",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Gọi giúp đỡ ngay lập tức hoặc báo cho một ______.<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>lifeguard</span> <span class='p-phonetic'>/ˈlaɪfɡɑːd/</span> (n): <span class='p-mean'>nhân viên cứu hộ</span>.<br>
-                    - <span class='p-word'>worker</span> <span class='p-phonetic'>/ˈwɜːkə(r)/</span> (n): <span class='p-mean'>công nhân</span>.<br>
-                    - <span class='p-word'>firefighter</span> <span class='p-phonetic'>/ˈfaɪəfaɪtə(r)/</span> (n): <span class='p-mean'>lính cứu hỏa</span>.<br>
-                    - <span class='p-word'>policeman</span> <span class='p-phonetic'>/pəˈliːsmən/</span> (n): <span class='p-mean'>cảnh sát</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>lifeguard</span>?</b> Đây là bài nói về "Drowning While Swimming" (Đuối nước khi bơi), nên người phù hợp nhất để gọi giúp đỡ ở bể bơi hoặc bãi biển là <span class='hl-green'>nhân viên cứu hộ</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Công nhân, lính cứu hỏa, cảnh sát</span> không phải là những người chuyên trực cứu hộ dưới nước trong bối cảnh này.
-                `
-            },
-            {
-                q: "Question 14: Do not jump (14) ______ the water unless you are trained.",
-                options: ["from", "into", "out of", "off"],
-                ans: "into",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Không nhảy ______ nước trừ khi bạn đã được huấn luyện.<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>from</span> (prep): <span class='p-mean'>từ</span>.<br>
-                    - <span class='p-word'>into</span> (prep): <span class='p-mean'>vào trong</span>.<br>
-                    - <span class='p-word'>out of</span> (prep): <span class='p-mean'>ra khỏi</span>.<br>
-                    - <span class='p-word'>off</span> (prep): <span class='p-mean'>rời khỏi</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>into</span>?</b> <span class='p-grammar'>Cấu trúc: jump + into + nơi chốn (nước) = nhảy vào/nhảy xuống nước</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> Sai ngữ nghĩa. Bạn không thể "nhảy từ nước" (from) hay "nhảy ra khỏi nước" (out of) để đi cứu người đang ở dưới nước được! <span class='hl-red'>Ngữ cảnh yêu cầu hành động lao xuống nước để cứu người</span>.
-                `
-            },
-            {
-                q: "Question 15: Throw something that floats to the person (like (15) ______ life jacket).",
-                options: ["the", "no article", "a", "an"],
-                ans: "a",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Ném vật gì đó nổi được cho người đó (như ______ áo phao).<br>
-                    2. <b>Phân tích đáp án:</b> Các mạo từ xác định và không xác định.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>a</span>?</b> "life jacket" là danh từ đếm được số ít, được nhắc đến lần đầu tiên mang tính chung chung (một cái áo phao bất kỳ). Chữ "life" bắt đầu bằng phụ âm /l/ nên dùng mạo từ "a". <span class='p-grammar'>Cấu trúc: a + Noun (số ít đếm được bắt đầu bằng phụ âm)</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>the</span> dùng khi vật đã xác định; <span class='hl-red'>an</span> dùng trước nguyên âm; <span class='hl-red'>no article</span> sai ngữ pháp với danh từ đếm được số ít.
-                `
-            },
-            {
-                q: "Question 16: If the person is out of the water, (16) ______ if they are breathing...",
-                options: ["check", "look", "research", "explore"],
-                ans: "check",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Nếu người đó đã ra khỏi nước, hãy ______ xem họ có thở không...<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>check</span> <span class='p-phonetic'>/tʃek/</span> (v): <span class='p-mean'>kiểm tra</span>.<br>
-                    - <span class='p-word'>look</span> <span class='p-phonetic'>/lʊk/</span> (v): <span class='p-mean'>nhìn</span>.<br>
-                    - <span class='p-word'>research</span> <span class='p-phonetic'>/rɪˈsɜːtʃ/</span> (v): <span class='p-mean'>nghiên cứu</span>.<br>
-                    - <span class='p-word'>explore</span> <span class='p-phonetic'>/ɪkˈsplɔː(r)/</span> (v): <span class='p-mean'>khám phá</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>check</span>?</b> Khi sơ cứu, hành động đầu tiên là <span class='hl-green'>kiểm tra</span> tình trạng hô hấp của nạn nhân. Sự kết hợp "check if..." (kiểm tra xem liệu...) rất phổ biến.<br>
-                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Look</span> thường đi với at/for; <span class='hl-red'>research</span> và <span class='hl-red'>explore</span> mang nghĩa hàn lâm, học thuật, hoàn toàn không phù hợp với ngữ cảnh cấp cứu khẩn cấp.
-                `
-            },
-            // Devices
-            {
-                q: "Question 19: They (19) ______ items like smartphones, computers, tablets...",
-                options: ["include", "contain", "consist", "make"],
-                ans: "include",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Chúng ______ các mặt hàng như điện thoại thông minh, máy tính...<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>include</span> (v): <span class='p-mean'>bao gồm (một phần của tổng thể)</span>.<br>
-                    - <span class='p-word'>contain</span> (v): <span class='p-mean'>chứa đựng (bên trong một vật chứa)</span>.<br>
-                    - <span class='p-word'>consist</span> (v): <span class='p-mean'>bao gồm (thường đi với 'of')</span>.<br>
-                    - <span class='p-word'>make</span> (v): <span class='p-mean'>làm ra</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>include</span>?</b> Để liệt kê một số thành phần trong một nhóm lớn (electronic devices), ta dùng "include". <span class='p-grammar'>Cấu trúc: include + Noun</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Consist</span> phải đi với giới từ 'of'. <span class='hl-red'>Contain</span> mang nghĩa vật lý (đựng bên trong hộp/túi). <span class='hl-red'>Make</span> không hợp nghĩa.
-                `
-            },
-            {
-                q: "Question 20: These devices help people (20) ______ with others...",
-                options: ["communicating", "communicate", "communicated", "communicates"],
-                ans: "communicate",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Những thiết bị này giúp mọi người ______ với những người khác...<br>
-                    2. <b>Phân tích đáp án:</b> Các dạng của động từ "communicate" (giao tiếp).<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>communicate</span>?</b> Dựa vào <span class='p-grammar'>Cấu trúc: help + Object + (to) V-infinitive</span> (giúp ai đó làm gì). Do đó động từ phải ở dạng nguyên thể.<br>
-                    4. <b>Tại sao loại còn lại?</b> Các dạng <span class='hl-red'>V-ing (communicating), V-ed (communicated), V-s (communicates)</span> đều sai cấu trúc ngữ pháp cơ bản của động từ "help".
-                `
-            },
-            {
-                q: "Question 21: Spending too much time on screens may affect health, (21) ______, causing eye strain...",
-                options: ["for example", "however", "in general", "therefore"],
-                ans: "for example",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Dành quá nhiều thời gian trên màn hình có thể ảnh hưởng sức khỏe, ______, gây mỏi mắt...<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>for example</span>: <span class='p-mean'>ví dụ</span>.<br>
-                    - <span class='p-word'>however</span>: <span class='p-mean'>tuy nhiên</span>.<br>
-                    - <span class='p-word'>in general</span>: <span class='p-mean'>nhìn chung</span>.<br>
-                    - <span class='p-word'>therefore</span>: <span class='p-mean'>do đó, vì vậy</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>for example</span>?</b> "causing eye strain" (gây mỏi mắt) là một ví dụ cụ thể minh họa cho ý "affect health" (ảnh hưởng sức khỏe) phía trước.<br>
-                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>However</span> dùng để chỉ sự tương phản. <span class='hl-red'>Therefore</span> dùng chỉ kết quả. <span class='hl-red'>In general</span> dùng để khái quát hóa. Tất cả đều không hợp logic liên kết câu.
-                `
-            },
-            {
-                q: "Question 22: It is important (22)__________.",
-                options: [
-                    "to suitably use electronic devices", 
-                    "to use electronic devices suitably", 
-                    "electronic devices to use suitably", 
-                    "to use suitably electronic devices"
-                ],
-                ans: "to use electronic devices suitably",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Điều quan trọng là ______.<br>
-                    2. <b>Phân tích đáp án:</b> Sắp xếp trật tự từ trong câu.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>to use electronic devices suitably</span>?</b> <span class='p-grammar'>Cấu trúc chủ ngữ giả: It is + adj + to V + Object + Trạng từ chỉ thể cách (Adverb of manner)</span>. Ở đây, động từ là "use", tân ngữ là "electronic devices", trạng từ bổ nghĩa "suitably" phải đứng sau tân ngữ.<br>
-                    4. <b>Tại sao loại còn lại?</b> Trạng từ "suitably" <span class='hl-red'>không được đứng chen giữa động từ và tân ngữ trực tiếp</span> (to use suitably electronic devices - SAI). Các cấu trúc khác đều sai trật tự từ cơ bản.
-                `
-            },
-            {
-                q: "Question 23: Parents and teachers can guide young people on (23) ______.",
-                options: [
-                    "how to use these devices wisely", 
-                    "how wisely for these devices to use", 
-                    "how these devices to use wisely", 
-                    "how wisely to use these devices"
-                ],
-                ans: "how to use these devices wisely",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Phụ huynh và giáo viên có thể hướng dẫn giới trẻ về ______.<br>
-                    2. <b>Phân tích đáp án:</b> Cấu trúc Wh-word + to V.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>how to use these devices wisely</span>?</b> <span class='p-grammar'>Cấu trúc: Từ để hỏi (how) + to V (to use) + Object (these devices) + Adverb (wisely)</span>. Nghĩa là: "cách để sử dụng những thiết bị này một cách khôn ngoan".<br>
-                    4. <b>Tại sao loại còn lại?</b> Các đáp án khác sắp xếp <span class='hl-red'>sai hoàn toàn trật tự ngữ pháp tiếng Anh</span>, đảo lộn trạng từ và tân ngữ một cách vô lý.
-                `
-            },
-            {
-                q: "Question 24: In conclusion, electronic devices (24) ______ today's world...",
-                options: [
-                    "have little impact on", 
-                    "play a significant role in", 
-                    "are rapidly evolving in", 
-                    "are unnecessary in"
-                ],
-                ans: "play a significant role in",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Tóm lại, các thiết bị điện tử ______ thế giới ngày nay...<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>have little impact on</span>: <span class='p-mean'>có ít tác động đến</span>.<br>
-                    - <span class='p-word'>play a significant role in</span>: <span class='p-mean'>đóng một vai trò quan trọng trong</span>.<br>
-                    - <span class='p-word'>are rapidly evolving in</span>: <span class='p-mean'>đang phát triển nhanh chóng trong</span>.<br>
-                    - <span class='p-word'>are unnecessary in</span>: <span class='p-mean'>không cần thiết trong</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>play a significant role in</span>?</b> Đoạn văn bàn về tầm quan trọng và sự hữu ích (cũng như tác hại cần cân bằng) của thiết bị điện tử. Câu chốt hạ (In conclusion) phải khẳng định lại <span class='hl-green'>vai trò to lớn</span> của chúng.<br>
-                    4. <b>Tại sao loại còn lại?</b> Đoạn văn không hề nói chúng "ít tác động" hay "không cần thiết" <span class='hl-red'>(Trái ngược hoàn toàn ý nghĩa bài đọc)</span>.
-                `
-            },
-            // Yagi
-            {
-                q: "Question 31: According to the passage, what did the authorities do to prepare for Typhoon Yagi?",
-                options: [
-                    "Allowed people to stay in their homes", 
-                    "Repaired the roads before the storm", 
-                    "Built new homes for the evacuees", 
-                    "Issued alerts before the storm arrived"
-                ],
-                ans: "Issued alerts before the storm arrived",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Theo đoạn văn, chính quyền đã làm gì để chuẩn bị cho bão Yagi?<br>
-                    2. <b>Phân tích đáp án:</b> A. Cho phép người dân ở nhà; B. Sửa đường; C. Xây nhà mới; D. Phát cảnh báo trước khi bão đến.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>D</span>?</b> 🔍 Dẫn chứng trong bài (Đoạn 3): <span class='p-grammar'>"The authorities issued alerts days before the storm arrived..."</span>.<br>
-                    👉 <b>Dịch:</b> "Chính quyền đã <span class='hl-green'>đưa ra cảnh báo</span> nhiều ngày trước khi cơn bão đến...".<br>
-                    4. <b>Tại sao loại còn lại?</b> Các thông tin A, B, C <span class='hl-red'>hoàn toàn không được nhắc đến hoặc sai sự thật</span> trong bài. Bài viết rõ ràng đề cập việc "evacuate" (sơ tán) chứ không cho phép ở lại nhà vùng nguy hiểm.
-                `
-            },
-            {
-                q: "Question 32: The word evacuated in paragraph 1 is CLOSEST in meaning to _____.",
-                options: ["stayed", "ignored", "moved to safety", "returned home"],
-                ans: "moved to safety",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Từ "evacuated" (sơ tán) ở đoạn 1 GẦN NGHĨA NHẤT với từ nào?<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>stayed</span>: <span class='p-mean'>ở lại</span>.<br>
-                    - <span class='p-word'>ignored</span>: <span class='p-mean'>phớt lờ</span>.<br>
-                    - <span class='p-word'>moved to safety</span>: <span class='p-mean'>di chuyển đến nơi an toàn</span>.<br>
-                    - <span class='p-word'>returned home</span>: <span class='p-mean'>trở về nhà</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>moved to safety</span>?</b> "Evacuate" có nghĩa là sơ tán người dân khỏi nơi nguy hiểm đến nơi an toàn hơn. Ngữ cảnh: "evacuated from low-lying areas to prevent further harm" (sơ tán khỏi vùng trũng để tránh nguy hiểm).<br>
-                    4. <b>Tại sao loại còn lại?</b> Các từ khác mang nghĩa <span class='hl-red'>ngược lại hoặc không liên quan</span>.
-                `
-            },
-            {
-                q: "Question 33: Which of the following is NOT TRUE according to the passage?",
-                options: [
-                    "Typhoon Yagi caused severe flooding in Ha Noi.", 
-                    "Many people were evacuated from low-lying areas.", 
-                    "Schools and businesses remained open during the storm.", 
-                    "The government provided emergency shelters for the public."
-                ],
-                ans: "Schools and businesses remained open during the storm.",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Điều nào sau đây KHÔNG ĐÚNG theo đoạn văn?<br>
-                    2. <b>Phân tích đáp án:</b> A. Bão gây lũ lụt nghiêm trọng; B. Nhiều người được sơ tán; C. Trường học và doanh nghiệp vẫn mở cửa; D. Chính phủ cung cấp nơi trú ẩn.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>C</span>?</b> 🔍 Dẫn chứng trong bài (Đoạn 2): <span class='p-grammar'>"Schools and businesses were closed to ensure the safety of the public."</span>.<br>
-                    👉 <b>Dịch:</b> "Trường học và doanh nghiệp <span class='hl-green'>đã đóng cửa</span> để đảm bảo an toàn". Do đó, nhận định chúng "remained open" (vẫn mở cửa) là <span class='hl-red'>SAI SỰ THẬT</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> Các thông tin A, B, D đều là sự thật đã được nêu rõ trong bài đọc.
-                `
-            },
-            {
-                q: "Question 34: The word challenges in paragraph 2 is OPPOSITE in meaning to _____.",
-                options: ["opportunities", "issues", "difficulties", "objections"],
-                ans: "opportunities",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Từ "challenges" (thách thức) ở đoạn 2 TRÁI NGHĨA với từ nào?<br>
-                    2. <b>Phân tích đáp án:</b><br>
-                    - <span class='p-word'>opportunities</span>: <span class='p-mean'>cơ hội</span>.<br>
-                    - <span class='p-word'>issues</span>: <span class='p-mean'>vấn đề</span>.<br>
-                    - <span class='p-word'>difficulties</span>: <span class='p-mean'>sự khó khăn</span>.<br>
-                    - <span class='p-word'>objections</span>: <span class='p-mean'>sự phản đối</span>.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>opportunities</span>?</b> "Challenges" mang nghĩa tiêu cực (sự khó khăn, cản trở). Từ trái nghĩa hoàn hảo của nó là <span class='hl-green'>Cơ hội (những điều kiện thuận lợi)</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> "Issues" và "difficulties" là <span class='hl-red'>từ đồng nghĩa (synonyms)</span> chứ không phải trái nghĩa.
-                `
-            },
-            {
-                q: "Question 35: What can be inferred about the impact of Typhoon Yagi on Ha Noi?",
-                options: [
-                    "It caused hardly any damage to the city.", 
-                    "Early warnings helped save lives and reduce the damage.", 
-                    "The government did not respond quickly to the storm.", 
-                    "People were not affected by the flooding."
-                ],
-                ans: "Early warnings helped save lives and reduce the damage.",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Có thể suy ra điều gì về tác động của bão Yagi đối với Hà Nội?<br>
-                    2. <b>Phân tích đáp án:</b> A. Hầu như không gây thiệt hại; B. Cảnh báo sớm giúp cứu sống và giảm thiệt hại; C. Chính phủ không phản ứng nhanh; D. Người dân không bị ảnh hưởng bởi lũ.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> 🔍 Dẫn chứng trong bài: <span class='p-grammar'>"This quick response helped save lives and minimize damage to properties."</span><br>
-                    👉 <b>Dịch:</b> "Phản ứng nhanh chóng (nhờ cảnh báo sớm) này đã giúp <span class='hl-green'>cứu sống nhiều người và giảm thiểu thiệt hại</span>."<br>
-                    4. <b>Tại sao loại còn lại?</b> Bài đọc nêu rõ bão gây "significant damage" (thiết hại lớn) -> A, D sai. Chính phủ "acted quickly" (phản ứng nhanh) -> C sai.
-                `
-            },
-            {
-                q: "Question 36: What is the main idea of the passage?",
-                options: [
-                    "Typhoon Yagi did not cause any problems in Ha Noi.", 
-                    "Typhoon Yagi caused damage to Ha Noi, but early preparation helped reduce the impact.", 
-                    "The authorities of Ha Noi were not prepared for Typhoon Yagi.", 
-                    "People in Ha Noi received the warnings about Typhoon Yagi but ignored them."
-                ],
-                ans: "Typhoon Yagi caused damage to Ha Noi, but early preparation helped reduce the impact.",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Ý chính của đoạn văn là gì?<br>
-                    2. <b>Phân tích đáp án:</b> A. Không gây vấn đề gì; B. Gây thiệt hại nhưng chuẩn bị sớm giúp giảm tác động; C. Nhà chức trách không chuẩn bị; D. Người dân phớt lờ cảnh báo.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> Câu chủ đề cuối bài đã tóm tắt toàn bộ: <span class='p-grammar'>"In conclusion, Typhoon Yagi... had a major impact... but thanks to early preparations... the city was able to recover quickly."</span> Nhấn mạnh sự thiệt hại nhưng được bù đắp bởi sự chuẩn bị tốt.<br>
-                    4. <b>Tại sao loại còn lại?</b> Các phương án khác đưa ra thông tin <span class='hl-red'>hoàn toàn trái ngược</span> với dữ kiện trong bài đọc.
-                `
-            },
-            // Mars Rovers
-            {
-                q: "Question 37: The National Aeronautics and Space Administration (NASA) designed and built the rovers... (37)______.",
-                options: [
-                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
-                    "to operate until 2018", 
-                    "to move in many directions", 
-                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
-                ],
-                ans: "NASA launched Spirit on June 10, and Opportunity on July 7, 2003.",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Cần điền câu nào vào chỗ trống (37)?<br>
-                    2. <b>Phân tích logic:</b> Câu trước nói về việc NASA tạo ra hai tàu thăm dò tên Spirit và Opportunity. Câu tiếp theo nói: "Spirit touched down on January 3, 2004" (Spirit hạ cánh vào...).<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>D</span>?</b> Theo mạch thời gian logic: Chế tạo -> <span class='hl-green'>Phóng lên (launched) năm 2003</span> -> Hạ cánh (touched down) năm 2004.<br>
-                    4. <b>Tại sao loại còn lại?</b> Các lựa chọn khác không tạo ra sự liên kết logic về mặt thời gian và sự kiện ở đoạn đầu.
-                `
-            },
-            {
-                q: "Question 38: The rovers had six wheels that allowed them (38)________.",
-                options: [
-                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
-                    "to operate until 2018", 
-                    "to move in many directions", 
-                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
-                ],
-                ans: "to move in many directions",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Các tàu thăm dò có sáu bánh xe cho phép chúng ______.<br>
-                    2. <b>Phân tích logic:</b> "six wheels" (sáu bánh xe) là công cụ dùng để di chuyển.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>C</span>?</b> "to move in many directions" (di chuyển theo nhiều hướng). <span class='p-grammar'>Cấu trúc: allow + Object + to V</span>.<br>
-                    4. <b>Tại sao loại còn lại?</b> Bánh xe thì không dùng để gửi tín hiệu (A) hay hoạt động tới năm 2018 (B).
-                `
-            },
-            {
-                q: "Question 39: Scientists on Earth sent commands to the rovers... (39)_________.",
-                options: [
-                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
-                    "to operate until 2018", 
-                    "to move in many directions", 
-                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
-                ],
-                ans: "The rovers sent signals back to the scientists through computers and large antennas on Earth.",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Cần điền câu nào vào chỗ trống (39)?<br>
-                    2. <b>Phân tích logic:</b> Câu trước nói: "Các nhà khoa học gửi lệnh cho tàu thăm dò...". Nó thể hiện sự giao tiếp một chiều từ Trái đất đến Sao Hỏa.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>A</span>?</b> Để hoàn thiện ý giao tiếp hai chiều, câu tiếp theo phản hồi lại: "Các tàu thăm dò <span class='hl-green'>gửi tín hiệu trở lại</span> (sent signals back) cho các nhà khoa học qua ăng-ten".<br>
-                    4. <b>Tại sao loại còn lại?</b> Lắp ghép ngữ nghĩa của B, C, D vào đây hoàn toàn vô nghĩa.
-                `
-            },
-            {
-                q: "Question 40: In 2010 Spirit stopped sending signals, but Opportunity continued (40)________.",
-                options: [
-                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
-                    "to operate until 2018", 
-                    "to move in many directions", 
-                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
-                ],
-                ans: "to operate until 2018",
-                exp: `
-                    1. <b>Dịch câu hỏi:</b> Năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục ______.<br>
-                    2. <b>Phân tích logic:</b> Câu chứa sự tương phản "but" (nhưng). Tàu kia dừng hoạt động (stopped), thì tàu này phải tiếp tục hoạt động.<br>
-                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> "to operate until 2018" (hoạt động cho đến năm 2018). Điều này khớp nối hoàn hảo với câu kết ngay sau đó: "NASA chính thức tuyên bố kết thúc sứ mệnh vào tháng 2 năm 2019".<br>
-                    4. <b>Tại sao loại còn lại?</b> Đây là lựa chọn cuối cùng duy nhất hợp lý về mặt vòng đời (timeline) của dự án thám hiểm.
-                `
-            }
-        ];
-
-        // --- RENDER LOGIC ---
-        let score = 0;
-        let answeredQuestions = 0;
-
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        function initQuiz() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = '';
-            
-            quizData.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'question-card';
-                card.id = `q-card-${index}`;
-
-                const qText = document.createElement('div');
-                qText.className = 'q-text';
-                qText.innerHTML = item.q;
-                card.appendChild(qText);
-
-                const grid = document.createElement('div');
-                grid.className = 'options-grid';
-
-                let shuffledOptions = shuffleArray([...item.options]);
-                
-                shuffledOptions.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerHTML = opt;
-                    btn.onclick = () => handleAnswer(btn, opt, item.ans, index, grid);
-                    grid.appendChild(btn);
-                });
-
-                card.appendChild(grid);
-
-                const expBox = document.createElement('div');
-                expBox.className = 'explanation-box';
-                expBox.id = `exp-${index}`;
-                expBox.innerHTML = item.exp;
-                card.appendChild(expBox);
-
-                container.appendChild(card);
-            });
-        }
-
-        function handleAnswer(btn, selected, correct, qIndex, grid) {
-            // Disable all buttons in this grid
-            const allBtns = grid.querySelectorAll('.option-btn');
-            allBtns.forEach(b => {
-                b.disabled = true;
-                if(b.innerHTML === correct) {
-                    b.classList.add('correct'); // Show correct answer always
-                }
-            });
-
-            const expBox = document.getElementById(`exp-${qIndex}`);
-            expBox.style.display = 'block';
-            answeredQuestions++;
-
-            if(selected === correct) {
-                btn.classList.add('correct');
-                score++;
-                playDing();
-                shootConfetti();
-            } else {
-                btn.classList.add('wrong');
-                btn.classList.add('shake');
-                playBuzz();
-            }
-        }
-
-        // --- SUBMIT LOGIC ---
-        function openNameModal() {
-            if(answeredQuestions < quizData.length) {
-                if(!confirm(`Bạn mới làm ${answeredQuestions}/${quizData.length} câu. Bạn có chắc chắn muốn nộp bài sớm không?`)) {
-                    return;
-                }
-            }
-            document.getElementById('name-modal').style.display = 'flex';
-        }
-
-        function handleNameEnter(e) {
-            if (e.key === 'Enter') submitQuiz();
-        }
-
-        function submitQuiz() {
-            const nameInput = document.getElementById('student-name');
-            const name = nameInput.value.trim();
-            const errorMsg = document.getElementById('name-error');
-
-            if(!name) {
-                nameInput.classList.remove('shake');
-                void nameInput.offsetWidth;
-                nameInput.classList.add('shake');
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            document.getElementById('name-modal').style.display = 'none';
-            clearInterval(timerInterval); // Stop timer
-
-            const resultModal = document.getElementById('result-modal');
-            const title = document.getElementById('result-title');
-            const meme = document.getElementById('result-meme');
-            const text = document.getElementById('result-text');
-
-            const percentage = score / quizData.length;
-            
-            if(percentage === 1) {
-                title.innerText = "🌟 THIÊN TÀI!";
-                meme.src = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Minion cheer
-                text.innerHTML = `Xuất sắc tuyệt đối! <b>${name}</b> đã đạt ${score}/${quizData.length} điểm. Không sai câu nào luôn! 😎`;
-                shootConfetti(); setTimeout(shootConfetti, 500);
-                playDing();
-            } else if(percentage >= 0.6) {
-                title.innerText = "👍 LÀM TỐT LẮM!";
-                meme.src = "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif"; // High five
-                text.innerHTML = `Giỏi quá <b>${name}</b> ơi! Bạn đạt ${score}/${quizData.length} điểm. Cố gắng thêm chút xíu nữa là hoàn hảo nha! 🚀`;
-                shootConfetti();
-                playDing();
-            } else {
-                title.innerText = "😢 CỐ LÊN NHÉ!";
-                meme.src = "https://media.giphy.com/media/3o6wrvdHFbwBrUFenu/giphy.gif"; // Crying SpongeBob
-                text.innerHTML = `Oái, <b>${name}</b> đạt ${score}/${quizData.length} điểm. Đừng buồn nha, hãy đọc kỹ phần giải thích chi tiết của cô giáo và thử lại nhé! 💪`;
-                playBuzz();
-            }
-
-            resultModal.style.display = 'flex';
-        }
-    </script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English Test - MS Chí Nên ULIS</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+
+            --primary: #8854C0;
+
+            --secondary: #FDCB6E;
+
+            --tertiary: #00C9A7;
+
+            --glass-bg: rgba(255, 255, 255, 0.7);
+
+            --glass-border: rgba(255, 255, 255, 0.4);
+
+            --text-dark: #2D3436;
+
+            --correct: #00D26A;
+
+            --wrong: #FF4757;
+
+            --font-main: 'Nunito', sans-serif;
+
+            --font-heading: 'Quicksand', sans-serif;
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+
+
+        body {
+
+            font-family: var(--font-main);
+
+            color: var(--text-dark);
+
+            height: 100vh;
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            /* Dynamic background set via JS, but base fallback here */
+
+            background: linear-gradient(-45deg, #FF9A9E, #FECFEF, #A1C4FD, #C2E9FB);
+
+            background-size: 400% 400%;
+
+            animation: gradientBG 15s ease infinite;
+
+        }
+
+
+
+        @keyframes gradientBG {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        #bg-pattern {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            pointer-events: none;
+
+            z-index: -1;
+
+            background-repeat: repeat;
+
+            animation: floatPattern 40s linear infinite;
+
+        }
+
+
+
+        @keyframes floatPattern {
+
+            from { background-position: 0 0; }
+
+            to { background-position: 1000px 1000px; }
+
+        }
+
+
+
+        /* Authentication Modal */
+
+        #auth-modal, #name-modal, #result-modal {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            backdrop-filter: blur(8px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 9999;
+
+        }
+
+
+
+        .modal-content {
+
+            background: rgba(255, 255, 255, 0.9);
+
+            padding: 3rem;
+
+            border-radius: 25px;
+
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+
+            text-align: center;
+
+            max-width: 500px;
+
+            width: 90%;
+
+            border: 2px solid #fff;
+
+        }
+
+
+
+        .modal-content h2 {
+
+            font-family: var(--font-heading);
+
+            color: var(--primary);
+
+            margin-bottom: 1.5rem;
+
+            font-size: 2rem;
+
+        }
+
+
+
+        .input-group input {
+
+            padding: 15px 20px;
+
+            font-size: 1.2rem;
+
+            border: 3px solid #eee;
+
+            border-radius: 15px;
+
+            width: 100%;
+
+            font-family: var(--font-main);
+
+            outline: none;
+
+            transition: 0.3s;
+
+        }
+
+
+
+        .input-group input:focus {
+
+            border-color: var(--tertiary);
+
+            box-shadow: 0 0 15px rgba(0, 201, 167, 0.3);
+
+        }
+
+
+
+        .btn-submit {
+
+            margin-top: 1.5rem;
+
+            padding: 12px 30px;
+
+            font-size: 1.2rem;
+
+            font-weight: 800;
+
+            color: white;
+
+            background: var(--primary);
+
+            border: none;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            box-shadow: 0 6px 0 #5f3a8a;
+
+            transition: 0.1s;
+
+        }
+
+
+
+        .btn-submit:active {
+
+            transform: translateY(6px);
+
+            box-shadow: none;
+
+        }
+
+
+
+        .shake {
+
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+
+            border-color: var(--wrong) !important;
+
+        }
+
+
+
+        @keyframes shake {
+
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+
+        }
+
+
+
+        /* Main App Layout */
+
+        #app-container {
+
+            display: none;
+
+            height: 100%;
+
+            flex-direction: column;
+
+        }
+
+
+
+        header {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(10px);
+
+            padding: 10px 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-bottom: 2px solid var(--glass-border);
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+            z-index: 10;
+
+        }
+
+
+
+        .header-title {
+
+            font-family: var(--font-heading);
+
+            font-size: 1.2rem;
+
+            font-weight: 700;
+
+            color: var(--primary);
+
+        }
+
+
+
+        .timer-container {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+
+        #timer-display {
+
+            font-size: 1.5rem;
+
+            font-weight: 800;
+
+            color: var(--wrong);
+
+            background: white;
+
+            padding: 5px 15px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 0 #d1d8e0;
+
+        }
+
+
+
+        .split-container {
+
+            display: flex;
+
+            flex: 1;
+
+            overflow: hidden;
+
+            gap: 20px;
+
+            padding: 20px;
+
+        }
+
+
+
+        .left-pane, .right-pane {
+
+            flex: 1;
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(15px);
+
+            border: 2px solid var(--glass-border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            overflow-y: auto;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+        }
+
+
+
+        .right-pane {
+
+            flex: 1.2;
+
+            scroll-behavior: smooth;
+
+        }
+
+
+
+        /* Scrollbar styling */
+
+        ::-webkit-scrollbar { width: 10px; }
+
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+
+
+        /* Typography & Content Layout */
+
+        h3.section-title {
+
+            font-family: var(--font-heading);
+
+            color: var(--primary);
+
+            font-size: 1.6rem;
+
+            margin-bottom: 15px;
+
+            border-bottom: 2px dashed #ccc;
+
+            padding-bottom: 10px;
+
+        }
+
+
+
+        .passage {
+
+            font-size: 1.15rem;
+
+            line-height: 1.8;
+
+            margin-bottom: 30px;
+
+            background: rgba(255,255,255,0.6);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+        }
+
+
+
+        .btn-translate {
+
+            background: var(--secondary);
+
+            color: #553c00;
+
+            border: none;
+
+            padding: 8px 15px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+
+            display: inline-block;
+
+            box-shadow: 0 4px 0 #d4a034;
+
+            transition: 0.1s;
+
+        }
+
+        .btn-translate:active { transform: translateY(4px); box-shadow: none; }
+
+
+
+        .translation-box {
+
+            display: none;
+
+            background: #fff;
+
+            padding: 15px;
+
+            border-left: 5px solid var(--tertiary);
+
+            border-radius: 0 10px 10px 0;
+
+            margin-top: 15px;
+
+            font-size: 1.05rem;
+
+            color: #444;
+
+        }
+
+
+
+        .glossary-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+        }
+
+        .glossary-table th, .glossary-table td {
+
+            padding: 12px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eee;
+
+        }
+
+        .glossary-table th {
+
+            background: var(--primary);
+
+            color: white;
+
+            font-family: var(--font-heading);
+
+        }
+
+
+
+        /* Quiz UI */
+
+        .question-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-bottom: 30px;
+
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+            border: 2px solid transparent;
+
+            transition: 0.3s;
+
+        }
+
+
+
+        .question-card:hover {
+
+            border-color: var(--secondary);
+
+            transform: translateY(-2px);
+
+        }
+
+
+
+        .q-text {
+
+            font-size: 1.15rem;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+            color: var(--text-dark);
+
+        }
+
+
+
+        .options-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+
+        .option-btn {
+
+            background: #f8f9fa;
+
+            border: 2px solid #e9ecef;
+
+            border-radius: 15px;
+
+            padding: 15px 20px;
+
+            font-size: 1.08rem;
+
+            font-family: var(--font-main);
+
+            font-weight: 600;
+
+            color: #2D3436;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            box-shadow: 0 6px 0 #d1d8e0;
+
+            text-align: center;
+
+        }
+
+
+
+        .option-btn:hover {
+
+            transform: scale(1.02);
+
+            border-color: var(--tertiary);
+
+        }
+
+
+
+        .option-btn:active {
+
+            transform: translateY(6px);
+
+            box-shadow: none;
+
+        }
+
+
+
+        .option-btn.correct {
+
+            background: var(--correct);
+
+            color: white;
+
+            border-color: var(--correct);
+
+            box-shadow: 0 6px 0 #00994d;
+
+        }
+
+
+
+        .option-btn.wrong {
+
+            background: var(--wrong);
+
+            color: white;
+
+            border-color: var(--wrong);
+
+            box-shadow: 0 6px 0 #c82333;
+
+        }
+
+
+
+        .option-btn:disabled {
+
+            cursor: not-allowed;
+
+            pointer-events: none;
+
+        }
+
+
+
+        /* Explanation Box */
+
+        .explanation-box {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fdfbf7;
+
+            border: 2px dashed var(--primary);
+
+            border-radius: 15px;
+
+            font-size: 1rem;
+
+            line-height: 1.7;
+
+            animation: slideDown 0.4s ease-out;
+
+        }
+
+
+
+        @keyframes slideDown {
+
+            from { opacity: 0; transform: translateY(-10px); }
+
+            to { opacity: 1; transform: translateY(0); }
+
+        }
+
+
+
+        /* Syntax Highlighting required by Prompt */
+
+        .p-word { color: #0984e3; font-weight: bold; }
+
+        .p-phonetic { background: #e8dbfc; color: #6c5ce7; padding: 2px 6px; border-radius: 6px; font-family: monospace; }
+
+        .p-mean { color: #d63031; font-weight: bold; }
+
+        .p-grammar { color: #d63031; text-decoration: underline; font-weight: bold; }
+
+        .hl-green { color: #00b894; font-weight: bold; }
+
+        .hl-red { color: #d63031; font-weight: bold; }
+
+
+
+        .submit-area {
+
+            text-align: center;
+
+            margin: 40px 0;
+
+        }
+
+
+
+        .btn-finish {
+
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+
+            color: white;
+
+            font-size: 1.5rem;
+
+            padding: 15px 40px;
+
+            border: none;
+
+            border-radius: 50px;
+
+            font-family: var(--font-heading);
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 0 #c23b3b;
+
+            transition: 0.2s;
+
+        }
+
+
+
+        .btn-finish:hover { transform: scale(1.05); }
+
+        .btn-finish:active { transform: translateY(8px); box-shadow: none; }
+
+
+
+        /* Results Modal Specific */
+
+        #result-meme {
+
+            width: 100%;
+
+            max-width: 300px;
+
+            border-radius: 15px;
+
+            margin: 15px auto;
+
+            display: block;
+
+            border: 5px solid white;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+        }
+
+
+
+        #result-text {
+
+            font-size: 1.5rem;
+
+            color: var(--text-dark);
+
+            margin-bottom: 20px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div id="bg-pattern"></div>
+
+
+
+    <div id="auth-modal">
+
+        <div class="modal-content">
+
+            <h2>🔒 Nhập Mật Khẩu Để Làm Bài</h2>
+
+            <div class="input-group">
+
+                <input type="password" id="pwd-input" placeholder="Nhập mật khẩu bí mật...">
+
+            </div>
+
+            <p id="pwd-error" style="color: red; margin-top: 10px; display: none; font-weight: bold;">Sai mật khẩu rồi bạn ơi!</p>
+
+            <button class="btn-submit" onclick="checkAuth()">Mở Khóa Bài Thi 🚀</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="app-container">
+
+        <header>
+
+            <div class="header-title">Giáo viên tạo: MS Chí Nên ULIS 🌸</div>
+
+            <div class="timer-container">
+
+                <button class="btn-translate" id="btn-timer-toggle" onclick="toggleTimer()">BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+
+                <div id="timer-display">10:00</div>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="split-container">
+
+            <div class="left-pane" id="reading-pane">
+
+                <h3 class="section-title">📖 Reading Passages</h3>
+
+                
+
+                <div class="passage">
+
+                    <strong>What to do if someone is Drowning While Swimming</strong><br><br>
+
+                    1. Call for help immediately or tell a (13) ______.<br>
+
+                    2. Do not jump (14) ______ the water unless you are trained.<br>
+
+                    3. Throw something that floats to the person (like (15) ______ life jacket).<br>
+
+                    4. If the person is out of the water, (16) ______ if they are breathing and do CPR if you can.<br>
+
+                    5. Stay with them until help arrives.
+
+                    
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans1')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans1">
+
+                        <strong>Phải làm gì nếu có người đang đuối nước khi bơi</strong><br>
+
+                        1. Gọi giúp đỡ ngay lập tức hoặc báo cho nhân viên cứu hộ.<br>
+
+                        2. Không nhảy xuống nước trừ khi bạn đã được huấn luyện.<br>
+
+                        3. Ném vật gì đó nổi được cho người đó (như áo phao).<br>
+
+                        4. Nếu người đó đã ra khỏi nước, hãy kiểm tra xem họ có thở không và thực hiện hô hấp nhân tạo (CPR) nếu bạn có thể.<br>
+
+                        5. Ở lại với họ cho đến khi có sự trợ giúp.
+
+                    </div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td><span class="p-word">drowning</span></td><td><span class="p-phonetic">/ˈdraʊnɪŋ/</span> (n)</td><td><span class="p-mean">sự đuối nước</span></td></tr>
+
+                        <tr><td><span class="p-word">immediately</span></td><td><span class="p-phonetic">/ɪˈmiːdiətli/</span> (adv)</td><td><span class="p-mean">ngay lập tức</span></td></tr>
+
+                        <tr><td><span class="p-word">trained</span></td><td><span class="p-phonetic">/treɪnd/</span> (adj)</td><td><span class="p-mean">được huấn luyện</span></td></tr>
+
+                        <tr><td><span class="p-word">float</span></td><td><span class="p-phonetic">/fləʊt/</span> (v)</td><td><span class="p-mean">nổi</span></td></tr>
+
+                        <tr><td><span class="p-word">CPR</span></td><td><span class="p-phonetic">/ˌsiː piː ˈɑː(r)/</span> (n)</td><td><span class="p-mean">Hô hấp nhân tạo</span></td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                <div class="passage">
+
+                    Electronic devices have become an essential part of modern life. They (19) ______ items like smartphones, computers, tablets, and smartwatches. These devices help people (20) ______ with others, access information quickly, and entertain themselves with games and videos. 
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans2a')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans2a">
+
+                        Các thiết bị điện tử đã trở thành một phần thiết yếu của cuộc sống hiện đại. Chúng bao gồm các thiết bị như điện thoại thông minh, máy tính, máy tính bảng và đồng hồ thông minh. Những thiết bị này giúp con người giao tiếp với người khác, truy cập thông tin nhanh chóng và giải trí bằng trò chơi và video.
+
+                    </div>
+
+                    <br><br>
+
+                    In education, electronic devices are useful tools for learning. Students can use them to research topics, complete homework, and collaborate with classmates online. Teachers can also use electronic devices to present lessons in an interactive way.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans2b')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans2b">
+
+                        Trong giáo dục, thiết bị điện tử là công cụ hữu ích cho việc học tập. Học sinh có thể sử dụng chúng để nghiên cứu các chủ đề, hoàn thành bài tập về nhà và cộng tác với các bạn cùng lớp trực tuyến. Giáo viên cũng có thể sử dụng thiết bị điện tử để trình bày bài học một cách tương tác.
+
+                    </div>
+
+                    <br><br>
+
+                    However, excessive use of electronic devices can lead to problems. Spending too much time on screens may affect health, (21) ______, causing eye strain and reducing physical activity. It is important (22)___________. Setting limits on screen time and taking regular breaks can help prevent negative effects. Parents and teachers can guide young people on (23) ______. Electronic devices offer many benefits, but it is important to balance their use with other activities. In conclusion, electronic devices (24) ______ today's world, and understanding how to use them properly is important for everyone.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans2c')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans2c">
+
+                        Tuy nhiên, việc sử dụng quá nhiều thiết bị điện tử có thể dẫn đến các vấn đề. Dành quá nhiều thời gian trên màn hình có thể ảnh hưởng đến sức khỏe, ví dụ, gây mỏi mắt và giảm hoạt động thể chất. Điều quan trọng là sử dụng các thiết bị điện tử một cách phù hợp. Đặt giới hạn về thời gian sử dụng màn hình và nghỉ ngơi thường xuyên có thể giúp ngăn ngừa các tác động tiêu cực. Cha mẹ và giáo viên có thể hướng dẫn những người trẻ tuổi về cách sử dụng các thiết bị này một cách khôn ngoan. Thiết bị điện tử mang lại nhiều lợi ích, nhưng điều quan trọng là phải cân bằng việc sử dụng chúng với các hoạt động khác. Tóm lại, các thiết bị điện tử đóng vai trò quan trọng trong thế giới ngày nay và hiểu cách sử dụng chúng đúng cách là điều quan trọng đối với mọi người.
+
+                    </div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td><span class="p-word">essential</span></td><td><span class="p-phonetic">/ɪˈsenʃl/</span> (adj)</td><td><span class="p-mean">thiết yếu, quan trọng</span></td></tr>
+
+                        <tr><td><span class="p-word">collaborate</span></td><td><span class="p-phonetic">/kəˈlæbəreɪt/</span> (v)</td><td><span class="p-mean">hợp tác, cộng tác</span></td></tr>
+
+                        <tr><td><span class="p-word">interactive</span></td><td><span class="p-phonetic">/ˌɪntərˈæktɪv/</span> (adj)</td><td><span class="p-mean">có tính tương tác</span></td></tr>
+
+                        <tr><td><span class="p-word">excessive</span></td><td><span class="p-phonetic">/ɪkˈsesɪv/</span> (adj)</td><td><span class="p-mean">thái quá, quá mức</span></td></tr>
+
+                        <tr><td><span class="p-word">strain</span></td><td><span class="p-phonetic">/streɪn/</span> (n)</td><td><span class="p-mean">sự căng thẳng (mỏi mắt)</span></td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                <div class="passage">
+
+                    In October 2024, Typhoon Yagi made landfall in Ha Noi, causing significant damage to the city. This powerful storm brought strong winds and heavy rain, leading to widespread flooding in many districts. It was one of the worst storms the capital city had experienced in recent years. Thousands of people were evacuated from low-lying areas to prevent further harm from rising water levels.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans3a')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans3a">
+
+                        Vào tháng 10 năm 2024, Bão Yagi đổ bộ vào Hà Nội, gây ra thiệt hại đáng kể cho thành phố. Cơn bão mạnh này mang theo gió lớn và mưa to, dẫn đến lũ lụt trên diện rộng ở nhiều quận huyện. Đây là một trong những cơn bão tồi tệ nhất mà thủ đô từng trải qua trong những năm gần đây. Hàng ngàn người đã được sơ tán khỏi các vùng trũng thấp để ngăn ngừa thiệt hại thêm do mực nước dâng cao.
+
+                    </div>
+
+                    <br><br>
+
+                    During the storm, many roads in the city were flooded, making transportation difficult. Schools and businesses were closed to ensure the safety of the public. The government acted quickly by providing emergency shelters and organizing rescue teams. Many people in affected areas received food and water supplies from these teams.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans3b')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans3b">
+
+                        Trong cơn bão, nhiều tuyến đường trong thành phố bị ngập, gây khó khăn cho việc đi lại. Các trường học và doanh nghiệp đã đóng cửa để đảm bảo an toàn cho công chúng. Chính phủ đã hành động nhanh chóng bằng cách cung cấp các nơi trú ẩn khẩn cấp và tổ chức các đội cứu hộ. Nhiều người ở các khu vực bị ảnh hưởng đã nhận được thực phẩm và nước uống từ các đội này.
+
+                    </div>
+
+                    <br><br>
+
+                    Despite the challenges, the damage could have been worse if there had not been early warnings. The authorities issued alerts days before the storm arrived, allowing people to prepare and evacuate on time. This quick response helped save lives and minimize damage to properties.
+
+                    <br>
+
+                    In conclusion, Typhoon Yagi in 2024 had a major impact on Ha Noi, but thanks to early preparations and quick action by the government, the city was able to recover quickly.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans3c')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans3c">
+
+                        Bất chấp những thách thức, thiệt hại có thể tồi tệ hơn nếu không có cảnh báo sớm. Các nhà chức trách đã đưa ra cảnh báo nhiều ngày trước khi cơn bão đến, cho phép người dân chuẩn bị và sơ tán kịp thời. Phản ứng nhanh chóng này đã giúp cứu sống nhiều người và giảm thiểu thiệt hại về tài sản.<br>
+
+                        Tóm lại, bão Yagi năm 2024 đã có tác động lớn đến Hà Nội, nhưng nhờ sự chuẩn bị sớm và hành động nhanh chóng của chính phủ, thành phố đã có thể phục hồi nhanh chóng.
+
+                    </div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td><span class="p-word">landfall</span></td><td><span class="p-phonetic">/ˈlændfɔːl/</span> (n)</td><td><span class="p-mean">sự đổ bộ (vào đất liền)</span></td></tr>
+
+                        <tr><td><span class="p-word">evacuate</span></td><td><span class="p-phonetic">/ɪˈvækjueɪt/</span> (v)</td><td><span class="p-mean">sơ tán</span></td></tr>
+
+                        <tr><td><span class="p-word">low-lying</span></td><td><span class="p-phonetic">/ˌləʊ ˈlaɪɪŋ/</span> (adj)</td><td><span class="p-mean">trũng thấp</span></td></tr>
+
+                        <tr><td><span class="p-word">authorities</span></td><td><span class="p-phonetic">/ɔːˈθɒrətiz/</span> (n)</td><td><span class="p-mean">nhà chức trách, chính quyền</span></td></tr>
+
+                        <tr><td><span class="p-word">minimize</span></td><td><span class="p-phonetic">/ˈmɪnɪmaɪz/</span> (v)</td><td><span class="p-mean">giảm thiểu tối đa</span></td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                <div class="passage">
+
+                    The Mars Exploration Rovers were two robotic vehicles that explored the surface of Mars. Scientists wanted them to figure out whether water had ever existed on the planet. The rovers also searched for other traces of life on Mars. The National Aeronautics and Space Administration (NASA) designed and built the rovers, named Spirit and Opportunity. (37)______. Spirit touched down on January 3, 2004. Three weeks later, Opportunity landed on the opposite side of the planet.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans4a')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans4a">
+
+                        Tàu Thám hiểm Sao Hỏa là hai phương tiện robot đã khám phá bề mặt Sao Hỏa. Các nhà khoa học muốn chúng tìm ra liệu nước có từng tồn tại trên hành tinh này hay không. Các tàu thăm dò cũng tìm kiếm những dấu vết sự sống khác trên Sao Hỏa. Cơ quan Hàng không và Vũ trụ Quốc gia (NASA) đã thiết kế và chế tạo các tàu thăm dò, mang tên Spirit và Opportunity. NASA đã phóng Spirit vào ngày 10 tháng 6 và Opportunity vào ngày 7 tháng 7 năm 2003. Spirit hạ cánh vào ngày 3 tháng 1 năm 2004. Ba tuần sau, Opportunity hạ cánh ở phía đối diện của hành tinh.
+
+                    </div>
+
+                    <br><br>
+
+                    The rovers had six wheels that allowed them (38)________. They also had cameras and many instruments for examining the rocks, soil, and dust on the planet. Scientists on Earth sent commands to the rovers to tell them where to go and what to do. (39)_________. 
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans4b')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans4b">
+
+                        Các tàu thăm dò có sáu bánh xe cho phép chúng di chuyển theo nhiều hướng. Chúng cũng có camera và nhiều công cụ để kiểm tra đá, đất và bụi trên hành tinh. Các nhà khoa học trên Trái đất đã gửi lệnh cho các tàu thăm dò để nói cho chúng biết phải đi đâu và làm gì. Các tàu thăm dò đã gửi tín hiệu trở lại cho các nhà khoa học thông qua máy tính và ăng-ten lớn trên Trái đất.
+
+                    </div>
+
+                    <br><br>
+
+                    Each rover was designed to last for about 90 days. However, they worked so well that their mission was extended. In 2010 Spirit stopped sending signals, but Opportunity continued (40)________. NASA officially declared the Opportunity mission to be ended in February 2019.
+
+                    <button class="btn-translate" onclick="toggleTranslation('trans4c')">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-box" id="trans4c">
+
+                        Mỗi tàu thăm dò được thiết kế để tồn tại trong khoảng 90 ngày. Tuy nhiên, chúng đã hoạt động tốt đến mức sứ mệnh của chúng được kéo dài. Vào năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục hoạt động cho đến năm 2018. NASA chính thức tuyên bố sứ mệnh Opportunity kết thúc vào tháng 2 năm 2019.
+
+                    </div>
+
+                    
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ & IPA</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td><span class="p-word">exploration</span></td><td><span class="p-phonetic">/ˌekspləˈreɪʃn/</span> (n)</td><td><span class="p-mean">sự thám hiểm</span></td></tr>
+
+                        <tr><td><span class="p-word">surface</span></td><td><span class="p-phonetic">/ˈsɜːfɪs/</span> (n)</td><td><span class="p-mean">bề mặt</span></td></tr>
+
+                        <tr><td><span class="p-word">trace</span></td><td><span class="p-phonetic">/treɪs/</span> (n)</td><td><span class="p-mean">dấu vết</span></td></tr>
+
+                        <tr><td><span class="p-word">instrument</span></td><td><span class="p-phonetic">/ˈɪnstrəmənt/</span> (n)</td><td><span class="p-mean">dụng cụ, thiết bị</span></td></tr>
+
+                        <tr><td><span class="p-word">declare</span></td><td><span class="p-phonetic">/dɪˈkleə(r)/</span> (v)</td><td><span class="p-mean">tuyên bố</span></td></tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="right-pane" id="quiz-pane">
+
+                <h3 class="section-title">✍️ Interactive Exercises</h3>
+
+                <div id="quiz-container">
+
+                    </div>
+
+                
+
+                <div class="submit-area">
+
+                    <button class="btn-finish" onclick="openNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="name-modal" style="display: none;">
+
+        <div class="modal-content">
+
+            <h2>Hé lộ điểm số nào! 🎉</h2>
+
+            <div class="input-group">
+
+                <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A..." onkeypress="handleNameEnter(event)">
+
+            </div>
+
+            <p id="name-error" style="color: red; margin-top: 10px; display: none; font-weight: bold;">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</p>
+
+            <button class="btn-submit" onclick="submitQuiz()">Xem Điểm Của Mình ✨</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="result-modal" style="display: none;">
+
+        <div class="modal-content">
+
+            <h2 id="result-title">Kết Quả</h2>
+
+            <img id="result-meme" src="" alt="Meme cảm xúc">
+
+            <p id="result-text"></p>
+
+            <button class="btn-submit" onclick="location.reload()">Làm Lại Từ Đầu 🔄</button>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        // --- SECURITY LOGIC ---
+
+        // Expected pwd: "comaianulis" -> [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115]
+
+        const secretHash = [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115];
+
+        
+
+        function checkAuth() {
+
+            const input = document.getElementById('pwd-input');
+
+            const errorMsg = document.getElementById('pwd-error');
+
+            const val = input.value;
+
+            
+
+            let isCorrect = val.length === secretHash.length;
+
+            if(isCorrect) {
+
+                for(let i=0; i<val.length; i++){
+
+                    if(val.charCodeAt(i) !== secretHash[i]) {
+
+                        isCorrect = false;
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+
+
+            if(isCorrect) {
+
+                document.getElementById('auth-modal').style.display = 'none';
+
+                document.getElementById('app-container').style.display = 'flex';
+
+                initQuiz();
+
+            } else {
+
+                input.classList.remove('shake');
+
+                void input.offsetWidth; // trigger reflow
+
+                input.classList.add('shake');
+
+                errorMsg.style.display = 'block';
+
+                playBuzz();
+
+            }
+
+        }
+
+
+
+        document.getElementById('pwd-input').addEventListener('keypress', function(e) {
+
+            if (e.key === 'Enter') checkAuth();
+
+        });
+
+
+
+        // --- AUDIO ENGINE ---
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playDing() {
+
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+
+            osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); // Slide to A6
+
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+            osc.connect(gain);
+
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+
+            osc.stop(audioCtx.currentTime + 0.5);
+
+        }
+
+
+
+        function playBuzz() {
+
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+            osc.connect(gain);
+
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+
+            osc.stop(audioCtx.currentTime + 0.3);
+
+        }
+
+
+
+        // --- CONFETTI ENGINE ---
+
+        function shootConfetti() {
+
+            for(let i=0; i<50; i++) {
+
+                const conf = document.createElement('div');
+
+                conf.style.position = 'fixed';
+
+                conf.style.left = Math.random() * 100 + 'vw';
+
+                conf.style.top = '-10px';
+
+                conf.style.width = Math.random() * 10 + 5 + 'px';
+
+                conf.style.height = conf.style.width;
+
+                conf.style.backgroundColor = ['#00D26A', '#FDCB6E', '#8854C0', '#00C9A7', '#FF4757'][Math.floor(Math.random()*5)];
+
+                conf.style.zIndex = '9999';
+
+                conf.style.pointerEvents = 'none';
+
+                conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+
+                document.body.appendChild(conf);
+
+
+
+                const angle = Math.random() * Math.PI * 2;
+
+                const velocity = 5 + Math.random() * 10;
+
+                let x = parseFloat(conf.style.left);
+
+                let y = -10;
+
+                let opacity = 1;
+
+
+
+                function animate() {
+
+                    y += velocity;
+
+                    x += Math.sin(angle) * 2;
+
+                    opacity -= 0.02;
+
+                    conf.style.top = y + 'px';
+
+                    conf.style.left = x + 'vw';
+
+                    conf.style.opacity = opacity;
+
+                    conf.style.transform = `rotate(${y * 2}deg)`;
+
+
+
+                    if(opacity > 0) requestAnimationFrame(animate);
+
+                    else conf.remove();
+
+                }
+
+                animate();
+
+            }
+
+        }
+
+
+
+        // --- DYNAMIC BACKGROUND & THEME ---
+
+        function setDynamicTheme() {
+
+            // Emulating user's past request for "cute cats and flowers" mixed with Gamification elements
+
+            const svgContent = `
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" opacity="0.6">
+
+                    <text x="30" y="50" font-size="40" style="animation: bounce 2s infinite">🌸</text>
+
+                    <text x="150" y="100" font-size="50">🐱</text>
+
+                    <text x="80" y="200" font-size="35">🚀</text>
+
+                    <text x="220" y="250" font-size="45">🌟</text>
+
+                    <text x="10" y="280" font-size="40">🌊</text>
+
+                </svg>
+
+            `;
+
+            const encodedSVG = "data:image/svg+xml;utf8," + encodeURIComponent(svgContent);
+
+            document.getElementById('bg-pattern').style.backgroundImage = `url('${encodedSVG}')`;
+
+        }
+
+        setDynamicTheme();
+
+
+
+        // --- TIMER LOGIC ---
+
+        let timerInterval;
+
+        let timeLeft = 600; // 10 minutes
+
+        let isRunning = false;
+
+
+
+        function toggleTimer() {
+
+            const btn = document.getElementById('btn-timer-toggle');
+
+            if(!isRunning) {
+
+                isRunning = true;
+
+                btn.innerText = "TẠM DỪNG TÍNH GIỜ";
+
+                timerInterval = setInterval(() => {
+
+                    timeLeft--;
+
+                    let m = Math.floor(timeLeft / 60);
+
+                    let s = timeLeft % 60;
+
+                    document.getElementById('timer-display').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+
+                    if(timeLeft <= 0) {
+
+                        clearInterval(timerInterval);
+
+                        alert("⏰ Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.");
+
+                        btn.style.display = 'none';
+
+                    }
+
+                }, 1000);
+
+            } else {
+
+                isRunning = false;
+
+                btn.innerText = "TIẾP TỤC TÍNH GIỜ";
+
+                clearInterval(timerInterval);
+
+            }
+
+        }
+
+
+
+        // --- UI TOGGLES ---
+
+        function toggleTranslation(id) {
+
+            const el = document.getElementById(id);
+
+            if(el.style.display === 'block') el.style.display = 'none';
+
+            else el.style.display = 'block';
+
+        }
+
+
+
+        // --- QUIZ DATA & LOGIC ---
+
+        const quizData = [
+
+            // Drowning
+
+            {
+
+                q: "Question 13: Call for help immediately or tell a (13) ______.",
+
+                options: ["lifeguard", "worker", "firefighter", "policeman"],
+
+                ans: "lifeguard",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Gọi giúp đỡ ngay lập tức hoặc báo cho một ______.<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>lifeguard</span> <span class='p-phonetic'>/ˈlaɪfɡɑːd/</span> (n): <span class='p-mean'>nhân viên cứu hộ</span>.<br>
+
+                    - <span class='p-word'>worker</span> <span class='p-phonetic'>/ˈwɜːkə(r)/</span> (n): <span class='p-mean'>công nhân</span>.<br>
+
+                    - <span class='p-word'>firefighter</span> <span class='p-phonetic'>/ˈfaɪəfaɪtə(r)/</span> (n): <span class='p-mean'>lính cứu hỏa</span>.<br>
+
+                    - <span class='p-word'>policeman</span> <span class='p-phonetic'>/pəˈliːsmən/</span> (n): <span class='p-mean'>cảnh sát</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>lifeguard</span>?</b> Đây là bài nói về "Drowning While Swimming" (Đuối nước khi bơi), nên người phù hợp nhất để gọi giúp đỡ ở bể bơi hoặc bãi biển là <span class='hl-green'>nhân viên cứu hộ</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Công nhân, lính cứu hỏa, cảnh sát</span> không phải là những người chuyên trực cứu hộ dưới nước trong bối cảnh này.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 14: Do not jump (14) ______ the water unless you are trained.",
+
+                options: ["from", "into", "out of", "off"],
+
+                ans: "into",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Không nhảy ______ nước trừ khi bạn đã được huấn luyện.<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>from</span> (prep): <span class='p-mean'>từ</span>.<br>
+
+                    - <span class='p-word'>into</span> (prep): <span class='p-mean'>vào trong</span>.<br>
+
+                    - <span class='p-word'>out of</span> (prep): <span class='p-mean'>ra khỏi</span>.<br>
+
+                    - <span class='p-word'>off</span> (prep): <span class='p-mean'>rời khỏi</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>into</span>?</b> <span class='p-grammar'>Cấu trúc: jump + into + nơi chốn (nước) = nhảy vào/nhảy xuống nước</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Sai ngữ nghĩa. Bạn không thể "nhảy từ nước" (from) hay "nhảy ra khỏi nước" (out of) để đi cứu người đang ở dưới nước được! <span class='hl-red'>Ngữ cảnh yêu cầu hành động lao xuống nước để cứu người</span>.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 15: Throw something that floats to the person (like (15) ______ life jacket).",
+
+                options: ["the", "no article", "a", "an"],
+
+                ans: "a",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Ném vật gì đó nổi được cho người đó (như ______ áo phao).<br>
+
+                    2. <b>Phân tích đáp án:</b> Các mạo từ xác định và không xác định.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>a</span>?</b> "life jacket" là danh từ đếm được số ít, được nhắc đến lần đầu tiên mang tính chung chung (một cái áo phao bất kỳ). Chữ "life" bắt đầu bằng phụ âm /l/ nên dùng mạo từ "a". <span class='p-grammar'>Cấu trúc: a + Noun (số ít đếm được bắt đầu bằng phụ âm)</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>the</span> dùng khi vật đã xác định; <span class='hl-red'>an</span> dùng trước nguyên âm; <span class='hl-red'>no article</span> sai ngữ pháp với danh từ đếm được số ít.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 16: If the person is out of the water, (16) ______ if they are breathing...",
+
+                options: ["check", "look", "research", "explore"],
+
+                ans: "check",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Nếu người đó đã ra khỏi nước, hãy ______ xem họ có thở không...<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>check</span> <span class='p-phonetic'>/tʃek/</span> (v): <span class='p-mean'>kiểm tra</span>.<br>
+
+                    - <span class='p-word'>look</span> <span class='p-phonetic'>/lʊk/</span> (v): <span class='p-mean'>nhìn</span>.<br>
+
+                    - <span class='p-word'>research</span> <span class='p-phonetic'>/rɪˈsɜːtʃ/</span> (v): <span class='p-mean'>nghiên cứu</span>.<br>
+
+                    - <span class='p-word'>explore</span> <span class='p-phonetic'>/ɪkˈsplɔː(r)/</span> (v): <span class='p-mean'>khám phá</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>check</span>?</b> Khi sơ cứu, hành động đầu tiên là <span class='hl-green'>kiểm tra</span> tình trạng hô hấp của nạn nhân. Sự kết hợp "check if..." (kiểm tra xem liệu...) rất phổ biến.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Look</span> thường đi với at/for; <span class='hl-red'>research</span> và <span class='hl-red'>explore</span> mang nghĩa hàn lâm, học thuật, hoàn toàn không phù hợp với ngữ cảnh cấp cứu khẩn cấp.
+
+                `
+
+            },
+
+            // Devices
+
+            {
+
+                q: "Question 19: They (19) ______ items like smartphones, computers, tablets...",
+
+                options: ["include", "contain", "consist", "make"],
+
+                ans: "include",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Chúng ______ các mặt hàng như điện thoại thông minh, máy tính...<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>include</span> (v): <span class='p-mean'>bao gồm (một phần của tổng thể)</span>.<br>
+
+                    - <span class='p-word'>contain</span> (v): <span class='p-mean'>chứa đựng (bên trong một vật chứa)</span>.<br>
+
+                    - <span class='p-word'>consist</span> (v): <span class='p-mean'>bao gồm (thường đi với 'of')</span>.<br>
+
+                    - <span class='p-word'>make</span> (v): <span class='p-mean'>làm ra</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>include</span>?</b> Để liệt kê một số thành phần trong một nhóm lớn (electronic devices), ta dùng "include". <span class='p-grammar'>Cấu trúc: include + Noun</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>Consist</span> phải đi với giới từ 'of'. <span class='hl-red'>Contain</span> mang nghĩa vật lý (đựng bên trong hộp/túi). <span class='hl-red'>Make</span> không hợp nghĩa.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 20: These devices help people (20) ______ with others...",
+
+                options: ["communicating", "communicate", "communicated", "communicates"],
+
+                ans: "communicate",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Những thiết bị này giúp mọi người ______ với những người khác...<br>
+
+                    2. <b>Phân tích đáp án:</b> Các dạng của động từ "communicate" (giao tiếp).<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>communicate</span>?</b> Dựa vào <span class='p-grammar'>Cấu trúc: help + Object + (to) V-infinitive</span> (giúp ai đó làm gì). Do đó động từ phải ở dạng nguyên thể.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các dạng <span class='hl-red'>V-ing (communicating), V-ed (communicated), V-s (communicates)</span> đều sai cấu trúc ngữ pháp cơ bản của động từ "help".
+
+                `
+
+            },
+
+            {
+
+                q: "Question 21: Spending too much time on screens may affect health, (21) ______, causing eye strain...",
+
+                options: ["for example", "however", "in general", "therefore"],
+
+                ans: "for example",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Dành quá nhiều thời gian trên màn hình có thể ảnh hưởng sức khỏe, ______, gây mỏi mắt...<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>for example</span>: <span class='p-mean'>ví dụ</span>.<br>
+
+                    - <span class='p-word'>however</span>: <span class='p-mean'>tuy nhiên</span>.<br>
+
+                    - <span class='p-word'>in general</span>: <span class='p-mean'>nhìn chung</span>.<br>
+
+                    - <span class='p-word'>therefore</span>: <span class='p-mean'>do đó, vì vậy</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>for example</span>?</b> "causing eye strain" (gây mỏi mắt) là một ví dụ cụ thể minh họa cho ý "affect health" (ảnh hưởng sức khỏe) phía trước.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> <span class='hl-red'>However</span> dùng để chỉ sự tương phản. <span class='hl-red'>Therefore</span> dùng chỉ kết quả. <span class='hl-red'>In general</span> dùng để khái quát hóa. Tất cả đều không hợp logic liên kết câu.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 22: It is important (22)__________.",
+
+                options: [
+
+                    "to suitably use electronic devices", 
+
+                    "to use electronic devices suitably", 
+
+                    "electronic devices to use suitably", 
+
+                    "to use suitably electronic devices"
+
+                ],
+
+                ans: "to use electronic devices suitably",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Điều quan trọng là ______.<br>
+
+                    2. <b>Phân tích đáp án:</b> Sắp xếp trật tự từ trong câu.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>to use electronic devices suitably</span>?</b> <span class='p-grammar'>Cấu trúc chủ ngữ giả: It is + adj + to V + Object + Trạng từ chỉ thể cách (Adverb of manner)</span>. Ở đây, động từ là "use", tân ngữ là "electronic devices", trạng từ bổ nghĩa "suitably" phải đứng sau tân ngữ.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Trạng từ "suitably" <span class='hl-red'>không được đứng chen giữa động từ và tân ngữ trực tiếp</span> (to use suitably electronic devices - SAI). Các cấu trúc khác đều sai trật tự từ cơ bản.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 23: Parents and teachers can guide young people on (23) ______.",
+
+                options: [
+
+                    "how to use these devices wisely", 
+
+                    "how wisely for these devices to use", 
+
+                    "how these devices to use wisely", 
+
+                    "how wisely to use these devices"
+
+                ],
+
+                ans: "how to use these devices wisely",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Phụ huynh và giáo viên có thể hướng dẫn giới trẻ về ______.<br>
+
+                    2. <b>Phân tích đáp án:</b> Cấu trúc Wh-word + to V.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>how to use these devices wisely</span>?</b> <span class='p-grammar'>Cấu trúc: Từ để hỏi (how) + to V (to use) + Object (these devices) + Adverb (wisely)</span>. Nghĩa là: "cách để sử dụng những thiết bị này một cách khôn ngoan".<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các đáp án khác sắp xếp <span class='hl-red'>sai hoàn toàn trật tự ngữ pháp tiếng Anh</span>, đảo lộn trạng từ và tân ngữ một cách vô lý.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 24: In conclusion, electronic devices (24) ______ today's world...",
+
+                options: [
+
+                    "have little impact on", 
+
+                    "play a significant role in", 
+
+                    "are rapidly evolving in", 
+
+                    "are unnecessary in"
+
+                ],
+
+                ans: "play a significant role in",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Tóm lại, các thiết bị điện tử ______ thế giới ngày nay...<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>have little impact on</span>: <span class='p-mean'>có ít tác động đến</span>.<br>
+
+                    - <span class='p-word'>play a significant role in</span>: <span class='p-mean'>đóng một vai trò quan trọng trong</span>.<br>
+
+                    - <span class='p-word'>are rapidly evolving in</span>: <span class='p-mean'>đang phát triển nhanh chóng trong</span>.<br>
+
+                    - <span class='p-word'>are unnecessary in</span>: <span class='p-mean'>không cần thiết trong</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>play a significant role in</span>?</b> Đoạn văn bàn về tầm quan trọng và sự hữu ích (cũng như tác hại cần cân bằng) của thiết bị điện tử. Câu chốt hạ (In conclusion) phải khẳng định lại <span class='hl-green'>vai trò to lớn</span> của chúng.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Đoạn văn không hề nói chúng "ít tác động" hay "không cần thiết" <span class='hl-red'>(Trái ngược hoàn toàn ý nghĩa bài đọc)</span>.
+
+                `
+
+            },
+
+            // Yagi
+
+            {
+
+                q: "Question 31: According to the passage, what did the authorities do to prepare for Typhoon Yagi?",
+
+                options: [
+
+                    "Allowed people to stay in their homes", 
+
+                    "Repaired the roads before the storm", 
+
+                    "Built new homes for the evacuees", 
+
+                    "Issued alerts before the storm arrived"
+
+                ],
+
+                ans: "Issued alerts before the storm arrived",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Theo đoạn văn, chính quyền đã làm gì để chuẩn bị cho bão Yagi?<br>
+
+                    2. <b>Phân tích đáp án:</b> A. Cho phép người dân ở nhà; B. Sửa đường; C. Xây nhà mới; D. Phát cảnh báo trước khi bão đến.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>D</span>?</b> 🔍 Dẫn chứng trong bài (Đoạn 3): <span class='p-grammar'>"The authorities issued alerts days before the storm arrived..."</span>.<br>
+
+                    👉 <b>Dịch:</b> "Chính quyền đã <span class='hl-green'>đưa ra cảnh báo</span> nhiều ngày trước khi cơn bão đến...".<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các thông tin A, B, C <span class='hl-red'>hoàn toàn không được nhắc đến hoặc sai sự thật</span> trong bài. Bài viết rõ ràng đề cập việc "evacuate" (sơ tán) chứ không cho phép ở lại nhà vùng nguy hiểm.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 32: The word evacuated in paragraph 1 is CLOSEST in meaning to _____.",
+
+                options: ["stayed", "ignored", "moved to safety", "returned home"],
+
+                ans: "moved to safety",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Từ "evacuated" (sơ tán) ở đoạn 1 GẦN NGHĨA NHẤT với từ nào?<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>stayed</span>: <span class='p-mean'>ở lại</span>.<br>
+
+                    - <span class='p-word'>ignored</span>: <span class='p-mean'>phớt lờ</span>.<br>
+
+                    - <span class='p-word'>moved to safety</span>: <span class='p-mean'>di chuyển đến nơi an toàn</span>.<br>
+
+                    - <span class='p-word'>returned home</span>: <span class='p-mean'>trở về nhà</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>moved to safety</span>?</b> "Evacuate" có nghĩa là sơ tán người dân khỏi nơi nguy hiểm đến nơi an toàn hơn. Ngữ cảnh: "evacuated from low-lying areas to prevent further harm" (sơ tán khỏi vùng trũng để tránh nguy hiểm).<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các từ khác mang nghĩa <span class='hl-red'>ngược lại hoặc không liên quan</span>.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 33: Which of the following is NOT TRUE according to the passage?",
+
+                options: [
+
+                    "Typhoon Yagi caused severe flooding in Ha Noi.", 
+
+                    "Many people were evacuated from low-lying areas.", 
+
+                    "Schools and businesses remained open during the storm.", 
+
+                    "The government provided emergency shelters for the public."
+
+                ],
+
+                ans: "Schools and businesses remained open during the storm.",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Điều nào sau đây KHÔNG ĐÚNG theo đoạn văn?<br>
+
+                    2. <b>Phân tích đáp án:</b> A. Bão gây lũ lụt nghiêm trọng; B. Nhiều người được sơ tán; C. Trường học và doanh nghiệp vẫn mở cửa; D. Chính phủ cung cấp nơi trú ẩn.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>C</span>?</b> 🔍 Dẫn chứng trong bài (Đoạn 2): <span class='p-grammar'>"Schools and businesses were closed to ensure the safety of the public."</span>.<br>
+
+                    👉 <b>Dịch:</b> "Trường học và doanh nghiệp <span class='hl-green'>đã đóng cửa</span> để đảm bảo an toàn". Do đó, nhận định chúng "remained open" (vẫn mở cửa) là <span class='hl-red'>SAI SỰ THẬT</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các thông tin A, B, D đều là sự thật đã được nêu rõ trong bài đọc.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 34: The word challenges in paragraph 2 is OPPOSITE in meaning to _____.",
+
+                options: ["opportunities", "issues", "difficulties", "objections"],
+
+                ans: "opportunities",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Từ "challenges" (thách thức) ở đoạn 2 TRÁI NGHĨA với từ nào?<br>
+
+                    2. <b>Phân tích đáp án:</b><br>
+
+                    - <span class='p-word'>opportunities</span>: <span class='p-mean'>cơ hội</span>.<br>
+
+                    - <span class='p-word'>issues</span>: <span class='p-mean'>vấn đề</span>.<br>
+
+                    - <span class='p-word'>difficulties</span>: <span class='p-mean'>sự khó khăn</span>.<br>
+
+                    - <span class='p-word'>objections</span>: <span class='p-mean'>sự phản đối</span>.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>opportunities</span>?</b> "Challenges" mang nghĩa tiêu cực (sự khó khăn, cản trở). Từ trái nghĩa hoàn hảo của nó là <span class='hl-green'>Cơ hội (những điều kiện thuận lợi)</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> "Issues" và "difficulties" là <span class='hl-red'>từ đồng nghĩa (synonyms)</span> chứ không phải trái nghĩa.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 35: What can be inferred about the impact of Typhoon Yagi on Ha Noi?",
+
+                options: [
+
+                    "It caused hardly any damage to the city.", 
+
+                    "Early warnings helped save lives and reduce the damage.", 
+
+                    "The government did not respond quickly to the storm.", 
+
+                    "People were not affected by the flooding."
+
+                ],
+
+                ans: "Early warnings helped save lives and reduce the damage.",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Có thể suy ra điều gì về tác động của bão Yagi đối với Hà Nội?<br>
+
+                    2. <b>Phân tích đáp án:</b> A. Hầu như không gây thiệt hại; B. Cảnh báo sớm giúp cứu sống và giảm thiệt hại; C. Chính phủ không phản ứng nhanh; D. Người dân không bị ảnh hưởng bởi lũ.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> 🔍 Dẫn chứng trong bài: <span class='p-grammar'>"This quick response helped save lives and minimize damage to properties."</span><br>
+
+                    👉 <b>Dịch:</b> "Phản ứng nhanh chóng (nhờ cảnh báo sớm) này đã giúp <span class='hl-green'>cứu sống nhiều người và giảm thiểu thiệt hại</span>."<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Bài đọc nêu rõ bão gây "significant damage" (thiết hại lớn) -> A, D sai. Chính phủ "acted quickly" (phản ứng nhanh) -> C sai.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 36: What is the main idea of the passage?",
+
+                options: [
+
+                    "Typhoon Yagi did not cause any problems in Ha Noi.", 
+
+                    "Typhoon Yagi caused damage to Ha Noi, but early preparation helped reduce the impact.", 
+
+                    "The authorities of Ha Noi were not prepared for Typhoon Yagi.", 
+
+                    "People in Ha Noi received the warnings about Typhoon Yagi but ignored them."
+
+                ],
+
+                ans: "Typhoon Yagi caused damage to Ha Noi, but early preparation helped reduce the impact.",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Ý chính của đoạn văn là gì?<br>
+
+                    2. <b>Phân tích đáp án:</b> A. Không gây vấn đề gì; B. Gây thiệt hại nhưng chuẩn bị sớm giúp giảm tác động; C. Nhà chức trách không chuẩn bị; D. Người dân phớt lờ cảnh báo.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> Câu chủ đề cuối bài đã tóm tắt toàn bộ: <span class='p-grammar'>"In conclusion, Typhoon Yagi... had a major impact... but thanks to early preparations... the city was able to recover quickly."</span> Nhấn mạnh sự thiệt hại nhưng được bù đắp bởi sự chuẩn bị tốt.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các phương án khác đưa ra thông tin <span class='hl-red'>hoàn toàn trái ngược</span> với dữ kiện trong bài đọc.
+
+                `
+
+            },
+
+            // Mars Rovers
+
+            {
+
+                q: "Question 37: The National Aeronautics and Space Administration (NASA) designed and built the rovers... (37)______.",
+
+                options: [
+
+                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
+
+                    "to operate until 2018", 
+
+                    "to move in many directions", 
+
+                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
+
+                ],
+
+                ans: "NASA launched Spirit on June 10, and Opportunity on July 7, 2003.",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Cần điền câu nào vào chỗ trống (37)?<br>
+
+                    2. <b>Phân tích logic:</b> Câu trước nói về việc NASA tạo ra hai tàu thăm dò tên Spirit và Opportunity. Câu tiếp theo nói: "Spirit touched down on January 3, 2004" (Spirit hạ cánh vào...).<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>D</span>?</b> Theo mạch thời gian logic: Chế tạo -> <span class='hl-green'>Phóng lên (launched) năm 2003</span> -> Hạ cánh (touched down) năm 2004.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Các lựa chọn khác không tạo ra sự liên kết logic về mặt thời gian và sự kiện ở đoạn đầu.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 38: The rovers had six wheels that allowed them (38)________.",
+
+                options: [
+
+                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
+
+                    "to operate until 2018", 
+
+                    "to move in many directions", 
+
+                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
+
+                ],
+
+                ans: "to move in many directions",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Các tàu thăm dò có sáu bánh xe cho phép chúng ______.<br>
+
+                    2. <b>Phân tích logic:</b> "six wheels" (sáu bánh xe) là công cụ dùng để di chuyển.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>C</span>?</b> "to move in many directions" (di chuyển theo nhiều hướng). <span class='p-grammar'>Cấu trúc: allow + Object + to V</span>.<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Bánh xe thì không dùng để gửi tín hiệu (A) hay hoạt động tới năm 2018 (B).
+
+                `
+
+            },
+
+            {
+
+                q: "Question 39: Scientists on Earth sent commands to the rovers... (39)_________.",
+
+                options: [
+
+                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
+
+                    "to operate until 2018", 
+
+                    "to move in many directions", 
+
+                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
+
+                ],
+
+                ans: "The rovers sent signals back to the scientists through computers and large antennas on Earth.",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Cần điền câu nào vào chỗ trống (39)?<br>
+
+                    2. <b>Phân tích logic:</b> Câu trước nói: "Các nhà khoa học gửi lệnh cho tàu thăm dò...". Nó thể hiện sự giao tiếp một chiều từ Trái đất đến Sao Hỏa.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>A</span>?</b> Để hoàn thiện ý giao tiếp hai chiều, câu tiếp theo phản hồi lại: "Các tàu thăm dò <span class='hl-green'>gửi tín hiệu trở lại</span> (sent signals back) cho các nhà khoa học qua ăng-ten".<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Lắp ghép ngữ nghĩa của B, C, D vào đây hoàn toàn vô nghĩa.
+
+                `
+
+            },
+
+            {
+
+                q: "Question 40: In 2010 Spirit stopped sending signals, but Opportunity continued (40)________.",
+
+                options: [
+
+                    "The rovers sent signals back to the scientists through computers and large antennas on Earth.", 
+
+                    "to operate until 2018", 
+
+                    "to move in many directions", 
+
+                    "NASA launched Spirit on June 10, and Opportunity on July 7, 2003."
+
+                ],
+
+                ans: "to operate until 2018",
+
+                exp: `
+
+                    1. <b>Dịch câu hỏi:</b> Năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục ______.<br>
+
+                    2. <b>Phân tích logic:</b> Câu chứa sự tương phản "but" (nhưng). Tàu kia dừng hoạt động (stopped), thì tàu này phải tiếp tục hoạt động.<br>
+
+                    3. <b>Tại sao chọn <span class='hl-green'>B</span>?</b> "to operate until 2018" (hoạt động cho đến năm 2018). Điều này khớp nối hoàn hảo với câu kết ngay sau đó: "NASA chính thức tuyên bố kết thúc sứ mệnh vào tháng 2 năm 2019".<br>
+
+                    4. <b>Tại sao loại còn lại?</b> Đây là lựa chọn cuối cùng duy nhất hợp lý về mặt vòng đời (timeline) của dự án thám hiểm.
+
+                `
+
+            }
+
+        ];
+
+
+
+        // --- RENDER LOGIC ---
+
+        let score = 0;
+
+        let answeredQuestions = 0;
+
+
+
+        function shuffleArray(arr) {
+
+            for (let i = arr.length - 1; i > 0; i--) {
+
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+
+            }
+
+            return arr;
+
+        }
+
+
+
+        function initQuiz() {
+
+            const container = document.getElementById('quiz-container');
+
+            container.innerHTML = '';
+
+            
+
+            quizData.forEach((item, index) => {
+
+                const card = document.createElement('div');
+
+                card.className = 'question-card';
+
+                card.id = `q-card-${index}`;
+
+
+
+                const qText = document.createElement('div');
+
+                qText.className = 'q-text';
+
+                qText.innerHTML = item.q;
+
+                card.appendChild(qText);
+
+
+
+                const grid = document.createElement('div');
+
+                grid.className = 'options-grid';
+
+
+
+                let shuffledOptions = shuffleArray([...item.options]);
+
+                
+
+                shuffledOptions.forEach(opt => {
+
+                    const btn = document.createElement('button');
+
+                    btn.className = 'option-btn';
+
+                    btn.innerHTML = opt;
+
+                    btn.onclick = () => handleAnswer(btn, opt, item.ans, index, grid);
+
+                    grid.appendChild(btn);
+
+                });
+
+
+
+                card.appendChild(grid);
+
+
+
+                const expBox = document.createElement('div');
+
+                expBox.className = 'explanation-box';
+
+                expBox.id = `exp-${index}`;
+
+                expBox.innerHTML = item.exp;
+
+                card.appendChild(expBox);
+
+
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+
+        function handleAnswer(btn, selected, correct, qIndex, grid) {
+
+            // Disable all buttons in this grid
+
+            const allBtns = grid.querySelectorAll('.option-btn');
+
+            allBtns.forEach(b => {
+
+                b.disabled = true;
+
+                if(b.innerHTML === correct) {
+
+                    b.classList.add('correct'); // Show correct answer always
+
+                }
+
+            });
+
+
+
+            const expBox = document.getElementById(`exp-${qIndex}`);
+
+            expBox.style.display = 'block';
+
+            answeredQuestions++;
+
+
+
+            if(selected === correct) {
+
+                btn.classList.add('correct');
+
+                score++;
+
+                playDing();
+
+                shootConfetti();
+
+            } else {
+
+                btn.classList.add('wrong');
+
+                btn.classList.add('shake');
+
+                playBuzz();
+
+            }
+
+        }
+
+
+
+        // --- SUBMIT LOGIC ---
+
+        function openNameModal() {
+
+            if(answeredQuestions < quizData.length) {
+
+                if(!confirm(`Bạn mới làm ${answeredQuestions}/${quizData.length} câu. Bạn có chắc chắn muốn nộp bài sớm không?`)) {
+
+                    return;
+
+                }
+
+            }
+
+            document.getElementById('name-modal').style.display = 'flex';
+
+        }
+
+
+
+        function handleNameEnter(e) {
+
+            if (e.key === 'Enter') submitQuiz();
+
+        }
+
+
+
+        function submitQuiz() {
+
+            const nameInput = document.getElementById('student-name');
+
+            const name = nameInput.value.trim();
+
+            const errorMsg = document.getElementById('name-error');
+
+
+
+            if(!name) {
+
+                nameInput.classList.remove('shake');
+
+                void nameInput.offsetWidth;
+
+                nameInput.classList.add('shake');
+
+                errorMsg.style.display = 'block';
+
+                return;
+
+            }
+
+
+
+            document.getElementById('name-modal').style.display = 'none';
+
+            clearInterval(timerInterval); // Stop timer
+
+
+
+            const resultModal = document.getElementById('result-modal');
+
+            const title = document.getElementById('result-title');
+
+            const meme = document.getElementById('result-meme');
+
+            const text = document.getElementById('result-text');
+
+
+
+            const percentage = score / quizData.length;
+
+            
+
+            if(percentage === 1) {
+
+                title.innerText = "🌟 THIÊN TÀI!";
+
+                meme.src = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Minion cheer
+
+                text.innerHTML = `Xuất sắc tuyệt đối! <b>${name}</b> đã đạt ${score}/${quizData.length} điểm. Không sai câu nào luôn! 😎`;
+
+                shootConfetti(); setTimeout(shootConfetti, 500);
+
+                playDing();
+
+            } else if(percentage >= 0.6) {
+
+                title.innerText = "👍 LÀM TỐT LẮM!";
+
+                meme.src = "https://media.giphy.com/media/l41JRsph73VokN6ik/giphy.gif"; // High five
+
+                text.innerHTML = `Giỏi quá <b>${name}</b> ơi! Bạn đạt ${score}/${quizData.length} điểm. Cố gắng thêm chút xíu nữa là hoàn hảo nha! 🚀`;
+
+                shootConfetti();
+
+                playDing();
+
+            } else {
+
+                title.innerText = "😢 CỐ LÊN NHÉ!";
+
+                meme.src = "https://media.giphy.com/media/3o6wrvdHFbwBrUFenu/giphy.gif"; // Crying SpongeBob
+
+                text.innerHTML = `Oái, <b>${name}</b> đạt ${score}/${quizData.length} điểm. Đừng buồn nha, hãy đọc kỹ phần giải thích chi tiết của cô giáo và thử lại nhé! 💪`;
+
+                playBuzz();
+
+            }
+
+
+
+            resultModal.style.display = 'flex';
+
+        }
+
+    </script>
+
+
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
     function unlockNow() {
-        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
         pwIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -1213,40 +2420,43 @@
                 try { el.remove(); } catch(e) {}
             }
         });
-        
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
         modalEls.forEach(function(el) {
-            el.style.setProperty('display', 'none', 'important');
-            try { el.remove(); } catch(e) {}
+            // Keep result modals if any, but hide overlays that block quiz
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
         });
 
-        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
-                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
-                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
-                        el.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        el.style.setProperty('display', 'block', 'important');
-                    }
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
                 }
             }
         });
 
-        var tayMoMain = document.getElementById('mainContent');
-        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
-            tayMoMain.style.setProperty('display', 'flex', 'important');
-        }
-
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
         if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
         if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
         if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
         if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
         if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
         if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
 
@@ -1260,5 +2470,6 @@
     setTimeout(unlockNow, 600);
 })();
 </script>
-</body>
+</body>
+
 </html>
