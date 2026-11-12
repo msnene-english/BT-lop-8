@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quiz – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --pink:#c96fdb;--yellow:#FDCB6E;--teal:#00C9A7;--purple:#8854C0;
+    --correct:#00D26A;--wrong:#FF4757;--card:#ffffffdd;
+    --shadow:0 8px 32px #8854c040;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+
+  /* Animated gradient background */
+  .bg-layer{
+    position:fixed;inset:0;z-index:0;
+    background:linear-gradient(120deg,#f8b4d9,#c3b1e1,#a8d8ea,#fdcb6e,#00c9a7,#c96fdb);
+    background-size:400% 400%;
+    animation:gradMove 10s ease infinite;
+  }
+  @keyframes gradMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* SVG pattern overlay */
+  .pattern-layer{
+    position:fixed;inset:0;z-index:1;opacity:.18;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Ctext x='10' y='30' font-size='22'%3E⭐%3C/text%3E%3Ctext x='80' y='20' font-size='18'%3E🌸%3C/text%3E%3Ctext x='130' y='50' font-size='20'%3E🍭%3C/text%3E%3Ctext x='40' y='75' font-size='24'%3E🐱%3C/text%3E%3Ctext x='110' y='90' font-size='20'%3E☁️%3C/text%3E%3Ctext x='5' y='120' font-size='22'%3E🌈%3C/text%3E%3Ctext x='70' y='140' font-size='18'%3E🍀%3C/text%3E%3Ctext x='130' y='130' font-size='22'%3E💫%3C/text%3E%3C/svg%3E");
+    background-size:160px 160px;
+    mix-blend-mode:multiply;
+    animation:patternDrift 30s linear infinite;
+  }
+  @keyframes patternDrift{from{background-position:0 0}to{background-position:160px 160px}}
+
+  /* Main container */
+  .container{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:16px 12px 60px}
+
+  /* Header */
+  header{text-align:center;padding:24px 0 12px}
+  header h1{font-size:1.6rem;font-weight:900;color:#fff;text-shadow:0 3px 10px #8854c080;letter-spacing:1px}
+  header p{font-size:.9rem;color:#fff;opacity:.9;font-weight:600;margin-top:4px}
+
+  /* Section title */
+  .section-title{
+    background:linear-gradient(90deg,var(--purple),var(--pink));
+    color:#fff;font-size:1rem;font-weight:800;
+    padding:10px 20px;border-radius:16px;margin:24px 0 12px;
+    box-shadow:0 4px 16px #8854c050;letter-spacing:.5px;
+  }
+
+  /* Card */
+  .card{
+    background:var(--card);border-radius:22px;padding:20px 22px 16px;
+    margin-bottom:18px;box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);border:2px solid #fff8;
+    animation:fadeUp .4s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  .q-num{font-size:.78rem;font-weight:800;color:var(--purple);text-transform:uppercase;margin-bottom:6px}
+  .q-text{font-size:1rem;font-weight:700;color:#333;margin-bottom:14px;line-height:1.5}
+  .q-text u{text-decoration:underline;text-underline-offset:3px}
+
+  /* Options grid */
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:500px){.options{grid-template-columns:1fr}}
+
+  .opt-btn{
+    background:#f0eaff;border:2.5px solid #c3b1e1;border-radius:16px;
+    padding:10px 14px;font-family:'Nunito',sans-serif;font-size:.93rem;font-weight:700;
+    color:#444;cursor:pointer;text-align:left;
+    box-shadow:0 5px 0 #b89dd0;
+    transition:transform .15s,box-shadow .15s,background .15s;
+    position:relative;overflow:hidden;
+  }
+  .opt-btn:hover:not(:disabled){transform:scale(1.04) translateY(-2px);box-shadow:0 8px 0 #b89dd0;background:#e8dfff}
+  .opt-btn.correct{background:#d4fce9!important;border-color:var(--correct)!important;box-shadow:0 5px 0 #00a050!important;color:#006630!important}
+  .opt-btn.wrong{background:#ffe0e3!important;border-color:var(--wrong)!important;box-shadow:0 5px 0 #cc0015!important;color:#800010!important}
+  .opt-btn.correct::after{content:'✔';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.1rem}
+  .opt-btn.wrong::after{content:'✘';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.1rem}
+  .opt-btn:disabled{cursor:default}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+  .shake{animation:shake .4s ease}
+
+  /* Explanation box */
+  .explanation{
+    display:none;margin-top:14px;background:linear-gradient(135deg,#fff9e6,#e8f8ff);
+    border-left:5px solid var(--teal);border-radius:12px;padding:14px 16px;
+    font-size:.88rem;color:#333;line-height:1.7;
+  }
+  .explanation.show{display:block}
+  .explanation b{color:var(--purple)}
+  .explanation .ans-tag{display:inline-block;background:var(--correct);color:#fff;border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:800;margin-bottom:8px}
+
+  /* Matching exercise */
+  .match-wrapper{display:flex;gap:16px;flex-wrap:wrap}
+  .match-col{flex:1;min-width:200px}
+  .match-col h4{font-size:.82rem;font-weight:800;color:var(--purple);margin-bottom:8px;text-transform:uppercase}
+  .match-item{
+    background:#f0eaff;border:2px solid #c3b1e1;border-radius:12px;
+    padding:8px 12px;margin-bottom:8px;font-size:.88rem;font-weight:700;color:#333;
+    cursor:pointer;transition:all .2s;user-select:none;
+  }
+  .match-item:hover{background:#e2d5ff;transform:scale(1.02)}
+  .match-item.selected{background:var(--yellow);border-color:#e6a800;color:#333}
+  .match-item.matched-correct{background:#d4fce9;border-color:var(--correct);color:#006630;cursor:default}
+  .match-item.matched-wrong{background:#ffe0e3;border-color:var(--wrong);color:#800010;cursor:default}
+  .match-item.disabled{pointer-events:none;opacity:.7}
+
+  /* Submit button */
+  .submit-btn{
+    display:block;width:100%;max-width:360px;margin:30px auto 0;
+    background:linear-gradient(135deg,var(--purple),var(--pink));
+    color:#fff;border:none;border-radius:24px;padding:16px 32px;
+    font-family:'Nunito',sans-serif;font-size:1.15rem;font-weight:900;
+    cursor:pointer;box-shadow:0 8px 0 #6b3aaa;
+    transition:transform .15s,box-shadow .15s;letter-spacing:.5px;
+  }
+  .submit-btn:hover{transform:translateY(-3px);box-shadow:0 12px 0 #6b3aaa}
+  .submit-btn:active{transform:translateY(3px);box-shadow:0 4px 0 #6b3aaa}
+
+  /* Confetti */
+  .confetti-piece{
+    position:fixed;width:10px;height:10px;border-radius:2px;
+    animation:confettiFall 1.5s ease-in forwards;pointer-events:none;z-index:9999;
+  }
+  @keyframes confettiFall{
+    0%{opacity:1;transform:translateY(-20px) rotate(0deg)}
+    100%{opacity:0;transform:translateY(90vh) rotate(720deg)}
+  }
+
+  /* Popup */
+  .popup-overlay{
+    display:none;position:fixed;inset:0;background:#0006;z-index:10000;
+    align-items:center;justify-content:center;
+  }
+  .popup-overlay.show{display:flex}
+  .popup-box{
+    background:#fff;border-radius:28px;padding:40px 36px;text-align:center;
+    max-width:420px;width:90%;box-shadow:0 20px 60px #0004;
+    animation:popIn .3s ease;
+  }
+  @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .popup-box h2{font-size:2rem;font-weight:900;color:var(--purple);margin-bottom:8px}
+  .popup-box .score{font-size:3rem;font-weight:900;color:var(--teal);margin:10px 0}
+  .popup-box p{font-size:1rem;color:#555;margin-bottom:16px;font-weight:600}
+  .popup-close{
+    background:linear-gradient(135deg,var(--teal),var(--purple));color:#fff;
+    border:none;border-radius:18px;padding:12px 32px;font-family:'Nunito',sans-serif;
+    font-size:1rem;font-weight:800;cursor:pointer;margin-top:6px;
+  }
+
+  .score-bar{
+    position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:#ffffffdd;backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;gap:20px;
+    padding:10px 20px;border-top:2px solid #e0d0ff;
+    box-shadow:0 -4px 20px #8854c030;
+  }
+  .score-bar span{font-weight:800;color:var(--purple);font-size:1rem}
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="pattern-layer"></div>
+
+<div class="container">
+  <header>
+    <h1>🎮 English Quiz</h1>
+    <p>Giáo viên tạo: <b>MS Chí Nên – ULIS</b></p>
+  </header>
+
+  <!-- ===== EXERCISE 2: PHONETICS ===== -->
+  <div class="section-title">📢 Exercise 2 – Phonetics: Chọn từ có phần gạch chân phát âm khác</div>
+
+  <!-- Q1 -->
+  <div class="card" id="q1">
+    <div class="q-num">Câu 1</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts1"></div>
+    <div class="explanation" id="exp1">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích âm "a" trong mỗi từ:</b><br>
+      A. inter<u>a</u>ct /ˌɪntərˈækt/ → âm <b>/æ/</b> (như trong "cat")<br>
+      B. pl<u>a</u>ce /pleɪs/ → âm <b>/eɪ/</b><br>
+      C. volc<u>a</u>no /vɒlˈkeɪnəʊ/ → âm <b>/eɪ/</b><br>
+      D. pl<u>a</u>ne /pleɪn/ → âm <b>/eɪ/</b><br>
+      <b>→ A (interact)</b> có 'a' phát âm là /æ/, trong khi B, C, D đều phát âm là /eɪ/.
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="card" id="q2">
+    <div class="q-num">Câu 2</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts2"></div>
+    <div class="explanation" id="exp2">
+      <span class="ans-tag">Đáp án: D</span><br>
+      <b>Phân tích nguyên âm giữa mỗi từ:</b><br>
+      A. fish<u>e</u>rman → âm <b>/ə/</b> (schwa, âm nhẹ)<br>
+      B. tick<u>e</u>t → âm <b>/ɪ/</b> (ngắn, nhẹ)<br>
+      C. pris<u>o</u>ner → âm <b>/ə/</b> (schwa)<br>
+      D. onl<u>i</u>ne → âm <b>/aɪ/</b> (dài, rõ ràng như trong "time")<br>
+      <b>→ D (online)</b> có 'i' phát âm là /aɪ/, rõ và dài, trong khi A, B, C đều có âm nhẹ/không nhấn.
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="card" id="q3">
+    <div class="q-num">Câu 3</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts3"></div>
+    <div class="explanation" id="exp3">
+      <span class="ans-tag">Đáp án: C</span><br>
+      <b>Phân tích âm "o" trong mỗi từ:</b><br>
+      A. h<u>o</u>tel /həʊˈtel/ → âm <b>/əʊ/</b><br>
+      B. p<u>o</u>stcard /ˈpəʊstkɑːd/ → âm <b>/əʊ/</b><br>
+      C. sh<u>o</u>re /ʃɔː/ → âm <b>/ɔː/</b> (dài, như "or")<br>
+      D. c<u>o</u>ld /kəʊld/ → âm <b>/əʊ/</b><br>
+      <b>→ C (shore)</b> có 'o' phát âm là /ɔː/, trong khi A, B, D đều phát âm là /əʊ/.
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="card" id="q4">
+    <div class="q-num">Câu 4</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts4"></div>
+    <div class="explanation" id="exp4">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích đuôi "-ed" trong mỗi từ:</b><br>
+      A. includ<u>ed</u> /ɪnˈkluːdɪd/ → âm <b>/ɪd/</b> (thêm một âm tiết – vì động từ kết thúc bằng âm /d/)<br>
+      B. call<u>ed</u> /kɔːld/ → âm <b>/d/</b><br>
+      C. phon<u>ed</u> /fəʊnd/ → âm <b>/d/</b><br>
+      D. arriv<u>ed</u> /əˈraɪvd/ → âm <b>/d/</b><br>
+      <b>→ A (included)</b> có "-ed" phát âm là /ɪd/ (có âm tiết riêng), còn B, C, D đều phát âm là /d/.
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="card" id="q5">
+    <div class="q-num">Câu 5</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts5"></div>
+    <div class="explanation" id="exp5">
+      <span class="ans-tag">Đáp án: D</span><br>
+      <b>Phân tích phụ âm "ch" trong mỗi từ:</b><br>
+      A. mu<u>ch</u> /mʌtʃ/ → âm <b>/tʃ/</b><br>
+      B. tea<u>ch</u>er /ˈtiːtʃər/ → âm <b>/tʃ/</b><br>
+      C. bea<u>ch</u> /biːtʃ/ → âm <b>/tʃ/</b><br>
+      D. bro<u>ch</u>ure /brəˈʃʊər/ → âm <b>/ʃ/</b> (vì đây là từ gốc Pháp)<br>
+      <b>→ D (brochure)</b> có 'ch' phát âm là /ʃ/, trong khi A, B, C đều phát âm là /tʃ/.
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="card" id="q6">
+    <div class="q-num">Câu 6</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts6"></div>
+    <div class="explanation" id="exp6">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích âm "ou" trong mỗi từ:</b><br>
+      A. t<u>ou</u>ch /tʌtʃ/ → âm <b>/ʌ/</b> (ngắn, như "cup")<br>
+      B. f<u>ou</u>l /faʊl/ → âm <b>/aʊ/</b><br>
+      C. acc<u>ou</u>nt /əˈkaʊnt/ → âm <b>/aʊ/</b><br>
+      D. m<u>ou</u>nt /maʊnt/ → âm <b>/aʊ/</b><br>
+      <b>→ A (touch)</b> có 'ou' phát âm là /ʌ/, trong khi B, C, D đều phát âm là /aʊ/.
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="card" id="q7">
+    <div class="q-num">Câu 7</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts7"></div>
+    <div class="explanation" id="exp7">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích âm "o" trong mỗi từ:</b><br>
+      A. l<u>o</u>se /luːz/ → âm <b>/uː/</b> (dài, như "moon")<br>
+      B. v<u>o</u>te /vəʊt/ → âm <b>/əʊ/</b><br>
+      C. contr<u>o</u>l /kənˈtrəʊl/ → âm <b>/əʊ/</b><br>
+      D. s<u>o</u>cial /ˈsəʊʃl/ → âm <b>/əʊ/</b><br>
+      <b>→ A (lose)</b> có 'o' phát âm là /uː/, trong khi B, C, D đều phát âm là /əʊ/.
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="card" id="q8">
+    <div class="q-num">Câu 8</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts8"></div>
+    <div class="explanation" id="exp8">
+      <span class="ans-tag">Đáp án: B</span><br>
+      <b>Phân tích âm "ear" trong mỗi từ:</b><br>
+      A. r<u>ear</u> /rɪər/ → âm <b>/ɪə/</b><br>
+      B. b<u>ear</u> /beər/ → âm <b>/eə/</b> (như "air")<br>
+      C. g<u>ear</u> /ɡɪər/ → âm <b>/ɪə/</b><br>
+      D. y<u>ear</u> /jɪər/ → âm <b>/ɪə/</b><br>
+      <b>→ B (bear)</b> có 'ear' phát âm là /eə/, trong khi A, C, D đều phát âm là /ɪə/.
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="card" id="q9">
+    <div class="q-num">Câu 9</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts9"></div>
+    <div class="explanation" id="exp9">
+      <span class="ans-tag">Đáp án: D</span><br>
+      <b>Phân tích âm "ea" trong mỗi từ:</b><br>
+      A. pl<u>ea</u>se /pliːz/ → âm <b>/iː/</b><br>
+      B. p<u>ea</u>ce /piːs/ → âm <b>/iː/</b><br>
+      C. s<u>ea</u>t /siːt/ → âm <b>/iː/</b><br>
+      D. spr<u>ea</u>d /spred/ → âm <b>/e/</b> (ngắn, như "bed")<br>
+      <b>→ D (spread)</b> có 'ea' phát âm là /e/, trong khi A, B, C đều phát âm là /iː/.
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="card" id="q10">
+    <div class="q-num">Câu 10</div>
+    <div class="q-text">Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại:</div>
+    <div class="options" id="opts10"></div>
+    <div class="explanation" id="exp10">
+      <span class="ans-tag">Đáp án: C</span><br>
+      <b>Phân tích âm "s/s" cuối từ:</b><br>
+      A. overlook<u>s</u> /ˈəʊvəlʊks/ → âm <b>/s/</b><br>
+      B. belief<u>s</u> /bɪˈliːfs/ → âm <b>/s/</b><br>
+      C. toward<u>s</u> /təˈwɔːdz/ → âm <b>/z/</b><br>
+      D. right<u>s</u> /raɪts/ → âm <b>/s/</b><br>
+      <b>→ C (towards)</b> có 's' cuối phát âm là /z/, trong khi A, B, D đều phát âm là /s/.
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE 3: STRESS ===== -->
+  <div class="section-title">🔊 Exercise 3 – Word Stress: Chọn từ có trọng âm khác</div>
+
+  <!-- S1 -->
+  <div class="card" id="s1">
+    <div class="q-num">Câu 1</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS1"></div>
+    <div class="explanation" id="expS1">
+      <span class="ans-tag">Đáp án: C</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. <b>COM</b>-ment → trọng âm âm tiết <b>1</b><br>
+      B. <b>ON</b>-line → trọng âm âm tiết <b>1</b><br>
+      C. dis-<b>CUSS</b> → trọng âm âm tiết <b>2</b><br>
+      D. <b>BREAK</b>-out → trọng âm âm tiết <b>1</b><br>
+      <b>→ C (discuss)</b>: Động từ 2 âm tiết thường có trọng âm ở âm tiết 2. A, B, D đều có trọng âm ở âm tiết 1.
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="card" id="s2">
+    <div class="q-num">Câu 2</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS2"></div>
+    <div class="explanation" id="expS2">
+      <span class="ans-tag">Đáp án: D</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. <b>CON</b>-tact → trọng âm âm tiết <b>1</b><br>
+      B. <b>PA</b>-per → trọng âm âm tiết <b>1</b><br>
+      C. <b>CLASS</b>-mate → trọng âm âm tiết <b>1</b><br>
+      D. e-<b>NOUGH</b> → trọng âm âm tiết <b>2</b><br>
+      <b>→ D (enough)</b>: A, B, C là danh từ/tính từ ghép có trọng âm ở âm tiết 1; D là tính từ có trọng âm ở âm tiết 2.
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div class="card" id="s3">
+    <div class="q-num">Câu 3</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS3"></div>
+    <div class="explanation" id="expS3">
+      <span class="ans-tag">Đáp án: C</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. a-<b>VAIL</b>-a-ble → trọng âm âm tiết <b>2</b><br>
+      B. con-<b>VEN</b>-ient → trọng âm âm tiết <b>2</b><br>
+      C. in-ter-<b>AC</b>-tion → trọng âm âm tiết <b>3</b><br>
+      D. com-<b>MU</b>-ni-cate → trọng âm âm tiết <b>2</b><br>
+      <b>→ C (interaction)</b>: Từ có đuôi "-tion" thường có trọng âm ở âm tiết ngay trước đuôi (âm tiết 3). A, B, D đều có trọng âm ở âm tiết 2.
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="card" id="s4">
+    <div class="q-num">Câu 4</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS4"></div>
+    <div class="explanation" id="expS4">
+      <span class="ans-tag">Đáp án: B</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. <b>SCI</b>-ence → trọng âm âm tiết <b>1</b><br>
+      B. in-<b>VENT</b> → trọng âm âm tiết <b>2</b><br>
+      C. <b>SCAN</b>-ner → trọng âm âm tiết <b>1</b><br>
+      D. <b>AC</b>-cess → trọng âm âm tiết <b>1</b><br>
+      <b>→ B (invent)</b>: Động từ 2 âm tiết "in-" thường nhấn âm tiết 2. A, C, D đều có trọng âm ở âm tiết 1.
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="card" id="s5">
+    <div class="q-num">Câu 5</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS5"></div>
+    <div class="explanation" id="expS5">
+      <span class="ans-tag">Đáp án: B</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. ex-<b>PER</b>-i-ment → trọng âm âm tiết <b>2</b><br>
+      B. rec-og-<b>NI</b>-tion → trọng âm âm tiết <b>3</b><br>
+      C. tech-<b>NOL</b>-o-gy → trọng âm âm tiết <b>2</b><br>
+      D. e-<b>MO</b>-tion-al → trọng âm âm tiết <b>2</b><br>
+      <b>→ B (recognition)</b>: Có đuôi "-tion", nhấn vào âm tiết ngay trước (âm tiết 3). A, C, D đều nhấn âm tiết 2.
+    </div>
+  </div>
+
+  <!-- S6 -->
+  <div class="card" id="s6">
+    <div class="q-num">Câu 6</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS6"></div>
+    <div class="explanation" id="expS6">
+      <span class="ans-tag">Đáp án: C</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. <b>PLAT</b>-form → trọng âm âm tiết <b>1</b><br>
+      B. <b>AIR</b>-port → trọng âm âm tiết <b>1</b><br>
+      C. re-<b>PEAT</b> → trọng âm âm tiết <b>2</b><br>
+      D. <b>PRAC</b>-tice → trọng âm âm tiết <b>1</b><br>
+      <b>→ C (repeat)</b>: Động từ "re-" thường có trọng âm ở âm tiết 2. A, B, D là danh từ/động từ có trọng âm ở âm tiết 1.
+    </div>
+  </div>
+
+  <!-- S7 -->
+  <div class="card" id="s7">
+    <div class="q-num">Câu 7</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS7"></div>
+    <div class="explanation" id="expS7">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. be-<b>HAVE</b> → trọng âm âm tiết <b>2</b><br>
+      B. <b>PLA</b>-net → trọng âm âm tiết <b>1</b><br>
+      C. <b>CO</b>-ver → trọng âm âm tiết <b>1</b><br>
+      D. <b>RO</b>-bot → trọng âm âm tiết <b>1</b><br>
+      <b>→ A (behave)</b>: Động từ "be-" thường có trọng âm ở âm tiết 2. B, C, D đều có trọng âm ở âm tiết 1.
+    </div>
+  </div>
+
+  <!-- S8 -->
+  <div class="card" id="s8">
+    <div class="q-num">Câu 8</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS8"></div>
+    <div class="explanation" id="expS8">
+      <span class="ans-tag">Đáp án: D</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. ap-pli-<b>CA</b>-tion → trọng âm âm tiết <b>3</b><br>
+      B. en-ter-<b>TAIN</b>-ment → trọng âm âm tiết <b>3</b><br>
+      C. sci-en-<b>TIF</b>-ic → trọng âm âm tiết <b>3</b><br>
+      D. i-<b>DEN</b>-ti-ty → trọng âm âm tiết <b>2</b><br>
+      <b>→ D (identity)</b>: Nhấn âm tiết 2. A, B, C đều nhấn âm tiết 3 (đuôi -tion, -ment, -ic thường kéo trọng âm về gần cuối).
+    </div>
+  </div>
+
+  <!-- S9 -->
+  <div class="card" id="s9">
+    <div class="q-num">Câu 9</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS9"></div>
+    <div class="explanation" id="expS9">
+      <span class="ans-tag">Đáp án: B</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. <b>VI</b>-sit → trọng âm âm tiết <b>1</b><br>
+      B. be-<b>TWEEN</b> → trọng âm âm tiết <b>2</b><br>
+      C. <b>LAN</b>-guage → trọng âm âm tiết <b>1</b><br>
+      D. <b>AN</b>-swer → trọng âm âm tiết <b>1</b><br>
+      <b>→ B (between)</b>: Giới từ/liên từ 2 âm tiết thường nhấn âm tiết 2. A, C, D đều nhấn âm tiết 1.
+    </div>
+  </div>
+
+  <!-- S10 -->
+  <div class="card" id="s10">
+    <div class="q-num">Câu 10</div>
+    <div class="q-text">Chọn từ có trọng âm chính KHÁC với các từ còn lại:</div>
+    <div class="options" id="optsS10"></div>
+    <div class="explanation" id="expS10">
+      <span class="ans-tag">Đáp án: A</span><br>
+      <b>Phân tích trọng âm:</b><br>
+      A. de-<b>VEL</b>-op-ment → trọng âm âm tiết <b>2</b><br>
+      B. in-for-<b>MA</b>-tion → trọng âm âm tiết <b>3</b><br>
+      C. un-der-<b>STAND</b>-ing → trọng âm âm tiết <b>3</b><br>
+      D. bi-o-<b>MET</b>-ric → trọng âm âm tiết <b>3</b><br>
+      <b>→ A (development)</b>: Nhấn âm tiết 2. B, C, D đều nhấn âm tiết 3.
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE B1: MATCHING ===== -->
+  <div class="section-title">🔗 Exercise B1 – Matching: Nối nghề nghiệp với định nghĩa</div>
+  <div class="card" id="matchCard">
+    <div class="q-text">Nối tên nghề nghiệp (cột trái) với định nghĩa đúng (cột phải). Bấm vào một từ bên trái, rồi bấm vào định nghĩa tương ứng bên phải.</div>
+    <div class="match-wrapper">
+      <div class="match-col">
+        <h4>Nghề nghiệp</h4>
+        <div class="match-item" data-id="1" data-side="left" onclick="matchSelect(this)">1. chemist</div>
+        <div class="match-item" data-id="2" data-side="left" onclick="matchSelect(this)">2. archaeologist</div>
+        <div class="match-item" data-id="3" data-side="left" onclick="matchSelect(this)">3. software developer</div>
+        <div class="match-item" data-id="4" data-side="left" onclick="matchSelect(this)">4. physicist</div>
+        <div class="match-item" data-id="5" data-side="left" onclick="matchSelect(this)">5. explorer</div>
+        <div class="match-item" data-id="6" data-side="left" onclick="matchSelect(this)">6. biologist</div>
+        <div class="match-item" data-id="7" data-side="left" onclick="matchSelect(this)">7. inventor</div>
+        <div class="match-item" data-id="8" data-side="left" onclick="matchSelect(this)">8. conservationist</div>
+      </div>
+      <div class="match-col">
+        <h4>Định nghĩa</h4>
+        <div class="match-item" data-id="7" data-side="right" onclick="matchSelect(this)">A. a person who has invented something.</div>
+        <div class="match-item" data-id="5" data-side="right" onclick="matchSelect(this)">B. a person who travels to unknown places in order to find out what is there.</div>
+        <div class="match-item" data-id="8" data-side="right" onclick="matchSelect(this)">C. a person who works to protect the environment, plants, animals and natural resources.</div>
+        <div class="match-item" data-id="2" data-side="right" onclick="matchSelect(this)">D. a person who studies the buildings, graves, tools, and other objects of people who lived in the past.</div>
+        <div class="match-item" data-id="3" data-side="right" onclick="matchSelect(this)">E. a person who builds and creates Computer programs.</div>
+        <div class="match-item" data-id="1" data-side="right" onclick="matchSelect(this)">F. a scientist who works with Chemicals or studies their reactions.</div>
+        <div class="match-item" data-id="4" data-side="right" onclick="matchSelect(this)">G. a scientist who studies Physics.</div>
+        <div class="match-item" data-id="6" data-side="right" onclick="matchSelect(this)">H. a scientist who studies living things.</div>
+      </div>
+    </div>
+    <!-- Per-pair vocab explanations (shown one by one as student matches) -->
+    <div id="matchVocabLog" style="margin-top:14px;display:flex;flex-direction:column;gap:8px"></div>
+
+    <div class="explanation" id="expMatch" style="margin-top:10px">
+      🎊 <b>Chúc mừng! Bạn đã nối đúng tất cả 8 cặp!</b><br><br>
+      <b>Tóm tắt đáp án đầy đủ:</b><br>
+      1 – F &nbsp;|&nbsp; 2 – D &nbsp;|&nbsp; 3 – E &nbsp;|&nbsp; 4 – G &nbsp;|&nbsp; 5 – B &nbsp;|&nbsp; 6 – H &nbsp;|&nbsp; 7 – A &nbsp;|&nbsp; 8 – C
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE B2: VOCABULARY ===== -->
+  <div class="section-title">📝 Exercise B2 – Vocabulary & Grammar: Chọn đáp án đúng</div>
+
+  <!-- B2-Q1 -->
+  <div class="card" id="b1">
+    <div class="q-num">Câu 1</div>
+    <div class="q-text">There are a lot of benefits to do ________ research.</div>
+    <div class="options" id="optsB1"></div>
+    <div class="explanation" id="expB1">
+      <span class="ans-tag">Đáp án: A – scientific</span><br>
+      <b>Dịch câu:</b> "Có rất nhiều lợi ích khi thực hiện các nghiên cứu khoa học."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. <b>scientific</b> (adj): thuộc về khoa học ✔ → phù hợp bổ nghĩa cho danh từ "researches"<br>
+      B. enormous (adj): khổng lồ, rất lớn → không kết hợp với "researches" trong ngữ cảnh này<br>
+      C. precise (adj): chính xác → không phải collocation với "researches"<br>
+      D. technical (adj): kỹ thuật → "technical research" có thể dùng nhưng "scientific research" là cụm chuẩn, phổ biến nhất<br>
+      <b>Quy tắc:</b> "Scientific research" là cụm từ cố định (collocation) trong tiếng Anh học thuật.
+    </div>
+  </div>
+
+  <!-- B2-Q2 -->
+  <div class="card" id="b2">
+    <div class="q-num">Câu 2</div>
+    <div class="q-text">To check ________ students now just scan their fingerprints on those machines.</div>
+    <div class="options" id="optsB2"></div>
+    <div class="explanation" id="expB2">
+      <span class="ans-tag">Đáp án: D – attendance</span><br>
+      <b>Dịch câu:</b> "Để kiểm tra điểm danh, học sinh chỉ cần quét vân tay lên những máy đó."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. attentive (adj): chú ý, chăm chú → tính từ, không điền vào chỗ cần danh từ<br>
+      B. attention (n): sự chú ý → "check attention" không phải collocation đúng<br>
+      C. attendant (n): người phục vụ → sai ngữ nghĩa<br>
+      D. <b>attendance</b> (n): sự có mặt, điểm danh ✔ → "check attendance" = kiểm tra điểm danh (collocation chuẩn)
+    </div>
+  </div>
+
+  <!-- B2-Q3 -->
+  <div class="card" id="b3">
+    <div class="q-num">Câu 3</div>
+    <div class="q-text">The use of ________ can be seen everywhere as a way for people to check in and check out automatically.</div>
+    <div class="options" id="optsB3"></div>
+    <div class="explanation" id="expB3">
+      <span class="ans-tag">Đáp án: A – biometrics</span><br>
+      <b>Dịch câu:</b> "Việc sử dụng sinh trắc học có thể thấy ở khắp nơi như một cách để mọi người check in và check out tự động."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. <b>biometrics</b> (n): sinh trắc học ✔ → công nghệ nhận dạng tự động (vân tay, mắt, mặt)<br>
+      B. websites (n): trang web → không liên quan đến check in/out tự động vật lý<br>
+      C. platforms (n): nền tảng → quá chung chung<br>
+      D. networks (n): mạng lưới → không phù hợp ngữ cảnh<br>
+      <b>Biometrics</b> bao gồm nhận dạng vân tay, khuôn mặt, mống mắt – phù hợp với "check in/out automatically".
+    </div>
+  </div>
+
+  <!-- B2-Q4 -->
+  <div class="card" id="b4">
+    <div class="q-num">Câu 4</div>
+    <div class="q-text">The development of technology has brought about ________ in transportation.</div>
+    <div class="options" id="optsB4"></div>
+    <div class="explanation" id="expB4">
+      <span class="ans-tag">Đáp án: D – breakthroughs</span><br>
+      <b>Dịch câu:</b> "Sự phát triển của công nghệ đã tạo ra những bước đột phá trong giao thông vận tải."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. breakups (n): sự chia tay, tan vỡ → không phù hợp<br>
+      B. breakdowns (n): sự cố, hỏng hóc → nghĩa tiêu cực<br>
+      C. break-evens (n): điểm hòa vốn (thuật ngữ tài chính) → sai ngữ cảnh<br>
+      D. <b>breakthroughs</b> (n): những bước đột phá ✔ → "bring about breakthroughs" = tạo ra những bước đột phá
+    </div>
+  </div>
+
+  <!-- B2-Q5 -->
+  <div class="card" id="b5">
+    <div class="q-num">Câu 5</div>
+    <div class="q-text">The identity cards are examined by an electronic ________.</div>
+    <div class="options" id="optsB5"></div>
+    <div class="explanation" id="expB5">
+      <span class="ans-tag">Đáp án: D – scanner</span><br>
+      <b>Dịch câu:</b> "Các thẻ căn cước được kiểm tra bởi một máy quét điện tử."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. network (n): mạng lưới → không kiểm tra thẻ vật lý<br>
+      B. skimmer (n): thiết bị đánh cắp dữ liệu thẻ → nghĩa tiêu cực, phi pháp<br>
+      C. printer (n): máy in → không kiểm tra thẻ<br>
+      D. <b>scanner</b> (n): máy quét ✔ → "electronic scanner" = máy quét điện tử, dùng để đọc thẻ
+    </div>
+  </div>
+
+  <!-- B2-Q6 -->
+  <div class="card" id="b6">
+    <div class="q-num">Câu 6</div>
+    <div class="q-text">Tom wants to have a larger computer __________ for playing video games.</div>
+    <div class="options" id="optsB6"></div>
+    <div class="explanation" id="expB6">
+      <span class="ans-tag">Đáp án: B – screen</span><br>
+      <b>Dịch câu:</b> "Tom muốn có một màn hình máy tính lớn hơn để chơi video game."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. scanner (n): máy quét → không liên quan đến chơi game<br>
+      B. <b>screen</b> (n): màn hình ✔ → "computer screen" = màn hình máy tính, từ khoá "larger" gợi ý về kích thước màn hình<br>
+      C. solution (n): giải pháp → không phải thiết bị phần cứng<br>
+      D. phone (n): điện thoại → câu đã đề cập "computer"
+    </div>
+  </div>
+
+  <!-- B2-Q7 -->
+  <div class="card" id="b7">
+    <div class="q-num">Câu 7</div>
+    <div class="q-text">The word that is opposite in meaning to "absence" is __________.</div>
+    <div class="options" id="optsB7"></div>
+    <div class="explanation" id="expB7">
+      <span class="ans-tag">Đáp án: D – presence</span><br>
+      <b>Dịch câu:</b> "Từ trái nghĩa với 'absence' (sự vắng mặt) là __________."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. growth (n): sự tăng trưởng → không phải trái nghĩa<br>
+      B. ignorance (n): sự thiếu hiểu biết → sai nghĩa hoàn toàn<br>
+      C. truancy (n): sự trốn học → gần nghĩa với "absence", không phải trái nghĩa<br>
+      D. <b>presence</b> (n): sự có mặt ✔ → "absence" (vắng mặt) ↔ "presence" (có mặt)
+    </div>
+  </div>
+
+  <!-- B2-Q8 -->
+  <div class="card" id="b8">
+    <div class="q-num">Câu 8</div>
+    <div class="q-text">I like this _________ because it is small and has a large touch screen.</div>
+    <div class="options" id="optsB8"></div>
+    <div class="explanation" id="expB8">
+      <span class="ans-tag">Đáp án: B – tablet</span><br>
+      <b>Dịch câu:</b> "Tôi thích cái này vì nó nhỏ gọn và có màn hình cảm ứng lớn."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. telephone (n): điện thoại → thường không có màn hình "lớn" và không được mô tả là "small"<br>
+      B. <b>tablet</b> (n): máy tính bảng ✔ → nhỏ gọn hơn laptop, có màn hình cảm ứng lớn<br>
+      C. desktop (n): máy tính để bàn → to, không phải "small"<br>
+      D. mouse (n): chuột máy tính → không có màn hình
+    </div>
+  </div>
+
+  <!-- B2-Q9 -->
+  <div class="card" id="b9">
+    <div class="q-num">Câu 9</div>
+    <div class="q-text">To enable students to have more interactions in online classes, our teachers let us work in ________.</div>
+    <div class="options" id="optsB9"></div>
+    <div class="explanation" id="expB9">
+      <span class="ans-tag">Đáp án: B – breakout rooms</span><br>
+      <b>Dịch câu:</b> "Để học sinh có nhiều tương tác hơn trong lớp học trực tuyến, giáo viên của chúng tôi cho chúng tôi làm việc trong các phòng nhóm nhỏ."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. divided rooms: phòng bị chia → không phải thuật ngữ kỹ thuật<br>
+      B. <b>breakout rooms</b> ✔ → thuật ngữ trong Zoom/Meet: phòng nhóm nhỏ được tách ra từ phòng chính để tương tác nhóm<br>
+      C. separated space: không gian riêng biệt → không phải thuật ngữ học trực tuyến<br>
+      D. face-to-face: mặt đối mặt → ngược với "online classes"
+    </div>
+  </div>
+
+  <!-- B2-Q10 -->
+  <div class="card" id="b10">
+    <div class="q-num">Câu 10</div>
+    <div class="q-text">Although the students learn online, they receive both ________ and physical support from their teachers and schools.</div>
+    <div class="options" id="optsB10"></div>
+    <div class="explanation" id="expB10">
+      <span class="ans-tag">Đáp án: B – virtual</span><br>
+      <b>Dịch câu:</b> "Mặc dù học sinh học trực tuyến, họ vẫn nhận được cả sự hỗ trợ ảo/trực tuyến và hỗ trợ vật chất từ giáo viên và nhà trường."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. spiritual (adj): tinh thần, tâm linh → không phải từ đối lập với "physical" trong ngữ cảnh học trực tuyến<br>
+      B. <b>virtual</b> (adj): ảo, trực tuyến ✔ → "virtual support" ↔ "physical support" (hỗ trợ trực tuyến vs hỗ trợ trực tiếp)<br>
+      C. material (adj): vật chất → đồng nghĩa với "physical", không phải từ đối lập<br>
+      D. offline (adj): ngoại tuyến → mâu thuẫn với "learn online"
+    </div>
+  </div>
+
+  <!-- B2-Q11 -->
+  <div class="card" id="b11">
+    <div class="q-num">Câu 11</div>
+    <div class="q-text">Sue wants to go to the supermarket to buy some ________ bulbs.</div>
+    <div class="options" id="optsB11"></div>
+    <div class="explanation" id="expB11">
+      <span class="ans-tag">Đáp án: C – light</span><br>
+      <b>Dịch câu:</b> "Sue muốn đi siêu thị để mua một số bóng đèn."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. precise (adj): chính xác → "precise bulb" không tồn tại<br>
+      B. field (n/adj): cánh đồng, lĩnh vực → "field bulb" không có nghĩa<br>
+      C. <b>light</b> (adj/n): ánh sáng, đèn ✔ → "light bulb" = bóng đèn (collocation chuẩn)<br>
+      D. steam (n): hơi nước → "steam bulb" không phải đồ dùng mua ở siêu thị
+    </div>
+  </div>
+
+  <!-- B2-Q12 -->
+  <div class="card" id="b12">
+    <div class="q-num">Câu 12</div>
+    <div class="q-text">Harry and Tom are trying to ________ the problem with the steam engine.</div>
+    <div class="options" id="optsB12"></div>
+    <div class="explanation" id="expB12">
+      <span class="ans-tag">Đáp án: B – solve</span><br>
+      <b>Dịch câu:</b> "Harry và Tom đang cố gắng giải quyết vấn đề với động cơ hơi nước."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. support (v): hỗ trợ → "support the problem" sai collocation<br>
+      B. <b>solve</b> (v): giải quyết ✔ → "solve the problem" = giải quyết vấn đề (collocation chuẩn)<br>
+      C. invent (v): phát minh → "invent the problem" vô nghĩa<br>
+      D. benefit (v): hưởng lợi → "benefit the problem" sai ngữ pháp
+    </div>
+  </div>
+
+  <!-- B2-Q13 -->
+  <div class="card" id="b13">
+    <div class="q-num">Câu 13</div>
+    <div class="q-text">Science is used in all corners of the world for the ________ of human.</div>
+    <div class="options" id="optsB13"></div>
+    <div class="explanation" id="expB13">
+      <span class="ans-tag">Đáp án: C – benefit</span><br>
+      <b>Dịch câu:</b> "Khoa học được sử dụng ở khắp nơi trên thế giới vì lợi ích của con người."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. quality (n): chất lượng → "for the quality of human" không phải thành ngữ chuẩn<br>
+      B. discovery (n): sự khám phá → "for the discovery of human" sai ngữ cảnh<br>
+      C. <b>benefit</b> (n): lợi ích ✔ → "for the benefit of human(kind)" = vì lợi ích của nhân loại (cụm cố định)<br>
+      D. engine (n): động cơ → hoàn toàn không phù hợp
+    </div>
+  </div>
+
+  <!-- B2-Q14 -->
+  <div class="card" id="b14">
+    <div class="q-num">Câu 14</div>
+    <div class="q-text">This new cell phone is ________ - it has so many awesome new features.</div>
+    <div class="options" id="optsB14"></div>
+    <div class="explanation" id="expB14">
+      <span class="ans-tag">Đáp án: A – cutting edge</span><br>
+      <b>Dịch câu:</b> "Chiếc điện thoại mới này rất tiên tiến – nó có rất nhiều tính năng tuyệt vời mới."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. <b>cutting edge</b> (adj): tiên tiến nhất, đỉnh cao công nghệ ✔ → phù hợp với điện thoại có nhiều tính năng mới<br>
+      B. innovator (n): người đổi mới → danh từ, không dùng làm tính ngữ ở đây<br>
+      C. discovery (n): sự khám phá → danh từ, sai ngữ pháp<br>
+      D. advancer (n): không phải từ thông dụng trong tiếng Anh
+    </div>
+  </div>
+
+  <!-- B2-Q15 -->
+  <div class="card" id="b15">
+    <div class="q-num">Câu 15</div>
+    <div class="q-text">We've spoken on the phone but never _________.</div>
+    <div class="options" id="optsB15"></div>
+    <div class="explanation" id="expB15">
+      <span class="ans-tag">Đáp án: D – face to face</span><br>
+      <b>Dịch câu:</b> "Chúng tôi đã nói chuyện qua điện thoại nhưng chưa bao giờ gặp mặt trực tiếp."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. eye to eye: cùng quan điểm → "see eye to eye" có nghĩa khác (đồng ý nhau)<br>
+      B. door to door: từ cửa này đến cửa khác → bán hàng tận nhà<br>
+      C. time to time: không phải thành ngữ đúng (from time to time = thỉnh thoảng)<br>
+      D. <b>face to face</b> ✔ → gặp trực tiếp, đối mặt nhau; tương phản với "spoken on the phone"
+    </div>
+  </div>
+
+  <!-- B2-Q16 -->
+  <div class="card" id="b16">
+    <div class="q-num">Câu 16</div>
+    <div class="q-text">_________ is a method of identifying or verifying the identity of an individual using their face.</div>
+    <div class="options" id="optsB16"></div>
+    <div class="explanation" id="expB16">
+      <span class="ans-tag">Đáp án: A – Face recognition</span><br>
+      <b>Dịch câu:</b> "_________ là phương pháp nhận dạng hoặc xác minh danh tính của một cá nhân bằng khuôn mặt của họ."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. <b>Face recognition</b> ✔ → nhận dạng khuôn mặt, thuật ngữ công nghệ sinh trắc học chính xác<br>
+      B. Face copier: không phải thuật ngữ tồn tại<br>
+      C. Face recognised: dạng bị động, không đúng cú pháp làm chủ ngữ<br>
+      D. Face scanner: máy quét khuôn mặt → chỉ phần cứng, không phải phương pháp nhận dạng
+    </div>
+  </div>
+
+  <!-- B2-Q17 -->
+  <div class="card" id="b17">
+    <div class="q-num">Câu 17</div>
+    <div class="q-text">_________ is a sensor technology that can detect a person's presence and follow what they are looking at in real-time.</div>
+    <div class="options" id="optsB17"></div>
+    <div class="explanation" id="expB17">
+      <span class="ans-tag">Đáp án: C – Eye-tracking</span><br>
+      <b>Dịch câu:</b> "_________ là công nghệ cảm biến có thể phát hiện sự hiện diện của một người và theo dõi những gì họ đang nhìn theo thời gian thực."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. Eye location: không phải thuật ngữ kỹ thuật<br>
+      B. Eye recognition: nhận dạng mắt (nhận diện mống mắt) → khác với theo dõi hướng nhìn<br>
+      C. <b>Eye-tracking</b> ✔ → theo dõi mắt, theo dõi hướng nhìn theo thời gian thực<br>
+      D. Eye-finding: không tồn tại như thuật ngữ kỹ thuật
+    </div>
+  </div>
+
+  <!-- B2-Q18 -->
+  <div class="card" id="b18">
+    <div class="q-num">Câu 18</div>
+    <div class="q-text">Generally speaking, most technology has had a ________ effect on our lives.</div>
+    <div class="options" id="optsB18"></div>
+    <div class="explanation" id="expB18">
+      <span class="ans-tag">Đáp án: A – beneficial</span><br>
+      <b>Dịch câu:</b> "Nói chung, hầu hết công nghệ đã có tác động có lợi đối với cuộc sống của chúng ta."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. <b>beneficial</b> (adj): có lợi, có ích ✔ → "a beneficial effect" = tác động có lợi; tính từ bổ nghĩa cho "effect"<br>
+      B. benefice (n): lợi tức, thụ hưởng → danh từ, sai từ loại<br>
+      C. benefit (n/v): lợi ích / mang lại lợi ích → không thể làm tính từ bổ nghĩa cho "effect"<br>
+      D. beneficent (adj): nhân từ, làm việc thiện → thường dùng cho người, không dùng cho "effect"
+    </div>
+  </div>
+
+  <!-- B2-Q19 -->
+  <div class="card" id="b19">
+    <div class="q-num">Câu 19</div>
+    <div class="q-text">They sent some technical _______ to maintain the air conditioner system in the building.</div>
+    <div class="options" id="optsB19"></div>
+    <div class="explanation" id="expB19">
+      <span class="ans-tag">Đáp án: C – engineers</span><br>
+      <b>Dịch câu:</b> "Họ đã cử một số kỹ sư kỹ thuật đến để bảo trì hệ thống điều hòa không khí trong tòa nhà."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. designers (n): nhà thiết kế → không phụ trách bảo trì kỹ thuật<br>
+      B. producers (n): nhà sản xuất → không liên quan đến bảo trì<br>
+      C. <b>engineers</b> (n): kỹ sư ✔ → "technical engineers" = kỹ sư kỹ thuật, phù hợp với công việc maintain (bảo trì)<br>
+      D. developers (n): lập trình viên, nhà phát triển → thường về phần mềm, không bảo trì điều hòa
+    </div>
+  </div>
+
+  <!-- B2-Q20 -->
+  <div class="card" id="b20">
+    <div class="q-num">Câu 20</div>
+    <div class="q-text">It remains to be seen what the ________ impact of this technology will be.</div>
+    <div class="options" id="optsB20"></div>
+    <div class="explanation" id="expB20">
+      <span class="ans-tag">Đáp án: B – long-term</span><br>
+      <b>Dịch câu:</b> "Vẫn còn phải xem tác động lâu dài của công nghệ này sẽ như thế nào."<br>
+      <b>Phân tích 4 đáp án:</b><br>
+      A. long (adj): dài → "long impact" không phải collocation chuẩn trong tiếng Anh học thuật<br>
+      B. <b>long-term</b> (adj): lâu dài ✔ → "long-term impact" = tác động lâu dài (collocation rất phổ biến)<br>
+      C. boring (adj): nhàm chán → không hợp ngữ nghĩa<br>
+      D. relax (v): thư giãn → động từ, không thể bổ nghĩa cho danh từ "impact"
+    </div>
+  </div>
+
+  <button class="submit-btn" onclick="submitQuiz()">🎉 Nộp bài & Xem điểm</button>
+</div>
+
+<!-- Score bar -->
+<div class="score-bar">
+  <span>✅ Đúng: <span id="scoreCorrect">0</span></span>
+  <span>❌ Sai: <span id="scoreWrong">0</span></span>
+  <span>📊 Tổng: <span id="scoreTotal">0</span>/48</span>
+</div>
+
+<!-- Result popup -->
+<div class="popup-overlay" id="resultPopup">
+  <div class="popup-box">
+    <h2 id="popupEmoji">🎉</h2>
+    <div class="score" id="popupScore">0/48</div>
+    <p id="popupMsg">Chúc mừng!</p>
+    <button class="popup-close" onclick="document.getElementById('resultPopup').classList.remove('show')">Đóng lại</button>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const questions = [
+  // Exercise 2 Phonetics (1-10)
+  {id:'opts1', correct:'A', opts:[
+    {lbl:'A',txt:'A. inter<u>a</u>ct'},
+    {lbl:'B',txt:'B. pl<u>a</u>ce'},
+    {lbl:'C',txt:'C. volc<u>a</u>no'},
+    {lbl:'D',txt:'D. pl<u>a</u>ne'}
+  ]},
+  {id:'opts2', correct:'D', opts:[
+    {lbl:'A',txt:'A. fish<u>e</u>rman'},
+    {lbl:'B',txt:'B. tick<u>e</u>t'},
+    {lbl:'C',txt:'C. pris<u>o</u>ner'},
+    {lbl:'D',txt:'D. onl<u>i</u>ne'}
+  ]},
+  {id:'opts3', correct:'C', opts:[
+    {lbl:'A',txt:'A. h<u>o</u>tel'},
+    {lbl:'B',txt:'B. p<u>o</u>stcard'},
+    {lbl:'C',txt:'C. sh<u>o</u>re'},
+    {lbl:'D',txt:'D. c<u>o</u>ld'}
+  ]},
+  {id:'opts4', correct:'A', opts:[
+    {lbl:'A',txt:'A. includ<u>ed</u>'},
+    {lbl:'B',txt:'B. call<u>ed</u>'},
+    {lbl:'C',txt:'C. phon<u>ed</u>'},
+    {lbl:'D',txt:'D. arriv<u>ed</u>'}
+  ]},
+  {id:'opts5', correct:'D', opts:[
+    {lbl:'A',txt:'A. mu<u>ch</u>'},
+    {lbl:'B',txt:'B. tea<u>ch</u>er'},
+    {lbl:'C',txt:'C. bea<u>ch</u>'},
+    {lbl:'D',txt:'D. bro<u>ch</u>ure'}
+  ]},
+  {id:'opts6', correct:'A', opts:[
+    {lbl:'A',txt:'A. t<u>ou</u>ch'},
+    {lbl:'B',txt:'B. f<u>ou</u>l'},
+    {lbl:'C',txt:'C. acc<u>ou</u>nt'},
+    {lbl:'D',txt:'D. m<u>ou</u>nt'}
+  ]},
+  {id:'opts7', correct:'A', opts:[
+    {lbl:'A',txt:'A. l<u>o</u>se'},
+    {lbl:'B',txt:'B. v<u>o</u>te'},
+    {lbl:'C',txt:'C. contr<u>o</u>l'},
+    {lbl:'D',txt:'D. s<u>o</u>cial'}
+  ]},
+  {id:'opts8', correct:'B', opts:[
+    {lbl:'A',txt:'A. r<u>ear</u>'},
+    {lbl:'B',txt:'B. b<u>ear</u>'},
+    {lbl:'C',txt:'C. g<u>ear</u>'},
+    {lbl:'D',txt:'D. y<u>ear</u>'}
+  ]},
+  {id:'opts9', correct:'D', opts:[
+    {lbl:'A',txt:'A. pl<u>ea</u>se'},
+    {lbl:'B',txt:'B. p<u>ea</u>ce'},
+    {lbl:'C',txt:'C. s<u>ea</u>t'},
+    {lbl:'D',txt:'D. spr<u>ea</u>d'}
+  ]},
+  {id:'opts10', correct:'C', opts:[
+    {lbl:'A',txt:'A. overlook<u>s</u>'},
+    {lbl:'B',txt:'B. belief<u>s</u>'},
+    {lbl:'C',txt:'C. toward<u>s</u>'},
+    {lbl:'D',txt:'D. right<u>s</u>'}
+  ]},
+  // Exercise 3 Stress (11-20)
+  {id:'optsS1', correct:'C', opts:[
+    {lbl:'A',txt:'A. comment'},
+    {lbl:'B',txt:'B. online'},
+    {lbl:'C',txt:'C. discuss'},
+    {lbl:'D',txt:'D. breakout'}
+  ]},
+  {id:'optsS2', correct:'D', opts:[
+    {lbl:'A',txt:'A. contact'},
+    {lbl:'B',txt:'B. paper'},
+    {lbl:'C',txt:'C. classmate'},
+    {lbl:'D',txt:'D. enough'}
+  ]},
+  {id:'optsS3', correct:'C', opts:[
+    {lbl:'A',txt:'A. available'},
+    {lbl:'B',txt:'B. convenient'},
+    {lbl:'C',txt:'C. interaction'},
+    {lbl:'D',txt:'D. communicate'}
+  ]},
+  {id:'optsS4', correct:'B', opts:[
+    {lbl:'A',txt:'A. science'},
+    {lbl:'B',txt:'B. invent'},
+    {lbl:'C',txt:'C. scanner'},
+    {lbl:'D',txt:'D. access'}
+  ]},
+  {id:'optsS5', correct:'B', opts:[
+    {lbl:'A',txt:'A. experiment'},
+    {lbl:'B',txt:'B. recognition'},
+    {lbl:'C',txt:'C. technology'},
+    {lbl:'D',txt:'D. emotional'}
+  ]},
+  {id:'optsS6', correct:'C', opts:[
+    {lbl:'A',txt:'A. platform'},
+    {lbl:'B',txt:'B. airport'},
+    {lbl:'C',txt:'C. repeat'},
+    {lbl:'D',txt:'D. practice'}
+  ]},
+  {id:'optsS7', correct:'A', opts:[
+    {lbl:'A',txt:'A. behave'},
+    {lbl:'B',txt:'B. planet'},
+    {lbl:'C',txt:'C. cover'},
+    {lbl:'D',txt:'D. robot'}
+  ]},
+  {id:'optsS8', correct:'D', opts:[
+    {lbl:'A',txt:'A. application'},
+    {lbl:'B',txt:'B. entertainment'},
+    {lbl:'C',txt:'C. scientific'},
+    {lbl:'D',txt:'D. identity'}
+  ]},
+  {id:'optsS9', correct:'B', opts:[
+    {lbl:'A',txt:'A. visit'},
+    {lbl:'B',txt:'B. between'},
+    {lbl:'C',txt:'C. language'},
+    {lbl:'D',txt:'D. answer'}
+  ]},
+  {id:'optsS10', correct:'A', opts:[
+    {lbl:'A',txt:'A. development'},
+    {lbl:'B',txt:'B. information'},
+    {lbl:'C',txt:'C. understanding'},
+    {lbl:'D',txt:'D. biometric'}
+  ]},
+  // Exercise B2 (21-40)
+  {id:'optsB1', correct:'A', opts:[
+    {lbl:'A',txt:'A. scientific'},
+    {lbl:'B',txt:'B. enormous'},
+    {lbl:'C',txt:'C. precise'},
+    {lbl:'D',txt:'D. technical'}
+  ]},
+  {id:'optsB2', correct:'D', opts:[
+    {lbl:'A',txt:'A. attentive'},
+    {lbl:'B',txt:'B. attention'},
+    {lbl:'C',txt:'C. attendant'},
+    {lbl:'D',txt:'D. attendance'}
+  ]},
+  {id:'optsB3', correct:'A', opts:[
+    {lbl:'A',txt:'A. biometrics'},
+    {lbl:'B',txt:'B. websites'},
+    {lbl:'C',txt:'C. platforms'},
+    {lbl:'D',txt:'D. networks'}
+  ]},
+  {id:'optsB4', correct:'D', opts:[
+    {lbl:'A',txt:'A. breakups'},
+    {lbl:'B',txt:'B. breakdowns'},
+    {lbl:'C',txt:'C. break-evens'},
+    {lbl:'D',txt:'D. breakthroughs'}
+  ]},
+  {id:'optsB5', correct:'D', opts:[
+    {lbl:'A',txt:'A. network'},
+    {lbl:'B',txt:'B. skimmer'},
+    {lbl:'C',txt:'C. printer'},
+    {lbl:'D',txt:'D. scanner'}
+  ]},
+  {id:'optsB6', correct:'B', opts:[
+    {lbl:'A',txt:'A. scanner'},
+    {lbl:'B',txt:'B. screen'},
+    {lbl:'C',txt:'C. solution'},
+    {lbl:'D',txt:'D. phone'}
+  ]},
+  {id:'optsB7', correct:'D', opts:[
+    {lbl:'A',txt:'A. growth'},
+    {lbl:'B',txt:'B. ignorance'},
+    {lbl:'C',txt:'C. truancy'},
+    {lbl:'D',txt:'D. presence'}
+  ]},
+  {id:'optsB8', correct:'B', opts:[
+    {lbl:'A',txt:'A. telephone'},
+    {lbl:'B',txt:'B. tablet'},
+    {lbl:'C',txt:'C. desktop'},
+    {lbl:'D',txt:'D. mouse'}
+  ]},
+  {id:'optsB9', correct:'B', opts:[
+    {lbl:'A',txt:'A. divided rooms'},
+    {lbl:'B',txt:'B. breakout rooms'},
+    {lbl:'C',txt:'C. separated space'},
+    {lbl:'D',txt:'D. face-to-face'}
+  ]},
+  {id:'optsB10', correct:'B', opts:[
+    {lbl:'A',txt:'A. spiritual'},
+    {lbl:'B',txt:'B. virtual'},
+    {lbl:'C',txt:'C. material'},
+    {lbl:'D',txt:'D. offline'}
+  ]},
+  {id:'optsB11', correct:'C', opts:[
+    {lbl:'A',txt:'A. precise'},
+    {lbl:'B',txt:'B. field'},
+    {lbl:'C',txt:'C. light'},
+    {lbl:'D',txt:'D. steam'}
+  ]},
+  {id:'optsB12', correct:'B', opts:[
+    {lbl:'A',txt:'A. support'},
+    {lbl:'B',txt:'B. solve'},
+    {lbl:'C',txt:'C. invent'},
+    {lbl:'D',txt:'D. benefit'}
+  ]},
+  {id:'optsB13', correct:'C', opts:[
+    {lbl:'A',txt:'A. quality'},
+    {lbl:'B',txt:'B. discovery'},
+    {lbl:'C',txt:'C. benefit'},
+    {lbl:'D',txt:'D. engine'}
+  ]},
+  {id:'optsB14', correct:'A', opts:[
+    {lbl:'A',txt:'A. cutting edge'},
+    {lbl:'B',txt:'B. innovator'},
+    {lbl:'C',txt:'C. discovery'},
+    {lbl:'D',txt:'D. advancer'}
+  ]},
+  {id:'optsB15', correct:'D', opts:[
+    {lbl:'A',txt:'A. eye to eye'},
+    {lbl:'B',txt:'B. door to door'},
+    {lbl:'C',txt:'C. time to time'},
+    {lbl:'D',txt:'D. face to face'}
+  ]},
+  {id:'optsB16', correct:'A', opts:[
+    {lbl:'A',txt:'A. Face recognition'},
+    {lbl:'B',txt:'B. Face copier'},
+    {lbl:'C',txt:'C. Face recognised'},
+    {lbl:'D',txt:'D. Face scanner'}
+  ]},
+  {id:'optsB17', correct:'C', opts:[
+    {lbl:'A',txt:'A. Eye location'},
+    {lbl:'B',txt:'B. Eye recognition'},
+    {lbl:'C',txt:'C. Eye-tracking'},
+    {lbl:'D',txt:'D. Eye-finding'}
+  ]},
+  {id:'optsB18', correct:'A', opts:[
+    {lbl:'A',txt:'A. beneficial'},
+    {lbl:'B',txt:'B. benefice'},
+    {lbl:'C',txt:'C. benefit'},
+    {lbl:'D',txt:'D. beneficent'}
+  ]},
+  {id:'optsB19', correct:'C', opts:[
+    {lbl:'A',txt:'A. designers'},
+    {lbl:'B',txt:'B. producers'},
+    {lbl:'C',txt:'C. engineers'},
+    {lbl:'D',txt:'D. developers'}
+  ]},
+  {id:'optsB20', correct:'B', opts:[
+    {lbl:'A',txt:'A. long'},
+    {lbl:'B',txt:'B. long-term'},
+    {lbl:'C',txt:'C. boring'},
+    {lbl:'D',txt:'D. relax'}
+  ]}
+];
+
+// Explanation IDs mapping
+const expIds = [
+  'exp1','exp2','exp3','exp4','exp5','exp6','exp7','exp8','exp9','exp10',
+  'expS1','expS2','expS3','expS4','expS5','expS6','expS7','expS8','expS9','expS10',
+  'expB1','expB2','expB3','expB4','expB5','expB6','expB7','expB8','expB9','expB10',
+  'expB11','expB12','expB13','expB14','expB15','expB16','expB17','expB18','expB19','expB20'
+];
+
+let scoreCorrect = 0, scoreWrong = 0;
+
+function shuffleArray(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// Render all MC questions
+questions.forEach((q, idx) => {
+  const container = document.getElementById(q.id);
+  if(!container) return;
+  const shuffled = shuffleArray(q.opts);
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = opt.txt;
+    btn.setAttribute('data-lbl', opt.lbl);
+    btn.onclick = function(){ handleMC(this, q.correct, expIds[idx], q.id); };
+    container.appendChild(btn);
+  });
+});
+
+function handleMC(btn, correct, expId, containerId){
+  const container = document.getElementById(containerId);
+  const allBtns = container.querySelectorAll('.opt-btn');
+  if(btn.disabled) return;
+  allBtns.forEach(b => b.disabled = true);
+  const chosen = btn.getAttribute('data-lbl');
+  if(chosen === correct){
+    btn.classList.add('correct');
+    scoreCorrect++;
+    playDing();
+    spawnConfetti(btn);
+  } else {
+    btn.classList.add('wrong');
+    btn.classList.add('shake');
+    setTimeout(()=>btn.classList.remove('shake'),500);
+    scoreWrong++;
+    playBuzz();
+    // Show correct answer
+    allBtns.forEach(b => {
+      if(b.getAttribute('data-lbl') === correct) b.classList.add('correct');
+    });
+  }
+  updateScoreBar();
+  const exp = document.getElementById(expId);
+  if(exp){ exp.classList.add('show'); }
+}
+
+// ===== MATCHING =====
+let matchSelected = null;
+let matchScore = 0;
+
+// Vocabulary explanations per occupation id (left column id)
+const matchVocab = {
+  1: {
+    pair: '1 – F',
+    word: 'chemist',
+    ipa: '/ˈkemɪst/',
+    vi: 'nhà hóa học',
+    def: 'a scientist who works with chemicals or studies their reactions.',
+    defVi: 'Nhà khoa học làm việc với hóa chất hoặc nghiên cứu các phản ứng hóa học.',
+    tip: '💡 "chemistry" (môn Hóa học) → "chemist" (người làm hóa). Ở Anh, "chemist" còn có nghĩa là "nhà thuốc / dược sĩ"!',
+    emoji: '⚗️'
+  },
+  2: {
+    pair: '2 – D',
+    word: 'archaeologist',
+    ipa: '/ˌɑːrkiˈɒlədʒɪst/',
+    vi: 'nhà khảo cổ học',
+    def: 'a person who studies buildings, graves, tools, and other objects of people who lived in the past.',
+    defVi: 'Người nghiên cứu công trình, ngôi mộ, công cụ và đồ vật của con người thời xa xưa.',
+    tip: '💡 Gốc Hy Lạp: "archaio" = cổ xưa + "logos" = khoa học. Nhớ: khảo cổ = đào bới quá khứ!',
+    emoji: '🏺'
+  },
+  3: {
+    pair: '3 – E',
+    word: 'software developer',
+    ipa: '/ˈsɒftweər dɪˈveləpər/',
+    vi: 'lập trình viên / nhà phát triển phần mềm',
+    def: 'a person who builds and creates computer programs.',
+    defVi: 'Người xây dựng và tạo ra các chương trình máy tính.',
+    tip: '💡 "software" (phần mềm) + "developer" (người phát triển). Còn gọi là "programmer" hoặc "coder".',
+    emoji: '💻'
+  },
+  4: {
+    pair: '4 – G',
+    word: 'physicist',
+    ipa: '/ˈfɪzɪsɪst/',
+    vi: 'nhà vật lý học',
+    def: 'a scientist who studies physics (matter, energy, force, motion).',
+    defVi: 'Nhà khoa học nghiên cứu vật lý (vật chất, năng lượng, lực, chuyển động).',
+    tip: '💡 "physics" (môn Vật lý) → "physicist". Albert Einstein và Stephen Hawking là những physicist nổi tiếng!',
+    emoji: '⚛️'
+  },
+  5: {
+    pair: '5 – B',
+    word: 'explorer',
+    ipa: '/ɪkˈsplɔːrər/',
+    vi: 'nhà thám hiểm',
+    def: 'a person who travels to unknown places in order to find out what is there.',
+    defVi: 'Người đi đến những nơi chưa được biết đến để khám phá và tìm hiểu.',
+    tip: '💡 Từ động từ "explore" (khám phá, thám hiểm). Christopher Columbus là một explorer nổi tiếng!',
+    emoji: '🧭'
+  },
+  6: {
+    pair: '6 – H',
+    word: 'biologist',
+    ipa: '/baɪˈɒlədʒɪst/',
+    vi: 'nhà sinh vật học',
+    def: 'a scientist who studies living things (plants, animals, microorganisms).',
+    defVi: 'Nhà khoa học nghiên cứu các sinh vật sống (thực vật, động vật, vi sinh vật).',
+    tip: '💡 "bio" (sống) + "logy" (khoa học) → "biology" → "biologist". Liên quan: biography (tiểu sử), biodiversity (đa dạng sinh học).',
+    emoji: '🧬'
+  },
+  7: {
+    pair: '7 – A',
+    word: 'inventor',
+    ipa: '/ɪnˈventər/',
+    vi: 'nhà phát minh',
+    def: 'a person who has invented something new for the first time.',
+    defVi: 'Người đã phát minh ra thứ gì đó lần đầu tiên.',
+    tip: '💡 Từ động từ "invent" (phát minh). Thomas Edison là inventor của bóng đèn điện. Đừng nhầm với "discoverer" (người khám phá ra thứ đã tồn tại sẵn)!',
+    emoji: '💡'
+  },
+  8: {
+    pair: '8 – C',
+    word: 'conservationist',
+    ipa: '/ˌkɒnsərˈveɪʃənɪst/',
+    vi: 'người bảo tồn thiên nhiên / nhà bảo tồn',
+    def: 'a person who works to protect the environment, plants, animals and natural resources.',
+    defVi: 'Người làm việc để bảo vệ môi trường, thực vật, động vật và tài nguyên thiên nhiên.',
+    tip: '💡 "conservation" (sự bảo tồn) + "-ist" (người). Liên quan: conserve (bảo tồn), conservation area (khu bảo tồn).',
+    emoji: '🌿'
+  }
+};
+
+function matchSelect(item){
+  const side = item.getAttribute('data-side');
+  const id = parseInt(item.getAttribute('data-id'));
+  if(item.classList.contains('matched-correct')||item.classList.contains('matched-wrong')) return;
+  if(item.classList.contains('disabled')) return;
+
+  if(!matchSelected){
+    if(side === 'left'){
+      document.querySelectorAll('.match-item[data-side="left"]').forEach(i=>i.classList.remove('selected'));
+      item.classList.add('selected');
+      matchSelected = {id, side, el: item};
+    }
+    return;
+  }
+
+  if(side === 'right'){
+    const leftId = matchSelected.id;
+    const rightId = id;
+    const leftEl = matchSelected.el;
+    const rightEl = item;
+
+    leftEl.classList.remove('selected');
+    matchSelected = null;
+
+    if(leftId === rightId){
+      leftEl.classList.add('matched-correct');
+      rightEl.classList.add('matched-correct');
+      leftEl.classList.add('disabled');
+      rightEl.classList.add('disabled');
+      matchScore++;
+      scoreCorrect++;
+      playDing();
+      spawnConfetti(rightEl);
+      showMatchVocab(leftId, true);
+    } else {
+      leftEl.classList.add('matched-wrong');
+      rightEl.classList.add('matched-wrong');
+      scoreWrong++;
+      playBuzz();
+      leftEl.classList.add('shake');
+      rightEl.classList.add('shake');
+      showMatchVocab(leftId, false, rightId);
+      setTimeout(()=>{
+        leftEl.classList.remove('shake','matched-wrong');
+        rightEl.classList.remove('shake','matched-wrong');
+      },600);
+    }
+    updateScoreBar();
+    if(matchScore === 8){
+      document.getElementById('expMatch').classList.add('show');
+    }
+  } else {
+    document.querySelectorAll('.match-item[data-side="left"]').forEach(i=>i.classList.remove('selected'));
+    item.classList.add('selected');
+    matchSelected = {id, side, el: item};
+  }
+}
+
+function showMatchVocab(leftId, isCorrect, wrongRightId){
+  const v = matchVocab[leftId];
+  const log = document.getElementById('matchVocabLog');
+  const box = document.createElement('div');
+  box.style.cssText = `background:${isCorrect?'linear-gradient(135deg,#d4fce9,#e8fff5)':'linear-gradient(135deg,#ffe0e3,#fff0f0)'};
+    border-left:5px solid ${isCorrect?'#00D26A':'#FF4757'};border-radius:14px;
+    padding:14px 16px;font-size:.87rem;color:#333;line-height:1.75;
+    animation:fadeUp .4s ease both;`;
+
+  if(isCorrect){
+    box.innerHTML = `
+      <div style="font-weight:800;color:#006630;margin-bottom:6px">${v.emoji} ✔ Chính xác! &nbsp;<span style="background:#00D26A;color:#fff;border-radius:8px;padding:2px 10px;font-size:.8rem">${v.pair}</span></div>
+      <div><b style="color:#8854C0;font-size:1rem">${v.word}</b> <span style="color:#888;font-size:.82rem">${v.ipa}</span> → <b>${v.vi}</b></div>
+      <div style="margin-top:4px"><i style="color:#555">"${v.def}"</i></div>
+      <div style="margin-top:2px">🇻🇳 ${v.defVi}</div>
+      <div style="margin-top:6px;background:#ffffffaa;border-radius:8px;padding:6px 10px;font-size:.84rem">${v.tip}</div>`;
+  } else {
+    const correct = matchVocab[leftId];
+    box.innerHTML = `
+      <div style="font-weight:800;color:#cc0015;margin-bottom:6px">❌ Chưa đúng! Đáp án đúng là <b>${correct.pair}</b></div>
+      <div><b style="color:#8854C0;font-size:1rem">${correct.word}</b> <span style="color:#888;font-size:.82rem">${correct.ipa}</span> → <b>${correct.vi}</b></div>
+      <div style="margin-top:4px"><i style="color:#555">"${correct.def}"</i></div>
+      <div style="margin-top:2px">🇻🇳 ${correct.defVi}</div>
+      <div style="margin-top:6px;background:#ffffffaa;border-radius:8px;padding:6px 10px;font-size:.84rem">${correct.tip}</div>`;
+  }
+  log.appendChild(box);
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function updateScoreBar(){
+  document.getElementById('scoreCorrect').textContent = scoreCorrect;
+  document.getElementById('scoreWrong').textContent = scoreWrong;
+  document.getElementById('scoreTotal').textContent = scoreCorrect + scoreWrong;
+}
+
+function submitQuiz(){
+  const total = 48; // 40 MC + 8 matching
+  const pct = Math.round(scoreCorrect/total*100);
+  let emoji, msg;
+  if(pct >= 90){ emoji='🏆'; msg='Xuất sắc! Bạn là thiên tài! 🌟'; }
+  else if(pct >= 75){ emoji='🎉'; msg='Giỏi lắm! Tiếp tục cố gắng nhé!'; }
+  else if(pct >= 60){ emoji='💪'; msg='Khá tốt! Ôn thêm một chút nhé!'; }
+  else { emoji='📚'; msg='Cần ôn tập thêm – bạn sẽ làm được!'; }
+  document.getElementById('popupEmoji').textContent = emoji;
+  document.getElementById('popupScore').textContent = scoreCorrect + '/' + total;
+  document.getElementById('popupMsg').textContent = msg + ' (' + pct + '%)';
+  document.getElementById('resultPopup').classList.add('show');
+  bigConfetti();
+}
+
+// ===== AUDIO =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx;
+function getCtx(){ if(!actx) actx = new AudioCtx(); return actx; }
+
+function playDing(){
+  try{
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime+0.1);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.5);
+    osc.start(); osc.stop(ctx.currentTime+0.5);
+  }catch(e){}
+}
+
+function playBuzz(){
+  try{
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(200, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime+0.3);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.4);
+    osc.start(); osc.stop(ctx.currentTime+0.4);
+  }catch(e){}
+}
+
+// ===== CONFETTI =====
+const colors = ['#FF6B6B','#FFE66D','#4ECDC4','#A855F7','#FB923C','#34D399','#60A5FA'];
+function spawnConfetti(el){
+  const rect = el.getBoundingClientRect();
+  for(let i=0;i<18;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = (rect.left + Math.random()*rect.width) + 'px';
+    c.style.top = rect.top + 'px';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    c.style.animationDuration = (0.8 + Math.random()*0.8) + 's';
+    c.style.animationDelay = (Math.random()*0.3) + 's';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 2000);
+  }
+}
+function bigConfetti(){
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.left = Math.random()*window.innerWidth + 'px';
+      c.style.top = '-20px';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.width = (6+Math.random()*10) + 'px';
+      c.style.height = (6+Math.random()*10) + 'px';
+      c.style.animationDuration = (1+Math.random()*1.5) + 's';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3000);
+    }, i*50);
+  }
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

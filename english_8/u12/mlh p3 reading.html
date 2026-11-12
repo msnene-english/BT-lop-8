@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 12 – Life on Other Planets</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#7c3aed;--cyan:#06b6d4;--gold:#fbbf24;
+  --correct:#00D26A;--wrong:#FF4757;
+  --card:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.12);
+  --text:#e8e8ff;--muted:#a0a8d0;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Nunito',sans-serif;}
+
+/* ── ANIMATED BACKGROUND ── */
+body{
+  min-height:100vh;
+  background:linear-gradient(-45deg,#060618,#150535,#0a1a55,#1a0545,#060618);
+  background-size:500% 500%;
+  animation:bgAnim 18s ease infinite;
+  color:var(--text);overflow-x:hidden;
+}
+@keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Ctext x='10' y='90' font-size='52' opacity='0.055'%3E🚀%3C/text%3E%3Ctext x='180' y='200' font-size='48' opacity='0.055'%3E🪐%3C/text%3E%3Ctext x='330' y='100' font-size='36' opacity='0.05'%3E⭐%3C/text%3E%3Ctext x='50' y='310' font-size='32' opacity='0.05'%3E🌙%3C/text%3E%3Ctext x='290' y='360' font-size='42' opacity='0.055'%3E🛸%3C/text%3E%3Ctext x='150' y='390' font-size='28' opacity='0.045'%3E✨%3C/text%3E%3C/svg%3E");
+  background-size:420px 420px;
+  animation:floatPattern 25s linear infinite;
+  pointer-events:none;z-index:0;mix-blend-mode:screen;
+}
+@keyframes floatPattern{0%{background-position:0 0}100%{background-position:420px 420px}}
+
+/* ── LAYOUT ── */
+#app{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding-bottom:50px;}
+
+/* ── HEADER ── */
+.header{
+  text-align:center;padding:14px 20px 10px;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  position:sticky;top:0;z-index:200;
+}
+.header h1{
+  font-family:'Space Grotesk',sans-serif;font-size:1.45rem;font-weight:800;
+  background:linear-gradient(90deg,#fbbf24,#f0abfc,#67e8f9,#fbbf24);
+  background-size:300%;animation:shimmer 4s linear infinite;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+.header p{font-size:0.78rem;color:var(--muted);margin-top:2px;}
+
+/* ── TIMER BAR ── */
+.timer-bar{
+  display:flex;justify-content:center;align-items:center;gap:14px;
+  padding:10px 20px;background:rgba(0,0,0,0.2);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.btn-timer{
+  background:linear-gradient(135deg,var(--purple),#2563eb);color:#fff;
+  border:none;padding:9px 22px;border-radius:20px;font-size:0.95rem;
+  font-weight:800;cursor:pointer;box-shadow:0 4px 18px rgba(124,58,237,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-timer:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(124,58,237,.6);}
+#countdown{font-size:1.9rem;font-weight:900;color:var(--gold);min-width:84px;text-align:center;display:none;text-shadow:0 0 20px rgba(251,191,36,.6);}
+.btn-pause{
+  background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);
+  padding:7px 16px;border-radius:14px;cursor:pointer;font-size:0.85rem;
+  font-family:'Nunito',sans-serif;font-weight:700;display:none;transition:.2s;
+}
+.btn-pause:hover{background:rgba(255,255,255,.2);}
+
+/* ── SECTION CARDS ── */
+.section-card{
+  background:var(--card);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:22px;
+  margin:18px 18px 0;padding:24px;
+  box-shadow:0 8px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.section-title{
+  font-size:1.15rem;font-weight:900;color:var(--gold);
+  margin-bottom:18px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;
+}
+
+/* ── WORD BANK ── */
+.word-bank{
+  display:flex;flex-wrap:wrap;gap:9px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;padding:14px;margin-bottom:20px;
+}
+.word-chip{
+  background:linear-gradient(135deg,rgba(124,58,237,.5),rgba(79,70,229,.5));
+  border:1px solid rgba(124,58,237,.6);color:#c4b5fd;
+  padding:5px 15px;border-radius:20px;font-size:.93rem;font-weight:800;
+  letter-spacing:.3px;
+}
+
+/* ── PASSAGE TEXT ── */
+.passage-text{line-height:1.95;font-size:1rem;color:#dde4ff;}
+
+/* ── BLANK SELECT ── */
+.blank-sel{
+  background:rgba(6,182,212,.12);border:2px solid rgba(6,182,212,.5);
+  border-radius:10px;color:#67e8f9;font-family:'Nunito',sans-serif;
+  font-size:.92rem;font-weight:800;padding:3px 8px;cursor:pointer;
+  outline:none;transition:all .3s;min-width:130px;
+}
+.blank-sel:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(251,191,36,.35);}
+.blank-sel.correct{background:rgba(0,210,106,.2);border-color:var(--correct);color:var(--correct);}
+.blank-sel.wrong{background:rgba(255,71,87,.2);border-color:var(--wrong);color:var(--wrong);}
+
+.btn-check-p1{
+  background:linear-gradient(135deg,var(--cyan),#0891b2);color:#fff;
+  border:none;padding:11px 28px;border-radius:18px;font-size:1rem;
+  font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(6,182,212,.4);
+  margin-top:18px;transition:transform .2s;
+}
+.btn-check-p1:hover{transform:translateY(-2px);}
+
+/* ── P1 EXPLANATION GRID ── */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.exp-item{
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);
+  border-radius:14px;padding:12px;font-size:.83rem;line-height:1.65;
+  color:#fde68a;display:none;
+}
+.exp-item.show{display:block;}
+.exp-item strong{color:var(--gold);}
+.score-bar{
+  background:rgba(0,210,106,.1);border:1px solid rgba(0,210,106,.25);
+  border-radius:12px;padding:10px 16px;margin-top:12px;
+  color:#6ee7b7;font-weight:800;font-size:1rem;display:none;
+}
+.score-bar.show{display:block;}
+
+/* ── PART II SPLIT SCREEN ── */
+.part2-header{
+  margin:18px 18px 0;padding:10px 24px;
+  background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(6,182,212,.15));
+  border:1px solid rgba(124,58,237,.35);border-radius:16px;
+  display:flex;align-items:center;gap:10px;
+  font-size:1.1rem;font-weight:900;color:var(--gold);
+}
+.split-wrapper{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  margin:14px 18px 0;height:78vh;
+}
+.split-panel{
+  background:var(--card);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:20px;
+  overflow-y:auto;padding:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,.3);
+}
+.split-panel::-webkit-scrollbar{width:5px;}
+.split-panel::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:3px;}
+.split-panel::-webkit-scrollbar-thumb{background:rgba(124,58,237,.45);border-radius:3px;}
+.panel-title{
+  font-size:1.1rem;font-weight:900;color:var(--gold);margin-bottom:16px;
+  padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.09);
+}
+
+/* ── PARAGRAPHS + TRANSLATION ── */
+.para-section{margin-bottom:20px;}
+.para-text{font-size:.97rem;line-height:1.9;color:#d8e0ff;margin-bottom:8px;}
+.btn-tr{
+  background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);
+  color:var(--gold);padding:5px 14px;border-radius:14px;
+  font-size:.8rem;font-weight:800;cursor:pointer;transition:.2s;
+  font-family:'Nunito',sans-serif;
+}
+.btn-tr:hover{background:rgba(251,191,36,.22);}
+.tr-box{
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);
+  border-radius:13px;padding:13px 15px;margin-top:9px;
+  font-size:.85rem;color:#fde68a;line-height:1.75;display:none;
+}
+.tr-box.show{display:block;}
+.tr-box strong{color:var(--gold);}
+
+/* ── GLOSSARY ── */
+.glossary-title{
+  font-size:.95rem;font-weight:900;color:var(--cyan);
+  margin:24px 0 10px;display:flex;align-items:center;gap:6px;
+}
+.glossary-table{width:100%;border-collapse:collapse;font-size:.83rem;}
+.glossary-table th{
+  background:rgba(124,58,237,.28);padding:8px 10px;text-align:left;
+  color:#c4b5fd;font-weight:800;
+}
+.glossary-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:#dde4ff;}
+.glossary-table tr:hover td{background:rgba(255,255,255,.04);}
+.pos{background:rgba(6,182,212,.2);color:#67e8f9;padding:2px 7px;border-radius:9px;font-size:.75rem;font-weight:800;}
+
+/* ── SECTION SUBTITLE ── */
+.sec-sub{
+  font-size:.95rem;font-weight:900;color:#67e8f9;
+  margin:20px 0 10px;display:flex;align-items:center;gap:7px;
+}
+.q-num{
+  background:linear-gradient(135deg,var(--purple),#4f46e5);color:#fff;
+  width:24px;height:24px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:900;flex-shrink:0;
+}
+
+/* ── TRUE/FALSE ── */
+.tf-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:15px;padding:14px 16px;margin-bottom:11px;
+}
+.tf-stmt{font-size:.97rem;color:#dde4ff;margin-bottom:10px;line-height:1.6;}
+.tf-btns{display:flex;gap:9px;}
+.tf-btn{
+  padding:7px 20px;border:2px solid;border-radius:13px;font-size:.92rem;
+  font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;
+  box-shadow:0 3px 12px rgba(0,0,0,.2);
+}
+.tf-btn.t-btn{background:rgba(74,222,128,.12);border-color:#4ade80;color:#4ade80;}
+.tf-btn.f-btn{background:rgba(248,113,113,.12);border-color:#f87171;color:#f87171;}
+.tf-btn:hover:not(.locked){transform:scale(1.06);}
+.tf-btn.ok{background:var(--correct)!important;border-color:var(--correct)!important;color:#fff!important;}
+.tf-btn.bad{background:var(--wrong)!important;border-color:var(--wrong)!important;color:#fff!important;animation:shake .45s;}
+.tf-btn.reveal{background:var(--correct)!important;border-color:var(--correct)!important;color:#fff!important;}
+.tf-exp{
+  margin-top:9px;background:rgba(0,210,106,.08);border:1px solid rgba(0,210,106,.2);
+  border-radius:11px;padding:10px 13px;font-size:.83rem;line-height:1.7;
+  color:#a7f3d0;display:none;
+}
+.tf-exp.show{display:block;}
+.tf-exp strong{color:#6ee7b7;}
+
+/* ── MULTIPLE CHOICE ── */
+.mc-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:15px;padding:16px;margin-bottom:13px;
+}
+.mc-q{font-size:1rem;font-weight:800;color:#dde4ff;margin-bottom:12px;line-height:1.55;}
+.mc-opts{display:flex;flex-direction:column;gap:8px;}
+.mc-opt{
+  padding:10px 16px;border-radius:14px;
+  background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.14);
+  cursor:pointer;font-size:.93rem;color:#dde4ff;font-weight:600;
+  transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;
+  box-shadow:0 3px 12px rgba(0,0,0,.18);line-height:1.4;
+}
+.mc-opt:hover:not(.locked){transform:scale(1.02);border-color:rgba(124,58,237,.6);background:rgba(124,58,237,.15);}
+.mc-opt.correct{background:rgba(0,210,106,.18)!important;border-color:var(--correct)!important;color:var(--correct)!important;}
+.mc-opt.wrong{background:rgba(255,71,87,.18)!important;border-color:var(--wrong)!important;color:var(--wrong)!important;animation:shake .45s;}
+.mc-exp{
+  margin-top:10px;padding:12px 14px;border-radius:13px;
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);
+  font-size:.83rem;line-height:1.72;color:#fde68a;display:none;
+}
+.mc-exp.show{display:block;}
+.mc-exp strong{color:var(--gold);}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ── SUBMIT ── */
+.submit-wrap{text-align:center;margin:24px 0 10px;padding-bottom:6px;}
+.btn-submit{
+  background:linear-gradient(135deg,var(--gold),#f59e0b);
+  color:#1a0a4a;border:none;padding:14px 42px;border-radius:24px;
+  font-size:1.15rem;font-weight:900;cursor:pointer;
+  box-shadow:0 5px 24px rgba(251,191,36,.45);
+  transition:transform .2s,box-shadow .2s;font-family:'Nunito',sans-serif;
+}
+.btn-submit:hover{transform:translateY(-3px);box-shadow:0 9px 30px rgba(251,191,36,.6);}
+
+/* ── TIMEOUT MODAL ── */
+.overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.72);z-index:500;
+  display:none;align-items:center;justify-content:center;
+}
+.overlay.show{display:flex;}
+.timeout-card{
+  background:linear-gradient(135deg,#160535,#081a55);
+  border:2px solid rgba(255,71,87,.45);border-radius:22px;
+  padding:32px 36px;max-width:430px;width:90%;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.timeout-card h2{color:var(--wrong);font-size:1.35rem;margin-bottom:12px;}
+.timeout-card p{color:#dde4ff;font-size:.93rem;line-height:1.65;}
+.btn-close-to{
+  background:linear-gradient(135deg,var(--wrong),#c0392b);color:#fff;
+  border:none;padding:10px 26px;border-radius:16px;
+  font-size:.92rem;font-weight:800;cursor:pointer;margin-top:18px;
+  font-family:'Nunito',sans-serif;
+}
+
+/* ── SCORE MODAL ── */
+.score-card{
+  background:linear-gradient(145deg,#0e0430,#091850,#0e0430);
+  border:2px solid rgba(251,191,36,.35);border-radius:26px;
+  padding:42px 36px;max-width:520px;width:92%;text-align:center;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 50px rgba(124,58,237,.25);
+  position:relative;overflow:hidden;
+}
+.score-card::before{
+  content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(124,58,237,.3),transparent 70%);pointer-events:none;
+}
+.score-emoji{font-size:4.5rem;margin-bottom:8px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{0%{transform:scale(0)}100%{transform:scale(1)}}
+.score-title{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:800;color:var(--gold);}
+.score-nums{font-size:3.2rem;font-weight:900;color:#fff;margin:8px 0 4px;line-height:1;}
+.score-of{font-size:.85rem;color:var(--muted);}
+.score-msg{font-size:1.05rem;color:#67e8f9;margin:14px 0;font-weight:700;line-height:1.5;}
+.score-breakdown{
+  background:rgba(255,255,255,.06);border-radius:16px;padding:16px;
+  margin:14px 0 20px;text-align:left;font-size:.88rem;line-height:1.95;color:#dde4ff;
+}
+.btn-retry{
+  background:linear-gradient(135deg,var(--purple),#4f46e5);color:#fff;
+  border:none;padding:12px 32px;border-radius:20px;
+  font-size:.98rem;font-weight:800;cursor:pointer;
+  box-shadow:0 5px 20px rgba(124,58,237,.45);font-family:'Nunito',sans-serif;
+}
+/* ── CONFETTI ── */
+.confetti-layer{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:600;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ════ HEADER ════ -->
+<div class="header">
+  <h1>🚀 Unit 12: Life on Other Planets 🪐</h1>
+  <p>Bài kiểm tra tiếng Anh · Giáo viên tạo: <strong>MS Chí Nên</strong> · ULIS</p>
+</div>
+
+<!-- ════ TIMER BAR ════ -->
+<div class="timer-bar">
+  <button class="btn-timer" id="startBtn" onclick="startTimer()">⏱️ BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+  <div id="countdown"></div>
+  <button class="btn-pause" id="pauseBtn" onclick="togglePause()">⏸️ Tạm dừng</button>
+</div>
+
+<!-- ════ PART I ════ -->
+<div class="section-card">
+  <div class="section-title">📝 PART I — Complete the passage with the words from the box</div>
+
+  <div class="word-bank">
+    <span class="word-chip">surface</span><span class="word-chip">survive</span>
+    <span class="word-chip">frozen</span><span class="word-chip">universe</span>
+    <span class="word-chip">explore</span><span class="word-chip">missions</span>
+    <span class="word-chip">down</span><span class="word-chip">might</span>
+  </div>
+
+  <button class="btn-tr" onclick="toggleTr('tr_p1',this)" style="margin-bottom:12px;">🌟 Mở bản dịch đoạn văn</button>
+  <div class="tr-box" id="tr_p1" style="margin-bottom:14px;">
+    <strong>🇻🇳 Bản dịch đầy đủ – Phần I:</strong><br><br>
+    Khi chúng ta khám phá <strong>(1) vũ trụ</strong>, chúng ta tự nhiên hỏi: "Liệu có sự sống trên các hành tinh khác không?" Năm 1976, hai tàu đổ bộ Viking của NASA đã <strong>(2) hạ cánh</strong> xuống Sao Hỏa nhằm trả lời một câu hỏi quan trọng: Liệu có sự sống trên Hành tinh Đỏ không? Kể từ đó, NASA và các cơ quan vũ trụ khác đã gửi thêm nhiều <strong>(3) sứ mệnh</strong> đến Sao Hỏa. Tuy nhiên, câu trả lời cho đến nay vẫn là: "Chúng tôi chưa biết, nhưng chúng tôi sẽ tiếp tục tìm kiếm." Mọi sự sống trên Trái Đất đều cần nước lỏng để <strong>(4) tồn tại</strong>. Vì các tàu vũ trụ chưa tìm thấy nước lỏng nào trên <strong>(5) bề mặt</strong> Sao Hỏa, các nhà khoa học cho rằng ở đó không có sự sống. Nhưng còn bên dưới bề mặt thì sao? Các tàu vũ trụ đã phát hiện nước <strong>(6) đóng băng</strong> trong các chỏm băng ở cực Sao Hỏa và trong những đám mây tinh thể băng. Điều này có nghĩa là ở đó <strong>(7) có thể</strong> có nước lỏng bên dưới bề mặt, nơi có nhiệt độ ấm hơn. NASA dự định tiếp tục <strong>(8) khám phá</strong> Sao Hỏa mỗi hai năm một lần. Trong các sứ mệnh tương lai, chúng ta sẽ khám phá bên dưới bề mặt và tìm kiếm nước lỏng – và sự sống!
+  </div>
+
+  <div class="passage-text">
+    <p>
+      As we explore the
+      <select class="blank-sel" id="b1" onchange="chkBlank(this,'universe',1)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>,
+      we naturally ask, "Is there life on other planets?" In 1976, NASA's twin Viking landers touched
+      <select class="blank-sel" id="b2" onchange="chkBlank(this,'down',2)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>
+      on Mars in an attempt to answer a weighty question: Is there life on the Red Planet? Since then, NASA and other space agencies have sent many more
+      <select class="blank-sel" id="b3" onchange="chkBlank(this,'missions',3)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>
+      to Mars. However, the answer so far is, "We don't know, but we'll keep searching." All life on Earth needs liquid water to
+      <select class="blank-sel" id="b4" onchange="chkBlank(this,'survive',4)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>.
+      Since spacecraft haven't found any liquid water on Mars'
+      <select class="blank-sel" id="b5" onchange="chkBlank(this,'surface',5)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>,
+      scientists think that there is no life there. But what about below the surface? Spacecraft have discovered
+      <select class="blank-sel" id="b6" onchange="chkBlank(this,'frozen',6)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>
+      water in Mars' polar ice caps and in clouds of ice crystals. This means that there
+      <select class="blank-sel" id="b7" onchange="chkBlank(this,'might',7)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>
+      be liquid water below the surface where it's warmer. NASA plans to continue to
+      <select class="blank-sel" id="b8" onchange="chkBlank(this,'explore',8)"><option value="">── chọn ──</option><option>surface</option><option>survive</option><option>frozen</option><option>universe</option><option>explore</option><option>missions</option><option>down</option><option>might</option></select>
+      Mars every two years. In future missions, we'll explore below the surface and search for liquid water – and life!
+    </p>
+  </div>
+
+  <!-- Explanation grid -->
+  <div class="exp-grid">
+    <div class="exp-item" id="e1"><strong>✅ (1) universe – vũ trụ</strong><br>📖 "As we explore the <strong>universe</strong>, we naturally ask, 'Is there life on other planets?'"<br>🇻🇳 "Khi chúng ta khám phá <strong>vũ trụ</strong>, chúng ta tự nhiên hỏi về sự sống ở các hành tinh khác."<br>💡 Ngữ cảnh hỏi về "sự sống ở các hành tinh khác" → chủ đề rộng là vũ trụ → <strong>universe</strong>.</div>
+    <div class="exp-item" id="e2"><strong>✅ (2) down – hạ cánh</strong><br>📖 "NASA's twin Viking landers touched <strong>down</strong> on Mars"<br>🇻🇳 "Hai tàu đổ bộ Viking của NASA đã <strong>hạ cánh</strong> xuống Sao Hỏa"<br>💡 <strong>touch down</strong> = phrasal verb cố định nghĩa "hạ cánh" (tàu vũ trụ/máy bay). Đây là collocation quan trọng!</div>
+    <div class="exp-item" id="e3"><strong>✅ (3) missions – sứ mệnh</strong><br>📖 "NASA…have sent many more <strong>missions</strong> to Mars"<br>🇻🇳 "NASA đã gửi nhiều <strong>sứ mệnh</strong> hơn đến Sao Hỏa"<br>💡 "Space missions" = sứ mệnh không gian. Danh từ số nhiều phù hợp sau "many more" + trước "to Mars".</div>
+    <div class="exp-item" id="e4"><strong>✅ (4) survive – tồn tại/sống sót</strong><br>📖 "All life on Earth needs liquid water to <strong>survive</strong>"<br>🇻🇳 "Mọi sự sống trên Trái Đất cần nước lỏng để <strong>tồn tại</strong>"<br>💡 Cấu trúc <strong>need + to + V</strong>. "survive" (sống sót) diễn đạt điều kiện thiết yếu để tồn tại – hoàn toàn phù hợp ngữ nghĩa.</div>
+    <div class="exp-item" id="e5"><strong>✅ (5) surface – bề mặt</strong><br>📖 "haven't found any liquid water on Mars' <strong>surface</strong>"<br>🇻🇳 "chưa tìm thấy nước lỏng trên <strong>bề mặt</strong> Sao Hỏa"<br>💡 Câu tiếp theo hỏi về "below the surface" (bên dưới bề mặt) → cặp đối nghĩa trên/dưới xác nhận đáp án <strong>surface</strong>.</div>
+    <div class="exp-item" id="e6"><strong>✅ (6) frozen – đóng băng</strong><br>📖 "discovered <strong>frozen</strong> water in Mars' polar ice caps"<br>🇻🇳 "phát hiện nước <strong>đóng băng</strong> trong các chỏm băng ở cực Sao Hỏa"<br>💡 "polar ice caps" (chỏm băng cực) → nước ở đây ở dạng rắn → <strong>frozen</strong> (đông lạnh/đóng băng). Adj bổ nghĩa cho danh từ "water".</div>
+    <div class="exp-item" id="e7"><strong>✅ (7) might – có thể</strong><br>📖 "there <strong>might</strong> be liquid water below the surface"<br>🇻🇳 "ở đó <strong>có thể</strong> có nước lỏng bên dưới bề mặt"<br>💡 <strong>might</strong> là modal verb diễn tả khả năng không chắc chắn. Đây chỉ là suy đoán chưa được xác nhận – dùng "might" là chuẩn xác.</div>
+    <div class="exp-item" id="e8"><strong>✅ (8) explore – khám phá</strong><br>📖 "NASA plans to continue to <strong>explore</strong> Mars every two years"<br>🇻🇳 "NASA dự định tiếp tục <strong>khám phá</strong> Sao Hỏa mỗi hai năm"<br>💡 Cấu trúc <strong>continue to + V</strong>. Câu kết "we'll explore below the surface" cũng dùng lại "explore" → từ chủ đề xuyên suốt bài.</div>
+  </div>
+
+  <button class="btn-check-p1" onclick="checkAllP1()">✅ Kiểm tra toàn bộ Phần I</button>
+  <div class="score-bar" id="scoreP1"></div>
+</div>
+
+<!-- ════ PART II HEADER ════ -->
+<div class="part2-header">
+  📚 PART II — THE INNER PLANETS &nbsp;|&nbsp; <span style="font-size:.85rem;color:#c4b5fd;font-weight:600;">Bài đọc bên trái · Bài tập bên phải (cuộn độc lập)</span>
+</div>
+
+<!-- ════ SPLIT SCREEN ════ -->
+<div class="split-wrapper">
+
+  <!-- ── LEFT: READING PASSAGE ── -->
+  <div class="split-panel">
+    <div class="panel-title">📖 Reading Passage</div>
+
+    <!-- §1 Introduction -->
+    <div class="para-section">
+      <div class="para-text">
+        <strong style="color:var(--gold);font-size:1.05rem;">THE INNER PLANETS</strong><br><br>
+        Planets are large bodies that rotate around the sun. The inner planets, or terrestrial planets, are the four planets closest to the Sun: Mercury, Venus, Earth, and Mars. Even though these planets are all small and rocky, they have more differences than they have things in common.
+      </div>
+      <button class="btn-tr" onclick="toggleTr('tr1',this)">🌟 Mở bản dịch đoạn này</button>
+      <div class="tr-box" id="tr1">
+        <strong>🇻🇳 Bản dịch đầy đủ – Đoạn 1:</strong><br>
+        <strong>CÁC HÀNH TINH PHÍA TRONG</strong><br><br>
+        Các hành tinh là những thiên thể lớn quay xung quanh mặt trời. Các hành tinh phía trong, hay còn gọi là các hành tinh đá (<em>terrestrial planets</em>), là bốn hành tinh gần Mặt trời nhất: Sao Thủy (Mercury), Sao Kim (Venus), Trái Đất (Earth) và Sao Hỏa (Mars). Mặc dù tất cả các hành tinh này đều nhỏ và có bề mặt đá, chúng có nhiều điểm khác biệt hơn là điểm chung.
+      </div>
+    </div>
+
+    <!-- §2 Mercury -->
+    <div class="para-section">
+      <div class="para-text">
+        Because Mercury is the closest to the sun, the side that faces the sun gets as hot as 427° Celsius. At the same time, the side that faces away from the sun is a freezing -173° Celsius. The extreme temperatures alone make it a very unlikely place for life. With an atmosphere too thin for human breathing, it's obvious that people won't be living on Mercury any time soon.
+      </div>
+      <button class="btn-tr" onclick="toggleTr('tr2',this)">🌟 Mở bản dịch đoạn này</button>
+      <div class="tr-box" id="tr2">
+        <strong>🇻🇳 Bản dịch đầy đủ – Đoạn 2 (Sao Thủy):</strong><br><br>
+        Vì Sao Thủy là hành tinh gần mặt trời nhất, mặt hướng về phía mặt trời nóng lên đến 427° Celsius. Đồng thời, mặt quay ra xa mặt trời lại lạnh cóng ở mức -173° Celsius. Chỉ riêng nhiệt độ cực đoan này đã khiến Sao Thủy trở thành nơi rất khó có sự sống. Với bầu khí quyển quá mỏng để con người có thể thở, rõ ràng là trong tương lai gần, con người sẽ không thể sinh sống trên Sao Thủy.
+      </div>
+    </div>
+
+    <!-- §3 Venus -->
+    <div class="para-section">
+      <div class="para-text">
+        The next planet from the sun is Venus. Below clouds of sulfuric gas lies 96% carbon dioxide atmosphere. That might be nice for a plant, since a plant "breathes" carbon dioxide, but not for a person. If you managed to survive the atmosphere, the surface of the planet is hot enough to melt solid metal. Venus has a temperature that is maintained at 462° Celsius, no matter where you go on the planet.
+      </div>
+      <button class="btn-tr" onclick="toggleTr('tr3',this)">🌟 Mở bản dịch đoạn này</button>
+      <div class="tr-box" id="tr3">
+        <strong>🇻🇳 Bản dịch đầy đủ – Đoạn 3 (Sao Kim):</strong><br><br>
+        Hành tinh tiếp theo tính từ mặt trời là Sao Kim. Bên dưới những đám mây khí lưu huỳnh là bầu khí quyển chứa 96% carbon dioxide. Điều đó có thể tốt cho thực vật, vì thực vật "hít thở" carbon dioxide, nhưng lại không tốt cho con người. Nếu bạn cố sống sót qua được bầu khí quyển đó, bề mặt hành tinh lại nóng đến mức có thể làm chảy kim loại rắn. Sao Kim duy trì nhiệt độ ở mức 462° Celsius, dù bạn ở bất kỳ đâu trên hành tinh này.
+      </div>
+    </div>
+
+    <!-- §4 Earth -->
+    <div class="para-section">
+      <div class="para-text">
+        You are probably most familiar with Earth because it is your home planet. It has the perfect conditions for life. Earth's atmosphere and oceans help control the trickiest part of making a planet life-friendly: temperature. Earth is the only planet known to have liquid water.
+      </div>
+      <button class="btn-tr" onclick="toggleTr('tr4',this)">🌟 Mở bản dịch đoạn này</button>
+      <div class="tr-box" id="tr4">
+        <strong>🇻🇳 Bản dịch đầy đủ – Đoạn 4 (Trái Đất):</strong><br><br>
+        Bạn có lẽ quen thuộc nhất với Trái Đất vì đó là hành tinh quê hương của bạn. Trái Đất có những điều kiện hoàn hảo để có sự sống. Bầu khí quyển và các đại dương của Trái Đất giúp kiểm soát phần khó nhất trong việc làm cho một hành tinh thân thiện với sự sống: nhiệt độ. Trái Đất là hành tinh duy nhất được biết đến là có nước ở dạng lỏng.
+      </div>
+    </div>
+
+    <!-- §5 Mars -->
+    <div class="para-section">
+      <div class="para-text">
+        Mars is the fourth farthest from the sun. Some people think it may be possible for life to exist there. Although scientists have not been able to find actual water on Mars, there seems to be evidence of water erosion on its surface. Its canyons and mountains are very similar to those found on Earth. The main difference is that there is no plant life. Some scientists believe that Mars may have been very much like Earth until something happened that made the water supply evaporate.
+      </div>
+      <button class="btn-tr" onclick="toggleTr('tr5',this)">🌟 Mở bản dịch đoạn này</button>
+      <div class="tr-box" id="tr5">
+        <strong>🇻🇳 Bản dịch đầy đủ – Đoạn 5 (Sao Hỏa):</strong><br><br>
+        Sao Hỏa là hành tinh thứ tư tính từ mặt trời. Một số người nghĩ rằng có thể có sự sống tồn tại ở đó. Mặc dù các nhà khoa học vẫn chưa tìm được nước thực sự trên Sao Hỏa, nhưng dường như có bằng chứng về sự xói mòn do nước trên bề mặt của nó. Các hẻm núi và núi của Sao Hỏa rất giống với những gì được tìm thấy trên Trái Đất. Điểm khác biệt chính là không có sự sống thực vật. Một số nhà khoa học tin rằng Sao Hỏa có thể đã từng rất giống Trái Đất cho đến khi có điều gì đó xảy ra khiến nguồn nước bị bốc hơi.
+      </div>
+    </div>
+
+    <!-- GLOSSARY -->
+    <div class="glossary-title">📚 Bảng từ vựng quan trọng (Glossary)</div>
+    <table class="glossary-table">
+      <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr></thead>
+      <tbody>
+        <tr><td><strong>terrestrial</strong></td><td><span class="pos">adj</span></td><td>thuộc về mặt đất; hành tinh đá (có bề mặt cứng)</td></tr>
+        <tr><td><strong>atmosphere</strong></td><td><span class="pos">n</span></td><td>bầu khí quyển bao quanh hành tinh</td></tr>
+        <tr><td><strong>sulfuric</strong></td><td><span class="pos">adj</span></td><td>thuộc về lưu huỳnh; mang tính axit sulfuric</td></tr>
+        <tr><td><strong>carbon dioxide</strong></td><td><span class="pos">n</span></td><td>khí carbon dioxide (CO₂) – khí nhà kính</td></tr>
+        <tr><td><strong>maintain</strong></td><td><span class="pos">v</span></td><td>duy trì; giữ ở mức ổn định không thay đổi</td></tr>
+        <tr><td><strong>erosion</strong></td><td><span class="pos">n</span></td><td>sự xói mòn (đất, đá bị bào mòn bởi nước/gió)</td></tr>
+        <tr><td><strong>evaporate</strong></td><td><span class="pos">v</span></td><td>bốc hơi; chuyển từ chất lỏng sang hơi nước</td></tr>
+        <tr><td><strong>extreme</strong></td><td><span class="pos">adj</span></td><td>cực đoan; ở mức rất cao hoặc rất thấp bất thường</td></tr>
+        <tr><td><strong>conditions</strong></td><td><span class="pos">n</span></td><td>điều kiện; hoàn cảnh (cần thiết cho sự sống)</td></tr>
+        <tr><td><strong>canyon</strong></td><td><span class="pos">n</span></td><td>hẻm núi sâu và hẹp (thường do nước xói mòn tạo ra)</td></tr>
+        <tr><td><strong>evidence</strong></td><td><span class="pos">n</span></td><td>bằng chứng; dẫn chứng có thể kiểm chứng</td></tr>
+        <tr><td><strong>weighty</strong></td><td><span class="pos">adj</span></td><td>quan trọng; nghiêm túc; đòi hỏi suy nghĩ kỹ</td></tr>
+      </tbody>
+    </table>
+  </div><!-- end left panel -->
+
+  <!-- ── RIGHT: EXERCISES ── -->
+  <div class="split-panel">
+    <div class="panel-title">✏️ Exercises</div>
+
+    <!-- ═══ SECTION A: TRUE / FALSE ═══ -->
+    <div class="sec-sub">🅰️ A. Decide if the statements are True (T) or False (F)</div>
+
+    <!-- TF 1 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">1</span>&nbsp; The inner planets are located closest to the sun.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,true,'tf1e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,true,'tf1e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf1e">
+        <strong>✅ Đáp án: TRUE (Đúng)</strong><br>
+        📖 <em>Dẫn chứng:</em> "The inner planets…are the <strong>four planets closest to the Sun</strong>: Mercury, Venus, Earth, and Mars."<br>
+        🇻🇳 <em>Dịch:</em> "Các hành tinh phía trong…là bốn hành tinh <strong>gần Mặt trời nhất</strong>."<br>
+        💡 Bài đọc khẳng định thẳng: inner planets = closest to the Sun → Câu này ĐÚNG hoàn toàn.
+      </div>
+    </div>
+
+    <!-- TF 2 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">2</span>&nbsp; Mercury is the hottest planet because it's the closest to the sun.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,false,'tf2e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,false,'tf2e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf2e">
+        <strong>❌ Đáp án: FALSE (Sai)</strong><br>
+        📖 <em>Dẫn chứng:</em> Mercury nóng tới <strong>427°C</strong> (chỉ mặt hướng mặt trời). Còn Venus: "a temperature that is maintained at <strong>462° Celsius</strong>, no matter where you go."<br>
+        🇻🇳 <em>Dịch:</em> "Sao Kim duy trì nhiệt độ <strong>462°C</strong> dù ở bất kỳ đâu trên hành tinh."<br>
+        💡 Mặc dù Mercury gần mặt trời hơn, <strong>Venus mới là hành tinh NÓNG NHẤT</strong> (462°C) nhờ hiệu ứng nhà kính từ 96% CO₂. Mercury đạt 427°C chỉ ở mặt hướng mặt trời, còn mặt kia -173°C → Câu này SAI.
+      </div>
+    </div>
+
+    <!-- TF 3 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">3</span>&nbsp; Venus has an atmosphere whose composition is similar to that of Earth.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,false,'tf3e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,false,'tf3e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf3e">
+        <strong>❌ Đáp án: FALSE (Sai)</strong><br>
+        📖 <em>Dẫn chứng:</em> Venus: "Below clouds of sulfuric gas lies <strong>96% carbon dioxide atmosphere</strong>."<br>
+        🇻🇳 <em>Dịch:</em> "Bên dưới những đám mây khí lưu huỳnh là bầu khí quyển chứa <strong>96% carbon dioxide</strong>."<br>
+        💡 Khí quyển Sao Kim: 96% CO₂ + khí lưu huỳnh → hoàn toàn KHÁC Trái Đất (chủ yếu ~78% nitrogen + ~21% oxygen). Câu này SAI.
+      </div>
+    </div>
+
+    <!-- TF 4 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">4</span>&nbsp; The temperature on the surface of Venus is hot enough to melt lead.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,true,'tf4e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,true,'tf4e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf4e">
+        <strong>✅ Đáp án: TRUE (Đúng)</strong><br>
+        📖 <em>Dẫn chứng:</em> "the surface…is <strong>hot enough to melt solid metal</strong>. Venus has a temperature…at <strong>462° Celsius</strong>."<br>
+        🇻🇳 <em>Dịch:</em> "bề mặt nóng đủ để làm chảy kim loại rắn; Sao Kim duy trì 462°C."<br>
+        💡 Chì (lead) nóng chảy ở ~327°C. Venus đạt 462°C → chắc chắn đủ nóng để làm chảy chì. Bài dùng "melt solid metal" (kim loại rắn) – chì là kim loại rắn → Câu này ĐÚNG.
+      </div>
+    </div>
+
+    <!-- TF 5 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">5</span>&nbsp; Earth has a surface temperature that is uniquely friendly to life.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,true,'tf5e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,true,'tf5e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf5e">
+        <strong>✅ Đáp án: TRUE (Đúng)</strong><br>
+        📖 <em>Dẫn chứng:</em> "It has the <strong>perfect conditions for life</strong>…help control…<strong>temperature</strong>. Earth is the <strong>only planet</strong> known to have liquid water."<br>
+        🇻🇳 <em>Dịch:</em> "Trái Đất có điều kiện hoàn hảo cho sự sống…là hành tinh <strong>duy nhất</strong> có nước lỏng."<br>
+        💡 "Only planet" = duy nhất (uniquely). Nhiệt độ Trái Đất được khí quyển và đại dương điều hòa → thân thiện với sự sống một cách đặc biệt → Câu này ĐÚNG.
+      </div>
+    </div>
+
+    <!-- TF 6 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">6</span>&nbsp; Scientists have proved that life once existed on Mars.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,false,'tf6e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,false,'tf6e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf6e">
+        <strong>❌ Đáp án: FALSE (Sai)</strong><br>
+        📖 <em>Dẫn chứng:</em> "scientists have <strong>not been able to find</strong> actual water on Mars, there <strong>seems to be evidence</strong> of water erosion…"<br>
+        🇻🇳 <em>Dịch:</em> "các nhà khoa học <strong>vẫn chưa tìm được</strong> nước thực sự, chỉ <strong>dường như có bằng chứng</strong> xói mòn do nước."<br>
+        💡 Câu bài thi dùng "<strong>proved</strong>" (đã chứng minh), nhưng bài đọc chỉ nói "seems to be evidence" (dường như có bằng chứng) – nghĩa là CHƯA có kết luận. Không có gì chứng minh sự sống từng tồn tại → Câu này SAI.
+      </div>
+    </div>
+
+    <!-- TF 7 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">7</span>&nbsp; It seems that Mars once had liquid water on its surface.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,true,'tf7e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,true,'tf7e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf7e">
+        <strong>✅ Đáp án: TRUE (Đúng)</strong><br>
+        📖 <em>Dẫn chứng:</em> "there <strong>seems to be evidence of water erosion</strong> on its surface" + "Mars <strong>may have been very much like Earth</strong> until something happened that made the <strong>water supply evaporate</strong>."<br>
+        🇻🇳 <em>Dịch:</em> "dường như có bằng chứng về xói mòn do nước" + "Sao Hỏa có thể đã từng giống Trái Đất cho đến khi nguồn nước bị bốc hơi."<br>
+        💡 Sự xói mòn do nước + nước bị bốc hơi → trước đây Sao Hỏa CÓ nước lỏng. Câu bài thi dùng "seems" khớp với "seems to be evidence" trong bài → Câu này ĐÚNG.
+      </div>
+    </div>
+
+    <!-- TF 8 -->
+    <div class="tf-card">
+      <div class="tf-stmt"><span class="q-num">8</span>&nbsp; Some scientists believe that Mars is very similar to the Earth.</div>
+      <div class="tf-btns">
+        <button class="tf-btn t-btn" onclick="chkTF(this,true,false,'tf8e')">✅ TRUE</button>
+        <button class="tf-btn f-btn" onclick="chkTF(this,false,false,'tf8e')">❌ FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf8e">
+        <strong>❌ Đáp án: FALSE (Sai)</strong><br>
+        📖 <em>Dẫn chứng:</em> "Some scientists believe that Mars <strong>may have been</strong> very much like Earth <strong>until something happened</strong>…"<br>
+        🇻🇳 <em>Dịch:</em> "Một số nhà khoa học tin Sao Hỏa <strong>có thể đã từng</strong> rất giống Trái Đất <strong>cho đến khi có điều gì đó xảy ra</strong>…"<br>
+        💡 Câu bài thi dùng thì hiện tại "<strong>is</strong> very similar" (HIỆN TẠI giống), nhưng bài đọc dùng "<strong>may have been</strong>" (QUÁ KHỨ – đã từng giống). Hiện tại Sao Hỏa không có nước lỏng, không có sự sống thực vật → Câu này SAI.
+      </div>
+    </div>
+
+    <!-- ═══ SECTION B: MULTIPLE CHOICE ═══ -->
+    <div class="sec-sub" style="margin-top:26px;">🅱️ B. Answer the questions</div>
+
+    <!-- MC 1 -->
+    <div class="mc-card" id="mc1">
+      <div class="mc-q"><span class="q-num">1</span>&nbsp; What is another name for inner planets?</div>
+      <div class="mc-opts" id="mc1o"></div>
+      <div class="mc-exp" id="mc1e">
+        <strong>✅ Đáp án đúng: Terrestrial planets</strong><br>
+        📖 <em>Dẫn chứng:</em> "The inner planets, or <strong>terrestrial planets</strong>, are the four planets closest to the Sun…"<br>
+        🇻🇳 <em>Dịch:</em> "Các hành tinh phía trong, hay còn gọi là <strong>các hành tinh đá (terrestrial planets)</strong>…"<br>
+        💡 Bài đọc dùng "or" (hay còn gọi là) nêu thẳng tên thay thế là <strong>terrestrial planets</strong>. Loại "rocky planets" – tuy đúng một phần nhưng KHÔNG phải từ được ghi trong bài. Loại "outer planets" & "giant planets" vì đó là các hành tinh hoàn toàn khác (Jupiter, Saturn…).
+      </div>
+    </div>
+
+    <!-- MC 2 -->
+    <div class="mc-card" id="mc2">
+      <div class="mc-q"><span class="q-num">2</span>&nbsp; Why can't people live on Mercury?</div>
+      <div class="mc-opts" id="mc2o"></div>
+      <div class="mc-exp" id="mc2e">
+        <strong>✅ Đáp án đúng: Extreme temperatures &amp; thin atmosphere</strong><br>
+        📖 <em>Dẫn chứng:</em> "The <strong>extreme temperatures</strong> alone make it a very unlikely place for life. With an <strong>atmosphere too thin</strong> for human breathing…"<br>
+        🇻🇳 <em>Dịch:</em> "Chỉ riêng <strong>nhiệt độ cực đoan</strong> đã khiến nó khó có sự sống. Với <strong>bầu khí quyển quá mỏng</strong>…"<br>
+        💡 Bài đọc nêu HAI lý do rõ ràng: (1) nhiệt độ cực đoan và (2) khí quyển quá mỏng. Loại "no sunlight" – sai, Mercury rất gần mặt trời. Loại "too far from sun" – sai, Mercury GẦN nhất. Loại "too much CO₂" – đó là Venus.
+      </div>
+    </div>
+
+    <!-- MC 3 -->
+    <div class="mc-card" id="mc3">
+      <div class="mc-q"><span class="q-num">3</span>&nbsp; What is the atmosphere of Venus primarily composed of?</div>
+      <div class="mc-opts" id="mc3o"></div>
+      <div class="mc-exp" id="mc3e">
+        <strong>✅ Đáp án đúng: Carbon dioxide (CO₂)</strong><br>
+        📖 <em>Dẫn chứng:</em> "Below clouds of sulfuric gas lies <strong>96% carbon dioxide atmosphere</strong>."<br>
+        🇻🇳 <em>Dịch:</em> "Bên dưới những đám mây khí lưu huỳnh là bầu khí quyển chứa <strong>96% carbon dioxide</strong>."<br>
+        💡 Bài đọc nêu rõ con số 96% CO₂. Loại "oxygen" & "nitrogen" – là thành phần chính của Trái Đất. Loại "sulfur" – sulfur chỉ có ở các đám mây phía trên (clouds), không phải thành phần chủ đạo khí quyển Venus.
+      </div>
+    </div>
+
+    <!-- MC 4 -->
+    <div class="mc-card" id="mc4">
+      <div class="mc-q"><span class="q-num">4</span>&nbsp; Which planet is hotter, Mercury or Venus?</div>
+      <div class="mc-opts" id="mc4o"></div>
+      <div class="mc-exp" id="mc4e">
+        <strong>✅ Đáp án đúng: Venus (Sao Kim)</strong><br>
+        📖 <em>Dẫn chứng:</em> Mercury: "as hot as <strong>427°C</strong>" (chỉ mặt hướng mặt trời). Venus: "maintained at <strong>462°C</strong>, no matter where you go."<br>
+        🇻🇳 <em>Dịch:</em> Mercury nóng tới 427°C (một mặt). Venus <strong>462°C</strong> ở khắp mọi nơi.<br>
+        💡 Mặc dù Mercury gần mặt trời hơn, <strong>Venus NÓNG HƠN</strong> (462°C &gt; 427°C) do hiệu ứng nhà kính từ 96% CO₂ giữ nhiệt. Loại "Mercury" vì 427°C &lt; 462°C. Loại "same temperature" – sai rõ ràng.
+      </div>
+    </div>
+
+    <!-- MC 5 -->
+    <div class="mc-card" id="mc5">
+      <div class="mc-q"><span class="q-num">5</span>&nbsp; Is Earth the only planet with water in liquid form on its surface?</div>
+      <div class="mc-opts" id="mc5o"></div>
+      <div class="mc-exp" id="mc5e">
+        <strong>✅ Đáp án đúng: Yes, it is.</strong><br>
+        📖 <em>Dẫn chứng:</em> "Earth is the <strong>only planet known to have liquid water</strong>."<br>
+        🇻🇳 <em>Dịch:</em> "Trái Đất là <strong>hành tinh duy nhất</strong> được biết đến là có nước ở dạng lỏng."<br>
+        💡 Từ "<strong>only</strong>" xác nhận Trái Đất là duy nhất. Loại "No, Mars also has liquid water" – bài đọc nói scientists "have NOT been able to find actual water on Mars." Loại "No, Venus" – không có đề cập.
+      </div>
+    </div>
+
+    <!-- MC 6 -->
+    <div class="mc-card" id="mc6">
+      <div class="mc-q"><span class="q-num">6</span>&nbsp; What land features of Mars are similar to Earth's?</div>
+      <div class="mc-opts" id="mc6o"></div>
+      <div class="mc-exp" id="mc6e">
+        <strong>✅ Đáp án đúng: Canyons and mountains</strong><br>
+        📖 <em>Dẫn chứng:</em> "Its <strong>canyons and mountains</strong> are very similar to those found on Earth."<br>
+        🇻🇳 <em>Dịch:</em> "Các <strong>hẻm núi và núi</strong> của Sao Hỏa rất giống với những gì được tìm thấy trên Trái Đất."<br>
+        💡 Bài đọc chỉ đề cập "canyons and mountains" (hẻm núi và núi). Loại "oceans and rivers" – không có đại dương trên Mars. Loại "volcanoes and craters" và "plains and deserts" – không được đề cập trong bài.
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button class="btn-submit" onclick="submitAll()">🚀 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+    </div>
+  </div><!-- end right panel -->
+
+</div><!-- end split-wrapper -->
+
+</div><!-- end #app -->
+
+<!-- ════ TIMEOUT MODAL ════ -->
+<div class="overlay" id="toModal">
+  <div class="timeout-card">
+    <h2>⏰ Đã hết giờ làm bài!</h2>
+    <p>Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong <strong>10 phút</strong> thôi nha! 💪 Hãy luyện tập để làm nhanh hơn nhé!</p>
+    <button class="btn-close-to" onclick="closeTO()">Tôi hiểu rồi! ✨</button>
+  </div>
+</div>
+
+<!-- ════ SCORE MODAL ════ -->
+<div class="overlay" id="scoreModal">
+  <div class="score-card">
+    <div class="score-emoji" id="sEmoji">🚀</div>
+    <div class="score-title" id="sTitle">Kết quả làm bài</div>
+    <div class="score-nums" id="sNums">0/22</div>
+    <div class="score-of">câu trả lời đúng</div>
+    <div class="score-msg" id="sMsg"></div>
+    <div class="score-breakdown" id="sBreak"></div>
+    <button class="btn-retry" onclick="location.reload()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<!-- ════ CONFETTI ════ -->
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<script>
+// ══════════════════════════════
+// AUDIO
+// ══════════════════════════════
+let actx=null;
+function getAC(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function ding(){
+  try{const c=getAC(),o=c.createOscillator(),g=c.createGain();
+  o.connect(g);g.connect(c.destination);
+  o.frequency.setValueAtTime(523,c.currentTime);
+  o.frequency.setValueAtTime(659,c.currentTime+.1);
+  o.frequency.setValueAtTime(784,c.currentTime+.2);
+  g.gain.setValueAtTime(.25,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.55);
+  o.start();o.stop(c.currentTime+.55);}catch(e){}
+}
+function buzz(){
+  try{const c=getAC(),o=c.createOscillator(),g=c.createGain();
+  o.type='sawtooth';o.connect(g);g.connect(c.destination);
+  o.frequency.setValueAtTime(280,c.currentTime);
+  o.frequency.setValueAtTime(190,c.currentTime+.15);
+  o.frequency.setValueAtTime(140,c.currentTime+.32);
+  g.gain.setValueAtTime(.18,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.55);
+  o.start();o.stop(c.currentTime+.55);}catch(e){}
+}
+
+// ══════════════════════════════
+// CONFETTI
+// ══════════════════════════════
+const COLORS=['#fbbf24','#7c3aed','#06b6d4','#00D26A','#f0abfc','#67e8f9','#ff6b6b'];
+function confetti(n=55){
+  const lay=document.getElementById('confettiLayer');
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      const sz=6+Math.random()*8;
+      d.style.cssText=`position:absolute;width:${sz}px;height:${sz}px;border-radius:${Math.random()>0.5?'50%':'3px'};
+        background:${COLORS[Math.floor(Math.random()*COLORS.length)]};
+        left:${Math.random()*100}vw;top:-12px;
+        animation:cfall ${1.2+Math.random()*1.8}s linear forwards;
+        transform:rotate(${Math.random()*360}deg);`;
+      lay.appendChild(d);
+      setTimeout(()=>d.remove(),3500);
+    },i*28);
+  }
+}
+const cStyle=document.createElement('style');
+cStyle.textContent='@keyframes cfall{to{transform:translateY(105vh) rotate(900deg);opacity:0;}}';
+document.head.appendChild(cStyle);
+
+// ══════════════════════════════
+// TIMER
+// ══════════════════════════════
+let tLeft=600,tPaused=false,tInt=null;
+function startTimer(){
+  document.getElementById('startBtn').style.display='none';
+  document.getElementById('countdown').style.display='block';
+  document.getElementById('pauseBtn').style.display='block';
+  tInt=setInterval(()=>{
+    if(!tPaused){
+      tLeft--;updateCD();
+      if(tLeft<=0){clearInterval(tInt);document.getElementById('toModal').classList.add('show');}
+    }
+  },1000);
+}
+function updateCD(){
+  const m=String(Math.floor(tLeft/60)).padStart(2,'0'),s=String(tLeft%60).padStart(2,'0');
+  const el=document.getElementById('countdown');el.textContent=`${m}:${s}`;
+  el.style.color=tLeft<=60?'#FF4757':tLeft<=180?'#fbbf24':'var(--gold)';
+}
+function togglePause(){
+  tPaused=!tPaused;
+  document.getElementById('pauseBtn').textContent=tPaused?'▶️ Tiếp tục':'⏸️ Tạm dừng';
+}
+function closeTO(){document.getElementById('toModal').classList.remove('show');}
+
+// ══════════════════════════════
+// TRANSLATION TOGGLE
+// ══════════════════════════════
+function toggleTr(id,btn){
+  const b=document.getElementById(id),on=b.classList.toggle('show');
+  btn.textContent=on?'🔽 Đóng bản dịch':'🌟 Mở bản dịch đoạn này';
+}
+
+// ══════════════════════════════
+// PART I — FILL IN BLANK
+// ══════════════════════════════
+const P1ANS=['universe','down','missions','survive','surface','frozen','might','explore'];
+let p1score=0;
+
+function chkBlank(sel,correct,num){
+  if(sel.disabled)return;
+  const expEl=document.getElementById('e'+num);
+  expEl.classList.add('show');
+  if(sel.value===correct){
+    sel.classList.add('correct');sel.disabled=true;
+    ding();p1score++;
+  } else {
+    sel.classList.add('wrong');buzz();
+    setTimeout(()=>{
+      sel.value=correct;sel.classList.remove('wrong');sel.classList.add('correct');sel.disabled=true;
+    },900);
+  }
+}
+
+function checkAllP1(){
+  let correct=0;
+  P1ANS.forEach((ans,i)=>{
+    const sel=document.getElementById('b'+(i+1));
+    const expEl=document.getElementById('e'+(i+1));
+    expEl.classList.add('show');
+    if(!sel.disabled){
+      if(sel.value===ans){sel.classList.add('correct');sel.disabled=true;correct++;}
+      else{sel.classList.add('wrong');sel.value=ans;sel.disabled=true;
+        setTimeout(()=>{sel.classList.remove('wrong');sel.classList.add('correct');},400);}
+    } else if(sel.classList.contains('correct'))correct++;
+  });
+  const sc=document.getElementById('scoreP1');sc.classList.add('show');
+  const pct=Math.round(correct/8*100);
+  sc.innerHTML=`📊 Phần I: <strong>${correct}/8</strong> câu đúng (${pct}%) &nbsp;${pct===100?'🎉 Hoàn hảo!':pct>=75?'👍 Tốt lắm!':'💪 Xem lại giải thích nhé!'}`;
+  p1score=correct;
+  if(pct===100)confetti(80);
+}
+
+// ══════════════════════════════
+// SECTION A — TRUE / FALSE
+// ══════════════════════════════
+let tfScore=0;
+
+function chkTF(btn,userAns,correctAns,expId){
+  const card=btn.closest('.tf-card');
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  const btns=card.querySelectorAll('.tf-btn');
+  btns.forEach(b=>b.classList.add('locked'));
+  document.getElementById(expId).classList.add('show');
+  if(userAns===correctAns){
+    btn.classList.add('ok');ding();confetti(45);tfScore++;
+  } else {
+    btn.classList.add('bad');buzz();
+    btns.forEach(b=>{
+      const isCorrect=(correctAns===true&&b.classList.contains('t-btn'))||(correctAns===false&&b.classList.contains('f-btn'));
+      if(isCorrect)b.classList.add('reveal');
+    });
+  }
+}
+
+// ══════════════════════════════
+// SECTION B — MULTIPLE CHOICE
+// ══════════════════════════════
+const MCQ=[
+  {id:'mc1',optsId:'mc1o',expId:'mc1e',
+   correct:'Terrestrial planets (các hành tinh mặt đất/hành tinh đá)',
+   opts:['Rocky planets (các hành tinh đá)','Terrestrial planets (các hành tinh mặt đất/hành tinh đá)',
+         'Outer planets (các hành tinh ngoài hệ mặt trời)','Giant planets (các hành tinh khổng lồ)']},
+  {id:'mc2',optsId:'mc2o',expId:'mc2e',
+   correct:'Because it has extreme temperatures and a very thin atmosphere.',
+   opts:['Because there is no sunlight on Mercury at all.',
+         'Because it has extreme temperatures and a very thin atmosphere.',
+         'Because Mercury is too far from the Sun.',
+         'Because its atmosphere contains too much carbon dioxide.']},
+  {id:'mc3',optsId:'mc3o',expId:'mc3e',
+   correct:'Carbon dioxide (khí CO₂)',
+   opts:['Oxygen (oxy – O₂)','Nitrogen (khí nitơ – N₂)',
+         'Carbon dioxide (khí CO₂)','Sulfur gas (khí lưu huỳnh)']},
+  {id:'mc4',optsId:'mc4o',expId:'mc4e',
+   correct:'Venus – because its thick CO₂ atmosphere traps heat.',
+   opts:['Mercury – because it is the closest planet to the Sun.',
+         'Venus – because its thick CO₂ atmosphere traps heat.',
+         'They have the same temperature.',
+         'It depends on the time of year.']},
+  {id:'mc5',optsId:'mc5o',expId:'mc5e',
+   correct:'Yes, it is the only planet known to have liquid water.',
+   opts:['No, Mars also has liquid water on its surface.',
+         'No, Venus also has some liquid water near the poles.',
+         'Yes, it is the only planet known to have liquid water.',
+         'Yes, but this could change in the future.']},
+  {id:'mc6',optsId:'mc6o',expId:'mc6e',
+   correct:'Canyons and mountains (hẻm núi và núi)',
+   opts:['Oceans and rivers (đại dương và sông ngòi)',
+         'Volcanoes and craters (núi lửa và miệng hố thiên thạch)',
+         'Canyons and mountains (hẻm núi và núi)',
+         'Plains and deserts (đồng bằng và sa mạc)']}
+];
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+let mcScore=0;
+
+function renderMC(){
+  const LABELS=['A','B','C','D'];
+  MCQ.forEach(q=>{
+    const con=document.getElementById(q.optsId);
+    const shuffled=shuffle(q.opts);
+    shuffled.forEach((txt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='mc-opt';
+      btn.innerHTML=`<strong>${LABELS[i]}.</strong> ${txt}`;
+      btn.dataset.txt=txt;
+      btn.onclick=()=>handleMC(btn,q);
+      con.appendChild(btn);
+    });
+  });
+}
+
+function handleMC(btn,q){
+  const card=document.getElementById(q.id);
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  const allBtns=document.getElementById(q.optsId).querySelectorAll('.mc-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  document.getElementById(q.expId).classList.add('show');
+  if(btn.dataset.txt===q.correct){
+    btn.classList.add('correct');ding();confetti(50);mcScore++;
+  } else {
+    btn.classList.add('wrong');buzz();
+    allBtns.forEach(b=>{if(b.dataset.txt===q.correct)b.classList.add('correct');});
+  }
+}
+
+// ══════════════════════════════
+// SUBMIT ALL
+// ══════════════════════════════
+function submitAll(){
+  // Force reveal any unanswered blanks
+  P1ANS.forEach((ans,i)=>{
+    const sel=document.getElementById('b'+(i+1));
+    if(!sel.disabled){document.getElementById('e'+(i+1)).classList.add('show');}
+  });
+  // Force reveal any unanswered TF
+  document.querySelectorAll('.tf-card').forEach((c,i)=>{
+    if(!c.dataset.done){document.getElementById('tf'+(i+1)+'e').classList.add('show');}
+  });
+  // Force reveal any unanswered MC
+  MCQ.forEach(q=>{
+    const c=document.getElementById(q.id);
+    if(!c.dataset.done){document.getElementById(q.expId).classList.add('show');}
+  });
+
+  // Recalculate p1score from DOM
+  let p1c=0;
+  P1ANS.forEach((ans,i)=>{
+    const s=document.getElementById('b'+(i+1));
+    if(s.classList.contains('correct'))p1c++;
+  });
+
+  const total=22;
+  const grand=p1c+tfScore+mcScore;
+  const pct=Math.round(grand/total*100);
+
+  document.getElementById('sNums').textContent=`${grand}/${total}`;
+  document.getElementById('sBreak').innerHTML=
+    `📝 Phần I (Điền từ): <strong>${p1c}/8</strong> câu đúng<br>`+
+    `🅰️ Phần II-A (True/False): <strong>${tfScore}/8</strong> câu đúng<br>`+
+    `🅱️ Phần II-B (Multiple Choice): <strong>${mcScore}/6</strong> câu đúng<br>`+
+    `📊 Tổng cộng: <strong>${grand}/22</strong> — ${pct}%`;
+
+  let emoji,title,msg;
+  if(pct===100){emoji='🏆';title='THIÊN TÀI VŨ TRỤ!';msg='Bạn đã đạt điểm tuyệt đối! Xuất sắc hoàn toàn! Bạn chính là ngôi sao sáng nhất! 🌟';confetti(120);}
+  else if(pct>=85){emoji='🌟';title='XUẤT SẮC!';msg='Gần hoàn hảo rồi! Xem lại những câu sai để đạt 100% lần sau nha! 💪';confetti(80);}
+  else if(pct>=70){emoji='😊';title='LÀM TỐT LẮM!';msg='Rất tốt! Bạn đã nắm phần lớn nội dung. Ôn lại phần giải thích để hoàn thiện hơn nhé! 📚';}
+  else if(pct>=50){emoji='😐';title='CỐ LÊN NHÉ!';msg='Được rồi đó! Đọc kỹ lại bài đọc và xem phần giải thích từng câu. Lần sau chắc chắn tốt hơn! 🌈';}
+  else{emoji='💙';title='HÃY THỬ LẠI!';msg='Đừng nản lòng! Đọc kỹ bài, xem hết giải thích rồi ấn "Làm lại" – bạn sẽ làm được thôi! 🚀';}
+
+  document.getElementById('sEmoji').textContent=emoji;
+  document.getElementById('sTitle').textContent=title;
+  document.getElementById('sMsg').textContent=msg;
+  document.getElementById('scoreModal').classList.add('show');
+  ding();
+}
+
+// ══════════════════════════════
+// INIT
+// ══════════════════════════════
+renderMC();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

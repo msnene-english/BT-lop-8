@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Test - MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --correct: #00D26A;
+  --wrong: #FF4757;
+  --primary: #8854C0;
+  --accent: #FDCB6E;
+  --teal: #00C9A7;
+  --card: #ffffffeb;
+  --radius: 18px;
+  --shadow: 0 8px 32px rgba(136, 84, 192, 0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; min-height: 100vh; overflow-x: hidden; color: #2d3436; }
+
+/* Background Mèo & Hoa */
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #8854C0, #FDCB6E, #00C9A7, #FF9FF3, #54a0ff, #00d2d3);
+  background-size: 400% 400%;
+  animation: gradMove 16s ease infinite;
+}
+@keyframes gradMove { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+
+.bg-pattern {
+  position: fixed; inset: 0; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Ctext x='20' y='40' font-size='28' opacity='0.8'%3E🐱%3C/text%3E%3Ctext x='120' y='90' font-size='26' opacity='0.75'%3E🌸%3C/text%3E%3Ctext x='180' y='30' font-size='24' opacity='0.8'%3E🐾%3C/text%3E%3Ctext x='50' y='160' font-size='30' opacity='0.8'%3E🐈%3C/text%3E%3Ctext x='160' y='200' font-size='28' opacity='0.75'%3E🌺%3C/text%3E%3Ctext x='220' y='140' font-size='24' opacity='0.7'%3E🌻%3C/text%3E%3Ctext x='80' y='230' font-size='26' opacity='0.8'%3E😺%3C/text%3E%3C/svg%3E");
+  background-size: 250px 250px;
+  mix-blend-mode: overlay;
+  animation: patDrift 35s linear infinite;
+  pointer-events: none;
+}
+@keyframes patDrift { 0% { background-position: 0 0 } 100% { background-position: 250px 250px } }
+
+/* Cấu trúc chính */
+#mainContent { display: none; position: relative; z-index: 2; max-width: 820px; margin: 0 auto; padding: 16px 14px 60px; }
+.header {
+  text-align: center; padding: 18px 20px 14px;
+  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(12px);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  margin-bottom: 22px; border: 2px solid rgba(255, 255, 255, 0.5);
+}
+.header h1 { font-size: 1.6rem; font-weight: 900; color: #8854C0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+.header p { font-size: 0.95rem; font-weight: 700; color: #2d3436; margin-top: 4px; }
+.header .teacher { font-size: 0.85rem; font-weight: 800; color: #d35400; margin-top: 4px; background: #ffeaa7; display: inline-block; padding: 3px 12px; border-radius: 20px; }
+
+.score-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+  border-radius: 50px; padding: 10px 20px; margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); font-weight: 800; font-size: 1.05rem;
+}
+.score-bar span { color: #8854C0; }
+
+.q-card {
+  background: var(--card); backdrop-filter: blur(10px);
+  border-radius: var(--radius); padding: 22px; margin-bottom: 20px;
+  box-shadow: var(--shadow); border: 2.5px solid rgba(255,255,255,0.6);
+  transition: border 0.3s;
+}
+.q-card.answered { border-color: #00C9A7; }
+.q-num {
+  font-size: 0.85rem; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, #8854C0, #a29bfe);
+  border-radius: 50px; padding: 4px 14px; display: inline-block; margin-bottom: 12px;
+}
+.q-text { font-size: 1.15rem; font-weight: 800; color: #2d3436; margin-bottom: 16px; line-height: 1.6; }
+.q-text u { text-decoration: underline; color: #d63031; text-underline-offset: 3px; }
+
+/* Nút đáp án thẻ bài */
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.opt {
+  padding: 15px 20px; border-radius: 16px; border: 2px solid #dfe6e9;
+  background: #fff; font-size: 1.08rem; font-weight: 700; color: #2d3436;
+  cursor: pointer; text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  box-shadow: 0 6px 0 #dfe6e9; user-select: none;
+}
+.opt:hover:not(.disabled) { transform: translateY(-3px); box-shadow: 0 9px 0 #b2bec3; border-color: #b2bec3; }
+.opt:active:not(.disabled) { transform: translateY(3px); box-shadow: 0 3px 0 #b2bec3; }
+.opt.correct { background: #d4fce8; border-color: var(--correct); color: #006837; box-shadow: 0 6px 0 #00a854; transform: translateY(-2px); }
+.opt.wrong { background: #ffe0e3; border-color: var(--wrong); color: #b71c1c; box-shadow: 0 6px 0 #c0392b; animation: shakeOpt 0.4s ease; }
+.opt.disabled { cursor: not-allowed; pointer-events: none; }
+@keyframes shakeOpt { 0%, 100% { transform: translateX(0) } 20% { transform: translateX(-8px) } 40% { transform: translateX(8px) } 60% { transform: translateX(-6px) } 80% { transform: translateX(6px) } }
+
+/* Giải thích */
+.explanation {
+  margin-top: 18px; background: #fff; border-radius: 14px;
+  border: 2px dashed #00C9A7; padding: 16px; font-size: 1rem; line-height: 1.7;
+  display: none; animation: fadeIn 0.4s ease;
+}
+.explanation.show { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px) } to { opacity: 1; transform: translateY(0) } }
+
+/* Style Dịch & Phân tích */
+.vietnamese-translation { background: #ffeaa7; color: #d35400; padding: 12px 16px; border-radius: 10px; font-weight: 800; margin-bottom: 12px; border-left: 6px solid #e17055; font-size: 1.05rem; }
+.p-word { color: #0984e3; font-weight: 800; }
+.p-phonetic { background: #e0d4f5; color: #6c5ce7; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-weight: bold; }
+.p-mean { color: #d35400; font-weight: 700; }
+.p-grammar { text-decoration: underline; text-decoration-color: #e84118; text-decoration-thickness: 2px; color: #c23616; font-weight: 800; }
+.hl-green { color: #00b894; font-weight: 900; background: #e8f8f5; padding: 2px 6px; border-radius: 4px; }
+.hl-red { color: #d63031; text-decoration: line-through; font-weight: 700; background: #ffeded; padding: 2px 6px; border-radius: 4px; }
+.step-title { font-weight: 900; color: #8854C0; margin-top: 10px; margin-bottom: 4px; display: block; border-bottom: 2px solid #f1f2f6; padding-bottom: 4px; }
+
+/* Biển báo */
+.sign-box { border: 4px solid #27ae60; border-radius: 12px; padding: 16px; background: #e8f5e9; text-align: center; max-width: 300px; margin: 10px auto; font-family: 'Arial', sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.sign-box.green-sign { background: #1e6c41; color: white; border-color: #fff; outline: 3px solid #1e6c41; }
+.sign-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; font-style: italic; }
+.sign-main { font-size: 1.4rem; font-weight: 900; border-top: 3px solid white; border-bottom: 3px solid white; padding: 8px 0; }
+.notice-box { border: 3px solid #74b9ff; border-radius: 16px; padding: 20px; background: #fff; text-align: center; max-width: 400px; margin: 10px auto; color: #0984e3; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(9, 132, 227, 0.15); }
+
+/* Nút Submit */
+.submit-btn {
+  display: block; width: 100%; padding: 18px; font-family: 'Nunito', sans-serif; font-size: 1.3rem; font-weight: 900;
+  background: linear-gradient(135deg, #0984e3, #6c5ce7); color: #fff; border: none; border-radius: 20px; cursor: pointer;
+  box-shadow: 0 8px 0 #0652a3, 0 15px 20px rgba(9,132,227,0.3); transition: transform 0.15s, box-shadow 0.15s; margin-top: 30px; letter-spacing: 1px;
+}
+.submit-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 0 #0652a3, 0 20px 25px rgba(9,132,227,0.4); }
+.submit-btn:active { transform: translateY(4px); box-shadow: 0 4px 0 #0652a3; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+.modal-overlay.hidden { display: none; }
+.modal-box { background: #fff; border-radius: 28px; padding: 36px 30px; max-width: 460px; width: 92%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); border: 4px solid #FDCB6E; }
+.modal-box h2 { font-size: 1.8rem; font-weight: 900; color: #8854C0; margin-bottom: 12px; }
+.name-input { width: 100%; padding: 16px; border-radius: 16px; border: 3px solid #dfe6e9; font-family: 'Nunito', sans-serif; font-size: 1.15rem; font-weight: 700; text-align: center; outline: none; transition: 0.3s; background: #f8f9fa; }
+.name-input:focus { border-color: #8854C0; background: #fff; box-shadow: 0 0 0 4px rgba(136, 84, 192, 0.2); }
+.name-input.error { border-color: #FF4757; animation: shakeOpt 0.4s ease; }
+.modal-btn { margin-top: 20px; padding: 14px 30px; font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; background: #00C9A7; color: #fff; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 0 #00997f; transition: transform 0.15s; width: 100%; }
+.modal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #00997f; }
+.modal-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #00997f; }
+
+/* Password Modal CSS */
+#passwordModal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(5,2,15,0.92); backdrop-filter: blur(20px); }
+.pw-card { background: linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%); border: 1.5px solid rgba(240,192,64,0.4); border-radius: 24px; padding: 48px 40px 40px; max-width: 440px; width: 93%; text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15); }
+.pw-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #6A0572, #F0C040, #6A0572); }
+.pw-crest { font-size: 4rem; margin-bottom: 8px; display: block; }
+.pw-title { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; color: #F0C040; margin-bottom: 6px; letter-spacing: 1px; }
+.pw-sub { font-size: .87rem; color: rgba(200,200,212,0.6); margin-bottom: 24px; }
+.pw-input { width: 100%; padding: 13px 20px; border-radius: 12px; border: 1.5px solid rgba(240,192,64,0.3); background: rgba(255,255,255,0.05); color: #FFE082; font-size: 1rem; font-family: 'Nunito', sans-serif; outline: none; letter-spacing: 3px; text-align: center; transition: all .3s; }
+.pw-input:focus { border-color: #F0C040; box-shadow: 0 0 0 3px rgba(240,192,64,0.15); }
+.pw-input.error { border-color: #FF4757; box-shadow: 0 0 0 3px rgba(255,71,87,0.25); animation: shakeOpt .4s ease; }
+.pw-input::placeholder { color: rgba(200,200,212,0.3); letter-spacing: 1px; }
+.pw-btn { width: 100%; padding: 14px; margin-top: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%); color: #fff; font-size: 1rem; font-weight: 700; font-family: 'Cinzel', serif; cursor: pointer; letter-spacing: .5px; transition: transform .2s; }
+.pw-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(106,5,114,0.7); }
+.pw-err { color: #ff8a9a; font-size: .84rem; margin-top: 10px; display: none; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+<canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:999;"></canvas>
+
+<div id="mainContent">
+  <div class="header">
+    <h1>📝 ĐỀ 09 - CUỐI KỲ 2 LỚP 8</h1>
+    <p>Môn: Tiếng Anh</p>
+    <p class="teacher">👩‍🏫 Giáo viên tạo: MS Chí Nên ULIS</p>
+  </div>
+
+  <div class="score-bar">
+    <span>✅ Đúng: <span id="score-correct">0</span></span>
+    <span>❌ Sai: <span id="score-wrong">0</span></span>
+    <span>📊 Câu: <span id="score-progress">0</span>/16</span>
+  </div>
+
+  <div id="quiz-container"></div>
+  <button class="submit-btn" onclick="openNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ</button>
+</div>
+
+<div class="modal-overlay hidden" id="name-modal">
+  <div class="modal-box">
+    <h2>✏️ Bạn tên là gì nhỉ?</h2>
+    <input id="student-name" class="name-input" type="text" placeholder="Ví dụ: Nguyễn Văn A..." onkeydown="if(event.key==='Enter') showResult()">
+    <button class="modal-btn" onclick="showResult()">Xem kết quả ngay!</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="result-modal">
+  <div class="modal-box" style="padding: 20px;">
+    <h2 id="result-greeting"></h2>
+    <div style="font-size: 3.5rem; font-weight: 900; color: #00D26A; margin: 10px 0;" id="result-score"></div>
+    <img id="result-gif" src="" style="width:100%; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <button class="modal-btn" onclick="document.getElementById('result-modal').classList.add('hidden')">Xem lại bài thi</button>
+  </div>
+</div>
+
+<script>
+// Logic Màn Hình Khóa
+const _k  = [49, 54, 49, 49]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+
+// Dữ Liệu Đề Bài
+const quizData = [
+  {
+    q: "Question 1. Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.<br>A. b<u>u</u>ry &nbsp;&nbsp;&nbsp; B. d<u>u</u>mp &nbsp;&nbsp;&nbsp; C. instr<u>u</u>ct &nbsp;&nbsp;&nbsp; D. r<u>u</u>bbish",
+    opts: [
+      { text: "bury", correct: true },
+      { text: "dump", correct: false },
+      { text: "instruct", correct: false },
+      { text: "rubbish", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">1. Dịch đề: Chọn từ có phần gạch chân phát âm khác với ba từ còn lại.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>bury</span> <span class='p-phonetic'>/ˈberi/</span>: <span class='p-mean'>chôn cất</span></li>
+        <li>B. <span class='p-word'>dump</span> <span class='p-phonetic'>/dʌmp/</span>: <span class='p-mean'>vứt bỏ</span></li>
+        <li>C. <span class='p-word'>instruct</span> <span class='p-phonetic'>/ɪnˈstrʌkt/</span>: <span class='p-mean'>hướng dẫn</span></li>
+        <li>D. <span class='p-word'>rubbish</span> <span class='p-phonetic'>/ˈrʌbɪʃ/</span>: <span class='p-mean'>rác thải</span></li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Phần gạch chân ở đáp án A được phát âm là <span class='p-phonetic'>/e/</span>. <span class='hl-green'>=> Đáp án đúng: bury</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các từ ở đáp án B, C, D đều có phần gạch chân được phát âm là <span class='p-phonetic'>/ʌ/</span>. <span class='hl-red'>=> dump, instruct, rubbish sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 2. Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.<br>A. o<u>th</u>er &nbsp;&nbsp;&nbsp; B. bro<u>th</u>er &nbsp;&nbsp;&nbsp; C. lea<u>th</u>er &nbsp;&nbsp;&nbsp; D. weal<u>th</u>y",
+    opts: [
+      { text: "other", correct: false },
+      { text: "brother", correct: false },
+      { text: "leather", correct: false },
+      { text: "wealthy", correct: true }
+    ],
+    exp: `
+      <div class="vietnamese-translation">2. Dịch đề: Chọn từ có phần gạch chân phát âm khác với ba từ còn lại.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>other</span> <span class='p-phonetic'>/ˈʌð.ər/</span>: <span class='p-mean'>khác</span></li>
+        <li>B. <span class='p-word'>brother</span> <span class='p-phonetic'>/ˈbrʌð.ər/</span>: <span class='p-mean'>anh/em trai</span></li>
+        <li>C. <span class='p-word'>leather</span> <span class='p-phonetic'>/ˈleð.ər/</span>: <span class='p-mean'>da (chất liệu)</span></li>
+        <li>D. <span class='p-word'>wealthy</span> <span class='p-phonetic'>/ˈwel.θi/</span>: <span class='p-mean'>giàu có</span></li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Phần gạch chân ở đáp án D được phát âm là <span class='p-phonetic'>/θ/</span> (âm vô thanh). <span class='hl-green'>=> Đáp án đúng: wealthy</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các từ ở đáp án A, B, C đều có phần gạch chân phát âm là <span class='p-phonetic'>/ð/</span> (âm hữu thanh). <span class='hl-red'>=> other, brother, leather sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 3. Mark the letter A, B, C, or D to indicate the word that differs from the other three in the position of primary stress.",
+    opts: [
+      { text: "wonder", correct: true },
+      { text: "maintain", correct: false },
+      { text: "oppose", correct: false },
+      { text: "invent", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">3. Dịch đề: Chọn từ có vị trí trọng âm chính khác với ba từ còn lại.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>wonder</span> <span class='p-phonetic'>/ˈwʌn.dər/</span>: <span class='p-mean'>tự hỏi / kỳ quan</span> (Trọng âm 1)</li>
+        <li>B. <span class='p-word'>maintain</span> <span class='p-phonetic'>/meɪnˈteɪn/</span>: <span class='p-mean'>duy trì</span> (Trọng âm 2)</li>
+        <li>C. <span class='p-word'>oppose</span> <span class='p-phonetic'>/əˈpəʊz/</span>: <span class='p-mean'>phản đối</span> (Trọng âm 2)</li>
+        <li>D. <span class='p-word'>invent</span> <span class='p-phonetic'>/ɪnˈvent/</span>: <span class='p-mean'>phát minh</span> (Trọng âm 2)</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Từ 'wonder' có trọng âm rơi vào âm tiết thứ 1. <span class='hl-green'>=> Đáp án đúng: wonder</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các động từ 'maintain', 'oppose', 'invent' đều là động từ 2 âm tiết và có trọng âm rơi vào âm tiết thứ 2. <span class='hl-red'>=> maintain, oppose, invent sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 4. Mark the letter A, B, C, or D to indicate the word that differs from the other three in the position of primary stress.",
+    opts: [
+      { text: "habitable", correct: false },
+      { text: "promising", correct: false },
+      { text: "nomadic", correct: true },
+      { text: "marvelous", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">4. Dịch đề: Chọn từ có vị trí trọng âm chính khác với ba từ còn lại.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>habitable</span> <span class='p-phonetic'>/ˈhæb.ɪ.tə.bəl/</span>: <span class='p-mean'>có thể ở được</span> (Trọng âm 1)</li>
+        <li>B. <span class='p-word'>promising</span> <span class='p-phonetic'>/ˈprɒm.ɪ.sɪŋ/</span>: <span class='p-mean'>đầy hứa hẹn</span> (Trọng âm 1)</li>
+        <li>C. <span class='p-word'>nomadic</span> <span class='p-phonetic'>/nəʊˈmæd.ɪk/</span>: <span class='p-mean'>thuộc về du mục</span> (Trọng âm 2)</li>
+        <li>D. <span class='p-word'>marvelous</span> <span class='p-phonetic'>/ˈmɑː.vəl.əs/</span>: <span class='p-mean'>tuyệt diệu</span> (Trọng âm 1)</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Từ 'nomadic' có đuôi -ic nên trọng âm rơi vào âm tiết ngay trước nó (âm tiết 2). <span class='hl-green'>=> Đáp án đúng: nomadic</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các từ còn lại đều có trọng âm rơi vào âm tiết thứ 1. <span class='hl-red'>=> habitable, promising, marvelous sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 5. The workshop will start at 9:15. You should be ready _____________ 9:00.",
+    opts: [
+      { text: "by", correct: true },
+      { text: "on", correct: false },
+      { text: "for", correct: false },
+      { text: "in", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">5. Dịch đề: Buổi hội thảo sẽ bắt đầu lúc 9:15. Bạn nên sẵn sàng trước 9:00.</div>
+      <span class="step-title">1. Phân tích ngữ pháp & từ vựng:</span>
+      <ul>
+        <li><span class='p-grammar'>by + mốc thời gian</span>: <span class='p-mean'>trước hoặc muộn nhất là lúc đó</span>.</li>
+        <li><span class='p-grammar'>on / in / for</span>: <span class='p-mean'>không kết hợp với giờ cụ thể để chỉ giới hạn thời gian trong ngữ cảnh này.</span></li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Dựa vào nghĩa "hội thảo bắt đầu lúc 9:15", ta cần một giới từ mang nghĩa "trước lúc/chậm nhất là" 9:00. Cấu trúc <span class='p-grammar'>by + time</span> diễn tả sự việc phải hoàn thành trước mốc thời gian đó. <span class='hl-green'>=> Đáp án đúng: by</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Dùng "in" hay "on" với giờ cụ thể (9:00) là sai ngữ pháp (chỉ dùng "at 9:00" cho đúng giờ, nhưng nghĩa "tại đúng 9:00" không hợp lý bằng "trước 9:00" để chuẩn bị). <span class='hl-red'>=> on, for, in sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 6. You can’t have any chocolate! It’s _________!",
+    opts: [
+      { text: "your", correct: false },
+      { text: "yours", correct: false },
+      { text: "her", correct: false },
+      { text: "mine", correct: true }
+    ],
+    exp: `
+      <div class="vietnamese-translation">6. Dịch đề: Bạn không được ăn chút sô-cô-la nào đâu! Nó là của tôi!</div>
+      <span class="step-title">1. Phân tích ngữ pháp:</span>
+      <ul>
+        <li><span class='p-grammar'>your / her</span>: Tính từ sở hữu, bắt buộc phải có Danh từ đi kèm phía sau (VD: your chocolate).</li>
+        <li><span class='p-grammar'>yours / mine</span>: Đại từ sở hữu, đứng một mình không cần danh từ (mine = my chocolate).</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Câu nói "Bạn không được ăn!" thể hiện sự sở hữu thuộc về người nói. Vị trí cuối câu đứng một mình cần dùng Đại từ sở hữu ngôi thứ nhất "của tôi". <span class='hl-green'>=> Đáp án đúng: mine</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>"your" và "her" thiếu danh từ. "yours" (của bạn) mâu thuẫn về nghĩa (nếu là của bạn thì tại sao lại không được ăn?). <span class='hl-red'>=> your, yours, her sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 7. _________ and eye contact are examples of non-verbal communication.",
+    opts: [
+      { text: "Chatting", correct: false },
+      { text: "Video call", correct: false },
+      { text: "Body language", correct: true },
+      { text: "Voice message", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">7. Dịch đề: ______ và giao tiếp bằng mắt là những ví dụ của giao tiếp phi ngôn ngữ (không dùng lời nói).</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>Chatting</span>: <span class='p-mean'>Nhắn tin/Tán gẫu</span> (Dùng ngôn từ).</li>
+        <li>B. <span class='p-word'>Video call</span>: <span class='p-mean'>Gọi video</span> (Dùng ngôn từ).</li>
+        <li>C. <span class='p-word'>Body language</span>: <span class='p-mean'>Ngôn ngữ cơ thể</span> (Không dùng ngôn từ).</li>
+        <li>D. <span class='p-word'>Voice message</span>: <span class='p-mean'>Tin nhắn thoại</span> (Dùng ngôn từ).</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Từ khóa là <span class='p-word'>non-verbal communication</span> (giao tiếp phi ngôn ngữ). Ngôn ngữ cơ thể và ánh mắt là ví dụ điển hình nhất. <span class='hl-green'>=> Đáp án đúng: Body language</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Chatting, Video call và Voice message đều liên quan đến "verbal" (có sử dụng từ ngữ/âm thanh ngôn ngữ). <span class='hl-red'>=> Chatting, Video call, Voice message sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 8. “Can Mai translate French documents into Vietnamese?”<br>Jack wondered if Mai __________ translate French documents into Vietnamese.",
+    opts: [
+      { text: "can", correct: false },
+      { text: "would", correct: false },
+      { text: "could", correct: true },
+      { text: "might", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">8. Dịch đề: "Mai có thể dịch tài liệu tiếng Pháp sang tiếng Việt không?" -> Jack tự hỏi liệu Mai CÓ THỂ dịch...</div>
+      <span class="step-title">1. Phân tích ngữ pháp:</span>
+      <ul>
+        <li>Đây là cấu trúc <span class='p-grammar'>Reported Speech (Câu gián tiếp)</span> đối với câu hỏi Yes/No.</li>
+        <li>Quy tắc: Động từ lùi một thì. "Can" (Hiện tại) phải lùi về "Could" (Quá khứ).</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Trong câu trực tiếp dùng từ "Can", lùi thì chuẩn xác nhất sẽ là "could". <span class='hl-green'>=> Đáp án đúng: could</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>"can" chưa lùi thì. "would" là lùi thì của "will". "might" là lùi thì của "may". <span class='hl-red'>=> can, would, might sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 9. To enable students to have more interactions in online classes, our teachers let us work in _________.",
+    opts: [
+      { text: "epidemic", correct: false },
+      { text: "breakout rooms", correct: true },
+      { text: "experiment", correct: false },
+      { text: "recognition", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">9. Dịch đề: Để cho phép học sinh tương tác nhiều hơn trong các lớp học trực tuyến, giáo viên cho chúng tôi làm việc trong _________.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>epidemic</span>: <span class='p-mean'>dịch bệnh</span>.</li>
+        <li>B. <span class='p-word'>breakout rooms</span>: <span class='p-mean'>phòng chia nhỏ (trong Zoom/Meet)</span>.</li>
+        <li>C. <span class='p-word'>experiment</span>: <span class='p-mean'>cuộc thí nghiệm</span>.</li>
+        <li>D. <span class='p-word'>recognition</span>: <span class='p-mean'>sự công nhận</span>.</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Cụm từ <span class='p-word'>online classes</span> (lớp học trực tuyến) và làm việc nhóm đi liền với tính năng <span class='p-word'>breakout rooms</span> phổ biến trên các nền tảng học online. <span class='hl-green'>=> Đáp án đúng: breakout rooms</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các từ còn lại hoàn toàn không phù hợp với ngữ cảnh lớp học trực tuyến. <span class='hl-red'>=> epidemic, experiment, recognition sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 10. To check _________, students now just scan their fingerprints on those machines.",
+    opts: [
+      { text: "attentive", correct: false },
+      { text: "attention", correct: false },
+      { text: "attendant", correct: false },
+      { text: "attendance", correct: true }
+    ],
+    exp: `
+      <div class="vietnamese-translation">10. Dịch đề: Để điểm danh, học sinh hiện nay chỉ cần quét vân tay trên những chiếc máy đó.</div>
+      <span class="step-title">1. Phân tích từ vựng (Word form):</span>
+      <ul>
+        <li>A. <span class='p-word'>attentive</span> (adj): <span class='p-mean'>chăm chú</span>.</li>
+        <li>B. <span class='p-word'>attention</span> (n): <span class='p-mean'>sự chú ý</span> (Ví dụ: pay attention).</li>
+        <li>C. <span class='p-word'>attendant</span> (n): <span class='p-mean'>người phục vụ</span>.</li>
+        <li>D. <span class='p-word'>attendance</span> (n): <span class='p-mean'>sự tham dự / sự điểm danh</span>.</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Cụm từ vựng cố định (Collocation): <span class='p-grammar'>check attendance</span> = điểm danh. Việc quét vân tay (scan fingerprints) chính là hành động để điểm danh. <span class='hl-green'>=> Đáp án đúng: attendance</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Sai từ loại (attentive) hoặc sai hoàn toàn về nghĩa trong ngữ cảnh trường học. <span class='hl-red'>=> attentive, attention, attendant sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 11. _________ is the force that causes something to fall to the ground.",
+    opts: [
+      { text: "air", correct: false },
+      { text: "force", correct: false },
+      { text: "gravity", correct: true },
+      { text: "pressure", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">11. Dịch đề: _______ là lực khiến cho một vật rơi xuống mặt đất.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li>A. <span class='p-word'>air</span>: <span class='p-mean'>không khí</span>.</li>
+        <li>B. <span class='p-word'>force</span>: <span class='p-mean'>lực nói chung</span>.</li>
+        <li>C. <span class='p-word'>gravity</span>: <span class='p-mean'>trọng lực / lực hấp dẫn</span>.</li>
+        <li>D. <span class='p-word'>pressure</span>: <span class='p-mean'>áp suất</span>.</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Theo định nghĩa khoa học vật lý cơ bản, lực kéo vật thể rơi xuống bề mặt Trái Đất chính là trọng lực (Gravity). <span class='hl-green'>=> Đáp án đúng: gravity</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Các khái niệm kia không có chức năng hút vật thể rơi xuống đất. <span class='hl-red'>=> air, force, pressure sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 12. - Nick: Do you think we will live on the moon one day?<br>- Hoa: _________",
+    opts: [
+      { text: "No, I can't.", correct: false },
+      { text: "I'm not sure about it.", correct: true },
+      { text: "I won't live on the moon.", correct: false },
+      { text: "Yes, the moon is far from us.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">12. Dịch đề: - Nick: Bạn có nghĩ một ngày nào đó chúng ta sẽ sống trên mặt trăng không? | - Hoa: _________</div>
+      <span class="step-title">1. Phân tích đáp án giao tiếp:</span>
+      <ul>
+        <li>A. Không, tôi không thể. (Sai ngữ pháp vì câu hỏi dùng "Do you think...", không phải "Can you...")</li>
+        <li>B. Tôi không chắc chắn về điều đó. (Hợp lý, thể hiện sự hoài nghi về dự đoán tương lai).</li>
+        <li>C. Tôi sẽ không sống trên mặt trăng. (Trả lời quá cá nhân, không phản hồi trực tiếp vào ý "Do you think WE will...").</li>
+        <li>D. Có, mặt trăng ở xa chúng ta. (Lý do "ở xa" mâu thuẫn với việc đồng ý "Có").</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Đáp án B thể hiện sự phản hồi tự nhiên nhất đối với một câu hỏi suy đoán về tương lai chưa chắc chắn. <span class='hl-green'>=> Đáp án đúng: I'm not sure about it.</span></p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Sai cấu trúc trả lời hoặc mâu thuẫn logic trong giao tiếp. <span class='hl-red'>=> A, C, D sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 17. Put the sentences (a-c) in the correct order, then fill in the blank.<br>Most Vietnamese families have customs and traditions that they have observed for many generations. Firstly, they worship their ancestors... _____<br><br>a. Secondly, they take part in many national and regional festivals...<br>b. That's the way they show their gratitude...<br>c. Thirdly, they celebrate many holidays...",
+    opts: [
+      { text: "b - c - a", correct: false },
+      { text: "a - c - b", correct: true },
+      { text: "b - a - c", correct: false },
+      { text: "c - b - c", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">17. Dịch đề: Sắp xếp các câu (a-c) theo đúng thứ tự logic của đoạn văn liệt kê.</div>
+      <span class="step-title">1. Phân tích Logic:</span>
+      <ul>
+        <li>Câu trước chỗ trống đã có từ nối <span class='p-grammar'>"Firstly"</span> (Đầu tiên).</li>
+        <li>Đương nhiên tiếp theo phải là <span class='p-grammar'>"Secondly" (a)</span>, rồi đến <span class='p-grammar'>"Thirdly" (c)</span>.</li>
+        <li>Câu (b) "That's the way..." (Đó là cách...) mang tính chất tổng kết các hành động trên.</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Sắp xếp theo thứ tự liệt kê rõ ràng Firstly -> Secondly -> Thirdly -> Kết luận. Ta có trật tự là a -> c -> b. <span class='hl-green'>=> Đáp án đúng: a - c - b</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>Làm lộn xộn các từ nối chỉ trình tự Secondly, Thirdly. <span class='hl-red'>=> b-c-a, b-a-c, c-b-c sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 18. Choose the sentence that can end the text (in Question 17) most appropriately.",
+    opts: [
+      { text: "They also show their interests in all festivals and holidays.", correct: false },
+      { text: "Next, celebrating holidays can make generations close to each other.", correct: false },
+      { text: "Finally, every generation can live happily together.", correct: false },
+      { text: "In this way, they keep their traditions alive and pass them down to the next generation.", correct: true }
+    ],
+    exp: `
+      <div class="vietnamese-translation">18. Dịch đề: Chọn câu phù hợp nhất để làm câu kết luận cho đoạn văn (ở câu 17).</div>
+      <span class="step-title">1. Phân tích nội dung đoạn:</span>
+      <p>Đoạn văn nói về các gia đình Việt Nam giữ gìn phong tục tập quán (customs and traditions) qua các thế hệ bằng việc thờ cúng, đi lễ hội, đón ngày lễ...</p>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Câu kết luận xuất sắc nhất là thâu tóm lại chủ đề truyền thống (traditions): "Bằng cách này, họ giữ cho truyền thống luôn sống động và truyền lại cho thế hệ mai sau." <span class='hl-green'>=> Đáp án đúng: In this way, they keep their traditions alive...</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A chỉ lặp lại ý lễ hội. B dùng "Next" không hợp để kết luận. C quá chung chung không bám vào từ khóa "truyền thống". <span class='hl-red'>=> A, B, C sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 25. Indicate the sentence closest in meaning:<br>Hanna said, \"I will meet you outside the post office tomorrow.\"",
+    opts: [
+      { text: "Hanna said to me that she would meet me outside the post office the next day.", correct: true },
+      { text: "Hanna said me that she would meet you outside the post office the next day.", correct: false },
+      { text: "Hanna said to me that she would met me outside the post office the next day.", correct: false },
+      { text: "Hanna said to me that she would meet me outside the post office next day.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">25. Dịch đề: Tìm câu gián tiếp đồng nghĩa: Hanna nói, "Tôi sẽ gặp bạn ngoài bưu điện vào ngày mai."</div>
+      <span class="step-title">1. Phân tích ngữ pháp (Câu gián tiếp - Reported Speech):</span>
+      <ul>
+        <li>Đổi đại từ: "I" -> "she", "you" -> "me".</li>
+        <li>Lùi thì: "will meet" -> "would meet".</li>
+        <li>Đổi trạng từ thời gian: "tomorrow" -> "the next day" hoặc "the following day".</li>
+        <li>Động từ tường thuật: "said to me" (đúng), "said me" (sai ngữ pháp).</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Đáp án A thực hiện đầy đủ và chính xác tất cả các quy tắc chuyển đổi trên. <span class='hl-green'>=> Đáp án đúng: A</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>B sai vì dùng "said me" và giữ nguyên "you". C sai ngữ pháp vì dùng "would met" (sau would phải là động từ nguyên thể). D thiếu mạo từ "the" trước "next day". <span class='hl-red'>=> B, C, D sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 26. Indicate the sentence closest in meaning:<br>I will send you the email. I reach the office.",
+    opts: [
+      { text: "When I will send you the email, I reach the office.", correct: false },
+      { text: "I will send you the email as soon as I reach the office.", correct: true },
+      { text: "Before I will send you the email, I reach the office.", correct: false },
+      { text: "I will send you the email while I reach the office.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">26. Dịch đề: Nối 2 câu: Tôi sẽ gửi email cho bạn. Tôi tới văn phòng.</div>
+      <span class="step-title">1. Phân tích ngữ pháp (Mệnh đề thời gian):</span>
+      <ul>
+        <li>Trong mệnh đề trạng ngữ chỉ thời gian (bắt đầu bằng When, As soon as, Before, Until...), ta <b>KHÔNG dùng thì Tương lai (will)</b>, mà phải dùng thì Hiện tại.</li>
+        <li>Nghĩa logic: Việc tới văn phòng xảy ra trước hoặc ngay lập tức dẫn đến việc gửi email.</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Cấu trúc: <span class='p-grammar'>S + will V + as soon as + S + V(hiện tại đơn)</span> (Ngay khi). "Tôi sẽ gửi email cho bạn NGAY KHI tôi tới văn phòng". <span class='hl-green'>=> Đáp án đúng: I will send... as soon as I reach...</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A và C vi phạm luật "không dùng will trong mệnh đề thời gian". D dùng "while" (trong khi) không phù hợp về mặt ngữ nghĩa (hành động gửi email không diễn ra song song với một hành động ngắn "reach"). <span class='hl-red'>=> A, C, D sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 27. Make a sentence from the given cues:<br>She/ asked/ how long/ I/ live/ this town?",
+    opts: [
+      { text: "She asked how long I have lived in this town", correct: false },
+      { text: "She asked me how long she had live this town", correct: false },
+      { text: "She asked me how long I had lived in that town.", correct: true },
+      { text: "She asked me how long I have lived this town.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">27. Dịch đề: Xây dựng câu gián tiếp dựa trên từ gợi ý. Cô ấy hỏi tôi đã sống ở thị trấn này bao lâu rồi.</div>
+      <span class="step-title">1. Phân tích ngữ pháp:</span>
+      <ul>
+        <li>Đây là câu hỏi gián tiếp có từ để hỏi (Wh-question).</li>
+        <li>Cấu trúc: <span class='p-grammar'>S + asked (+O) + Wh-word + S + V (lùi thì)</span>.</li>
+        <li>Thì hiện tại hoàn thành (how long have you lived) phải lùi về Quá khứ hoàn thành (how long I had lived). Đổi "this" -> "that".</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Đáp án C lùi thì đúng thành "had lived", đổi đúng từ "that town" và dùng giới từ "in" chuẩn xác. <span class='hl-green'>=> Đáp án đúng: She asked me how long I had lived in that town.</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A và D chưa lùi thì (vẫn dùng have lived), D thiếu "in". B sai chủ ngữ "she" (lẽ ra phải là hỏi "tôi"). <span class='hl-red'>=> A, B, D sai</span>.</p>
+    `
+  },
+  {
+    q: "Question 28. Make a sentence from the given cues:<br>I/ do/ homework/ while/ my sister/ listen/ music/ her room.",
+    opts: [
+      { text: "I was doing my homework while my sister was listening music in her room.", correct: false },
+      { text: "I did my homework while my sister was listening to music in her room.", correct: false },
+      { text: "I was doing my homework while my sister listened to music her room.", correct: false },
+      { text: "I was doing my homework while my sister was listening to music in her room.", correct: true }
+    ],
+    exp: `
+      <div class="vietnamese-translation">28. Dịch đề: Xây dựng câu với "while". Tôi đang làm bài tập trong khi chị tôi đang nghe nhạc trong phòng.</div>
+      <span class="step-title">1. Phân tích ngữ pháp:</span>
+      <ul>
+        <li>Hành động xảy ra song song trong quá khứ -> Cả 2 vế dùng <span class='p-grammar'>Quá khứ tiếp diễn (was/were + V-ing)</span>.</li>
+        <li>Collocation: <span class='p-grammar'>listen to music</span> (không bao giờ được thiếu giới từ "to").</li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Đáp án D chia đúng cả hai vế ở quá khứ tiếp diễn (was doing / was listening) và có đầy đủ giới từ "to music" và "in her room". <span class='hl-green'>=> Đáp án đúng: D</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A thiếu giới từ "to". B vế đầu chia sai thì (Quá khứ đơn). C vế sau chia sai thì và thiếu giới từ "in" (her room). <span class='hl-red'>=> A, B, C sai</span>.</p>
+    `
+  },
+  {
+    q: `Question 29. What does the sign say?
+        <div class="sign-box green-sign">
+          <div class="sign-title">Please...</div>
+          <div class="sign-main">KEEP OFF THE GRASS</div>
+        </div>`,
+    opts: [
+      { text: "You can walk on the grass and play games there.", correct: false },
+      { text: "The grass should be kept clean and free of trash.", correct: false },
+      { text: "You should not walk on the grass.", correct: true },
+      { text: "The grass is for sitting and relaxing only.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">29. Dịch đề: Biển báo này có nghĩa là gì? -> Vui lòng TRÁNH XA BÃI CỎ / KHÔNG GIẪM LÊN CỎ.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li><span class='p-word'>Keep off</span>: <span class='p-mean'>Tránh xa, không chạm vào, không dẫm lên.</span></li>
+        <li><span class='p-word'>Grass</span>: <span class='p-mean'>Bãi cỏ.</span></li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>"Keep off the grass" mang nghĩa cảnh báo không được phép bước lên bãi cỏ. Đáp án tương đương là "You should not walk on the grass" (Bạn không nên đi lên cỏ). <span class='hl-green'>=> Đáp án đúng: You should not walk on the grass.</span></p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A cho phép đi lại/chơi (sai hoàn toàn). B nói về việc giữ vệ sinh (không liên quan biển báo). D cho phép ngồi nghỉ (sai vì cấm dẫm/vào cỏ). <span class='hl-red'>=> A, B, D sai</span>.</p>
+    `
+  },
+  {
+    q: `Question 30. What does the notice say?
+        <div class="notice-box">
+          "No food or drink is allowed inside this area.<br>Please finish your snacks before entering."
+        </div>`,
+    opts: [
+      { text: "Only food is not allowed; drinks are fine.", correct: false },
+      { text: "You can eat and drink inside this area.", correct: false },
+      { text: "Do not bring food or drinks inside. Finish them first.", correct: true },
+      { text: "You can bring food but no drinks are allowed.", correct: false }
+    ],
+    exp: `
+      <div class="vietnamese-translation">30. Dịch đề: Thông báo viết gì? -> KHÔNG được mang đồ ăn THỨC UỐNG vào khu vực này. Vui lòng ăn xong đồ ăn vặt trước khi bước vào.</div>
+      <span class="step-title">1. Phân tích từ vựng:</span>
+      <ul>
+        <li><span class='p-word'>No food or drink is allowed</span>: <span class='p-mean'>Không đồ ăn thức uống nào được cho phép.</span></li>
+        <li><span class='p-word'>Finish your snacks before entering</span>: <span class='p-mean'>Ăn xong trước khi vào.</span></li>
+      </ul>
+      <span class="step-title">2. Tại sao chọn?</span>
+      <p>Nội dung cấm rành rọt cả đồ ăn và thức uống, yêu cầu xử lý xong bên ngoài. Tương đương với "Do not bring food or drinks inside. Finish them first." <span class='hl-green'>=> Đáp án đúng: C</span>.</p>
+      <span class="step-title">3. Tại sao các đáp án kia sai?</span>
+      <p>A và D cố tình tách rời "cấm đồ ăn nhưng cho đồ uống" hoặc ngược lại (sai sự thật). B cho phép mang vào (ngược hoàn toàn). <span class='hl-red'>=> A, B, D sai</span>.</p>
+    `
+  }
+];
+
+// Sinh Audio API
+let actx = null;
+function getACtx() {
+  if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  return actx;
+}
+function playCorrect() {
+  try {
+    const ctx = getACtx(); const now = ctx.currentTime;
+    [523.25, 659.25, 1046.50].forEach((f, i) => { // C5, E5, C6 (Rất trong trẻo)
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = f; o.type = 'sine';
+      g.gain.setValueAtTime(0, now + i*0.1);
+      g.gain.linearRampToValueAtTime(0.3, now + i*0.1 + 0.05);
+      g.gain.linearRampToValueAtTime(0, now + i*0.1 + 0.4);
+      o.start(now + i*0.1); o.stop(now + i*0.1 + 0.5);
+    });
+  } catch(e){}
+}
+function playWrong() {
+  try {
+    const ctx = getACtx(); const now = ctx.currentTime;
+    [300, 250, 200].forEach((f, i) => { // Téo tèo tèo
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = f; o.type = 'sawtooth';
+      g.gain.setValueAtTime(0, now + i*0.15);
+      g.gain.linearRampToValueAtTime(0.2, now + i*0.15 + 0.05);
+      g.gain.linearRampToValueAtTime(0, now + i*0.15 + 0.3);
+      o.start(now + i*0.15); o.stop(now + i*0.15 + 0.35);
+    });
+  } catch(e){}
+}
+
+// Hàm Trộn Array
+function shuffleArray(arr) {
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Render Câu Hỏi
+const container = document.getElementById('quiz-container');
+let correctCount = 0, wrongCount = 0, answered = 0;
+const totalQs = quizData.length;
+
+quizData.forEach((q, index) => {
+  const shuffledOpts = shuffleArray(q.opts);
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = 'q-card-' + index;
+
+  card.innerHTML = `
+    <div class="q-num">Câu ${index + 1} / ${totalQs}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="opts-${index}">
+      ${shuffledOpts.map((opt, i) => `<button class="opt" data-correct="${opt.correct}" onclick="handleAnswer(this, ${index})">${opt.text}</button>`).join('')}
+    </div>
+    <div class="explanation" id="exp-${index}">${q.exp}</div>
+  `;
+  container.appendChild(card);
+});
+
+// Xử lý khi chọn đáp án
+function handleAnswer(btn, index) {
+  const parent = document.getElementById(`opts-${index}`);
+  if(parent.dataset.answered) return;
+  parent.dataset.answered = "1";
+
+  const isCorrect = btn.dataset.correct === "true";
+  const allBtns = parent.querySelectorAll('.opt');
+
+  answered++;
+  document.getElementById('score-progress').textContent = answered;
+
+  if(isCorrect) {
+    correctCount++;
+    btn.classList.add('correct');
+    playCorrect();
+    launchConfetti();
+    document.getElementById('score-correct').textContent = correctCount;
+  } else {
+    wrongCount++;
+    btn.classList.add('wrong');
+    playWrong();
+    document.getElementById('score-wrong').textContent = wrongCount;
+    // Show đáp án đúng
+    allBtns.forEach(b => { if(b.dataset.correct === "true") b.classList.add('correct'); });
+  }
+
+  allBtns.forEach(b => b.classList.add('disabled'));
+  document.getElementById(`exp-${index}`).classList.add('show');
+  document.getElementById(`q-card-${index}`).classList.add('answered');
+}
+
+// Pháo giấy
+const canvas = document.getElementById('confetti-canvas');
+const cCtx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function launchConfetti() {
+  const colors = ['#00D26A', '#FDCB6E', '#8854C0', '#00C9A7', '#ff7675'];
+  for(let i=0; i<60; i++) {
+    particles.push({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height * 0.3,
+      vx: (Math.random() - 0.5) * 8, vy: Math.random() * 5 + 2,
+      r: Math.random() * 8 + 4, color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1, rot: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 10
+    });
+  }
+  if(particles.length <= 60) animConf();
+}
+function animConf() {
+  cCtx.clearRect(0,0,canvas.width,canvas.height);
+  particles = particles.filter(p => p.alpha > 0.02);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.alpha -= 0.015; p.rot += p.rotSpeed;
+    cCtx.save(); cCtx.globalAlpha = p.alpha; cCtx.translate(p.x, p.y);
+    cCtx.rotate(p.rot * Math.PI / 180); cCtx.fillStyle = p.color;
+    cCtx.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.6); cCtx.restore();
+  });
+  if(particles.length) requestAnimationFrame(animConf);
+  else cCtx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+// Submit Modal logic
+function openNameModal() {
+  document.getElementById('name-modal').classList.remove('hidden');
+  document.getElementById('student-name').focus();
+}
+
+function showResult() {
+  const nameInp = document.getElementById('student-name');
+  const name = nameInp.value.trim();
+  
+  if(!name) {
+    nameInp.classList.remove('error'); void nameInp.offsetWidth; nameInp.classList.add('error');
+    return;
+  }
+  
+  document.getElementById('name-modal').classList.add('hidden');
+  
+  const pct = correctCount / totalQs;
+  const greet = document.getElementById('result-greeting');
+  const gif = document.getElementById('result-gif');
+  
+  if(pct === 1) {
+    greet.innerHTML = `🌟 THIÊN TÀI!<br><span style="color:#2d3436;font-size:1.4rem">${name} xuất sắc tuyệt đối!</span>`;
+    gif.src = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2pxcm94aGNqMmg5bnBybXZ2cjYyeGN4Nmg1OXA4ZmRocHVxbWg1diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/11sBLVxNs7v6WA/giphy.gif";
+  } else if(pct >= 0.6) {
+    greet.innerHTML = `👏 LÀM TỐT LẮM!<br><span style="color:#2d3436;font-size:1.4rem">${name} tiếp tục phát huy nhé!</span>`;
+    gif.src = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGZtbXU1bXN4Nng0cXc3ZW10NjBvcHFuZDltdDBycjdzM2QyMnAxNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7abKhOpu0NwenH3O/giphy.gif";
+  } else {
+    greet.innerHTML = `😅 CỐ GẮNG THÊM NHÉ!<br><span style="color:#2d3436;font-size:1.4rem">${name} ôn lại bài kỹ hơn nha!</span>`;
+    gif.src = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTlsa2p1OWI5eDVxeThscndweDRtZWUyeDVweHkyOHRzNHA2ZGNpdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OPU6wzx8JrHna/giphy.gif";
+  }
+  
+  document.getElementById('result-score').textContent = `${correctCount} / ${totalQs}`;
+  document.getElementById('result-modal').classList.remove('hidden');
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

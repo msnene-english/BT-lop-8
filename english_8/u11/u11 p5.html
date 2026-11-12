@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Technology Quiz | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4A00E0;
+  --secondary: #00D4FF;
+  --accent: #FF6B6B;
+  --correct: #00D26A;
+  --wrong: #FF4757;
+  --card: rgba(255,255,255,0.97);
+  --shadow: 0 8px 32px rgba(0,0,0,0.18);
+  --radius: 16px;
+  --font: 'Nunito', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body {
+  font-family: var(--font);
+  background: linear-gradient(-45deg,#0D1B2A,#1A0A3E,#0A2A4A,#1E0A5E,#0D1B3E);
+  background-size:400% 400%;
+  animation: gradBG 10s ease infinite;
+  display:flex; flex-direction:column; height:100vh;
+  position:relative;
+}
+@keyframes gradBG{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* Floating emoji layer */
+.float-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fe{position:absolute;font-size:2.2rem;opacity:0.07;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);}100%{transform:translateY(-10vh) rotate(360deg);}}
+
+/* Header */
+header{
+  position:relative;z-index:10;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.15);
+  padding:7px 18px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0; min-height:48px;
+}
+.h-brand{font-size:.8rem;font-weight:800;color:#fff;letter-spacing:.5px;}
+.h-brand em{color:#00D4FF;font-style:normal;}
+.h-center{display:flex;align-items:center;gap:10px;}
+#timerStartBtn{
+  background:linear-gradient(135deg,#00D4FF,#7B2FBE);
+  color:#fff;border:none;padding:7px 16px;border-radius:50px;
+  font-family:var(--font);font-weight:800;font-size:.75rem;
+  cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,.4);
+  transition:transform .2s,box-shadow .2s;text-transform:uppercase;letter-spacing:.5px;
+}
+#timerStartBtn:hover{transform:scale(1.05);box-shadow:0 6px 22px rgba(0,212,255,.6);}
+#timerBox{display:none;align-items:center;gap:8px;background:rgba(0,0,0,.35);padding:5px 14px;border-radius:50px;}
+#timeDisp{font-size:1.05rem;font-weight:900;color:#00D4FF;min-width:48px;text-align:center;}
+#timeDisp.urgent{color:#FF4757;animation:blink .5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+#pauseBtn{background:rgba(255,255,255,.18);border:none;color:#fff;padding:3px 10px;border-radius:50px;cursor:pointer;font-family:var(--font);font-weight:700;font-size:.72rem;}
+.h-teacher{font-size:.72rem;color:rgba(255,255,255,.65);font-weight:700;font-style:italic;}
+
+/* Main split */
+main{display:flex;flex:1;overflow:hidden;position:relative;z-index:1;}
+.panel{flex:1;overflow-y:auto;padding:14px 12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent;}
+.panel::-webkit-scrollbar{width:4px;}
+.panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:10px;}
+.reading-panel{border-right:1px solid rgba(255,255,255,.15);}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card-title{font-size:.98rem;font-weight:900;color:var(--primary);margin-bottom:12px;padding-bottom:9px;border-bottom:2px solid #f0f0f8;display:flex;align-items:center;gap:7px;}
+
+/* Paragraphs */
+.para-block{margin-bottom:12px;}
+.para-text{font-size:.85rem;line-height:1.8;color:#2d3436;margin-bottom:7px;}
+.hl{background:linear-gradient(135deg,rgba(74,0,224,.12),rgba(0,212,255,.12));border-bottom:2px dashed var(--primary);padding:1px 3px;border-radius:3px;font-weight:700;cursor:help;}
+.trans-btn{background:linear-gradient(135deg,#FDCB6E,#e17055);color:#fff;border:none;padding:4px 12px;border-radius:50px;font-family:var(--font);font-weight:700;font-size:.72rem;cursor:pointer;box-shadow:0 3px 8px rgba(225,112,85,.35);transition:transform .15s;margin-bottom:3px;}
+.trans-btn:hover{transform:scale(1.04);}
+.trans-box{display:none;background:linear-gradient(135deg,#fff9e8,#fff3d4);border-left:3px solid #FDCB6E;padding:10px 13px;border-radius:0 10px 10px 0;font-size:.8rem;line-height:1.75;color:#666;margin-top:5px;font-style:italic;}
+
+/* Glossary */
+.gloss{background:linear-gradient(135deg,#f0f7ff,#e8f4ff);border-radius:12px;padding:12px;margin-top:14px;}
+.gloss-title{font-size:.85rem;font-weight:800;color:var(--primary);margin-bottom:9px;display:flex;align-items:center;gap:5px;}
+.gloss table{width:100%;border-collapse:collapse;font-size:.75rem;}
+.gloss th{background:linear-gradient(135deg,var(--primary),#7B2FBE);color:#fff;padding:6px 9px;text-align:left;font-weight:700;}
+.gloss th:first-child{border-radius:7px 0 0 0;}.gloss th:last-child{border-radius:0 7px 0 0;}
+.gloss td{padding:5px 9px;border-bottom:1px solid rgba(74,0,224,.08);color:#333;font-weight:600;}
+.gloss tr:nth-child(even) td{background:rgba(74,0,224,.04);}
+.wt{color:#e17055;font-style:italic;font-weight:600;}
+
+/* Exercise cards */
+.ex-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.ex-title{font-size:.95rem;font-weight:900;color:var(--primary);margin-bottom:10px;padding-bottom:9px;border-bottom:2px solid #f0f0f8;display:flex;align-items:center;gap:7px;}
+.ex-note{font-size:.75rem;color:#888;margin-bottom:12px;font-style:italic;}
+
+/* Question block */
+.qblock{background:#f8f9ff;border-radius:12px;padding:13px;margin-bottom:11px;border:1.5px solid rgba(74,0,224,.1);}
+.qtext{font-size:.85rem;font-weight:700;color:#2d3436;margin-bottom:9px;line-height:1.55;}
+.qnum{color:var(--primary);font-weight:900;}
+
+/* MC Options */
+.opts{display:flex;flex-direction:column;gap:6px;}
+.opt{background:#fff;border:2px solid rgba(74,0,224,.18);padding:8px 13px;border-radius:11px;font-family:var(--font);font-size:.8rem;font-weight:600;color:#2d3436;cursor:pointer;text-align:left;transition:all .18s;display:flex;align-items:center;gap:8px;box-shadow:0 2px 6px rgba(0,0,0,.06);}
+.opt:hover:not(:disabled){transform:scale(1.02);border-color:var(--secondary);background:#f0fcff;box-shadow:0 4px 12px rgba(0,212,255,.18);}
+.olabel{background:linear-gradient(135deg,var(--primary),#7B2FBE);color:#fff;border-radius:6px;width:21px;height:21px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900;flex-shrink:0;}
+.opt.correct{background:#e6fff2;border-color:var(--correct);color:#006633;}
+.opt.correct .olabel{background:var(--correct);}
+.opt.wrong{background:#fff0f0;border-color:var(--wrong);color:#cc0000;animation:shake .4s ease;}
+.opt.wrong .olabel{background:var(--wrong);}
+.opt:disabled{cursor:not-allowed;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+/* T/F buttons */
+.tf-row{display:flex;gap:8px;margin-top:8px;}
+.tfbtn{flex:1;padding:8px 12px;border:2px solid;border-radius:11px;font-family:var(--font);font-size:.82rem;font-weight:800;cursor:pointer;transition:all .18s;text-transform:uppercase;letter-spacing:.8px;}
+.tfbtn.tbtn{background:#f0fff4;border-color:#00D26A;color:#006633;}
+.tfbtn.fbtn{background:#fff0f0;border-color:#FF4757;color:#cc0000;}
+.tfbtn:hover:not(:disabled){transform:scale(1.03);box-shadow:0 4px 12px rgba(0,0,0,.14);}
+.tfbtn.sel-ok{background:var(--correct);color:#fff;border-color:var(--correct);}
+.tfbtn.sel-bad{background:var(--wrong);color:#fff;border-color:var(--wrong);animation:shake .4s ease;}
+.tfbtn.show-ans{background:var(--correct);color:#fff;border-color:var(--correct);}
+.tfbtn:disabled{cursor:not-allowed;}
+
+/* Explanation */
+.expbtn{background:linear-gradient(135deg,#6C5CE7,#a29bfe);color:#fff;border:none;padding:5px 12px;border-radius:50px;font-family:var(--font);font-size:.7rem;font-weight:700;cursor:pointer;margin-top:8px;transition:transform .15s;}
+.expbtn:hover{transform:scale(1.04);}
+.expbox{display:none;background:linear-gradient(135deg,#f8f5ff,#ece8ff);border-left:3px solid #6C5CE7;padding:11px 13px;border-radius:0 10px 10px 0;margin-top:8px;font-size:.77rem;line-height:1.75;color:#444;}
+.expbox h4{color:#6C5CE7;font-size:.78rem;font-weight:800;margin-bottom:6px;}
+.ok{color:#006633;font-weight:700;}
+.bad{color:#cc0000;font-weight:600;}
+.evid{background:rgba(74,0,224,.07);border-radius:7px;padding:6px 10px;margin:6px 0;font-style:italic;font-size:.75rem;}
+
+/* Submit */
+.sub-wrap{text-align:center;padding:18px 0 24px;}
+#submitBtn{background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;border:none;padding:13px 38px;border-radius:50px;font-family:var(--font);font-size:.95rem;font-weight:900;cursor:pointer;box-shadow:0 6px 22px rgba(238,90,36,.45);transition:transform .2s,box-shadow .2s;text-transform:uppercase;letter-spacing:.8px;}
+#submitBtn:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 10px 28px rgba(238,90,36,.55);}
+
+/* Time warning toast */
+#timeToast{display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;padding:12px 22px;border-radius:50px;font-family:var(--font);font-weight:700;font-size:.8rem;z-index:90;box-shadow:0 6px 22px rgba(238,90,36,.5);max-width:90%;text-align:center;animation:slideUp .35s ease;}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(30px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+
+/* Score Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.modal-bg.on{display:flex;}
+.modal{background:#fff;border-radius:22px;padding:34px 30px;max-width:460px;width:92%;text-align:center;box-shadow:0 22px 60px rgba(0,0,0,.3);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;}
+@keyframes popIn{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(135deg,var(--primary),#00D4FF,#7B2FBE);}
+.m-emoji{font-size:3.8rem;display:block;margin-bottom:10px;}
+.m-title{font-size:1.35rem;font-weight:900;color:var(--primary);margin-bottom:6px;}
+.m-score{font-size:2.8rem;font-weight:900;color:transparent;background:linear-gradient(135deg,var(--primary),#00D4FF);-webkit-background-clip:text;background-clip:text;line-height:1;margin-bottom:8px;}
+.m-comment{font-size:.9rem;color:#636e72;margin-bottom:16px;line-height:1.55;font-weight:600;}
+.m-break{background:#f8f9ff;border-radius:11px;padding:13px;margin-bottom:18px;text-align:left;}
+.brow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.06);font-weight:600;color:#444;font-size:.82rem;}
+.brow:last-child{border-bottom:none;font-weight:800;color:var(--primary);}
+.m-close{background:linear-gradient(135deg,var(--primary),#7B2FBE);color:#fff;border:none;padding:11px 28px;border-radius:50px;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;transition:transform .2s;}
+.m-close:hover{transform:scale(1.05);}
+
+/* Confetti */
+#confCanvas{position:fixed;inset:0;pointer-events:none;z-index:200;}
+</style>
+</head>
+<body>
+
+<!-- Floating emoji layer -->
+<div class="float-layer" id="floatLayer"></div>
+
+<!-- Confetti canvas -->
+<canvas id="confCanvas"></canvas>
+
+<!-- Time's up toast -->
+<div id="timeToast">⏰ Đã hết giờ làm bài! Bạn vẫn có thể tiếp tục, nhưng trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha! 😊</div>
+
+<!-- Score modal -->
+<div class="modal-bg" id="scoreModal">
+  <div class="modal">
+    <span class="m-emoji" id="mEmoji">🏆</span>
+    <div class="m-title" id="mTitle">KẾT QUẢ BÀI THI</div>
+    <div class="m-score" id="mScore">0/11</div>
+    <div class="m-comment" id="mComment"></div>
+    <div class="m-break" id="mBreak"></div>
+    <button class="m-close" onclick="closeModal()">✨ Xem lại bài</button>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="h-brand">🤖 <em>Smart Technology</em> Quiz</div>
+  <div class="h-center">
+    <button id="timerStartBtn" onclick="startTimer()">🚀 BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+    <div id="timerBox">
+      ⏱️&nbsp;<span id="timeDisp">10:00</span>
+      <button id="pauseBtn" onclick="togglePause()">⏸️ Tạm dừng</button>
+    </div>
+  </div>
+  <div class="h-teacher">✏️ MS Chí Nên ULIS</div>
+</header>
+
+<!-- Main split screen -->
+<main>
+  <!-- ====== LEFT: READING ====== -->
+  <div class="panel reading-panel">
+
+    <!-- PASSAGE 1 -->
+    <div class="card">
+      <div class="card-title">📖 Reading Passage 1 — The Smart Water Bottle</div>
+      <p style="font-size:.72rem;color:#888;margin-bottom:11px;font-style:italic;">Nguồn: Adapted from getsurrey.co.uk</p>
+
+      <div class="para-block">
+        <p class="para-text">From watches and phones to household appliances, everything is getting smarter. Now, thanks to Apple, that's also true of your water bottle.</p>
+        <button class="trans-btn" onclick="toggleTrans('t1')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t1">Từ đồng hồ và điện thoại cho đến các thiết bị gia dụng, mọi thứ đang ngày càng trở nên thông minh hơn. Giờ đây, nhờ có Apple, điều đó cũng đúng với bình nước của bạn.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">The HidrateSpark Pro Smart Water Bottle — a mouthful, we know — takes all the guesswork out of tracking your water <span class="hl" title="intake = lượng tiêu thụ / hấp thụ">intake</span>. The vacuum-insulated exterior should keep your liquids cold for up to a full day and it has a host of other neat features.</p>
+        <button class="trans-btn" onclick="toggleTrans('t2')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t2">Bình nước thông minh HidrateSpark Pro — nghe có vẻ khó phát âm, chúng tôi biết — giúp loại bỏ hoàn toàn việc phỏng đoán khi theo dõi lượng nước bạn <em>tiêu thụ</em>. Lớp vỏ ngoài cách nhiệt chân không giúp giữ lạnh chất lỏng của bạn trong tối đa cả một ngày và sản phẩm này còn có nhiều tính năng gọn gàng thú vị khác.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">Apple's smart water bottle integrates with your Apple Watch and Apple Health. It takes into account your daily steps and exercise to calculate how much water you need. The LED puck at the bottom of the bottle lights up to remind you when it's time for a drink and tracks how many ounces or millimetres of water you drink throughout the day, using Bluetooth. You can also get a slightly less expensive version, without the insulation, in the form of the HidrateSpark Pro Tritan Plastic Sea Glass.</p>
+        <button class="trans-btn" onclick="toggleTrans('t3')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t3">Bình nước thông minh của Apple tích hợp với Apple Watch và Apple Health. Nó tính đến số bước chân hàng ngày và lượng vận động thể thao của bạn để tính toán lượng nước bạn cần uống. Đèn LED hình tròn ở đáy bình sẽ sáng lên để nhắc bạn khi đến lúc cần uống nước, đồng thời theo dõi số ounce hoặc milimet nước bạn đã uống trong suốt cả ngày bằng công nghệ Bluetooth. Bạn cũng có thể mua một phiên bản rẻ hơn một chút, không có lớp cách nhiệt, dưới dạng HidrateSpark Pro Tritan Plastic Sea Glass.</div>
+      </div>
+
+      <!-- Glossary 1 -->
+      <div class="gloss">
+        <div class="gloss-title">📚 Bảng từ vựng — Passage 1 (B1–C1)</div>
+        <table>
+          <thead><tr><th>Từ / Cụm từ</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr></thead>
+          <tbody>
+            <tr><td>household appliances</td><td class="wt">n. cụm</td><td>Thiết bị gia dụng</td></tr>
+            <tr><td>intake</td><td class="wt">n.</td><td>Lượng tiêu thụ / hấp thụ vào cơ thể</td></tr>
+            <tr><td>vacuum-insulated</td><td class="wt">adj.</td><td>Được cách nhiệt bằng chân không</td></tr>
+            <tr><td>exterior</td><td class="wt">n.</td><td>Bề mặt / lớp vỏ bên ngoài</td></tr>
+            <tr><td>integrate (with)</td><td class="wt">v.</td><td>Tích hợp (với); kết nối đồng bộ</td></tr>
+            <tr><td>take into account</td><td class="wt">idiom</td><td>Xem xét, tính đến, cân nhắc đến</td></tr>
+            <tr><td>calculate</td><td class="wt">v.</td><td>Tính toán</td></tr>
+            <tr><td>LED puck</td><td class="wt">n. cụm</td><td>Đèn LED hình tròn dẹt (như viên puck khúc côn cầu)</td></tr>
+            <tr><td>ounce</td><td class="wt">n.</td><td>Ounce — đơn vị đo thể tích / khối lượng (oz)</td></tr>
+            <tr><td>insulation</td><td class="wt">n.</td><td>Vật liệu / lớp cách nhiệt</td></tr>
+            <tr><td>a host of</td><td class="wt">idiom</td><td>Rất nhiều, vô số (something)</td></tr>
+            <tr><td>guesswork</td><td class="wt">n.</td><td>Sự đoán mò; phỏng đoán không có căn cứ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PASSAGE 2 -->
+    <div class="card">
+      <div class="card-title">📖 Reading Passage 2 — Book Review: <em>Future World</em></div>
+
+      <div class="para-block">
+        <p class="para-text">Today our bookshop would like to introduce you to a new book written by J.H. James. The book's title is "Future World". It is all about how new technologies will change our world in 2050.</p>
+        <button class="trans-btn" onclick="toggleTrans('t4')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t4">Hôm nay, hiệu sách của chúng tôi muốn giới thiệu đến các bạn một cuốn sách mới do J.H. James viết. Tựa đề của cuốn sách là "Future World" (Thế giới tương lai). Cuốn sách nói về cách các công nghệ mới sẽ thay đổi thế giới của chúng ta vào năm 2050.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">According to the book, the anti-aging drugs will help humans live healthy lives over 120 years old. Another advanced technology in health care is 3D printing of human organs and body parts. This will be good news to diabetes patients because new muscles, bones and even organs will be rebuilt and replace the damaged ones.</p>
+        <button class="trans-btn" onclick="toggleTrans('t5')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t5">Theo cuốn sách, các loại thuốc chống lão hóa sẽ giúp con người sống khỏe mạnh đến hơn 120 tuổi. Một công nghệ tiên tiến khác trong lĩnh vực chăm sóc sức khỏe là in 3D các cơ quan nội tạng và bộ phận cơ thể người. Đây sẽ là tin vui cho bệnh nhân tiểu đường vì cơ bắp, xương và thậm chí các cơ quan nội tạng mới sẽ được tái tạo và thay thế những phần bị hư hỏng.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">About the technologies in environment protection, solar power will be the main energy source of the world in 2050. Solar panels will be more popular and help us reduce a large amount of carbon dioxide emission. In addition, a new method of sewage treatment will solve problems of water pollution. Industrial sewage will be treated to become clean water and minerals.</p>
+        <button class="trans-btn" onclick="toggleTrans('t6')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t6">Về các công nghệ bảo vệ môi trường, năng lượng mặt trời sẽ là nguồn năng lượng chính của thế giới vào năm 2050. Các tấm pin mặt trời sẽ trở nên phổ biến hơn và giúp chúng ta giảm một lượng lớn khí thải carbon dioxide. Ngoài ra, một phương pháp xử lý nước thải mới sẽ giải quyết các vấn đề về ô nhiễm nguồn nước. Nước thải công nghiệp sẽ được xử lý để trở thành nước sạch và các khoáng chất.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">There is also some new advanced technology in transportation. Cruise control will reduce accidents. This device will be very helpful especially for drunk drivers. In the future, a transponder will also be installed in a bicycle and will reduce the crash.</p>
+        <button class="trans-btn" onclick="toggleTrans('t7')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t7">Cũng có một số công nghệ tiên tiến mới trong lĩnh vực giao thông vận tải. Hệ thống kiểm soát hành trình (cruise control) sẽ giảm tai nạn. Thiết bị này sẽ rất hữu ích, đặc biệt là đối với các tài xế lái xe khi say rượu. Trong tương lai, một bộ phát đáp (transponder) cũng sẽ được lắp đặt trong xe đạp và sẽ giảm các vụ va chạm.</div>
+      </div>
+
+      <div class="para-block">
+        <p class="para-text">Read the book now and we can see that many advanced technologies will bring us a safer and more convenient life.</p>
+        <button class="trans-btn" onclick="toggleTrans('t8')">🌟 Mở dịch đoạn này</button>
+        <div class="trans-box" id="t8">Hãy đọc cuốn sách ngay bây giờ và chúng ta có thể thấy rằng nhiều công nghệ tiên tiến sẽ mang lại cho chúng ta một cuộc sống an toàn hơn và tiện lợi hơn.</div>
+      </div>
+
+      <!-- Glossary 2 -->
+      <div class="gloss">
+        <div class="gloss-title">📚 Bảng từ vựng — Passage 2 (B1–C1)</div>
+        <table>
+          <thead><tr><th>Từ / Cụm từ</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr></thead>
+          <tbody>
+            <tr><td>anti-aging drugs</td><td class="wt">n. cụm</td><td>Thuốc chống lão hóa</td></tr>
+            <tr><td>3D printing</td><td class="wt">n. cụm</td><td>Công nghệ in 3D (in ba chiều)</td></tr>
+            <tr><td>diabetes</td><td class="wt">n.</td><td>Bệnh tiểu đường (đái tháo đường)</td></tr>
+            <tr><td>solar power</td><td class="wt">n. cụm</td><td>Năng lượng mặt trời</td></tr>
+            <tr><td>solar panels</td><td class="wt">n. cụm</td><td>Tấm pin mặt trời</td></tr>
+            <tr><td>carbon dioxide emission</td><td class="wt">n. cụm</td><td>Khí thải carbon dioxide (CO₂)</td></tr>
+            <tr><td>sewage treatment</td><td class="wt">n. cụm</td><td>Xử lý nước thải</td></tr>
+            <tr><td>cruise control</td><td class="wt">n. cụm</td><td>Hệ thống kiểm soát hành trình (ô tô tự duy trì tốc độ)</td></tr>
+            <tr><td>transponder</td><td class="wt">n.</td><td>Bộ phát đáp; thiết bị thu-phát tín hiệu tự động</td></tr>
+            <tr><td>convenient</td><td class="wt">adj.</td><td>Tiện lợi, thuận tiện</td></tr>
+            <tr><td>minerals</td><td class="wt">n. số nhiều</td><td>Khoáng chất</td></tr>
+            <tr><td>environment protection</td><td class="wt">n. cụm</td><td>Bảo vệ môi trường</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end reading-panel -->
+
+  <!-- ====== RIGHT: EXERCISES ====== -->
+  <div class="panel">
+
+    <div class="ex-card">
+      <div class="ex-title">✏️ Exercise 2: Multiple Choice — Reading Passage 1</div>
+      <p class="ex-note">📌 Dựa vào Reading Passage 1 để chọn đáp án đúng nhất (A, B, C hoặc D):</p>
+      <div id="mcQs"></div>
+    </div>
+
+    <div class="ex-card">
+      <div class="ex-title">✏️ Exercise 3: True (T) or False (F) — Reading Passage 2</div>
+      <p class="ex-note">📌 Dựa vào Reading Passage 2 (Future World), hãy quyết định mỗi câu dưới đây là TRUE hay FALSE:</p>
+      <div id="tfQs"></div>
+    </div>
+
+    <div class="sub-wrap">
+      <button id="submitBtn" onclick="showResults()">📝 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+    </div>
+
+  </div><!-- end exercise-panel -->
+</main>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const mcData = [
+  {
+    id:'mc1', n:1,
+    q:'How long can the vacuum-insulated exterior keep your liquids cold?',
+    opts:[
+      {t:'Half a day', ok:false},
+      {t:'A full week', ok:false},
+      {t:'18 hours', ok:false},
+      {t:'Up to 24 hours', ok:true}
+    ],
+    exp:{
+      head:'Câu 1: Thời gian giữ lạnh của lớp vỏ cách nhiệt chân không',
+      tr:'"Lớp vỏ ngoài cách nhiệt chân không có thể giữ lạnh chất lỏng của bạn trong bao lâu?"',
+      ok:'D. Up to 24 hours — Tối đa 24 giờ',
+      why:'Bài viết trực tiếp: <em>"keep your liquids cold for up to <strong>a full day</strong>"</em>. Mà "a full day" = 1 ngày đầy đủ = 24 giờ = "Up to 24 hours". Đây là thông tin được nêu trực tiếp trong đoạn 2.',
+      bad:[
+        '<span class="bad">A. Half a day</span>: "Nửa ngày" (= 12 giờ) — Bài không đề cập thông tin này.',
+        '<span class="bad">B. A full week</span>: "Một tuần" (= 168 giờ) — Bài hoàn toàn không đề cập.',
+        '<span class="bad">C. 18 hours</span>: "18 giờ" — Không có con số cụ thể này trong bài.'
+      ]
+    }
+  },
+  {
+    id:'mc2', n:2,
+    q:'Which of the following (A, B, C, or D) is closest in meaning to the word <u>intake</u>?',
+    opts:[
+      {t:'consumption', ok:true},
+      {t:'confusion', ok:false},
+      {t:'assumption', ok:false},
+      {t:'introduction', ok:false}
+    ],
+    exp:{
+      head:'Câu 2: Từ đồng nghĩa với "intake"',
+      tr:'"Từ nào sau đây gần nghĩa nhất với từ <u>intake</u>?"',
+      ok:'A. consumption (sự tiêu thụ)',
+      why:'<strong>Intake</strong> (n.) = lượng thức ăn / nước / không khí được đưa vào cơ thể. Trong câu: <em>"tracking your water <strong>intake</strong>"</em> = theo dõi lượng nước bạn tiêu thụ. <strong>Consumption</strong> (n.) = sự tiêu thụ, lượng sử dụng — cùng nghĩa với intake trong ngữ cảnh này.',
+      bad:[
+        '<span class="bad">B. confusion</span> (n.): Sự nhầm lẫn, bối rối — hoàn toàn khác nghĩa.',
+        '<span class="bad">C. assumption</span> (n.): Sự giả định, phỏng đoán — không liên quan đến lượng hấp thụ.',
+        '<span class="bad">D. introduction</span> (n.): Sự giới thiệu — không liên quan gì đến lượng tiêu thụ.'
+      ]
+    }
+  },
+  {
+    id:'mc3', n:3,
+    q:"What can Apple's smart water bottle integrate with?",
+    opts:[
+      {t:'Bluetooth', ok:false},
+      {t:'Plastic Sea Glass', ok:false},
+      {t:'Apple Watch and Apple Health', ok:true},
+      {t:'HidrateSpark', ok:false}
+    ],
+    exp:{
+      head:"Câu 3: Bình nước thông minh tích hợp với thứ gì?",
+      tr:'"Bình nước thông minh của Apple có thể tích hợp với thứ gì?"',
+      ok:'C. Apple Watch and Apple Health',
+      why:'Bài viết trực tiếp: <em>"Apple\'s smart water bottle <strong>integrates with</strong> your Apple Watch and Apple Health."</em> — Câu trả lời được lấy nguyên văn từ đoạn 3.',
+      bad:[
+        '<span class="bad">A. Bluetooth</span>: Bluetooth là <em>phương thức kết nối để theo dõi</em> ("tracks... using Bluetooth"), không phải thứ mà bình tích hợp với (integrate with).',
+        '<span class="bad">B. Plastic Sea Glass</span>: Đây là tên đầy đủ của <em>phiên bản thứ 2</em> (HidrateSpark Pro Tritan Plastic Sea Glass) — là tên sản phẩm, không phải nền tảng tích hợp.',
+        '<span class="bad">D. HidrateSpark</span>: Đây là tên thương hiệu của chính sản phẩm, không phải nền tảng bên ngoài để tích hợp vào.'
+      ]
+    }
+  },
+  {
+    id:'mc4', n:4,
+    q:"How many versions of smart water bottles does Apple have?",
+    opts:[
+      {t:'2', ok:true},
+      {t:'3', ok:false},
+      {t:'4', ok:false},
+      {t:'1', ok:false}
+    ],
+    exp:{
+      head:"Câu 4: Apple có bao nhiêu phiên bản bình nước thông minh?",
+      tr:'"Apple có bao nhiêu phiên bản bình nước thông minh?"',
+      ok:'A. 2 phiên bản',
+      why:'Bài đề cập đúng <strong>2 phiên bản</strong>: (1) <em>"The HidrateSpark Pro Smart Water Bottle"</em> — bản cao cấp có lớp cách nhiệt chân không; (2) <em>"You can also get a slightly less expensive <strong>version</strong>... the HidrateSpark Pro Tritan Plastic Sea Glass"</em> — bản rẻ hơn, không có lớp cách nhiệt. Từ <em>"also"</em> và <em>"version"</em> xác nhận đây là sản phẩm thứ 2.',
+      bad:[
+        '<span class="bad">B. 3 và C. 4</span>: Bài chỉ đề cập đúng 2 phiên bản. Không có thông tin về phiên bản thứ 3 hay thứ 4.',
+        '<span class="bad">D. 1</span>: Sai vì bài nói rõ <em>"you can <strong>also</strong> get a slightly less expensive <strong>version</strong>"</em> — "also" khẳng định có thêm sản phẩm khác ngoài cái đầu tiên.'
+      ]
+    }
+  },
+  {
+    id:'mc5', n:5,
+    q:"How can the smart water bottle remind you when it's time for a drink?",
+    opts:[
+      {t:'It takes all the guesswork out of tracking your water intake.', ok:false},
+      {t:'It takes into account your daily steps.', ok:false},
+      {t:'The LED puck at the bottom of the bottle lights up.', ok:true},
+      {t:'It tracks how many ounces or millimetres of water you drink throughout the day.', ok:false}
+    ],
+    exp:{
+      head:"Câu 5: Bình nước nhắc bạn uống nước bằng cách nào?",
+      tr:'"Bình nước thông minh nhắc bạn khi đến lúc cần uống nước bằng cách nào?"',
+      ok:'C. The LED puck at the bottom of the bottle lights up.',
+      why:'Bài viết: <em>"The LED puck at the bottom of the bottle <strong>lights up to remind you when it\'s time for a drink</strong>"</em> — cụm động từ "<strong>lights up to remind</strong>" trực tiếp mô tả cách nhắc nhở. Đây là thông tin rõ ràng nhất, được nêu trực tiếp.',
+      bad:[
+        '<span class="bad">A.</span>: "It takes all the guesswork out..." — Đây là mô tả <em>tính năng tổng quan</em> của sản phẩm, không phải cách nhắc nhở cụ thể.',
+        '<span class="bad">B.</span>: "takes into account daily steps" — Đây là cách bình tính toán <em>lượng nước cần uống</em>, không phải cách nhắc nhở.',
+        '<span class="bad">D.</span>: "tracks how many ounces..." — Đây là chức năng <em>theo dõi</em> (track), không phải chức năng <em>nhắc nhở</em> (remind).'
+      ]
+    }
+  }
+];
+
+const tfData = [
+  {
+    id:'tf1', n:1,
+    stmt:'"Future World" is the title of the book which is introduced at the bookshop.',
+    ans:'TRUE',
+    exp:{
+      head:'Câu 1: "Future World" là tựa đề cuốn sách được giới thiệu tại hiệu sách.',
+      verdict:'✅ TRUE (Đúng)',
+      evid:'📌 Bằng chứng trong bài: <em>"The book\'s title is \'Future World\'."</em>',
+      why:'Bài viết trực tiếp và rõ ràng rằng tựa đề cuốn sách là "Future World". Câu phát biểu hoàn toàn khớp với thông tin trong bài. Không cần suy luận gì thêm.'
+    }
+  },
+  {
+    id:'tf2', n:2,
+    stmt:'3D printing of human organs will help diabetes patients to build new organs and body parts.',
+    ans:'TRUE',
+    exp:{
+      head:'Câu 2: In 3D cơ quan nội tạng sẽ giúp bệnh nhân tiểu đường tái tạo cơ quan và bộ phận cơ thể mới.',
+      verdict:'✅ TRUE (Đúng)',
+      evid:'📌 Bằng chứng trong bài: <em>"3D printing of human organs and body parts. This will be good news to <strong>diabetes patients</strong> because new muscles, bones and even organs will be <strong>rebuilt</strong> and replace the damaged ones."</em>',
+      why:'Bài viết: công nghệ in 3D → tin vui cho bệnh nhân tiểu đường → vì cơ quan mới sẽ được tái tạo. Câu phát biểu diễn đạt lại (paraphrase) đúng ý này: "will help diabetes patients to build new organs" = "will be good news to diabetes patients because... organs will be rebuilt".'
+    }
+  },
+  {
+    id:'tf3', n:3,
+    stmt:'It is written in the book that in 2050, we will primarily use the energy generated from the Sun.',
+    ans:'TRUE',
+    exp:{
+      head:'Câu 3: Sách viết rằng vào năm 2050, chúng ta chủ yếu sử dụng năng lượng từ Mặt Trời.',
+      verdict:'✅ TRUE (Đúng)',
+      evid:'📌 Bằng chứng trong bài: <em>"<strong>solar power</strong> will be the <strong>main energy source</strong> of the world in 2050."</em>',
+      why:'Câu phát biểu dùng cụm "primarily use the energy generated from the Sun" = "năng lượng từ Mặt Trời là chính". Bài dùng "solar power will be the main energy source" — <em>solar</em> = từ Mặt Trời, <em>main</em> = chủ yếu (primarily). Hai câu đồng nghĩa nhau.'
+    }
+  },
+  {
+    id:'tf4', n:4,
+    stmt:'According to the book, in the future, sewage will be treated by the same method as present.',
+    ans:'FALSE',
+    exp:{
+      head:'Câu 4: Theo sách, trong tương lai nước thải sẽ được xử lý bằng phương pháp giống như hiện tại.',
+      verdict:'❌ FALSE (Sai)',
+      evid:'📌 Bằng chứng trong bài: <em>"a <strong>new method</strong> of sewage treatment will solve problems of water pollution."</em>',
+      why:'Từ khóa then chốt là "<strong>new method</strong>" (phương pháp MỚI). Câu phát biểu nói "same method as present" (phương pháp GIỐNG như hiện tại). Đây là thông tin ngược lại: bài nói sẽ có phương pháp MỚI, không phải dùng lại phương pháp cũ.'
+    }
+  },
+  {
+    id:'tf5', n:5,
+    stmt:'The author mentions cruise control as a device which helps to cut down the accidents.',
+    ans:'TRUE',
+    exp:{
+      head:'Câu 5: Tác giả đề cập cruise control là thiết bị giúp giảm tai nạn.',
+      verdict:'✅ TRUE (Đúng)',
+      evid:'📌 Bằng chứng trong bài: <em>"<strong>Cruise control</strong> will <strong>reduce accidents</strong>."</em>',
+      why:'"cut down (the) accidents" = giảm tai nạn = "reduce accidents". Đây là cách diễn đạt lại (paraphrase): <em>cut down</em> và <em>reduce</em> đều có nghĩa là giảm. Câu phát biểu đúng với nội dung bài.'
+    }
+  },
+  {
+    id:'tf6', n:6,
+    stmt:'New advanced technology in transportation is not written in the book.',
+    ans:'FALSE',
+    exp:{
+      head:'Câu 6: Công nghệ tiên tiến mới trong giao thông không được đề cập trong sách.',
+      verdict:'❌ FALSE (Sai)',
+      evid:'📌 Bằng chứng trong bài: <em>"<strong>There is also some new advanced technology in transportation.</strong> Cruise control will reduce accidents. This device will be very helpful especially for drunk drivers. In the future, a transponder will also be installed in a bicycle..."</em>',
+      why:'Câu phát biểu nói công nghệ giao thông "NOT written in the book" (không được đề cập). Nhưng bài đọc có cả một đoạn riêng về "new advanced technology in transportation" với hai ví dụ cụ thể: cruise control và transponder. Câu phát biểu hoàn toàn SAI với nội dung bài.'
+    }
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {};
+let timerInv = null, timeLeft = 600, running = false, warned = false;
+
+// ============================================================
+// HELPERS
+// ============================================================
+function shuffle(arr) {
+  const a = arr.map((x,i) => ({...x,_i:i}));
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function audioCorrect() {
+  try {
+    const c = new (window.AudioContext||window.webkitAudioContext)();
+    [[523.25,0],[659.25,.12],[783.99,.24]].forEach(([f,t])=>{
+      const o=c.createOscillator(), g=c.createGain();
+      o.connect(g); g.connect(c.destination);
+      o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(.22,c.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.3);
+      o.start(c.currentTime+t); o.stop(c.currentTime+t+.3);
+    });
+  } catch(e){}
+}
+
+function audioWrong() {
+  try {
+    const c = new (window.AudioContext||window.webkitAudioContext)();
+    const o=c.createOscillator(), g=c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(280,c.currentTime);
+    o.frequency.linearRampToValueAtTime(70,c.currentTime+.45);
+    g.gain.setValueAtTime(.18,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.45);
+    o.start(c.currentTime); o.stop(c.currentTime+.45);
+  } catch(e){}
+}
+
+function confetti() {
+  const cv=document.getElementById('confCanvas');
+  cv.width=innerWidth; cv.height=innerHeight;
+  const x=cv.getContext('2d');
+  const COLS=['#FF6B6B','#4ECDC4','#45B7D1','#FDCB6E','#A29BFE','#FD79A8','#00B894','#6C5CE7'];
+  const ps=Array.from({length:90},()=>({
+    x:Math.random()*cv.width, y:-Math.random()*150-10,
+    r:3+Math.random()*5, d:2+Math.random()*3,
+    c:COLS[Math.floor(Math.random()*COLS.length)],
+    ta:0, tai:.06+Math.random()*.05
+  }));
+  let fr=0;
+  (function draw(){
+    x.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{
+      x.beginPath(); x.fillStyle=p.c;
+      x.ellipse(p.x+Math.sin(p.ta)*8, p.y, p.r, p.r*.5, p.ta, 0, Math.PI*2);
+      x.fill();
+      p.ta+=p.tai; p.y+=p.d+Math.sin(p.ta); p.x+=Math.cos(p.ta)*.5;
+    });
+    if(++fr<140) requestAnimationFrame(draw);
+    else x.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer() {
+  document.getElementById('timerStartBtn').style.display='none';
+  const tb=document.getElementById('timerBox'); tb.style.display='flex';
+  running=true;
+  timerInv=setInterval(()=>{
+    if(!running) return;
+    timeLeft--;
+    const m=Math.floor(timeLeft/60), s=timeLeft%60;
+    const d=document.getElementById('timeDisp');
+    d.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    if(timeLeft<=60) d.classList.add('urgent'); else d.classList.remove('urgent');
+    if(timeLeft<=0){clearInterval(timerInv); showToast();}
+  },1000);
+}
+
+function togglePause() {
+  running=!running;
+  document.getElementById('pauseBtn').textContent=running?'⏸️ Tạm dừng':'▶️ Tiếp tục';
+}
+
+function showToast() {
+  if(warned) return; warned=true;
+  const t=document.getElementById('timeToast');
+  t.style.display='block';
+  setTimeout(()=>{t.style.display='none';},12000);
+}
+
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+function toggleTrans(id) {
+  const el=document.getElementById(id);
+  const btn=el.previousElementSibling;
+  const shown=el.style.display==='block';
+  el.style.display=shown?'none':'block';
+  btn.textContent=shown?'🌟 Mở dịch đoạn này':'🔼 Đóng bản dịch';
+}
+
+// ============================================================
+// EXPLANATIONS
+// ============================================================
+function toggleExp(id) {
+  const el=document.getElementById('exp-'+id);
+  const btn=document.getElementById('eb-'+id);
+  const shown=el.style.display==='block';
+  el.style.display=shown?'none':'block';
+  btn.textContent=shown?'💡 Xem giải thích chi tiết':'🔼 Ẩn giải thích';
+}
+
+function autoShowExp(id) {
+  const el=document.getElementById('exp-'+id);
+  if(el){ el.style.display='block'; document.getElementById('eb-'+id).textContent='🔼 Ẩn giải thích'; }
+}
+
+// ============================================================
+// RENDER MC
+// ============================================================
+function renderMC() {
+  const C=document.getElementById('mcQs');
+  const LABELS=['A','B','C','D'];
+  mcData.forEach(q=>{
+    const shuf=shuffle(q.opts);
+    const blk=document.createElement('div'); blk.className='qblock'; blk.id='qb-'+q.id;
+
+    const qt=document.createElement('p'); qt.className='qtext';
+    qt.innerHTML=`<span class="qnum">Câu ${q.n}.</span> ${q.q}`;
+    blk.appendChild(qt);
+
+    const og=document.createElement('div'); og.className='opts';
+    shuf.forEach((o,i)=>{
+      const b=document.createElement('button'); b.className='opt';
+      b.id=`o-${q.id}-${i}`;
+      b.dataset.ok=o.ok?'1':'0';
+      b.innerHTML=`<span class="olabel">${LABELS[i]}</span>${o.t}`;
+      b.onclick=()=>handleMC(q.id,i,o.ok,shuf.length);
+      og.appendChild(b);
+    });
+    blk.appendChild(og);
+
+    const eb=document.createElement('button'); eb.className='expbtn';
+    eb.id='eb-'+q.id; eb.textContent='💡 Xem giải thích chi tiết';
+    eb.onclick=()=>toggleExp(q.id);
+    blk.appendChild(eb);
+
+    const ex=document.createElement('div'); ex.className='expbox'; ex.id='exp-'+q.id;
+    ex.innerHTML=buildMCExp(q,shuf,LABELS); blk.appendChild(ex);
+
+    C.appendChild(blk);
+  });
+}
+
+function buildMCExp(q,shuf,LABELS) {
+  const e=q.exp;
+  // find which label is correct
+  const cIdx=shuf.findIndex(o=>o.ok);
+  const cLabel=LABELS[cIdx];
+  return `
+    <h4>🔍 ${e.head}</h4>
+    <p><strong>📝 Dịch câu hỏi:</strong> ${e.tr}</p>
+    <p style="margin-top:7px;"><span class="ok">✅ Đáp án đúng: ${cLabel}. ${shuf[cIdx].t}</span></p>
+    <div class="evid">${e.why}</div>
+    <p style="margin-top:7px;"><strong>❌ Tại sao loại các đáp án khác:</strong></p>
+    <ul style="margin-top:5px;padding-left:15px;">${e.bad.map(b=>`<li style="margin-bottom:4px;">${b}</li>`).join('')}</ul>
+  `;
+}
+
+function handleMC(qId,idx,isOk,total) {
+  if(state[qId]) return;
+  state[qId]={ok:isOk};
+  for(let i=0;i<total;i++) document.getElementById(`o-${qId}-${i}`).disabled=true;
+  const sel=document.getElementById(`o-${qId}-${idx}`);
+  if(isOk){
+    sel.classList.add('correct'); audioCorrect(); confetti();
+  } else {
+    sel.classList.add('wrong'); audioWrong();
+    for(let i=0;i<total;i++){
+      const b=document.getElementById(`o-${qId}-${i}`);
+      if(b.dataset.ok==='1'){b.classList.add('correct');break;}
+    }
+  }
+  autoShowExp(qId);
+}
+
+// ============================================================
+// RENDER T/F
+// ============================================================
+function renderTF() {
+  const C=document.getElementById('tfQs');
+  tfData.forEach(q=>{
+    const blk=document.createElement('div'); blk.className='qblock'; blk.id='qb-'+q.id;
+
+    const qt=document.createElement('p'); qt.className='qtext';
+    qt.innerHTML=`<span class="qnum">${q.n}.</span> ${q.stmt}`;
+    blk.appendChild(qt);
+
+    const row=document.createElement('div'); row.className='tf-row';
+    ['TRUE','FALSE'].forEach(v=>{
+      const b=document.createElement('button');
+      b.className=`tfbtn ${v==='TRUE'?'tbtn':'fbtn'}`;
+      b.id=`tf-${q.id}-${v}`;
+      b.textContent=v==='TRUE'?'✅ TRUE':'❌ FALSE';
+      b.onclick=()=>handleTF(q.id,v,q.ans);
+      row.appendChild(b);
+    });
+    blk.appendChild(row);
+
+    const eb=document.createElement('button'); eb.className='expbtn';
+    eb.id='eb-'+q.id; eb.textContent='💡 Xem giải thích chi tiết';
+    eb.onclick=()=>toggleExp(q.id);
+    blk.appendChild(eb);
+
+    const ex=document.createElement('div'); ex.className='expbox'; ex.id='exp-'+q.id;
+    ex.innerHTML=buildTFExp(q); blk.appendChild(ex);
+
+    C.appendChild(blk);
+  });
+}
+
+function buildTFExp(q) {
+  const e=q.exp;
+  return `
+    <h4>🔍 ${e.head}</h4>
+    <p><strong>${e.verdict}</strong></p>
+    <div class="evid">${e.evid}</div>
+    <p style="margin-top:6px;">${e.why}</p>
+  `;
+}
+
+function handleTF(qId,sel,correct) {
+  if(state[qId]) return;
+  const isOk=sel===correct;
+  state[qId]={ok:isOk};
+  ['TRUE','FALSE'].forEach(v=>{ const b=document.getElementById(`tf-${qId}-${v}`); if(b) b.disabled=true; });
+  const sb=document.getElementById(`tf-${qId}-${sel}`);
+  if(isOk){
+    sb.classList.add('sel-ok'); audioCorrect(); confetti();
+  } else {
+    sb.classList.add('sel-bad'); audioWrong();
+    const cb=document.getElementById(`tf-${qId}-${correct}`);
+    if(cb) cb.classList.add('show-ans');
+  }
+  autoShowExp(qId);
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults() {
+  let mc=0, tf=0;
+  mcData.forEach(q=>{ if(state[q.id]?.ok) mc++; });
+  tfData.forEach(q=>{ if(state[q.id]?.ok) tf++; });
+  const total=mc+tf, max=mcData.length+tfData.length;
+  const pct=Math.round(total/max*100);
+
+  let emoji,title,comment;
+  if(total===max)      {emoji='🏆';title='THIÊN TÀI!';comment='Chúc mừng! Bạn đã trả lời đúng tất cả câu hỏi! Thật xuất sắc! 🌟';}
+  else if(total>=9)    {emoji='⭐';title='LÀM TỐT LẮM!';comment='Kết quả rất tốt! Bạn nắm vững hầu hết nội dung bài đọc. Tiếp tục phát huy! 💪';}
+  else if(total>=7)    {emoji='👍';title='KHÁ ĐẤY!';comment='Bạn làm khá tốt! Hãy ôn lại những câu sai để cải thiện thêm nhé! 📚';}
+  else if(total>=5)    {emoji='💪';title='CỐ LÊN NHÉ!';comment='Cần ôn tập thêm! Đọc kỹ bài và chú ý từ khoá trong đoạn văn nhé! 🔍';}
+  else                 {emoji='📚';title='CẦN ÔN TẬP!';comment='Đừng nản lòng! Hãy đọc kỹ lại bài và xem phần giải thích chi tiết từng câu! 🌈';}
+
+  document.getElementById('mEmoji').textContent=emoji;
+  document.getElementById('mTitle').textContent=title;
+  document.getElementById('mScore').textContent=`${total}/${max}`;
+  document.getElementById('mComment').textContent=comment;
+  document.getElementById('mBreak').innerHTML=`
+    <div class="brow"><span>✏️ Exercise 2 — Multiple Choice (Passage 1):</span><span>${mc}/${mcData.length}</span></div>
+    <div class="brow"><span>✅ Exercise 3 — True / False (Passage 2):</span><span>${tf}/${tfData.length}</span></div>
+    <div class="brow"><span>🏅 TỔNG ĐIỂM:</span><span>${total}/${max} &nbsp;(${pct}%)</span></div>
+  `;
+  document.getElementById('scoreModal').classList.add('on');
+  confetti();
+}
+
+function closeModal() { document.getElementById('scoreModal').classList.remove('on'); }
+
+// ============================================================
+// FLOATING EMOJIS BACKGROUND
+// ============================================================
+(function createFloaters(){
+  const emojis=['💡','📱','🤖','⚡','🔬','💻','🌐','🛰️','⚙️','🔋'];
+  const layer=document.getElementById('floatLayer');
+  for(let i=0;i<18;i++){
+    const el=document.createElement('span');
+    el.className='fe';
+    el.textContent=emojis[i%emojis.length];
+    el.style.cssText=`
+      left:${Math.random()*100}%;
+      font-size:${1.5+Math.random()*2}rem;
+      animation-duration:${15+Math.random()*25}s;
+      animation-delay:-${Math.random()*25}s;
+    `;
+    layer.appendChild(el);
+  }
+})();
+
+// ============================================================
+// INIT
+// ============================================================
+renderMC();
+renderTF();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

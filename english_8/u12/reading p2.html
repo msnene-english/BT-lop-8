@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Quiz – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #7c3aed;
+    --secondary: #f59e0b;
+    --accent: #06b6d4;
+    --correct: #00D26A;
+    --wrong: #FF4757;
+    --bg-dark: #0f0a2e;
+    --bg-mid: #1e1255;
+    --card-bg: rgba(255,255,255,0.07);
+    --text-main: #e8e0ff;
+    --text-soft: #b0a8d8;
+    --border: rgba(124,58,237,0.35);
+    --radius: 18px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;font-family:'Nunito',sans-serif;color:var(--text-main);overflow:hidden;}
+
+  /* ── Animated gradient background ── */
+  body{
+    background: linear-gradient(135deg, #0f0a2e 0%, #1e1255 30%, #2d0b6b 60%, #0f2a5e 100%);
+    background-size: 400% 400%;
+    animation: bgShift 14s ease infinite;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed;inset:0;z-index:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Ctext x='30' y='80' font-size='48' opacity='0.06'%3E🚀%3C/text%3E%3Ctext x='200' y='160' font-size='56' opacity='0.05'%3E🪐%3C/text%3E%3Ctext x='340' y='60' font-size='34' opacity='0.07'%3E⭐%3C/text%3E%3Ctext x='80' y='260' font-size='40' opacity='0.05'%3E🌌%3C/text%3E%3Ctext x='300' y='320' font-size='50' opacity='0.06'%3E🌟%3C/text%3E%3Ctext x='10' y='380' font-size='38' opacity='0.05'%3E🛸%3C/text%3E%3Ctext x='370' y='410' font-size='32' opacity='0.06'%3E☄️%3C/text%3E%3C/svg%3E");
+    background-repeat: repeat;
+    animation: floatBg 30s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  @keyframes floatBg{from{background-position:0 0}to{background-position:420px 420px}}
+
+  /* ── Layout ── */
+  #app{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;}
+
+  /* ── Header ── */
+  header{
+    background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(6,182,212,0.7));
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-shrink:0;
+  }
+  .header-title{
+    font-size:0.92rem; font-weight:800;
+    background: linear-gradient(90deg,#f59e0b,#e879f9,#38bdf8);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    line-height:1.2;
+  }
+  .header-sub{font-size:0.72rem;color:var(--text-soft);font-weight:600;}
+
+  /* ── Timer bar ── */
+  #timer-bar{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    padding:6px 20px;
+    background:rgba(15,10,46,0.7);
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  #timer-display{
+    font-size:1.5rem;font-weight:900;letter-spacing:3px;
+    color:#f59e0b;text-shadow:0 0 16px #f59e0b88;
+    min-width:80px;text-align:center;
+  }
+  .btn-timer{
+    padding:6px 18px;border-radius:40px;border:none;cursor:pointer;
+    font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    color:#fff;box-shadow:0 4px 14px rgba(124,58,237,0.5);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-timer:hover{transform:scale(1.06);box-shadow:0 6px 20px rgba(124,58,237,0.7);}
+
+  /* ── Split screen ── */
+  #split{display:flex;flex:1;overflow:hidden;gap:0;}
+  .pane{flex:1;overflow-y:auto;padding:16px 20px;scrollbar-width:thin;scrollbar-color:rgba(124,58,237,.5) transparent;}
+  .pane::-webkit-scrollbar{width:6px;}
+  .pane::-webkit-scrollbar-thumb{background:rgba(124,58,237,.5);border-radius:4px;}
+  #pane-left{border-right:2px solid var(--border);}
+
+  /* ── Section labels ── */
+  .pane-label{
+    font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;
+  }
+
+  /* ── Reading passage cards ── */
+  .passage-card{
+    background: rgba(255,255,255,0.05);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;margin-bottom:14px;
+    backdrop-filter:blur(6px);
+  }
+  .passage-title{
+    font-size:0.95rem;font-weight:800;
+    color:#e879f9;margin-bottom:10px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .passage-text{font-size:0.9rem;line-height:1.85;color:var(--text-main);}
+  .passage-para{margin-bottom:10px;}
+  .highlight-word{
+    background:rgba(245,158,11,0.28);color:#fcd34d;
+    padding:1px 4px;border-radius:5px;font-weight:700;cursor:help;
+  }
+
+  /* ── Translation button ── */
+  .btn-trans{
+    margin-top:8px;padding:5px 14px;border-radius:30px;border:none;cursor:pointer;
+    font-family:'Nunito',sans-serif;font-weight:700;font-size:0.78rem;
+    background:linear-gradient(135deg,#f59e0b88,#e879f988);
+    color:#fef9c3;border:1px solid rgba(245,158,11,.4);
+    transition:all .2s;
+  }
+  .btn-trans:hover{background:linear-gradient(135deg,#f59e0b,#e879f9);color:#fff;}
+  .trans-box{
+    display:none;margin-top:8px;padding:10px 14px;
+    background:rgba(6,182,212,0.1);border-left:3px solid #06b6d4;
+    border-radius:0 10px 10px 0;font-size:0.83rem;line-height:1.7;
+    color:#a5f3fc;font-style:italic;
+  }
+
+  /* ── Glossary ── */
+  .glossary-card{
+    background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,.3);
+    border-radius:var(--radius);padding:14px;margin-top:6px;
+  }
+  .glossary-title{font-size:0.88rem;font-weight:800;color:#38bdf8;margin-bottom:10px;}
+  .glossary-table{width:100%;border-collapse:collapse;font-size:0.8rem;}
+  .glossary-table th{
+    background:rgba(6,182,212,0.2);color:#7dd3fc;
+    padding:6px 8px;text-align:left;font-weight:800;
+    border-bottom:2px solid rgba(6,182,212,.3);
+  }
+  .glossary-table td{
+    padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.06);
+    color:var(--text-main);vertical-align:top;
+  }
+  .glossary-table tr:hover td{background:rgba(255,255,255,.04);}
+  .pos-tag{
+    display:inline-block;padding:1px 7px;border-radius:20px;font-size:0.7rem;
+    font-weight:700;background:rgba(124,58,237,.4);color:#c4b5fd;
+  }
+
+  /* ── Exercise cards ── */
+  .ex-card{
+    background:rgba(255,255,255,0.05);border:1px solid var(--border);
+    border-radius:var(--radius);padding:16px;margin-bottom:16px;
+    backdrop-filter:blur(6px);
+  }
+  .ex-title{font-size:0.88rem;font-weight:800;color:#f59e0b;margin-bottom:12px;border-bottom:1px solid rgba(245,158,11,.2);padding-bottom:8px;}
+
+  /* ── Questions ── */
+  .q-block{margin-bottom:18px;}
+  .q-text{font-size:1.02rem;font-weight:700;color:var(--text-main);margin-bottom:10px;line-height:1.6;}
+  .q-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;border-radius:50%;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    color:#fff;font-size:0.8rem;font-weight:800;margin-right:8px;flex-shrink:0;
+  }
+
+  /* ── MC Options ── */
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .opt-btn{
+    padding:9px 14px;border-radius:14px;border:2px solid rgba(124,58,237,.4);
+    background:rgba(124,58,237,.12);color:var(--text-main);
+    font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:600;
+    cursor:pointer;text-align:left;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+    transition:transform .15s,box-shadow .15s,background .2s,border-color .2s;
+    position:relative;overflow:hidden;
+  }
+  .opt-btn:hover:not(:disabled){
+    transform:scale(1.035);
+    box-shadow:0 6px 20px rgba(124,58,237,.5);
+    border-color:rgba(124,58,237,.8);
+    background:rgba(124,58,237,.25);
+  }
+  .opt-btn.correct{
+    background:rgba(0,210,106,.2)!important;
+    border-color:var(--correct)!important;
+    color:#86efac!important;
+  }
+  .opt-btn.wrong{
+    background:rgba(255,71,87,.2)!important;
+    border-color:var(--wrong)!important;
+    color:#fca5a5!important;
+    animation:shake .4s ease;
+  }
+  .opt-btn:disabled{cursor:not-allowed;}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+  /* ── True/False New Buttons ── */
+  .tf-row{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:12px 10px;border-radius:12px;margin-bottom:8px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    transition:background .2s;
+  }
+  .tf-row:hover{background:rgba(255,255,255,.07);}
+  .tf-stmt{flex:1;font-size:0.88rem;color:var(--text-main);line-height:1.55;}
+  
+  .tf-actions {
+    display: flex; gap: 6px;
+  }
+  .btn-tf {
+    padding: 6px 14px; border-radius: 8px; border: 2px solid rgba(124,58,237,.4);
+    background: rgba(124,58,237,.1); color: var(--text-main);
+    font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 800;
+    cursor: pointer; transition: all .2s; min-width: 60px;
+  }
+  .btn-tf:hover:not(:disabled) {
+    background: rgba(124,58,237,.3); border-color: #7c3aed;
+  }
+  .btn-tf.correct {
+    background: rgba(0,210,106,.2) !important; border-color: var(--correct) !important; color: #86efac !important;
+  }
+  .btn-tf.wrong {
+    background: rgba(255,71,87,.2) !important; border-color: var(--wrong) !important; color: #fca5a5 !important;
+    animation: shake .4s ease;
+  }
+  .btn-tf:disabled { cursor: not-allowed; opacity: 0.8; }
+
+  /* ── Explanations ── */
+  .explain-block{
+    display:none;margin-top:10px;padding:12px 14px;
+    background:rgba(56,189,248,.08);border-left:3px solid #38bdf8;
+    border-radius:0 12px 12px 0;font-size:0.86rem;line-height:1.7;color:#bae6fd;
+  }
+  .explain-block.show{display:block;}
+  .explain-block strong{color:#f59e0b;}
+  .btn-explain{
+    margin-top:8px;padding:4px 12px;border-radius:20px;border:1px solid rgba(56,189,248,.4);
+    background:rgba(56,189,248,.1);color:#7dd3fc;
+    font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;
+    transition:all .2s;
+  }
+  .btn-explain:hover{background:rgba(56,189,248,.25);}
+
+  /* ── Submit & Score ── */
+  #submit-area{padding:12px 20px;background:rgba(15,10,46,.8);border-top:1px solid var(--border);flex-shrink:0;}
+  #btn-submit{
+    width:100%;padding:14px;border-radius:var(--radius);border:none;cursor:pointer;
+    font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;
+    background:linear-gradient(135deg,#7c3aed,#f59e0b,#06b6d4);
+    background-size:200% 200%;animation:btnGrad 4s ease infinite;
+    color:#fff;box-shadow:0 6px 28px rgba(124,58,237,.6);
+    transition:transform .2s;letter-spacing:1px;
+  }
+  #btn-submit:hover{transform:scale(1.02);}
+  @keyframes btnGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+  /* ── Score overlay ── */
+  #score-overlay{
+    display:none;position:fixed;inset:0;z-index:1000;
+    background:rgba(8,5,25,.9);backdrop-filter:blur(12px);
+    align-items:center;justify-content:center;
+  }
+  #score-overlay.show{display:flex;}
+  .score-box{
+    background:linear-gradient(135deg,rgba(124,58,237,.4),rgba(6,182,212,.3));
+    border:2px solid rgba(124,58,237,.6);border-radius:28px;
+    padding:36px 40px;text-align:center;max-width:480px;width:90%;
+    box-shadow:0 20px 60px rgba(0,0,0,.7);
+    animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);
+  }
+  @keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+  .score-emoji{font-size:3.5rem;margin-bottom:10px;}
+  .score-num{font-size:3rem;font-weight:900;
+    background:linear-gradient(90deg,#f59e0b,#e879f9);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .score-label{font-size:1.3rem;font-weight:800;color:#e8e0ff;margin:8px 0;}
+  .score-comment{font-size:0.95rem;color:var(--text-soft);line-height:1.6;margin-top:8px;}
+  .btn-retry{
+    margin-top:20px;padding:12px 30px;border-radius:40px;border:none;cursor:pointer;
+    font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;
+    box-shadow:0 6px 20px rgba(124,58,237,.6);transition:transform .2s;
+  }
+  .btn-retry:hover{transform:scale(1.06);}
+
+  /* ── Confetti ── */
+  .confetti-piece{
+    position:fixed;width:10px;height:10px;
+    animation:confettiFall 1.5s ease-out forwards;
+    pointer-events:none;z-index:9999;border-radius:2px;
+  }
+  @keyframes confettiFall{
+    0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+  }
+
+  /* ── Scrollbar general ── */
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(124,58,237,.4);border-radius:4px;}
+
+  /* ── Timer alert ── */
+  #timer-alert{
+    display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);
+    background:rgba(255,71,87,.9);color:#fff;padding:12px 24px;
+    border-radius:14px;font-weight:800;font-size:0.9rem;z-index:500;
+    box-shadow:0 8px 24px rgba(255,71,87,.5);text-align:center;max-width:380px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div>
+      <div class="header-title">🌌 Space & Planets – Reading Quiz</div>
+      <div class="header-sub">Giáo viên tạo: MS Chí Nên | ULIS</div>
+    </div>
+    <div style="font-size:0.75rem;color:var(--text-soft);text-align:right;">
+      Tiếng Anh 8 – Global Success<br>
+      <span style="color:#f59e0b;font-weight:700;">Bài tập Reading</span>
+    </div>
+  </header>
+
+  <div id="timer-bar">
+    <button class="btn-timer" id="btn-start-timer">▶ BẮT ĐẦU TÍNH GIỜ</button>
+    <div id="timer-display" style="display:none;">10:00</div>
+    <button class="btn-timer" id="btn-pause-timer" style="display:none;">⏸ Tạm dừng</button>
+  </div>
+
+  <div id="split">
+
+    <div class="pane" id="pane-left">
+      <div class="pane-label">📖 Reading Passages</div>
+
+      <div class="passage-card">
+        <div class="passage-title">② The Mars Exploration Rovers 🚀</div>
+        <div class="passage-text">
+
+          <div class="passage-para" id="mars-p1">
+            The Mars Exploration Rovers were two robotic vehicles that explored the surface of Mars. Scientists wanted them to figure out whether water had ever existed on the planet. The rovers also searched for other traces of life on Mars. The National Aeronautics and Space Administration (NASA) designed and built the rovers, named Spirit and Opportunity. NASA launched Spirit on June 10, and Opportunity on July 7, 2003. Spirit <span class="highlight-word" title="touched down = hạ cánh, đáp xuống đất">touched down</span> on January 3, 2004. Three weeks later, Opportunity landed on the opposite side of the planet.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-mars-p1',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-mars-p1">
+            Tàu thăm dò Sao Hỏa là hai phương tiện robot đã khám phá bề mặt của Sao Hỏa. Các nhà khoa học muốn chúng tìm hiểu xem liệu nước có từng tồn tại trên hành tinh này hay không. Các tàu thăm dò cũng tìm kiếm các dấu vết sự sống khác trên Sao Hỏa. Cơ quan Hàng không và Vũ trụ Quốc gia Hoa Kỳ (NASA) đã thiết kế và chế tạo các tàu thăm dò, đặt tên là Spirit và Opportunity. NASA đã phóng Spirit vào ngày 10 tháng 6, và Opportunity vào ngày 7 tháng 7 năm 2003. Spirit <em>đáp xuống</em> vào ngày 3 tháng 1 năm 2004. Ba tuần sau, Opportunity đổ bộ xuống phía đối diện của hành tinh.
+          </div>
+
+          <div class="passage-para" id="mars-p2" style="margin-top:10px;">
+            The rovers had six wheels that allowed them to move in many directions. They also had cameras and many instruments for examining the rocks, soil, and dust on the planet. Scientists on Earth sent commands to the rovers to tell them where to go and what to do. The rovers sent signals back to the scientists through computers and large antennas on Earth.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-mars-p2',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-mars-p2">
+            Các tàu thăm dò có sáu bánh xe cho phép chúng di chuyển theo nhiều hướng. Chúng cũng được trang bị camera và nhiều thiết bị để kiểm tra đá, đất và bụi trên hành tinh. Các nhà khoa học trên Trái Đất đã gửi lệnh đến các tàu thăm dò để hướng dẫn chúng đi đâu và làm gì. Các tàu thăm dò đã gửi tín hiệu phản hồi về cho các nhà khoa học thông qua máy tính và ăng-ten lớn trên Trái Đất.
+          </div>
+
+          <div class="passage-para" id="mars-p3" style="margin-top:10px;">
+            Each rover was designed to last for about 90 days. However, they worked so well that their mission was extended. In 2010 Spirit stopped sending signals, but Opportunity continued to operate until 2018. NASA officially declared the Opportunity mission to end in February 2019.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-mars-p3',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-mars-p3">
+            Mỗi tàu thăm dò được thiết kế để hoạt động trong khoảng 90 ngày. Tuy nhiên, chúng hoạt động tốt đến mức nhiệm vụ được kéo dài thêm. Năm 2010, Spirit ngừng gửi tín hiệu, nhưng Opportunity tiếp tục hoạt động cho đến năm 2018. NASA chính thức tuyên bố nhiệm vụ của Opportunity kết thúc vào tháng 2 năm 2019.
+          </div>
+
+          <div style="font-size:0.72rem;color:var(--text-soft);margin-top:8px;font-style:italic;">
+            (Adapted from: https://kids.britannica.com)
+          </div>
+        </div>
+      </div>
+
+      <div class="passage-card">
+        <div class="passage-title">③ Mercury – The Planet of Records 🪐</div>
+        <div class="passage-text">
+
+          <div style="font-size:0.85rem;color:#a78bfa;font-weight:700;margin-bottom:6px;">
+            Among the eight planets in the solar system, Mercury has achieved several "most" records:
+          </div>
+
+          <div class="passage-para" id="merc-p1">
+            <strong style="color:#f59e0b;">• Closest to the sun</strong><br>
+            The average distance between Mercury and the sun is 57.9 million kilometres, which is closer than other planets in the solar system. Scientists haven't discovered any planets closer to the sun than Mercury so far.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-merc-p1',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-merc-p1">
+            <strong>• Gần Mặt Trời nhất</strong><br>
+            Khoảng cách trung bình giữa Sao Thủy và Mặt Trời là 57,9 triệu kilômét, gần hơn so với các hành tinh khác trong hệ Mặt Trời. Cho đến nay, các nhà khoa học chưa phát hiện ra bất kỳ hành tinh nào gần Mặt Trời hơn Sao Thủy.
+          </div>
+
+          <div class="passage-para" id="merc-p2" style="margin-top:10px;">
+            <strong style="color:#f59e0b;">• Maximum surface temperature difference</strong><br>
+            Because it is very close to the sun, the temperature of the sunny side on Mercury can reach 430°C at the highest, but the night temperature on the back sunny side can fall to -160°C. The temperature difference between day and night is nearly 600°C. This is the largest temperature difference between the planet's surface.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-merc-p2',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-merc-p2">
+            <strong>• Chênh lệch nhiệt độ bề mặt lớn nhất</strong><br>
+            Do rất gần Mặt Trời, nhiệt độ ở phía sáng của Sao Thủy có thể đạt tới 430°C ở mức cao nhất, nhưng nhiệt độ ban đêm ở phía tối có thể giảm xuống -160°C. Sự chênh lệch nhiệt độ giữa ngày và đêm gần 600°C. Đây là sự chênh lệch nhiệt độ bề mặt lớn nhất giữa các hành tinh.
+          </div>
+
+          <div class="passage-para" id="merc-p3" style="margin-top:10px;">
+            <strong style="color:#f59e0b;">• Fastest year</strong><br>
+            The earth orbits around the sun every year, and the "Mercury year" is the shortest year in the solar system. It takes only 88 days to go around the sun, which is less than 3 months on the earth. This is because Mercury is flying around the sun at high speed. It also explains why the signs and symbols representing Mercury are compared to a messenger wearing flying shoes and holding a magic wand, based on Greek mythology.
+          </div>
+          <button class="btn-trans" onclick="toggleTrans('trans-merc-p3',this)">🌟 Mở dịch đoạn này</button>
+          <div class="trans-box" id="trans-merc-p3">
+            <strong>• Năm ngắn nhất (Nhanh nhất)</strong><br>
+            Trái Đất quay quanh Mặt Trời mỗi năm một vòng, và "một năm Sao Thủy" là năm ngắn nhất trong hệ Mặt Trời. Sao Thủy chỉ mất 88 ngày để đi hết một vòng quanh Mặt Trời, tức là chưa đến 3 tháng trên Trái Đất. Điều này là do Sao Thủy bay quanh Mặt Trời với tốc độ rất cao. Điều này cũng giải thích tại sao các dấu hiệu và biểu tượng đại diện cho Sao Thủy lại được ví như một người đưa tin đeo giày có cánh và cầm cây đũa phép, dựa trên thần thoại Hy Lạp.
+          </div>
+
+          <div style="font-size:0.72rem;color:var(--text-soft);margin-top:8px;font-style:italic;">
+            (Adapted from: https://inf.news/en/science)
+          </div>
+        </div>
+      </div>
+
+      <div class="glossary-card">
+        <div class="glossary-title">📚 Glossary – Từ vựng học thuật (B1–C2)</div>
+        <table class="glossary-table">
+          <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr></thead>
+          <tbody>
+            <tr><td><strong>robotic</strong></td><td><span class="pos-tag">adj</span></td><td>thuộc về robot, tự động hóa</td></tr>
+            <tr><td><strong>exploration</strong></td><td><span class="pos-tag">n</span></td><td>sự thám hiểm, khám phá</td></tr>
+            <tr><td><strong>trace</strong></td><td><span class="pos-tag">n</span></td><td>dấu vết, tàn tích</td></tr>
+            <tr><td><strong>aeronautics</strong></td><td><span class="pos-tag">n</span></td><td>ngành hàng không, kỹ thuật bay</td></tr>
+            <tr><td><strong>administration</strong></td><td><span class="pos-tag">n</span></td><td>cơ quan quản lý, hành chính</td></tr>
+            <tr><td><strong>instrument</strong></td><td><span class="pos-tag">n</span></td><td>thiết bị, dụng cụ đo lường</td></tr>
+            <tr><td><strong>antenna</strong></td><td><span class="pos-tag">n</span></td><td>ăng-ten (thiết bị thu/phát sóng)</td></tr>
+            <tr><td><strong>extended</strong></td><td><span class="pos-tag">adj</span></td><td>được kéo dài, mở rộng</td></tr>
+            <tr><td><strong>orbit</strong></td><td><span class="pos-tag">v/n</span></td><td>bay quanh / quỹ đạo</td></tr>
+            <tr><td><strong>mythology</strong></td><td><span class="pos-tag">n</span></td><td>thần thoại học</td></tr>
+            <tr><td><strong>kilometre</strong></td><td><span class="pos-tag">n</span></td><td>kilômét (đơn vị đo độ dài)</td></tr>
+            <tr><td><strong>declare</strong></td><td><span class="pos-tag">v</span></td><td>tuyên bố, công bố chính thức</td></tr>
+            <tr><td><strong>symbol</strong></td><td><span class="pos-tag">n</span></td><td>biểu tượng, ký hiệu</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><div class="pane" id="pane-right">
+      <div class="pane-label">✏️ Exercises</div>
+
+      <div class="ex-card">
+        <div class="ex-title">🚀 Exercise 2 – Multiple Choice: The Mars Rovers</div>
+
+        <div class="q-block" id="q1-block">
+          <div class="q-text"><span class="q-num">1</span>What are the Mars Exploration Rovers?</div>
+          <div class="options-grid" id="q1-opts"></div>
+          <div class="explain-block" id="q1-explain">
+            <strong>✅ Đáp án đúng: C. Robots (Người máy/Xe robot)</strong><br><br>
+            <strong>🔍 Phân tích 4 đáp án:</strong><br>
+            A. <em>Computers</em> (máy tính) – Sai. Tàu thăm dò không phải máy tính.<br>
+            B. <em>Wheels</em> (bánh xe) – Sai. Đây chỉ là bộ phận của xe, không phải bản thân chiếc xe.<br>
+            <strong>C. <em>Robots</em> (xe robot / người máy) – Đúng.</strong> Câu đầu bài đọc nêu rõ: <em>"two robotic vehicles"</em> = hai phương tiện robot, tức là chúng là những chiếc xe robot.<br>
+            D. <em>Planets</em> (hành tinh) – Sai hoàn toàn. Tàu thăm dò <em>khám phá</em> hành tinh, không phải <em>là</em> hành tinh.<br><br>
+            <strong>🌐 Dịch câu hỏi:</strong> "Các tàu thăm dò Sao Hỏa là gì?" → Đáp án: Robot (xe robot).<br>
+            <strong>💡 Từ khóa bài đọc:</strong> <em>"two robotic vehicles"</em> → robotic = thuộc về robot → chọn C.
+          </div>
+          <button class="btn-explain" onclick="toggleExplain('q1-explain',this)" style="display:none;" id="q1-explain-btn">💡 Xem giải thích chi tiết</button>
+        </div>
+
+        <div class="q-block" id="q2-block">
+          <div class="q-text"><span class="q-num">2</span>The phrase <strong>"touched down"</strong> in paragraph 1 is closest in meaning to ________.</div>
+          <div class="options-grid" id="q2-opts"></div>
+          <div class="explain-block" id="q2-explain">
+            <strong>✅ Đáp án đúng: A. landed (hạ cánh, đáp xuống)</strong><br><br>
+            <strong>🔍 Phân tích 4 đáp án:</strong><br>
+            <strong>A. <em>landed</em> – Đúng.</strong> "Touch down" là cụm động từ chuyên ngành hàng không/vũ trụ, nghĩa là "đáp xuống, hạ cánh xuống bề mặt". Câu văn tiếp theo cũng xác nhận: <em>"Opportunity <u>landed</u> on the opposite side"</em> – dùng "landed" như từ song song, chứng tỏ 2 từ đồng nghĩa.<br>
+            B. <em>affected</em> (tác động, ảnh hưởng) – Sai nghĩa hoàn toàn.<br>
+            C. <em>moved</em> (di chuyển) – Quá chung chung; "touch down" mang nghĩa cụ thể hơn là đáp xuống một điểm cụ thể.<br>
+            D. <em>examined</em> (kiểm tra, xem xét) – Sai nghĩa; không liên quan.<br><br>
+            <strong>🌐 Dịch câu:</strong> "Spirit <em>đáp xuống</em> vào ngày 3 tháng 1 năm 2004."<br>
+            <strong>💡 Mẹo:</strong> Câu ngay sau dùng "landed" cho Opportunity – đây là gợi ý đồng nghĩa trực tiếp từ bài đọc!
+          </div>
+          <button class="btn-explain" onclick="toggleExplain('q2-explain',this)" style="display:none;" id="q2-explain-btn">💡 Xem giải thích chi tiết</button>
+        </div>
+
+        <div class="q-block" id="q3-block">
+          <div class="q-text"><span class="q-num">3</span>How many wheels did each rover have?</div>
+          <div class="options-grid" id="q3-opts"></div>
+          <div class="explain-block" id="q3-explain">
+            <strong>✅ Đáp án đúng: C. 6</strong><br><br>
+            <strong>🔍 Phân tích:</strong><br>
+            Câu hỏi hỏi về số bánh xe của mỗi tàu thăm dò. Đoạn 2 bài đọc ghi rõ: <em>"The rovers had <strong>six wheels</strong>"</em> = các tàu thăm dò có <strong>sáu bánh xe</strong>.<br>
+            A. 4, B. 5, D. 7 – Đây là các con số nhiễu không có trong bài đọc.<br><br>
+            <strong>🌐 Dịch câu hỏi:</strong> "Mỗi tàu thăm dò có bao nhiêu bánh xe?" → 6 bánh xe.<br>
+            <strong>💡 Từ khóa:</strong> <em>"six wheels"</em> ở đoạn 2.
+          </div>
+          <button class="btn-explain" onclick="toggleExplain('q3-explain',this)" style="display:none;" id="q3-explain-btn">💡 Xem giải thích chi tiết</button>
+        </div>
+
+        <div class="q-block" id="q4-block">
+          <div class="q-text"><span class="q-num">4</span>The rovers sent responses to ________ through computers and antennas.</div>
+          <div class="options-grid" id="q4-opts"></div>
+          <div class="explain-block" id="q4-explain">
+            <strong>✅ Đáp án đúng: D. NASA scientists (các nhà khoa học của NASA)</strong><br><br>
+            <strong>🔍 Phân tích 4 đáp án:</strong><br>
+            A. <em>Mars creatures</em> (sinh vật Sao Hỏa) – Sai. Bài đọc không đề cập đến sinh vật nào trên Sao Hỏa.<br>
+            B. <em>spacecrafts</em> (tàu vũ trụ) – Sai. Bài không nói tín hiệu được gửi đến tàu vũ trụ khác.<br>
+            C. <em>UFOs</em> (vật thể bay không xác định) – Sai hoàn toàn, không có trong bài.<br>
+            <strong>D. <em>NASA scientists</em> – Đúng.</strong> Câu bài đọc: <em>"The rovers sent signals back to the <strong>scientists</strong> through computers and large antennas on Earth."</em> Những nhà khoa học này thuộc NASA (đã thiết kế và vận hành các tàu thăm dò).<br><br>
+            <strong>🌐 Dịch câu hỏi:</strong> "Các tàu thăm dò đã gửi phản hồi đến ________ thông qua máy tính và ăng-ten."<br>
+            <strong>💡 Từ khóa bài đọc:</strong> <em>"sent signals back to the scientists"</em> = gửi tín hiệu lại cho các nhà khoa học.
+          </div>
+          <button class="btn-explain" onclick="toggleExplain('q4-explain',this)" style="display:none;" id="q4-explain-btn">💡 Xem giải thích chi tiết</button>
+        </div>
+
+        <div class="q-block" id="q5-block">
+          <div class="q-text"><span class="q-num">5</span>How long did the Opportunity mission last?</div>
+          <div class="options-grid" id="q5-opts"></div>
+          <div class="explain-block" id="q5-explain">
+            <strong>✅ Đáp án đúng: D. Nearly 16 years (gần 16 năm)</strong><br><br>
+            <strong>🔍 Phân tích:</strong><br>
+            Opportunity được phóng ngày <strong>7 tháng 7 năm 2003</strong> và NASA tuyên bố nhiệm vụ kết thúc vào <strong>tháng 2 năm 2019</strong>. Tính từ 2003 đến 2019 là khoảng <strong>~16 năm</strong>.<br><br>
+            A. <em>About 90 days</em> – Đây là thời gian thiết kế ban đầu (<em>"designed to last for about 90 days"</em>), nhưng thực tế đã được kéo dài hơn nhiều → Sai.<br>
+            B. <em>About 8 years</em> – Sai. Không có căn cứ trong bài.<br>
+            C. <em>Less than 10 years</em> – Sai. 16 năm > 10 năm.<br>
+            <strong>D. <em>Nearly 16 years</em> – Đúng.</strong> 2003 → 2019 ≈ 16 năm.<br><br>
+            <strong>🌐 Dịch câu hỏi:</strong> "Nhiệm vụ của Opportunity kéo dài bao lâu?" → Gần 16 năm.<br>
+            <strong>💡 Lưu ý:</strong> Cần đọc kỹ cả bài, không nhầm với "90 days" là thời gian dự kiến ban đầu.
+          </div>
+          <button class="btn-explain" onclick="toggleExplain('q5-explain',this)" style="display:none;" id="q5-explain-btn">💡 Xem giải thích chi tiết</button>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-title">🪐 Exercise 3 – True (T) or False (F): Mercury</div>
+        <p style="font-size:0.8rem;color:var(--text-soft);margin-bottom:12px;">👉 Click chọn nút <strong>True</strong> hoặc <strong>False</strong> để trả lời.</p>
+
+        <div class="tf-row">
+          <div class="tf-stmt"><span class="q-num">1</span>Some planets closer to the sun than Mercury have been found.</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="tf-actions" id="tf-actions-1">
+              <button class="btn-tf" onclick="answerTF(1, 'TRUE')">True</button>
+              <button class="btn-tf" onclick="answerTF(1, 'FALSE')">False</button>
+            </div>
+            <button class="btn-explain" onclick="toggleExplain('tf1-explain',this)" style="display:none;" id="tf1-explain-btn">💡 Giải thích</button>
+          </div>
+        </div>
+        <div class="explain-block" id="tf1-explain">
+          <strong>✅ Đáp án: FALSE (Sai)</strong><br><br>
+          <strong>🔍 Lý do:</strong> Câu này khẳng định "<em>một số hành tinh gần Mặt Trời hơn Sao Thủy đã được tìm thấy</em>". Nhưng bài đọc nêu rõ ngược lại: <em>"Scientists haven't discovered <strong>any</strong> planets closer to the sun than Mercury <strong>so far</strong>."</em><br><br>
+          <strong>🌐 Dịch bài đọc:</strong> "Cho đến nay, các nhà khoa học chưa phát hiện ra bất kỳ hành tinh nào gần Mặt Trời hơn Sao Thủy."<br>
+          → Thông tin trong câu hỏi <strong>trái ngược</strong> hoàn toàn với bài đọc → FALSE.
+        </div>
+
+        <div class="tf-row">
+          <div class="tf-stmt"><span class="q-num">2</span>The day and night temperatures on the surface of Mercury are totally different.</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="tf-actions" id="tf-actions-2">
+              <button class="btn-tf" onclick="answerTF(2, 'TRUE')">True</button>
+              <button class="btn-tf" onclick="answerTF(2, 'FALSE')">False</button>
+            </div>
+            <button class="btn-explain" onclick="toggleExplain('tf2-explain',this)" style="display:none;" id="tf2-explain-btn">💡 Giải thích</button>
+          </div>
+        </div>
+        <div class="explain-block" id="tf2-explain">
+          <strong>✅ Đáp án: TRUE (Đúng)</strong><br><br>
+          <strong>🔍 Lý do:</strong> Bài đọc cho biết nhiệt độ ban ngày lên đến <strong>430°C</strong>, còn ban đêm xuống tới <strong>-160°C</strong>. Chênh lệch gần <strong>600°C</strong> – đây quả thực là sự chênh lệch <em>hoàn toàn khác biệt</em> (totally different).<br><br>
+          <strong>🌐 Dịch câu hỏi:</strong> "Nhiệt độ ngày và đêm trên bề mặt Sao Thủy hoàn toàn khác nhau."<br>
+          → Bài đọc xác nhận sự chênh lệch khổng lồ (gần 600°C) → TRUE.
+        </div>
+
+        <div class="tf-row">
+          <div class="tf-stmt"><span class="q-num">3</span>It takes Mercury shorter time to go around the sun than the Earth.</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="tf-actions" id="tf-actions-3">
+              <button class="btn-tf" onclick="answerTF(3, 'TRUE')">True</button>
+              <button class="btn-tf" onclick="answerTF(3, 'FALSE')">False</button>
+            </div>
+            <button class="btn-explain" onclick="toggleExplain('tf3-explain',this)" style="display:none;" id="tf3-explain-btn">💡 Giải thích</button>
+          </div>
+        </div>
+        <div class="explain-block" id="tf3-explain">
+          <strong>✅ Đáp án: TRUE (Đúng)</strong><br><br>
+          <strong>🔍 Lý do:</strong> Bài đọc viết: <em>"the 'Mercury year' is the shortest year in the solar system. It takes only <strong>88 days</strong> to go around the sun, which is <strong>less than 3 months</strong> on the earth."</em> Trong khi Trái Đất mất <strong>365 ngày</strong> (~12 tháng), Sao Thủy chỉ cần <strong>88 ngày</strong> (<3 tháng).<br><br>
+          <strong>🌐 Dịch câu hỏi:</strong> "Sao Thủy mất ít thời gian hơn Trái Đất để quay quanh Mặt Trời."<br>
+          → 88 ngày &lt; 365 ngày → TRUE.
+        </div>
+
+        <div class="tf-row">
+          <div class="tf-stmt"><span class="q-num">4</span>The signs and symbols of Mercury are a flying messenger with magic shoes.</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="tf-actions" id="tf-actions-4">
+              <button class="btn-tf" onclick="answerTF(4, 'TRUE')">True</button>
+              <button class="btn-tf" onclick="answerTF(4, 'FALSE')">False</button>
+            </div>
+            <button class="btn-explain" onclick="toggleExplain('tf4-explain',this)" style="display:none;" id="tf4-explain-btn">💡 Giải thích</button>
+          </div>
+        </div>
+        <div class="explain-block" id="tf4-explain">
+          <strong>✅ Đáp án: FALSE (Sai)</strong><br><br>
+          <strong>🔍 Lý do:</strong> Câu hỏi chỉ nói "<em>a flying messenger with magic shoes</em>" (người đưa tin bay với đôi giày phép). Nhưng bài đọc ghi đầy đủ hơn: <em>"a messenger wearing <strong>flying shoes</strong> and <strong>holding a magic wand</strong>"</em> = người đưa tin đeo <strong>giày có cánh</strong> VÀ <strong>cầm cây đũa phép</strong>.<br><br>
+          Câu hỏi thiếu chi tiết "<strong>holding a magic wand</strong>" (cầm cây đũa phép) và gọi giày là "magic shoes" thay vì "flying shoes" → Thông tin không chính xác hoàn toàn → FALSE.<br><br>
+          <strong>🌐 Dịch câu hỏi:</strong> "Các dấu hiệu và biểu tượng của Sao Thủy là một người đưa tin bay với đôi giày phép."<br>
+          → Thiếu "cây đũa phép" và sai chi tiết "giày có cánh" → FALSE.
+        </div>
+
+        <div class="tf-row">
+          <div class="tf-stmt"><span class="q-num">5</span>Mercury has the most "most" records in the solar system.</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="tf-actions" id="tf-actions-5">
+              <button class="btn-tf" onclick="answerTF(5, 'TRUE')">True</button>
+              <button class="btn-tf" onclick="answerTF(5, 'FALSE')">False</button>
+            </div>
+            <button class="btn-explain" onclick="toggleExplain('tf5-explain',this)" style="display:none;" id="tf5-explain-btn">💡 Giải thích</button>
+          </div>
+        </div>
+        <div class="explain-block" id="tf5-explain">
+          <strong>✅ Đáp án: TRUE (Đúng)</strong><br><br>
+          <strong>🔍 Lý do:</strong> Câu mở đầu bài đọc đã khẳng định: <em>"Mercury has achieved <strong>several 'most' records</strong>"</em> (Sao Thủy đã đạt được <em>nhiều</em> kỷ lục "nhất"). Bài đọc liệt kê: <em>gần Mặt Trời nhất, chênh lệch nhiệt độ lớn nhất, năm ngắn nhất</em> – đây là những kỷ lục "nhất" mà Sao Thủy nắm giữ trong hệ Mặt Trời.<br><br>
+          Câu hỏi nói Sao Thủy có nhiều kỷ lục "nhất" nhất trong hệ Mặt Trời → phù hợp với nội dung bài → TRUE.<br><br>
+          <strong>🌐 Dịch câu hỏi:</strong> "Sao Thủy có nhiều kỷ lục 'nhất' nhất trong hệ Mặt Trời."<br>
+          → Đúng theo nội dung bài đọc.
+        </div>
+      </div>
+
+    </div></div><div id="submit-area">
+    <button id="btn-submit" onclick="submitQuiz()">🚀 NỘP BÀI & XEM KẾT QUẢ</button>
+  </div>
+
+</div><div id="score-overlay">
+  <div class="score-box">
+    <div class="score-emoji" id="score-emoji">🎉</div>
+    <div class="score-num" id="score-num">0/10</div>
+    <div class="score-label" id="score-label">Kết quả của bạn</div>
+    <div class="score-comment" id="score-comment"></div>
+    <button class="btn-retry" onclick="retryQuiz()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<div id="timer-alert">
+  ⏰ Đã hết giờ làm bài! Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha. 😊
+</div>
+
+<script>
+// ── Audio ──
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+function getAudio(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx;}
+function playDing(){
+  const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.frequency.setValueAtTime(880,ctx.currentTime);
+  o.frequency.setValueAtTime(1100,ctx.currentTime+0.1);
+  g.gain.setValueAtTime(0.3,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.5);
+  o.start();o.stop(ctx.currentTime+0.5);
+}
+function playWrong(){
+  const ctx=getAudio();
+  [300,200,150].forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(f,ctx.currentTime+i*0.12);
+    g.gain.setValueAtTime(0.15,ctx.currentTime+i*0.12);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.12+0.15);
+    o.start(ctx.currentTime+i*0.12);
+    o.stop(ctx.currentTime+i*0.12+0.15);
+  });
+}
+
+// ── Confetti ──
+function spawnConfetti(){
+  const colors=['#f59e0b','#06b6d4','#e879f9','#00D26A','#fbbf24','#38bdf8'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';
+    el.style.top='-10px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius=Math.random()>0.5?'50%':'2px';
+    el.style.width=(6+Math.random()*10)+'px';
+    el.style.height=(6+Math.random()*10)+'px';
+    el.style.animationDelay=Math.random()*0.8+'s';
+    el.style.animationDuration=(1+Math.random()*1)+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+
+// ── Timer ──
+let timerInterval=null, timerSeconds=600, timerRunning=false;
+document.getElementById('btn-start-timer').onclick=function(){
+  this.style.display='none';
+  document.getElementById('timer-display').style.display='block';
+  document.getElementById('btn-pause-timer').style.display='block';
+  startTimer();
+};
+document.getElementById('btn-pause-timer').onclick=function(){
+  if(timerRunning){clearInterval(timerInterval);timerRunning=false;this.textContent='▶ Tiếp tục';}
+  else{startTimer();this.textContent='⏸ Tạm dừng';}
+};
+function startTimer(){
+  timerRunning=true;
+  timerInterval=setInterval(()=>{
+    timerSeconds--;
+    updateTimerDisplay();
+    if(timerSeconds<=0){
+      clearInterval(timerInterval);timerRunning=false;
+      document.getElementById('timer-alert').style.display='block';
+      setTimeout(()=>document.getElementById('timer-alert').style.display='none',8000);
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(Math.abs(timerSeconds)/60),s=Math.abs(timerSeconds)%60;
+  const d=document.getElementById('timer-display');
+  d.textContent=(timerSeconds<0?'-':'')+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  d.style.color=timerSeconds<=60?'#FF4757':timerSeconds<=120?'#f59e0b':'#f59e0b';
+}
+
+// ── Translations ──
+function toggleTrans(id,btn){
+  const box=document.getElementById(id);
+  const isOpen=box.style.display==='block';
+  box.style.display=isOpen?'none':'block';
+  btn.textContent=isOpen?'🌟 Mở dịch đoạn này':'🔼 Đóng bản dịch';
+}
+
+// ── Explain toggle ──
+function toggleExplain(id,btn){
+  const box=document.getElementById(id);
+  const isOpen=box.classList.contains('show');
+  box.classList.toggle('show',!isOpen);
+  btn.textContent=isOpen?'💡 Xem giải thích chi tiết':'🔼 Thu gọn giải thích';
+}
+
+// ── MC Questions ──
+const mcData=[
+  {id:'q1',correct:'C',opts:[
+    {label:'A',text:'Computers'},
+    {label:'B',text:'Wheels'},
+    {label:'C',text:'Robots'},
+    {label:'D',text:'Planets'}
+  ]},
+  {id:'q2',correct:'A',opts:[
+    {label:'A',text:'landed'},
+    {label:'B',text:'affected'},
+    {label:'C',text:'moved'},
+    {label:'D',text:'examined'}
+  ]},
+  {id:'q3',correct:'C',opts:[
+    {label:'A',text:'4'},
+    {label:'B',text:'5'},
+    {label:'C',text:'6'},
+    {label:'D',text:'7'}
+  ]},
+  {id:'q4',correct:'D',opts:[
+    {label:'A',text:'Mars creatures'},
+    {label:'B',text:'spacecrafts'},
+    {label:'C',text:'UFOs'},
+    {label:'D',text:'NASA scientists'}
+  ]},
+  {id:'q5',correct:'D',opts:[
+    {label:'A',text:'About 90 days'},
+    {label:'B',text:'About 8 years'},
+    {label:'C',text:'Less than 10 years'},
+    {label:'D',text:'Nearly 16 years'}
+  ]}
+];
+
+const mcAnswered={};
+function shuffleArray(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function buildMC(){
+  mcData.forEach(q=>{
+    const container=document.getElementById(q.id+'-opts');
+    const shuffled=shuffleArray(q.opts);
+    container.innerHTML='';
+    shuffled.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.innerHTML=`<strong>${opt.label}.</strong> ${opt.text}`;
+      btn.dataset.label=opt.label;
+      btn.onclick=function(){handleMC(q.id,opt.label,q.correct,container,q.id+'-explain-btn');};
+      container.appendChild(btn);
+    });
+  });
+}
+function handleMC(qid,chosen,correct,container,explainBtnId){
+  if(mcAnswered[qid])return;
+  mcAnswered[qid]=chosen===correct;
+  const btns=container.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.label===correct){b.classList.add('correct');}
+    else if(b.dataset.label===chosen&&chosen!==correct){b.classList.add('wrong');}
+  });
+  if(chosen===correct){playDing();spawnConfetti();}
+  else{playWrong();}
+  document.getElementById(explainBtnId).style.display='inline-block';
+}
+
+// ── True/False New Logic ──
+const tfCorrect = {1:'FALSE', 2:'TRUE', 3:'TRUE', 4:'FALSE', 5:'TRUE'};
+const tfAnsweredStatus = {}; // Lưu trữ xem câu hỏi đã trả lời đúng chưa
+
+function answerTF(qNum, selectedAns) {
+  if (tfAnsweredStatus[qNum] !== undefined) return; // Đã trả lời thì không cho chọn lại
+
+  const correctAns = tfCorrect[qNum];
+  const isCorrect = (selectedAns === correctAns);
+  tfAnsweredStatus[qNum] = isCorrect; // Ghi nhận đúng/sai cho điểm số cuối cùng
+
+  // Đổi màu các nút
+  const container = document.getElementById('tf-actions-' + qNum);
+  const btns = container.querySelectorAll('.btn-tf');
+  
+  btns.forEach(btn => {
+    btn.disabled = true;
+    const btnAns = btn.textContent.toUpperCase(); // Lấy chữ 'TRUE' hoặc 'FALSE'
+    
+    if (btnAns === correctAns) {
+      btn.classList.add('correct');
+    } else if (btnAns === selectedAns && !isCorrect) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  // Hiện nút giải thích
+  document.getElementById('tf'+qNum+'-explain-btn').style.display = 'inline-block';
+
+  // Phát âm thanh & hiệu ứng
+  if (isCorrect) { playDing(); spawnConfetti(); }
+  else { playWrong(); }
+}
+
+// ── Submit ──
+function submitQuiz(){
+  let correct=0,total=10;
+  // MC
+  mcData.forEach(q=>{if(mcAnswered[q.id]===true)correct++;});
+  // TF (dựa theo trạng thái đã ghi nhận)
+  for(let i=1;i<=5;i++){if(tfAnsweredStatus[i] === true)correct++;}
+  
+  const overlay=document.getElementById('score-overlay');
+  document.getElementById('score-num').textContent=correct+'/'+total;
+  const pct=correct/total;
+  let emoji,label,comment;
+  
+  if(pct===1){emoji='🏆';label='THIÊN TÀI!';comment='Tuyệt vời! Bạn trả lời đúng tất cả 10/10 câu! Bạn thực sự là một ngôi sao sáng trên bầu trời kiến thức! 🌟';}
+  else if(pct>=0.8){emoji='🚀';label='Xuất sắc!';comment='Làm tốt lắm! Bạn trả lời đúng '+correct+'/10 câu. Chỉ cần ôn thêm một chút là hoàn hảo rồi!';}
+  else if(pct>=0.6){emoji='⭐';label='Làm tốt lắm!';comment='Bạn trả lời đúng '+correct+'/10 câu. Cố gắng thêm một chút là sẽ lên cấp độ cao hơn thôi!';}
+  else if(pct>=0.4){emoji='🪐';label='Cố lên nhé!';comment='Bạn trả lời đúng '+correct+'/10 câu. Hãy đọc lại bài và thử lại nhé – bạn có thể làm tốt hơn!';}
+  else{emoji='🛸';label='Cần ôn lại!';comment='Bạn trả lời đúng '+correct+'/10 câu. Đừng nản! Hãy đọc kỹ bài đọc một lần nữa và thử lại nhé. Bạn sẽ tiến bộ thôi!';}
+  
+  document.getElementById('score-emoji').textContent=emoji;
+  document.getElementById('score-label').textContent=label;
+  document.getElementById('score-comment').textContent=comment;
+  overlay.classList.add('show');
+  if(pct>=0.8)spawnConfetti();
+}
+function retryQuiz(){
+  location.reload();
+}
+
+// ── Init ──
+buildMC();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

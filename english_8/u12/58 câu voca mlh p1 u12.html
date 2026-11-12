@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 Space English Test – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#8854C0;--yellow:#FDCB6E;--teal:#00C9A7;--correct:#00D26A;--wrong:#FF4757;--pink:#ff6eb4;--blue:#4a9eff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;background:linear-gradient(-45deg,#ffb3c6,#ffd6a5,#caffbf,#9bf6ff,#a0c4ff,#ffc6ff);background-size:400% 400%;animation:gradShift 14s ease infinite;position:relative;}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.pattern-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.18;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Ctext x='10' y='35' font-size='28'%3E⭐%3C/text%3E%3Ctext x='80' y='20' font-size='22'%3E🚀%3C/text%3E%3Ctext x='150' y='50' font-size='24'%3E🌙%3C/text%3E%3Ctext x='30' y='100' font-size='20'%3E🪐%3C/text%3E%3Ctext x='110' y='85' font-size='26'%3E⭐%3C/text%3E%3Ctext x='175' y='110' font-size='20'%3E🌟%3C/text%3E%3Ctext x='60' y='155' font-size='22'%3E🛸%3C/text%3E%3Ctext x='140' y='175' font-size='18'%3E🌠%3C/text%3E%3Ctext x='5' y='195' font-size='20'%3E✨%3C/text%3E%3Ctext x='190' y='200' font-size='22'%3E🔭%3C/text%3E%3C/svg%3E");
+  animation:floatBg 30s linear infinite;}
+@keyframes floatBg{0%{background-position:0 0}100%{background-position:220px 220px}}
+.wrap{max-width:920px;margin:0 auto;padding:16px 14px 40px;position:relative;z-index:1;}
+
+/* HEADER */
+.header{text-align:center;padding:16px 20px 12px;background:rgba(255,255,255,.88);border-radius:22px;margin-bottom:18px;box-shadow:0 8px 30px rgba(136,84,192,.22);backdrop-filter:blur(10px);}
+.header h1{font-size:1.55rem;font-weight:900;background:linear-gradient(135deg,#8854C0,#ff6eb4,#FDCB6E,#00C9A7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;}
+.header p{font-size:.85rem;color:#636e72;margin-top:4px;font-weight:600;}
+
+/* SCORE BAR */
+.score-bar{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.92);border-radius:50px;padding:9px 20px;margin-bottom:18px;box-shadow:0 4px 18px rgba(0,0,0,.12);position:sticky;top:8px;z-index:200;backdrop-filter:blur(12px);}
+.score-bar span{font-weight:800;font-size:1rem;}
+.score-num{color:var(--purple);font-size:1.2rem;}
+.progress-bar{flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:10px;margin:0 14px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:10px;transition:width .5s ease;width:0%;}
+
+/* SECTION CARD */
+.section-card{background:rgba(255,255,255,.91);border-radius:24px;padding:20px 18px;margin-bottom:22px;box-shadow:0 6px 26px rgba(136,84,192,.14);backdrop-filter:blur(8px);}
+.sec-title{font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--purple),#b45cf4);padding:9px 16px;border-radius:12px;margin-bottom:16px;display:inline-block;}
+
+/* QUESTION */
+.q-wrap{margin-bottom:18px;padding:14px 14px 10px;background:rgba(255,255,255,.8);border-radius:16px;box-shadow:0 3px 10px rgba(0,0,0,.06);}
+.q-num{font-size:.88rem;font-weight:800;color:var(--purple);margin-bottom:4px;}
+.q-text{font-size:1.13rem;font-weight:700;color:#2d3436;line-height:1.8;margin-bottom:10px;}
+
+/* MCQ OPTIONS */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+@media(max-width:520px){.opts{grid-template-columns:1fr;}}
+.opt-btn{padding:11px 14px;border:3px solid transparent;border-radius:16px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform .18s,box-shadow .18s,background .15s;background:linear-gradient(135deg,#f0e6ff,#e6f7ff);box-shadow:0 4px 0 rgba(136,84,192,.18),0 2px 8px rgba(0,0,0,.08);text-align:left;color:#2d3436;}
+.opt-btn:hover:not(:disabled){transform:scale(1.04);box-shadow:0 6px 0 rgba(136,84,192,.25),0 4px 16px rgba(136,84,192,.2);}
+.opt-btn:disabled{cursor:default;}
+.opt-btn.correct{background:linear-gradient(135deg,#00D26A,#00b857)!important;color:#fff!important;border-color:#00b857;box-shadow:0 4px 0 #008f3c,0 4px 14px rgba(0,210,106,.35);}
+.opt-btn.wrong{background:linear-gradient(135deg,#FF4757,#d63031)!important;color:#fff!important;border-color:#d63031;box-shadow:0 4px 0 #a61c27,0 4px 14px rgba(255,71,87,.35);animation:shake .45s ease;}
+.opt-btn.reveal-correct{background:linear-gradient(135deg,#b2f2bb,#69db7c)!important;color:#1a5e31!important;border-color:#69db7c;}
+@keyframes shake{0%,100%{transform:translateX(0)}15%,45%,75%{transform:translateX(-7px)}30%,60%,90%{transform:translateX(7px)}}
+
+/* EXPLANATION */
+.expl{margin-top:11px;padding:12px 14px;background:linear-gradient(135deg,rgba(136,84,192,.07),rgba(0,201,167,.07));border-radius:12px;border-left:4px solid var(--purple);font-size:.98rem;line-height:1.72;display:none;animation:slideDown .3s ease;}
+.expl.show{display:block;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.expl strong{color:var(--purple);}
+.expl .correct-badge{display:inline-block;background:var(--correct);color:#fff;padding:1px 10px;border-radius:20px;font-size:.85rem;font-weight:800;margin-bottom:6px;}
+.expl .wrong-badge{display:inline-block;background:var(--wrong);color:#fff;padding:1px 10px;border-radius:20px;font-size:.85rem;font-weight:800;margin-bottom:6px;}
+
+/* WORD BANK */
+.word-bank{background:linear-gradient(135deg,rgba(136,84,192,.07),rgba(253,203,110,.18));border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:.93rem;border:2px dashed rgba(136,84,192,.3);line-height:1.8;}
+.word-bank strong{color:var(--purple);font-size:.95rem;}
+
+/* INPUTS & CHECK BUTTONS */
+.input-wrap { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 2px 4px; vertical-align: middle; }
+.text-input { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; color: var(--purple); border: 2.5px solid rgba(136,84,192,.3); border-radius: 8px; padding: 4px 10px; width: 140px; text-align: center; transition: all .2s; outline: none; background: rgba(255,255,255,.9); }
+.text-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(136,84,192,.2); }
+.text-input.input-correct { border-color: var(--correct); background: rgba(0,210,106,.1); color: var(--correct); }
+.text-input.input-wrong { border-color: var(--wrong); background: rgba(255,71,87,.1); color: var(--wrong); animation: shake .4s ease; }
+.text-input:disabled { cursor: not-allowed; }
+
+.check-btn { font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 800; background: linear-gradient(135deg, var(--purple), #b45cf4); color: #fff; border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; transition: all .2s; box-shadow: 0 3px 6px rgba(136,84,192,.25); }
+.check-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(136,84,192,.35); }
+.check-btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 4px rgba(136,84,192,.25); }
+.check-btn:disabled { background: #b2bec3; box-shadow: none; cursor: not-allowed; transform: none; }
+
+/* MATCHING */
+.match-grid{display:grid;gap:10px;}
+.match-row{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:start;}
+@media(max-width:520px){.match-row{grid-template-columns:1fr;}}
+.planet-btn{padding:10px 12px;background:linear-gradient(135deg,#e0c3fc,#8ec5fc);border:3px solid transparent;border-radius:16px;font-weight:800;font-size:.98rem;cursor:pointer;transition:all .2s;text-align:center;box-shadow:0 4px 0 rgba(100,50,180,.2),0 2px 8px rgba(0,0,0,.1);}
+.planet-btn:hover:not(.matched){transform:scale(1.05);}
+.planet-btn.selected{border-color:var(--purple)!important;background:linear-gradient(135deg,var(--purple),#b45cf4)!important;color:#fff!important;transform:scale(1.06)!important;}
+.planet-btn.matched-ok{background:linear-gradient(135deg,var(--correct),#00b857)!important;color:#fff!important;border-color:#009146!important;cursor:default;}
+.planet-btn.matched-bad{background:linear-gradient(135deg,var(--wrong),#c0392b)!important;color:#fff!important;border-color:#a61c27!important;cursor:default;animation:shake .4s ease;}
+.desc-cards{display:flex;flex-wrap:wrap;gap:7px;}
+.desc-btn{padding:8px 12px;background:linear-gradient(135deg,#ffecd2,#fcb69f);border:3px solid transparent;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;line-height:1.5;box-shadow:0 3px 0 rgba(200,100,50,.15),0 2px 6px rgba(0,0,0,.08);}
+.desc-btn:hover:not(.matched){transform:scale(1.02);border-color:var(--purple);}
+.desc-btn.matched-ok{background:linear-gradient(135deg,var(--correct),#00b857)!important;color:#fff!important;border-color:#009146!important;cursor:default;}
+.desc-btn.matched-bad{background:linear-gradient(135deg,var(--wrong),#c0392b)!important;color:#fff!important;border-color:#a61c27!important;cursor:default;animation:shake .4s ease;}
+.desc-btn.selected-target{border-color:var(--purple);background:linear-gradient(135deg,#d7bfff,#b3f0ff);}
+.match-hint{font-size:.83rem;color:#636e72;margin-bottom:10px;font-style:italic;}
+
+/* SUBMIT */
+.submit-wrap{text-align:center;margin:28px 0;}
+.submit-btn{display:inline-block;padding:16px 56px;background:linear-gradient(135deg,var(--purple),var(--yellow));color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:1.25rem;font-weight:900;cursor:pointer;box-shadow:0 8px 0 rgba(136,84,192,.35),0 4px 24px rgba(136,84,192,.3);transition:all .2s;}
+.submit-btn:hover{transform:translateY(-3px);box-shadow:0 11px 0 rgba(136,84,192,.35),0 6px 30px rgba(136,84,192,.35);}
+.submit-btn:active{transform:translateY(2px);}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:2000;display:flex;align-items:center;justify-content:center;display:none;}
+.modal-bg.show{display:flex;}
+.modal-box{background:#fff;border-radius:28px;padding:36px 30px;text-align:center;max-width:400px;width:92vw;box-shadow:0 24px 80px rgba(0,0,0,.3);animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.modal-emoji{font-size:4rem;margin-bottom:8px;}
+.modal-title{font-size:1.7rem;font-weight:900;color:var(--purple);margin-bottom:6px;}
+.modal-score{font-size:2.6rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:6px 0;}
+.modal-msg{font-size:1.05rem;color:#636e72;font-weight:700;margin-bottom:18px;}
+.modal-btn{display:inline-block;padding:12px 40px;background:linear-gradient(135deg,var(--purple),var(--teal));color:#fff;border:none;border-radius:50px;font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;cursor:pointer;box-shadow:0 5px 0 rgba(136,84,192,.3);transition:all .2s;}
+.modal-btn:hover{transform:translateY(-2px);}
+
+/* CONFETTI */
+#cfv{position:fixed;inset:0;pointer-events:none;z-index:1500;}
+</style>
+</head>
+<body>
+<div class="pattern-bg"></div>
+<canvas id="cfv"></canvas>
+
+<div class="wrap">
+  <div class="header">
+    <h1>🚀 Space English Test</h1>
+    <p>👩‍🏫 Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong> &nbsp;|&nbsp; Chúc em làm bài thật tốt! 🌟</p>
+  </div>
+
+  <div class="score-bar">
+    <span>🏆 Điểm:</span>
+    <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+    <span class="score-num"><span id="sc">0</span> / <span id="tot">0</span></span>
+  </div>
+
+  <div id="exam"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="submitExam()">🎯 Nộp Bài &amp; Xem Kết Quả</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-emoji" id="m-emoji">🎉</div>
+    <div class="modal-title">Kết Quả Bài Thi</div>
+    <div class="modal-score" id="m-score">0/0</div>
+    <div class="modal-msg" id="m-msg"></div>
+    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('show')">✨ Đóng</button>
+  </div>
+</div>
+
+<script>
+// ========== AUDIO ==========
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+function beep(freq,dur,type='sine',vol=.4){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.connect(g);g.connect(AC.destination);
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(vol,AC.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+dur);
+  o.start();o.stop(AC.currentTime+dur);
+}
+function playOK(){beep(880,.08,'sine',.35);setTimeout(()=>beep(1100,.15,'sine',.35),90);}
+function playBad(){beep(200,.08,'sawtooth',.3);setTimeout(()=>beep(150,.18,'sawtooth',.3),90);}
+
+// ========== CONFETTI ==========
+const cfv=document.getElementById('cfv');
+const cfx=cfv.getContext('2d');
+let particles=[];
+function launchConfetti(){
+  cfv.width=innerWidth;cfv.height=innerHeight;
+  for(let i=0;i<90;i++){
+    particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight-.5*innerHeight,
+      r:Math.random()*7+4,dx:(Math.random()-.5)*4,dy:Math.random()*3+2,
+      color:`hsl(${Math.random()*360},90%,55%)`,rot:Math.random()*360,drot:(Math.random()-.5)*8});
+  }
+  requestAnimationFrame(animCf);
+}
+function animCf(){
+  cfx.clearRect(0,0,cfv.width,cfv.height);
+  particles=particles.filter(p=>p.y<cfv.height+20);
+  particles.forEach(p=>{
+    p.x+=p.dx;p.y+=p.dy;p.rot+=p.drot;
+    cfx.save();cfx.translate(p.x,p.y);cfx.rotate(p.rot*Math.PI/180);
+    cfx.fillStyle=p.color;cfx.fillRect(-p.r/2,-p.r/2,p.r,p.r);cfx.restore();
+  });
+  if(particles.length>0)requestAnimationFrame(animCf);
+  else cfx.clearRect(0,0,cfv.width,cfv.height);
+}
+
+// ========== SCORE ==========
+let score=0,total=0;
+function updateScore(){
+  document.getElementById('sc').textContent=score;
+  document.getElementById('tot').textContent=total;
+  const pct=(total>0?score/total:0)*100;
+  document.getElementById('pbar').style.width=pct+'%';
+}
+
+// ========== DATA ==========
+
+/* SECTION I - MATCHING */
+const S1_PLANETS=['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune'];
+const S1_DESCS=[
+  {l:'a',t:'It is nicknamed "The Red Planet" because of the rust on its surface.'},
+  {l:'b',t:'It is often called "The Water Planet" because it is the only planet with water.'},
+  {l:'c',t:'It has a rocky surface. It is the smallest in our solar system and the closest to the sun.'},
+  {l:'d',t:'It is the largest planet in our solar system and the fifth planet from the sun. It is composed of mostly gas and has a great red spot.'},
+  {l:'e',t:'It is the coldest planet in our solar system and is the seventh planet from the Sun. It is a giant gas planet and it rotates on its side.'},
+  {l:'f',t:'It is the hottest planet in our solar system and is the closest planet to Earth in size.'},
+  {l:'g',t:'It has a cold surface, is blue in color from the gas in its atmosphere and is the furthest from the sun.'},
+  {l:'h',t:'It is the second largest planet and is known best for its rings made of ice and rock chunks.'}
+];
+const S1_ANS=['c','f','b','a','d','h','e','g'];
+const S1_EXPL=[
+  `<span class="correct-badge">✅ Mercury → c</span><br>📌 <strong>Dịch:</strong> <em>"Nó có bề mặt đá. Nó là hành tinh nhỏ nhất trong hệ mặt trời của chúng ta và gần mặt trời nhất."</em><br>🔑 <strong>Mercury (Sao Thủy)</strong> là hành tinh <strong>nhỏ nhất</strong> trong hệ mặt trời và <strong>gần mặt trời nhất</strong>. Bề mặt đá (rocky surface), nhiệt độ thay đổi cực đoan giữa ngày và đêm do không có bầu khí quyển.`,
+  `<span class="correct-badge">✅ Venus → f</span><br>📌 <strong>Dịch:</strong> <em>"Nó là hành tinh nóng nhất trong hệ mặt trời của chúng ta và là hành tinh có kích thước gần với Trái Đất nhất."</em><br>🔑 <strong>Venus (Sao Kim)</strong> là hành tinh <strong>nóng nhất</strong> (dù không gần Mặt Trời nhất) do hiệu ứng nhà kính cực mạnh, và có kích thước <strong>gần giống Trái Đất nhất</strong>.`,
+  `<span class="correct-badge">✅ Earth → b</span><br>📌 <strong>Dịch:</strong> <em>"Nó thường được gọi là 'Hành tinh nước' vì nó là hành tinh duy nhất có nước."</em><br>🔑 <strong>Earth (Trái Đất)</strong> được gọi là "Hành tinh nước" vì là <strong>hành tinh duy nhất</strong> có nước lỏng trên bề mặt, điều kiện lý tưởng cho sự sống.`,
+  `<span class="correct-badge">✅ Mars → a</span><br>📌 <strong>Dịch:</strong> <em>"Nó được đặt biệt danh là 'Hành tinh Đỏ' vì lớp rỉ sét trên bề mặt của nó."</em><br>🔑 <strong>Mars (Sao Hỏa)</strong> được gọi là "Hành tinh đỏ" vì bề mặt chứa nhiều <strong>oxit sắt (gỉ sét)</strong> tạo ra màu đỏ đặc trưng.`,
+  `<span class="correct-badge">✅ Jupiter → d</span><br>📌 <strong>Dịch:</strong> <em>"Nó là hành tinh lớn nhất trong hệ mặt trời của chúng ta và là hành tinh thứ năm tính từ mặt trời. Nó được cấu tạo chủ yếu từ khí và có một vết đỏ lớn."</em><br>🔑 <strong>Jupiter (Sao Mộc)</strong> là <strong>hành tinh lớn nhất</strong>, là hành tinh thứ 5, chủ yếu cấu tạo từ khí (gas giant) và có Vết Đỏ Lớn (Great Red Spot) – cơn bão khổng lồ kéo dài hàng trăm năm.`,
+  `<span class="correct-badge">✅ Saturn → h</span><br>📌 <strong>Dịch:</strong> <em>"Nó là hành tinh lớn thứ hai và được biết đến nhiều nhất với các vành đai làm bằng những khối băng và đá."</em><br>🔑 <strong>Saturn (Sao Thổ)</strong> là hành tinh <strong>lớn thứ hai</strong>, nổi tiếng nhất với <strong>vành đai băng và đá</strong> (rings made of ice and rock chunks).`,
+  `<span class="correct-badge">✅ Uranus → e</span><br>📌 <strong>Dịch:</strong> <em>"Nó là hành tinh lạnh nhất trong hệ mặt trời của chúng ta và là hành tinh thứ bảy tính từ Mặt trời. Nó là một hành tinh khí khổng lồ và nó quay quanh trục nằm ngang."</em><br>🔑 <strong>Uranus (Sao Thiên Vương)</strong> là hành tinh <strong>lạnh nhất</strong>, thứ 7 từ Mặt Trời, và đặc biệt <strong>quay nằm nghiêng</strong> (rotates on its side) so với quỹ đạo của nó.`,
+  `<span class="correct-badge">✅ Neptune → g</span><br>📌 <strong>Dịch:</strong> <em>"Nó có bề mặt lạnh, có màu xanh lam từ khí trong bầu khí quyển của nó và ở xa mặt trời nhất."</em><br>🔑 <strong>Neptune (Sao Hải Vương)</strong> có màu xanh dương từ khí <strong>methane</strong> trong khí quyển và là hành tinh <strong>xa Mặt Trời nhất</strong> trong hệ mặt trời.`
+];
+
+/* SECTION II - GAP FILL */
+const S2_BANK=['galaxy','planet','telescope','solar system','astronaut','outer space','spaceship','craters','aliens','traces'];
+const S2_QS=[
+  {pre:"NASA's James Webb ",post:" captures groundbreaking images of distant galaxies.",ans:"telescope",
+   expl:`<span class="correct-badge">✅ telescope</span><br>📌 <strong>Dịch:</strong> Kính viễn vọng James Webb của NASA chụp được những hình ảnh mang tính đột phá về các thiên hà xa xôi.<br>🔑 <strong>Telescope (n) = kính viễn vọng/kính thiên văn</strong>. "James Webb Space Telescope" là tên kính viễn vọng vũ trụ nổi tiếng của NASA.`},
+  {pre:"John Glenn became the first American ",post:" to orbit the earth in 1962.",ans:"astronaut",
+   expl:`<span class="correct-badge">✅ astronaut</span><br>📌 <strong>Dịch:</strong> John Glenn trở thành phi hành gia người Mỹ đầu tiên bay vào quỹ đạo quanh trái đất vào năm 1962.<br>🔑 <strong>Astronaut (n) = phi hành gia</strong>.`},
+  {pre:"Researchers made the amazing findings of ",post:" of water on Mars.",ans:"traces",
+   expl:`<span class="correct-badge">✅ traces</span><br>📌 <strong>Dịch:</strong> Các nhà nghiên cứu đã đưa ra những phát hiện đáng kinh ngạc về dấu vết của nước trên Sao Hỏa.<br>🔑 <strong>Traces (n, số nhiều) = dấu vết, vết tích</strong>. Collocation: "findings of traces of water" = phát hiện dấu vết của nước.`},
+  {pre:"What would a ",post:" carrying aliens to first contact with Earth look like?",ans:"spaceship",
+   expl:`<span class="correct-badge">✅ spaceship</span><br>📌 <strong>Dịch:</strong> Một chiếc tàu vũ trụ chở người ngoài hành tinh đến lần tiếp xúc đầu tiên với Trái Đất sẽ trông như thế nào?<br>🔑 <strong>Spaceship (n) = tàu vũ trụ</strong>. "a spaceship carrying aliens" = tàu vũ trụ chở người ngoài hành tinh.`},
+  {pre:"Our ",post:" is made up of the sun and all the objects that travel around it.",ans:"solar system",
+   expl:`<span class="correct-badge">✅ solar system</span><br>📌 <strong>Dịch:</strong> Hệ mặt trời của chúng ta được tạo thành từ mặt trời và tất cả các vật thể quay xung quanh nó.<br>🔑 <strong>Solar system (n) = hệ mặt trời</strong>. Định nghĩa hoàn chỉnh trong câu đã gợi ý rõ đáp án này.`},
+  {pre:"Which ",post:" orbits around the Sun the fastest? ~ Mercury.",ans:"planet",
+   expl:`<span class="correct-badge">✅ planet</span><br>📌 <strong>Dịch:</strong> Hành tinh nào quay quanh Mặt Trời nhanh nhất? ~ Sao Thủy.<br>🔑 <strong>Planet (n) = hành tinh</strong>. Mercury (Sao Thủy) là một hành tinh.`},
+  {pre:"Do you believe ",post:" exist on other planets?",ans:"aliens",
+   expl:`<span class="correct-badge">✅ aliens</span><br>📌 <strong>Dịch:</strong> Bạn có tin người ngoài hành tinh tồn tại trên các hành tinh khác không?<br>🔑 <strong>Aliens (n, số nhiều) = người ngoài hành tinh, sinh vật ngoài Trái Đất</strong>.`},
+  {pre:"Spacecraft are vehicles used for travel in ",post:".",ans:"outer space",
+   expl:`<span class="correct-badge">✅ outer space</span><br>📌 <strong>Dịch:</strong> Tàu vũ trụ là phương tiện được sử dụng để di chuyển ngoài không gian vũ trụ.<br>🔑 <strong>Outer space (n) = không gian vũ trụ bên ngoài</strong>.`},
+  {pre:"Our ",post:", the Milky Way, consists of 100 – 400 billion stars.",ans:"galaxy",
+   expl:`<span class="correct-badge">✅ galaxy</span><br>📌 <strong>Dịch:</strong> Thiên hà của chúng ta, Dải Ngân Hà, bao gồm 100 - 400 tỷ ngôi sao.<br>🔑 <strong>Galaxy (n) = thiên hà</strong>. Milky Way (Dải Ngân Hà) là một thiên hà.`},
+  {pre:"When rocks or comets from space smashed into the surface of the Moon, they formed ",post:".",ans:"craters",
+   expl:`<span class="correct-badge">✅ craters</span><br>📌 <strong>Dịch:</strong> Khi các tảng đá hoặc sao chổi từ không gian lao vào bề mặt Mặt Trăng, chúng tạo thành các hố va chạm.<br>🔑 <strong>Craters (n, số nhiều) = miệng hố, hố va chạm</strong>. Va chạm của thiên thạch tạo ra các hố lõm này.`}
+];
+
+/* SECTION III - MCQ */
+const S3_QS=[
+  {t:'___, which is closest to the sun, is very hot in the daytime but very cold at night.',opts:['Mars','Jupiter','Venus','Mercury'],ans:3,
+   expl:`<span class="correct-badge">✅ Mercury</span><br>📌 <strong>Dịch:</strong> ___ , hành tinh gần mặt trời nhất, rất nóng vào ban ngày nhưng rất lạnh vào ban đêm.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>Mars</strong>: Sao Hỏa<br>• <strong>Jupiter</strong>: Sao Mộc<br>• <strong>Venus</strong>: Sao Kim<br>• <strong>Mercury</strong>: Sao Thủy (hành tinh gần mặt trời nhất)`},
+  {t:'___ is the largest planet and the stormiest planet in the solar system.',opts:['Earth','Jupiter','Saturn','Neptune'],ans:1,
+   expl:`<span class="correct-badge">✅ Jupiter</span><br>📌 <strong>Dịch:</strong> ___ là hành tinh lớn nhất và nhiều bão nhất trong hệ mặt trời.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>Earth</strong>: Trái Đất<br>• <strong>Jupiter</strong>: Sao Mộc (lớn nhất và có Vết Đỏ Lớn là cơn bão khổng lồ)<br>• <strong>Saturn</strong>: Sao Thổ<br>• <strong>Neptune</strong>: Sao Hải Vương`},
+  {t:'Are ___ extraterrestrial spacecraft visiting our planet?',opts:['UFOs','rockets','space shuttles','aliens'],ans:0,
+   expl:`<span class="correct-badge">✅ UFOs</span><br>📌 <strong>Dịch:</strong> Có phải ___ là các tàu vũ trụ ngoài Trái Đất đang ghé thăm hành tinh của chúng ta không?<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>UFOs</strong>: Vật thể bay không xác định (Unidentified Flying Objects)<br>• <strong>rockets</strong>: Tên lửa<br>• <strong>space shuttles</strong>: Tàu con thoi<br>• <strong>aliens</strong>: Người ngoài hành tinh`},
+  {t:'Astronomers may have discovered the first planet outside our ___ known as Messier 51 or M51.',opts:['galaxy','atmosphere','universe','outer space'],ans:0,
+   expl:`<span class="correct-badge">✅ galaxy</span><br>📌 <strong>Dịch:</strong> Các nhà thiên văn học có thể đã phát hiện ra hành tinh đầu tiên bên ngoài ___ của chúng ta được gọi là Messier 51 hay M51.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>galaxy</strong>: Thiên hà (M51 là một thiên hà khác nằm ngoài Dải Ngân Hà của chúng ta)<br>• <strong>atmosphere</strong>: Bầu khí quyển<br>• <strong>universe</strong>: Vũ trụ<br>• <strong>outer space</strong>: Không gian vũ trụ`},
+  {t:"___ is called the morning star or the evening star because it's either visible at sunset or sunrise.",opts:['Uranus','Jupiter','Venus','Mars'],ans:2,
+   expl:`<span class="correct-badge">✅ Venus</span><br>📌 <strong>Dịch:</strong> ___ được gọi là sao mai hoặc sao hôm vì có thể nhìn thấy nó vào lúc hoàng hôn hoặc lúc bình minh.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>Uranus</strong>: Sao Thiên Vương<br>• <strong>Jupiter</strong>: Sao Mộc<br>• <strong>Venus</strong>: Sao Kim (rất sáng, thường xuất hiện lúc chạng vạng)<br>• <strong>Mars</strong>: Sao Hỏa`},
+  {t:'In the series <em>Alien</em>, Xenomorph is the name of the alien ___ that attacks humans.',opts:['foreigner','supporter','astronaut','creature'],ans:3,
+   expl:`<span class="correct-badge">✅ creature</span><br>📌 <strong>Dịch:</strong> Trong loạt phim <em>Alien</em>, Xenomorph là tên của ___ ngoài hành tinh tấn công con người.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>foreigner</strong>: Người nước ngoài<br>• <strong>supporter</strong>: Người ủng hộ<br>• <strong>astronaut</strong>: Phi hành gia<br>• <strong>creature</strong>: Sinh vật ("alien creature" = sinh vật ngoài hành tinh)`},
+  {t:'There is less ___ in space, so astronauts float in space.',opts:['trace','gravity','liquid','crater'],ans:1,
+   expl:`<span class="correct-badge">✅ gravity</span><br>📌 <strong>Dịch:</strong> Trong không gian có ít ___ hơn, do đó các phi hành gia lơ lửng trong không gian.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>trace</strong>: Dấu vết<br>• <strong>gravity</strong>: Trọng lực / Lực hấp dẫn ("less gravity" = vi trọng lực)<br>• <strong>liquid</strong>: Chất lỏng<br>• <strong>crater</strong>: Miệng hố / Hố va chạm`},
+  {t:'Some people strongly ___ the idea of moving to another planet.',opts:['oppose','face','disagree','stop'],ans:0,
+   expl:`<span class="correct-badge">✅ oppose</span><br>📌 <strong>Dịch:</strong> Một số người mạnh mẽ ___ ý tưởng chuyển đến một hành tinh khác.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>oppose</strong>: Phản đối (Collocation: "strongly oppose" = phản đối mạnh mẽ)<br>• <strong>face</strong>: Đối mặt<br>• <strong>disagree</strong>: Không đồng ý (thường đi với "with")<br>• <strong>stop</strong>: Dừng lại`},
+  {t:'On June 2, 1966, <em>Surveyor 1</em> becomes the first U.S. ___ to land on the moon.',opts:['rocket','airplane','spacecraft','helicopter'],ans:2,
+   expl:`<span class="correct-badge">✅ spacecraft</span><br>📌 <strong>Dịch:</strong> Vào ngày 2 tháng 6 năm 1966, <em>Surveyor 1</em> trở thành ___ đầu tiên của Mỹ hạ cánh xuống mặt trăng.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>rocket</strong>: Tên lửa<br>• <strong>airplane</strong>: Máy bay<br>• <strong>spacecraft</strong>: Tàu vũ trụ (Surveyor 1 là tàu thám hiểm tự động)<br>• <strong>helicopter</strong>: Trực thăng`},
+  {t:'Mars is the most ___ planet in our Solar System besides Earth.',opts:['powerful','notable','appropriate','habitable'],ans:3,
+   expl:`<span class="correct-badge">✅ habitable</span><br>📌 <strong>Dịch:</strong> Sao Hỏa là hành tinh ___ nhất trong Hệ Mặt Trời của chúng ta ngoài Trái Đất.<br>🔑 <strong>Nghĩa các đáp án:</strong><br>• <strong>powerful</strong>: Mạnh mẽ<br>• <strong>notable</strong>: Đáng chú ý<br>• <strong>appropriate</strong>: Thích hợp<br>• <strong>habitable</strong>: Có thể sinh sống được`}
+];
+
+/* SECTION IV - VERB FORMS */
+const S4_BANK='oppose | launch | discover | live | work | destroy | exist | attack | travel | explore';
+const S4_QS=[
+  {pre:'Aliens may ',post:" in ways that we can't even imagine.",ans:'exist',
+   expl:`<span class="correct-badge">✅ exist</span><br>📌 <strong>Dịch:</strong> Người ngoài hành tinh có thể tồn tại theo những cách mà chúng ta thậm chí không thể tưởng tượng được.<br>🔑 Cấu trúc: <strong>may + V(nguyên thể không to)</strong> diễn tả khả năng ở hiện tại/tương lai.`},
+  {pre:'Many scientists think humans ',post:' on Mars someday.',ans:'will live',
+   expl:`<span class="correct-badge">✅ will live</span><br>📌 <strong>Dịch:</strong> Nhiều nhà khoa học nghĩ rằng con người sẽ sống trên sao Hỏa vào một ngày nào đó.<br>🔑 Dấu hiệu: <strong>"someday"</strong> (một ngày nào đó) + động từ <strong>"think"</strong> diễn tả dự đoán → Dùng thì tương lai đơn (will + V).`},
+  {pre:'At present, scientists ',post:' on plans to turn Mars into a new Earth.',ans:'are working',
+   expl:`<span class="correct-badge">✅ are working</span><br>📌 <strong>Dịch:</strong> Hiện tại, các nhà khoa học đang nghiên cứu các kế hoạch để biến sao Hỏa thành một Trái Đất mới.<br>🔑 Dấu hiệu: <strong>"At present"</strong> (hiện tại) → Dùng thì hiện tại tiếp diễn (be + V-ing) diễn tả hành động đang xảy ra.`},
+  {pre:'Russia ',post:' an uncrewed spacecraft to the moon last week.',ans:'launched',
+   expl:`<span class="correct-badge">✅ launched</span><br>📌 <strong>Dịch:</strong> Nga đã phóng một tàu vũ trụ không người lái lên mặt trăng vào tuần trước.<br>🔑 Dấu hiệu: <strong>"last week"</strong> (tuần trước) → Dùng thì quá khứ đơn (V-ed).`},
+  {pre:'In the future, it may be possible to build a spaceship that can ',post:' to distant planets.',ans:'travel',
+   expl:`<span class="correct-badge">✅ travel</span><br>📌 <strong>Dịch:</strong> Trong tương lai, việc chế tạo một tàu vũ trụ có thể du hành đến các hành tinh xa xôi là điều có thể xảy ra.<br>🔑 Cấu trúc: <strong>can + V(nguyên thể không to)</strong> diễn tả khả năng.`},
+  {pre:'Some people try ',post:' space exploration because they think it\'s a waste of money.',ans:'to oppose',
+   expl:`<span class="correct-badge">✅ to oppose</span><br>📌 <strong>Dịch:</strong> Một số người cố gắng phản đối việc khám phá không gian vì họ cho rằng đó là sự lãng phí tiền bạc.<br>🔑 Cấu trúc: <strong>try + to-infinitive</strong> = cố gắng làm gì.`},
+  {pre:'If we ',post:' another planet in our solar system, what would we call it?',ans:'discovered',
+   expl:`<span class="correct-badge">✅ discovered</span><br>📌 <strong>Dịch:</strong> Nếu chúng ta khám phá ra một hành tinh khác trong hệ mặt trời của chúng ta, chúng ta sẽ gọi nó là gì?<br>🔑 <strong>Câu điều kiện loại 2 (giả định không có thật)</strong>: If + quá khứ đơn, S + would + V.`},
+  {pre:'The commander forced the alien creatures ',post:' Earth.',ans:'to destroy',
+   expl:`<span class="correct-badge">✅ to destroy</span><br>📌 <strong>Dịch:</strong> Vị chỉ huy đã buộc các sinh vật ngoài hành tinh phải phá hủy Trái Đất.<br>🔑 Cấu trúc: <strong>force sb + to-infinitive</strong> = buộc/ép buộc ai đó làm gì.`},
+  {pre:'What would happen if aliens ',post:' Earth? ~ We would be absolutely defeated, I think.',ans:'attacked',
+   expl:`<span class="correct-badge">✅ attacked</span><br>📌 <strong>Dịch:</strong> Điều gì sẽ xảy ra nếu người ngoài hành tinh tấn công Trái Đất? ~ Tôi nghĩ chúng ta sẽ hoàn toàn bị đánh bại.<br>🔑 <strong>Câu điều kiện loại 2</strong>: Mệnh đề chính dùng "would happen" → Mệnh đề if dùng thì quá khứ đơn (V-ed/V2).`},
+  {pre:'Scientists are interested in ',post:' Mars because of its potential for life.',ans:'exploring',
+   expl:`<span class="correct-badge">✅ exploring</span><br>📌 <strong>Dịch:</strong> Các nhà khoa học quan tâm đến việc khám phá sao Hỏa vì tiềm năng cho sự sống của nó.<br>🔑 Cấu trúc: <strong>interested in + V-ing (Danh động từ)</strong>. Sau giới từ "in" động từ phải thêm đuôi -ing.`}
+];
+
+/* SECTION X - WORD FORMS */
+const S10_QS=[
+  {pre:'John Young, NASA most ',post:' astronaut, flew into space six times. (experience)',ans:'experienced',
+   expl:`<span class="correct-badge">✅ experienced</span><br>📌 <strong>Dịch:</strong> John Young, phi hành gia giàu kinh nghiệm nhất của NASA, đã bay vào không gian sáu lần.<br>🔑 Cần một tính từ bổ nghĩa cho "astronaut". Từ "experience" (n) → <strong>experienced (adj)</strong> = giàu kinh nghiệm.`},
+  {pre:'The high concentration of carbon dioxide in the atmosphere makes it ',post:' to humans. (poison)',ans:'poisonous',
+   expl:`<span class="correct-badge">✅ poisonous</span><br>📌 <strong>Dịch:</strong> Nồng độ carbon dioxide cao trong bầu khí quyển khiến nó trở nên độc hại đối với con người.<br>🔑 Cấu trúc "make + tân ngữ + tính từ". Từ "poison" (n/v) → <strong>poisonous (adj)</strong> = có độc, độc hại.`},
+  {pre:'Who is the ',post:' in the series <em>Star Wars</em>? (command)',ans:'commander',
+   expl:`<span class="correct-badge">✅ commander</span><br>📌 <strong>Dịch:</strong> Ai là người chỉ huy trong loạt phim Star Wars?<br>🔑 Sau mạo từ "the" cần một danh từ chỉ người. Từ "command" (v/n) → <strong>commander (n)</strong> = người chỉ huy, tư lệnh.`},
+  {pre:'Earth is the only planet in the solar system that ',post:' life. (supportive)',ans:'supports',
+   expl:`<span class="correct-badge">✅ supports</span><br>📌 <strong>Dịch:</strong> Trái đất là hành tinh duy nhất trong hệ mặt trời hỗ trợ/duy trì sự sống.<br>🔑 Mệnh đề quan hệ "that..." cần một động từ chính. Chủ ngữ là "Earth" (số ít) nên động từ thêm -s. Từ "supportive" (adj) → <strong>supports (v)</strong> = hỗ trợ, duy trì.`},
+  {pre:'Mercury and Venus aren\'t in the ',post:' zone because they are too close to the sun to support liquid water. (habitat)',ans:'habitable',
+   expl:`<span class="correct-badge">✅ habitable</span><br>📌 <strong>Dịch:</strong> Sao Thủy và Sao Kim không nằm trong vùng có thể sống được vì chúng quá gần mặt trời để duy trì nước ở dạng lỏng.<br>🔑 Cần tính từ bổ nghĩa cho "zone". Từ "habitat" (n) → <strong>habitable (adj)</strong> = có thể sinh sống được.`},
+  {pre:'The term UFO stands for "',post:' flying object". (identify)',ans:'unidentified',
+   expl:`<span class="correct-badge">✅ unidentified</span><br>📌 <strong>Dịch:</strong> Thuật ngữ UFO là viết tắt của "vật thể bay không xác định".<br>🔑 Cần tính từ. Từ "identify" (v) → <strong>unidentified (adj)</strong> = chưa/không được xác định (có tiền tố phủ định un-).`},
+  {pre:'Our project is to describe our ',post:' planet and its creatures. (imagine)',ans:'imaginary',
+   expl:`<span class="correct-badge">✅ imaginary</span><br>📌 <strong>Dịch:</strong> Dự án của chúng tôi là mô tả hành tinh tưởng tượng của chúng ta và các sinh vật của nó.<br>🔑 Cần tính từ bổ nghĩa cho "planet". Từ "imagine" (v) → <strong>imaginary (adj)</strong> = thuộc về tưởng tượng, không có thật.`},
+  {pre:'How can someone fight hunger, ',post:', and radiation on Mars? (lonely)',ans:'loneliness',
+   expl:`<span class="correct-badge">✅ loneliness</span><br>📌 <strong>Dịch:</strong> Làm thế nào để ai đó có thể chống lại nạn đói, sự cô đơn và bức xạ trên sao Hỏa?<br>🔑 Cần danh từ để song song với "hunger" và "radiation". Từ "lonely" (adj) → <strong>loneliness (n)</strong> = sự cô đơn.`},
+  {pre:'That film about aliens might ',post:' be classified a horror film. (appropriate)',ans:'appropriately',
+   expl:`<span class="correct-badge">✅ appropriately</span><br>📌 <strong>Dịch:</strong> Bộ phim về người ngoài hành tinh đó có thể được phân loại một cách thích hợp là một bộ phim kinh dị.<br>🔑 Cần trạng từ bổ nghĩa cho động từ "be classified". Từ "appropriate" (adj) → <strong>appropriately (adv)</strong> = một cách thích hợp.`},
+  {pre:'The ',post:' of life on Mars has fascinated humans for generations. (possible)',ans:'possibility',
+   expl:`<span class="correct-badge">✅ possibility</span><br>📌 <strong>Dịch:</strong> Khả năng có sự sống trên sao Hỏa đã mê hoặc con người trong nhiều thế hệ.<br>🔑 Cần danh từ đi sau mạo từ "The". Từ "possible" (adj) → <strong>possibility (n)</strong> = khả năng.`}
+];
+
+/* SECTION XI - PREPOSITIONS */
+const S11_QS=[
+  {pre:'The children were excited ',post:' <em>Star Wars: The Last Jedi</em>.',ans:['about','at','by'],
+   expl:`<span class="correct-badge">✅ about / at / by</span><br>📌 <strong>Dịch:</strong> Bọn trẻ rất háo hức/phấn khích về bộ phim Star Wars: The Last Jedi.<br>🔑 Cấu trúc: <strong>"excited about/at/by something"</strong> = phấn khích về điều gì đó (thường dùng nhất là "about").`},
+  {pre:'Yuri Gagarin was the first person to fly ',post:' space.',ans:['into','in'],
+   expl:`<span class="correct-badge">✅ into / in</span><br>📌 <strong>Dịch:</strong> Yuri Gagarin là người đầu tiên bay vào không gian vũ trụ.<br>🔑 Cấu trúc: <strong>"fly into space"</strong> = bay vào không gian (nhấn mạnh sự di chuyển vào bên trong).`},
+  {pre:'NASA scientists are looking ',post:' habitable planets.',ans:['for'],
+   expl:`<span class="correct-badge">✅ for</span><br>📌 <strong>Dịch:</strong> Các nhà khoa học NASA đang tìm kiếm các hành tinh có thể sinh sống được.<br>🔑 Cụm động từ: <strong>"look for"</strong> = tìm kiếm.`},
+  {pre:'Mercury is the closest planet ',post:' the Sun.',ans:['to'],
+   expl:`<span class="correct-badge">✅ to</span><br>📌 <strong>Dịch:</strong> Sao Thủy là hành tinh gần Mặt Trời nhất.<br>🔑 Cấu trúc: <strong>"closest to"</strong> = gần nhất với (dùng giới từ "to" chỉ khoảng cách/vị trí).`},
+  {pre:'Could extraterrestrials really take ',post:' Earth?',ans:['over'],
+   expl:`<span class="correct-badge">✅ over</span><br>📌 <strong>Dịch:</strong> Người ngoài hành tinh có thực sự có thể tiếp quản/chiếm lấy Trái Đất không?<br>🔑 Cụm động từ: <strong>"take over"</strong> = tiếp quản, chiếm lĩnh quyền kiểm soát.`},
+  {pre:"The Moon's gravity is quite different ",post:" the Earth's.",ans:['from'],
+   expl:`<span class="correct-badge">✅ from</span><br>📌 <strong>Dịch:</strong> Trọng lực của Mặt Trăng khá khác biệt so với trọng lực của Trái Đất.<br>🔑 Cấu trúc cố định: <strong>"different from"</strong> = khác với.`},
+  {pre:'Is there a possibility ',post:' life existing outside of the solar system?',ans:['of'],
+   expl:`<span class="correct-badge">✅ of</span><br>📌 <strong>Dịch:</strong> Liệu có khả năng sự sống tồn tại bên ngoài hệ mặt trời không?<br>🔑 Cấu trúc cố định: <strong>"possibility of + Danh từ/V-ing"</strong> = khả năng về điều gì.`},
+  {pre:'A SpaceX Dragon spacecraft returned ',post:' Earth from the ISS last Sunday.',ans:['to'],
+   expl:`<span class="correct-badge">✅ to</span><br>📌 <strong>Dịch:</strong> Một tàu vũ trụ SpaceX Dragon đã trở về Trái đất từ Trạm Vũ trụ Quốc tế (ISS) vào Chủ nhật tuần trước.<br>🔑 Cấu trúc: <strong>"return to + địa điểm"</strong> = trở về nơi nào.`},
+  {pre:'Humans will be living ',post:' Mars far sooner than most people think.',ans:['on'],
+   expl:`<span class="correct-badge">✅ on</span><br>📌 <strong>Dịch:</strong> Con người sẽ sống trên sao Hỏa sớm hơn rất nhiều so với hầu hết mọi người nghĩ.<br>🔑 Dùng giới từ <strong>"on"</strong> khi nói về việc sống/ở trên bề mặt của các hành tinh (on Earth, on Mars, on the moon).`},
+  {pre:"Neil Armstrong took the first steps on the moon's surface ",post:' July 20, 1969.',ans:['on'],
+   expl:`<span class="correct-badge">✅ on</span><br>📌 <strong>Dịch:</strong> Neil Armstrong đã bước những bước đầu tiên trên bề mặt mặt trăng vào ngày 20 tháng 7 năm 1969.<br>🔑 Dùng giới từ <strong>"on"</strong> đứng trước ngày tháng năm cụ thể (on + Day/Date).`}
+];
+
+// ========== STATE ==========
+let s1State={selected:null,matches:{},answered:{}};
+
+// ========== RENDER ==========
+function renderAll(){
+  const exam=document.getElementById('exam');
+  exam.innerHTML='';
+  exam.appendChild(renderS1());
+  exam.appendChild(renderS2());
+  exam.appendChild(renderS3());
+  exam.appendChild(renderS4());
+  exam.appendChild(renderS10());
+  exam.appendChild(renderS11());
+  
+  total = S1_PLANETS.length + S2_QS.length + S3_QS.length + S4_QS.length + S10_QS.length + S11_QS.length;
+  updateScore();
+}
+
+// ===== SECTION I =====
+function renderS1(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  sec.innerHTML=`<div class="sec-title">⭐ I. Match the planets with their descriptions.</div>
+  <p class="match-hint">👆 Nhấn vào tên hành tinh → rồi nhấn vào mô tả để nối!</p>
+  <div class="match-grid" id="s1grid"></div>
+  <div id="s1-expls"></div>`;
+  
+  const grid=sec.querySelector('#s1grid');
+  const planetCol=document.createElement('div');
+  planetCol.style='display:flex;flex-direction:column;gap:9px;';
+  S1_PLANETS.forEach((p,i)=>{
+    const btn=document.createElement('button');
+    btn.className='planet-btn';
+    btn.id='planet-'+i;
+    btn.textContent=`${i+1}. ${p}`;
+    btn.onclick=()=>selectPlanet(i);
+    planetCol.appendChild(btn);
+  });
+  
+  const descCol=document.createElement('div');
+  descCol.style='display:flex;flex-direction:column;gap:9px;';
+  const shuffled=[...S1_DESCS].sort(()=>Math.random()-.5);
+  shuffled.forEach(d=>{
+    const btn=document.createElement('button');
+    btn.className='desc-btn';
+    btn.id='desc-'+d.l;
+    btn.innerHTML=`<strong>${d.l}.</strong> ${d.t}`;
+    btn.onclick=()=>selectDesc(d.l);
+    descCol.appendChild(btn);
+  });
+  
+  grid.style='display:grid;grid-template-columns:150px 1fr;gap:10px;';
+  grid.appendChild(planetCol);
+  grid.appendChild(descCol);
+  return sec;
+}
+
+function selectPlanet(idx){
+  if(s1State.answered[idx]) return;
+  s1State.selected = s1State.selected===idx ? null : idx;
+  renderPlanetHighlights();
+}
+
+function renderPlanetHighlights(){
+  S1_PLANETS.forEach((_,i)=>{
+    const btn=document.getElementById('planet-'+i);
+    if(!btn) return;
+    if(s1State.answered[i]!==undefined){
+      btn.classList.add(s1State.answered[i]?'matched-ok':'matched-bad');
+      btn.classList.remove('selected','planet-btn');
+    } else if(s1State.selected===i){
+      btn.className='planet-btn selected';
+    } else {
+      btn.className='planet-btn';
+    }
+  });
+}
+
+function selectDesc(letter){
+  if(s1State.selected===null){
+    const btn=document.getElementById('desc-'+letter);
+    btn.style.animation='shake .4s ease';
+    setTimeout(()=>{btn.style.animation='';},450);
+    return;
+  }
+  const idx=s1State.selected;
+  if(s1State.answered[idx]!==undefined) return;
+  if(Object.values(s1State.matches).includes(letter)) return;
+  
+  const correct=S1_ANS[idx]===letter;
+  s1State.matches[idx]=letter;
+  s1State.answered[idx]=correct;
+  s1State.selected=null;
+  
+  const pBtn=document.getElementById('planet-'+idx);
+  pBtn.className=correct?'planet-btn matched-ok':'planet-btn matched-bad';
+  pBtn.disabled=true;
+  
+  const dBtn=document.getElementById('desc-'+letter);
+  dBtn.className=correct?'desc-btn matched-ok':'desc-btn matched-bad';
+  if(correct){dBtn.disabled=true;}
+  
+  if(correct){score++;playOK();launchConfetti();}
+  else{playBad();}
+  
+  const explsDiv=document.getElementById('s1-expls');
+  const eDiv=document.createElement('div');
+  eDiv.className='expl show';
+  eDiv.innerHTML=`<strong>Câu ${idx+1} (${S1_PLANETS[idx]}):</strong> ${S1_EXPL[idx]}`;
+  explsDiv.appendChild(eDiv);
+  
+  updateScore();
+}
+
+// ===== TEXT INPUT RENDER TEMPLATE =====
+function createTextInputHTML(sec, q, i) {
+  return `<div class="q-wrap" id="${sec}q${i}">
+    <div class="q-num">Câu ${i+1}:</div>
+    <div class="q-text">
+      ${q.pre}
+      <span class="input-wrap">
+        <input type="text" class="text-input" id="input-${sec}-${i}" placeholder="Type here..." autocomplete="off">
+        <button class="check-btn" id="check-${sec}-${i}" onclick="checkTextInput('${sec}',${i})">Check</button>
+      </span>
+      ${q.post}
+    </div>
+    <div class="expl" id="expl-${sec}-${i}"></div>
+  </div>`;
+}
+
+// ===== SECTION II =====
+function renderS2(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  let html=`<div class="sec-title">📝 II. Complete the sentences with the words or phrases in the box.</div>
+  <div class="word-bank"><strong>📦 Word Bank:</strong> ${S2_BANK.join(' &nbsp;|&nbsp; ')}</div>`;
+  S2_QS.forEach((q,i) => { html += createTextInputHTML('s2', q, i); });
+  sec.innerHTML=html;
+  return sec;
+}
+
+// ===== SECTION III (MCQ) =====
+function renderS3(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  let html=`<div class="sec-title">🔤 III. Choose the best answers to complete the sentences.</div>`;
+  S3_QS.forEach((q,i)=>{
+    const shuffled=q.opts.map((o,oi)=>({text:o,origIdx:oi})).sort(()=>Math.random()-.5);
+    html+=`<div class="q-wrap" id="s3q${i}">
+      <div class="q-num">Câu ${i+1}:</div>
+      <div class="q-text">${q.t}</div>
+      <div class="opts" id="s3opts${i}">`;
+    shuffled.forEach((o,si)=>{
+      const labels=['a','b','c','d'];
+      html+=`<button class="opt-btn" onclick="answerMCQ(this,${i},${o.origIdx},'s3')" data-orig="${o.origIdx}">${labels[si]}. ${o.text}</button>`;
+    });
+    html+=`</div><div class="expl" id="expl-s3-${i}"></div></div>`;
+  });
+  sec.innerHTML=html;
+  return sec;
+}
+
+// ===== SECTION IV =====
+function renderS4(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  let html=`<div class="sec-title">🔧 IV. Complete the sentences with the correct form or tense of the verbs in the box.</div>
+  <div class="word-bank"><strong>📦 Verb Bank:</strong> ${S4_BANK}</div>`;
+  S4_QS.forEach((q,i) => { html += createTextInputHTML('s4', q, i); });
+  sec.innerHTML=html;
+  return sec;
+}
+
+// ===== SECTION X =====
+function renderS10(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  let html=`<div class="sec-title">🧠 X. Supply the correct form of the words in brackets.</div>`;
+  S10_QS.forEach((q,i) => { html += createTextInputHTML('s10', q, i); });
+  sec.innerHTML=html;
+  return sec;
+}
+
+// ===== SECTION XI =====
+function renderS11(){
+  const sec=document.createElement('div');
+  sec.className='section-card';
+  let html=`<div class="sec-title">🔗 XI. Fill in each blank with an appropriate preposition.</div>`;
+  S11_QS.forEach((q,i) => { html += createTextInputHTML('s11', q, i); });
+  sec.innerHTML=html;
+  return sec;
+}
+
+// ===== MCQ ANSWER LOGIC =====
+function answerMCQ(btn,qIdx,optIdx,sec){
+  const opts=document.querySelectorAll(`#${sec}opts${qIdx} .opt-btn`);
+  opts.forEach(b=>b.disabled=true);
+  const qData = S3_QS[qIdx];
+  const correct=optIdx===qData.ans;
+  btn.classList.add(correct?'correct':'wrong');
+  opts.forEach(b=>{
+    if(parseInt(b.dataset.orig)===qData.ans) b.classList.add(correct?'correct':'reveal-correct');
+  });
+  if(correct){score++;playOK();launchConfetti();}else{playBad();}
+  const expl=document.getElementById(`expl-${sec}-${qIdx}`);
+  expl.innerHTML=qData.expl;
+  expl.classList.add('show');
+  updateScore();
+}
+
+// ===== TEXT INPUT VALIDATION LOGIC =====
+function checkTextInput(sec, idx) {
+  const inputEl = document.getElementById(`input-${sec}-${idx}`);
+  const checkBtn = document.getElementById(`check-${sec}-${idx}`);
+  const explEl = document.getElementById(`expl-${sec}-${idx}`);
+  
+  if(!inputEl || inputEl.disabled) return;
+
+  const userVal = inputEl.value.trim().toLowerCase();
+  if(!userVal) {
+    inputEl.style.animation = 'none';
+    void inputEl.offsetWidth; // Trigger reflow
+    inputEl.style.animation = 'shake .4s ease';
+    return;
+  }
+
+  let correct = false;
+  let corrAnsStr = '';
+  let explHTML = '';
+
+  if(sec === 's2') {
+    const ans = S2_QS[idx].ans.toLowerCase();
+    correct = (userVal === ans);
+    corrAnsStr = S2_QS[idx].ans;
+    explHTML = S2_QS[idx].expl;
+  } else if(sec === 's4') {
+    const ans = S4_QS[idx].ans.toLowerCase();
+    correct = (userVal === ans);
+    corrAnsStr = S4_QS[idx].ans;
+    explHTML = S4_QS[idx].expl;
+  } else if(sec === 's10') {
+    const ans = S10_QS[idx].ans.toLowerCase();
+    correct = (userVal === ans);
+    corrAnsStr = S10_QS[idx].ans;
+    explHTML = S10_QS[idx].expl;
+  } else if(sec === 's11') {
+    const ans = S11_QS[idx].ans;
+    if(Array.isArray(ans)) {
+      correct = ans.map(a => a.toLowerCase()).includes(userVal);
+      corrAnsStr = ans.join(' / ');
+    } else {
+      correct = (userVal === ans.toLowerCase());
+      corrAnsStr = ans;
+    }
+    explHTML = S11_QS[idx].expl;
+  }
+
+  inputEl.disabled = true;
+  checkBtn.disabled = true;
+
+  if(correct) {
+    inputEl.classList.add('input-correct');
+    score++;
+    playOK();
+    launchConfetti();
+  } else {
+    inputEl.classList.add('input-wrong');
+    playBad();
+    explHTML = `<span class="wrong-badge">❌ Sai!</span> Đáp án đúng: <strong>${corrAnsStr}</strong><br>` + explHTML;
+  }
+
+  explEl.innerHTML = explHTML;
+  explEl.classList.add('show');
+  updateScore();
+}
+
+// Add Enter key listener for all inputs
+document.addEventListener('keypress', function(e) {
+  if(e.key === 'Enter' && e.target.classList.contains('text-input')) {
+    const idParts = e.target.id.split('-'); 
+    if(idParts.length === 3) {
+      checkTextInput(idParts[1], idParts[2]);
+    }
+  }
+});
+
+// ===== SUBMIT =====
+function submitExam(){
+  const msgs=[
+    ['🎉','Xuất sắc! Em là ngôi sao không gian! ⭐'],
+    ['🚀','Tuyệt vời! Tiếp tục bay cao nhé! 🌟'],
+    ['😊','Khá tốt! Ôn thêm một chút là giỏi thôi! 💪'],
+    ['📚','Cố lên! Kiến thức vũ trụ đang chờ em! 🌌'],
+    ['🌙','Hãy ôn lại và thử lần nữa nhé! 💫']
+  ];
+  const pct=total>0?(score/total):0;
+  let mi=pct>=.9?0:pct>=.75?1:pct>=.6?2:pct>=.4?3:4;
+  document.getElementById('m-emoji').textContent=msgs[mi][0];
+  document.getElementById('m-score').textContent=`${score} / ${total}`;
+  document.getElementById('m-msg').textContent=msgs[mi][1];
+  document.getElementById('modal').classList.add('show');
+  launchConfetti();launchConfetti();
+}
+
+// Init
+renderAll();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

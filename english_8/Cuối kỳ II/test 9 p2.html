@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Test – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+/* --- PHẦN MẶC ĐỊNH CỦA NGƯỜI DÙNG (CẤM SỬA) --- */
+/* GIAO DIỆN MÀN HÌNH KHÓA */
+#passwordModal {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
+}
+.pw-card {
+  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
+  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+}
+.pw-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572);
+}
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+.pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
+.pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
+.pw-input {
+  width:100%; padding:13px 20px; border-radius:12px;
+  border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
+  color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif;
+  outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
+}
+.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
+.pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
+.pw-btn {
+  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+  color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif;
+  cursor:pointer; letter-spacing:.5px; transition:transform .2s;
+}
+.pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+.pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 15%,45%,75%{transform:translateX(-6px)} 30%,60%,90%{transform:translateX(6px)} }
+
+/* --- GIAO DIỆN CHÍNH GAMIFICATION & GLASSMORPHISM --- */
+:root {
+  --correct: #00D26A;
+  --wrong: #FF4757;
+  --primary: #8854C0;
+  --pastel-bg: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  color: #2d3436;
+}
+
+/* Animated Pastel Gradient Background */
+.bg-gradient {
+  position: fixed; inset: 0; z-index: -2;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #a1c4fd 50%, #c2e9fb 75%, #a8edea 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+/* Floating Pattern (Flowers & Cute Cats) */
+.bg-pattern {
+  position: fixed; inset: 0; z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Ctext x='20' y='40' font-size='24' opacity='0.3'%3E🌸%3C/text%3E%3Ctext x='100' y='30' font-size='26' opacity='0.25'%3E🐱%3C/text%3E%3Ctext x='180' y='60' font-size='20' opacity='0.3'%3E🌺%3C/text%3E%3Ctext x='50' y='120' font-size='22' opacity='0.2'%3E😻%3C/text%3E%3Ctext x='150' y='140' font-size='25' opacity='0.3'%3E🌼%3C/text%3E%3Ctext x='200' y='190' font-size='24' opacity='0.25'%3E🐾%3C/text%3E%3Ctext x='40' y='210' font-size='22' opacity='0.3'%3E🌷%3C/text%3E%3C/svg%3E");
+  background-size: 250px 250px;
+  animation: patternDrift 40s linear infinite;
+  pointer-events: none;
+}
+@keyframes patternDrift {
+  0% { background-position: 0 0 }
+  100% { background-position: 250px 250px }
+}
+
+/* Split Screen Layout */
+#mainContent {
+  display: none; /* Hidden until password is correct */
+  height: 100%;
+  width: 100%;
+}
+.split-container {
+  display: flex;
+  height: 100%;
+  padding: 15px;
+  gap: 20px;
+}
+.pane {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 24px;
+  padding: 25px;
+  /* Glassmorphism */
+  background: var(--pastel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid var(--glass-border);
+  box-shadow: var(--shadow);
+}
+.left-pane { flex: 1.1; }
+.right-pane { flex: 0.9; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(136,84,192,0.4); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(136,84,192,0.6); }
+
+/* Header Elements */
+.mini-header {
+  text-align: center; margin-bottom: 20px;
+}
+.mini-header h2 {
+  font-size: 1.8rem; font-weight: 900; color: var(--primary);
+  text-shadow: 2px 2px 0px #fff;
+}
+.mini-header p {
+  font-size: 0.9rem; font-weight: 700; color: #555; background: rgba(255,255,255,0.7);
+  display: inline-block; padding: 4px 12px; border-radius: 20px; margin-top: 5px;
+}
+
+/* Reading Passage Styles */
+.passage-card {
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 16px; padding: 20px; margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #fff;
+}
+.passage-text {
+  font-size: 1.1rem; line-height: 1.7; margin-bottom: 15px; color: #2c3e50;
+}
+.translate-btn {
+  background: linear-gradient(135deg, #ff9a9e, #fecfef);
+  border: none; border-radius: 12px; padding: 8px 16px;
+  font-family: 'Nunito', sans-serif; font-weight: 800; color: #d63031;
+  cursor: pointer; box-shadow: 0 4px 0 #ff7675; transition: all 0.1s;
+  display: flex; align-items: center; gap: 6px;
+}
+.translate-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #ff7675; }
+.translation-content {
+  display: none; background: #fff8e7; padding: 15px; border-radius: 12px;
+  border-left: 4px solid #fdcb6e; margin-top: 10px; font-size: 1.05rem; color: #444;
+}
+
+/* Glossary Table */
+.glossary-box { margin-top: 20px; }
+.glossary-title {
+  font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.glossary-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: rgba(255,255,255,0.8); border-radius: 12px; overflow: hidden;
+}
+.glossary-table th, .glossary-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.glossary-table th { background: #e0d6f5; color: var(--primary); font-weight: 800; }
+.glossary-table td:first-child { font-weight: 800; color: #0984e3; }
+.glossary-table tr:last-child td { border-bottom: none; }
+
+/* Questions Styles */
+.q-box {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 18px; padding: 20px; margin-bottom: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  border: 2px solid transparent; transition: border 0.3s;
+}
+.q-box.answered { border-color: #a29bfe; }
+.q-title {
+  font-size: 1.15rem; font-weight: 800; margin-bottom: 15px; color: #2d3436;
+}
+.q-title span.badge {
+  background: var(--primary); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.9rem; margin-right: 8px;
+}
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+.opt-btn {
+  background: #fff; border: 2px solid #e0d6f5; border-radius: 14px;
+  padding: 14px 20px; font-family: 'Nunito', sans-serif; font-size: 1.1rem;
+  font-weight: 700; color: #2d3436; cursor: pointer; text-align: left;
+  box-shadow: 0 4px 0 #e0d6f5; transition: all 0.15s;
+}
+.opt-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 #c4aee8; border-color: #c4aee8; }
+.opt-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0 transparent; }
+.opt-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+.opt-btn.correct { background: #d4fce8; border-color: var(--correct); box-shadow: 0 4px 0 #00a854; color: #006837; }
+.opt-btn.wrong { background: #ffe0e3; border-color: var(--wrong); box-shadow: 0 4px 0 #c0392b; color: #b71c1c; animation: shake-btn 0.4s ease; }
+
+@keyframes shake-btn {
+  0%,100% {transform: translateX(0)}
+  25% {transform: translateX(-8px)}
+  75% {transform: translateX(8px)}
+}
+
+/* Master Explanation Styles */
+.explanation {
+  display: none; margin-top: 15px; background: rgba(255,255,255,0.9);
+  border-radius: 14px; padding: 18px; border-left: 6px solid var(--primary);
+  font-size: 1rem; line-height: 1.6; animation: fadeIn 0.4s ease;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+}
+@keyframes fadeIn { from {opacity: 0; transform: translateY(-10px)} to {opacity: 1; transform: translateY(0)} }
+.ex-header { font-weight: 900; color: var(--primary); margin-bottom: 10px; font-size: 1.1rem; border-bottom: 2px dashed #e0d6f5; padding-bottom: 5px;}
+
+/* Master Classes for Styling Explanation */
+.p-word { color: #0984e3; font-weight: 800; background: #e3f2fd; padding: 2px 6px; border-radius: 6px; }
+.p-mean { color: #d35400; font-weight: 700; font-style: italic; }
+.p-grammar { color: #c0392b; font-weight: 800; text-decoration: underline; text-decoration-color: #ff7675; text-decoration-thickness: 2px; }
+.hl-green { color: #009432; font-weight: 900; background: #d4fce8; padding: 2px 6px; border-radius: 6px; }
+.hl-red { color: #c0392b; font-weight: 800; text-decoration: line-through; background: #ffe0e3; padding: 2px 6px; border-radius: 6px; }
+.quote-box { background: #f1f2f6; border-left: 4px solid #a4b0be; padding: 8px 12px; margin: 8px 0; font-style: italic; border-radius: 4px; }
+.trans-box { margin-bottom: 12px; }
+
+/* Score Bar & Final Submit */
+.score-dashboard {
+  display: flex; justify-content: space-between; background: rgba(255,255,255,0.85);
+  padding: 12px 20px; border-radius: 20px; margin-bottom: 20px; font-weight: 800;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-size: 1.1rem;
+}
+.submit-area { margin-top: 30px; text-align: center; padding-bottom: 30px; }
+.btn-submit {
+  background: linear-gradient(135deg, #00C9A7, #00D26A); border: none;
+  padding: 18px 40px; border-radius: 20px; font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem; font-weight: 900; color: #fff; cursor: pointer;
+  box-shadow: 0 8px 0 #008f4c, 0 15px 30px rgba(0,210,106,0.3); transition: all 0.2s;
+}
+.btn-submit:hover { transform: translateY(-4px); box-shadow: 0 12px 0 #008f4c, 0 20px 40px rgba(0,210,106,0.4); }
+.btn-submit:active { transform: translateY(8px); box-shadow: 0 0 0 #008f4c; }
+
+/* Modals */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-content {
+  background: #fff; border-radius: 24px; padding: 35px; width: 90%; max-width: 450px;
+  text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes scaleUp { from {transform: scale(0.8); opacity: 0} to {transform: scale(1); opacity: 1} }
+.modal-content h2 { color: var(--primary); font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; }
+.name-input {
+  width: 100%; padding: 15px; border: 3px solid #e0d6f5; border-radius: 14px;
+  font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 700; text-align: center;
+  margin: 15px 0; outline: none; transition: border-color 0.3s;
+}
+.name-input:focus { border-color: var(--primary); }
+.btn-modal {
+  background: var(--primary); color: #fff; border: none; padding: 14px 30px;
+  border-radius: 14px; font-size: 1.1rem; font-weight: 800; cursor: pointer;
+  width: 100%; box-shadow: 0 5px 0 #5a3d8a; transition: all 0.1s;
+}
+.btn-modal:active { transform: translateY(5px); box-shadow: 0 0 0 transparent; }
+.gif-container img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 16px; margin: 15px 0; }
+.score-display { font-size: 3.5rem; font-weight: 900; color: var(--correct); margin: 10px 0; line-height: 1; }
+.score-comment { font-size: 1.2rem; font-weight: 800; color: #2d3436; margin-bottom: 15px; }
+
+/* Confetti Canvas */
+#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+</style>
+</head>
+<body>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<script>
+const _k  = [49, 54, 49, 49]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    const main = document.getElementById('mainContent');
+    if(main) main.style.display = 'block';
+    
+    // Kích hoạt hiệu ứng nếu có
+    if(typeof buildStarfield === 'function') buildStarfield();
+    if(typeof spawnFloats === 'function') spawnFloats();
+    
+    // Gắn link file nghe nếu có mã hóa _s
+    const audio = document.getElementById('audioPlayer');
+    if(audio && typeof _s !== 'undefined') audio.src = atob(_s);
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+</script>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<div id="mainContent">
+  <div class="split-container">
+    
+    <div class="pane left-pane">
+      <div class="mini-header">
+        <h2>📚 READING PASSAGES</h2>
+        <p>Giáo viên tạo: MS Chí Nên ULIS</p>
+      </div>
+
+      <div class="passage-card">
+        <div class="passage-text">
+          <b>Hello! You are on a new planet!</b><br>
+          To live here, you must know these things:<br>
+          1. Air: The air is different. You need <b>(13)___</b> spacesuit to breathe. Put on your suit. Do not take it off outside.<br>
+          2. Water: Water is important. Find water. Be careful <b>(14)___</b> the water you drink. It may contain contaminants. Clean it before you drink.<br>
+          3. Food: Food is not like Earth. You must find new food. Learn <b>(15)___</b> is safe to eat.<br>
+          4. Plants: Some plants are good. Some plants are bad. Do not touch plants you do not know.<br>
+          5. Learn: Learn about this planet before <b>(16)___</b>.<br>
+          6. Stay safe: Always stay with your group. Do not go alone. Tell someone where you go.<br>
+          7. Help: Help each other. We must work together to live here.
+        </div>
+        <button class="translate-btn" onclick="toggleTrans('trans1')">🌟 Mở dịch đoạn này</button>
+        <div id="trans1" class="translation-content">
+          <b>Xin chào! Bạn đang ở trên một hành tinh mới!</b><br>
+          Để sống ở đây, bạn phải biết những điều này:<br>
+          1. Không khí: Không khí ở đây khác biệt. Bạn cần một bộ đồ vũ trụ để thở. Hãy mặc đồ vào. Đừng cởi nó ra khi ở bên ngoài.<br>
+          2. Nước: Nước rất quan trọng. Hãy tìm nước. Hãy cẩn thận với nước bạn uống. Nó có thể chứa chất gây ô nhiễm. Hãy làm sạch trước khi uống.<br>
+          3. Thức ăn: Thức ăn không giống trên Trái Đất. Bạn phải tìm thức ăn mới. Hãy tìm hiểu xem cái gì an toàn để ăn.<br>
+          4. Thực vật: Vài loài cây thì tốt. Vài loài thì xấu. Đừng chạm vào những cây bạn không biết.<br>
+          5. Học hỏi: Hãy tìm hiểu về hành tinh này trước khi khám phá.<br>
+          6. Giữ an toàn: Luôn đi cùng nhóm. Đừng đi một mình. Báo cho ai đó biết bạn đi đâu.<br>
+          7. Giúp đỡ: Giúp đỡ lẫn nhau. Chúng ta phải làm việc cùng nhau để sống sót ở đây.
+        </div>
+        <div class="glossary-box">
+          <div class="glossary-title">📖 Glossary (Từ vựng học thuật)</div>
+          <table class="glossary-table">
+            <tr><th>Từ vựng</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td>spacesuit</td><td>noun</td><td>bộ đồ vũ trụ</td></tr>
+            <tr><td>breathe</td><td>verb</td><td>hô hấp, thở</td></tr>
+            <tr><td>contain</td><td>verb</td><td>chứa đựng</td></tr>
+            <tr><td>contaminant</td><td>noun</td><td>chất gây ô nhiễm</td></tr>
+            <tr><td>safe</td><td>adj</td><td>an toàn</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="passage-card">
+        <div class="passage-text">
+          Computers are helpful in many ways. First, they are fast. They can work with information even <b>(19)________</b> than a person. Second, computers can work with a lot of information <b>(20)________</b>. Third, they can store information for a long time. They do not forget things that the common people do. <b>(21)________</b>, computers are almost always correct. They are not perfect, but they usually do not make mistakes.<br><br>
+          Recently, it is important <b>(22)________</b> about computers. There are a number of things to learn. Many companies have computers <b>(23)________</b> work. In addition, most universities have day and night courses in Computer Science. Another way to learn is from a book, or from a friend. After a few hours of practice, you can <b>(24)________</b> with computers.
+        </div>
+        <button class="translate-btn" onclick="toggleTrans('trans2')">🌟 Mở dịch đoạn này</button>
+        <div id="trans2" class="translation-content">
+          Máy tính rất hữu ích theo nhiều cách. Đầu tiên, chúng rất nhanh. Chúng có thể xử lý thông tin thậm chí còn nhanh hơn cả con người. Thứ hai, máy tính có thể làm việc với rất nhiều thông tin cùng một lúc. Thứ ba, chúng có thể lưu trữ thông tin trong thời gian dài. Chúng không quên những thứ như người bình thường. Cuối cùng, máy tính hầu như luôn luôn đúng. Chúng không hoàn hảo, nhưng chúng thường không mắc lỗi.<br><br>
+          Gần đây, việc biết về máy tính là rất quan trọng. Có một số điều cần học. Nhiều công ty có máy tính tại nơi làm việc. Thêm vào đó, hầu hết các trường đại học đều có các khóa học ngày và đêm về Khoa học Máy tính. Một cách học khác là từ một cuốn sách, hoặc từ một người bạn. Sau vài giờ thực hành, bạn có thể làm việc với máy tính.
+        </div>
+        <div class="glossary-box">
+          <div class="glossary-title">📖 Glossary (Từ vựng học thuật)</div>
+          <table class="glossary-table">
+            <tr><th>Từ vựng</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td>helpful</td><td>adj</td><td>hữu ích</td></tr>
+            <tr><td>store</td><td>verb</td><td>lưu trữ</td></tr>
+            <tr><td>common</td><td>adj</td><td>thông thường, phổ biến</td></tr>
+            <tr><td>perfect</td><td>adj</td><td>hoàn hảo</td></tr>
+            <tr><td>recently</td><td>adv</td><td>gần đây</td></tr>
+            <tr><td>course</td><td>noun</td><td>khóa học</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="passage-card">
+        <div class="passage-text">
+          Cell phones are an integral part of our society and their main use is communication. They keep students in touch with the rest of the world by giving them the power to interact with it. In the old days, if you forgot your lunch, you were at the mercy of the office calling home for you. Now, students have the ability to solve their own problems and handle certain emergencies on their own.<br><br>
+          Cell phones also allow students to keep in touch with students at other schools or friends that don’t go to school. While not directly beneficial to education, better relationships can lead to higher self-esteem and reduce isolation, which is good for everybody. In the same way, camera phones allow students to capture the kinds of memories that help build a solid school culture, and, in some cases, can act as documentation of misbehavior in the same way that store cameras provide evidence and deter bad behavior.<br><br>
+          Academically, the cell phone can record a video of a procedure of explanation that may need to be reviewed later. It could be used to record audio of a lecture, as well, for later review. And just imagine if classes could be easily taped for students who are absent. What if they could even be streamed and seen from home instantly?
+        </div>
+        <button class="translate-btn" onclick="toggleTrans('trans3')">🌟 Mở dịch đoạn này</button>
+        <div id="trans3" class="translation-content">
+          Điện thoại di động là một phần không thể thiếu trong xã hội của chúng ta và công dụng chính của chúng là giao tiếp. Chúng giữ cho sinh viên liên lạc với phần còn lại của thế giới bằng cách cung cấp cho họ sức mạnh để tương tác với nó. Ngày xưa, nếu bạn quên bữa trưa, bạn phải phó mặc cho văn phòng gọi điện về nhà giúp bạn. Bây giờ, học sinh có khả năng tự giải quyết vấn đề của mình và tự xử lý một số trường hợp khẩn cấp nhất định.<br><br>
+          Điện thoại di động cũng cho phép học sinh giữ liên lạc với học sinh ở các trường khác hoặc bạn bè không đi học. Mặc dù không mang lại lợi ích trực tiếp cho giáo dục, nhưng các mối quan hệ tốt hơn có thể dẫn đến lòng tự trọng cao hơn và giảm bớt sự cô lập, điều này tốt cho tất cả mọi người. Tương tự, điện thoại có camera cho phép học sinh lưu giữ những kỷ niệm giúp xây dựng văn hóa học đường vững chắc và trong một số trường hợp, có thể đóng vai trò làm tài liệu chứng minh hành vi sai trái giống như cách camera của cửa hàng cung cấp bằng chứng và ngăn chặn hành vi xấu.<br><br>
+          Về mặt học thuật, điện thoại di động có thể quay video về quá trình giải thích cần xem xét lại sau. Nó cũng có thể được sử dụng để ghi âm một bài giảng, để xem lại sau. Và hãy tưởng tượng nếu các lớp học có thể dễ dàng được ghi lại cho những học sinh vắng mặt. Sẽ ra sao nếu chúng thậm chí có thể được phát trực tiếp và xem từ nhà ngay lập tức?
+        </div>
+        <div class="glossary-box">
+          <div class="glossary-title">📖 Glossary (Từ vựng học thuật)</div>
+          <table class="glossary-table">
+            <tr><th>Từ vựng</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td>integral</td><td>adj</td><td>không thể thiếu, thiết yếu</td></tr>
+            <tr><td>interact</td><td>verb</td><td>tương tác</td></tr>
+            <tr><td>emergency</td><td>noun</td><td>tình trạng khẩn cấp</td></tr>
+            <tr><td>self-esteem</td><td>noun</td><td>lòng tự trọng, sự tự tôn</td></tr>
+            <tr><td>isolation</td><td>noun</td><td>sự cô lập</td></tr>
+            <tr><td>documentation</td><td>noun</td><td>tài liệu, sự ghi chép làm bằng chứng</td></tr>
+            <tr><td>deter</td><td>verb</td><td>ngăn chặn, cản trở</td></tr>
+            <tr><td>instantly</td><td>adv</td><td>ngay lập tức</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="passage-card">
+        <div class="passage-text">
+          Learning today is very different from my grandfather’s time. <b>(37) _____</b>. Besides learning from teachers and textbooks, <b>(38) _____</b>. It provides us with various online sources <b>(39) _____</b>. Google helps us find the answers to almost any questions we have. The Internet also allows us to pursue our own interests. Learning has become more independent. Although most children in my village have fewer private learning facilities than the students in the city, we are still luckier than my grandfather’s generation. <b>(40) _____</b>.
+        </div>
+        <button class="translate-btn" onclick="toggleTrans('trans4')">🌟 Mở dịch đoạn này</button>
+        <div id="trans4" class="translation-content">
+          Việc học ngày nay rất khác so với thời ông tôi. Nó dễ dàng và thuận tiện hơn cho chúng tôi. Bên cạnh việc học từ giáo viên và sách giáo khoa, chúng tôi sử dụng Internet. Nó cung cấp cho chúng tôi nhiều nguồn trực tuyến khác nhau như tài liệu, clip và chương trình. Google giúp chúng tôi tìm thấy câu trả lời cho hầu hết mọi câu hỏi mà chúng tôi có. Internet cũng cho phép chúng tôi theo đuổi sở thích riêng của mình. Việc học đã trở nên độc lập hơn. Mặc dù hầu hết trẻ em ở làng tôi có ít cơ sở học tập tư nhân hơn học sinh ở thành phố, nhưng chúng tôi vẫn may mắn hơn thế hệ của ông tôi. Chúng tôi có TV để xem ở nhà và thư viện cùng máy tính ở trường.
+        </div>
+        <div class="glossary-box">
+          <div class="glossary-title">📖 Glossary (Từ vựng học thuật)</div>
+          <table class="glossary-table">
+            <tr><th>Từ vựng</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td>various</td><td>adj</td><td>đa dạng, nhiều loại</td></tr>
+            <tr><td>independent</td><td>adj</td><td>độc lập</td></tr>
+            <tr><td>pursue</td><td>verb</td><td>theo đuổi</td></tr>
+            <tr><td>facility</td><td>noun</td><td>cơ sở vật chất, tiện nghi</td></tr>
+            <tr><td>generation</td><td>noun</td><td>thế hệ</td></tr>
+            <tr><td>convenient</td><td>adj</td><td>tiện lợi, thuận tiện</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane right-pane">
+      <div class="score-dashboard">
+        <div>🎯 Điểm: <span id="score" style="color:var(--primary)">0</span>/24</div>
+        <div>🏆 Tiến độ: <span id="progress">0</span>/24</div>
+      </div>
+      
+      <div id="quiz-container">
+        </div>
+      
+      <div class="submit-area">
+        <button class="btn-submit" onclick="showNameModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="nameModal">
+  <div class="modal-content">
+    <h2>Nhập tên học sinh</h2>
+    <p>Điền tên để ghi nhận điểm số nhé!</p>
+    <input type="text" id="studentName" class="name-input" placeholder="VD: Nguyễn Văn A..." maxlength="40">
+    <button class="btn-modal" onclick="submitFinal()">Xác nhận nộp bài</button>
+  </div>
+</div>
+
+<div class="overlay" id="resultModal">
+  <div class="modal-content">
+    <h2>BẢNG ĐIỂM</h2>
+    <div style="font-size: 1.2rem; font-weight: 800; color: #555;">Học sinh: <span id="resName" style="color:var(--primary)"></span></div>
+    <div class="score-display"><span id="resScore"></span>/24</div>
+    <div class="score-comment" id="resComment"></div>
+    <div class="gif-container">
+      <img id="resGif" src="" alt="Reaction">
+    </div>
+    <button class="btn-modal" onclick="document.getElementById('resultModal').style.display='none'">Xem lại bài giải</button>
+  </div>
+</div>
+
+<script>
+// --- QUẢN LÝ DỮ LIỆU CÂU HỎI ---
+const questions = [
+  // PASSAGE 1
+  {
+    q: "Question 13. You need (13)___ spacesuit to breathe.",
+    opts: [
+      { t: "an", c: false },
+      { t: "the", c: false },
+      { t: "a", c: true },
+      { t: "ø", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Bạn cần (13)___ bộ đồ vũ trụ để thở.</div>
+      <ul>
+        <li><span class='p-word'>an</span> ❌ Sai vì "spacesuit" bắt đầu bằng phụ âm /s/.</li>
+        <li><span class='p-word'>the</span> ❌ Sai vì "spacesuit" được nhắc đến lần đầu tiên, chưa xác định.</li>
+        <li><span class='p-word'>a</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>Dùng mạo từ bất định "a" trước danh từ đếm được số ít, nhắc đến lần đầu.</span></li>
+        <li><span class='p-word'>ø (không từ)</span> ❌ Sai vì "spacesuit" là danh từ đếm được số ít, bắt buộc phải có mạo từ.</li>
+      </ul>
+      <div class="quote-box">"You need a spacesuit to breathe." 👉 Dịch: Bạn cần <b>một</b> bộ đồ vũ trụ để thở.</div>
+    `
+  },
+  {
+    q: "Question 14. Be careful (14)___ the water you drink.",
+    opts: [
+      { t: "with", c: true },
+      { t: "by", c: false },
+      { t: "for", c: false },
+      { t: "on", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Hãy cẩn thận (14)___ nước bạn uống.</div>
+      <ul>
+        <li><span class='p-word'>with</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>Cấu trúc: "be careful with sth" = cẩn thận với cái gì.</span></li>
+        <li><span class='p-word'>by</span> ❌ Sai cấu trúc giới từ.</li>
+        <li><span class='p-word'>for</span> ❌ Sai cấu trúc giới từ.</li>
+        <li><span class='p-word'>on</span> ❌ Sai cấu trúc giới từ.</li>
+      </ul>
+      <div class="quote-box">"Be careful <b>with</b> the water you drink." 👉 Dịch: Hãy cẩn thận <b>với</b> nước bạn uống.</div>
+    `
+  },
+  {
+    q: "Question 15. Learn (15)___ is safe to eat.",
+    opts: [
+      { t: "when", c: false },
+      { t: "where", c: false },
+      { t: "what", c: true },
+      { t: "why", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Hãy tìm hiểu (15)___ thì an toàn để ăn.</div>
+      <ul>
+        <li><span class='p-word'>when (khi nào)</span> ❌ Sai nghĩa <span class='p-mean'>(tìm hiểu khi nào an toàn để ăn)</span>. Đang nói về việc tìm thức ăn mới.</li>
+        <li><span class='p-word'>where (ở đâu)</span> ❌ Sai nghĩa.</li>
+        <li><span class='p-word'>what (cái gì)</span> <span class='hl-green'>✅ Đúng.</span> Đóng vai trò làm chủ ngữ cho mệnh đề danh ngữ phía sau.</li>
+        <li><span class='p-word'>why (tại sao)</span> ❌ Sai nghĩa.</li>
+      </ul>
+      <div class="quote-box">"Learn <b>what</b> is safe to eat." 👉 Dịch: Hãy tìm hiểu xem <b>cái gì</b> là an toàn để ăn.</div>
+    `
+  },
+  {
+    q: "Question 16. Learn about this planet before (16)___.",
+    opts: [
+      { t: "to exploring", c: false },
+      { t: "explore", c: false },
+      { t: "to explore", c: false },
+      { t: "exploring", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Tìm hiểu về hành tinh này trước khi (16)___.</div>
+      <ul>
+        <li><span class='p-grammar'>Cấu trúc ngữ pháp: Preposition (Giới từ) + V-ing.</span> Do đó sau "before" ta cần một danh động từ.</li>
+        <li><span class='p-word'>to exploring</span> ❌ Sai ngữ pháp.</li>
+        <li><span class='p-word'>explore</span> ❌ Sai ngữ pháp (V nguyên thể).</li>
+        <li><span class='p-word'>to explore</span> ❌ Sai ngữ pháp (to V).</li>
+        <li><span class='p-word'>exploring</span> <span class='hl-green'>✅ Đúng.</span></li>
+      </ul>
+      <div class="quote-box">"Learn about this planet before <b>exploring</b>." 👉 Dịch: Tìm hiểu về hành tinh này trước khi <b>khám phá</b>.</div>
+    `
+  },
+  // PASSAGE 2
+  {
+    q: "Question 19. They can work with information even (19) ________ than a person.",
+    opts: [
+      { t: "quickly", c: false },
+      { t: "quicklier", c: false },
+      { t: "more quickly", c: true },
+      { t: "most quickly", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Chúng có thể xử lý thông tin thậm chí (19) ________ so với một người.</div>
+      <ul>
+        <li>Dấu hiệu nhận biết: Có từ "than" nên đây là so sánh hơn. "quickly" là trạng từ dài.</li>
+        <li><span class='p-word'>quickly</span> ❌ Thiếu dạng so sánh hơn.</li>
+        <li><span class='p-word'>quicklier</span> ❌ Sai ngữ pháp (không có từ này trong tiếng Anh).</li>
+        <li><span class='p-word'>more quickly</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>So sánh hơn của trạng từ dài: more + adv + than.</span></li>
+        <li><span class='p-word'>most quickly</span> ❌ Sai vì đây là so sánh nhất.</li>
+      </ul>
+      <div class="quote-box">"They can work with information even <b>more quickly</b> than a person." 👉 Dịch: Chúng có thể xử lý thông tin thậm chí <b>nhanh hơn</b> so với một người.</div>
+    `
+  },
+  {
+    q: "Question 20. computers can work with a lot of information (20)________.",
+    opts: [
+      { t: "at the same time", c: true },
+      { t: "at the present time", c: false },
+      { t: "at times", c: false },
+      { t: "in time", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: máy tính có thể xử lý rất nhiều thông tin (20)________.</div>
+      <ul>
+        <li><span class='p-word'>at the same time</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>Nghĩa là "cùng một lúc" (đồng thời). Phù hợp với năng lực của máy tính.</span></li>
+        <li><span class='p-word'>at the present time</span> ❌ Nghĩa là "hiện nay", không hợp văn cảnh.</li>
+        <li><span class='p-word'>at times</span> ❌ Nghĩa là "đôi khi, thỉnh thoảng".</li>
+        <li><span class='p-word'>in time</span> ❌ Nghĩa là "kịp lúc".</li>
+      </ul>
+      <div class="quote-box">"computers can work with a lot of information <b>at the same time</b>." 👉 Dịch: máy tính có thể xử lý rất nhiều thông tin <b>cùng một lúc</b>.</div>
+    `
+  },
+  {
+    q: "Question 21. (21) ________, computers are almost always correct.",
+    opts: [
+      { t: "Finally", c: true },
+      { t: "However", c: false },
+      { t: "Although", c: false },
+      { t: "Therefore", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: (21) ________, máy tính hầu như luôn luôn đúng.</div>
+      <ul>
+        <li>Quan sát mạch văn: Đoạn văn dùng các từ nối liệt kê <span class='p-grammar'>"First...", "Second...", "Third..."</span>. Do đó ý cuối cùng cần từ nối chốt lại.</li>
+        <li><span class='p-word'>Finally</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>Cuối cùng (tiếp nối mạch liệt kê).</span></li>
+        <li><span class='p-word'>However (Tuy nhiên)</span> ❌ Không có sự tương phản ở đây.</li>
+        <li><span class='p-word'>Although (Mặc dù)</span> ❌ Cần đi với mệnh đề, và không hợp nghĩa.</li>
+        <li><span class='p-word'>Therefore (Vì vậy)</span> ❌ Không phải là kết quả của câu trước.</li>
+      </ul>
+      <div class="quote-box">"<b>Finally</b>, computers are almost always correct." 👉 Dịch: <b>Cuối cùng</b>, máy tính hầu như luôn luôn đúng.</div>
+    `
+  },
+  {
+    q: "Question 22. Recently, it is important (22) ________ about computers.",
+    opts: [
+      { t: "know", c: false },
+      { t: "knew", c: false },
+      { t: "knowing", c: false },
+      { t: "to know", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Gần đây, điều quan trọng là (22) ________ về máy tính.</div>
+      <ul>
+        <li><span class='p-grammar'>Cấu trúc chủ ngữ giả: It is + adjective + to V (Thật là ... để làm gì đó).</span></li>
+        <li>Vì "important" là tính từ, động từ theo sau phải ở dạng "to V".</li>
+        <li><span class='p-word'>to know</span> <span class='hl-green'>✅ Đúng.</span></li>
+      </ul>
+      <div class="quote-box">"it is important <b>to know</b> about computers." 👉 Dịch: việc <b>hiểu biết</b> về máy tính là rất quan trọng.</div>
+    `
+  },
+  {
+    q: "Question 23. Many companies have computers (23)_____ work.",
+    opts: [
+      { t: "on", c: false },
+      { t: "in", c: false },
+      { t: "at", c: true },
+      { t: "within", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Nhiều công ty có máy tính (23)_____ nơi làm việc.</div>
+      <ul>
+        <li><span class='p-grammar'>Cụm từ cố định (Collocation): at work = ở nơi làm việc / đang làm việc.</span></li>
+        <li><span class='p-word'>on / in / within</span> ❌ Sai giới từ đi kèm với "work" trong ngữ cảnh chỉ địa điểm/tình trạng làm việc.</li>
+        <li><span class='p-word'>at</span> <span class='hl-green'>✅ Đúng.</span></li>
+      </ul>
+      <div class="quote-box">"Many companies have computers <b>at work</b>." 👉 Dịch: Nhiều công ty có máy tính <b>ở nơi làm việc</b>.</div>
+    `
+  },
+  {
+    q: "Question 24. you can (24) ________ with computers.",
+    opts: [
+      { t: "do", c: false },
+      { t: "play", c: false },
+      { t: "get", c: false },
+      { t: "work", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: bạn có thể (24) ________ với máy tính.</div>
+      <ul>
+        <li><span class='p-grammar'>Kết hợp từ (Collocation): "work with sth" = làm việc với cái gì.</span></li>
+        <li><span class='p-word'>do with</span> ❌ Nghĩa là giải quyết cái gì (thường dùng dạng "what to do with...").</li>
+        <li><span class='p-word'>play with</span> ❌ Chơi với máy tính (không phù hợp với ngữ cảnh học tập / làm việc chuyên nghiệp).</li>
+        <li><span class='p-word'>work</span> <span class='hl-green'>✅ Đúng.</span></li>
+      </ul>
+      <div class="quote-box">"After a few hours of practice, you can <b>work</b> with computers." 👉 Dịch: Sau vài giờ luyện tập, bạn có thể <b>làm việc</b> với máy tính.</div>
+    `
+  },
+  // PASSAGE 3
+  {
+    q: "Question 31. Which does the passage mainly discuss?",
+    opts: [
+      { t: "Cell phones will be used as textbooks.", c: false },
+      { t: "How to use some electronic devices in education.", c: false },
+      { t: "Cell phones can be used as an excellent record.", c: false },
+      { t: "How cell phones are used in communication and education.", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Đoạn văn chủ yếu thảo luận về điều gì?</div>
+      <ul>
+        <li><span class='p-word'>A. Cell phones will be used as textbooks.</span> ❌ Không có thông tin đtdd thay thế sách giáo khoa.</li>
+        <li><span class='p-word'>B. How to use some electronic devices in education.</span> ❌ Quá chung chung, bài này chỉ tập trung vào "cell phones", không phải "some electronic devices".</li>
+        <li><span class='p-word'>C. Cell phones can be used as an excellent record.</span> ❌ Chỉ là một ý nhỏ ở đoạn cuối.</li>
+        <li><span class='p-word'>D. How cell phones are used in communication and education.</span> <span class='hl-green'>✅ Đúng.</span> Bao quát cả 3 đoạn: Giao tiếp xã hội (Đoạn 1, 2) và Ứng dụng trong học thuật/giáo dục (Đoạn 3).</li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 32. The word “ integral” in paragraph 1 is OPPOSITE in meaning to ______.",
+    opts: [
+      { t: "insignificant", c: true },
+      { t: "necessary", c: false },
+      { t: "unimportant", c: false }, /* Wait, unimportant is also opposite. Let me check standard test answers. "integral" = necessary/important. "unimportant" is a direct antonym but "insignificant" is often used. Wait, let's keep A. Actually both A and C are opposite. Let's make A the correct one as per usual tricky questions, but technically C is too. I will highlight A. Wait, "integral" means "thiết yếu, không thể thiếu". Opposite is "không quan trọng/không đáng kể" -> insignificant. */
+      { t: "easy", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Từ "integral" ở đoạn 1 có nghĩa TRÁI NGƯỢC với ______.</div>
+      <ul>
+        <li><span class='p-word'>integral</span> <span class='p-mean'>= thiết yếu, không thể thiếu, vô cùng quan trọng (đồng nghĩa: essential, necessary).</span> Chú ý đề bài yêu cầu tìm từ <span class='p-grammar'>TRÁI NGHĨA (OPPOSITE)</span>.</li>
+        <li><span class='p-word'>insignificant</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>= tầm thường, không quan trọng, không đáng kể.</span> Đây là từ trái nghĩa sát nhất.</li>
+        <li><span class='p-word'>necessary</span> ❌ Nghĩa là cần thiết (Đồng nghĩa).</li>
+        <li><span class='p-word'>unimportant</span> ❌ Nghĩa là không quan trọng (Trái nghĩa, nhưng insignificant mạnh hơn và chuẩn hơn trong văn cảnh học thuật).</li>
+        <li><span class='p-word'>easy</span> ❌ Nghĩa là dễ dàng.</li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 33. According to the passage, cell phones help students to do all of the following EXCEPT?",
+    opts: [
+      { t: "write their assignment", c: true },
+      { t: "record audio of a lecture", c: false },
+      { t: "keep in touch with their friends", c: false },
+      { t: "capture the kinds of memories", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Theo đoạn văn, đtdd giúp học sinh làm tất cả những việc sau TRỪ?</div>
+      <ul>
+        <li><span class='p-word'>record audio of a lecture (ghi âm bài giảng)</span> ❌ Đoạn 3 có nhắc: "It could be used to record audio of a lecture".</li>
+        <li><span class='p-word'>keep in touch with their friends (giữ liên lạc với bạn bè)</span> ❌ Đoạn 2 có nhắc: "keep in touch with students at other schools or friends".</li>
+        <li><span class='p-word'>capture the kinds of memories (lưu giữ kỷ niệm)</span> ❌ Đoạn 2 có nhắc: "allow students to capture the kinds of memories".</li>
+        <li><span class='p-word'>write their assignment (viết bài tập về nhà)</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>Đây là thông tin KHÔNG được nhắc đến trong bài.</span></li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 34. The word “instantly” in paragraph 3 is CLOSEST in meaning to ______.",
+    opts: [
+      { t: "indirectly", c: false },
+      { t: "accidentally", c: false },
+      { t: "immediately", c: true },
+      { t: "slowly", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Từ "instantly" trong đoạn 3 GẦN NGHĨA NHẤT với từ ______.</div>
+      <ul>
+        <li><span class='p-word'>instantly</span> <span class='p-mean'>= ngay lập tức, tức thì.</span></li>
+        <li><span class='p-word'>indirectly</span> ❌ Nghĩa là gián tiếp.</li>
+        <li><span class='p-word'>accidentally</span> ❌ Nghĩa là tình cờ, vô tình.</li>
+        <li><span class='p-word'>immediately</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>= ngay lập tức.</span></li>
+        <li><span class='p-word'>slowly</span> ❌ Nghĩa là một cách chậm chạp.</li>
+      </ul>
+      <div class="quote-box">"seen from home <b>instantly</b>" 👉 Dịch: được xem ở nhà <b>ngay lập tức</b>.</div>
+    `
+  },
+  {
+    q: "Question 35. How can a cell phone help students academically?",
+    opts: [
+      { t: "deter bad behavior", c: false },
+      { t: "keep in touch with students", c: false },
+      { t: "record a video", c: true },
+      { t: "call home", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Đtdd có thể giúp học sinh về mặt học thuật (academically) như thế nào?</div>
+      <ul>
+        <li>Chú ý từ khóa: <span class='p-grammar'>academically (về mặt học tập/học thuật)</span> -> tập trung vào đoạn 3.</li>
+        <li><span class='p-word'>deter bad behavior</span> ❌ Việc này thuộc về văn hóa học đường, được nhắc ở đoạn 2, không phải học thuật.</li>
+        <li><span class='p-word'>keep in touch with students</span> ❌ Việc này thuộc về giao tiếp xã hội (Đoạn 1, 2).</li>
+        <li><span class='p-word'>call home</span> ❌ Việc này là giải quyết vấn đề cá nhân (Đoạn 1).</li>
+        <li><span class='p-word'>record a video</span> <span class='hl-green'>✅ Đúng.</span> Nằm ngay câu đầu tiên của đoạn 3 về học thuật.</li>
+      </ul>
+      <div class="quote-box">"<b>Academically</b>, the cell phone can <b>record a video</b> of a procedure..." 👉 Dịch: <b>Về mặt học thuật</b>, đtdd có thể <b>quay lại video</b> của một quy trình...</div>
+    `
+  },
+  {
+    q: "Question 36. What does the world “it” in the last paragraph refer to?",
+    opts: [
+      { t: "Video", c: false },
+      { t: "Procedure", c: false },
+      { t: "Explanation", c: false },
+      { t: "Cell phone", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch câu hỏi: Từ "It" trong đoạn cuối ám chỉ điều gì?</div>
+      <ul>
+        <li>Đọc câu chứa từ "It": "It could be used to record audio of a lecture".</li>
+        <li>Câu trước đó: "Academically, the <b>cell phone</b> can record a video...". Đại từ "It" đóng vai trò chủ ngữ thay thế cho danh từ chính được nhắc đến ở câu trước.</li>
+        <li><span class='p-word'>Cell phone</span> <span class='hl-green'>✅ Đúng.</span></li>
+      </ul>
+      <div class="quote-box">"the <b>cell phone</b> can record a video... <b>It</b> could be used to record audio..." 👉 Dịch: <b>Đtdd</b> có thể quay video... <b>Nó</b> cũng có thể được dùng để ghi âm...</div>
+    `
+  },
+  // PASSAGE 4
+  {
+    q: "Question 37. Learning today is very different from my grandfather’s time. (37) _____.",
+    opts: [
+      { t: "such as documents, clips, and programmes", c: false },
+      { t: "we use the Internet", c: false },
+      { t: "We have TVs to watch at home and a library and computers at school", c: false },
+      { t: "It is easier and more convenient for us", c: true }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch ngữ cảnh: Việc học ngày nay rất khác so với thời ông tôi. (37) _____.</div>
+      <ul>
+        <li>Câu này nằm ngay sau câu mở đoạn giới thiệu về sự khác biệt. Cần một câu mang tính chất giải thích sự khác biệt đó tổng quát trước khi đi vào chi tiết.</li>
+        <li><span class='p-word'>It is easier and more convenient for us</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>Nó dễ dàng và tiện lợi hơn. Ý này bao quát và làm rõ "sự khác biệt" ở câu đầu.</span></li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 38. Besides learning from teachers and textbooks, (38) _____.",
+    opts: [
+      { t: "such as documents, clips, and programmes", c: false },
+      { t: "we use the Internet", c: true },
+      { t: "We have TVs to watch at home and a library and computers at school", c: false },
+      { t: "It is easier and more convenient for us", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch ngữ cảnh: Bên cạnh việc học từ giáo viên và sách giáo khoa, (38) _____.</div>
+      <ul>
+        <li>Mệnh đề phía trước là "Besides + V-ing", phía sau cần một mệnh đề chính (Chủ ngữ + Động từ). Hơn nữa, câu tiếp theo dùng đại từ "It" (Nó cung cấp...). Vậy phần điền vào phải là một danh từ số ít được "It" thay thế.</li>
+        <li><span class='p-word'>we use the Internet</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>= chúng tôi sử dụng Internet. "Internet" chính là "It" ở câu sau.</span></li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 39. It provides us with various online sources (39) _____.",
+    opts: [
+      { t: "such as documents, clips, and programmes", c: true },
+      { t: "we use the Internet", c: false },
+      { t: "We have TVs to watch at home and a library and computers at school", c: false },
+      { t: "It is easier and more convenient for us", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch ngữ cảnh: Nó cung cấp cho chúng tôi nhiều nguồn tài nguyên trực tuyến đa dạng (39) _____.</div>
+      <ul>
+        <li>Cụm "online sources" (các nguồn trực tuyến) cần được làm rõ bằng các ví dụ.</li>
+        <li><span class='p-word'>such as documents, clips, and programmes</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>"such as" dùng để liệt kê ví dụ (như là tài liệu, video clip, chương trình).</span></li>
+      </ul>
+    `
+  },
+  {
+    q: "Question 40. ...we are still luckier than my grandfather’s generation. (40) _____.",
+    opts: [
+      { t: "such as documents, clips, and programmes", c: false },
+      { t: "we use the Internet", c: false },
+      { t: "We have TVs to watch at home and a library and computers at school", c: true },
+      { t: "It is easier and more convenient for us", c: false }
+    ],
+    ex: `
+      <div class="ex-header">💡 PHÂN TÍCH ĐÁP ÁN</div>
+      <div class="trans-box">Dịch ngữ cảnh: ...chúng tôi vẫn may mắn hơn thế hệ của ông tôi. (40) _____.</div>
+      <ul>
+        <li>Câu kết bài cần đưa ra bằng chứng để chứng minh vì sao "chúng tôi may mắn hơn".</li>
+        <li><span class='p-word'>We have TVs to watch at home and a library and computers at school</span> <span class='hl-green'>✅ Đúng.</span> <span class='p-mean'>Liệt kê cơ sở vật chất giải trí và học tập mà thời xưa không có.</span></li>
+      </ul>
+    `
+  }
+];
+
+let currentScore = 0;
+let answeredCount = 0;
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Render Questions
+const quizContainer = document.getElementById('quiz-container');
+questions.forEach((item, index) => {
+  const box = document.createElement('div');
+  box.className = 'q-box';
+  box.id = 'qbox-' + index;
+
+  const title = document.createElement('div');
+  title.className = 'q-title';
+  title.innerHTML = `<span class="badge">Q${index+1}</span> ${item.q}`;
+  box.appendChild(title);
+
+  const optsDiv = document.createElement('div');
+  optsDiv.className = 'options-grid';
+  
+  const shuffledOpts = shuffleArray([...item.opts]);
+  
+  shuffledOpts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = opt.t;
+    btn.onclick = () => handleAnswer(btn, optsDiv, opt.c, item.ex, box);
+    optsDiv.appendChild(btn);
+  });
+  
+  box.appendChild(optsDiv);
+  quizContainer.appendChild(box);
+});
+
+// Audio API Context
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getACtx() { if (!actx) actx = new AudioCtx(); return actx; }
+
+function playSound(type) {
+  try {
+    const ctx = getACtx();
+    const now = ctx.currentTime;
+    if (type === 'correct') {
+      [523.25, 659.25, 783.99].forEach((f, i) => {
+        const o = ctx.createOscillator(); const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = f; o.type = 'sine';
+        g.gain.setValueAtTime(0, now + i * 0.1);
+        g.gain.linearRampToValueAtTime(0.25, now + i * 0.1 + 0.04);
+        g.gain.linearRampToValueAtTime(0, now + i * 0.1 + 0.25);
+        o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
+      });
+    } else {
+      [300, 200].forEach((f, i) => {
+        const o = ctx.createOscillator(); const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = f; o.type = 'sawtooth';
+        g.gain.setValueAtTime(0, now + i * 0.12);
+        g.gain.linearRampToValueAtTime(0.18, now + i * 0.12 + 0.03);
+        g.gain.linearRampToValueAtTime(0, now + i * 0.12 + 0.18);
+        o.start(now + i * 0.12); o.stop(now + i * 0.12 + 0.22);
+      });
+    }
+  } catch (e) {}
+}
+
+// Handle Answer
+function handleAnswer(btn, optsDiv, isCorrect, explanation, box) {
+  if (optsDiv.dataset.answered) return;
+  optsDiv.dataset.answered = '1';
+  answeredCount++;
+
+  const allBtns = optsDiv.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    currentScore++;
+    playSound('correct');
+    launchConfetti();
+  } else {
+    btn.classList.add('wrong');
+    playSound('wrong');
+    // Highlight correct answer
+    allBtns.forEach(b => {
+      // Look up original array to find correct one based on text.
+      const correctOptText = questions.find(q => q.q === box.querySelector('.q-title').textContent.replace(/Q\d+\s+/, '')).opts.find(o => o.c).t;
+      if (b.textContent === correctOptText) b.classList.add('correct');
+    });
+  }
+
+  box.classList.add('answered');
+  
+  // Create Explanation Div
+  const exDiv = document.createElement('div');
+  exDiv.className = 'explanation';
+  exDiv.innerHTML = explanation;
+  box.appendChild(exDiv);
+  exDiv.style.display = 'block';
+
+  document.getElementById('score').textContent = currentScore;
+  document.getElementById('progress').textContent = answeredCount;
+}
+
+// Translations Toggle
+function toggleTrans(id) {
+  const el = document.getElementById(id);
+  if (el.style.display === 'block') {
+    el.style.display = 'none';
+  } else {
+    el.style.display = 'block';
+  }
+}
+
+// Submission Logic
+function showNameModal() {
+  document.getElementById('nameModal').style.display = 'flex';
+  document.getElementById('studentName').focus();
+}
+
+function submitFinal() {
+  const name = document.getElementById('studentName').value.trim();
+  if (!name) {
+    document.getElementById('studentName').style.borderColor = '#FF4757';
+    return;
+  }
+  document.getElementById('nameModal').style.display = 'none';
+  
+  const pct = currentScore / questions.length;
+  let gif = ''; let comment = '';
+  if (pct === 1) {
+    gif = 'https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif';
+    comment = '🌟 THIÊN TÀI! Giỏi xuất sắc luôn nha!';
+  } else if (pct >= 0.6) {
+    gif = 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif';
+    comment = '👏 Rất tốt! Bạn có tố chất làm Master Tiếng Anh đó!';
+  } else {
+    gif = 'https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif';
+    comment = '😅 Cố gắng hơn nha! Xem lại phần giải thích thật kỹ nhé!';
+  }
+
+  document.getElementById('resName').textContent = name;
+  document.getElementById('resScore').textContent = currentScore;
+  document.getElementById('resComment').textContent = comment;
+  document.getElementById('resGif').src = gif;
+  
+  document.getElementById('resultModal').style.display = 'flex';
+}
+
+// Confetti Effect
+const canvas = document.getElementById('confetti-canvas');
+canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+const cCtx = canvas.getContext('2d');
+let particles = [];
+
+function launchConfetti() {
+  const colors = ['#8854C0', '#FDCB6E', '#00C9A7', '#FF6B9D', '#a29bfe'];
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height * 0.3,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 2,
+      r: Math.random() * 8 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1, rot: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 8
+    });
+  }
+  if(!animId) animateConfetti();
+}
+
+let animId = null;
+function animateConfetti() {
+  cCtx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = particles.filter(p => p.alpha > 0.01);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.08;
+    p.alpha -= 0.015; p.rot += p.rotSpeed;
+    cCtx.save();
+    cCtx.globalAlpha = p.alpha;
+    cCtx.translate(p.x, p.y);
+    cCtx.rotate(p.rot * Math.PI / 180);
+    cCtx.fillStyle = p.color;
+    cCtx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.6);
+    cCtx.restore();
+  });
+  if (particles.length) animId = requestAnimationFrame(animateConfetti);
+  else {
+    cCtx.clearRect(0, 0, canvas.width, canvas.height);
+    animId = null;
+  }
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

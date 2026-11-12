@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Test – Technology & Inventions</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #8854C0;
+  --yellow: #FDCB6E;
+  --teal: #00C9A7;
+  --green: #00D26A;
+  --red: #FF4757;
+  --card-bg: rgba(255,255,255,0.93);
+  --shadow: 0 8px 32px rgba(136,84,192,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* Animated gradient background */
+.bg-gradient{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(135deg,#f8b4d9,#c3b1e1,#a8e6cf,#fdcb6e,#81ecec,#fd79a8);
+  background-size:400% 400%;
+  animation:gradMove 10s ease infinite;
+}
+@keyframes gradMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+/* SVG Pattern overlay */
+.bg-pattern{
+  position:fixed;inset:0;z-index:1;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext x='10' y='30' font-size='22' opacity='0.18'%3E⭐%3C/text%3E%3Ctext x='80' y='20' font-size='18' opacity='0.15'%3E🌸%3C/text%3E%3Ctext x='150' y='40' font-size='20' opacity='0.18'%3E🍎%3C/text%3E%3Ctext x='30' y='90' font-size='24' opacity='0.15'%3E🌈%3C/text%3E%3Ctext x='110' y='80' font-size='20' opacity='0.18'%3E⭐%3C/text%3E%3Ctext x='170' y='100' font-size='18' opacity='0.15'%3E🌺%3C/text%3E%3Ctext x='50' y='150' font-size='22' opacity='0.18'%3E🍓%3C/text%3E%3Ctext x='130' y='140' font-size='20' opacity='0.15'%3E💫%3C/text%3E%3Ctext x='10' y='190' font-size='18' opacity='0.18'%3E🌻%3C/text%3E%3Ctext x='160' y='180' font-size='22' opacity='0.15'%3E⭐%3C/text%3E%3C/svg%3E");
+  background-repeat:repeat;
+  animation:patFloat 20s linear infinite;
+}
+@keyframes patFloat{
+  0%{background-position:0 0}
+  100%{background-position:200px 200px}
+}
+
+.container{
+  position:relative;z-index:2;
+  max-width:860px;margin:0 auto;
+  padding:16px 12px 80px;
+}
+
+/* Header */
+.header{
+  text-align:center;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:14px 20px 10px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:2px solid rgba(136,84,192,0.2);
+}
+.header h1{
+  font-size:1.4rem;font-weight:900;
+  background:linear-gradient(90deg,#8854C0,#00C9A7,#FDCB6E);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.header p{font-size:0.82rem;color:#666;margin-top:2px;}
+
+/* Score bar */
+.score-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.85);
+  border-radius:50px;padding:8px 20px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  font-weight:700;color:#8854C0;font-size:0.95rem;
+}
+.score-val{font-size:1.2rem;color:#00C9A7;}
+
+/* Section card */
+.section-card{
+  background:var(--card-bg);
+  border-radius:24px;
+  padding:20px 22px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+  border:2px solid rgba(136,84,192,0.12);
+}
+.section-title{
+  font-size:1.05rem;font-weight:900;
+  color:#8854C0;
+  margin-bottom:16px;
+  padding-bottom:8px;
+  border-bottom:3px dashed #c3b1e1;
+}
+.section-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,#8854C0,#00C9A7);
+  color:#fff;border-radius:50px;
+  padding:2px 12px;font-size:0.78rem;font-weight:800;
+  margin-right:8px;
+}
+
+/* Question rows */
+.q-row{
+  margin-bottom:18px;
+  padding:14px 16px;
+  background:rgba(248,245,255,0.7);
+  border-radius:16px;
+  border-left:4px solid #c3b1e1;
+  transition:background .3s;
+}
+.q-row:hover{background:rgba(240,235,255,0.9);}
+.q-num{
+  font-weight:900;color:#8854C0;margin-right:6px;font-size:0.9rem;
+}
+.q-text{font-size:0.95rem;line-height:1.7;color:#2d3436;}
+
+/* Blank span */
+.blank{
+  display:inline-block;
+  min-width:110px;
+  border-bottom:3px solid #8854C0;
+  padding:2px 6px;
+  margin:0 4px;
+  border-radius:6px 6px 0 0;
+  cursor:pointer;
+  font-weight:700;
+  text-align:center;
+  font-size:0.9rem;
+  background:rgba(136,84,192,0.07);
+  transition:all .2s;
+  color:#555;
+  vertical-align:middle;
+}
+.blank:hover{background:rgba(136,84,192,0.15);transform:scale(1.05);}
+.blank.correct{background:#d4f8e8;border-color:var(--green);color:var(--green);}
+.blank.wrong{background:#ffe0e3;border-color:var(--red);color:var(--red);}
+.blank.answered{cursor:default;pointer-events:none;}
+
+/* Explanation box */
+.explanation{
+  display:none;
+  margin-top:12px;
+  padding:12px 14px;
+  background:linear-gradient(135deg,rgba(168,230,207,0.3),rgba(200,181,255,0.3));
+  border-radius:12px;
+  border-left:4px solid #00C9A7;
+  font-size:0.85rem;
+  line-height:1.6;
+  color:#2d3436;
+}
+.explanation.show{display:block;}
+.expl-title{font-weight:900;color:#8854C0;font-size:0.88rem;margin-bottom:6px;}
+.expl-correct{color:var(--green);font-weight:700;}
+.expl-wrong{color:var(--red);font-weight:700;}
+.expl-item{margin-bottom:3px;}
+
+/* Popup overlay */
+.popup-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(4px);
+  z-index:1000;
+  align-items:center;justify-content:center;
+}
+.popup-overlay.active{display:flex;}
+.popup-box{
+  background:#fff;
+  border-radius:24px;
+  padding:24px 20px;
+  max-width:400px;width:92%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation:popIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-q{
+  font-weight:800;font-size:0.95rem;color:#2d3436;
+  margin-bottom:14px;text-align:center;
+  padding:8px;background:rgba(136,84,192,0.08);
+  border-radius:10px;
+}
+.popup-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opt-btn{
+  padding:12px 10px;
+  border:none;border-radius:16px;
+  font-family:'Nunito',sans-serif;
+  font-size:0.9rem;font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(135deg,#e8daff,#d8f5f0);
+  color:#2d3436;
+  box-shadow:0 4px 12px rgba(136,84,192,0.2),0 2px 0 #b39ddb;
+  transition:all .15s;
+}
+.opt-btn:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 8px 20px rgba(136,84,192,0.3),0 2px 0 #b39ddb;}
+.opt-btn:active{transform:scale(0.97) translateY(0);}
+
+/* Matching section */
+.match-wrapper{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.match-col-title{font-weight:800;color:#8854C0;font-size:0.85rem;text-align:center;margin-bottom:6px;}
+.match-q-item,.match-a-item{
+  padding:10px 14px;
+  border-radius:14px;
+  border:2.5px solid #c3b1e1;
+  font-size:0.83rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s;
+  background:rgba(248,245,255,0.8);
+  line-height:1.4;
+  min-height:48px;
+  display:flex;align-items:center;
+}
+.match-q-item:hover,.match-a-item:hover{
+  border-color:#8854C0;background:rgba(200,181,255,0.2);
+  transform:scale(1.02);
+}
+.match-q-item.selected{
+  border-color:#8854C0;background:rgba(136,84,192,0.15);
+  box-shadow:0 0 0 3px rgba(136,84,192,0.3);
+}
+.match-q-item.matched,.match-a-item.matched{
+  background:rgba(0,210,106,0.12);
+  border-color:var(--green);color:#00a854;
+  cursor:default;pointer-events:none;
+}
+.match-q-item.wrong-flash,.match-a-item.wrong-flash{
+  background:rgba(255,71,87,0.15);border-color:var(--red);
+}
+.match-num{
+  display:inline-block;
+  min-width:22px;height:22px;
+  background:#8854C0;color:#fff;
+  border-radius:50%;font-size:0.75rem;font-weight:900;
+  text-align:center;line-height:22px;
+  margin-right:8px;flex-shrink:0;
+}
+.match-letter{
+  display:inline-block;
+  min-width:22px;height:22px;
+  background:#00C9A7;color:#fff;
+  border-radius:50%;font-size:0.75rem;font-weight:900;
+  text-align:center;line-height:22px;
+  margin-right:8px;flex-shrink:0;
+}
+
+/* Section XI - text input */
+.xi-row{margin-bottom:16px;}
+.xi-prompt{font-size:0.9rem;font-weight:700;color:#2d3436;margin-bottom:4px;}
+.xi-given{font-size:0.88rem;color:#636e72;font-style:italic;margin-bottom:6px;}
+.xi-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.xi-prefix{font-size:0.88rem;font-weight:700;color:#444;white-space:nowrap;}
+.xi-input{
+  flex:1;min-width:200px;
+  padding:9px 14px;
+  border:2.5px solid #c3b1e1;
+  border-radius:14px;
+  font-family:'Nunito',sans-serif;
+  font-size:0.88rem;font-weight:600;
+  outline:none;
+  transition:border-color .2s;
+  background:rgba(248,245,255,0.9);
+}
+.xi-input:focus{border-color:#8854C0;box-shadow:0 0 0 3px rgba(136,84,192,0.15);}
+.xi-input.correct{border-color:var(--green);background:#e8faf1;color:#00a854;}
+.xi-input.wrong{border-color:var(--red);background:#fff0f2;color:#d63031;}
+.xi-check-btn{
+  padding:9px 16px;
+  border:none;border-radius:14px;
+  background:linear-gradient(135deg,#8854C0,#00C9A7);
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:0.85rem;font-weight:800;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:0 4px 12px rgba(136,84,192,0.3),0 2px 0 #6c3aad;
+  transition:all .15s;
+}
+.xi-check-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(136,84,192,0.4);}
+.xi-check-btn:disabled{opacity:0.5;cursor:default;transform:none;}
+
+/* Submit button */
+.submit-btn{
+  display:block;width:100%;max-width:360px;
+  margin:0 auto;padding:16px 30px;
+  border:none;border-radius:24px;
+  background:linear-gradient(135deg,#8854C0,#FDCB6E,#00C9A7);
+  background-size:200% 200%;
+  animation:gradMove 4s ease infinite;
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:1.15rem;font-weight:900;
+  cursor:pointer;letter-spacing:1px;
+  box-shadow:0 8px 30px rgba(136,84,192,0.4),0 4px 0 #6c3aad;
+  transition:transform .15s;
+}
+.submit-btn:hover{transform:translateY(-3px)scale(1.03);}
+
+/* Result popup */
+.result-popup{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(6px);
+  z-index:2000;
+  align-items:center;justify-content:center;
+}
+.result-popup.active{display:flex;}
+.result-box{
+  background:#fff;
+  border-radius:28px;
+  padding:32px 28px;
+  max-width:440px;width:92%;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+.result-emoji{font-size:4rem;margin-bottom:12px;}
+.result-title{font-size:1.5rem;font-weight:900;color:#8854C0;margin-bottom:8px;}
+.result-score{
+  font-size:3rem;font-weight:900;
+  background:linear-gradient(135deg,#8854C0,#00C9A7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.result-msg{font-size:1rem;color:#636e72;margin-top:10px;line-height:1.5;}
+.result-close{
+  margin-top:20px;padding:12px 30px;
+  border:none;border-radius:20px;
+  background:linear-gradient(135deg,#8854C0,#00C9A7);
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 15px rgba(136,84,192,0.4);
+}
+
+/* Animations */
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-6px)}
+  80%{transform:translateX(6px)}
+}
+.shake{animation:shake .4s ease;}
+
+/* Confetti canvas */
+#confetti-canvas{
+  position:fixed;inset:0;z-index:9999;
+  pointer-events:none;
+}
+
+/* Correct/Wrong badge */
+.badge{
+  display:inline-block;
+  padding:2px 10px;border-radius:50px;
+  font-size:0.78rem;font-weight:800;margin-left:8px;
+  vertical-align:middle;
+}
+.badge-correct{background:#d4f8e8;color:var(--green);}
+.badge-wrong{background:#ffe0e3;color:var(--red);}
+
+.hint-word{
+  display:inline-block;
+  background:rgba(136,84,192,0.1);
+  border-radius:8px;padding:1px 8px;
+  color:#8854C0;font-weight:700;font-size:0.82rem;
+  margin-left:6px;
+}
+
+@media(max-width:600px){
+  .match-wrapper{grid-template-columns:1fr;}
+  .popup-opts{grid-template-columns:1fr;}
+  .header h1{font-size:1.1rem;}
+}
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Popup for gap fill -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <div class="popup-q" id="popup-q"></div>
+    <div class="popup-opts" id="popup-opts"></div>
+  </div>
+</div>
+
+<!-- Result popup -->
+<div class="result-popup" id="result-popup">
+  <div class="result-box">
+    <div class="result-emoji" id="result-emoji">🏆</div>
+    <div class="result-title">Kết Quả Bài Thi!</div>
+    <div class="result-score" id="result-score">0/0</div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="result-close" onclick="document.getElementById('result-popup').classList.remove('active')">Xem Lại Bài ✨</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🤖 ENGLISH TEST – Technology &amp; Inventions 🚀</h1>
+    <p>👩‍🏫 Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong></p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <span>📊 Điểm hiện tại:</span>
+    <span class="score-val" id="live-score">0 / 0</span>
+    <span id="live-emoji">⭐</span>
+  </div>
+
+  <!-- ===================== SECTION VI ===================== -->
+  <div class="section-card">
+    <div class="section-title"><span class="section-badge">VI</span>Write the correct tense or form of the verbs in brackets</div>
+
+    <!-- Q1 -->
+    <div class="q-row" id="row-v6q1">
+      <span class="q-num">1.</span><span class="q-text">
+        Look over there! Everyone <span class="blank" id="v6q1" onclick="openPopup('v6q1')">______</span> (watch) the robot frying an egg.
+      </span>
+      <div class="explanation" id="expl-v6q1">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">is watching</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "Look over there!" (Nhìn kìa!) → Dấu hiệu hiện tại đang xảy ra ngay lúc nói.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Hiện tại tiếp diễn (Present Continuous) = S + is/am/are + V-ing.</div>
+        <div class="expl-item">❌ <strong>watches</strong> → Hiện tại đơn, diễn tả thói quen, không phù hợp với "right now".</div>
+        <div class="expl-item">❌ <strong>watched</strong> → Quá khứ đơn – không phù hợp vì đang xảy ra.</div>
+        <div class="expl-item">❌ <strong>will watch</strong> → Tương lai – sự việc chưa xảy ra, không phù hợp.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Nhìn kia kìa! Mọi người đang xem con robot chiên trứng."</div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-row" id="row-v6q2">
+      <span class="q-num">2.</span><span class="q-text">
+        The mayor promises that the city <span class="blank" id="v6q2" onclick="openPopup('v6q2')">______</span> (plant) more trees this year.
+      </span>
+      <div class="explanation" id="expl-v6q2">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">will plant</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "promises" (hứa hẹn) + "this year" → Kế hoạch/lời hứa tương lai.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Tương lai đơn (Future Simple) = will + V (sau "promise that" diễn tả ý định/kế hoạch tương lai).</div>
+        <div class="expl-item">❌ <strong>planted</strong> → Quá khứ đơn – "this year" cho thấy chưa xảy ra.</div>
+        <div class="expl-item">❌ <strong>is planting</strong> → Hiện tại tiếp diễn – dùng cho hành động đang xảy ra ngay lúc này.</div>
+        <div class="expl-item">❌ <strong>plants</strong> → Hiện tại đơn – không phù hợp với lời hứa về tương lai.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Thị trưởng hứa rằng thành phố sẽ trồng thêm cây xanh trong năm nay."</div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-row" id="row-v6q3">
+      <span class="q-num">3.</span><span class="q-text">
+        How did people live in the past when there <span class="blank" id="v6q3" onclick="openPopup('v6q3')">______</span> (not be) any electricity?
+      </span>
+      <div class="explanation" id="expl-v6q3">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">wasn't</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "in the past", "did" (quá khứ) → Toàn câu ở thì quá khứ.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Quá khứ đơn phủ định = was not (wasn't). Chủ ngữ "there" → dùng "was".</div>
+        <div class="expl-item">❌ <strong>isn't</strong> → Hiện tại – không phù hợp với ngữ cảnh quá khứ.</div>
+        <div class="expl-item">❌ <strong>won't be</strong> → Tương lai – sai hoàn toàn.</div>
+        <div class="expl-item">❌ <strong>hadn't been</strong> → Quá khứ hoàn thành – không có sự kiện tham chiếu trước đó.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Người ta đã sống như thế nào trong quá khứ khi không có điện?"</div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-row" id="row-v6q4">
+      <span class="q-num">4.</span><span class="q-text">
+        John J. Stone-Parker <span class="blank" id="v6q4" onclick="openPopup('v6q4')">______</span> (patent) his invention when he was 4 years old.
+      </span>
+      <div class="explanation" id="expl-v6q4">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">patented</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "when he was 4 years old" → Thời điểm cụ thể trong quá khứ.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Quá khứ đơn (Past Simple) = V-ed. "patent" → "patented" (đã đăng ký bằng sáng chế).</div>
+        <div class="expl-item">❌ <strong>has patented</strong> → Hiện tại hoàn thành – dùng cho kết quả ảnh hưởng đến hiện tại, không kết hợp với "when + past".</div>
+        <div class="expl-item">❌ <strong>was patenting</strong> → Quá khứ tiếp diễn – không phù hợp vì không diễn đạt hành động đang xảy ra kéo dài.</div>
+        <div class="expl-item">❌ <strong>will patent</strong> → Tương lai – sai.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "John J. Stone-Parker đã đăng ký bằng sáng chế cho phát minh của mình khi mới 4 tuổi."</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-row" id="row-v6q5">
+      <span class="q-num">5.</span><span class="q-text">
+        Douglas Engelbart <span class="blank" id="v6q5" onclick="openPopup('v6q5')">______</span> (invent) the computer mouse in 1964.
+      </span>
+      <div class="explanation" id="expl-v6q5">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">invented</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "in 1964" → Năm cụ thể trong quá khứ → Quá khứ đơn.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Past Simple = V-ed. "invent" → "invented" (đã phát minh).</div>
+        <div class="expl-item">❌ <strong>invents</strong> → Hiện tại đơn – không phù hợp với "in 1964".</div>
+        <div class="expl-item">❌ <strong>was inventing</strong> → Quá khứ tiếp diễn – diễn tả hành động đang xảy ra, không phù hợp.</div>
+        <div class="expl-item">❌ <strong>has invented</strong> → Hiện tại hoàn thành – không dùng với thời gian cụ thể trong quá khứ.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Douglas Engelbart đã phát minh ra chuột máy tính vào năm 1964."</div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-row" id="row-v6q6">
+      <span class="q-num">6.</span><span class="q-text">
+        They said that they <span class="blank" id="v6q6" onclick="openPopup('v6q6')">______</span> (not visit) the art gallery the following year.
+      </span>
+      <div class="explanation" id="expl-v6q6">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">wouldn't visit</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "said that" → Câu gián tiếp (Reported Speech). "the following year" → tương lai trong quá khứ.</div>
+        <div class="expl-item">📐 <strong>Quy tắc:</strong> will → would (trong reported speech). "will not visit" → "wouldn't visit".</div>
+        <div class="expl-item">❌ <strong>didn't visit</strong> → Quá khứ đơn phủ định – không thể hiện ý "dự định không làm trong tương lai".</div>
+        <div class="expl-item">❌ <strong>won't visit</strong> → will not – chỉ dùng trong câu trực tiếp, không dùng sau "said".</div>
+        <div class="expl-item">❌ <strong>hasn't visited</strong> → Hiện tại hoàn thành – sai.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Họ nói rằng họ sẽ không đến thăm phòng trưng bày nghệ thuật vào năm tiếp theo."</div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-row" id="row-v6q7">
+      <span class="q-num">7.</span><span class="q-text">
+        I strongly believe there <span class="blank" id="v6q7" onclick="openPopup('v6q7')">______</span> (be) huge changes in the way we live in 10 years' time.
+      </span>
+      <div class="explanation" id="expl-v6q7">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">will be</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "in 10 years' time" → Thời gian tương lai. "believe" → niềm tin, dự đoán.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Tương lai đơn (Future Simple) = will + V. Dùng để dự đoán tương lai.</div>
+        <div class="expl-item">❌ <strong>would be</strong> → Điều kiện, giả thiết – không phù hợp ở đây.</div>
+        <div class="expl-item">❌ <strong>are</strong> → Hiện tại đơn – không diễn tả tương lai.</div>
+        <div class="expl-item">❌ <strong>were</strong> → Quá khứ đơn hoặc điều kiện – sai ngữ cảnh.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Tôi tin tưởng mạnh mẽ rằng sẽ có những thay đổi lớn trong cách chúng ta sống trong 10 năm tới."</div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-row" id="row-v6q8">
+      <span class="q-num">8.</span><span class="q-text">
+        The fingerprint scanner <span class="blank" id="v6q8" onclick="openPopup('v6q8')">______</span> (work) by examining a finger pressed against its surface.
+      </span>
+      <div class="explanation" id="expl-v6q8">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">works</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> Câu mô tả nguyên lý hoạt động (sự thật hiển nhiên, chân lý).</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Hiện tại đơn (Present Simple) = V-s/es → Diễn tả chân lý, nguyên tắc, cách hoạt động.</div>
+        <div class="expl-item">❌ <strong>worked</strong> → Quá khứ đơn – không phù hợp với sự thật vĩnh viễn.</div>
+        <div class="expl-item">❌ <strong>is working</strong> → Hiện tại tiếp diễn – không phù hợp với nguyên tắc.</div>
+        <div class="expl-item">❌ <strong>will work</strong> → Tương lai – không phù hợp.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Máy quét dấu vân tay hoạt động bằng cách kiểm tra ngón tay được nhấn vào bề mặt của nó."</div>
+      </div>
+    </div>
+
+    <!-- Q9 (two blanks) -->
+    <div class="q-row" id="row-v6q9">
+      <span class="q-num">9.</span><span class="q-text">
+        The teacher told us that we <span class="blank" id="v6q9a" onclick="openPopup('v6q9a')">______</span> (may) choose any subject that we <span class="blank" id="v6q9b" onclick="openPopup('v6q9b')">______</span> (like) best.
+      </span>
+      <div class="explanation" id="expl-v6q9a">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">might</span> – <span class="expl-correct">liked</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "told us that" → Câu tường thuật (Reported Speech), động từ chính ở quá khứ.</div>
+        <div class="expl-item">📐 <strong>Quy tắc lùi thì:</strong> may → might; like (Ht đơn) → liked (Qk đơn).</div>
+        <div class="expl-item">❌ <strong>may</strong> (blank 1) → Là động từ trong câu trực tiếp, phải lùi thành "might".</div>
+        <div class="expl-item">❌ <strong>like</strong> (blank 2) → Cũng phải lùi thì thành "liked".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Giáo viên nói với chúng tôi rằng chúng tôi có thể chọn bất kỳ môn học nào mà chúng tôi thích nhất."</div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-row" id="row-v6q10">
+      <span class="q-num">10.</span><span class="q-text">
+        When I called Jane at 4 o'clock yesterday evening, she said she <span class="blank" id="v6q10" onclick="openPopup('v6q10')">______</span> (work) then.
+      </span>
+      <div class="explanation" id="expl-v6q10">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">was working</span></strong></div>
+        <div class="expl-item">📌 <strong>Tín hiệu nhận biết:</strong> "at 4 o'clock yesterday" → Thời điểm cụ thể. "then" → hành động đang diễn ra vào thời điểm đó.</div>
+        <div class="expl-item">📐 <strong>Thì:</strong> Quá khứ tiếp diễn (Past Continuous) = was/were + V-ing. Nhấn mạnh hành động đang diễn ra tại thời điểm trong quá khứ.</div>
+        <div class="expl-item">❌ <strong>worked</strong> → Quá khứ đơn – không nhấn mạnh tính liên tục.</div>
+        <div class="expl-item">❌ <strong>is working</strong> → Hiện tại tiếp diễn – sai thì.</div>
+        <div class="expl-item">❌ <strong>had worked</strong> → Quá khứ hoàn thành – không phù hợp ngữ cảnh.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Khi tôi gọi cho Jane lúc 4 giờ chiều hôm qua, cô ấy nói cô ấy đang làm việc lúc đó."</div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="q-row" id="row-v6q11">
+      <span class="q-num">11.</span><span class="q-text">
+        My brother is very creative. He is fond of <span class="blank" id="v6q11" onclick="openPopup('v6q11')">______</span> (write) poems and stories.
+      </span>
+      <div class="explanation" id="expl-v6q11">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">writing</span></strong></div>
+        <div class="expl-item">📌 <strong>Cấu trúc:</strong> <strong>be fond of + V-ing</strong> (danh động từ – Gerund). "of" là giới từ → sau giới từ luôn dùng V-ing.</div>
+        <div class="expl-item">📐 <strong>Các cụm tương tự:</strong> be good at + V-ing, be interested in + V-ing, look forward to + V-ing.</div>
+        <div class="expl-item">❌ <strong>to write</strong> → Sau giới từ không dùng infinitive.</div>
+        <div class="expl-item">❌ <strong>wrote</strong> → Quá khứ đơn – không thể làm tân ngữ sau giới từ.</div>
+        <div class="expl-item">❌ <strong>written</strong> → Quá khứ phân từ – sai cấu trúc.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Anh tôi rất sáng tạo. Anh ấy thích viết thơ và truyện."</div>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q-row" id="row-v6q12">
+      <span class="q-num">12.</span><span class="q-text">
+        He planned <span class="blank" id="v6q12" onclick="openPopup('v6q12')">______</span> (turn out) minor inventions every ten days.
+      </span>
+      <div class="explanation" id="expl-v6q12">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">to turn out</span></strong></div>
+        <div class="expl-item">📌 <strong>Cấu trúc:</strong> <strong>plan + to + V (infinitive)</strong>. "plan to do sth" = dự định làm gì đó.</div>
+        <div class="expl-item">📐 <strong>Các động từ tương tự + to-infinitive:</strong> want, hope, decide, expect, agree, refuse...</div>
+        <div class="expl-item">❌ <strong>turning out</strong> → V-ing – không phù hợp sau "plan" (plan không đi với gerund).</div>
+        <div class="expl-item">❌ <strong>turned out</strong> → Quá khứ đơn – không làm tân ngữ sau "planned".</div>
+        <div class="expl-item">❌ <strong>turn out</strong> → Nguyên thể không "to" – sai cấu trúc sau "plan".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Ông đã lên kế hoạch tạo ra những phát minh nhỏ mỗi mười ngày."</div>
+      </div>
+    </div>
+  </div><!-- end section VI -->
+
+  <!-- ===================== SECTION VII ===================== -->
+  <div class="section-card">
+    <div class="section-title"><span class="section-badge">VII</span>Supply the correct form of the words in brackets</div>
+
+    <!-- Q1 -->
+    <div class="q-row" id="row-v7q1">
+      <span class="q-num">1.</span><span class="q-text">
+        He started a new job as a computer <span class="blank" id="v7q1" onclick="openPopup('v7q1')">______</span> after completing his course. <span class="hint-word">(technique)</span>
+      </span>
+      <div class="explanation" id="expl-v7q1">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">technician</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "a computer ___" → cần danh từ chỉ NGƯỜI. technique (n) = kỹ thuật → technician (n) = kỹ thuật viên, người làm kỹ thuật.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>technician</strong> (n): kỹ thuật viên → ĐÚNG, chỉ nghề nghiệp.</div>
+        <div class="expl-item">❌ <strong>technical</strong> (adj): thuộc về kỹ thuật → Tính từ, không phù hợp sau "a computer".</div>
+        <div class="expl-item">❌ <strong>technically</strong> (adv): về mặt kỹ thuật → Trạng từ, sai hoàn toàn.</div>
+        <div class="expl-item">❌ <strong>technology</strong> (n): công nghệ → Không chỉ người, không phù hợp ngữ cảnh.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Anh ấy đã bắt đầu công việc mới với tư cách là kỹ thuật viên máy tính sau khi hoàn thành khóa học."</div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-row" id="row-v7q2">
+      <span class="q-num">2.</span><span class="q-text">
+        GPS (Global Positioning System) is one of the greatest <span class="blank" id="v7q2" onclick="openPopup('v7q2')">______</span> of the 21st century. <span class="hint-word">(invent)</span>
+      </span>
+      <div class="explanation" id="expl-v7q2">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">inventions</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "one of the greatest ___" → cần danh từ số nhiều (one of + N số nhiều).</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>inventions</strong> (n, plural): những phát minh → ĐÚNG, danh từ số nhiều.</div>
+        <div class="expl-item">❌ <strong>inventor</strong> (n): nhà phát minh → Chỉ người, không phù hợp ("GPS không phải là người").</div>
+        <div class="expl-item">❌ <strong>inventive</strong> (adj): sáng tạo → Tính từ, không làm danh từ.</div>
+        <div class="expl-item">❌ <strong>invented</strong> (v/adj): đã phát minh → Động từ/Tính từ, sai cấu trúc.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "GPS là một trong những phát minh vĩ đại nhất của thế kỷ 21."</div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-row" id="row-v7q3">
+      <span class="q-num">3.</span><span class="q-text">
+        They were unable to run the telephone network <span class="blank" id="v7q3" onclick="openPopup('v7q3')">______</span>. <span class="hint-word">(economic)</span>
+      </span>
+      <div class="explanation" id="expl-v7q3">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">economically</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "___ run" → Từ bổ nghĩa cho động từ "run" → cần TRẠNG TỪ (Adverb).</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>economically</strong> (adv): một cách kinh tế, tiết kiệm → ĐÚNG, bổ nghĩa cho động từ.</div>
+        <div class="expl-item">❌ <strong>economic</strong> (adj): thuộc về kinh tế → Tính từ, không bổ nghĩa cho động từ.</div>
+        <div class="expl-item">❌ <strong>economics</strong> (n): kinh tế học → Danh từ, sai cấu trúc.</div>
+        <div class="expl-item">❌ <strong>economist</strong> (n): nhà kinh tế → Chỉ người, sai hoàn toàn.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Họ không thể vận hành mạng điện thoại một cách kinh tế."</div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-row" id="row-v7q4">
+      <span class="q-num">4.</span><span class="q-text">
+        Over two decades ago, the idea of a flying car seemed <span class="blank" id="v7q4" onclick="openPopup('v7q4')">______</span>, but now flying cars are becoming a reality. <span class="hint-word">(realistic)</span>
+      </span>
+      <div class="explanation" id="expl-v7q4">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">unrealistic</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "but now... becoming a reality" (nhưng bây giờ đang trở thành sự thật) → Vế đầu phải mang nghĩa TIÊU CỰC → thêm tiền tố "un-" để phủ định.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>unrealistic</strong> (adj): không thực tế, viển vông → ĐÚNG (un- + realistic).</div>
+        <div class="expl-item">❌ <strong>realistic</strong> (adj): thực tế → Nghĩa dương tính, không phù hợp với ngữ cảnh đối lập.</div>
+        <div class="expl-item">❌ <strong>realism</strong> (n): chủ nghĩa hiện thực → Danh từ, không phù hợp sau "seemed".</div>
+        <div class="expl-item">❌ <strong>realistically</strong> (adv): một cách thực tế → Trạng từ, không phù hợp sau "seemed".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Hơn hai thập kỷ trước, ý tưởng về xe bay có vẻ không thực tế, nhưng bây giờ xe bay đang trở thành hiện thực."</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-row" id="row-v7q5">
+      <span class="q-num">5.</span><span class="q-text">
+        The <span class="blank" id="v7q5" onclick="openPopup('v7q5')">______</span> Michael Faraday showed that there is no electric field within a conductor. <span class="hint-word">(physics)</span>
+      </span>
+      <div class="explanation" id="expl-v7q5">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">physicist</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "The ___ Michael Faraday" → Từ đứng trước tên người, là DANH TỪ CHỈ NGHỀ NGHIỆP/DANH HIỆU.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>physicist</strong> (n): nhà vật lý học → ĐÚNG, chỉ người theo nghề vật lý.</div>
+        <div class="expl-item">❌ <strong>physics</strong> (n): môn vật lý → Môn học, không chỉ người.</div>
+        <div class="expl-item">❌ <strong>physical</strong> (adj): thuộc về thể chất/vật lý → Tính từ, không làm danh hiệu.</div>
+        <div class="expl-item">❌ <strong>physically</strong> (adv): về mặt thể chất → Trạng từ, sai hoàn toàn.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Nhà vật lý học Michael Faraday đã chứng minh rằng không có điện trường bên trong một vật dẫn điện."</div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-row" id="row-v7q6">
+      <span class="q-num">6.</span><span class="q-text">
+        Face <span class="blank" id="v7q6" onclick="openPopup('v7q6')">______</span> helps police find missing people or wanted criminals. <span class="hint-word">(recognize)</span>
+      </span>
+      <div class="explanation" id="expl-v7q6">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">recognition</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "Face ___" → Cụm danh từ ghép (compound noun). "Face recognition" = nhận diện khuôn mặt → cần DANH TỪ.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>recognition</strong> (n): sự nhận biết, nhận diện → ĐÚNG, danh từ phù hợp.</div>
+        <div class="expl-item">❌ <strong>recognizing</strong> (v/gerund): đang nhận biết → Dạng tiếp diễn, không tạo thành compound noun chuẩn.</div>
+        <div class="expl-item">❌ <strong>recognizable</strong> (adj): có thể nhận ra được → Tính từ, không làm danh từ trong compound noun.</div>
+        <div class="expl-item">❌ <strong>recognized</strong> (v/adj): đã nhận ra → Quá khứ/tính từ, không phù hợp.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Nhận diện khuôn mặt giúp cảnh sát tìm người mất tích hoặc tội phạm bị truy nã."</div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-row" id="row-v7q7">
+      <span class="q-num">7.</span><span class="q-text">
+        Scientists will explore the <span class="blank" id="v7q7" onclick="openPopup('v7q7')">______</span> of living on Mars. <span class="hint-word">(possible)</span>
+      </span>
+      <div class="explanation" id="expl-v7q7">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">possibility</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "the ___" + "of living" → Cần DANH TỪ (mạo từ "the" đứng trước, giới từ "of" đứng sau).</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>possibility</strong> (n): khả năng → ĐÚNG (possible → possibility).</div>
+        <div class="expl-item">❌ <strong>possible</strong> (adj): có thể → Tính từ, không đứng sau "the".</div>
+        <div class="expl-item">❌ <strong>possibly</strong> (adv): có lẽ → Trạng từ, sai cấu trúc.</div>
+        <div class="expl-item">❌ <strong>impossibility</strong> (n): điều không thể → Nghĩa tiêu cực, không phù hợp ngữ cảnh.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Các nhà khoa học sẽ khám phá khả năng sống trên Sao Hỏa."</div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-row" id="row-v7q8">
+      <span class="q-num">8.</span><span class="q-text">
+        Despite its usefulness, robots are <span class="blank" id="v7q8" onclick="openPopup('v7q8')">______</span> to express emotions like humans. <span class="hint-word">(able)</span>
+      </span>
+      <div class="explanation" id="expl-v7q8">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">unable</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "Despite its usefulness" (Dù hữu ích) → Vế chính phải mang nghĩa TIÊU CỰC (tương phản). "are ___ to" → cần tính từ → un + able = unable.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>unable</strong> (adj): không thể, không có khả năng → ĐÚNG (un- + able).</div>
+        <div class="expl-item">❌ <strong>able</strong> (adj): có khả năng → Nghĩa dương tính, mâu thuẫn với "Despite".</div>
+        <div class="expl-item">❌ <strong>ability</strong> (n): khả năng → Danh từ, không phù hợp sau "are".</div>
+        <div class="expl-item">❌ <strong>ably</strong> (adv): một cách thành thạo → Trạng từ, không phù hợp.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Dù hữu ích, robot vẫn không thể bày tỏ cảm xúc như con người."</div>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-row" id="row-v7q9">
+      <span class="q-num">9.</span><span class="q-text">
+        Quantum teleportation is one of the 10 scientific <span class="blank" id="v7q9" onclick="openPopup('v7q9')">______</span> of the 21st century. <span class="hint-word">(discover)</span>
+      </span>
+      <div class="explanation" id="expl-v7q9">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">discoveries</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "one of the 10 scientific ___" → "one of + N số nhiều" → cần danh từ số nhiều. discover → discovery → discoveries.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>discoveries</strong> (n, plural): những khám phá → ĐÚNG (số nhiều của discovery).</div>
+        <div class="expl-item">❌ <strong>discovery</strong> (n, singular): khám phá → Số ít, không phù hợp sau "one of the 10".</div>
+        <div class="expl-item">❌ <strong>discovering</strong> (v/gerund): đang khám phá → Dạng động từ, sai cấu trúc.</div>
+        <div class="expl-item">❌ <strong>discovered</strong> (v/adj): đã khám phá → Dạng quá khứ, không làm danh từ.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Dịch chuyển lượng tử là một trong 10 khám phá khoa học của thế kỷ 21."</div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-row" id="row-v7q10">
+      <span class="q-num">10.</span><span class="q-text">
+        The evolution of technology is <span class="blank" id="v7q10" onclick="openPopup('v7q10')">______</span> to humans for several reasons. <span class="hint-word">(benefit)</span>
+      </span>
+      <div class="explanation" id="expl-v7q10">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án đúng: <span class="expl-correct">beneficial</span></strong></div>
+        <div class="expl-item">📌 <strong>Phân tích:</strong> "is ___" → Sau động từ "to be" cần TÍNH TỪ (Adjective). benefit → beneficial.</div>
+        <div class="expl-item">📐 <strong>Từ vựng 4 đáp án:</strong></div>
+        <div class="expl-item">✅ <strong>beneficial</strong> (adj): có lợi → ĐÚNG, tính từ phù hợp sau "is".</div>
+        <div class="expl-item">❌ <strong>benefit</strong> (n/v): lợi ích / mang lại lợi ích → Danh từ hoặc động từ, không phù hợp sau "is".</div>
+        <div class="expl-item">❌ <strong>benefiting</strong> (v): đang mang lại lợi ích → Dạng tiếp diễn, sai.</div>
+        <div class="expl-item">❌ <strong>beneficially</strong> (adv): một cách có lợi → Trạng từ, không phù hợp sau "is".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Sự phát triển của công nghệ có lợi cho con người vì nhiều lý do."</div>
+      </div>
+    </div>
+  </div><!-- end section VII -->
+
+  <!-- ===================== SECTION VIII ===================== -->
+  <div class="section-card">
+    <div class="section-title"><span class="section-badge">VIII</span>Match the questions to the answers</div>
+    <p style="font-size:0.82rem;color:#888;margin-bottom:14px;">👆 Nhấp chọn câu hỏi bên trái, rồi nhấp đáp án tương ứng bên phải.</p>
+    <div class="match-wrapper">
+      <div>
+        <div class="match-col-title">❓ Questions</div>
+        <div class="match-q-item" id="mq1" onclick="selectMatchQ('mq1')"><span class="match-num">1</span>What are some of the greatest technological inventions?</div>
+        <div class="match-q-item" id="mq2" onclick="selectMatchQ('mq2')" style="margin-top:6px"><span class="match-num">2</span>What do you think robots should be used for?</div>
+        <div class="match-q-item" id="mq3" onclick="selectMatchQ('mq3')" style="margin-top:6px"><span class="match-num">3</span>Which country has maximum number of robots working?</div>
+        <div class="match-q-item" id="mq4" onclick="selectMatchQ('mq4')" style="margin-top:6px"><span class="match-num">4</span>What will we drive in the future?</div>
+        <div class="match-q-item" id="mq5" onclick="selectMatchQ('mq5')" style="margin-top:6px"><span class="match-num">5</span>How does technology help us in our daily lives?</div>
+        <div class="match-q-item" id="mq6" onclick="selectMatchQ('mq6')" style="margin-top:6px"><span class="match-num">6</span>How often do you use social media?</div>
+        <div class="match-q-item" id="mq7" onclick="selectMatchQ('mq7')" style="margin-top:6px"><span class="match-num">7</span>When did Mark Zuckerberg make Facebook?</div>
+        <div class="match-q-item" id="mq8" onclick="selectMatchQ('mq8')" style="margin-top:6px"><span class="match-num">8</span>Who invented the microwave?</div>
+      </div>
+      <div>
+        <div class="match-col-title">💬 Answers</div>
+        <div class="match-a-item" id="ma-a" onclick="selectMatchA('ma-a','a')" style="margin-bottom:6px"><span class="match-letter">a</span>In 2004.</div>
+        <div class="match-a-item" id="ma-b" onclick="selectMatchA('ma-b','b')" style="margin-bottom:6px"><span class="match-letter">b</span>Multiple times per day.</div>
+        <div class="match-a-item" id="ma-c" onclick="selectMatchA('ma-c','c')" style="margin-bottom:6px"><span class="match-letter">c</span>Percy Spencer.</div>
+        <div class="match-a-item" id="ma-d" onclick="selectMatchA('ma-d','d')" style="margin-bottom:6px"><span class="match-letter">d</span>Self-driving cars or maybe flying cars.</div>
+        <div class="match-a-item" id="ma-e" onclick="selectMatchA('ma-e','e')" style="margin-bottom:6px"><span class="match-letter">e</span>Japan.</div>
+        <div class="match-a-item" id="ma-f" onclick="selectMatchA('ma-f','f')" style="margin-bottom:6px"><span class="match-letter">f</span>They should be used to work in factories or do dangerous tasks.</div>
+        <div class="match-a-item" id="ma-g" onclick="selectMatchA('ma-g','g')" style="margin-bottom:6px"><span class="match-letter">g</span>Personal computer, Internet, GPS, video conferencing.</div>
+        <div class="match-a-item" id="ma-h" onclick="selectMatchA('ma-h','h')"><span class="match-letter">h</span>It helps us to accomplish various tasks like shopping, working, studying, getting informed, and having fun.</div>
+      </div>
+    </div>
+    <!-- Per-pair explanations shown one by one as student matches -->
+    <div id="match-expl-1" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 1 → g: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "What are some of the greatest technological inventions?" → <em>Một số phát minh công nghệ vĩ đại nhất là gì?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án g:</strong> "Personal computer, Internet, GPS, video conferencing." → <em>Máy tính cá nhân, Internet, GPS, hội nghị truyền hình.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi yêu cầu <strong>liệt kê các phát minh công nghệ</strong> (inventions). Đáp án g là câu duy nhất kể tên các phát minh cụ thể (PC, Internet, GPS, video conferencing), hoàn toàn trả lời câu hỏi "What are...?"</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> invention (n) = phát minh | technological (adj) = thuộc về công nghệ | video conferencing (n) = hội nghị truyền hình.</div>
+    </div>
+    <div id="match-expl-2" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 2 → f: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "What do you think robots should be used for?" → <em>Bạn nghĩ robot nên được sử dụng để làm gì?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án f:</strong> "They should be used to work in factories or do dangerous tasks." → <em>Chúng nên được sử dụng để làm việc trong các nhà máy hoặc thực hiện các nhiệm vụ nguy hiểm.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi dùng "should be used for" → đáp án f dùng đúng từ "should be used to" và nêu rõ mục đích sử dụng robot (nhà máy, việc nguy hiểm). Cụm "dangerous tasks" (nhiệm vụ nguy hiểm) là lý do robot được ưu tiên hơn con người.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> factory (n) = nhà máy | dangerous (adj) = nguy hiểm | task (n) = nhiệm vụ, công việc.</div>
+    </div>
+    <div id="match-expl-3" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 3 → e: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "Which country has maximum number of robots working?" → <em>Quốc gia nào có số lượng robot đang hoạt động nhiều nhất?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án e:</strong> "Japan." → <em>Nhật Bản.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi hỏi tên <strong>quốc gia</strong> (which country?) → đáp án e là tên quốc gia duy nhất (Japan). Nhật Bản nổi tiếng là nước dẫn đầu thế giới về công nghệ robot với số lượng robot công nghiệp lớn nhất.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> maximum (adj) = tối đa, lớn nhất | working (adj) = đang hoạt động | Japan (n) = Nhật Bản.</div>
+    </div>
+    <div id="match-expl-4" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 4 → d: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "What will we drive in the future?" → <em>Chúng ta sẽ lái gì trong tương lai?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án d:</strong> "Self-driving cars or maybe flying cars." → <em>Xe tự lái hoặc có thể là xe bay.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi về phương tiện ("drive") trong tương lai → đáp án d đề cập đúng hai loại xe tương lai: <strong>xe tự lái</strong> (self-driving cars) và <strong>xe bay</strong> (flying cars). Từ "maybe" (có thể) thể hiện đây là dự đoán về tương lai.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> self-driving (adj) = tự lái | flying car (n) = xe bay | maybe (adv) = có thể, có lẽ.</div>
+    </div>
+    <div id="match-expl-5" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 5 → h: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "How does technology help us in our daily lives?" → <em>Công nghệ giúp ích gì cho chúng ta trong cuộc sống hàng ngày?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án h:</strong> "It helps us to accomplish various tasks like shopping, working, studying, getting informed, and having fun." → <em>Nó giúp chúng ta hoàn thành nhiều công việc khác nhau như mua sắm, làm việc, học tập, cập nhật thông tin và giải trí.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi hỏi cách thức ("how") công nghệ hỗ trợ cuộc sống hàng ngày → đáp án h giải thích cụ thể bằng cách liệt kê 5 hoạt động: shopping, working, studying, getting informed, having fun. Đây là câu trả lời dài nhất và đầy đủ nhất, xứng đáng với câu hỏi "how".</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> accomplish (v) = hoàn thành | various (adj) = đa dạng, nhiều loại | get informed (v) = cập nhật thông tin | daily life (n) = cuộc sống hàng ngày.</div>
+    </div>
+    <div id="match-expl-6" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 6 → b: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "How often do you use social media?" → <em>Bạn sử dụng mạng xã hội thường xuyên như thế nào?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án b:</strong> "Multiple times per day." → <em>Nhiều lần mỗi ngày.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi "How often?" (Bao lâu một lần?) luôn được trả lời bằng cụm chỉ <strong>tần suất</strong>. Đáp án b "Multiple times per day" (nhiều lần mỗi ngày) là câu trả lời chỉ tần suất duy nhất trong 8 đáp án.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> how often (adv) = bao lâu một lần | multiple (adj) = nhiều, đa dạng | per day = mỗi ngày | social media (n) = mạng xã hội.</div>
+    </div>
+    <div id="match-expl-7" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 7 → a: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "When did Mark Zuckerberg make Facebook?" → <em>Mark Zuckerberg đã tạo ra Facebook vào khi nào?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án a:</strong> "In 2004." → <em>Vào năm 2004.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi "When?" (Khi nào?) → câu trả lời phải là <strong>thời gian</strong>. Đáp án a "In 2004" là câu trả lời chỉ thời gian duy nhất. Đây là sự kiện có thật: Mark Zuckerberg thành lập Facebook vào tháng 2/2004 khi còn là sinh viên Harvard.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> make / found / create (v) = tạo ra, thành lập | Mark Zuckerberg = nhà sáng lập Facebook | In + năm = vào năm...</div>
+    </div>
+    <div id="match-expl-8" class="explanation" style="margin-top:10px;display:none;">
+      <div class="expl-title">✅ Cặp 8 → c: Giải thích chi tiết</div>
+      <div class="expl-item">❓ <strong>Câu hỏi:</strong> "Who invented the microwave?" → <em>Ai đã phát minh ra lò vi sóng?</em></div>
+      <div class="expl-item">💬 <strong>Đáp án c:</strong> "Percy Spencer." → <em>Percy Spencer.</em></div>
+      <div class="expl-item">💡 <strong>Tại sao đúng?</strong> Câu hỏi "Who?" (Ai?) → câu trả lời phải là <strong>tên người</strong>. Đáp án c "Percy Spencer" là tên người duy nhất trong 8 đáp án. Đây là sự kiện lịch sử: kỹ sư người Mỹ Percy Spencer vô tình phát minh ra lò vi sóng năm 1945 khi đang nghiên cứu sóng radar.</div>
+      <div class="expl-item">📚 <strong>Từ vựng:</strong> invent (v) = phát minh | microwave (n) = lò vi sóng | inventor (n) = nhà phát minh | accidentally (adv) = vô tình, tình cờ.</div>
+    </div>
+
+    <!-- Shown only when ALL pairs matched -->
+    <div id="match-expl-all" class="explanation" style="margin-top:14px;display:none;">
+      <div class="expl-title">🎉 Hoàn thành! Bảng tóm tắt đáp án Section VIII:</div>
+      <div class="expl-item">1 → g &nbsp;|&nbsp; 2 → f &nbsp;|&nbsp; 3 → e &nbsp;|&nbsp; 4 → d &nbsp;|&nbsp; 5 → h &nbsp;|&nbsp; 6 → b &nbsp;|&nbsp; 7 → a &nbsp;|&nbsp; 8 → c</div>
+    </div>
+  </div><!-- end section VIII -->
+
+  <!-- ===================== SECTION XI ===================== -->
+  <div class="section-card">
+    <div class="section-title"><span class="section-badge">XI</span>Write the second sentence so that it has the same meaning to the first one. Use the words given.</div>
+
+    <!-- XI Q1 -->
+    <div class="q-row xi-row" id="row-xi1">
+      <div class="xi-prompt"><span class="q-num">1.</span> Because of the bad weather, the plane couldn't touch down. <span class="hint-word">(impossible)</span></div>
+      <div class="xi-given">Bad weather made it ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">Bad weather made it</span>
+        <input class="xi-input" id="xi1" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi1','impossible for the plane to touch down')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi1">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">Bad weather made it impossible for the plane to touch down.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>make it + adj + for sb + to-V</strong></div>
+        <div class="expl-item">📌 <strong>Chuyển đổi:</strong> "couldn't touch down" → "impossible for the plane to touch down".</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "impossible" = không thể. "make it impossible for sb to do" = làm cho ai đó không thể làm gì.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Thời tiết xấu khiến chiếc máy bay không thể hạ cánh."</div>
+      </div>
+    </div>
+
+    <!-- XI Q2 -->
+    <div class="q-row xi-row" id="row-xi2">
+      <div class="xi-prompt"><span class="q-num">2.</span> My brother likes science fiction books very much. <span class="hint-word">(fond)</span></div>
+      <div class="xi-given">My brother ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">My brother</span>
+        <input class="xi-input" id="xi2" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi2','is fond of science fiction books')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi2">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">My brother is fond of science fiction books.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>be fond of + N/V-ing</strong> = thích cái gì / làm gì.</div>
+        <div class="expl-item">📌 <strong>Chuyển đổi:</strong> "likes... very much" → "is fond of".</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "fond of" = "like" nhưng cấu trúc là adj + giới từ "of".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Anh tôi thích sách khoa học viễn tưởng."</div>
+      </div>
+    </div>
+
+    <!-- XI Q3 -->
+    <div class="q-row xi-row" id="row-xi3">
+      <div class="xi-prompt"><span class="q-num">3.</span> 'I'm going to attend the New-Tech Exhibition next Monday.' (said) <span class="hint-word">(said)</span></div>
+      <div class="xi-given">Peter ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">Peter</span>
+        <input class="xi-input" id="xi3" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi3','said that he was going to attend the new-tech exhibition the next monday')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi3">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">Peter said (that) he was going to attend the New-Tech Exhibition the next Monday / the following Monday.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> Câu tường thuật: S + said (that) + mệnh đề (lùi thì).</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> I → he; am going → was going; next Monday → the next Monday / the following Monday.</div>
+        <div class="expl-item">💡 <strong>Lưu ý thì gian:</strong> "next" trong câu trực tiếp → "the next / the following" trong câu gián tiếp.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Peter nói rằng anh ấy sẽ tham dự Triển lãm Công nghệ Mới vào thứ Hai tiếp theo."</div>
+      </div>
+    </div>
+
+    <!-- XI Q4 -->
+    <div class="q-row xi-row" id="row-xi4">
+      <div class="xi-prompt"><span class="q-num">4.</span> 'The train to New York departs every two hours.' (announced) <span class="hint-word">(announced)</span></div>
+      <div class="xi-given">They ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">They</span>
+        <input class="xi-input" id="xi4" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi4','announced that the train to new york departed every two hours')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi4">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">They announced (that) the train to New York departed every two hours.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> S + announced (that) + mệnh đề tường thuật (lùi thì).</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> departs (hiện tại đơn) → departed (quá khứ đơn). "announce" = thông báo chính thức.</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "every two hours" giữ nguyên (không thay đổi).</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Họ thông báo rằng tàu đến New York khởi hành mỗi hai giờ một lần."</div>
+      </div>
+    </div>
+
+    <!-- XI Q5 -->
+    <div class="q-row xi-row" id="row-xi5">
+      <div class="xi-prompt"><span class="q-num">5.</span> Does the robot have the ability to think and act independently? <span class="hint-word">(able)</span></div>
+      <div class="xi-given">Is ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">Is</span>
+        <input class="xi-input" id="xi5" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi5','the robot able to think and act independently')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi5">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">Is the robot able to think and act independently?</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>be able to + V</strong> = có khả năng làm gì (thay thế cho "have the ability to").</div>
+        <div class="expl-item">📌 <strong>Chuyển đổi:</strong> "have the ability to" → "be able to". Câu hỏi: Is + S + able to + V?</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Robot có thể tự suy nghĩ và hành động một cách độc lập không?"</div>
+      </div>
+    </div>
+
+    <!-- XI Q6 -->
+    <div class="q-row xi-row" id="row-xi6">
+      <div class="xi-prompt"><span class="q-num">6.</span> The explorer discovered the pyramid while he was hiking deep in the jungle. <span class="hint-word">(when)</span></div>
+      <div class="xi-given">The explorer ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">The explorer</span>
+        <input class="xi-input" id="xi6" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi6','was hiking deep in the jungle when he discovered the pyramid')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi6">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">The explorer was hiking deep in the jungle when he discovered the pyramid.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> S + was/were + V-ing + when + S + V (quá khứ đơn). Đảo ngược mệnh đề: từ "while" sang "when".</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> Hành động dài (was hiking) + "when" + hành động ngắn xảy ra (discovered).</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "while" + tiếp diễn ↔ "when" + quá khứ đơn (cả hai diễn đạt hai hành động đồng thời trong quá khứ).</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Nhà thám hiểm đang đi bộ xuyên rừng sâu khi anh ta phát hiện ra kim tự tháp."</div>
+      </div>
+    </div>
+
+    <!-- XI Q7 -->
+    <div class="q-row xi-row" id="row-xi7">
+      <div class="xi-prompt"><span class="q-num">7.</span> 'What about going to the Science and Technology Fair?' Mark said to me. <span class="hint-word">(should)</span></div>
+      <div class="xi-given">Mark suggested ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">Mark suggested</span>
+        <input class="xi-input" id="xi7" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi7','that we should go to the science and technology fair')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi7">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">Mark suggested (that) we should go to the Science and Technology Fair.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>suggest + (that) + S + should + V</strong>. "What about + V-ing?" → lời gợi ý → "suggest".</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> "What about going?" → "suggested that we should go".</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "suggest" KHÔNG theo sau bởi "to + V" → phải dùng "that + S + should + V" hoặc "V-ing".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Mark gợi ý rằng chúng tôi nên đến Hội chợ Khoa học và Công nghệ."</div>
+      </div>
+    </div>
+
+    <!-- XI Q8 -->
+    <div class="q-row xi-row" id="row-xi8">
+      <div class="xi-prompt"><span class="q-num">8.</span> Don't waste time persuading him to go with us. <span class="hint-word">(worth)</span></div>
+      <div class="xi-given">It's ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">It's</span>
+        <input class="xi-input" id="xi8" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi8','not worth persuading him to go with us')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi8">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">It's not worth persuading him to go with us.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>It's (not) worth + V-ing</strong> = (không) đáng làm gì đó.</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> "Don't waste time + V-ing" → "It's not worth + V-ing".</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> Sau "worth" luôn dùng V-ing (gerund), không dùng to-V.</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Không đáng mất công thuyết phục anh ta đi cùng chúng ta."</div>
+      </div>
+    </div>
+
+    <!-- XI Q9 -->
+    <div class="q-row xi-row" id="row-xi9">
+      <div class="xi-prompt"><span class="q-num">9.</span> If we can't make aircrafts quieter, this area will still suffer from noise pollution. <span class="hint-word">(unless)</span></div>
+      <div class="xi-given">This area ___________</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">This area</span>
+        <input class="xi-input" id="xi9" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi9','will still suffer from noise pollution unless we can make aircrafts quieter')">Kiểm tra ✅</button>
+      </div>
+      <div class="explanation" id="expl-xi9">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">This area will still suffer from noise pollution unless we can make aircrafts quieter.</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> <strong>unless = if not</strong>. "If we can't..." → "unless we can..."</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> "If + S + can't + V..." → "... unless + S + can + V". Vế kết quả giữ nguyên.</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> "unless" thay thế "if not" → không dùng phủ định sau "unless".</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> "Khu vực này vẫn sẽ phải chịu ô nhiễm tiếng ồn trừ khi chúng ta có thể làm cho máy bay yên tĩnh hơn."</div>
+      </div>
+    </div>
+
+    <!-- XI Q10 -->
+    <div class="q-row xi-row" id="row-xi10">
+      <div class="xi-prompt"><span class="q-num">10.</span> The mayor said that they were developing technology to identify criminals faster. <span class="hint-word">(we)</span></div>
+      <div class="xi-given">The mayor said, '___________'</div>
+      <div class="xi-input-row">
+        <span class="xi-prefix">The mayor said, '</span>
+        <input class="xi-input" id="xi10" placeholder="Nhập phần còn lại...">
+        <button class="xi-check-btn" onclick="checkXI('xi10','we are developing technology to identify criminals faster')">Kiểm tra ✅</button>
+        <span style="font-weight:700;font-size:0.9rem;">'</span>
+      </div>
+      <div class="explanation" id="expl-xi10">
+        <div class="expl-title">📖 Giải thích chi tiết:</div>
+        <div class="expl-item">🔑 <strong>Đáp án: <span class="expl-correct">The mayor said, "We are developing technology to identify criminals faster."</span></strong></div>
+        <div class="expl-item">📐 <strong>Cấu trúc:</strong> Chuyển câu gián tiếp → câu trực tiếp (ngược lại reported speech).</div>
+        <div class="expl-item">📌 <strong>Biến đổi:</strong> they → we; were developing (Qk tiếp diễn) → are developing (Ht tiếp diễn).</div>
+        <div class="expl-item">💡 <strong>Lưu ý:</strong> Câu nói trực tiếp phải đặt trong ngoặc kép, và lùi thì ngược lại (quá khứ → hiện tại).</div>
+        <div class="expl-item">📝 <strong>Dịch nghĩa:</strong> Thị trưởng nói: "Chúng tôi đang phát triển công nghệ để nhận dạng tội phạm nhanh hơn."</div>
+      </div>
+    </div>
+  </div><!-- end section XI -->
+
+  <button class="submit-btn" onclick="submitAll()">🏆 Nộp Bài & Xem Kết Quả</button>
+</div>
+
+<script>
+// ======================== DATA ========================
+const gapData = {
+  // Section VI
+  v6q1: {
+    correct: 'is watching',
+    opts: ['is watching','watches','watched','will watch'],
+    expl: 'v6q1'
+  },
+  v6q2: {
+    correct: 'will plant',
+    opts: ['will plant','planted','is planting','plants'],
+    expl: 'v6q2'
+  },
+  v6q3: {
+    correct: "wasn't",
+    opts: ["wasn't","isn't","won't be","hadn't been"],
+    expl: 'v6q3'
+  },
+  v6q4: {
+    correct: 'patented',
+    opts: ['patented','has patented','was patenting','will patent'],
+    expl: 'v6q4'
+  },
+  v6q5: {
+    correct: 'invented',
+    opts: ['invented','invents','was inventing','has invented'],
+    expl: 'v6q5'
+  },
+  v6q6: {
+    correct: "wouldn't visit",
+    opts: ["wouldn't visit","didn't visit","won't visit","hasn't visited"],
+    expl: 'v6q6'
+  },
+  v6q7: {
+    correct: 'will be',
+    opts: ['will be','would be','are','were'],
+    expl: 'v6q7'
+  },
+  v6q8: {
+    correct: 'works',
+    opts: ['works','worked','is working','will work'],
+    expl: 'v6q8'
+  },
+  v6q9a: {
+    correct: 'might',
+    opts: ['might','may','could','would'],
+    expl: 'v6q9a'
+  },
+  v6q9b: {
+    correct: 'liked',
+    opts: ['liked','like','likes','would like'],
+    expl: 'v6q9a' // same explanation block
+  },
+  v6q10: {
+    correct: 'was working',
+    opts: ['was working','worked','is working','had worked'],
+    expl: 'v6q10'
+  },
+  v6q11: {
+    correct: 'writing',
+    opts: ['writing','to write','wrote','written'],
+    expl: 'v6q11'
+  },
+  v6q12: {
+    correct: 'to turn out',
+    opts: ['to turn out','turning out','turned out','turn out'],
+    expl: 'v6q12'
+  },
+  // Section VII
+  v7q1: {
+    correct: 'technician',
+    opts: ['technician','technical','technically','technology'],
+    expl: 'v7q1'
+  },
+  v7q2: {
+    correct: 'inventions',
+    opts: ['inventions','inventor','inventive','invented'],
+    expl: 'v7q2'
+  },
+  v7q3: {
+    correct: 'economically',
+    opts: ['economically','economic','economics','economist'],
+    expl: 'v7q3'
+  },
+  v7q4: {
+    correct: 'unrealistic',
+    opts: ['unrealistic','realistic','realism','realistically'],
+    expl: 'v7q4'
+  },
+  v7q5: {
+    correct: 'physicist',
+    opts: ['physicist','physics','physical','physically'],
+    expl: 'v7q5'
+  },
+  v7q6: {
+    correct: 'recognition',
+    opts: ['recognition','recognizing','recognizable','recognized'],
+    expl: 'v7q6'
+  },
+  v7q7: {
+    correct: 'possibility',
+    opts: ['possibility','possible','possibly','impossibility'],
+    expl: 'v7q7'
+  },
+  v7q8: {
+    correct: 'unable',
+    opts: ['unable','able','ability','ably'],
+    expl: 'v7q8'
+  },
+  v7q9: {
+    correct: 'discoveries',
+    opts: ['discoveries','discovery','discovering','discovered'],
+    expl: 'v7q9'
+  },
+  v7q10: {
+    correct: 'beneficial',
+    opts: ['beneficial','benefit','benefiting','beneficially'],
+    expl: 'v7q10'
+  }
+};
+
+// Matching correct map: question id → answer letter
+const matchCorrect = {
+  mq1: 'g', mq2: 'f', mq3: 'e', mq4: 'd',
+  mq5: 'h', mq6: 'b', mq7: 'a', mq8: 'c'
+};
+
+// Scoring
+let scores = { gap: 0, gapTotal: 0, match: 0, matchTotal: 8, xi: 0, xiTotal: 10 };
+let answered = {};
+let selectedMatchQ = null;
+
+// ======================== GAP FILL ========================
+let currentPopupId = null;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function openPopup(id) {
+  if (answered[id]) return;
+  const data = gapData[id];
+  currentPopupId = id;
+  document.getElementById('popup-q').textContent = 'Chọn đáp án đúng:';
+  const optsEl = document.getElementById('popup-opts');
+  optsEl.innerHTML = '';
+  const shuffled = shuffle([...data.opts]);
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(id, opt);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('popup').classList.add('active');
+}
+
+function selectAnswer(id, chosen) {
+  document.getElementById('popup').classList.remove('active');
+  const data = gapData[id];
+  const blank = document.getElementById(id);
+  const isCorrect = chosen.toLowerCase() === data.correct.toLowerCase();
+
+  blank.textContent = chosen;
+  blank.classList.add('answered');
+
+  if (!answered[id]) {
+    answered[id] = true;
+    scores.gapTotal++;
+    if (isCorrect) {
+      scores.gap++;
+      blank.classList.add('correct');
+      playCorrect();
+      launchConfetti();
+    } else {
+      blank.classList.add('wrong');
+      blank.classList.add('shake');
+      setTimeout(() => blank.classList.remove('shake'), 500);
+      playWrong();
+    }
+    // Show explanation
+    const expl = document.getElementById('expl-' + data.expl);
+    if (expl) expl.classList.add('show');
+    // Also show if it's q9b, show q9a expl
+    updateScore();
+  }
+}
+
+// ======================== MATCHING ========================
+function selectMatchQ(id) {
+  if (document.getElementById(id).classList.contains('matched')) return;
+  // Deselect previous
+  if (selectedMatchQ && selectedMatchQ !== id) {
+    document.getElementById(selectedMatchQ).classList.remove('selected');
+  }
+  selectedMatchQ = id;
+  document.getElementById(id).classList.add('selected');
+}
+
+// Map question id → pair number for per-pair explanations
+const matchPairNum = {
+  mq1: 1, mq2: 2, mq3: 3, mq4: 4,
+  mq5: 5, mq6: 6, mq7: 7, mq8: 8
+};
+
+function selectMatchA(ansId, letter) {
+  if (!selectedMatchQ) return;
+  const qEl = document.getElementById(selectedMatchQ);
+  const aEl = document.getElementById(ansId);
+  if (qEl.classList.contains('matched') || aEl.classList.contains('matched')) return;
+
+  const correct = matchCorrect[selectedMatchQ];
+  if (letter === correct) {
+    qEl.classList.remove('selected');
+    qEl.classList.add('matched');
+    aEl.classList.add('matched');
+    scores.match++;
+    playCorrect();
+    launchConfetti();
+
+    // Show per-pair explanation
+    const pairNum = matchPairNum[selectedMatchQ];
+    const explEl = document.getElementById('match-expl-' + pairNum);
+    if (explEl) { explEl.style.display = 'block'; explEl.classList.add('show'); }
+
+    selectedMatchQ = null;
+    // Check if all matched
+    const allMatched = Object.keys(matchCorrect).every(k => document.getElementById(k).classList.contains('matched'));
+    if (allMatched) {
+      const allEl = document.getElementById('match-expl-all');
+      if (allEl) { allEl.style.display = 'block'; allEl.classList.add('show'); }
+    }
+  } else {
+    qEl.classList.add('wrong-flash');
+    aEl.classList.add('wrong-flash');
+    setTimeout(() => {
+      qEl.classList.remove('wrong-flash');
+      aEl.classList.remove('wrong-flash');
+    }, 500);
+    playWrong();
+  }
+  updateScore();
+}
+
+// ======================== SECTION XI ========================
+function normalizeStr(s) {
+  return s.trim().toLowerCase()
+    .replace(/['']/g, "'")
+    .replace(/\s+/g, ' ')
+    .replace(/[.,!?'"]/g, '');
+}
+
+function checkXI(inputId, correctAnswer) {
+  if (answered[inputId]) return;
+  const inp = document.getElementById(inputId);
+  const val = inp.value;
+  if (!val.trim()) { inp.focus(); return; }
+
+  const normalized = normalizeStr(val);
+  const normCorrect = normalizeStr(correctAnswer);
+  
+  // Accept if it contains the key parts
+  const isCorrect = normalized === normCorrect ||
+    normalized.includes(normCorrect.substring(0, Math.floor(normCorrect.length * 0.85)));
+
+  answered[inputId] = true;
+  scores.xiTotal++;
+  if (isCorrect) {
+    scores.xi++;
+    inp.classList.add('correct');
+    playCorrect();
+    launchConfetti();
+  } else {
+    inp.classList.add('wrong');
+    playWrong();
+    inp.classList.add('shake');
+    setTimeout(() => inp.classList.remove('shake'), 500);
+  }
+  inp.disabled = true;
+  // Disable check button
+  inp.nextElementSibling && (inp.nextElementSibling.disabled = true) || 
+    inp.parentElement.querySelector('.xi-check-btn') && (inp.parentElement.querySelector('.xi-check-btn').disabled = true);
+  
+  const expl = document.getElementById('expl-' + inputId.replace('xi','xi'));
+  if (expl) expl.classList.add('show');
+  updateScore();
+}
+
+// Fix: disable button properly
+document.querySelectorAll('.xi-check-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // handled by onclick attribute
+  });
+});
+
+// ======================== SCORE ========================
+function updateScore() {
+  const total = scores.gap + scores.match + scores.xi;
+  const grand = scores.gapTotal + scores.matchTotal + scores.xiTotal;
+  document.getElementById('live-score').textContent = total + ' / ' + grand;
+  const pct = grand > 0 ? total / grand : 0;
+  let emoji = '⭐';
+  if (pct >= 0.9) emoji = '🏆';
+  else if (pct >= 0.7) emoji = '🌟';
+  else if (pct >= 0.5) emoji = '😊';
+  document.getElementById('live-emoji').textContent = emoji;
+}
+
+function submitAll() {
+  const total = scores.gap + scores.match + scores.xi;
+  const grand = scores.gapTotal + 8 + 10; // matchTotal + xiTotal fixed
+  const pct = total / grand;
+  let emoji, msg;
+  if (pct >= 0.9) {
+    emoji = '🏆'; msg = 'Xuất sắc! Em thật tuyệt vời! Tiếp tục phát huy nhé! 🌟';
+  } else if (pct >= 0.7) {
+    emoji = '🌟'; msg = 'Giỏi lắm! Một chút nữa là hoàn hảo! 💪';
+  } else if (pct >= 0.5) {
+    emoji = '😊'; msg = 'Cố gắng tốt! Hãy xem lại những câu sai nhé! 📚';
+  } else {
+    emoji = '📖'; msg = 'Đừng nản lòng! Ôn tập thêm và thử lại nhé! 💖';
+  }
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-score').textContent = total + ' / ' + grand;
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-popup').classList.add('active');
+  if (pct >= 0.7) launchConfetti();
+}
+
+// ======================== AUDIO ========================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getACtx() {
+  if (!actx) actx = new AudioCtx();
+  return actx;
+}
+function playCorrect() {
+  try {
+    const ctx = getACtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(523, ctx.currentTime);
+    osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
+  } catch(e){}
+}
+function playWrong() {
+  try {
+    const ctx = getACtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, ctx.currentTime);
+    osc.frequency.setValueAtTime(180, ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(150, ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.4);
+  } catch(e){}
+}
+
+// ======================== CONFETTI ========================
+const canvas = document.getElementById('confetti-canvas');
+const confCtx = canvas.getContext('2d');
+let confettiParticles = [];
+let confettiRunning = false;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function launchConfetti() {
+  const colors = ['#8854C0','#FDCB6E','#00C9A7','#FF4757','#00D26A','#fd79a8','#6c5ce7'];
+  for (let i = 0; i < 60; i++) {
+    confettiParticles.push({
+      x: Math.random() * canvas.width,
+      y: -10,
+      w: Math.random() * 10 + 4,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 4,
+      vy: Math.random() * 4 + 2,
+      angle: Math.random() * 360,
+      va: (Math.random() - 0.5) * 8,
+      life: 1
+    });
+  }
+  if (!confettiRunning) animateConfetti();
+}
+
+function animateConfetti() {
+  confettiRunning = true;
+  confCtx.clearRect(0, 0, canvas.width, canvas.height);
+  confettiParticles = confettiParticles.filter(p => p.life > 0);
+  confettiParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.1;
+    p.angle += p.va;
+    p.life -= 0.008;
+    confCtx.save();
+    confCtx.globalAlpha = Math.max(0, p.life);
+    confCtx.translate(p.x, p.y);
+    confCtx.rotate(p.angle * Math.PI / 180);
+    confCtx.fillStyle = p.color;
+    confCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    confCtx.restore();
+  });
+  if (confettiParticles.length > 0) {
+    requestAnimationFrame(animateConfetti);
+  } else {
+    confettiRunning = false;
+    confCtx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+// Close popup on overlay click
+document.getElementById('popup').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+// Init score display
+updateScore();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

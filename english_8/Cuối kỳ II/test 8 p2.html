@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài Tập Tiếng Anh - Gamification Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* === GIAO DIỆN MÀN HÌNH KHÓA (TỪ YÊU CẦU CỦA BẠN) === */
+#passwordModal {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
+}
+.pw-card {
+  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
+  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+}
+.pw-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572);
+}
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+.pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
+.pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
+.pw-input {
+  width:100%; padding:13px 20px; border-radius:12px;
+  border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
+  color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif;
+  outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
+}
+.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
+.pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
+.pw-btn {
+  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+  color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif;
+  cursor:pointer; letter-spacing:.5px; transition:transform .2s;
+}
+.pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+.pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 15%,45%,75%{transform:translateX(-6px)} 30%,60%,90%{transform:translateX(6px)} }
+
+
+/* === CSS THEME GAMIFICATION CHÍNH === */
+:root {
+  --pastel-pink: #FFD1DC;
+  --pastel-blue: #AEC6CF;
+  --pastel-purple: #C3B1E1;
+  --pastel-green: #B7E4C7;
+  --pastel-yellow: #FDFD96;
+  --glass-bg: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --shadow: 0 8px 32px rgba(100, 100, 150, 0.2);
+  --radius: 24px;
+  --primary-text: #2D3436;
+  --font-main: 'Nunito', 'Quicksand', sans-serif;
+  --green-ok: #00D26A;
+  --red-err: #FF4757;
+  --btn-purple: #8854C0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  height: 100vh;
+  overflow: hidden;
+  color: var(--primary-text);
+}
+
+/* === BỐ CỤC SPLIT SCREEN === */
+#mainContent {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+.app-container {
+  display: flex; height: 100%; padding: 16px; gap: 20px; position: relative; z-index: 10;
+}
+.left-panel, .right-panel {
+  flex: 1; height: 100%; overflow-y: auto;
+  background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 24px 30px; display: flex; flex-direction: column;
+}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
+
+@media (max-width: 900px) {
+  .app-container { flex-direction: column; overflow-y: auto; height: auto; }
+  .left-panel, .right-panel { height: auto; overflow: visible; }
+  body, #mainContent { overflow: auto; height: auto; }
+}
+
+/* === BACKGROUND === */
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 1;
+  background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-purple), var(--pastel-blue), var(--pastel-green));
+  background-size: 400% 400%; animation: bgMove 15s ease infinite alternate;
+}
+@keyframes bgMove { 0% {background-position: 0% 50%} 100% {background-position: 100% 50%} }
+.bg-pattern { position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.6; }
+
+/* === NỘI DUNG PANEL TRÁI (READING) === */
+.header-small {
+  text-align: center; font-size: 0.85rem; font-weight: 800; color: #555;
+  margin-bottom: 20px; letter-spacing: 0.5px; background: rgba(255,255,255,0.6); 
+  padding: 6px 12px; border-radius: 12px; display: inline-block;
+}
+.passage-card {
+  background: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 20px; margin-bottom: 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-size: 1.1rem; line-height: 1.7; font-weight: 600;
+}
+.passage-card h3 { color: var(--btn-purple); font-size: 1.2rem; margin-bottom: 12px; font-weight: 900; }
+.passage-card p { margin-bottom: 10px; }
+.blank-box {
+  display: inline-block; width: 60px; border-bottom: 2px solid #555; text-align: center; color: #555; font-weight: 800;
+}
+
+/* Nút dịch nhỏ gọn cho từng đoạn */
+.btn-translate {
+  background: linear-gradient(135deg, #FDCB6E, #FF9F43); border: none; border-radius: 10px; 
+  padding: 4px 12px; font-size: 0.85rem; margin-bottom: 16px;
+  font-family: var(--font-main); font-weight: 800; color: white; cursor: pointer;
+  transition: transform 0.2s; box-shadow: 0 3px 8px rgba(255, 159, 67, 0.3); display: block;
+}
+.btn-translate:hover { transform: scale(1.05); }
+.vn-translate {
+  display: none; margin-bottom: 16px; padding: 10px 14px;
+  background: #FFF3E0; border-left: 4px solid #FF9F43; border-radius: 8px;
+  color: #D35400; font-weight: 700; font-size: 0.95rem; line-height: 1.6;
+}
+.vn-translate.show { display: block; animation: fadeIn 0.3s; }
+
+/* === BẢNG GLOSSARY === */
+.glossary-table {
+  width: 100%; border-collapse: collapse; margin-top: 10px;
+  background: rgba(255,255,255,0.7); border-radius: 12px; overflow: hidden;
+}
+.glossary-table th { background: var(--btn-purple); color: white; padding: 10px; font-weight: 800; text-align: left; }
+.glossary-table td { padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 600; font-size: 0.95rem; }
+.pos-tag { background: #E0E0E0; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; color: #555; }
+
+/* === NỘI DUNG PANEL PHẢI (QUIZ) === */
+.q-card {
+  background: rgba(255, 255, 255, 0.6); border: 1px solid var(--glass-border); 
+  border-radius: 20px; padding: 20px; margin-bottom: 20px;
+}
+.q-num {
+  display: inline-block; background: var(--btn-purple); color: white;
+  padding: 4px 12px; border-radius: 10px; font-weight: 900; font-size: 0.9rem; margin-bottom: 10px;
+}
+.q-text { font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: #2D3436; }
+
+.answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .answers-grid { grid-template-columns: 1fr; } }
+.ans-btn {
+  background: rgba(255,255,255,0.8); border: 2px solid transparent; border-radius: 14px; padding: 14px; 
+  font-family: var(--font-main); font-size: 1.05rem; font-weight: 700; color: #2D3436; cursor: pointer; 
+  text-align: center; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.ans-btn:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--pastel-blue); background: white; }
+.ans-btn.correct { background: var(--green-ok) !important; color: white !important; transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,210,106,0.4); }
+.ans-btn.wrong { background: var(--red-err) !important; color: white !important; }
+.ans-btn.disabled-plain { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* === EXPLANATION (GIẢI THÍCH CHUẨN MASTER) === */
+.explanation {
+  margin-top: 16px; padding: 16px; background: rgba(255,255,255,0.9);
+  border-left: 5px solid var(--btn-purple); border-radius: 12px; font-size: 1rem; line-height: 1.7; display: none;
+}
+.explanation.show { display: block; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+span.p-word { color: #0984E3; font-weight: 800; }
+span.p-mean { color: #D35400; font-weight: 700; }
+span.p-grammar { color: #D63031; text-decoration: underline; text-decoration-color: #D63031; font-weight: 800; }
+span.hl-green { color: #00B894; font-weight: 800; }
+span.hl-red { color: #D63031; font-weight: 700; text-decoration: line-through; }
+.evidence-box { background: #F1F2F6; padding: 10px; border-radius: 8px; margin-top: 10px; font-style: italic; color: #2F3640; border: 1px dashed #A4B0BE; }
+
+/* === NÚT NỘP BÀI & MODALS === */
+.submit-btn {
+  width: 100%; background: linear-gradient(135deg, var(--btn-purple), #f06292);
+  border: none; border-radius: 16px; padding: 16px; margin-top: 20px;
+  font-family: var(--font-main); font-size: 1.3rem; font-weight: 900; color: white;
+  cursor: pointer; box-shadow: 0 8px 20px rgba(136,84,192,0.4); transition: transform 0.2s;
+}
+.submit-btn:hover { transform: scale(1.03); }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+  z-index: 100; display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.3s; }
+.modal-box {
+  background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 450px;
+  text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-box h2 { color: var(--btn-purple); font-weight: 900; margin-bottom: 10px; }
+.name-input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; font-family: var(--font-main); font-size: 1.1rem; font-weight: 700; text-align: center; outline: none; margin: 15px 0; }
+.name-input:focus { border-color: var(--btn-purple); }
+.modal-btn { background: var(--green-ok); color: white; border: none; padding: 12px 30px; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
+.result-score { font-size: 3rem; font-weight: 900; color: var(--btn-purple); margin: 10px 0; }
+.result-gif { width: 250px; height: 200px; border-radius: 16px; object-fit: cover; margin: 10px auto; display: block; }
+.confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
+.confetti-piece { position: absolute; width: 10px; height: 10px; opacity: 0; animation: fall 1.5s ease-out forwards; }
+@keyframes fall { 0%{opacity:1; transform:translateY(-20px) rotate(0);} 100%{opacity:0; transform:translateY(500px) rotate(720deg);} }
+</style>
+</head>
+<body>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern">
+  <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <text x="50" y="100" font-size="50" opacity="0.8">🚀</text>
+    <text x="700" y="80" font-size="45" opacity="0.8">🤖</text>
+    <text x="350" y="250" font-size="60" opacity="0.8">🪐</text>
+    <text x="150" y="450" font-size="50" opacity="0.8">📖</text>
+    <text x="650" y="500" font-size="55" opacity="0.8">💡</text>
+    <circle cx="400" cy="300" r="150" fill="url(#grad)" opacity="0.3"/>
+    <defs><radialGradient id="grad"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+  </svg>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<div id="mainContent" style="display: none;">
+  <div class="app-container">
+    <div class="left-panel">
+      <div style="text-align: center;"><div class="header-small">👩‍🏫 Giáo viên tạo: MS Chí Nên ULIS</div></div>
+      
+      <div class="passage-card">
+        <h3>📖 Passage 1: Life in the Past</h3>
+        <p>People in the past had to <span class="blank-box">13</span> letters instead of sending emails. They often walked long distances to visit <span class="blank-box">14</span> friends and family. Without modern appliances, they spent hours <span class="blank-box">15</span> basic tasks like washing clothes. Entertainment was simple, families would gather around the fireplace to tell stories or <span class="blank-box">16</span> music together.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans1')">Mở dịch đoạn này 🌟</button>
+        <div id="trans1" class="vn-translate">
+          Người xưa phải viết thư thay vì gửi email. Họ thường đi bộ quãng đường dài để thăm bạn bè và gia đình của họ. Không có các thiết bị hiện đại, họ dành hàng giờ để làm những công việc cơ bản như giặt quần áo. Giải trí rất đơn giản, các gia đình thường quây quần bên lò sưởi để kể chuyện hoặc cùng nhau tạo ra âm nhạc.
+        </div>
+      </div>
+
+      <div class="passage-card">
+        <h3>🚀 Passage 2: Life in Space</h3>
+        <p>The temperature on Mars is very cold, so all the water on <span class="blank-box">19</span> surface is ice. Scientists think that there is water in the soil or even in underground rivers. There may be life on Mars, too. At the moment, robots <span class="blank-box">20</span> the Earth are exploring Mars and looking for life.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans2_1')">Mở dịch đoạn này 🌟</button>
+        <div id="trans2_1" class="vn-translate">Nhiệt độ trên Sao Hỏa rất lạnh, vì vậy tất cả nước trên bề mặt của nó là băng. Các nhà khoa học nghĩ rằng có nước trong đất hoặc thậm chí ở các dòng sông ngầm. Cũng có thể có sự sống trên Sao Hỏa. Hiện tại, các robot từ Trái Đất đang khám phá Sao Hỏa và tìm kiếm sự sống.</div>
+
+        <p>Europa is one of Jupiter's moons and it's covered in ice. Although the surface is very cold, scientists think it's warmer inside. There may be oceans under the ice and bacteria or other <span class="blank-box">21</span> things in the oceans. One-day people will send robots to explore this planet to look for life.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans2_2')">Mở dịch đoạn này 🌟</button>
+        <div id="trans2_2" class="vn-translate">Europa là một trong những vệ tinh của Sao Mộc và nó được bao phủ bởi băng. Dù bề mặt rất lạnh, các nhà khoa học nghĩ bên trong ấm hơn. Có thể có đại dương dưới lớp băng và vi khuẩn hoặc các sinh vật sống khác trong các đại dương. Một ngày nào đó con người sẽ gửi robot đến hành tinh này để tìm sự sống.</div>
+
+        <p>Titan is the largest moon in Saturn. It is the only moon in the solar <span class="blank-box">22</span> with atmosphere. It has rivers, lakes, rain and clouds. These are made of chemicals called hydrocarbons, and scientists think that there is water under the surface of Titan, too. Living things <span class="blank-box">23</span> hydrocarbons and water. One day we will <span class="blank-box">24</span> life on Titan.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans2_3')">Mở dịch đoạn này 🌟</button>
+        <div id="trans2_3" class="vn-translate">Titan là vệ tinh lớn nhất của Sao Thổ. Đây là vệ tinh duy nhất trong hệ mặt trời có bầu khí quyển. Nó có sông, hồ, mưa và mây. Những thứ này được tạo thành từ các hóa chất gọi là hydrocarbon, và các nhà khoa học nghĩ rằng cũng có nước dưới bề mặt của Titan. Sinh vật sống được tạo thành từ hydrocarbon và nước. Một ngày nào đó chúng ta sẽ khám phá ra sự sống trên Titan.</div>
+      </div>
+
+      <div class="passage-card">
+        <h3>🤖 Passage 3: Robotics & Humanity</h3>
+        <p>Science and technology is changing the world, and the developments in robotics change the world for humanity. We can already talk with Alexa, Siri, Jibo, Tapia and other personal AI assistants. We can not only direct them to do things around like office work at workplaces or deliver pizza, but also have a real conversation with them. Now as machines are getting better at understanding natural languages, its applications are becoming more important to us. They help us to take notes, do translation, or even do teaching jobs. More than that, robots’ hands can handle objects and learning, and it teaches itself to perform various tasks. We can expect robotic limbs will soon take a big part of the workload off of humanity’s shoulders. For example, in factories, they can do assembling work, carry heavy things around. At home, they can do washing dishes and boring household chores. Robots will be ideal for people who are missing limbs or are disabled in some ways.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans3')">Mở dịch đoạn này 🌟</button>
+        <div id="trans3" class="vn-translate">Khoa học và công nghệ đang thay đổi thế giới, và sự phát triển trong lĩnh vực robot thay đổi thế giới cho nhân loại. Chúng ta đã có thể nói chuyện với Alexa, Siri, Jibo, Tapia và các trợ lý AI cá nhân khác. Chúng ta không chỉ có thể chỉ đạo chúng làm những việc như công việc văn phòng hoặc giao pizza, mà còn có những cuộc trò chuyện thực sự. Khi máy móc ngày càng giỏi hiểu ngôn ngữ tự nhiên, các ứng dụng của nó càng trở nên quan trọng hơn. Chúng giúp ta ghi chép, dịch thuật, hoặc thậm chí làm công việc giảng dạy. Hơn thế nữa, tay của robot có thể xử lý đồ vật và tự học để thực hiện nhiều nhiệm vụ khác nhau. Chúng ta có thể kỳ vọng các chi robot sẽ sớm gánh bớt phần lớn khối lượng công việc khỏi đôi vai nhân loại. Ví dụ, trong nhà máy, chúng có thể lắp ráp, mang vác đồ nặng. Ở nhà, chúng có thể rửa bát và làm các việc vặt nhàm chán. Robot sẽ rất lý tưởng cho những người bị khuyết tay chân hoặc bị khuyết tật.</div>
+      </div>
+
+      <div class="passage-card">
+        <h3>💡 Passage 4: Great Inventions</h3>
+        <p>There have been many great inventions in human history. One great invention is the printing press. A German named Johannes Gutenberg in the 1400s <span class="blank-box">37</span>. Books became much more common after the invention of the printing press. <span class="blank-box">38</span>, led to the invention of automobiles in the late 1800s. Inventors made better and better internal combustion engines. These are the engines we use today in cars, trucks, buses, and airplanes. <span class="blank-box">39</span> the electric lamp, phonograph, and other things in the late 1800s.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans4_1')">Mở dịch đoạn này 🌟</button>
+        <div id="trans4_1" class="vn-translate">Có nhiều phát minh vĩ đại trong lịch sử loài người. Một phát minh tuyệt vời là máy in. Một người Đức tên là Johannes Gutenberg vào những năm 1400 đã phát minh ra máy ép giúp in sách dễ dàng. Sách trở nên phổ biến hơn rất nhiều sau sự ra đời của máy in. Một phát minh tuyệt vời khác, động cơ đốt trong, đã dẫn đến sự ra đời của ô tô vào cuối những năm 1800. Các nhà phát minh đã tạo ra những động cơ đốt trong ngày càng tốt hơn. Đây là những động cơ chúng ta sử dụng ngày nay trên ô tô, xe tải, xe buýt và máy bay. Một nhà phát minh người Mỹ tên Thomas A. Edison đã phát minh ra đèn điện, máy hát và những thứ khác.</div>
+
+        <p>New things are invented today faster than ever before. The ways people invent things have changed over time. Until the 1900s, most inventors worked alone. <span class="blank-box">40</span>.</p>
+        <button class="btn-translate" onclick="toggleTranslate('trans4_2')">Mở dịch đoạn này 🌟</button>
+        <div id="trans4_2" class="vn-translate">Ngày nay, những thứ mới được phát minh nhanh hơn bao giờ hết. Cách mọi người phát minh cũng đã thay đổi. Cho đến những năm 1900, hầu hết các nhà phát minh đều làm việc một mình. Ngày nay, hầu hết các phát minh đều đến từ các nhà khoa học và kỹ sư làm việc theo nhóm.</div>
+      </div>
+
+      <div class="passage-card" style="background: rgba(255,255,255,0.85)">
+        <h3 style="color: #00B894; text-align: center;">📚 Master Vocabulary (Glossary)</h3>
+        <table class="glossary-table">
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+          <tr><td><span class="p-word">Appliance</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Thiết bị, dụng cụ (đặc biệt trong gia đình)</span></td></tr>
+          <tr><td><span class="p-word">Atmosphere</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Bầu khí quyển</span></td></tr>
+          <tr><td><span class="p-word">Hydrocarbon</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Hydrocarbon (hợp chất hóa học)</span></td></tr>
+          <tr><td><span class="p-word">Humanity</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Nhân loại, loài người</span></td></tr>
+          <tr><td><span class="p-word">Limb</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Chân/tay (robotic limb: tay chân máy)</span></td></tr>
+          <tr><td><span class="p-word">Assemble</span></td><td><span class="pos-tag">Verb</span></td><td><span class="p-mean">Lắp ráp</span></td></tr>
+          <tr><td><span class="p-word">Disabled</span></td><td><span class="pos-tag">Adj</span></td><td><span class="p-mean">Khuyết tật, tàn tật</span></td></tr>
+          <tr><td><span class="p-word">Internal combustion</span></td><td><span class="pos-tag">Noun Phr.</span></td><td><span class="p-mean">Động cơ đốt trong</span></td></tr>
+          <tr><td><span class="p-word">Phonograph</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Máy hát (đời cũ)</span></td></tr>
+          <tr><td><span class="p-word">Surface</span></td><td><span class="pos-tag">Noun</span></td><td><span class="p-mean">Bề mặt (hành tinh/sự vật)</span></td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="right-panel">
+      <div id="quizContainer"></div>
+      <button class="submit-btn" onclick="openSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="submitModal">
+  <div class="modal-box">
+    <h2>✍️ Nhập tên học sinh</h2>
+    <input type="text" class="name-input" id="studentName" placeholder="Tên của bạn là gì?..." onkeydown="if(event.key==='Enter') doSubmit();" />
+    <button class="modal-btn" onclick="doSubmit()">XÁC NHẬN</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resultModal">
+  <div class="modal-box">
+    <h2 id="rName"></h2>
+    <div class="result-score" id="rScore"></div>
+    <img id="rGif" class="result-gif" src="" />
+    <p id="rComment" style="font-size:1.1rem; font-weight:700; margin-top:10px; color:#555;"></p>
+    <br>
+    <button class="modal-btn" onclick="location.reload()">Làm Lại Lần Nữa 🔄</button>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// MÃ XÁC NHẬN MẬT KHẨU BẢO MẬT
+// ==========================================
+const _k  = [49, 54, 49, 49]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    const main = document.getElementById('mainContent');
+    if(main) main.style.display = 'block'; // Mở khóa nội dung chính
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+
+// ==========================================
+// DỮ LIỆU CÂU HỎI (CHUẨN MASTER)
+// ==========================================
+const questions = [
+  {
+    num: 13, text: "Chọn từ điền vào ô trống số (13):", correct: "write",
+    answers: ["write", "wrote", "writing", "writes"],
+    explanation: `
+      Dịch câu hỏi: Điền từ thích hợp vào chỗ trống (13).<br>
+      <span class="hl-green">✅ write</span>: Đúng. Cấu trúc <span class="p-grammar">have/had to + V-infinitive</span> (phải làm gì đó trong quá khứ).<br>
+      <span class="hl-red">❌ wrote</span>: Sai. Động từ ở dạng Quá khứ đơn, không đứng sau "to".<br>
+      <span class="hl-red">❌ writing</span>: Sai. V-ing, không đứng sau "to" ở cấu trúc này.<br>
+      <span class="hl-red">❌ writes</span>: Sai. Động từ chia V-s/es chỉ dùng ở hiện tại đơn.<br>
+      <div class="evidence-box">🔍 "People in the past had to (13) ________ letters..."<br>
+      👉 Dịch: Người xưa <b>đã phải viết</b> thư... (Cần động từ nguyên thể).</div>
+    `
+  },
+  {
+    num: 14, text: "Chọn từ điền vào ô trống số (14):", correct: "their",
+    answers: ["their", "them", "his", "her"],
+    explanation: `
+      Dịch câu hỏi: Chọn đại từ thích hợp vào (14).<br>
+      <span class="hl-green">✅ their</span>: Đúng. Tính từ sở hữu số nhiều tương ứng với chủ ngữ "They" (họ).<br>
+      <span class="hl-red">❌ them</span>: Sai. Đại từ tân ngữ, không đứng trước danh từ "friends".<br>
+      <span class="hl-red">❌ his / her</span>: Sai. Số ít không khớp với chủ ngữ số nhiều.<br>
+      <div class="evidence-box">🔍 "<b>They</b> often walked long distances to visit (14)________ friends..."<br>
+      👉 Dịch: <b>Họ</b> thường đi bộ rất xa để thăm bạn bè của <b>họ</b> (their).</div>
+    `
+  },
+  {
+    num: 15, text: "Chọn từ điền vào ô trống số (15):", correct: "doing",
+    answers: ["did", "have done", "done", "doing"],
+    explanation: `
+      Dịch câu hỏi: Chọn dạng động từ thích hợp vào (15).<br>
+      <span class="hl-green">✅ doing</span>: Đúng. Cấu trúc <span class="p-grammar">spend time/hours + V-ing</span> (dành thời gian làm gì).<br>
+      <span class="hl-red">❌ did / done / have done</span>: Sai hoàn toàn về mặt cấu trúc ngữ pháp sau động từ "spend".<br>
+      <div class="evidence-box">🔍 "...they <b>spent hours</b> (15) ________ basic tasks..."<br>
+      👉 Dịch: ...họ <b>đã dành hàng giờ để làm</b> những công việc cơ bản.</div>
+    `
+  },
+  {
+    num: 16, text: "Chọn từ điền vào ô trống số (16):", correct: "make",
+    answers: ["make", "made", "making", "makes"],
+    explanation: `
+      Dịch câu hỏi: Chọn dạng động từ thích hợp vào (16).<br>
+      <span class="hl-green">✅ make</span>: Đúng. Cấu trúc song song (Parallel structure) nối bởi "or". Động từ phía trước là "tell", nên phía sau cũng phải là V-infinitive "make".<br>
+      <span class="hl-red">❌ made / making / makes</span>: Sai do không hòa hợp cấu trúc song song.<br>
+      <div class="evidence-box">🔍 "...would gather around the fireplace to <b>tell</b> stories or (16) ________ music together."<br>
+      👉 Dịch: ...quây quần bên lò sưởi để <b>kể</b> chuyện hoặc cùng nhau <b>tạo ra</b> âm nhạc.</div>
+    `
+  },
+  {
+    num: 19, text: "Chọn từ điền vào ô trống số (19):", correct: "its",
+    answers: ["it", "its", "their", "the"],
+    explanation: `
+      Dịch câu hỏi: Chọn đại từ điền vào (19).<br>
+      <span class="hl-green">✅ its</span>: Đúng. Tính từ sở hữu của danh từ số ít "Mars" (bề mặt của nó).<br>
+      <span class="hl-red">❌ it</span>: Sai. Đại từ chủ ngữ, không đứng trước danh từ.<br>
+      <span class="hl-red">❌ their</span>: Sai. Số nhiều, trong khi Mars là 1 hành tinh.<br>
+      <div class="evidence-box">🔍 "The temperature on <b>Mars</b> is very cold, so all the water on (19) _________ surface is ice."<br>
+      👉 Dịch: Nhiệt độ trên <b>Sao Hỏa</b> rất lạnh, nên mọi giọt nước trên bề mặt <b>của nó</b> đều là băng.</div>
+    `
+  },
+  {
+    num: 20, text: "Chọn giới từ điền vào ô trống số (20):", correct: "from",
+    answers: ["in", "on", "from", "to"],
+    explanation: `
+      Dịch câu hỏi: Chọn giới từ điền vào (20).<br>
+      <span class="hl-green">✅ from</span>: Đúng. Mang nghĩa "từ đâu đến" (robot xuất phát từ Trái Đất).<br>
+      <span class="hl-red">❌ in / on / to</span>: Sai. Không phù hợp logic di chuyển không gian.<br>
+      <div class="evidence-box">🔍 "...robots (20) _________ the Earth are exploring Mars..."<br>
+      👉 Dịch: ...những robot <b>từ</b> Trái Đất đang khám phá Sao Hỏa...</div>
+    `
+  },
+  {
+    num: 21, text: "Chọn từ điền vào ô trống số (21):", correct: "living",
+    answers: ["living", "alive", "lively", "live"],
+    explanation: `
+      Dịch câu hỏi: Chọn dạng tính từ điền vào (21).<br>
+      <span class="hl-green">✅ living</span>: Đúng. Cụm danh từ <span class="p-grammar">living things</span> (sinh vật sống).<br>
+      <span class="hl-red">❌ alive</span>: Sai. "Alive" không bao giờ đứng trước danh từ.<br>
+      <span class="hl-red">❌ lively</span>: Sai. Có nghĩa là "sôi nổi, hoạt bát".<br>
+      <div class="evidence-box">🔍 "...bacteria or other (21) _________ things in the oceans."<br>
+      👉 Dịch: ...vi khuẩn hoặc các <b>sinh vật sống</b> khác...</div>
+    `
+  },
+  {
+    num: 22, text: "Chọn từ điền vào ô trống số (22):", correct: "system",
+    answers: ["body", "organization", "space", "system"],
+    explanation: `
+      Dịch câu hỏi: Chọn danh từ điền vào (22).<br>
+      <span class="hl-green">✅ system</span>: Đúng. Collocation cố định: <span class="p-word">solar system</span> (Hệ mặt trời).<br>
+      <span class="hl-red">❌ body / organization / space</span>: Sai. Không kết hợp với "solar" tạo thành cụm từ đúng.<br>
+      <div class="evidence-box">🔍 "It is the only moon in the solar (22) _________ with atmosphere."<br>
+      👉 Dịch: Nó là vệ tinh duy nhất trong <b>hệ mặt trời</b> có khí quyển.</div>
+    `
+  },
+  {
+    num: 23, text: "Chọn cụm từ điền vào ô trống số (23):", correct: "are made of",
+    answers: ["are made of", "consist of", "are made to", "is made by"],
+    explanation: `
+      Dịch câu hỏi: Chọn cụm động từ điền vào (23).<br>
+      <span class="hl-green">✅ are made of</span>: Đúng. Mang nghĩa bị động "được tạo thành từ". Phù hợp với câu liền trước.<br>
+      <span class="hl-red">❌ consist of</span>: Thường dùng ở chủ động. Đoạn văn đang sử dụng mạch văn "are made of".<br>
+      <div class="evidence-box">🔍 "...These <b>are made of</b> chemicals... Living things (23)________ hydrocarbons and water."<br>
+      👉 Dịch: Sinh vật sống <b>được tạo thành từ</b> hydrocarbon và nước.</div>
+    `
+  },
+  {
+    num: 24, text: "Chọn từ điền vào ô trống số (24):", correct: "discover",
+    answers: ["save", "discover", "learn", "explain"],
+    explanation: `
+      Dịch câu hỏi: Chọn động từ điền vào (24).<br>
+      <span class="hl-green">✅ discover</span>: Đúng. Mang nghĩa "khám phá". Cụm <span class="p-word">discover life</span> (phát hiện ra sự sống).<br>
+      <span class="hl-red">❌ save / learn / explain</span>: Sai. Không hợp logic thám hiểm.<br>
+      <div class="evidence-box">🔍 "One day we will (24) _________ life on Titan."<br>
+      👉 Dịch: Một ngày nào đó chúng ta sẽ <b>khám phá ra</b> sự sống trên Titan.</div>
+    `
+  },
+  {
+    num: 31, text: "Technology changes the world for ________.", correct: "better human life",
+    answers: ["better human life", "the benefits of producers", "the worst", "workers"],
+    explanation: `
+      Dịch câu hỏi: Công nghệ thay đổi thế giới vì mục đích gì?<br>
+      <span class="hl-green">✅ better human life</span>: Đúng (Cho cuộc sống con người tốt hơn).<br>
+      <span class="hl-red">❌ the benefits of producers / workers</span>: Sai. Bài đọc nói chung về nhân loại.<br>
+      <span class="hl-red">❌ the worst</span>: Sai (Tồi tệ hơn). Ngược hoàn toàn với thông điệp bài.<br>
+      <div class="evidence-box">🔍 "...developments in robotics change the world <b>for humanity</b>."<br>
+      👉 Dịch: ...sự phát triển robot thay đổi thế giới <b>cho nhân loại (để con người có cuộc sống tốt hơn)</b>.</div>
+    `
+  },
+  {
+    num: 32, text: "Which robot can’t talk?", correct: "Robota",
+    answers: ["Siri", "Alexa", "Robota", "Tapia"],
+    explanation: `
+      Dịch câu hỏi: Robot nào KHÔNG THỂ nói chuyện?<br>
+      <span class="hl-green">✅ Robota</span>: Đúng. Tên robot này <b>không hề xuất hiện</b> trong danh sách bài đọc liệt kê.<br>
+      <span class="hl-red">❌ Siri / Alexa / Tapia</span>: Sai. Đều là những cái tên được bài đọc xác nhận có thể giao tiếp.<br>
+      <div class="evidence-box">🔍 "We can already talk with <b>Alexa, Siri, Jibo, Tapia</b> and other personal AI assistants."<br>
+      👉 Dịch: Chúng ta đã có thể nói chuyện với <b>Alexa, Siri, Jibo, Tapia</b>...</div>
+    `
+  },
+  {
+    num: 33, text: "Which is mentioned as a thing that a speaking robot can do?", correct: "Taking notes",
+    answers: ["Nursing", "Cleaning", "Taking notes", "Guiding around"],
+    explanation: `
+      Dịch câu hỏi: Điều gì được đề cập là việc một robot biết nói có thể làm?<br>
+      <span class="hl-green">✅ Taking notes</span>: Đúng (Ghi chép). Bài đọc ghi rõ chúng giúp take notes.<br>
+      <span class="hl-red">❌ Nursing / Guiding around</span>: Sai. Không được nhắc tới.<br>
+      <span class="hl-red">❌ Cleaning</span>: Là do "robotic hands" (tay robot), câu hỏi đang tập trung vào "speaking robot".<br>
+      <div class="evidence-box">🔍 "Now as machines are getting better at understanding natural languages... They help us to <b>take notes</b>, do translation..."<br>
+      👉 Dịch: Khi máy móc giỏi hiểu ngôn ngữ... Chúng giúp ta <b>ghi chép</b>, dịch thuật...</div>
+    `
+  },
+  {
+    num: 34, text: "What does the word limbs mean?", correct: "arms",
+    answers: ["brains", "shoulders", "hearts", "arms"],
+    explanation: `
+      Dịch câu hỏi: Từ "limbs" có nghĩa là gì?<br>
+      <span class="hl-green">✅ arms</span>: Đúng. <span class="p-word">Limb</span> có nghĩa là tứ chi (tay/chân).<br>
+      <span class="hl-red">❌ brains / shoulders / hearts</span>: Sai (Não / Vai / Tim). Không liên quan đến bộ phận thao tác vật lý.<br>
+      <div class="evidence-box">🔍 "...<b>robotic limbs</b> will soon take a big part of the workload... they can do assembling work, carry heavy things..."<br>
+      👉 Dịch: ...<b>cánh tay/chi robot</b> sẽ gánh bớt công việc... chúng có thể lắp ráp, mang vác vật nặng...</div>
+    `
+  },
+  {
+    num: 35, text: "The passage is mainly about ________.", correct: "advantages of a robot",
+    answers: ["different types of robots", "advantages of a robot", "the role of robots to our home", "the role of robots in a factory"],
+    explanation: `
+      Dịch câu hỏi: Đoạn văn chủ yếu nói về chủ đề gì?<br>
+      <span class="hl-green">✅ advantages of a robot</span>: Đúng (Lợi ích của robot). Bài viết liệt kê hàng loạt ứng dụng trong nhà máy, ở nhà, hỗ trợ khuyết tật.<br>
+      <span class="hl-red">❌ types / role to home / role in factory</span>: Sai. Chỉ là các ý nhỏ lẻ (supporting ideas).<br>
+    `
+  },
+  {
+    num: 36, text: "The word “disabled” is opposite in meaning to __________", correct: "enable",
+    answers: ["enable", "damage", "care for", "handicaps"],
+    explanation: `
+      Dịch câu hỏi: Từ "disabled" TRÁI NGHĨA với từ nào?<br>
+      <span class="p-word">Disabled</span> có nghĩa là khuyết tật / không có khả năng.<br>
+      <span class="hl-green">✅ enable</span>: Đúng nhất (Trang bị khả năng/Cho phép). Sự đối lập về gốc từ (prefix 'dis-' vs 'en-').<br>
+      <span class="hl-red">❌ damage / handicaps</span>: Sai. Đây là các từ mang tính đồng nghĩa.<br>
+    `
+  },
+  {
+    num: 37, text: "Chọn câu để điền vào ô trống (37):", correct: "invented a press that made it easy to print books",
+    answers: [
+      "An American inventor named Thomas A. Edison invented",
+      "invented a press that made it easy to print books",
+      "Another great invention, the internal combustion engine",
+      "Today, most inventions come from scientists and engineers who work in teams."
+    ],
+    explanation: `
+      <span class="hl-green">✅ invented a press...</span>: Đúng. Câu trước đang nói về "Johannes Gutenberg" làm chủ ngữ, cần 1 hành động đi kèm.<br>
+      <div class="evidence-box">🔍 "A German named Johannes Gutenberg in the 1400s (37) <b>invented a press that made it easy to print books</b>."<br>
+      👉 Dịch: Một người Đức tên J.Gutenberg vào những năm 1400 đã <b>phát minh ra máy ép giúp in sách dễ dàng</b>.</div>
+    `
+  },
+  {
+    num: 38, text: "Chọn câu để điền vào ô trống (38):", correct: "Another great invention, the internal combustion engine",
+    answers: [
+      "An American inventor named Thomas A. Edison invented",
+      "invented a press that made it easy to print books",
+      "Another great invention, the internal combustion engine",
+      "Today, most inventions come from scientists and engineers who work in teams."
+    ],
+    explanation: `
+      <span class="hl-green">✅ Another great invention...</span>: Đúng. Phía sau chỗ trống là động từ "led to". Cần một cụm danh từ làm chủ ngữ nói về động cơ.<br>
+      <div class="evidence-box">🔍 "(38) <b>Another great invention, the internal combustion engine</b>, led to the invention of automobiles..."<br>
+      👉 Dịch: <b>Một phát minh tuyệt vời khác, động cơ đốt trong</b>, đã dẫn đến sự ra đời của ô tô...</div>
+    `
+  },
+  {
+    num: 39, text: "Chọn câu để điền vào ô trống (39):", correct: "An American inventor named Thomas A. Edison invented",
+    answers: [
+      "An American inventor named Thomas A. Edison invented",
+      "invented a press that made it easy to print books",
+      "Another great invention, the internal combustion engine",
+      "Today, most inventions come from scientists and engineers who work in teams."
+    ],
+    explanation: `
+      <span class="hl-green">✅ An American inventor...</span>: Đúng. Phía sau là các danh từ tân ngữ "the electric lamp...". Cần một cụm Chủ ngữ + Động từ.<br>
+      <div class="evidence-box">🔍 "(39) <b>An American inventor named Thomas A. Edison invented</b> the electric lamp..."<br>
+      👉 Dịch: <b>Nhà phát minh người Mỹ Thomas Edison đã chế tạo ra</b> đèn điện...</div>
+    `
+  },
+  {
+    num: 40, text: "Chọn câu để điền vào ô trống (40):", correct: "Today, most inventions come from scientists and engineers who work in teams.",
+    answers: [
+      "An American inventor named Thomas A. Edison invented",
+      "invented a press that made it easy to print books",
+      "Another great invention, the internal combustion engine",
+      "Today, most inventions come from scientists and engineers who work in teams."
+    ],
+    explanation: `
+      <span class="hl-green">✅ Today, most inventions...</span>: Đúng. Câu trước nhấn mạnh trong quá khứ họ làm việc "alone". Vậy câu sau phải là sự tương phản ở hiện tại "in teams".<br>
+      <div class="evidence-box">🔍 "Until the 1900s, most inventors worked alone. (40) <b>Today, most inventions come from scientists... who work in teams</b>."<br>
+      👉 Dịch: ...nhà phát minh thường làm việc một mình. <b>Ngày nay, hầu hết các phát minh đến từ các nhóm làm việc...</b></div>
+    `
+  }
+];
+
+// Quản lý state
+const state = { answers: {}, shuffled: {} };
+
+// Web Audio API
+const ctx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+function initAudio() { if(!audioCtx) audioCtx = new ctx(); return audioCtx; }
+
+function playCorrect() {
+  const ac = initAudio();
+  [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => { 
+    const osc = ac.createOscillator(); const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.type = 'sine'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.1, ac.currentTime + i*0.1);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i*0.1 + 0.3);
+    osc.start(ac.currentTime + i*0.1); osc.stop(ac.currentTime + i*0.1 + 0.3);
+  });
+}
+
+function playWrong() {
+  const ac = initAudio();
+  [200, 150].forEach((freq, i) => {
+    const osc = ac.createOscillator(); const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.type = 'sawtooth'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.1, ac.currentTime + i*0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i*0.15 + 0.2);
+    osc.start(ac.currentTime + i*0.15); osc.stop(ac.currentTime + i*0.15 + 0.2);
+  });
+}
+
+// Confetti Effect
+function shootConfetti() {
+  const c = document.getElementById('confettiContainer');
+  const colors = ['#00D26A', '#FDCB6E', '#FF4757', '#0984E3', '#8854C0'];
+  for(let i=0; i<50; i++) {
+    let p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay = Math.random()*0.3 + 's';
+    p.style.animationDuration = Math.random()*1 + 1 + 's';
+    c.appendChild(p);
+    setTimeout(()=>p.remove(), 2500);
+  }
+}
+
+// Logic Giao diện
+function toggleTranslate(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+
+function shuffle(arr) {
+  let a = [...arr];
+  for(let i = a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderQuestions() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  questions.forEach((q, idx) => {
+    if(!state.shuffled[idx]) state.shuffled[idx] = shuffle(q.answers);
+    const answers = state.shuffled[idx];
+    
+    let btns = answers.map(ans => 
+      `<button class="ans-btn" id="btn-${idx}-${btoa(unescape(encodeURIComponent(ans)))}" onclick="selectAns(${idx}, '${btoa(unescape(encodeURIComponent(ans)))}', '${btoa(unescape(encodeURIComponent(q.correct)))}')">${ans}</button>`
+    ).join('');
+
+    html += `
+      <div class="q-card">
+        <div class="q-num">Câu ${q.num}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="answers-grid">${btns}</div>
+        <div class="explanation" id="exp-${idx}">${q.explanation}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function selectAns(idx, ansB64, corB64) {
+  if(state.answers[idx]) return; 
+  state.answers[idx] = ansB64;
+  
+  const isCorrect = ansB64 === corB64;
+  const ansArr = state.shuffled[idx];
+
+  ansArr.forEach(ans => {
+    const enc = btoa(unescape(encodeURIComponent(ans)));
+    const btn = document.getElementById(`btn-${idx}-${enc}`);
+    btn.disabled = true;
+    if(enc === corB64) btn.classList.add('correct');
+    else if(enc === ansB64) btn.classList.add('wrong');
+    else btn.classList.add('disabled-plain');
+  });
+
+  if(isCorrect) {
+    playCorrect(); shootConfetti();
+  } else {
+    playWrong();
+    document.getElementById(`btn-${idx}-${ansB64}`).classList.add('shake');
+  }
+  document.getElementById(`exp-${idx}`).classList.add('show');
+}
+
+function openSubmitModal() { document.getElementById('submitModal').classList.add('open'); }
+
+function doSubmit() {
+  const name = document.getElementById('studentName').value.trim();
+  if(!name) { alert("Em hãy nhập tên để MS Chí Nên chấm điểm nhé!"); return; }
+  
+  let score = 0;
+  questions.forEach((q, i) => {
+    if(state.answers[i] === btoa(unescape(encodeURIComponent(q.correct)))) score++;
+  });
+  
+  const pct = score / questions.length;
+  let gif = "", msg = "";
+  if(pct === 1) {
+    gif = "https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif"; 
+    msg = "Thiên tài ngoại ngữ xuất hiện! 🏆 Xuất sắc 100%!";
+  } else if (pct >= 0.6) {
+    gif = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; 
+    msg = "Khá lắm em! Cố gắng luyện tập thêm để đạt tuyệt đối nhé! 💪";
+  } else {
+    gif = "https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif"; 
+    msg = "Đọc kỹ lại phần giải thích của cô và làm lại nhé! Cố lên em! 📚";
+  }
+
+  document.getElementById('submitModal').classList.remove('open');
+  document.getElementById('rName').innerText = "Thí sinh: " + name;
+  document.getElementById('rScore').innerText = `${score}/${questions.length}`;
+  document.getElementById('rGif').src = gif;
+  document.getElementById('rComment').innerText = msg;
+  document.getElementById('resultModal').classList.add('open');
+  
+  if(pct >= 0.6) shootConfetti();
+}
+
+renderQuestions();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html> 

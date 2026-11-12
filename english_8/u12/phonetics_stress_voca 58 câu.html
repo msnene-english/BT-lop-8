@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Quiz - Space & Universe | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #E040FB;
+  --purple: #8854C0;
+  --yellow: #FDCB6E;
+  --teal: #00C9A7;
+  --correct: #00D26A;
+  --wrong: #FF4757;
+  --card-bg: rgba(255,255,255,0.93);
+  --shadow: 0 8px 32px rgba(136,84,192,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body {
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background: linear-gradient(-45deg,#f8b4d9,#c3a8f0,#a8d8f0,#a8f0d8,#f0e8a8,#f0b8a8);
+  background-size:400% 400%;
+  animation: gradMove 12s ease infinite;
+  padding:0 0 60px 0;
+  position:relative;
+  overflow-x:hidden;
+}
+@keyframes gradMove {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+/* SVG Pattern overlay */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext x='10' y='40' font-size='28' opacity='0.13'%3E🌟%3C/text%3E%3Ctext x='80' y='25' font-size='22' opacity='0.11'%3E🚀%3C/text%3E%3Ctext x='150' y='50' font-size='20' opacity='0.12'%3E🪐%3C/text%3E%3Ctext x='30' y='90' font-size='24' opacity='0.1'%3E⭐%3C/text%3E%3Ctext x='120' y='80' font-size='26' opacity='0.11'%3E🌙%3C/text%3E%3Ctext x='60' y='140' font-size='22' opacity='0.12'%3E☄️%3C/text%3E%3Ctext x='160' y='130' font-size='20' opacity='0.1'%3E🌍%3C/text%3E%3Ctext x='10' y='180' font-size='24' opacity='0.11'%3E✨%3C/text%3E%3Ctext x='100' y='170' font-size='22' opacity='0.12'%3E🛸%3C/text%3E%3Ctext x='170' y='185' font-size='20' opacity='0.1'%3E💫%3C/text%3E%3C/svg%3E");
+  background-repeat:repeat;
+  pointer-events:none;
+  z-index:0;
+  mix-blend-mode:multiply;
+  animation: floatPat 20s linear infinite;
+}
+@keyframes floatPat {
+  0%{background-position:0 0}
+  100%{background-position:200px 200px}
+}
+/* Header */
+.site-header {
+  background: linear-gradient(90deg,#8854C0,#E040FB,#00C9A7);
+  background-size:200% 100%;
+  animation: gradMove 8s ease infinite;
+  color:#fff;
+  padding:14px 20px 10px;
+  text-align:center;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 4px 20px rgba(136,84,192,0.35);
+}
+.site-header h1 {font-size:1.15rem;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.site-header p {font-size:0.82rem;opacity:.9;margin-top:2px;}
+
+/* Score bar */
+.score-bar {
+  position:sticky;top:58px;z-index:99;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  padding:8px 20px;
+  box-shadow:0 2px 12px rgba(136,84,192,0.15);
+  font-weight:800;font-size:1rem;color:#8854C0;
+}
+.score-val{font-size:1.3rem;color:#00C9A7;}
+
+/* Container */
+.container{max-width:860px;margin:0 auto;padding:18px 12px;position:relative;z-index:1;}
+
+/* Section title */
+.section-title {
+  background:linear-gradient(90deg,#8854C0,#E040FB);
+  color:#fff;
+  border-radius:16px 16px 0 0;
+  padding:12px 20px;
+  font-size:1.05rem;font-weight:900;
+  margin-top:24px;
+  box-shadow:0 4px 12px rgba(136,84,192,0.25);
+}
+.section-subtitle{
+  background:rgba(255,255,255,0.92);
+  border-radius:0 0 16px 16px;
+  padding:8px 20px 12px;
+  font-size:0.92rem;color:#555;font-weight:700;
+  margin-bottom:4px;
+  box-shadow:0 4px 12px rgba(136,84,192,0.1);
+}
+
+/* Question card */
+.q-card {
+  background:var(--card-bg);
+  border-radius:20px;
+  padding:18px 20px;
+  margin:12px 0;
+  box-shadow:var(--shadow);
+  transition:transform .2s;
+  border:2px solid transparent;
+}
+.q-card:hover{transform:translateY(-2px);}
+.q-num{
+  display:inline-block;
+  background:linear-gradient(135deg,#8854C0,#E040FB);
+  color:#fff;border-radius:50%;
+  width:30px;height:30px;line-height:30px;text-align:center;
+  font-weight:800;font-size:0.9rem;margin-right:8px;flex-shrink:0;
+}
+.q-text{font-size:1.15rem;font-weight:700;color:#333;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;margin-bottom:12px;}
+.q-text u{text-decoration:underline;text-underline-offset:3px;}
+
+/* Options grid */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:520px){.options-grid{grid-template-columns:1fr;}}
+.opt-btn {
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  border-radius:16px;
+  border:2.5px solid #ddd;
+  background:#fff;
+  cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  font-size:1.08rem;font-weight:700;color:#444;
+  transition:transform .15s,box-shadow .15s,border-color .15s,background .15s;
+  box-shadow:0 4px 0 #ddd,0 6px 12px rgba(0,0,0,0.06);
+  text-align:left;
+}
+.opt-btn:hover:not(.disabled){
+  transform:scale(1.04) translateY(-2px);
+  border-color:#8854C0;
+  box-shadow:0 6px 0 #8854C0,0 8px 16px rgba(136,84,192,0.2);
+  background:linear-gradient(135deg,#f3eeff,#fff);
+}
+.opt-btn .opt-label{
+  background:linear-gradient(135deg,#8854C0,#E040FB);
+  color:#fff;border-radius:8px;
+  padding:2px 8px;font-size:0.85rem;font-weight:800;flex-shrink:0;
+}
+.opt-btn.correct{
+  background:linear-gradient(135deg,#e0fff2,#c8ffe4)!important;
+  border-color:var(--correct)!important;
+  box-shadow:0 4px 0 var(--correct),0 6px 16px rgba(0,210,106,0.3)!important;
+  color:#00703a!important;
+}
+.opt-btn.correct .opt-label{background:var(--correct);}
+.opt-btn.wrong{
+  background:linear-gradient(135deg,#fff0f1,#ffe0e3)!important;
+  border-color:var(--wrong)!important;
+  box-shadow:0 4px 0 var(--wrong),0 6px 16px rgba(255,71,87,0.3)!important;
+  color:#c0001a!important;
+  animation:shake .4s ease;
+}
+.opt-btn.wrong .opt-label{background:var(--wrong);}
+.opt-btn.disabled{cursor:default;pointer-events:none;}
+.opt-btn.dim{opacity:.5;}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-5px);}
+  80%{transform:translateX(5px);}
+}
+
+/* Explanation */
+.explanation {
+  margin-top:12px;
+  background:linear-gradient(135deg,#fffde7,#fff9e0);
+  border-left:5px solid var(--yellow);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:1rem;color:#555;
+  display:none;
+  animation:fadeIn .3s ease;
+}
+.explanation.show{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.explanation strong{color:#8854C0;}
+.explanation .correct-ans{color:var(--correct);font-weight:800;}
+.exp-title{font-weight:900;color:#E040FB;font-size:1.02rem;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+
+/* Stress display */
+.stress-word{letter-spacing:.5px;}
+.stressed{font-weight:900;color:#8854C0;font-size:1.15em;text-decoration:underline;text-decoration-color:#E040FB;text-underline-offset:3px;}
+
+/* MATCHING EXERCISE */
+.matching-container{background:var(--card-bg);border-radius:20px;padding:18px;box-shadow:var(--shadow);}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+@media(max-width:520px){.match-grid{grid-template-columns:1fr;}}
+.match-col-header{font-weight:900;color:#8854C0;font-size:0.95rem;margin-bottom:6px;text-align:center;}
+.match-item {
+  padding:10px 12px;border-radius:14px;border:2.5px solid #ddd;
+  background:#fff;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-size:0.95rem;font-weight:700;color:#444;
+  transition:all .2s;
+  box-shadow:0 3px 0 #ddd;
+  min-height:48px;display:flex;align-items:center;
+}
+.match-item:hover{border-color:#8854C0;transform:scale(1.02);box-shadow:0 4px 0 #8854C0;}
+.match-item.selected-left{background:linear-gradient(135deg,#f0e8ff,#fff);border-color:#E040FB;box-shadow:0 4px 0 #E040FB;}
+.match-item.matched-correct{background:linear-gradient(135deg,#e0fff2,#c8ffe4);border-color:var(--correct);color:#00703a;box-shadow:0 3px 0 var(--correct);cursor:default;}
+.match-item.matched-wrong{background:linear-gradient(135deg,#fff0f1,#ffe0e3);border-color:var(--wrong);color:#c0001a;box-shadow:0 3px 0 var(--wrong);animation:shake .4s ease;cursor:default;}
+.match-num{background:linear-gradient(135deg,#8854C0,#E040FB);color:#fff;border-radius:8px;padding:1px 7px;font-size:0.8rem;margin-right:7px;flex-shrink:0;}
+.match-letter{background:linear-gradient(135deg,#00C9A7,#0099cc);color:#fff;border-radius:8px;padding:1px 7px;font-size:0.8rem;margin-right:7px;flex-shrink:0;}
+.match-explanation{margin-top:10px;display:none;}
+.match-explanation.show{display:block;}
+.match-result-row{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:8px;margin:4px 0;font-size:0.92rem;font-weight:600;}
+.match-result-row.ok{background:#e0fff2;color:#00703a;}
+.match-result-row.no{background:#fff0f1;color:#c0001a;}
+
+/* Submit button */
+.submit-area{text-align:center;margin:28px 0 10px;}
+.submit-btn{
+  background:linear-gradient(135deg,#8854C0,#E040FB,#FDCB6E);
+  background-size:200% 100%;
+  color:#fff;border:none;border-radius:25px;
+  padding:16px 50px;font-size:1.2rem;font-weight:900;
+  cursor:pointer;font-family:'Nunito',sans-serif;
+  box-shadow:0 6px 0 #6a3daa,0 8px 24px rgba(136,84,192,0.4);
+  transition:all .2s;letter-spacing:.5px;
+}
+.submit-btn:hover{transform:translateY(-3px);box-shadow:0 9px 0 #6a3daa,0 12px 28px rgba(136,84,192,0.5);background-position:100% 0;}
+.submit-btn:active{transform:translateY(2px);box-shadow:0 3px 0 #6a3daa;}
+
+/* Result modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);
+  display:none;align-items:center;justify-content:center;
+  z-index:999;backdrop-filter:blur(4px);
+}
+.modal-overlay.show{display:flex;animation:fadeIn .3s ease;}
+.modal-box{
+  background:#fff;border-radius:28px;padding:36px 32px;
+  text-align:center;max-width:420px;width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-score{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#8854C0,#E040FB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.modal-msg{font-size:1.1rem;color:#555;margin:8px 0 20px;font-weight:700;}
+.modal-emoji{font-size:3rem;margin:8px 0;}
+.modal-close{
+  background:linear-gradient(135deg,#8854C0,#E040FB);
+  color:#fff;border:none;border-radius:16px;
+  padding:12px 32px;font-size:1rem;font-weight:800;
+  cursor:pointer;font-family:'Nunito',sans-serif;
+}
+
+/* Confetti canvas */
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:rgba(255,255,255,0.3);}
+::-webkit-scrollbar-thumb{background:linear-gradient(#8854C0,#E040FB);border-radius:4px;}
+
+/* Unanswered highlight for submit */
+.q-card.unanswered-warn{border-color:#ff4757;animation:pulse .5s ease;}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 4px rgba(255,71,87,0.4)}}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="site-header">
+  <h1>🚀 English Quiz: Space &amp; Universe 🌍</h1>
+  <p>Giáo viên tạo: MS Chí Nên ULIS</p>
+</div>
+
+<div class="score-bar">
+  <span>⭐ Điểm hiện tại:</span>
+  <span class="score-val" id="live-score">0</span>
+  <span>/ <span id="live-total">0</span></span>
+  <span>|</span>
+  <span>✅ <span id="live-correct">0</span> đúng</span>
+  <span>❌ <span id="live-wrong">0</span> sai</span>
+</div>
+
+<div class="container" id="main-container">
+  <!-- Content injected by JS -->
+</div>
+
+<div class="submit-area">
+  <button class="submit-btn" onclick="submitAll()">📝 Nộp bài &amp; Xem điểm</button>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+  <div class="modal-box">
+    <div class="modal-emoji" id="modal-emoji">🎉</div>
+    <div class="modal-score" id="modal-score">0/0</div>
+    <div class="modal-msg" id="modal-msg">Làm tốt lắm!</div>
+    <button class="modal-close" onclick="document.getElementById('result-modal').classList.remove('show')">Tiếp tục ôn luyện 💪</button>
+  </div>
+</div>
+
+<script>
+// ===================== AUDIO =====================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let ctx;
+function getCtx(){if(!ctx)ctx=new AudioCtx();return ctx;}
+function playCorrect(){
+  try{
+    const c=getCtx();
+    const o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.frequency.setValueAtTime(880,c.currentTime);
+    o.frequency.setValueAtTime(1100,c.currentTime+0.1);
+    o.frequency.setValueAtTime(1320,c.currentTime+0.18);
+    g.gain.setValueAtTime(0.3,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.5);
+    o.start(c.currentTime);o.stop(c.currentTime+0.5);
+  }catch(e){}
+}
+function playWrong(){
+  try{
+    const c=getCtx();
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sawtooth';
+    o.connect(g);g.connect(c.destination);
+    o.frequency.setValueAtTime(300,c.currentTime);
+    o.frequency.setValueAtTime(200,c.currentTime+0.1);
+    o.frequency.setValueAtTime(150,c.currentTime+0.2);
+    g.gain.setValueAtTime(0.2,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.4);
+    o.start(c.currentTime);o.stop(c.currentTime+0.4);
+  }catch(e){}
+}
+
+// ===================== CONFETTI =====================
+const canvas=document.getElementById('confetti-canvas');
+const cCtx=canvas.getContext('2d');
+let confettiPieces=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+function launchConfetti(){
+  for(let i=0;i<80;i++){
+    confettiPieces.push({
+      x:Math.random()*canvas.width,y:-20,
+      r:Math.random()*7+3,
+      color:`hsl(${Math.random()*360},80%,60%)`,
+      vx:(Math.random()-0.5)*4,
+      vy:Math.random()*5+3,
+      rot:Math.random()*360,rotV:Math.random()*8-4,
+      life:1
+    });
+  }
+  animConfetti();
+}
+let confettiRaf;
+function animConfetti(){
+  cCtx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces=confettiPieces.filter(p=>p.life>0.01);
+  confettiPieces.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.rot+=p.rotV;p.life-=0.015;
+    cCtx.save();cCtx.globalAlpha=p.life;cCtx.fillStyle=p.color;
+    cCtx.translate(p.x,p.y);cCtx.rotate(p.rot*Math.PI/180);
+    cCtx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cCtx.restore();
+  });
+  if(confettiPieces.length>0)confettiRaf=requestAnimationFrame(animConfetti);
+  else cCtx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+// ===================== SCORE =====================
+let totalAnswered=0,totalCorrect=0,totalWrong=0;
+function updateScore(){
+  document.getElementById('live-score').textContent=totalCorrect;
+  document.getElementById('live-total').textContent=totalAnswered;
+  document.getElementById('live-correct').textContent=totalCorrect;
+  document.getElementById('live-wrong').textContent=totalWrong;
+}
+
+// ===================== SHUFFLE =====================
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ===================== DATA =====================
+
+// --- EXERCISE A2: PRONUNCIATION ---
+const ex_a2 = [
+  {
+    qnum:1,
+    opts:[
+      {id:'A',html:'dea<u>th</u>'},
+      {id:'B',html:'<u>th</u>ermal'},
+      {id:'C',html:'al<u>th</u>ough'},
+      {id:'D',html:'ear<u>th</u>quake'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: "th"</strong><br>
+• A. dea<u>th</u>: "th" → /θ/ (vô thanh – lưỡi đặt giữa hai răng, không rung dây thanh)<br>
+• B. <u>th</u>ermal: "th" → /θ/ (vô thanh)<br>
+• C. al<u>th</u>ough ✅: "th" → <strong class="correct-ans">/ð/</strong> (hữu thanh – rung dây thanh) ← KHÁC BIỆT!<br>
+• D. ear<u>th</u>quake: "th" → /θ/ (vô thanh)<br><br>
+<strong>Lý do chọn C:</strong> "although" đọc "th" là /ð/ (giống "the, this, that, though") còn death/thermal/earthquake đọc "th" là /θ/ (giống "think, three, thank"). Đây là hai âm phụ âm răng khác nhau trong tiếng Anh.`
+  },
+  {
+    qnum:2,
+    opts:[
+      {id:'A',html:'b<u>u</u>ry'},
+      {id:'B',html:'d<u>u</u>mp'},
+      {id:'C',html:'r<u>u</u>bbish'},
+      {id:'D',html:'instr<u>u</u>ct'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm "u"</strong><br>
+• A. b<u>u</u>ry ✅: "u" → <strong class="correct-ans">/e/</strong> (đọc như "e" ngắn – phiên âm đầy đủ: /ˈberi/) ← KHÁC BIỆT!<br>
+• B. d<u>u</u>mp: "u" → /ʌ/ (âm "ă" ngắn – /dʌmp/)<br>
+• C. r<u>u</u>bbish: "u" → /ʌ/ (âm "ă" ngắn – /ˈrʌbɪʃ/)<br>
+• D. instr<u>u</u>ct: "u" → /ʌ/ (âm "ă" ngắn – /ɪnˈstrʌkt/)<br><br>
+<strong>Lý do chọn A:</strong> "bury" (chôn vùi) là từ NGOẠI LỆ đặc biệt trong tiếng Anh! Chữ "u" đọc là /e/ (giống "berry, merry,erry") – phiên âm chuẩn Anh-Anh: /ˈberi/. Ba từ còn lại (dump, rubbish, instruct) đều đọc "u" là /ʌ/ (âm "ă" ngắn rất phổ biến).`
+  },
+  {
+    qnum:3,
+    opts:[
+      {id:'A',html:'volcan<u>o</u>'},
+      {id:'B',html:'tornad<u>o</u>'},
+      {id:'C',html:'homel<u>ess</u>'},
+      {id:'D',html:'hist<u>o</u>rical'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm "o"</strong><br>
+• A. volcan<u>o</u>: "o" cuối → /əʊ/ (âm "âu" – /vɒlˈkeɪnəʊ/)<br>
+• B. tornad<u>o</u>: "o" cuối → /əʊ/ (âm "âu" – /tɔːˈneɪdəʊ/)<br>
+• C. homel<u>ess</u>: "o" → /əʊ/ (âm "âu" trong "home")<br>
+• D. hist<u>o</u>rical ✅: "o" → <strong class="correct-ans">/ɒ/</strong> (âm "o" ngắn – /hɪˈstɒrɪkəl/) ← KHÁC BIỆT!<br><br>
+<strong>Lý do chọn D:</strong> "historical" đọc "o" là /ɒ/ (âm o ngắn), còn volcano/tornado/homeless đều có "o" đọc là /əʊ/ (âm ô dài, giống "go, so, no").`
+  },
+  {
+    qnum:4,
+    opts:[
+      {id:'A',html:'<u>ough</u>t'},
+      {id:'B',html:'b<u>ough</u>t'},
+      {id:'C',html:'br<u>ough</u>t'},
+      {id:'D',html:'dr<u>ough</u>t'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: "ough"</strong><br>
+• A. <u>ough</u>t: "ough" → /ɔː/ (âm "o" dài – "ot")<br>
+• B. b<u>ough</u>t: "ough" → /ɔː/ (âm "o" dài – "bot")<br>
+• C. br<u>ough</u>t: "ough" → /ɔː/ (âm "o" dài – "brot")<br>
+• D. dr<u>ough</u>t ✅: "ough" → <strong class="correct-ans">/aʊ/</strong> (âm "ao" – "draut") ← KHÁC BIỆT!<br><br>
+<strong>Lý do chọn D:</strong> "ough" trong tiếng Anh đọc rất không nhất quán! Trong ought/bought/brought đọc là /ɔː/, nhưng trong "drought" (hạn hán) lại đọc là /aʊ/ (như "out/loud").`
+  },
+  {
+    qnum:5,
+    opts:[
+      {id:'A',html:'cake<u>s</u>'},
+      {id:'B',html:'mate<u>s</u>'},
+      {id:'C',html:'plate<u>s</u>'},
+      {id:'D',html:'place<u>s</u>'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: đuôi "s"</strong><br>
+• A. cake<u>s</u>: "s" → /s/ (sau âm /k/ vô thanh)<br>
+• B. mate<u>s</u>: "s" → /s/ (sau âm /t/ vô thanh)<br>
+• C. plate<u>s</u>: "s" → /s/ (sau âm /t/ vô thanh)<br>
+• D. place<u>s</u> ✅: "s" → <strong class="correct-ans">/ɪz/</strong> (sau âm /s/ → thêm âm tiết /ɪz/) ← KHÁC BIỆT!<br><br>
+<strong>Quy tắc đuôi "-s/-es":</strong><br>
+/s/: sau âm vô thanh /p, t, k, f, θ/ (maps, cakes, plates...)<br>
+/z/: sau âm hữu thanh /b, d, g, v.../ (dogs, beds...)<br>
+/ɪz/: sau âm sibilant /s, z, ʃ, ʒ, tʃ, dʒ/ (places, buses, watches...)<br>
+→ "places" tận cùng bằng âm /s/, nên khi thêm "s" phải đọc /ɪz/.`
+  },
+  {
+    qnum:6,
+    opts:[
+      {id:'A',html:'wick<u>ed</u>'},
+      {id:'B',html:'us<u>ed</u>'},
+      {id:'C',html:'play<u>ed</u>'},
+      {id:'D',html:'learn<u>ed</u>'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: đuôi "ed"</strong><br>
+• A. wick<u>ed</u> ✅: đây là TÍNH TỪ (adj), "ed" → <strong class="correct-ans">/ɪd/</strong> (đọc thành âm tiết riêng) ← KHÁC BIỆT!<br>
+• B. us<u>ed</u>: động từ quá khứ, "ed" → /d/ (sau âm /z/ hữu thanh)<br>
+• C. play<u>ed</u>: động từ quá khứ, "ed" → /d/ (sau âm /eɪ/ hữu thanh)<br>
+• D. learn<u>ed</u>: động từ quá khứ, "ed" → /d/ (sau âm /n/ hữu thanh)<br><br>
+<strong>Quy tắc đuôi "-ed":</strong><br>
+/t/: sau âm vô thanh /p, k, f, s, ʃ, tʃ/<br>
+/d/: sau âm hữu thanh và nguyên âm<br>
+/ɪd/: sau âm /t/ hoặc /d/<br>
+⚠️ <strong>Bẫy:</strong> "wicked" là tính từ (xấu xa, tinh quái), KHÔNG phải động từ, nên "ed" đọc là /ɪd/!`
+  },
+  {
+    qnum:7,
+    opts:[
+      {id:'A',html:'pl<u>a</u>net'},
+      {id:'B',html:'h<u>u</u>man'},
+      {id:'C',html:'tr<u>a</u>vel'},
+      {id:'D',html:'l<u>a</u>nd'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm đầu</strong><br>
+• A. pl<u>a</u>net: "a" → /æ/ (âm "e" mở rộng – /ˈplænɪt/)<br>
+• B. h<u>u</u>man ✅: "u" → <strong class="correct-ans">/juː/</strong> (âm "iu" dài – /ˈhjuːmən/) ← KHÁC BIỆT!<br>
+• C. tr<u>a</u>vel: "a" → /æ/ (âm "e" mở – /ˈtrævəl/)<br>
+• D. l<u>a</u>nd: "a" → /æ/ (âm "e" mở – /lænd/)<br><br>
+<strong>Lý do chọn B:</strong> "human" có nguyên âm /hjuː/ (âm dài), còn planet/travel/land đều có nguyên âm /æ/ (âm ngắn, mở). Đây là sự khác biệt về chất âm nguyên âm.`
+  },
+  {
+    qnum:8,
+    opts:[
+      {id:'A',html:'v<u>i</u>sit'},
+      {id:'B',html:'th<u>i</u>nk'},
+      {id:'C',html:'Jup<u>i</u>ter'},
+      {id:'D',html:'m<u>igh</u>t'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm "i" hoặc "igh"</strong><br>
+• A. v<u>i</u>sit: "i" → /ɪ/ (ngắn – /ˈvɪzɪt/)<br>
+• B. th<u>i</u>nk: "i" → /ɪ/ (ngắn – /θɪŋk/)<br>
+• C. Jup<u>i</u>ter: "i" → /ɪ/ (ngắn – /ˈdʒuːpɪtər/)<br>
+• D. m<u>igh</u>t ✅: "igh" → <strong class="correct-ans">/aɪ/</strong> (âm đôi "ai" – /maɪt/) ← KHÁC BIỆT!<br><br>
+<strong>Lý do chọn D:</strong> Nhóm "igh" (might, night, light, right...) luôn đọc là /aɪ/ (âm đôi). Còn visit/think/Jupiter đều có "i" ngắn /ɪ/. Đây là bẫy quen thuộc trong bài thi!`
+  },
+  {
+    qnum:9,
+    opts:[
+      {id:'A',html:'tr<u>a</u>ce'},
+      {id:'B',html:'<u>a</u>ble'},
+      {id:'C',html:'surf<u>a</u>ce'},
+      {id:'D',html:'cr<u>a</u>ter'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm "a"</strong><br>
+• A. tr<u>a</u>ce: "a" → /eɪ/ (âm đôi – /treɪs/)<br>
+• B. <u>a</u>ble: "a" → /eɪ/ (âm đôi – /ˈeɪbəl/)<br>
+• C. surf<u>a</u>ce ✅: "a" → <strong class="correct-ans">/ɪ/</strong> (âm yếu – /ˈsɜːfɪs/) ← KHÁC BIỆT!<br>
+• D. cr<u>a</u>ter: "a" → /eɪ/ (âm đôi – /ˈkreɪtər/)<br><br>
+<strong>Lý do chọn C:</strong> Trong "surface" (/ˈsɜːfɪs/), chữ "a" là âm tiết không được nhấn, đọc thành /ɪ/ ngắn. Còn trace/able/crater đều có "a" đọc là /eɪ/ (âm đôi dài).`
+  },
+  {
+    qnum:10,
+    opts:[
+      {id:'A',html:'pr<u>o</u>mise'},
+      {id:'B',html:'s<u>o</u>lar'},
+      {id:'C',html:'p<u>o</u>ssible'},
+      {id:'D',html:'n<u>o</u>vel'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích phát âm</div>
+<strong>Phần gạch chân: nguyên âm "o"</strong><br>
+• A. pr<u>o</u>mise: "o" → /ɒ/ (âm o ngắn – /ˈprɒmɪs/)<br>
+• B. s<u>o</u>lar ✅: "o" → <strong class="correct-ans">/əʊ/</strong> (âm đôi "âu" – /ˈsəʊlər/) ← KHÁC BIỆT!<br>
+• C. p<u>o</u>ssible: "o" → /ɒ/ (âm o ngắn – /ˈpɒsɪbəl/)<br>
+• D. n<u>o</u>vel: "o" → /ɒ/ (âm o ngắn – /ˈnɒvəl/)<br><br>
+<strong>Lý do chọn B:</strong> "solar" (thuộc về mặt trời) có "o" đọc là /əʊ/ (âm ô dài, như "so/go/no"). Còn promise/possible/novel đều có "o" đọc là /ɒ/ (âm o ngắn).`
+  }
+];
+
+// --- EXERCISE A3: STRESS ---
+const ex_a3 = [
+  {
+    qnum:1,
+    opts:[
+      {id:'A',text:'account'},
+      {id:'B',text:'advanced'},
+      {id:'C',text:'oppose'},
+      {id:'D',text:'scanner'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. ac·<strong>COUNT</strong> /əˈkaʊnt/: trọng âm âm tiết 2 → <em>acCOUNT</em><br>
+• B. ad·<strong>VANCED</strong> /ədˈvɑːnst/: trọng âm âm tiết 2 → <em>adVANCED</em><br>
+• C. op·<strong>POSE</strong> /əˈpəʊz/: trọng âm âm tiết 2 → <em>opPOSE</em><br>
+• D. <strong class="correct-ans">SCAN</strong>·ner /ˈskænər/ ✅: trọng âm âm tiết 1 → <em>SCANner</em> ← KHÁC BIỆT!<br><br>
+<strong>Lý do chọn D:</strong> "scanner" là danh từ 2 âm tiết → trọng âm ở âm tiết đầu. Ba từ còn lại (account, advanced, oppose) đều có trọng âm ở âm tiết thứ 2 – là các từ có tiền tố (ac-, ad-, op-).`
+  },
+  {
+    qnum:2,
+    opts:[
+      {id:'A',text:'rocket'},
+      {id:'B',text:'lively'},
+      {id:'C',text:'predict'},
+      {id:'D',text:'crater'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>ROCK</strong>·et /ˈrɒkɪt/: trọng âm âm tiết 1 → <em>ROCKet</em><br>
+• B. <strong>LIVE</strong>·ly /ˈlaɪvli/: trọng âm âm tiết 1 → <em>LIVEly</em><br>
+• C. pre·<strong class="correct-ans">DICT</strong> /prɪˈdɪkt/ ✅: trọng âm âm tiết 2 → <em>preDICT</em> ← KHÁC BIỆT!<br>
+• D. <strong>CRA</strong>·ter /ˈkreɪtər/: trọng âm âm tiết 1 → <em>CRAter</em><br><br>
+<strong>Lý do chọn C:</strong> "predict" (dự đoán) là ĐỘNG TỪ 2 âm tiết → trọng âm thường ở âm tiết 2. Rocket/lively/crater là danh từ/tính từ → trọng âm ở âm tiết 1.`
+  },
+  {
+    qnum:3,
+    opts:[
+      {id:'A',text:'condition'},
+      {id:'B',text:'gravity'},
+      {id:'C',text:'galaxy'},
+      {id:'D',text:'following'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. con·<strong class="correct-ans">DI</strong>·tion /kənˈdɪʃən/ ✅: trọng âm âm tiết 2 → <em>conDItion</em> ← KHÁC BIỆT!<br>
+• B. <strong>GRA</strong>·vi·ty /ˈɡrævɪti/: trọng âm âm tiết 1 → <em>GRAvity</em><br>
+• C. <strong>GA</strong>·lax·y /ˈɡæləksi/: trọng âm âm tiết 1 → <em>GAlaxy</em><br>
+• D. <strong>FOL</strong>·low·ing /ˈfɒləʊɪŋ/: trọng âm âm tiết 1 → <em>FOLlowing</em><br><br>
+<strong>Lý do chọn A:</strong> "condition" (điều kiện) là 3 âm tiết nhưng trọng âm ở âm tiết 2. Gravity/galaxy/following là 3 âm tiết với trọng âm ở âm tiết 1.`
+  },
+  {
+    qnum:4,
+    opts:[
+      {id:'A',text:'creature'},
+      {id:'B',text:'rocket'},
+      {id:'C',text:'spaceship'},
+      {id:'D',text:'account'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>CREA</strong>·ture /ˈkriːtʃər/: trọng âm âm tiết 1 → <em>CREAture</em><br>
+• B. <strong>ROCK</strong>·et /ˈrɒkɪt/: trọng âm âm tiết 1 → <em>ROCKet</em><br>
+• C. <strong>SPACE</strong>·ship /ˈspeɪsʃɪp/: trọng âm âm tiết 1 → <em>SPACEship</em><br>
+• D. ac·<strong class="correct-ans">COUNT</strong> /əˈkaʊnt/ ✅: trọng âm âm tiết 2 → <em>acCOUNT</em> ← KHÁC BIỆT!<br><br>
+<strong>Lý do chọn D:</strong> "account" bắt đầu bằng tiền tố "ac-" → trọng âm ở âm tiết 2. Creature/rocket/spaceship đều là danh từ với trọng âm ở âm tiết đầu.`
+  },
+  {
+    qnum:5,
+    opts:[
+      {id:'A',text:'gravity'},
+      {id:'B',text:'galaxy'},
+      {id:'C',text:'commander'},
+      {id:'D',text:'oxygen'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>GRA</strong>·vi·ty /ˈɡrævɪti/: trọng âm âm tiết 1 → <em>GRAvity</em><br>
+• B. <strong>GA</strong>·lax·y /ˈɡæləksi/: trọng âm âm tiết 1 → <em>GAlaxy</em><br>
+• C. com·<strong class="correct-ans">MAN</strong>·der /kəˈmɑːndər/ ✅: trọng âm âm tiết 2 → <em>comMANder</em> ← KHÁC BIỆT!<br>
+• D. <strong>OX</strong>·y·gen /ˈɒksɪdʒən/: trọng âm âm tiết 1 → <em>OXygen</em><br><br>
+<strong>Lý do chọn C:</strong> "commander" (chỉ huy) là 3 âm tiết với trọng âm ở âm tiết 2. Gravity/galaxy/oxygen đều có trọng âm ở âm tiết đầu.`
+  },
+  {
+    qnum:6,
+    opts:[
+      {id:'A',text:'habitable'},
+      {id:'B',text:'promising'},
+      {id:'C',text:'nomadic'},
+      {id:'D',text:'marvellous'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>HA</strong>·bi·ta·ble /ˈhæbɪtəbəl/: trọng âm âm tiết 1 → <em>HAbitable</em><br>
+• B. <strong>PROM</strong>·is·ing /ˈprɒmɪsɪŋ/: trọng âm âm tiết 1 → <em>PROMising</em><br>
+• C. no·<strong class="correct-ans">MAD</strong>·ic /nəʊˈmædɪk/ ✅: trọng âm âm tiết 2 → <em>noMADic</em> ← KHÁC BIỆT!<br>
+• D. <strong>MAR</strong>·vel·lous /ˈmɑːrvələs/: trọng âm âm tiết 1 → <em>MARvellous</em><br><br>
+<strong>Lý do chọn C:</strong> "nomadic" (du mục) kết thúc bằng "-ic" → theo quy tắc, trọng âm rơi vào âm tiết NGAY TRƯỚC đuôi "-ic" (noMAD-ic). Tính từ đuôi "-ic" hầu hết đều theo quy tắc này.`
+  },
+  {
+    qnum:7,
+    opts:[
+      {id:'A',text:'wonder'},
+      {id:'B',text:'maintain'},
+      {id:'C',text:'oppose'},
+      {id:'D',text:'invent'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong class="correct-ans">WON</strong>·der /ˈwʌndər/ ✅: trọng âm âm tiết 1 → <em>WONder</em> ← KHÁC BIỆT!<br>
+• B. main·<strong>TAIN</strong> /meɪnˈteɪn/: trọng âm âm tiết 2 → <em>mainTAIN</em><br>
+• C. op·<strong>POSE</strong> /əˈpəʊz/: trọng âm âm tiết 2 → <em>opPOSE</em><br>
+• D. in·<strong>VENT</strong> /ɪnˈvent/: trọng âm âm tiết 2 → <em>inVENT</em><br><br>
+<strong>Lý do chọn A:</strong> "wonder" (kỳ diệu, thắc mắc) là DANH TỪ/ĐỘNG TỪ 2 âm tiết → trọng âm ở âm tiết 1. Maintain/oppose/invent là các ĐỘNG TỪ có tiền tố → trọng âm ở âm tiết 2.`
+  },
+  {
+    qnum:8,
+    opts:[
+      {id:'A',text:'atmosphere'},
+      {id:'B',text:'pollution'},
+      {id:'C',text:'telescope'},
+      {id:'D',text:'alien'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>AT</strong>·mos·phere /ˈætməsfɪər/: trọng âm âm tiết 1 → <em>ATmosphere</em><br>
+• B. pol·<strong class="correct-ans">LU</strong>·tion /pəˈluːʃən/ ✅: trọng âm âm tiết 2 → <em>polLUtion</em> ← KHÁC BIỆT!<br>
+• C. <strong>TEL</strong>·e·scope /ˈtelɪskəʊp/: trọng âm âm tiết 1 → <em>TELescope</em><br>
+• D. <strong>A</strong>·li·en /ˈeɪliən/: trọng âm âm tiết 1 → <em>Alien</em><br><br>
+<strong>Lý do chọn B:</strong> "pollution" (ô nhiễm) kết thúc bằng "-tion" → trọng âm rơi vào âm tiết ngay TRƯỚC "-tion" (pol-LU-tion). Atmosphere/telescope/alien đều có trọng âm ở âm tiết 1.`
+  },
+  {
+    qnum:9,
+    opts:[
+      {id:'A',text:'spaceship'},
+      {id:'B',text:'invent'},
+      {id:'C',text:'machine'},
+      {id:'D',text:'technique'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong class="correct-ans">SPACE</strong>·ship /ˈspeɪsʃɪp/ ✅: trọng âm âm tiết 1 → <em>SPACEship</em> ← KHÁC BIỆT!<br>
+• B. in·<strong>VENT</strong> /ɪnˈvent/: trọng âm âm tiết 2 → <em>inVENT</em><br>
+• C. ma·<strong>CHINE</strong> /məˈʃiːn/: trọng âm âm tiết 2 → <em>maCHINE</em><br>
+• D. tech·<strong>NIQUE</strong> /tekˈniːk/: trọng âm âm tiết 2 → <em>techNIQUE</em><br><br>
+<strong>Lý do chọn A:</strong> "spaceship" là danh từ ghép (space + ship) → trọng âm ở thành phần đầu (SPACE). Invent/machine/technique đều có trọng âm ở âm tiết thứ 2.`
+  },
+  {
+    qnum:10,
+    opts:[
+      {id:'A',text:'Venus'},
+      {id:'B',text:'return'},
+      {id:'C',text:'rocket'},
+      {id:'D',text:'travel'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích trọng âm</div>
+• A. <strong>VE</strong>·nus /ˈviːnəs/: trọng âm âm tiết 1 → <em>VEnus</em><br>
+• B. re·<strong class="correct-ans">TURN</strong> /rɪˈtɜːn/ ✅: trọng âm âm tiết 2 → <em>reTURN</em> ← KHÁC BIỆT!<br>
+• C. <strong>ROCK</strong>·et /ˈrɒkɪt/: trọng âm âm tiết 1 → <em>ROCKet</em><br>
+• D. <strong>TRA</strong>·vel /ˈtrævəl/: trọng âm âm tiết 1 → <em>TRAvel</em><br><br>
+<strong>Lý do chọn B:</strong> "return" (trở về) có tiền tố "re-" nhưng trọng âm ở âm tiết 2 (re-TURN). Venus/rocket/travel là các từ 2 âm tiết với trọng âm ở âm tiết đầu.`
+  }
+];
+
+// --- EXERCISE B1: MATCHING ---
+const matchingLeft = [
+  {num:1, word:'telescope'},
+  {num:2, word:'atmosphere'},
+  {num:3, word:'gravity'},
+  {num:4, word:'possibility'},
+  {num:5, word:'astronaut'},
+  {num:6, word:'crater'},
+  {num:7, word:'solar system'},
+  {num:8, word:'galaxy'},
+  {num:9, word:'rocket'},
+  {num:10, word:'creature'}
+];
+const matchingRight = [
+  {letter:'A', def:'A spaceship that has the shape of a tube'},
+  {letter:'B', def:'A living thing that can move around'},
+  {letter:'C', def:'A system of stars and planets in outer space'},
+  {letter:'D', def:'A person who travels and works in a spaceship'},
+  {letter:'E', def:'A piece of equipment that you look through to make objects that are far away appear larger and nearer'},
+  {letter:'F', def:'A large hole in the ground caused by something large'},
+  {letter:'G', def:'Something that may happen but is not certain'},
+  {letter:'H', def:'The sun and the group of planets that move around it'},
+  {letter:'I', def:'The force that makes things fall to the ground'},
+  {letter:'J', def:'The mixture of gases around the earth'}
+];
+// Correct answers: 1→E, 2→J, 3→I, 4→G, 5→D, 6→F, 7→H, 8→C, 9→A, 10→B
+const matchCorrect = {1:'E',2:'J',3:'I',4:'G',5:'D',6:'F',7:'H',8:'C',9:'A',10:'B'};
+const matchExplanations = {
+  1: {vi:'telescope = kính thiên văn', en:'A piece of equipment you look through to make far objects appear larger and nearer.', note:'Kính thiên văn dùng để quan sát các vật thể xa như mặt trăng, sao, hành tinh.'},
+  2: {vi:'atmosphere = bầu khí quyển', en:'The mixture of gases around the earth.', note:'Lớp khí bao quanh Trái Đất gồm nitrogen (~78%), oxygen (~21%) và các khí khác.'},
+  3: {vi:'gravity = trọng lực', en:'The force that makes things fall to the ground.', note:'Trọng lực là lý do quả táo rơi xuống đất và tại sao phi hành gia lơ lửng trong vũ trụ.'},
+  4: {vi:'possibility = khả năng có thể', en:'Something that may happen but is not certain.', note:'Collocation: "there\'s a possibility of..." = có khả năng... (Không chắc chắn nhưng có thể xảy ra.)'},
+  5: {vi:'astronaut = phi hành gia', en:'A person who travels and works in a spaceship.', note:'Từ gốc Hy Lạp: astro (sao) + nautes (thủy thủ) = "thủy thủ giữa các vì sao".'},
+  6: {vi:'crater = miệng núi lửa / hố va chạm', en:'A large hole in the ground caused by something large.', note:'Crater xuất hiện khi thiên thạch đâm vào bề mặt hành tinh, hoặc khi núi lửa phun trào.'},
+  7: {vi:'solar system = hệ mặt trời', en:'The sun and the group of planets that move around it.', note:'"Solar" = thuộc về mặt trời (từ tiếng Latin: sol = sun). Hệ mặt trời có 8 hành tinh.'},
+  8: {vi:'galaxy = thiên hà', en:'A system of stars and planets in outer space.', note:'Dải Ngân Hà (The Milky Way) là thiên hà của chúng ta, chứa khoảng 200-400 tỷ ngôi sao.'},
+  9: {vi:'rocket = tên lửa', en:'A spaceship that has the shape of a tube.', note:'Rocket có hình dạng ống dài, dùng nhiên liệu đốt cháy để tạo lực đẩy phóng vào không gian.'},
+  10: {vi:'creature = sinh vật', en:'A living thing that can move around.', note:'"Creature" rộng hơn "animal" – dùng cho cả người, động vật, và ngoài hành tinh (alien creatures).'}
+};
+
+// --- EXERCISE B2: VOCABULARY ---
+const ex_b2 = [
+  {
+    qnum:1,
+    text:'The _________ is the whole of space and everything in it including the earth, the planets and the stars.',
+    opts:[
+      {id:'A',text:'air'},
+      {id:'B',text:'atmosphere'},
+      {id:'C',text:'sky'},
+      {id:'D',text:'universe'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "_________ là toàn bộ không gian và mọi thứ trong đó bao gồm Trái Đất, các hành tinh và các ngôi sao."<br><br>
+<strong>4 đáp án:</strong><br>
+• A. air (n): không khí, bầu không khí xung quanh<br>
+• B. atmosphere (n): bầu khí quyển (lớp khí bao quanh hành tinh)<br>
+• C. sky (n): bầu trời (phần không gian nhìn thấy từ mặt đất)<br>
+• D. universe (n): vũ trụ (toàn bộ không gian và mọi thứ trong đó) ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Universe" = vũ trụ, bao gồm tất cả mọi thứ (Trái Đất, hành tinh, ngôi sao...). Đây là định nghĩa chính xác nhất. "Sky" chỉ là bầu trời nhìn thấy. "Atmosphere" chỉ là lớp khí. "Air" chỉ là không khí.`
+  },
+  {
+    qnum:2,
+    text:'Surveyor I was the first U.S. _________ to land on the moon on June 2, 1966.',
+    opts:[
+      {id:'A',text:'flying saucer'},
+      {id:'B',text:'transport'},
+      {id:'C',text:'spaceship'},
+      {id:'D',text:'aeroplane'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Surveyor I là _________ đầu tiên của Mỹ đổ bộ lên mặt trăng vào ngày 2 tháng 6 năm 1966."<br><br>
+• A. flying saucer (n): đĩa bay (tàu UFO hình đĩa)<br>
+• B. transport (n): phương tiện vận tải (nói chung)<br>
+• C. spaceship (n): tàu vũ trụ ✅<br>
+• D. aeroplane (n): máy bay<br><br>
+<strong>Tại sao C đúng:</strong> Surveyor I là robot thăm dò (tàu vũ trụ không người lái) của NASA. "Spaceship" = tàu vũ trụ phù hợp ngữ cảnh đi vào không gian/đổ bộ mặt trăng. Aeroplane chỉ bay trong bầu khí quyển Trái Đất.`
+  },
+  {
+    qnum:3,
+    text:'My neighbour said that he sometimes saw _________ flying in the sky.',
+    opts:[
+      {id:'A',text:'UFOs'},
+      {id:'B',text:'craters'},
+      {id:'C',text:'stars'},
+      {id:'D',text:'planets'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Hàng xóm của tôi nói rằng đôi khi anh ấy nhìn thấy _________ bay trên bầu trời."<br><br>
+• A. UFOs (n): vật thể bay không xác định ✅<br>
+• B. craters (n): hố va chạm, miệng núi lửa (không bay được)<br>
+• C. stars (n): các ngôi sao (không "bay" – chúng đứng yên trên bầu trời)<br>
+• D. planets (n): các hành tinh (không bay trên bầu trời như vật thể di chuyển)<br><br>
+<strong>Tại sao A đúng:</strong> "Flying in the sky" (bay trên bầu trời) phù hợp với UFO (Unidentified Flying Objects = Vật Thể Bay Không Xác Định). Craters không thể "bay", stars/planets không di chuyển đủ nhanh để một người "nhìn thấy chúng bay".`
+  },
+  {
+    qnum:4,
+    text:'Astronauts float around their spaceship because there is no _________ in space.',
+    opts:[
+      {id:'A',text:'air'},
+      {id:'B',text:'force'},
+      {id:'C',text:'gravity'},
+      {id:'D',text:'pressure'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Các phi hành gia lơ lửng quanh tàu vũ trụ vì không có _________ trong không gian."<br><br>
+• A. air (n): không khí<br>
+• B. force (n): lực (nói chung)<br>
+• C. gravity (n): trọng lực ✅<br>
+• D. pressure (n): áp suất<br><br>
+<strong>Tại sao C đúng:</strong> Phi hành gia lơ lửng (float) trong không gian vì không có TRỌNG LỰC (gravity = lực hút của Trái Đất). Đây là hiện tượng vô trọng lực (weightlessness). Tuy trong không gian cũng không có không khí và áp suất, nhưng nguyên nhân TRỰC TIẾP khiến người lơ lửng là thiếu gravity.`
+  },
+  {
+    qnum:5,
+    text:'Besides Earth, Mars is the most _________ planet in our solar system.',
+    opts:[
+      {id:'A',text:'natural'},
+      {id:'B',text:'habitable'},
+      {id:'C',text:'appropriate'},
+      {id:'D',text:'friendly'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Ngoài Trái Đất, Sao Hỏa là hành tinh _________ nhất trong hệ mặt trời của chúng ta."<br><br>
+• A. natural (adj): tự nhiên<br>
+• B. habitable (adj): có thể sinh sống được ✅<br>
+• C. appropriate (adj): thích hợp, phù hợp<br>
+• D. friendly (adj): thân thiện<br><br>
+<strong>Tại sao B đúng:</strong> "Habitable" = có thể sinh sống được → collocation phổ biến "habitable planet" (hành tinh có thể ở được). Sao Hỏa được coi là hành tinh có nhiều điều kiện gần giống Trái Đất nhất trong hệ mặt trời. "Friendly planet" không phải collocation tự nhiên.`
+  },
+  {
+    qnum:6,
+    text:'The alien in her picture is an exotic _________ with long red hair and brilliant green eyes.',
+    opts:[
+      {id:'A',text:'thing'},
+      {id:'B',text:'living'},
+      {id:'C',text:'creature'},
+      {id:'D',text:'species'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Người ngoài hành tinh trong bức tranh của cô ấy là một _________ kỳ lạ với mái tóc đỏ dài và đôi mắt xanh lá sáng rực."<br><br>
+• A. thing (n): vật, thứ (quá chung chung, thường dùng cho đồ vật)<br>
+• B. living (adj/n): sống/sinh vật (không dùng "a living" như thế này)<br>
+• C. creature (n): sinh vật ✅<br>
+• D. species (n): loài (thường dùng cho phân loại sinh học, không dùng với "a")<br><br>
+<strong>Tại sao C đúng:</strong> "Creature" = sinh vật (có thể là người, động vật, hay ngoài hành tinh). "An exotic creature" là collocation tự nhiên. "Species" thường đi với số nhiều hoặc trong ngữ cảnh khoa học.`
+  },
+  {
+    qnum:7,
+    text:'He said that he saw a _________ landing on the field next to his house last night.',
+    opts:[
+      {id:'A',text:'rocket'},
+      {id:'B',text:'planet'},
+      {id:'C',text:'UFO'},
+      {id:'D',text:'ground'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Anh ấy nói rằng anh ấy đã nhìn thấy một _________ đáp xuống cánh đồng bên cạnh nhà anh ấy tối qua."<br><br>
+• A. rocket (n): tên lửa (phóng lên trời, không đáp xuống đồng)<br>
+• B. planet (n): hành tinh (không đáp xuống cánh đồng!)<br>
+• C. UFO (n): vật thể bay không xác định ✅<br>
+• D. ground (n): mặt đất (không thể "landing")<br><br>
+<strong>Tại sao C đúng:</strong> UFO "landing on a field" (đáp xuống cánh đồng) là kịch bản phổ biến trong câu chuyện về ngoài hành tinh. Planets và rockets không hợp với ngữ cảnh này.`
+  },
+  {
+    qnum:8,
+    text:'The Milky Way is just one of the _________ in space.',
+    opts:[
+      {id:'A',text:'galaxies'},
+      {id:'B',text:'planets'},
+      {id:'C',text:'moons'},
+      {id:'D',text:'creatures'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Dải Ngân Hà chỉ là một trong số các _________ trong không gian."<br><br>
+• A. galaxies (n): các thiên hà ✅<br>
+• B. planets (n): các hành tinh<br>
+• C. moons (n): các mặt trăng<br>
+• D. creatures (n): các sinh vật<br><br>
+<strong>Tại sao A đúng:</strong> "The Milky Way" (Dải Ngân Hà) là tên của THIÊN HÀ (galaxy) chứa Hệ Mặt Trời của chúng ta. Câu nói rằng nó "chỉ là một trong các thiên hà trong vũ trụ" – điều này đúng về mặt khoa học.`
+  },
+  {
+    qnum:9,
+    text:'Scientists are trying to find _________ planets like the Earth.',
+    opts:[
+      {id:'A',text:'freezing'},
+      {id:'B',text:'unsuitable'},
+      {id:'C',text:'strange'},
+      {id:'D',text:'habitable'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Các nhà khoa học đang cố gắng tìm kiếm các hành tinh _________ giống Trái Đất."<br><br>
+• A. freezing (adj): đóng băng, rất lạnh (ngược với điều kiện sống được)<br>
+• B. unsuitable (adj): không phù hợp (sai ngữ cảnh)<br>
+• C. strange (adj): kỳ lạ (không liên quan đến việc tìm hành tinh)<br>
+• D. habitable (adj): có thể sinh sống được ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Habitable planets like Earth" = hành tinh có thể ở được giống Trái Đất. Đây là mục tiêu khoa học thực tế. "Habitable" là collocation chuẩn với "planet". Ba đáp án còn lại không phù hợp về nghĩa.`
+  },
+  {
+    qnum:10,
+    text:'The young scientist was over the _________ when he saw that modern telescope.',
+    opts:[
+      {id:'A',text:'Mars'},
+      {id:'B',text:'sun'},
+      {id:'C',text:'Jupiter'},
+      {id:'D',text:'moon'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng & thành ngữ</div>
+<strong>Dịch câu:</strong> "Nhà khoa học trẻ rất _________ khi nhìn thấy chiếc kính thiên văn hiện đại đó."<br><br>
+• A. Mars: Sao Hỏa → "over the Mars" không phải thành ngữ<br>
+• B. sun: Mặt Trời → "over the sun" không phải thành ngữ<br>
+• C. Jupiter: Sao Mộc → "over the Jupiter" không phải thành ngữ<br>
+• D. moon: Mặt Trăng ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Over the moon" là thành ngữ tiếng Anh (idiom) có nghĩa là "vô cùng vui mừng, phấn khích". Ví dụ: "She was over the moon when she got the job." (Cô ấy vô cùng hạnh phúc khi được nhận việc.) → Nhà khoa học trẻ vô cùng phấn khích khi thấy kính thiên văn hiện đại.`
+  },
+  {
+    qnum:11,
+    text:'The moon has weaker _________ than the Earth, so you can jump higher on the moon than on the Earth.',
+    opts:[
+      {id:'A',text:'push'},
+      {id:'B',text:'gravity'},
+      {id:'C',text:'oxygen'},
+      {id:'D',text:'atmosphere'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Mặt Trăng có _________ yếu hơn Trái Đất, vì vậy bạn có thể nhảy cao hơn trên Mặt Trăng."<br><br>
+• A. push (n): cú đẩy, lực đẩy<br>
+• B. gravity (n): trọng lực ✅<br>
+• C. oxygen (n): ô-xi<br>
+• D. atmosphere (n): bầu khí quyển<br><br>
+<strong>Tại sao B đúng:</strong> "Gravity" (trọng lực) giải thích tại sao bạn nhảy cao hơn trên Mặt Trăng – trọng lực mặt trăng bằng 1/6 trọng lực Trái Đất. Đây là kiến thức khoa học cơ bản. "Weaker gravity" là collocation chuẩn.`
+  },
+  {
+    qnum:12,
+    text:'With a good telescope, you can see _________ on the moon.',
+    opts:[
+      {id:'A',text:'craters'},
+      {id:'B',text:'tidal waves'},
+      {id:'C',text:'villages'},
+      {id:'D',text:'buildings'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Với một kính thiên văn tốt, bạn có thể nhìn thấy _________ trên Mặt Trăng."<br><br>
+• A. craters (n): các hố va chạm (miệng núi lửa) ✅<br>
+• B. tidal waves (n): sóng thần (xảy ra ở đại dương)<br>
+• C. villages (n): các ngôi làng (không có trên Mặt Trăng)<br>
+• D. buildings (n): các tòa nhà (không có trên Mặt Trăng)<br><br>
+<strong>Tại sao A đúng:</strong> Bề mặt Mặt Trăng có rất nhiều "craters" (hố va chạm từ thiên thạch). Đây là điều dễ thấy qua kính thiên văn. Tidal waves xảy ra ở biển, và trên Mặt Trăng không có làng/nhà.`
+  },
+  {
+    qnum:13,
+    text:'_________ are creatures from a planet other than Earth.',
+    opts:[
+      {id:'A',text:'Humans'},
+      {id:'B',text:'Commanders'},
+      {id:'C',text:'Citizens'},
+      {id:'D',text:'Aliens'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "_________ là những sinh vật đến từ hành tinh khác ngoài Trái Đất."<br><br>
+• A. Humans (n): con người (ở Trái Đất)<br>
+• B. Commanders (n): các chỉ huy<br>
+• C. Citizens (n): công dân<br>
+• D. Aliens (n): người ngoài hành tinh ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Alien" = sinh vật từ hành tinh khác (người ngoài hành tinh). Đây là định nghĩa chính xác. Humans là người Trái Đất, commanders/citizens không liên quan đến nguồn gốc hành tinh.`
+  },
+  {
+    qnum:14,
+    text:'The Earth moves around the _________.',
+    opts:[
+      {id:'A',text:'Sun'},
+      {id:'B',text:'Moon'},
+      {id:'C',text:'Galaxy'},
+      {id:'D',text:'Venus'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích kiến thức khoa học</div>
+<strong>Dịch câu:</strong> "Trái Đất quay xung quanh _________."<br><br>
+• A. Sun (n): Mặt Trời ✅<br>
+• B. Moon (n): Mặt Trăng (Mặt Trăng quay xung quanh Trái Đất!)<br>
+• C. Galaxy (n): Thiên Hà (quá lớn, không phải trực tiếp)<br>
+• D. Venus (n): Sao Kim (cũng quay quanh Mặt Trời, không phải Trái Đất)<br><br>
+<strong>Tại sao A đúng:</strong> Đây là kiến thức thiên văn cơ bản: Trái Đất (Earth) quay quanh Mặt Trời (Sun) với chu kỳ 365 ngày. Mặt Trăng (Moon) quay quanh Trái Đất.`
+  },
+  {
+    qnum:15,
+    text:'We need to use a _________ to clearly see the surface of the moon.',
+    opts:[
+      {id:'A',text:'liquid'},
+      {id:'B',text:'UFO'},
+      {id:'C',text:'spaceship'},
+      {id:'D',text:'telescope'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Chúng ta cần dùng _________ để nhìn thấy rõ bề mặt của mặt trăng."<br><br>
+• A. liquid (n): chất lỏng (không liên quan)<br>
+• B. UFO (n): đĩa bay (không phải dụng cụ quan sát)<br>
+• C. spaceship (n): tàu vũ trụ (cần bay lên không gian, không phải quan sát từ xa)<br>
+• D. telescope (n): kính thiên văn ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Telescope" (kính thiên văn) là dụng cụ dùng để quan sát các vật thể xa như mặt trăng. Collocation: "use a telescope to see/observe" là cụm từ tự nhiên và đúng.`
+  },
+  {
+    qnum:16,
+    text:'_________ is the force that causes something to fall to the ground.',
+    opts:[
+      {id:'A',text:'Habitat'},
+      {id:'B',text:'Creature'},
+      {id:'C',text:'Gravity'},
+      {id:'D',text:'Possibility'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "_________ là lực khiến thứ gì đó rơi xuống mặt đất."<br><br>
+• A. Habitat (n): môi trường sống<br>
+• B. Creature (n): sinh vật<br>
+• C. Gravity (n): trọng lực ✅<br>
+• D. Possibility (n): khả năng, sự có thể<br><br>
+<strong>Tại sao C đúng:</strong> Đây là định nghĩa của "gravity" (trọng lực) = lực hút của Trái Đất khiến mọi vật rơi xuống. Isaac Newton khám phá ra trọng lực khi nhìn quả táo rơi. Gravity = "lực khiến vật rơi xuống đất".`
+  },
+  {
+    qnum:17,
+    text:'Traces are marks, objects, or _________ that show that somebody or something existed.',
+    opts:[
+      {id:'A',text:'aliens'},
+      {id:'B',text:'craters'},
+      {id:'C',text:'signs'},
+      {id:'D',text:'liquids'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Dấu vết là những vết, đồ vật, hoặc _________ cho thấy ai đó hoặc thứ gì đó đã tồn tại."<br><br>
+• A. aliens (n): người ngoài hành tinh<br>
+• B. craters (n): hố va chạm<br>
+• C. signs (n): dấu hiệu ✅<br>
+• D. liquids (n): chất lỏng<br><br>
+<strong>Tại sao C đúng:</strong> "Traces" = marks (vết), objects (đồ vật), hoặc "signs" (dấu hiệu) → đây là định nghĩa từ điển của "traces". Câu hỏi đang yêu cầu điền từ đồng nghĩa/bổ sung trong định nghĩa. "Signs" (dấu hiệu) hoàn toàn phù hợp ngữ cảnh.`
+  },
+  {
+    qnum:18,
+    text:'A journey back to Soduka is a _________ book.',
+    opts:[
+      {id:'A',text:'documentary'},
+      {id:'B',text:'travel'},
+      {id:'C',text:'history'},
+      {id:'D',text:'science fiction'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "A Journey Back to Soduka là một cuốn sách _________."<br><br>
+• A. documentary (n/adj): tài liệu, phim tài liệu<br>
+• B. travel (n/adj): du lịch → "travel book" (sách du lịch)<br>
+• C. history (n): lịch sử → "history book" (sách lịch sử)<br>
+• D. science fiction (n): khoa học viễn tưởng ✅<br><br>
+<strong>Tại sao D đúng:</strong> "Soduka" không phải địa danh thực, và "A Journey Back to Soduka" là tên một cuốn sách khoa học viễn tưởng về hành trình trong không gian/vũ trụ. "Science fiction" = thể loại văn học/phim về khoa học tưởng tượng.`
+  },
+  {
+    qnum:19,
+    text:'Travelling to Mars might _________ a reality sooner than you think.',
+    opts:[
+      {id:'A',text:'becoming'},
+      {id:'B',text:'become'},
+      {id:'C',text:'became'},
+      {id:'D',text:'to become'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích ngữ pháp</div>
+<strong>Dịch câu:</strong> "Du hành đến Sao Hỏa có thể _________ hiện thực sớm hơn bạn nghĩ."<br><br>
+• A. becoming: V-ing (không dùng sau "might")<br>
+• B. become: động từ nguyên mẫu ✅<br>
+• C. became: quá khứ đơn (không phù hợp với "might")<br>
+• D. to become: to-infinitive (không dùng sau modal verb)<br><br>
+<strong>Cấu trúc:</strong> Modal verb (might/can/will/should...) + <strong>V nguyên mẫu (bare infinitive)</strong><br>
+→ might + <strong>become</strong> (KHÔNG dùng "to become" hay "becoming" sau modal verbs).<br>
+Ví dụ: She might come. / He can swim. / They will go.`
+  },
+  {
+    qnum:20,
+    text:'Jupiter is the largest planet _________ about 63 moons.',
+    opts:[
+      {id:'A',text:'has'},
+      {id:'B',text:'have'},
+      {id:'C',text:'with'},
+      {id:'D',text:'there'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích ngữ pháp</div>
+<strong>Dịch câu:</strong> "Sao Mộc là hành tinh lớn nhất _________ khoảng 63 mặt trăng."<br><br>
+• A. has: động từ (nhưng câu đã có động từ "is", không cần thêm)<br>
+• B. have: động từ (tương tự A)<br>
+• C. with: giới từ ✅<br>
+• D. there: ở đó (sai ngữ pháp)<br><br>
+<strong>Tại sao C đúng:</strong> Câu đã hoàn chỉnh "Jupiter IS the largest planet". Phần sau là cụm bổ sung thông tin → dùng giới từ "<strong>with</strong>" (= có, kèm theo). Cấu trúc: Noun Phrase + <strong>with</strong> + Noun Phrase.<br>
+Ví dụ: "a house with a big garden" (ngôi nhà với vườn lớn).`
+  },
+  {
+    qnum:21,
+    text:'The atmosphere of Venus is quite _________ from ours.',
+    opts:[
+      {id:'A',text:'differ'},
+      {id:'B',text:'different'},
+      {id:'C',text:'difference'},
+      {id:'D',text:'differently'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích ngữ pháp – Word Forms</div>
+<strong>Dịch câu:</strong> "Bầu khí quyển của Sao Kim khá _________ so với của chúng ta."<br><br>
+• A. differ (v): khác nhau (động từ)<br>
+• B. different (adj): khác biệt ✅<br>
+• C. difference (n): sự khác biệt (danh từ)<br>
+• D. differently (adv): một cách khác biệt (trạng từ)<br><br>
+<strong>Cấu trúc:</strong> be + <strong>quite + adj</strong> + from<br>
+→ "is quite <strong>different</strong> from" (khá khác so với...)<br>
+Collocation cố định: be <strong>different from</strong> (không dùng "different to" hay "different than" trong British English trang trọng).`
+  },
+  {
+    qnum:22,
+    text:'The planets in the solar system are named _________ the Roman Gods.',
+    opts:[
+      {id:'A',text:'after'},
+      {id:'B',text:'before'},
+      {id:'C',text:'to'},
+      {id:'D',text:'according'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích ngữ pháp – Collocation</div>
+<strong>Dịch câu:</strong> "Các hành tinh trong hệ mặt trời được đặt tên _________ các vị thần La Mã."<br><br>
+• A. after: theo, theo tên của ✅<br>
+• B. before: trước (sai nghĩa)<br>
+• C. to: đến (sai collocation)<br>
+• D. according: theo (nhưng cần "according to" và không phù hợp nghĩa)<br><br>
+<strong>Collocation cố định:</strong> be named <strong>after</strong> sb/sth = được đặt tên theo ai/cái gì.<br>
+Ví dụ: "She was named after her grandmother." (Cô ấy được đặt tên theo bà nội.)<br>
+→ "named after the Roman Gods" = đặt tên theo các thần La Mã (Mercury, Venus, Mars, Jupiter, Saturn...)`
+  },
+  {
+    qnum:23,
+    text:'Vostok 1 is the name of the _________ in which Yuri Gagarin flew into outer space.',
+    opts:[
+      {id:'A',text:'soldier'},
+      {id:'B',text:'spaceship'},
+      {id:'C',text:'commander'},
+      {id:'D',text:'creature'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng</div>
+<strong>Dịch câu:</strong> "Vostok 1 là tên của _________ mà Yuri Gagarin đã bay vào vũ trụ."<br><br>
+• A. soldier (n): người lính<br>
+• B. spaceship (n): tàu vũ trụ ✅<br>
+• C. commander (n): chỉ huy<br>
+• D. creature (n): sinh vật<br><br>
+<strong>Tại sao B đúng:</strong> Vostok 1 là TÊN CỦA TÀU VŨ TRỤ (spaceship) mà Yuri Gagarin – phi hành gia đầu tiên của thế giới – đã dùng để bay vào không gian ngày 12/4/1961. Đây là kiến thức lịch sử + từ vựng kết hợp.`
+  },
+  {
+    qnum:24,
+    text:'The space exploration project looks quite _________ although it is led by a young scientist.',
+    opts:[
+      {id:'A',text:'difficult'},
+      {id:'B',text:'promising'},
+      {id:'C',text:'unrealistic'},
+      {id:'D',text:'problematic'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng & ngữ cảnh</div>
+<strong>Dịch câu:</strong> "Dự án thám hiểm không gian trông khá _________ mặc dù được dẫn dắt bởi một nhà khoa học trẻ."<br><br>
+• A. difficult (adj): khó khăn (không hợp – "although" gợi ý điều tích cực)<br>
+• B. promising (adj): đầy hứa hẹn, có triển vọng ✅<br>
+• C. unrealistic (adj): không thực tế (trái nghĩa với ý câu)<br>
+• D. problematic (adj): có vấn đề, rắc rối (không hợp)<br><br>
+<strong>Tại sao B đúng:</strong> Liên từ "although" (mặc dù) dùng để nối hai ý tương phản. Vế sau "led by a young scientist" (do nhà khoa học trẻ dẫn dắt) → có thể ai đó nghĩ sẽ không tốt. Vậy vế trước phải là điều TÍCH CỰC. → "promising" (đầy hứa hẹn) phù hợp nhất.`
+  },
+  {
+    qnum:25,
+    text:'Several moons in our solar system have _________ of frozen water on them.',
+    opts:[
+      {id:'A',text:'some'},
+      {id:'B',text:'traces'},
+      {id:'C',text:'many'},
+      {id:'D',text:'opportunities'}
+    ],
+    correct:'B',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng – Collocation</div>
+<strong>Dịch câu:</strong> "Một số mặt trăng trong hệ mặt trời của chúng ta có _________ của nước đá trên đó."<br><br>
+• A. some: một vài (đại từ/tính từ, không dùng "some of frozen water")<br>
+• B. traces (n): dấu vết ✅<br>
+• C. many: nhiều (cần danh từ đếm được ngay sau)<br>
+• D. opportunities (n): cơ hội (sai nghĩa hoàn toàn)<br><br>
+<strong>Collocation:</strong> <strong>traces of</strong> + N = dấu vết của...<br>
+Ví dụ: "traces of water" (dấu vết nước), "traces of life" (dấu hiệu của sự sống).<br>
+Đây là collocation phổ biến trong văn bản khoa học về khám phá vũ trụ.`
+  },
+  {
+    qnum:26,
+    text:'Many people want to know about outer space, so they _________ the closing of the space research centre.',
+    opts:[
+      {id:'A',text:'support'},
+      {id:'B',text:'advise'},
+      {id:'C',text:'oppose'},
+      {id:'D',text:'refuse'}
+    ],
+    correct:'C',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng & ngữ cảnh</div>
+<strong>Dịch câu:</strong> "Nhiều người muốn biết về vũ trụ, vì vậy họ _________ việc đóng cửa trung tâm nghiên cứu không gian."<br><br>
+• A. support (v): ủng hộ (sai – ủng hộ ĐÓNG CỬA trung tâm thì trái với ý câu)<br>
+• B. advise (v): khuyên (không hợp ngữ cảnh)<br>
+• C. oppose (v): phản đối ✅<br>
+• D. refuse (v): từ chối (từ chối làm gì đó, không dùng khi phản đối việc đóng cửa)<br><br>
+<strong>Logic câu:</strong> Nếu mọi người MUỐN biết về vũ trụ → họ sẽ PHẢN ĐỐI (oppose) việc đóng cửa trung tâm nghiên cứu. "So" (vì vậy) chỉ kết quả logic. → "oppose the closing" = phản đối việc đóng cửa.`
+  },
+  {
+    qnum:27,
+    text:"According to the weather forecast, there's a _________ of rain tonight.",
+    opts:[
+      {id:'A',text:'possibility'},
+      {id:'B',text:'ability'},
+      {id:'C',text:'competency'},
+      {id:'D',text:'situation'}
+    ],
+    correct:'A',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng – Collocation</div>
+<strong>Dịch câu:</strong> "Theo dự báo thời tiết, có _________ trời sẽ mưa tối nay."<br><br>
+• A. possibility (n): khả năng (có thể xảy ra) ✅<br>
+• B. ability (n): khả năng (năng lực của người/vật – ability to do sth)<br>
+• C. competency (n): năng lực (chuyên môn, kỹ năng của người)<br>
+• D. situation (n): tình huống, hoàn cảnh<br><br>
+<strong>Collocation cố định:</strong> there's a <strong>possibility of</strong> + N/V-ing = có khả năng...<br>
+Ví dụ: "There's a possibility of snow tomorrow." (Ngày mai có thể có tuyết.)<br>
+"Ability" và "competency" dùng cho KHẢ NĂNG của con người, không dùng cho sự kiện tự nhiên.`
+  },
+  {
+    qnum:28,
+    text:'Are there any _________ of life which could exist on Mercury?',
+    opts:[
+      {id:'A',text:'shapes'},
+      {id:'B',text:'ways'},
+      {id:'C',text:'works'},
+      {id:'D',text:'forms'}
+    ],
+    correct:'D',
+    exp:`<div class="exp-title">📚 Phân tích từ vựng – Collocation</div>
+<strong>Dịch câu:</strong> "Có _________ nào của sự sống có thể tồn tại trên Sao Thủy không?"<br><br>
+• A. shapes (n): hình dạng (không dùng "shapes of life")<br>
+• B. ways (n): cách thức (không dùng "ways of life" trong ngữ cảnh này)<br>
+• C. works (n): tác phẩm, hoạt động (không phù hợp)<br>
+• D. forms (n): dạng, hình thức ✅<br><br>
+<strong>Collocation cố định:</strong> <strong>forms of life</strong> = các dạng sống<br>
+Đây là cụm từ khoa học rất phổ biến: "forms of life" (các dạng sống), "life forms" (sinh vật sống). Ví dụ: "Scientists search for forms of life on other planets." (Các nhà khoa học tìm kiếm các dạng sống trên các hành tinh khác.)`
+  }
+];
+
+// ===========================
+// RENDER ENGINE
+// ===========================
+let answeredMap = {}; // qid -> {chosen, correct}
+let matchState = {selectedLeft: null, matched: {}};
+let matchScore = {correct:0, total:10};
+
+function renderAll(){
+  const container = document.getElementById('main-container');
+  container.innerHTML = '';
+
+  // SECTION A - EX 2
+  container.innerHTML += `<div class="section-title">📌 SECTION A – PHONETICS</div>
+    <div class="section-subtitle">Exercise 2: Choose the word whose <u>underlined part</u> is pronounced differently from the others.</div>`;
+  ex_a2.forEach(q => container.innerHTML += renderMCQ(q, 'ex_a2'));
+
+  // SECTION A - EX 3
+  container.innerHTML += `<div class="section-title" style="margin-top:30px">📌 SECTION A – STRESS</div>
+    <div class="section-subtitle">Exercise 3: Choose the word whose main <strong>stress</strong> is different from the others.</div>`;
+  ex_a3.forEach(q => container.innerHTML += renderMCQ(q, 'ex_a3'));
+
+  // SECTION B - EX 1 MATCHING
+  container.innerHTML += `<div class="section-title" style="margin-top:30px">📌 SECTION B – VOCABULARY: MATCHING</div>
+    <div class="section-subtitle">Exercise 1: Match the words or phrases on the left with their meaning on the right.</div>`;
+  container.innerHTML += renderMatching();
+
+  // SECTION B - EX 2
+  container.innerHTML += `<div class="section-title" style="margin-top:30px">📌 SECTION B – VOCABULARY & GRAMMAR</div>
+    <div class="section-subtitle">Exercise 2: Choose the word/phrase (A, B, C, or D) that best fits the blank.</div>`;
+  ex_b2.forEach(q => container.innerHTML += renderMCQ(q, 'ex_b2'));
+
+  updateLiveScore();
+}
+
+function renderMCQ(q, prefix){
+  const qid = `${prefix}_${q.qnum}`;
+  const shuffledOpts = shuffle(q.opts);
+  let optsHTML = shuffledOpts.map(opt =>
+    `<button class="opt-btn" id="opt_${qid}_${opt.id}" onclick="chooseOpt('${qid}','${opt.id}','${q.correct}')">
+      <span class="opt-label">${opt.id}</span>
+      <span>${opt.html || opt.text}</span>
+    </button>`
+  ).join('');
+
+  return `<div class="q-card" id="qcard_${qid}">
+    <div class="q-text"><span class="q-num">${q.qnum}</span> ${q.text || ''}</div>
+    <div class="options-grid">${optsHTML}</div>
+    <div class="explanation" id="exp_${qid}">${q.exp}</div>
+  </div>`;
+}
+
+function chooseOpt(qid, chosen, correct){
+  if(answeredMap[qid]) return;
+  answeredMap[qid] = {chosen, correct};
+
+  const allOpts = document.querySelectorAll(`[id^="opt_${qid}_"]`);
+  allOpts.forEach(btn => {
+    btn.classList.add('disabled');
+    const optId = btn.id.split('_').pop();
+    if(optId === correct) btn.classList.add('correct');
+    else if(optId === chosen && chosen !== correct) btn.classList.add('wrong');
+    else btn.classList.add('dim');
+  });
+
+  document.getElementById(`exp_${qid}`).classList.add('show');
+
+  if(chosen === correct){
+    playCorrect(); launchConfetti();
+    totalCorrect++;
+  } else {
+    playWrong();
+    totalWrong++;
+  }
+  totalAnswered++;
+  updateScore();
+}
+
+function renderMatching(){
+  const shuffledRight = shuffle([...matchingRight]);
+  let leftHTML = matchingLeft.map(item =>
+    `<div class="match-item" id="mleft_${item.num}" onclick="matchClickLeft(${item.num})">
+      <span class="match-num">${item.num}</span> ${item.word}
+    </div>`
+  ).join('');
+  let rightHTML = shuffledRight.map(item =>
+    `<div class="match-item" id="mright_${item.letter}" onclick="matchClickRight('${item.letter}')">
+      <span class="match-letter">${item.letter}</span> ${item.def}
+    </div>`
+  ).join('');
+
+  return `<div class="matching-container">
+    <div style="font-size:.92rem;color:#888;margin-bottom:8px;">👆 Nhấp vào từ bên trái, rồi nhấp vào định nghĩa bên phải để ghép đôi!</div>
+    <div class="match-grid">
+      <div>
+        <div class="match-col-header">🔤 Từ / Cụm từ</div>
+        ${leftHTML}
+      </div>
+      <div>
+        <div class="match-col-header">📖 Định nghĩa</div>
+        ${rightHTML}
+      </div>
+    </div>
+    <div class="match-explanation" id="match-exp"></div>
+  </div>`;
+}
+
+function matchClickLeft(num){
+  if(matchState.matched[num]) return;
+  // Deselect previous
+  if(matchState.selectedLeft !== null){
+    const prev = document.getElementById(`mleft_${matchState.selectedLeft}`);
+    if(prev) prev.classList.remove('selected-left');
+  }
+  matchState.selectedLeft = num;
+  const el = document.getElementById(`mleft_${num}`);
+  if(el) el.classList.add('selected-left');
+}
+
+function matchClickRight(letter){
+  if(matchState.selectedLeft === null) return;
+  const num = matchState.selectedLeft;
+  if(matchState.matched[num]) return;
+
+  const rightEl = document.getElementById(`mright_${letter}`);
+  if(rightEl && (rightEl.classList.contains('matched-correct') || rightEl.classList.contains('matched-wrong'))) return;
+
+  const leftEl = document.getElementById(`mleft_${num}`);
+  const isCorrect = matchCorrect[num] === letter;
+
+  matchState.matched[num] = letter;
+  matchState.selectedLeft = null;
+  if(leftEl) leftEl.classList.remove('selected-left');
+
+  if(isCorrect){
+    if(leftEl) leftEl.classList.add('matched-correct');
+    if(rightEl) rightEl.classList.add('matched-correct');
+    playCorrect(); launchConfetti();
+    totalCorrect++; totalAnswered++;
+    totalWrong = Math.max(0, totalAnswered - totalCorrect);
+
+    // Show per-item explanation immediately
+    const expData = matchExplanations[num];
+    const expBox = document.createElement('div');
+    expBox.style.cssText='margin:4px 0 6px 0;padding:8px 12px;background:linear-gradient(135deg,#e0fff2,#d0f7e8);border-left:4px solid #00D26A;border-radius:10px;font-size:0.92rem;animation:fadeIn .3s ease;';
+    expBox.innerHTML = `✅ <strong style="color:#00703a;">${num}. ${matchingLeft[num-1].word}</strong> → <strong style="color:#8854C0;">${matchCorrect[num]}</strong><br>
+      🇻🇳 <strong>${expData.vi}</strong><br>
+      🇬🇧 "${expData.en}"<br>
+      <span style="color:#888;font-size:.88rem;">💡 ${expData.note}</span>`;
+    leftEl.parentNode.insertBefore(expBox, leftEl.nextSibling);
+  } else {
+    if(leftEl){ leftEl.classList.add('matched-wrong'); setTimeout(()=>{leftEl.classList.remove('matched-wrong');delete matchState.matched[num];},800); }
+    if(rightEl){ rightEl.classList.add('matched-wrong'); setTimeout(()=>rightEl.classList.remove('matched-wrong'),800); }
+    playWrong();
+    totalWrong++; totalAnswered++;
+    matchState.matched[num] = null;
+  }
+  updateScore();
+  checkMatchingComplete();
+}
+
+function checkMatchingComplete(){
+  const allDone = matchingLeft.every(item => {
+    const leftEl = document.getElementById(`mleft_${item.num}`);
+    return leftEl && leftEl.classList.contains('matched-correct');
+  });
+  if(allDone){
+    const expEl = document.getElementById('match-exp');
+    if(expEl){
+      expEl.classList.add('show');
+      expEl.innerHTML = `<div class="exp-title">🎉 Xuất sắc! Bạn đã ghép đúng tất cả 10 cặp!</div>
+      <div style="color:#00703a;font-weight:700;font-size:1rem;">✅ Đáp án: 1-E | 2-J | 3-I | 4-G | 5-D | 6-F | 7-H | 8-C | 9-A | 10-B</div>`;
+    }
+  }
+}
+
+function updateLiveScore(){
+  document.getElementById('live-score').textContent = totalCorrect;
+  document.getElementById('live-total').textContent = totalAnswered;
+  document.getElementById('live-correct').textContent = totalCorrect;
+  document.getElementById('live-wrong').textContent = totalWrong;
+}
+
+function submitAll(){
+  // Count all answered MCQs
+  let totalQ = ex_a2.length + ex_a3.length + ex_b2.length + 10; // +10 for matching
+  let answered = Object.keys(answeredMap).length;
+  let matchDone = matchingLeft.filter(item => {
+    const el = document.getElementById(`mleft_${item.num}`);
+    return el && el.classList.contains('matched-correct');
+  }).length;
+
+  // Show all explanations for unanswered
+  [...ex_a2, ...ex_a3, ...ex_b2].forEach(q => {
+    const prefix = ex_a2.includes(q) ? 'ex_a2' : (ex_a3.includes(q) ? 'ex_a3' : 'ex_b2');
+    const qid = `${prefix}_${q.qnum}`;
+    if(!answeredMap[qid]){
+      document.getElementById(`exp_${qid}`)?.classList.add('show');
+    }
+  });
+
+  const totalAnsweredQ = answered + matchDone;
+  const pct = totalQ > 0 ? Math.round((totalCorrect / totalQ) * 100) : 0;
+
+  let emoji = '😊', msg = '';
+  if(pct >= 90){ emoji='🏆'; msg='Xuất sắc! Bạn là ngôi sao vũ trụ! 🌟';}
+  else if(pct >= 75){ emoji='🎉'; msg='Giỏi lắm! Tiếp tục phát huy nhé! 💪';}
+  else if(pct >= 60){ emoji='😊'; msg='Khá tốt! Cố gắng thêm một chút nữa! 📚';}
+  else if(pct >= 40){ emoji='🌱'; msg='Cần ôn luyện thêm – bạn sẽ tiến bộ thôi! 🚀';}
+  else{ emoji='💡'; msg='Đừng nản lòng! Ôn lại bài và thử lại nhé! ✨';}
+
+  document.getElementById('modal-emoji').textContent = emoji;
+  document.getElementById('modal-score').textContent = `${totalCorrect}/${totalQ}`;
+  document.getElementById('modal-msg').innerHTML = `${msg}<br><span style="font-size:.9rem;color:#aaa;">Tỉ lệ đúng: ${pct}%</span>`;
+  document.getElementById('result-modal').classList.add('show');
+  launchConfetti();
+}
+
+// Init
+renderAll();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

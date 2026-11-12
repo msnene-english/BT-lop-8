@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 11: Science & Technology – English Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#e040fb;--purple:#8854C0;--yellow:#FDCB6E;--teal:#00C9A7;--green:#00D26A;--red:#FF4757;--blue:#4A90E2;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(-45deg,#f8a4d8,#c3a4f8,#a4d4f8,#a4f8d4,#f8f4a4,#f8c4a4);background-size:400% 400%;animation:gradientShift 12s ease infinite;position:relative;overflow-x:hidden;}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.svg-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.14;}
+.container{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:16px;}
+header{background:rgba(255,255,255,0.9);border-radius:20px;padding:14px 20px;margin-bottom:20px;box-shadow:0 4px 20px rgba(136,84,192,0.18);text-align:center;backdrop-filter:blur(8px);}
+header h1{font-size:1.25rem;font-weight:900;background:linear-gradient(90deg,var(--purple),var(--pink),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+header p{font-size:0.8rem;color:#888;margin-top:2px;}
+.section-card{background:rgba(255,255,255,0.9);border-radius:22px;padding:22px 20px 18px;margin-bottom:22px;box-shadow:0 6px 28px rgba(136,84,192,0.13);backdrop-filter:blur(6px);}
+.section-title{font-size:1rem;font-weight:900;color:var(--purple);margin-bottom:16px;padding-bottom:8px;border-bottom:3px dashed #c3a4f8;display:flex;align-items:center;gap:8px;}
+.question-block{margin-bottom:18px;padding:14px 16px;background:rgba(248,244,255,0.7);border-radius:16px;border-left:5px solid var(--purple);transition:transform 0.2s;}
+.question-block:hover{transform:translateX(3px);}
+.q-label{font-weight:800;color:var(--purple);font-size:0.88rem;margin-bottom:5px;}
+.q-text{font-size:0.93rem;color:#333;margin-bottom:5px;line-height:1.65;}
+.q-vi{font-size:0.82rem;color:#777;font-style:italic;margin-bottom:8px;padding:4px 10px;background:rgba(255,253,230,0.7);border-radius:8px;border-left:3px solid var(--yellow);}
+.answer-input{width:100%;padding:10px 14px;border:2.5px solid #c3a4f8;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.88rem;background:rgba(255,255,255,0.9);outline:none;transition:border-color 0.2s,box-shadow 0.2s;color:#333;}
+.answer-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(136,84,192,0.15);}
+.answer-input.correct{border-color:var(--green);background:rgba(0,210,106,0.1);}
+.answer-input.incorrect{border-color:var(--red);background:rgba(255,71,87,0.08);}
+.check-btn{margin-top:8px;padding:7px 18px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer;box-shadow:0 3px 10px rgba(136,84,192,0.3);transition:transform 0.15s;}
+.check-btn:hover{transform:scale(1.05);}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+@media(max-width:500px){.options-grid{grid-template-columns:1fr;}}
+.option-btn{padding:10px 14px;border:2.5px solid #d0b4f8;border-radius:15px;background:rgba(255,255,255,0.9);font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer;text-align:left;box-shadow:0 4px 0 #c3a4f8,0 6px 12px rgba(0,0,0,0.08);transition:transform 0.15s;color:#444;}
+.option-btn:hover:not(:disabled){transform:scale(1.03);}
+.option-btn.correct{background:rgba(0,210,106,0.18);border-color:var(--green);box-shadow:0 4px 0 #00a052;color:#006630;}
+.option-btn.incorrect{background:rgba(255,71,87,0.13);border-color:var(--red);box-shadow:0 4px 0 #c03040;color:#a02030;animation:shake 0.5s;}
+.option-btn:disabled{cursor:default;}
+@keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-7px)}30%{transform:translateX(7px)}45%{transform:translateX(-5px)}60%{transform:translateX(5px)}75%{transform:translateX(-3px)}90%{transform:translateX(3px)}}
+.underline-choices{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.underline-btn{padding:8px 16px;border:2.5px solid #d0b4f8;border-radius:20px;background:rgba(255,255,255,0.9);font-family:'Nunito',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #c3a4f8;transition:transform 0.15s;color:#555;font-style:italic;}
+.underline-btn:hover:not(:disabled){transform:scale(1.05);}
+.underline-btn.correct{background:rgba(0,210,106,0.18);border-color:var(--green);color:#006630;box-shadow:0 3px 0 #00a052;}
+.underline-btn.incorrect{background:rgba(255,71,87,0.13);border-color:var(--red);color:#a02030;box-shadow:0 3px 0 #c03040;animation:shake 0.5s;}
+/* ===== EXPLANATION BOX ===== */
+.explanation-box{display:none;margin-top:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(210,185,255,0.25),rgba(170,230,255,0.2));border-radius:14px;border-left:4px solid var(--teal);font-size:0.84rem;line-height:1.8;color:#2d2d2d;animation:fadeIn 0.4s ease;}
+.explanation-box.show{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.exp-answer{font-size:0.92rem;font-weight:800;color:var(--green);margin-bottom:8px;padding:6px 10px;background:rgba(0,210,106,0.1);border-radius:8px;}
+.exp-translation{background:rgba(253,203,110,0.2);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-style:italic;color:#5a4000;font-size:0.83rem;border-left:3px solid var(--yellow);}
+.exp-section{margin-bottom:6px;}
+.exp-section b{color:var(--purple);}
+.exp-table{width:100%;border-collapse:collapse;margin:6px 0;font-size:0.82rem;}
+.exp-table th{background:rgba(136,84,192,0.15);padding:5px 8px;text-align:left;font-weight:800;color:var(--purple);}
+.exp-table td{padding:4px 8px;border-bottom:1px solid rgba(136,84,192,0.1);}
+.exp-table tr:nth-child(even) td{background:rgba(136,84,192,0.05);}
+.tag-correct{display:inline-block;background:rgba(0,210,106,0.2);color:#006630;font-weight:800;padding:1px 7px;border-radius:10px;font-size:0.78rem;}
+.tag-wrong{display:inline-block;background:rgba(255,71,87,0.15);color:#a02030;font-weight:700;padding:1px 7px;border-radius:10px;font-size:0.78rem;}
+.changes-table{width:100%;border-collapse:collapse;margin:6px 0;font-size:0.82rem;}
+.changes-table th{background:rgba(0,201,167,0.15);padding:5px 8px;text-align:center;font-weight:800;color:#007a65;}
+.changes-table td{padding:4px 8px;border-bottom:1px solid rgba(0,201,167,0.15);text-align:center;}
+.arrow-cell{color:var(--purple);font-weight:800;font-size:1rem;}
+/* submit */
+.submit-section{text-align:center;margin:30px 0 20px;}
+.submit-btn{padding:16px 50px;font-size:1.05rem;font-weight:900;font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--purple),var(--pink),var(--teal));background-size:200% 200%;animation:gradientShift 4s ease infinite;color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 8px 0 rgba(136,84,192,0.4),0 12px 28px rgba(136,84,192,0.3);transition:transform 0.15s;}
+.submit-btn:hover{transform:scale(1.05);}
+#result-popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(80,40,140,0.55);z-index:1000;justify-content:center;align-items:center;backdrop-filter:blur(4px);}
+#result-popup.show{display:flex;}
+.result-card{background:linear-gradient(135deg,#fff9ff,#f0f8ff);border-radius:28px;padding:36px 40px;text-align:center;box-shadow:0 20px 60px rgba(136,84,192,0.35);max-width:420px;width:90%;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+.result-emoji{font-size:4rem;margin-bottom:12px;}
+.result-score{font-size:2.8rem;font-weight:900;color:var(--purple);margin-bottom:8px;}
+.result-msg{font-size:1rem;font-weight:700;color:#555;margin-bottom:20px;}
+.close-result{padding:12px 36px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:25px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 5px 0 rgba(136,84,192,0.4);}
+.confetti-piece{position:fixed;pointer-events:none;z-index:9999;animation:confettiFall 1.5s ease-out forwards;}
+@keyframes confettiFall{0%{transform:translateY(-100px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.score-badge{position:fixed;top:14px;right:14px;z-index:100;background:rgba(255,255,255,0.92);border-radius:50px;padding:8px 18px;font-size:0.86rem;font-weight:800;color:var(--purple);box-shadow:0 4px 16px rgba(136,84,192,0.2);backdrop-filter:blur(6px);}
+.word-bank{background:rgba(200,230,255,0.4);border-radius:10px;padding:7px 12px;margin-bottom:8px;font-size:0.8rem;color:#555;}
+.word-bank span{font-weight:700;color:var(--blue);}
+.progress-bar-wrap{background:rgba(200,180,240,0.3);border-radius:10px;height:7px;margin-bottom:14px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--teal));border-radius:10px;transition:width 0.4s ease;}
+</style>
+</head>
+<body>
+<svg class="svg-bg" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="pat" x="0" y="0" width="90" height="90" patternUnits="userSpaceOnUse">
+      <text x="4" y="24" font-size="20">⭐</text><text x="44" y="18" font-size="17">🌸</text>
+      <text x="62" y="60" font-size="17">🐱</text><text x="8" y="72" font-size="17">🍊</text>
+      <text x="32" y="50" font-size="15">☁️</text><text x="74" y="34" font-size="14">🌟</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#pat)"/>
+</svg>
+<div class="score-badge" id="score-badge">⭐ 0 / 0</div>
+<div class="container">
+<header>
+  <h1>🚀 Unit 11: Science &amp; Technology – English Test</h1>
+  <p>Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong></p>
+</header>
+
+<!-- ============================================================ -->
+<!-- VI. REPORTED SPEECH – TENSE CHANGES                          -->
+<!-- ============================================================ -->
+<div class="section-card">
+<div class="section-title"><span class="icon">✍️</span>VI. Rewrite as Reported Speech (Tense Changes)</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+
+<div class="question-block" id="q-vi1">
+  <div class="q-label">1.</div>
+  <div class="q-text">Direct: <em>'I'm reading a science book now.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi đang đọc một cuốn sách khoa học bây giờ."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">She told me that _______________</div>
+  <input class="answer-input" id="inp-vi1" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi1',['she was reading a science book then','she was reading a science book at that time'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi1">
+    <div class="exp-answer">✅ She told me that she was reading a science book then.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Cô ấy nói với tôi rằng lúc đó cô ấy đang đọc một cuốn sách khoa học."</div>
+    <div class="exp-section"><b>📊 Bảng thay đổi khi chuyển sang Reported Speech:</b></div>
+    <table class="changes-table">
+      <tr><th>Direct Speech</th><th>→</th><th>Reported Speech</th><th>Lý do</th></tr>
+      <tr><td><em>I'm reading</em> (Pres. Cont.)</td><td class="arrow-cell">→</td><td><em>she was reading</em> (Past Cont.)</td><td>Lùi thì</td></tr>
+      <tr><td><em>I</em></td><td class="arrow-cell">→</td><td><em>she</em></td><td>Đổi đại từ</td></tr>
+      <tr><td><em>now</em></td><td class="arrow-cell">→</td><td><em>then / at that time</em></td><td>Đổi trạng từ</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi2">
+  <div class="q-label">2.</div>
+  <div class="q-text">Direct: <em>'The 8.30 flight to Da Nang will be delayed for 2 hours.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chuyến bay 8h30 đến Đà Nẵng sẽ bị trễ 2 tiếng."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">They announced that _______________</div>
+  <input class="answer-input" id="inp-vi2" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi2',['the 8.30 flight to da nang would be delayed for 2 hours'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi2">
+    <div class="exp-answer">✅ They announced that the 8.30 flight to Da Nang would be delayed for 2 hours.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Họ thông báo rằng chuyến bay 8h30 đến Đà Nẵng sẽ bị trễ 2 tiếng."</div>
+    <table class="changes-table">
+      <tr><th>Direct Speech</th><th>→</th><th>Reported Speech</th><th>Lý do</th></tr>
+      <tr><td><em>will be delayed</em> (Future Passive)</td><td class="arrow-cell">→</td><td><em>would be delayed</em> (Conditional Passive)</td><td>Lùi thì will → would</td></tr>
+    </table>
+    <div class="exp-section" style="margin-top:6px">📝 Địa danh <em>Da Nang</em>, số giờ <em>2 hours</em> → giữ nguyên, không đổi.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi3">
+  <div class="q-label">3.</div>
+  <div class="q-text">Direct: <em>'We will apply a new production chain this year.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chúng tôi sẽ áp dụng một dây chuyền sản xuất mới trong năm nay."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">The CEO of Volkswagen said that _______________</div>
+  <input class="answer-input" id="inp-vi3" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi3',['they would apply a new production chain that year'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi3">
+    <div class="exp-answer">✅ The CEO of Volkswagen said that they would apply a new production chain that year.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "CEO của Volkswagen cho biết rằng họ sẽ áp dụng một dây chuyền sản xuất mới trong năm đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>We will apply</em></td><td class="arrow-cell">→</td><td><em>they would apply</em></td></tr>
+      <tr><td><em>We</em></td><td class="arrow-cell">→</td><td><em>they</em> (CEO nói về công ty mình)</td></tr>
+      <tr><td><em>this year</em></td><td class="arrow-cell">→</td><td><em>that year</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi4">
+  <div class="q-label">4.</div>
+  <div class="q-text">Direct: <em>'The invention of light bulb is very important.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Sự phát minh ra bóng đèn rất quan trọng."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">My teacher said that _______________</div>
+  <input class="answer-input" id="inp-vi4" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi4',['the invention of light bulb was very important'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi4">
+    <div class="exp-answer">✅ My teacher said that the invention of light bulb was very important.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Giáo viên tôi nói rằng sự phát minh ra bóng đèn rất quan trọng."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>is</em> (Pres. Simple)</td><td class="arrow-cell">→</td><td><em>was</em> (Past Simple)</td></tr>
+    </table>
+    <div class="exp-section" style="margin-top:6px">📝 Danh từ <em>the invention of light bulb</em> và tính từ <em>very important</em> giữ nguyên.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi5">
+  <div class="q-label">5.</div>
+  <div class="q-text">Direct: <em>'My engineers can assemble 5 car engines a week.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Các kỹ sư của tôi có thể lắp ráp 5 động cơ ô tô mỗi tuần."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">The director said that _______________</div>
+  <input class="answer-input" id="inp-vi5" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi5',['his engineers could assemble 5 car engines a week','his/her engineers could assemble 5 car engines a week','her engineers could assemble 5 car engines a week'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi5">
+    <div class="exp-answer">✅ The director said that his/her engineers could assemble 5 car engines a week.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Giám đốc cho biết rằng các kỹ sư của ông/bà có thể lắp ráp 5 động cơ ô tô mỗi tuần."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>can</em></td><td class="arrow-cell">→</td><td><em>could</em></td></tr>
+      <tr><td><em>My</em></td><td class="arrow-cell">→</td><td><em>his/her</em> (tùy giới tính giám đốc)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi6">
+  <div class="q-label">6.</div>
+  <div class="q-text">Direct: <em>'I hope you will build the airport with lowest cost.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi hy vọng các bạn sẽ xây dựng sân bay với chi phí thấp nhất."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">The Prime Minister told foreign investors that _______________</div>
+  <input class="answer-input" id="inp-vi6" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi6',['he hoped they would build the airport with lowest cost','he/she hoped they would build the airport with lowest cost','she hoped they would build the airport with lowest cost'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi6">
+    <div class="exp-answer">✅ The Prime Minister told foreign investors that he/she hoped they would build the airport with lowest cost.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Thủ tướng nói với các nhà đầu tư nước ngoài rằng ông/bà hy vọng họ sẽ xây dựng sân bay với chi phí thấp nhất."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I hope</em></td><td class="arrow-cell">→</td><td><em>he/she hoped</em></td></tr>
+      <tr><td><em>you will build</em></td><td class="arrow-cell">→</td><td><em>they would build</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi7">
+  <div class="q-label">7.</div>
+  <div class="q-text">Direct: <em>'We plan to make the city a safer place for everyone.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chúng tôi có kế hoạch biến thành phố thành nơi an toàn hơn cho mọi người."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">The local MP said that _______________</div>
+  <input class="answer-input" id="inp-vi7" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi7',['they planned to make the city a safer place for everyone'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi7">
+    <div class="exp-answer">✅ The local MP said that they planned to make the city a safer place for everyone.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Nghị sĩ địa phương cho biết họ có kế hoạch biến thành phố thành nơi an toàn hơn cho mọi người."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>We plan</em> (Pres. Simple)</td><td class="arrow-cell">→</td><td><em>they planned</em> (Past Simple)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi8">
+  <div class="q-label">8.</div>
+  <div class="q-text">Direct: <em>'Scientists are using AI to improve the treatment and diagnosis of cancer.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Các nhà khoa học đang sử dụng AI để cải thiện việc điều trị và chẩn đoán ung thư."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">Carol said that _______________</div>
+  <input class="answer-input" id="inp-vi8" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi8',['scientists were using ai to improve the treatment and diagnosis of cancer'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi8">
+    <div class="exp-answer">✅ Carol said that scientists were using AI to improve the treatment and diagnosis of cancer.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Carol cho biết các nhà khoa học đang sử dụng AI để cải thiện việc điều trị và chẩn đoán ung thư."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>are using</em> (Pres. Cont.)</td><td class="arrow-cell">→</td><td><em>were using</em> (Past Cont.)</td></tr>
+    </table>
+    <div class="exp-section" style="margin-top:6px">📝 Chủ ngữ <em>Scientists</em> là danh từ số nhiều chung → giữ nguyên, không đổi đại từ.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi9">
+  <div class="q-label">9.</div>
+  <div class="q-text">Direct: <em>'We don't have computers or laptops, so we can't study online.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chúng tôi không có máy tính hay laptop, vì vậy chúng tôi không thể học trực tuyến."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">Some children said that _______________</div>
+  <input class="answer-input" id="inp-vi9" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi9',[`they didn't have computers or laptops so they couldn't study online`,`they did not have computers or laptops so they could not study online`])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi9">
+    <div class="exp-answer">✅ Some children said that they didn't have computers or laptops, so they couldn't study online.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Một số trẻ em cho biết chúng không có máy tính hay laptop, vì vậy chúng không thể học trực tuyến."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>We don't have</em></td><td class="arrow-cell">→</td><td><em>they didn't have</em></td></tr>
+      <tr><td><em>we can't</em></td><td class="arrow-cell">→</td><td><em>they couldn't</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vi10">
+  <div class="q-label">10.</div>
+  <div class="q-text">Direct: <em>'I actually find online classes very inconvenient.'</em></div>
+  <div class="q-vi">📌 Nghĩa: "Thực ra tôi thấy các lớp học trực tuyến rất bất tiện."</div>
+  <div class="q-text" style="color:#666;font-size:0.86rem">Harry told us that _______________</div>
+  <input class="answer-input" id="inp-vi10" placeholder="Nhập câu reported speech..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('vi10',['he actually found online classes very inconvenient'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-vi10">
+    <div class="exp-answer">✅ Harry told us that he actually found online classes very inconvenient.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Harry nói với chúng tôi rằng thực ra anh ấy thấy các lớp học trực tuyến rất bất tiện."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I find</em> (Pres. Simple)</td><td class="arrow-cell">→</td><td><em>he found</em> (Past Simple)</td></tr>
+      <tr><td><em>I</em></td><td class="arrow-cell">→</td><td><em>he</em></td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- VII. UNDERLINE BEST OPTION                                    -->
+<!-- ============================================================ -->
+<div class="section-card">
+<div class="section-title"><span class="icon">🔍</span>VII. Underline the Best Option</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+
+<div class="question-block" id="q-vii1">
+  <div class="q-label">1.</div>
+  <div class="q-text">She said she was seeing her brother <em>the following day / the previous day</em>.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Cô ấy nói rằng cô ấy đang gặp anh/em trai vào ngày ___ đó."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii1',this,'wrong')"><em>the following day</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii1',this,'correct')"><em>the previous day</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii1">
+    <div class="exp-answer">✅ the previous day</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Cô ấy nói rằng cô ấy đã gặp anh/em trai vào ngày hôm trước."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>was seeing</em> (Past Continuous) = hành động đã xảy ra trong quá khứ → cần trạng từ chỉ quá khứ.<br>
+    • <span class="tag-correct">✅ the previous day</span> = ngày hôm trước → ĐÚNG (đây là gặp gỡ đã xảy ra rồi).<br>
+    • <span class="tag-wrong">❌ the following day</span> = ngày hôm sau → SAI (hàm ý tương lai, mâu thuẫn với "was seeing").</div>
+    <div class="exp-section"><b>📊 Bảng đổi trạng từ thời gian trong Reported Speech:</b></div>
+    <table class="exp-table">
+      <tr><th>Direct Speech</th><th>Reported Speech</th></tr>
+      <tr><td>yesterday</td><td>the previous day / the day before</td></tr>
+      <tr><td>today</td><td>that day</td></tr>
+      <tr><td>tomorrow</td><td>the following day / the next day</td></tr>
+      <tr><td>next week/month/year</td><td>the following week/month/year</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii2">
+  <div class="q-label">2.</div>
+  <div class="q-text">Mike said he <em>puts / put</em> his laptop on that table over there.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Mike nói rằng anh ấy đặt laptop của mình lên cái bàn đó."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii2',this,'wrong')"><em>puts</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii2',this,'correct')"><em>put</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii2">
+    <div class="exp-answer">✅ put</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Mike nói rằng anh ấy đã đặt laptop của mình lên cái bàn đó."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • Động từ tường thuật <em>said</em> (quá khứ) → vế sau phải lùi thì.<br>
+    • <span class="tag-wrong">❌ puts</span> = Present Simple → không dùng sau động từ tường thuật quá khứ.<br>
+    • <span class="tag-correct">✅ put</span> = Past Simple → ĐÚNG. (<em>put</em> là động từ bất quy tắc: put – put – put; V1 = V2 nên hình thức trông giống nhau nhưng nghĩa là quá khứ.)</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii3">
+  <div class="q-label">3.</div>
+  <div class="q-text">James told me that he was leaving <em>here / there</em> the next day.</div>
+  <div class="q-vi">📌 Nghĩa câu: "James nói với tôi rằng anh ấy sẽ rời ___ vào ngày hôm sau."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii3',this,'wrong')"><em>here</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii3',this,'correct')"><em>there</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii3">
+    <div class="exp-answer">✅ there</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "James nói với tôi rằng anh ấy sẽ rời nơi đó vào ngày hôm sau."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • Trong Reported Speech: <em>here → there</em> (trạng từ nơi chốn cũng thay đổi).<br>
+    • <span class="tag-wrong">❌ here</span> = ở đây → chỉ dùng khi người nghe và người nói cùng ở một chỗ (Direct Speech).<br>
+    • <span class="tag-correct">✅ there</span> = ở đó → ĐÚNG.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii4">
+  <div class="q-label">4.</div>
+  <div class="q-text">I met Tom two days ago and he said he was going to London <em>tomorrow / the next day</em>.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Tôi gặp Tom hai ngày trước và anh ấy nói rằng anh ấy sẽ đến London vào ___."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii4',this,'wrong')"><em>tomorrow</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii4',this,'correct')"><em>the next day</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii4">
+    <div class="exp-answer">✅ the next day</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Tôi gặp Tom hai ngày trước và anh ấy nói rằng anh ấy sẽ đến London vào ngày hôm sau."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>he said</em> = động từ tường thuật quá khứ → <em>tomorrow</em> phải đổi.<br>
+    • <span class="tag-wrong">❌ tomorrow</span> = ngày mai → chỉ dùng trong Direct Speech.<br>
+    • <span class="tag-correct">✅ the next day / the following day</span> = ngày hôm sau đó → ĐÚNG.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii5">
+  <div class="q-label">5.</div>
+  <div class="q-text">Erica told me she <em>won't / wouldn't</em> be back until the following Thursday.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Erica nói với tôi rằng cô ấy sẽ không quay lại cho đến thứ Năm tới."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii5',this,'wrong')"><em>won't</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii5',this,'correct')"><em>wouldn't</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii5">
+    <div class="exp-answer">✅ wouldn't</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Erica nói với tôi rằng cô ấy sẽ không quay lại cho đến thứ Năm tới."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>told</em> (quá khứ) → lùi thì: <em>won't → wouldn't</em><br>
+    • <span class="tag-wrong">❌ won't</span> = will not → hiện tại/tương lai, không dùng sau động từ tường thuật quá khứ.<br>
+    • <span class="tag-correct">✅ wouldn't</span> = would not → ĐÚNG.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii6">
+  <div class="q-label">6.</div>
+  <div class="q-text">John said he would work at that company <em>the previous year / the following year</em>.</div>
+  <div class="q-vi">📌 Nghĩa câu: "John nói rằng anh ấy sẽ làm việc tại công ty đó vào ___."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii6',this,'wrong')"><em>the previous year</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii6',this,'correct')"><em>the following year</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii6">
+    <div class="exp-answer">✅ the following year</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "John nói rằng anh ấy sẽ làm việc tại công ty đó vào năm tiếp theo."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>would work</em> = tương lai (nhìn từ quá khứ) → cần trạng từ chỉ tương lai.<br>
+    • <span class="tag-wrong">❌ the previous year</span> = năm trước → mâu thuẫn với "sẽ làm việc" (tương lai).<br>
+    • <span class="tag-correct">✅ the following year</span> = năm tiếp theo → ĐÚNG (next year → the following year).</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii7">
+  <div class="q-label">7.</div>
+  <div class="q-text">Sam told the police he <em>can't / couldn't</em> recognise the criminal's voice.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Sam nói với cảnh sát rằng anh ấy không thể nhận ra giọng nói của tên tội phạm."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii7',this,'wrong')"><em>can't</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii7',this,'correct')"><em>couldn't</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii7">
+    <div class="exp-answer">✅ couldn't</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Sam nói với cảnh sát rằng anh ấy không thể nhận ra giọng nói của tên tội phạm."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>told</em> (quá khứ) → <em>can't → couldn't</em><br>
+    • <span class="tag-wrong">❌ can't</span> = cannot (hiện tại) → sai sau động từ tường thuật quá khứ.<br>
+    • <span class="tag-correct">✅ couldn't</span> = could not → ĐÚNG.</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii8">
+  <div class="q-label">8.</div>
+  <div class="q-text">Harry told us he <em>caught / was catching</em> the first bus to New York the next day.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Harry nói với chúng tôi rằng anh ấy ___ xe buýt đầu tiên đến New York vào ngày hôm sau."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii8',this,'wrong')"><em>caught</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii8',this,'correct')"><em>was catching</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii8">
+    <div class="exp-answer">✅ was catching</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Harry nói với chúng tôi rằng anh ấy dự định bắt chuyến xe buýt đầu tiên đến New York vào ngày hôm sau."</div>
+    <div class="exp-section"><b>📖 Phân tích chuyên sâu:</b><br>
+    • <em>the next day</em> → hành động trong tương lai (được lên kế hoạch sẵn).<br>
+    • <span class="tag-correct">✅ was catching</span>: Past Continuous dùng để diễn tả <strong>kế hoạch đã được sắp xếp trong tương lai gần</strong> (nhìn từ quá khứ). Tương tự: "I'm catching the bus tomorrow" → "he was catching the bus the next day".<br>
+    • <span class="tag-wrong">❌ caught</span>: Past Simple hàm ý hành động đã xảy ra và hoàn thành rồi → mâu thuẫn với "the next day" (vẫn là tương lai).</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii9">
+  <div class="q-label">9.</div>
+  <div class="q-text">My mother told me that if I <em>eat / ate</em> too much, I would feel ill.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Mẹ tôi nói với tôi rằng nếu tôi ăn quá nhiều, tôi sẽ cảm thấy mệt."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii9',this,'wrong')"><em>eat</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii9',this,'correct')"><em>ate</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii9">
+    <div class="exp-answer">✅ ate</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Mẹ tôi nói với tôi rằng nếu tôi ăn quá nhiều, tôi sẽ cảm thấy mệt."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>told</em> (quá khứ) + mệnh đề điều kiện → lùi thì trong if-clause.<br>
+    • <span class="tag-wrong">❌ eat</span> = Present Simple → sai, phải lùi thì.<br>
+    • <span class="tag-correct">✅ ate</span> = Past Simple → ĐÚNG.<br>
+    • Cấu trúc: <em>If + Past Simple, would + V</em> (Câu điều kiện loại 2 trong Reported Speech)</div>
+  </div>
+</div>
+
+<div class="question-block" id="q-vii10">
+  <div class="q-label">10.</div>
+  <div class="q-text">When I rang her this morning, she told me that she was busy <em>today / that day</em>.</div>
+  <div class="q-vi">📌 Nghĩa câu: "Khi tôi gọi điện cho cô ấy sáng nay, cô ấy nói với tôi rằng cô ấy bận vào ___."</div>
+  <div class="underline-choices">
+    <button class="underline-btn" onclick="checkUnderline('vii10',this,'wrong')"><em>today</em></button>
+    <button class="underline-btn" onclick="checkUnderline('vii10',this,'correct')"><em>that day</em></button>
+  </div>
+  <div class="explanation-box" id="exp-vii10">
+    <div class="exp-answer">✅ that day</div>
+    <div class="exp-translation">🇻🇳 Dịch đầy đủ: "Khi tôi gọi điện cho cô ấy sáng nay, cô ấy nói với tôi rằng cô ấy bận vào ngày hôm đó."</div>
+    <div class="exp-section"><b>📖 Phân tích:</b><br>
+    • <em>told</em> (quá khứ) → <em>today → that day</em><br>
+    • <span class="tag-wrong">❌ today</span> = hôm nay → chỉ dùng trong Direct Speech.<br>
+    • <span class="tag-correct">✅ that day</span> → ĐÚNG. Dù sự kiện xảy ra cùng ngày, khi đã dùng Reported Speech vẫn phải đổi <em>today → that day</em>.</div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- VIII. REPORTED SPEECH – ALL CHANGES                          -->
+<!-- ============================================================ -->
+<div class="section-card">
+<div class="section-title"><span class="icon">📝</span>VIII. Rewrite as Reported Speech (All Necessary Changes)</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+
+<div class="question-block" id="q-viii1">
+  <div class="q-label">1.</div>
+  <div class="q-text">Direct: <em>'I can't chat because I am working now,' said John.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi không thể trò chuyện vì tôi đang làm việc bây giờ," John nói.</div>
+  <input class="answer-input" id="inp-viii1" placeholder="John said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii1',[`john said that he couldn't chat because he was working then`,`john said he couldn't chat because he was working then`])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii1">
+    <div class="exp-answer">✅ John said (that) he couldn't chat because he was working then.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "John nói rằng anh ấy không thể trò chuyện vì anh ấy đang làm việc lúc đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I can't</em></td><td class="arrow-cell">→</td><td><em>he couldn't</em></td></tr>
+      <tr><td><em>I am working</em></td><td class="arrow-cell">→</td><td><em>he was working</em></td></tr>
+      <tr><td><em>now</em></td><td class="arrow-cell">→</td><td><em>then</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii2">
+  <div class="q-label">2.</div>
+  <div class="q-text">Direct: <em>'We're planning to hike across the Brecon Beacons this weekend,' my friends said.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chúng tôi đang lên kế hoạch đi bộ xuyên vùng Brecon Beacons cuối tuần này," bạn bè tôi nói.</div>
+  <input class="answer-input" id="inp-viii2" placeholder="My friends said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii2',['my friends said that they were planning to hike across the brecon beacons that weekend','my friends said they were planning to hike across the brecon beacons that weekend'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii2">
+    <div class="exp-answer">✅ My friends said (that) they were planning to hike across the Brecon Beacons that weekend.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Bạn bè tôi cho biết họ đang lên kế hoạch đi bộ xuyên vùng Brecon Beacons vào cuối tuần đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>We're planning</em></td><td class="arrow-cell">→</td><td><em>they were planning</em></td></tr>
+      <tr><td><em>this weekend</em></td><td class="arrow-cell">→</td><td><em>that weekend</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii3">
+  <div class="q-label">3.</div>
+  <div class="q-text">Direct: <em>Jane told us, 'I'm having dinner with Rachel tomorrow.'</em></div>
+  <div class="q-vi">📌 Nghĩa: Jane nói với chúng tôi rằng: "Tôi sẽ ăn tối với Rachel vào ngày mai."</div>
+  <input class="answer-input" id="inp-viii3" placeholder="Jane told us (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii3',['jane told us that she was having dinner with rachel the next day','jane told us that she was having dinner with rachel the following day'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii3">
+    <div class="exp-answer">✅ Jane told us (that) she was having dinner with Rachel the next day / the following day.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Jane nói với chúng tôi rằng cô ấy sẽ ăn tối với Rachel vào ngày hôm sau."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I'm having</em></td><td class="arrow-cell">→</td><td><em>she was having</em></td></tr>
+      <tr><td><em>tomorrow</em></td><td class="arrow-cell">→</td><td><em>the next day / the following day</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii4">
+  <div class="q-label">4.</div>
+  <div class="q-text">Direct: <em>'Everyone in our team is working very hard today,' the students said.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Mọi người trong nhóm chúng tôi đang làm việc rất chăm chỉ hôm nay," các học sinh nói.</div>
+  <input class="answer-input" id="inp-viii4" placeholder="The students said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii4',['the students said that everyone in their team was working very hard that day'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii4">
+    <div class="exp-answer">✅ The students said (that) everyone in their team was working very hard that day.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Các học sinh cho biết mọi người trong nhóm của họ đang làm việc rất chăm chỉ vào ngày hôm đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>our</em></td><td class="arrow-cell">→</td><td><em>their</em></td></tr>
+      <tr><td><em>is working</em></td><td class="arrow-cell">→</td><td><em>was working</em></td></tr>
+      <tr><td><em>today</em></td><td class="arrow-cell">→</td><td><em>that day</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii5">
+  <div class="q-label">5.</div>
+  <div class="q-text">Direct: <em>'I'll see you here next Friday,' Tom said to me.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi sẽ gặp bạn ở đây vào thứ Sáu tới," Tom nói với tôi.</div>
+  <input class="answer-input" id="inp-viii5" placeholder="Tom said to me (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii5',['tom said to me that he would see me there the next friday','tom said to me that he would see me there the following friday'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii5">
+    <div class="exp-answer">✅ Tom said to me (that) he would see me there the next Friday / the following Friday.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Tom nói với tôi rằng anh ấy sẽ gặp tôi ở đó vào thứ Sáu tiếp theo."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I'll see</em></td><td class="arrow-cell">→</td><td><em>he would see</em></td></tr>
+      <tr><td><em>you</em></td><td class="arrow-cell">→</td><td><em>me</em></td></tr>
+      <tr><td><em>here</em></td><td class="arrow-cell">→</td><td><em>there</em></td></tr>
+      <tr><td><em>next Friday</em></td><td class="arrow-cell">→</td><td><em>the next / the following Friday</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii6">
+  <div class="q-label">6.</div>
+  <div class="q-text">Direct: <em>'We'll show you our new robot later this week,' they told Maria.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Chúng tôi sẽ cho bạn xem robot mới của chúng tôi vào cuối tuần này," họ nói với Maria.</div>
+  <input class="answer-input" id="inp-viii6" placeholder="They told Maria (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii6',['they told maria that they would show her their new robot later that week'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii6">
+    <div class="exp-answer">✅ They told Maria (that) they would show her their new robot later that week.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Họ nói với Maria rằng họ sẽ cho cô ấy xem robot mới của họ vào cuối tuần đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>We'll show</em></td><td class="arrow-cell">→</td><td><em>they would show</em></td></tr>
+      <tr><td><em>you</em></td><td class="arrow-cell">→</td><td><em>her</em> (Maria)</td></tr>
+      <tr><td><em>our</em></td><td class="arrow-cell">→</td><td><em>their</em></td></tr>
+      <tr><td><em>this week</em></td><td class="arrow-cell">→</td><td><em>that week</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii7">
+  <div class="q-label">7.</div>
+  <div class="q-text">Direct: <em>'I don't know where Bill is living at the moment,' said Nicky.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi không biết Bill đang sống ở đâu lúc này," Nicky nói.</div>
+  <input class="answer-input" id="inp-viii7" placeholder="Nicky said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii7',[`nicky said that he didn't know where bill was living at that moment`,`nicky said he didn't know where bill was living at that moment`,`nicky said that she didn't know where bill was living at that moment`])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii7">
+    <div class="exp-answer">✅ Nicky said (that) he/she didn't know where Bill was living at that moment.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Nicky cho biết anh/cô ấy không biết Bill đang sống ở đâu vào lúc đó."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I don't know</em></td><td class="arrow-cell">→</td><td><em>he/she didn't know</em></td></tr>
+      <tr><td><em>is living</em></td><td class="arrow-cell">→</td><td><em>was living</em></td></tr>
+      <tr><td><em>at the moment</em></td><td class="arrow-cell">→</td><td><em>at that moment</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii8">
+  <div class="q-label">8.</div>
+  <div class="q-text">Direct: <em>'My parents are going to London to see my sister next month,' Susan said.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Bố mẹ tôi sẽ đến London để thăm em gái tôi vào tháng tới," Susan nói.</div>
+  <input class="answer-input" id="inp-viii8" placeholder="Susan said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii8',['susan said that her parents were going to london to see her sister the next month','susan said that her parents were going to london to see her sister the following month'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii8">
+    <div class="exp-answer">✅ Susan said (that) her parents were going to London to see her sister the next month / the following month.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Susan cho biết bố mẹ cô ấy sẽ đến London để thăm em gái cô ấy vào tháng tiếp theo."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>My parents</em></td><td class="arrow-cell">→</td><td><em>her parents</em></td></tr>
+      <tr><td><em>are going</em></td><td class="arrow-cell">→</td><td><em>were going</em></td></tr>
+      <tr><td><em>my sister</em></td><td class="arrow-cell">→</td><td><em>her sister</em></td></tr>
+      <tr><td><em>next month</em></td><td class="arrow-cell">→</td><td><em>the next month / the following month</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii9">
+  <div class="q-label">9.</div>
+  <div class="q-text">Direct: <em>'I may see you next week before I leave,' Nick told Sarah.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi có thể gặp bạn vào tuần tới trước khi tôi rời đi," Nick nói với Sarah.</div>
+  <input class="answer-input" id="inp-viii9" placeholder="Nick told Sarah (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii9',['nick told sarah that he might see her the next week before he left','nick told sarah that he might see her the following week before he left'])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii9">
+    <div class="exp-answer">✅ Nick told Sarah (that) he might see her the next week / the following week before he left.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Nick nói với Sarah rằng anh ấy có thể gặp cô ấy vào tuần tới trước khi anh ấy rời đi."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I may</em></td><td class="arrow-cell">→</td><td><em>he might</em></td></tr>
+      <tr><td><em>you</em></td><td class="arrow-cell">→</td><td><em>her</em></td></tr>
+      <tr><td><em>next week</em></td><td class="arrow-cell">→</td><td><em>the next/following week</em></td></tr>
+      <tr><td><em>I leave</em></td><td class="arrow-cell">→</td><td><em>he left</em></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="question-block" id="q-viii10">
+  <div class="q-label">10.</div>
+  <div class="q-text">Direct: <em>'I can't attend the meeting at this time tomorrow,' said Matt.</em></div>
+  <div class="q-vi">📌 Nghĩa: "Tôi không thể tham dự cuộc họp vào giờ này ngày mai," Matt nói.</div>
+  <input class="answer-input" id="inp-viii10" placeholder="Matt said (that)..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkWritten('viii10',[`matt said that he couldn't attend the meeting at that time the next day`,`matt said that he couldn't attend the meeting at that time the following day`])">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-viii10">
+    <div class="exp-answer">✅ Matt said (that) he couldn't attend the meeting at that time the next day / the following day.</div>
+    <div class="exp-translation">🇻🇳 Dịch: "Matt nói rằng anh ấy không thể tham dự cuộc họp vào giờ đó vào ngày hôm sau."</div>
+    <table class="changes-table">
+      <tr><th>Direct</th><th>→</th><th>Reported</th></tr>
+      <tr><td><em>I can't</em></td><td class="arrow-cell">→</td><td><em>he couldn't</em></td></tr>
+      <tr><td><em>this time</em></td><td class="arrow-cell">→</td><td><em>that time</em></td></tr>
+      <tr><td><em>tomorrow</em></td><td class="arrow-cell">→</td><td><em>the next day / the following day</em></td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- IX + X + CI rendered by JS -->
+<div class="section-card">
+<div class="section-title"><span class="icon">🔧</span>IX. Supply the Correct Form of the Words in Brackets</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+<div id="ix-questions"></div>
+</div>
+
+<div class="section-card">
+<div class="section-title"><span class="icon">🔗</span>X. Fill in Each Blank with an Appropriate Preposition</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+<div id="x-questions"></div>
+</div>
+
+<div class="section-card">
+<div class="section-title"><span class="icon">❓</span>C. Speaking – I. Make Questions for the Underlined Words</div>
+<div class="progress-bar-wrap"><div class="progress-bar" style="width:0%"></div></div>
+<div id="ci-questions"></div>
+</div>
+
+<div class="submit-section">
+  <button class="submit-btn" onclick="submitAll()">🎯 Nộp bài &amp; Xem điểm</button>
+</div>
+</div><!-- /container -->
+
+<div id="result-popup">
+  <div class="result-card">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-score" id="result-score">0/0</div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="close-result" onclick="closeResult()">✨ Đóng</button>
+  </div>
+</div>
+
+<script>
+// ===== AUDIO =====
+const AC=window.AudioContext||window.webkitAudioContext;let ac;
+function getAC(){if(!ac)ac=new AC();return ac;}
+function playDing(){try{const c=getAC(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(880,c.currentTime);o.frequency.exponentialRampToValueAtTime(1760,c.currentTime+0.15);g.gain.setValueAtTime(0.4,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.7);o.start();o.stop(c.currentTime+0.7);}catch(e){}}
+function playBuzz(){try{const c=getAC(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(220,c.currentTime);o.frequency.exponentialRampToValueAtTime(80,c.currentTime+0.35);g.gain.setValueAtTime(0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.45);o.start();o.stop(c.currentTime+0.45);}catch(e){}}
+
+// ===== CONFETTI =====
+const CLR=['#e040fb','#FDCB6E','#00C9A7','#FF4757','#4A90E2','#00D26A','#FF7F50'];
+function confetti(x,y){for(let i=0;i<20;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${x-15+Math.random()*30}px;top:${y}px;background:${CLR[0|Math.random()*CLR.length]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-delay:${Math.random()*0.25}s;animation-duration:${1.2+Math.random()*0.8}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2500);}}
+
+// ===== SCORE =====
+let total=0,correct=0;
+function badge(){document.getElementById('score-badge').textContent='⭐ '+correct+' / '+total;}
+
+function checkWritten(id,accepted){
+  const inp=document.getElementById('inp-'+id);
+  if(!inp||inp.disabled)return;
+  const val=inp.value.trim().toLowerCase().replace(/\.$/,'');
+  const ok=accepted.some(a=>val===a.toLowerCase().replace(/\.$/,'').trim());
+  inp.classList.add(ok?'correct':'incorrect');inp.disabled=true;total++;
+  if(ok){correct++;playDing();const r=inp.getBoundingClientRect();confetti(r.left+r.width/2,r.top+window.scrollY);}else{playBuzz();}
+  badge();const ex=document.getElementById('exp-'+id);if(ex)ex.classList.add('show');
+}
+
+function checkUnderline(id,btn,res){
+  const bl=document.getElementById('q-'+id);
+  bl.querySelectorAll('.underline-btn').forEach(b=>b.disabled=true);
+  const ok=res==='correct';btn.classList.add(ok?'correct':'incorrect');total++;
+  if(ok){correct++;playDing();const r=btn.getBoundingClientRect();confetti(r.left+r.width/2,r.top+window.scrollY);}
+  else{playBuzz();bl.querySelectorAll('.underline-btn').forEach(b=>{if(!b.classList.contains('incorrect'))b.classList.add('correct');});}
+  badge();const ex=document.getElementById('exp-'+id);if(ex)ex.classList.add('show');
+}
+
+function checkMCQ(id,btn,ok){
+  const bl=document.getElementById('q-'+id);
+  bl.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(ok?'correct':'incorrect');total++;
+  if(ok){correct++;playDing();const r=btn.getBoundingClientRect();confetti(r.left+r.width/2,r.top+window.scrollY);}
+  else{playBuzz();bl.querySelectorAll('.option-btn').forEach(b=>{if(b.dataset.correct==='true')b.classList.add('correct');});}
+  badge();const ex=document.getElementById('exp-'+id);if(ex)ex.classList.add('show');
+}
+
+// ===== IX DATA =====
+const ixData=[
+  {id:'ix1',sentence:'Many people use their smartphones to work on it as it is ______. (convenience)',vi:'Nhiều người dùng điện thoại thông minh để làm việc vì nó ______ (rất tiện lợi).',
+   answer:'convenient',options:['convenient','convenience','conveniently','convene'],
+   exp:`<div class="exp-answer">✅ convenient</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Nhiều người dùng điện thoại thông minh để làm việc trên đó vì nó rất tiện lợi."</div>
+   <div class="exp-section"><b>📖 Phân tích 4 đáp án:</b></div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>convenient</em></td><td>adj (tính từ)</td><td>tiện lợi, tiện dụng</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>convenience</em></td><td>n (danh từ)</td><td>sự tiện lợi</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>conveniently</em></td><td>adv (trạng từ)</td><td>một cách tiện lợi</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>convene</em></td><td>v (động từ)</td><td>triệu tập, họp lại</td><td><span class="tag-wrong">❌ Sai nghĩa & dạng</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Sau động từ <em>to be</em> (is) → cần <strong>tính từ (adjective)</strong>.</div>`},
+  {id:'ix2',sentence:'The science project is to encourage ______ in children. (create)',vi:'Dự án khoa học nhằm mục đích khuyến khích ______ ở trẻ em.',
+   answer:'creativity',options:['creation','creator','creative','creativity'],
+   exp:`<div class="exp-answer">✅ creativity</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Dự án khoa học nhằm mục đích khuyến khích tính sáng tạo ở trẻ em."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>creation</em></td><td>n</td><td>sự sáng tạo (hành động/kết quả vật chất)</td><td><span class="tag-wrong">❌ Sai nghĩa</span></td></tr>
+   <tr><td><em>creator</em></td><td>n</td><td>người tạo ra, nhà sáng tạo</td><td><span class="tag-wrong">❌ Sai nghĩa</span></td></tr>
+   <tr><td><em>creative</em></td><td>adj</td><td>sáng tạo</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>creativity</em></td><td>n</td><td>tính sáng tạo, khả năng sáng tạo</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Sau <em>encourage</em> → cần <strong>danh từ (object)</strong>. <em>creativity</em> = khả năng sáng tạo (tố chất bên trong) phù hợp nhất về nghĩa.</div>`},
+  {id:'ix3',sentence:'New ______ discoveries are made every day. (science)',vi:'Những khám phá ______ mới được thực hiện mỗi ngày.',
+   answer:'scientific',options:['science','scientific','scientist','scientifically'],
+   exp:`<div class="exp-answer">✅ scientific</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Những khám phá khoa học mới được thực hiện mỗi ngày."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>science</em></td><td>n</td><td>khoa học</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>scientific</em></td><td>adj</td><td>thuộc về/mang tính khoa học</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>scientist</em></td><td>n</td><td>nhà khoa học</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>scientifically</em></td><td>adv</td><td>về mặt khoa học</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Vị trí trước danh từ <em>discoveries</em> → cần <strong>tính từ</strong> để bổ nghĩa.</div>`},
+  {id:'ix4',sentence:'Technology is making our kids ______. Children have become less likely to play outside. (active)',vi:'Công nghệ đang khiến những đứa trẻ của chúng ta trở nên ______. Trẻ em ít có khả năng vui chơi ngoài trời hơn.',
+   answer:'inactive',options:['active','activity','inactivity','inactive'],
+   exp:`<div class="exp-answer">✅ inactive</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Công nghệ đang khiến những đứa trẻ của chúng ta trở nên thụ động. Trẻ em ít có khả năng vui chơi ngoài trời hơn."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>active</em></td><td>adj</td><td>năng động, tích cực</td><td><span class="tag-wrong">❌ Sai nghĩa (tích cực → ngược văn cảnh)</span></td></tr>
+   <tr><td><em>activity</em></td><td>n</td><td>hoạt động</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>inactivity</em></td><td>n</td><td>sự thụ động, không hoạt động</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>inactive</em></td><td>adj</td><td>không năng động, thụ động</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> <em>making</em> + O + <strong>adj</strong> (Object Complement). Vế sau "less likely to play outside" → nghĩa tiêu cực → cần <em>inactive</em> (in- = tiền tố phủ định).</div>`},
+  {id:'ix5',sentence:"Everyday life is constantly improving thanks to the ideas of famous ______ past and present. (invent)",vi:'Cuộc sống hàng ngày không ngừng cải thiện nhờ vào những ý tưởng của những ______ nổi tiếng trong quá khứ và hiện tại.',
+   answer:'inventors',options:['invention','inventions','inventor','inventors'],
+   exp:`<div class="exp-answer">✅ inventors</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Cuộc sống hàng ngày không ngừng cải thiện nhờ vào những ý tưởng của những nhà phát minh nổi tiếng trong quá khứ và hiện tại."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>invention</em></td><td>n (số ít)</td><td>sáng chế, phát minh (vật)</td><td><span class="tag-wrong">❌ Không phải người</span></td></tr>
+   <tr><td><em>inventions</em></td><td>n (số nhiều)</td><td>các sáng chế (vật)</td><td><span class="tag-wrong">❌ Không phải người</span></td></tr>
+   <tr><td><em>inventor</em></td><td>n (số ít)</td><td>nhà phát minh</td><td><span class="tag-wrong">❌ Số ít, không hợp văn cảnh</span></td></tr>
+   <tr><td><em>inventors</em></td><td>n (số nhiều)</td><td>các nhà phát minh</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> <em>of famous ___</em> → cần danh từ chỉ <strong>người</strong>. "past and present" (nhiều thời kỳ) → số nhiều (<em>inventors</em>).</div>`},
+  {id:'ix6',sentence:'Science and Technology have enormous effects on economic ______. (develop)',vi:'Khoa học và Công nghệ có những tác động to lớn đến ______ kinh tế.',
+   answer:'development',options:['develop','developer','developing','development'],
+   exp:`<div class="exp-answer">✅ development</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Khoa học và Công nghệ có những tác động to lớn đến sự phát triển kinh tế."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>develop</em></td><td>v</td><td>phát triển</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>developer</em></td><td>n</td><td>nhà phát triển</td><td><span class="tag-wrong">❌ Sai nghĩa</span></td></tr>
+   <tr><td><em>developing</em></td><td>adj/v-ing</td><td>đang phát triển</td><td><span class="tag-wrong">❌ Sai dạng trong vị trí này</span></td></tr>
+   <tr><td><em>development</em></td><td>n</td><td>sự phát triển</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Sau tính từ <em>economic</em> → cần <strong>danh từ</strong> làm đầu của cụm danh từ.</div>`},
+  {id:'ix7',sentence:"Just talk to him. The robot could ______ voice and reply to you. (recognition)",vi:'Cứ nói chuyện với nó. Robot có thể ______ giọng nói và trả lời bạn.',
+   answer:'recognize',options:['recognize','recognizing','recognition','recognized'],
+   exp:`<div class="exp-answer">✅ recognize</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Cứ nói chuyện với nó. Robot có thể nhận ra giọng nói và trả lời bạn."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>recognize</em></td><td>v nguyên thể</td><td>nhận ra, nhận dạng</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>recognizing</em></td><td>v-ing</td><td>đang nhận ra</td><td><span class="tag-wrong">❌ Sai sau modal</span></td></tr>
+   <tr><td><em>recognition</em></td><td>n</td><td>sự nhận dạng</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>recognized</em></td><td>v-ed</td><td>đã nhận ra</td><td><span class="tag-wrong">❌ Sai sau modal</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Sau <em>could</em> (modal verb) → bắt buộc dùng <strong>V nguyên thể (bare infinitive)</strong> không "to".</div>`},
+  {id:'ix8',sentence:"Using computers has a ______ effect on children's learning. (benefit)",vi:"Việc sử dụng máy tính có tác động ______ đến việc học của trẻ em.",
+   answer:'beneficial',options:['benefit','beneficial','beneficially','beneficiary'],
+   exp:`<div class="exp-answer">✅ beneficial</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Việc sử dụng máy tính có tác động có lợi đến việc học của trẻ em."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>benefit</em></td><td>n/v</td><td>lợi ích / mang lại lợi ích</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>beneficial</em></td><td>adj</td><td>có lợi, có ích</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>beneficially</em></td><td>adv</td><td>một cách có lợi</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>beneficiary</em></td><td>n</td><td>người thụ hưởng lợi ích</td><td><span class="tag-wrong">❌ Sai nghĩa</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Vị trí giữa mạo từ <em>a</em> và danh từ <em>effect</em> → cần <strong>tính từ</strong>.</div>`},
+  {id:'ix9',sentence:'Technology has both positive and negative impacts on social ______. (interact)',vi:'Công nghệ có cả tác động tích cực lẫn tiêu cực đến ______ xã hội.',
+   answer:'interaction',options:['interact','interactive','interaction','interactively'],
+   exp:`<div class="exp-answer">✅ interaction</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Công nghệ có cả tác động tích cực lẫn tiêu cực đến sự tương tác xã hội."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>interact</em></td><td>v</td><td>tương tác</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>interactive</em></td><td>adj</td><td>có tính tương tác</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>interaction</em></td><td>n</td><td>sự tương tác</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>interactively</em></td><td>adv</td><td>một cách tương tác</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Sau tính từ <em>social</em> → cần <strong>danh từ</strong> để tạo cụm danh từ.</div>`},
+  {id:'ix10',sentence:'______ progress has been so rapid over the last few years. (technology)',vi:'Tiến bộ ______ đã diễn ra rất nhanh chóng trong vài năm qua.',
+   answer:'Technological',options:['Technology','Technological','Technologist','Technologically'],
+   exp:`<div class="exp-answer">✅ Technological</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hoàn chỉnh: "Tiến bộ công nghệ đã diễn ra rất nhanh chóng trong vài năm qua."</div>
+   <table class="exp-table"><tr><th>Đáp án</th><th>Loại từ</th><th>Nghĩa</th><th>Đúng/Sai</th></tr>
+   <tr><td><em>Technology</em></td><td>n</td><td>công nghệ</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr>
+   <tr><td><em>Technological</em></td><td>adj</td><td>thuộc về công nghệ</td><td><span class="tag-correct">✅ ĐÚNG</span></td></tr>
+   <tr><td><em>Technologist</em></td><td>n</td><td>chuyên gia công nghệ</td><td><span class="tag-wrong">❌ Sai nghĩa & dạng</span></td></tr>
+   <tr><td><em>Technologically</em></td><td>adv</td><td>về mặt công nghệ</td><td><span class="tag-wrong">❌ Sai dạng</span></td></tr></table>
+   <div class="exp-section" style="margin-top:6px"><b>📌 Quy tắc:</b> Vị trí đứng đầu câu trước danh từ <em>progress</em> → cần <strong>tính từ</strong>.</div>`}
+];
+
+// ===== X DATA =====
+const xData=[
+  {id:'x1',sentence:'Science and technology are changing our lives ______ every field.',vi:'Khoa học và công nghệ đang thay đổi cuộc sống của chúng ta ______ mọi lĩnh vực.',
+   answer:'in',options:['in','on','at','for'],
+   exp:`<div class="exp-answer">✅ in</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Khoa học và công nghệ đang thay đổi cuộc sống của chúng ta trong mọi lĩnh vực."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Cụm cố định <em>in every field</em> = trong mọi lĩnh vực. Giới từ <em>in</em> dùng để chỉ lĩnh vực, phạm vi trừu tượng. Ví dụ: <em>in the field of medicine, in education, in science</em>.</div>`},
+  {id:'x2',sentence:'Some chemicals have damaging effect ______ the environment.',vi:'Một số hóa chất có tác động gây hại ______ môi trường.',
+   answer:'on',options:['on','upon','to','for'],
+   exp:`<div class="exp-answer">✅ on / upon</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Một số hóa chất có tác động gây hại đến môi trường."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation: <em>have an effect <strong>on/upon</strong></em> something = có tác động lên/đến cái gì. Cả <em>on</em> và <em>upon</em> đều chấp nhận được, <em>on</em> phổ biến hơn trong văn viết hiện đại.</div>`},
+  {id:'x3',sentence:'Is technology the key ______ success in the 21st century?',vi:'Công nghệ có phải là chìa khóa ______ thành công trong thế kỷ 21 không?',
+   answer:'to',options:['to','of','for','at'],
+   exp:`<div class="exp-answer">✅ to</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Công nghệ có phải là chìa khóa dẫn đến thành công trong thế kỷ 21 không?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation cố định: <em>the key <strong>to</strong></em> + N/V-ing = chìa khóa để đạt được điều gì. Ví dụ: <em>the key to success, the key to solving the problem</em>.</div>`},
+  {id:'x4',sentence:'Science and technology bring a lot of benefits ______ people.',vi:'Khoa học và công nghệ mang lại rất nhiều lợi ích ______ con người.',
+   answer:'to',options:['to','for','of','at'],
+   exp:`<div class="exp-answer">✅ to</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Khoa học và công nghệ mang lại rất nhiều lợi ích cho con người."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation: <em>bring benefits <strong>to</strong></em> somebody = mang lại lợi ích cho ai. Giới từ <em>to</em> chỉ đối tượng hưởng thụ. Lưu ý phân biệt: <em>good for</em> (có lợi cho) nhưng <em>bring benefits to</em>.</div>`},
+  {id:'x5',sentence:'Engineers need to be good ______ maths and sciences.',vi:'Các kỹ sư cần phải giỏi ______ toán và khoa học.',
+   answer:'at',options:['at','in','on','for'],
+   exp:`<div class="exp-answer">✅ at</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Các kỹ sư cần phải giỏi toán và khoa học."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation cố định: <em>be good <strong>at</strong></em> + N/V-ing = giỏi về cái gì, thành thạo trong cái gì. Ví dụ: <em>good at English, good at cooking, good at maths</em>.</div>`},
+  {id:'x6',sentence:'Thomas Edison was responsible ______ more than one thousand inventions.',vi:'Thomas Edison chịu trách nhiệm ______ hơn một nghìn phát minh.',
+   answer:'for',options:['for','of','to','at'],
+   exp:`<div class="exp-answer">✅ for</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Thomas Edison là tác giả của hơn một nghìn phát minh."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation: <em>be responsible <strong>for</strong></em> = chịu trách nhiệm về / là người tạo ra. Ví dụ: <em>responsible for the accident</em> (chịu trách nhiệm về tai nạn), <em>responsible for many inventions</em> (là tác giả của nhiều phát minh).</div>`},
+  {id:'x7',sentence:"It's almost impossible to keep up ______ the latest developments in computing.",vi:'Gần như không thể theo kịp ______ những phát triển mới nhất trong lĩnh vực máy tính.',
+   answer:'with',options:['with','to','on','of'],
+   exp:`<div class="exp-answer">✅ with</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Gần như không thể theo kịp những phát triển mới nhất trong lĩnh vực máy tính."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Phrasal verb: <em>keep up <strong>with</strong></em> = theo kịp (điều gì đó đang thay đổi hoặc tiến triển nhanh). Ví dụ: <em>keep up with technology, keep up with the news</em>.</div>`},
+  {id:'x8',sentence:'Will humans live ______ Mars someday?',vi:'Con người có thể sống ______ Sao Hỏa vào một ngày nào đó không?',
+   answer:'on',options:['on','in','at','to'],
+   exp:`<div class="exp-answer">✅ on</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Con người có thể sống trên Sao Hỏa vào một ngày nào đó không?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Khi nói về sống trên bề mặt các hành tinh → dùng <em>on</em>: <em>live on Mars, live on Earth, on the moon</em>. (Khác với <em>in</em> dùng cho không gian bên trong: <em>in a city, in a country</em>.)</div>`},
+  {id:'x9',sentence:'Global communication was transformed by the invention ______ the Internet.',vi:'Giao tiếp toàn cầu đã được biến đổi bởi sự phát minh ra Internet.',
+   answer:'of',options:['of','by','with','for'],
+   exp:`<div class="exp-answer">✅ of</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Giao tiếp toàn cầu đã được biến đổi bởi sự phát minh ra Internet."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Collocation: <em>the invention <strong>of</strong></em> something = sự phát minh ra cái gì. Giới từ <em>of</em> nối danh từ trừu tượng với đối tượng. Ví dụ: <em>the invention of the telephone, the discovery of penicillin</em>.</div>`},
+  {id:'x10a',sentence:'Thomas Edison was born ______ 1847 ______ Ohio, USA. &nbsp;<em>(giới từ 1 – trước năm)</em>',vi:'Thomas Edison sinh ______ năm 1847 ______ tiểu bang Ohio, Hoa Kỳ.',
+   answer:'in',options:['in','on','at','by'],
+   exp:`<div class="exp-answer">✅ in (trước năm 1847)</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Thomas Edison sinh năm 1847 tại Ohio, Hoa Kỳ."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b><br>• Trước <strong>năm</strong> → dùng <em>in</em>: born <em>in</em> 1847, <em>in</em> 2024.<br>• Trước <strong>tháng</strong> → dùng <em>in</em>: <em>in January</em>.<br>• Trước <strong>ngày cụ thể</strong> → dùng <em>on</em>: <em>on December 31st</em>.</div>`},
+  {id:'x10b',sentence:'Thomas Edison was born in 1847 ______ Ohio, USA. &nbsp;<em>(giới từ 2 – trước tiểu bang)</em>',vi:'Thomas Edison sinh năm 1847 ______ Ohio, Hoa Kỳ.',
+   answer:'in',options:['in','on','at','from'],
+   exp:`<div class="exp-answer">✅ in (trước Ohio)</div>
+   <div class="exp-translation">🇻🇳 Dịch: "Thomas Edison sinh năm 1847 tại Ohio, Hoa Kỳ."</div>
+   <div class="exp-section"><b>📖 Phân tích:</b><br>• Trước <strong>tiểu bang, thành phố, quốc gia</strong> → dùng <em>in</em>: <em>in Ohio, in New York, in Vietnam</em>.<br>• <em>at</em> thường dùng cho địa điểm cụ thể nhỏ hơn: <em>at the school, at the station</em>.</div>`}
+];
+
+// ===== CI DATA =====
+const ciData=[
+  {id:'ci1',sentence:"Robots won't replace teachers <u>because they can't inspire students to do their best</u>.",
+   vi:"Robot sẽ không thay thế giáo viên vì chúng không thể truyền cảm hứng cho học sinh làm hết sức mình.",
+   answer:"why won't robots replace teachers",hint:"Gạch chân: lý do (because...) → hỏi bằng <em>Why</em>",
+   exp:`<div class="exp-answer">✅ Why won't robots replace teachers?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Tại sao robot sẽ không thay thế giáo viên?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Phần gạch chân là mệnh đề nguyên nhân bắt đầu bằng <em>because</em> → dùng <em><strong>Why</strong></em> để hỏi.<br>Cấu trúc: <em>Why + won't + S + V?</em></div>`},
+  {id:'ci2',sentence:'A flying car can fly <u>at a speed of 120 mph</u>.',
+   vi:'Một chiếc ô tô bay có thể bay với tốc độ 120 dặm/giờ.',
+   answer:'how fast can a flying car fly',hint:'Gạch chân: tốc độ → hỏi bằng <em>How fast</em>',
+   exp:`<div class="exp-answer">✅ How fast can a flying car fly?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Một chiếc ô tô bay có thể bay nhanh đến mức nào?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Phần gạch chân <em>at a speed of 120 mph</em> = tốc độ → hỏi bằng <em><strong>How fast</strong></em>.<br>Cấu trúc: <em>How fast + can + S + V?</em></div>`},
+  {id:'ci3',sentence:"All schools will equip each student with a tablet <u>in 30 years' time</u>.",
+   vi:'Tất cả các trường sẽ trang bị cho mỗi học sinh một máy tính bảng trong vòng 30 năm nữa.',
+   answer:'when will all schools equip each student with a tablet',hint:'Gạch chân: thời gian → hỏi bằng <em>When</em>',
+   exp:`<div class="exp-answer">✅ When will all schools equip each student with a tablet?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Khi nào tất cả các trường sẽ trang bị máy tính bảng cho mỗi học sinh?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> <em>in 30 years' time</em> = thời gian → <em><strong>When</strong></em>.<br>Cấu trúc: <em>When + will + S + V?</em></div>`},
+  {id:'ci4',sentence:'In the future, we will be able to live <u>on other planets</u>.',
+   vi:'Trong tương lai, chúng ta sẽ có thể sống trên các hành tinh khác.',
+   answer:'where will we be able to live in the future',hint:'Gạch chân: nơi chốn → hỏi bằng <em>Where</em>',
+   exp:`<div class="exp-answer">✅ Where will we be able to live in the future?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Trong tương lai, chúng ta sẽ có thể sống ở đâu?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> <em>on other planets</em> = nơi chốn → <em><strong>Where</strong></em>.<br>Cấu trúc: <em>Where + will + S + be able to + V?</em></div>`},
+  {id:'ci5',sentence:'Science and technology are the keys to development in many fields.',
+   vi:'Khoa học và công nghệ là chìa khóa để phát triển trong nhiều lĩnh vực.',
+   answer:'what are the keys to development in many fields',hint:'Hỏi về chủ ngữ (sự vật) → <em>What</em>',
+   exp:`<div class="exp-answer">✅ What are the keys to development in many fields?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Đâu là chìa khóa để phát triển trong nhiều lĩnh vực?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Hỏi về chủ ngữ là sự vật → <em><strong>What</strong></em>. Cấu trúc hỏi chủ ngữ: <em>What + V + rest of sentence?</em> (không đảo ngữ)</div>`},
+  {id:'ci6',sentence:'An average person now lives <u>about 70 years</u>.',
+   vi:'Một người bình thường hiện nay sống khoảng 70 năm.',
+   answer:'how long does an average person live now',hint:'Gạch chân: khoảng thời gian/tuổi thọ → <em>How long</em>',
+   exp:`<div class="exp-answer">✅ How long does an average person live now?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Một người bình thường hiện nay sống được bao lâu?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> <em>about 70 years</em> = khoảng thời gian → <em><strong>How long</strong></em>.<br>Cấu trúc: <em>How long + does + S + V?</em> (thì hiện tại đơn → dùng does)</div>`},
+  {id:'ci7',sentence:'Scientists are exploring <u>the possibility of life on Mars</u>.',
+   vi:'Các nhà khoa học đang khám phá khả năng tồn tại sự sống trên Sao Hỏa.',
+   answer:'what are scientists exploring on mars',hint:'Gạch chân: tân ngữ (sự vật) → <em>What</em>',
+   exp:`<div class="exp-answer">✅ What are scientists exploring on Mars?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Các nhà khoa học đang khám phá điều gì trên Sao Hỏa?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Tân ngữ là sự vật → <em><strong>What</strong></em>. Cấu trúc: <em>What + are + S + V-ing?</em></div>`},
+  {id:'ci8',sentence:'New industrial robots cost <u>from $50,000 to $80,000</u>.',
+   vi:'Các robot công nghiệp mới có giá từ 50.000 đến 80.000 đô la.',
+   answer:'how much do new industrial robots cost',hint:'Gạch chân: giá tiền → <em>How much</em>',
+   exp:`<div class="exp-answer">✅ How much do new industrial robots cost?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Các robot công nghiệp mới có giá bao nhiêu?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> <em>from $50,000 to $80,000</em> = giá tiền → <em><strong>How much</strong></em>.<br>Cấu trúc: <em>How much + do + S + V?</em></div>`},
+  {id:'ci9',sentence:'<u>Dr. Engelberger</u> invented the first industrial robot.',
+   vi:'Tiến sĩ Engelberger đã phát minh ra robot công nghiệp đầu tiên.',
+   answer:'who invented the first industrial robot',hint:'Gạch chân: chủ ngữ là người → <em>Who</em>',
+   exp:`<div class="exp-answer">✅ Who invented the first industrial robot?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Ai đã phát minh ra robot công nghiệp đầu tiên?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> Phần gạch chân là chủ ngữ (người) → <em><strong>Who</strong></em>.<br>Cấu trúc hỏi chủ ngữ là người: <em>Who + V (không đảo ngữ)?</em> → <em>Who invented…?</em> ✅ (không phải "Who did invent…?")</div>`},
+  {id:'ci10',sentence:'Edison made the first public demonstration of his light bulb <u>on December 31, 1879</u>.',
+   vi:'Edison đã thực hiện buổi trình diễn công khai đầu tiên về bóng đèn của mình vào ngày 31 tháng 12 năm 1879.',
+   answer:'when did edison make the first public demonstration of his light bulb',hint:'Gạch chân: thời điểm cụ thể → <em>When</em>',
+   exp:`<div class="exp-answer">✅ When did Edison make the first public demonstration of his light bulb?</div>
+   <div class="exp-translation">🇻🇳 Dịch câu hỏi: "Khi nào Edison thực hiện buổi trình diễn công khai đầu tiên về bóng đèn của ông?"</div>
+   <div class="exp-section"><b>📖 Phân tích:</b> <em>on December 31, 1879</em> = thời điểm cụ thể → <em><strong>When</strong></em>.<br>Cấu trúc: <em>When + did + S + V?</em> (quá khứ đơn → dùng did)</div>`}
+];
+
+function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
+
+// Render IX
+const ixC=document.getElementById('ix-questions');
+ixData.forEach((q,i)=>{
+  const opts=shuffle(q.options);
+  const bl=document.createElement('div');bl.className='question-block';bl.id='q-'+q.id;
+  bl.innerHTML=`<div class="q-label">${i+1}.</div>
+  <div class="q-text">${q.sentence}</div>
+  <div class="q-vi">📌 Nghĩa: ${q.vi}</div>
+  <div class="options-grid">${opts.map(o=>`
+    <button class="option-btn" data-correct="${o.toLowerCase()===q.answer.toLowerCase()}"
+      onclick="checkMCQ('${q.id}',this,${o.toLowerCase()===q.answer.toLowerCase()})">${o}</button>`).join('')}
+  </div>
+  <div class="explanation-box" id="exp-${q.id}">${q.exp}</div>`;
+  ixC.appendChild(bl);
+});
+
+// Render X
+const xC=document.getElementById('x-questions');
+xData.forEach((q,i)=>{
+  const opts=shuffle(q.options);
+  const bl=document.createElement('div');bl.className='question-block';bl.id='q-'+q.id;
+  const num=i<9?i+1:(i===9?'10a':'10b');
+  bl.innerHTML=`<div class="q-label">${num}.</div>
+  <div class="q-text">${q.sentence}</div>
+  <div class="q-vi">📌 Nghĩa: ${q.vi}</div>
+  <div class="options-grid">${opts.map(o=>`
+    <button class="option-btn" data-correct="${o===q.answer}"
+      onclick="checkMCQ('${q.id}',this,${o===q.answer})">${o}</button>`).join('')}
+  </div>
+  <div class="explanation-box" id="exp-${q.id}">${q.exp}</div>`;
+  xC.appendChild(bl);
+});
+
+// Render CI
+const ciC=document.getElementById('ci-questions');
+ciData.forEach((q,i)=>{
+  const bl=document.createElement('div');bl.className='question-block';bl.id='q-'+q.id;
+  bl.innerHTML=`<div class="q-label">${i+1}.</div>
+  <div class="q-text">${q.sentence}</div>
+  <div class="q-vi">📌 Nghĩa câu gốc: ${q.vi}</div>
+  <div class="word-bank">💡 Gợi ý: <span>${q.hint}</span></div>
+  <input class="answer-input" id="inp-${q.id}" placeholder="Viết câu hỏi..." autocomplete="off">
+  <br><button class="check-btn" onclick="checkCI('${q.id}')">✔ Kiểm tra</button>
+  <div class="explanation-box" id="exp-${q.id}">${q.exp}</div>`;
+  ciC.appendChild(bl);
+});
+
+function checkCI(id){
+  const q=ciData.find(x=>x.id===id);
+  const inp=document.getElementById('inp-'+id);
+  if(!inp||inp.disabled)return;
+  const val=inp.value.trim().toLowerCase().replace(/\?$/,'').trim();
+  const exp=q.answer.toLowerCase().replace(/\?$/,'').trim();
+  const kw=exp.split(' ').filter(w=>w.length>3);
+  const mc=kw.filter(w=>val.includes(w)).length;
+  const ok=mc>=Math.ceil(kw.length*0.65);
+  inp.classList.add(ok?'correct':'incorrect');inp.disabled=true;total++;
+  if(ok){correct++;playDing();const r=inp.getBoundingClientRect();confetti(r.left+r.width/2,r.top+window.scrollY);}else{playBuzz();}
+  badge();const ex=document.getElementById('exp-'+id);if(ex)ex.classList.add('show');
+}
+
+// ===== SUBMIT =====
+function submitAll(){
+  const pct=total>0?correct/total:0;
+  const msgs=[['🏆','Xuất sắc! Em là thiên tài tiếng Anh rồi! 🌟'],['🎉','Rất tốt! Cố gắng một chút nữa là hoàn hảo! 💪'],['😊','Khá tốt! Xem lại phần giải thích để tiến bộ hơn! 📚'],['🤗','Hãy xem lại và thử lại – em làm được! 🔄']];
+  const idx=pct>=0.9?0:pct>=0.7?1:pct>=0.5?2:3;
+  document.getElementById('result-emoji').textContent=msgs[idx][0];
+  document.getElementById('result-score').textContent=correct+' / '+total;
+  document.getElementById('result-msg').textContent=msgs[idx][1];
+  document.getElementById('result-popup').classList.add('show');
+  if(pct>=0.7)for(let i=0;i<6;i++)setTimeout(()=>confetti(Math.random()*window.innerWidth,100+Math.random()*200),i*180);
+}
+function closeResult(){document.getElementById('result-popup').classList.remove('show');}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

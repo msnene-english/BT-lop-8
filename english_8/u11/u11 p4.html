@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Quiz - Science & Technology | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6C63FF;
+  --secondary: #00C9A7;
+  --accent: #FDCB6E;
+  --danger: #FF4757;
+  --success: #00D26A;
+  --bg1: #0f0c29;
+  --bg2: #302b63;
+  --bg3: #24243e;
+  --card: rgba(255,255,255,0.07);
+  --card-border: rgba(255,255,255,0.15);
+  --text: #f0f0ff;
+  --text-muted: rgba(240,240,255,0.6);
+  --radius: 18px;
+  --shadow: 0 8px 32px rgba(108,99,255,0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  color: var(--text);
+  overflow-x: hidden;
+  background: var(--bg1);
+}
+
+/* === ANIMATED GRADIENT BG === */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #1a1a4e, #6C63FF22);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === SVG PATTERN LAYER === */
+.pattern-layer {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Ctext x='20' y='60' font-size='38'%3E🤖%3C/text%3E%3Ctext x='100' y='130' font-size='32'%3E💻%3C/text%3E%3Ctext x='10' y='160' font-size='28'%3E⚙️%3C/text%3E%3Ctext x='120' y='50' font-size='30'%3E🚀%3C/text%3E%3C/svg%3E");
+  animation: patternFloat 20s linear infinite;
+}
+@keyframes patternFloat {
+  0% { background-position: 0 0; }
+  100% { background-position: 180px 180px; }
+}
+
+/* === LAYOUT === */
+.wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* === HEADER === */
+header {
+  background: rgba(15,12,41,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-title { display: flex; flex-direction: column; }
+.header-title h1 { font-size: 1.1rem; font-weight: 900; background: linear-gradient(90deg, #6C63FF, #00C9A7, #FDCB6E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header-title span { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+
+/* === TIMER SECTION === */
+.timer-zone { display: flex; align-items: center; gap: 10px; }
+#timerDisplay {
+  font-size: 1.5rem; font-weight: 900; font-family: 'Quicksand', sans-serif;
+  color: var(--accent); letter-spacing: 2px; min-width: 80px; text-align: center;
+  text-shadow: 0 0 12px rgba(253,203,110,0.6);
+  display: none;
+}
+#timerDisplay.warning { color: var(--danger); animation: pulse 0.8s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+.btn-timer {
+  background: linear-gradient(135deg, #6C63FF, #00C9A7);
+  border: none; color: white; font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 0.78rem; padding: 8px 16px; border-radius: 30px; cursor: pointer;
+  box-shadow: 0 4px 15px rgba(108,99,255,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-timer:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.5); }
+
+.btn-pause {
+  background: rgba(255,255,255,0.1); border: 1px solid var(--card-border);
+  color: var(--text); font-family: 'Nunito', sans-serif; font-weight: 700;
+  font-size: 0.78rem; padding: 8px 14px; border-radius: 30px; cursor: pointer;
+  transition: all 0.2s; display: none;
+}
+.btn-pause:hover { background: rgba(255,255,255,0.18); }
+
+/* === MAIN SPLIT === */
+.main-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; flex: 1;
+  height: calc(100vh - 65px);
+}
+
+/* === LEFT PANEL === */
+.left-panel {
+  overflow-y: auto; padding: 20px;
+  border-right: 1px solid var(--card-border);
+  background: rgba(15,12,41,0.5);
+}
+.left-panel::-webkit-scrollbar { width: 6px; }
+.left-panel::-webkit-scrollbar-track { background: transparent; }
+.left-panel::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.4); border-radius: 3px; }
+
+/* === RIGHT PANEL === */
+.right-panel {
+  overflow-y: auto; padding: 20px;
+  background: rgba(0,0,0,0.2);
+}
+.right-panel::-webkit-scrollbar { width: 6px; }
+.right-panel::-webkit-scrollbar-track { background: transparent; }
+.right-panel::-webkit-scrollbar-thumb { background: rgba(0,201,167,0.4); border-radius: 3px; }
+
+/* === PASSAGE CARD === */
+.passage-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+}
+.passage-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #6C63FF33, #00C9A733);
+  border: 1px solid #6C63FF55; border-radius: 20px;
+  padding: 4px 12px; font-size: 0.72rem; font-weight: 800;
+  color: #a29bfe; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase;
+}
+.passage-title {
+  font-size: 0.85rem; font-weight: 900; color: var(--accent); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.passage-title::before { content: ''; display: block; width: 4px; height: 16px; background: linear-gradient(to bottom, #6C63FF, #00C9A7); border-radius: 2px; }
+
+.passage-text {
+  font-size: 0.88rem; line-height: 1.9; color: var(--text);
+  font-family: 'Quicksand', sans-serif; font-weight: 500;
+}
+.passage-text p { margin-bottom: 8px; }
+
+/* Highlight blanks */
+.blank { color: var(--accent); font-weight: 800; background: rgba(253,203,110,0.12); padding: 1px 4px; border-radius: 4px; }
+
+/* === PARA BLOCK === */
+.para-block {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: border-color 0.2s;
+}
+.para-block:hover { border-color: rgba(108,99,255,0.3); }
+
+.para-block .passage-text { margin-bottom: 6px; }
+.para-block .passage-text p { margin-bottom: 0; }
+
+/* === TRANSLATE BUTTON & BOX === */
+.btn-translate {
+  margin-top: 5px;
+  background: transparent;
+  border: none;
+  color: #00C9A7;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.72rem;
+  padding: 2px 0;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  opacity: 0.7;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+.btn-translate:hover { opacity: 1; color: #00e8c0; }
+
+/* Bản dịch dạng popup nổi - KHÔNG đẩy layout */
+.translate-box {
+  display: none;
+  position: fixed;
+  bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  width: min(520px, 90vw);
+  background: rgba(10, 14, 40, 0.97);
+  border: 1px solid rgba(0,201,167,0.45);
+  border-radius: 16px;
+  padding: 14px 16px 12px;
+  font-size: 0.8rem; line-height: 1.75; color: #b2f5ea;
+  font-family: 'Quicksand', sans-serif; font-weight: 500;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,201,167,0.15);
+  backdrop-filter: blur(16px);
+}
+.translate-box.open {
+  display: block;
+  animation: popUp 0.22s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes popUp {
+  from { opacity:0; transform: translateX(-50%) translateY(12px) scale(0.97); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0)   scale(1);    }
+}
+.translate-box-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px; padding-bottom: 7px;
+  border-bottom: 1px solid rgba(0,201,167,0.2);
+}
+.translate-box-header span {
+  font-size: 0.7rem; font-weight: 900; color: #00C9A7;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.translate-close {
+  background: rgba(255,255,255,0.08); border: none; color: #aaa;
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.translate-close:hover { background: rgba(255,71,87,0.2); color: #ff7675; }
+
+/* === GLOSSARY === */
+.glossary-card {
+  background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.25);
+  border-radius: var(--radius); padding: 16px; margin-top: 6px;
+}
+.glossary-title { font-size: 0.82rem; font-weight: 900; color: #a29bfe; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.glossary-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.glossary-table th { background: rgba(108,99,255,0.2); color: #a29bfe; padding: 6px 10px; text-align: left; font-weight: 800; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.glossary-table td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 500; }
+.glossary-table tr:last-child td { border-bottom: none; }
+.glossary-table tr:hover td { background: rgba(108,99,255,0.08); }
+.word-col { color: #74b9ff; font-weight: 700; }
+.type-col { color: #fd79a8; font-style: italic; font-size: 0.72rem; }
+
+/* === EXERCISE SECTION === */
+.ex-section { margin-bottom: 28px; }
+.ex-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--card-border);
+}
+.ex-badge {
+  background: linear-gradient(135deg, #FDCB6E, #e17055);
+  color: #2d3436; font-weight: 900; font-size: 0.7rem; padding: 4px 12px;
+  border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
+}
+.ex-desc { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+
+/* === QUESTION CARD === */
+.q-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
+  backdrop-filter: blur(10px); transition: box-shadow 0.2s;
+}
+.q-card:hover { box-shadow: var(--shadow); }
+.q-number { font-size: 0.7rem; font-weight: 900; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.q-text { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.5; font-family: 'Quicksand', sans-serif; }
+.q-text .blank-q { color: var(--accent); font-weight: 800; background: rgba(253,203,110,0.15); padding: 2px 6px; border-radius: 6px; }
+
+/* === OPTIONS === */
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.option-btn {
+  background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 14px; padding: 9px 12px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem;
+  color: var(--text); text-align: left; transition: all 0.18s;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.option-btn:hover:not(:disabled) {
+  transform: scale(1.03) translateY(-1px);
+  background: rgba(108,99,255,0.2); border-color: #6C63FF;
+  box-shadow: 0 6px 20px rgba(108,99,255,0.3);
+}
+.option-label {
+  width: 24px; height: 24px; border-radius: 8px;
+  background: rgba(108,99,255,0.2); display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 900; color: #a29bfe; flex-shrink: 0;
+}
+.option-btn.correct { background: rgba(0,210,106,0.2) !important; border-color: var(--success) !important; color: #00D26A !important; }
+.option-btn.correct .option-label { background: rgba(0,210,106,0.3); color: #00D26A; }
+.option-btn.wrong { background: rgba(255,71,87,0.2) !important; border-color: var(--danger) !important; color: #FF4757 !important; animation: shake 0.4s ease; }
+.option-btn.wrong .option-label { background: rgba(255,71,87,0.3); color: #FF4757; }
+.option-btn:disabled { cursor: not-allowed; opacity: 0.75; transform: none !important; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* === EXPLANATION BOX === */
+.explain-box {
+  display: none; margin-top: 10px; padding: 12px;
+  background: rgba(0,0,0,0.3); border-left: 3px solid #6C63FF;
+  border-radius: 0 10px 10px 0; font-size: 0.78rem;
+  font-family: 'Quicksand', sans-serif; font-weight: 500; line-height: 1.7;
+  color: rgba(240,240,255,0.85);
+}
+.explain-box.visible { display: block; animation: fadeSlide 0.3s ease; }
+.explain-box strong { color: var(--accent); }
+.explain-box .correct-answer { color: var(--success); font-weight: 800; }
+.explain-box .wrong-item { color: #ff7675; font-weight: 600; }
+
+/* === SUBMIT SECTION === */
+.submit-zone { text-align: center; padding: 20px; margin-top: 10px; }
+.btn-submit {
+  background: linear-gradient(135deg, #6C63FF, #00C9A7);
+  border: none; color: white; font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 1rem; padding: 14px 40px;
+  border-radius: 30px; cursor: pointer;
+  box-shadow: 0 6px 25px rgba(108,99,255,0.45);
+  transition: all 0.2s; letter-spacing: 0.5px;
+}
+.btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(108,99,255,0.55); }
+.btn-submit:active { transform: translateY(-1px); }
+
+/* === RESULT MODAL === */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.result-card {
+  background: linear-gradient(135deg, rgba(48,43,99,0.95), rgba(15,12,41,0.98));
+  border: 1px solid rgba(108,99,255,0.4); border-radius: 28px;
+  padding: 40px 50px; text-align: center; max-width: 480px; width: 90%;
+  box-shadow: 0 20px 60px rgba(108,99,255,0.4);
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes popIn { from { transform: scale(0.7); opacity:0; } to { transform: scale(1); opacity:1; } }
+
+.result-emoji { font-size: 4rem; margin-bottom: 12px; display: block; }
+.result-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; background: linear-gradient(90deg, #6C63FF, #00C9A7, #FDCB6E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.result-score { font-size: 3rem; font-weight: 900; color: var(--accent); margin: 12px 0; font-family: 'Quicksand', sans-serif; text-shadow: 0 0 20px rgba(253,203,110,0.5); }
+.result-msg { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; font-family: 'Quicksand', sans-serif; font-weight: 500; line-height: 1.6; }
+.result-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.breakdown-item { background: rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; }
+.breakdown-item span { display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.breakdown-item strong { font-size: 1.1rem; color: var(--text); }
+.btn-retry { background: linear-gradient(135deg, #6C63FF, #00C9A7); border: none; color: white; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.9rem; padding: 12px 30px; border-radius: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(108,99,255,0.4); transition: all 0.2s; }
+.btn-retry:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.5); }
+
+/* === TIMER ALERT === */
+.time-alert {
+  display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  z-index: 200; background: rgba(255,71,87,0.15); border: 1px solid rgba(255,71,87,0.4);
+  border-radius: 16px; padding: 14px 24px; text-align: center;
+  backdrop-filter: blur(12px); max-width: 500px; width: 90%;
+  animation: slideDown 0.3s ease;
+  font-size: 0.85rem; line-height: 1.6; color: #ffcccc; font-family: 'Quicksand', sans-serif; font-weight: 600;
+}
+@keyframes slideDown { from { transform: translateX(-50%) translateY(-20px); opacity:0; } to { transform: translateX(-50%) translateY(0); opacity:1; } }
+.time-alert.show { display: block; }
+.time-alert .close-alert { position: absolute; top: 8px; right: 12px; cursor: pointer; color: #ff7675; font-weight: 900; font-size: 1rem; }
+
+/* === CONFETTI === */
+.confetti-piece {
+  position: fixed; width: 10px; height: 10px; border-radius: 2px;
+  pointer-events: none; z-index: 9999;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .main-split { grid-template-columns: 1fr; height: auto; }
+  .left-panel, .right-panel { height: auto; }
+  .options-grid { grid-template-columns: 1fr; }
+  .result-breakdown { grid-template-columns: 1fr; }
+}
+
+/* === SCROLLBAR GLOBAL === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.3); border-radius: 3px; }
+
+/* === SECTION DIVIDER === */
+.section-divider {
+  display: flex; align-items: center; gap: 10px; margin: 20px 0;
+  font-size: 0.72rem; font-weight: 900; color: var(--accent); text-transform: uppercase; letter-spacing: 2px;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(253,203,110,0.3));
+}
+.section-divider::after { background: linear-gradient(270deg, transparent, rgba(253,203,110,0.3)); }
+
+/* === SCORE COUNTER === */
+.score-counter {
+  position: fixed; bottom: 20px; right: 20px; z-index: 50;
+  background: rgba(15,12,41,0.9); border: 1px solid rgba(108,99,255,0.4);
+  border-radius: 20px; padding: 10px 18px; backdrop-filter: blur(12px);
+  font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.85rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.score-counter .score-icon { font-size: 1.1rem; }
+.score-counter .score-val { color: var(--accent); font-weight: 900; font-size: 1rem; }
+
+/* Exercise 2 reading questions */
+.reading-q-options { display: grid; grid-template-columns: 1fr; gap: 7px; }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="pattern-layer"></div>
+
+<!-- Timer Alert -->
+<div class="time-alert" id="timeAlert">
+  <span class="close-alert" onclick="document.getElementById('timeAlert').classList.remove('show')">✕</span>
+  ⏰ <strong>Đã hết giờ làm bài.</strong><br>
+  Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong <strong>10 phút</strong> thôi nha! 💪
+</div>
+
+<!-- Result Modal -->
+<div class="modal-overlay" id="resultModal">
+  <div class="result-card">
+    <span class="result-emoji" id="resultEmoji">🏆</span>
+    <div class="result-title" id="resultTitle">Kết quả của bạn</div>
+    <div class="result-score" id="resultScore">0/15</div>
+    <div class="result-msg" id="resultMsg">Đang tính điểm...</div>
+    <div class="result-breakdown">
+      <div class="breakdown-item"><span>Bài tập 1</span><strong id="score1">-</strong></div>
+      <div class="breakdown-item"><span>Bài tập 2</span><strong id="score2">-</strong></div>
+      <div class="breakdown-item"><span>Câu đúng</span><strong id="scoreCorrect" style="color:#00D26A">-</strong></div>
+      <div class="breakdown-item"><span>Câu sai</span><strong id="scoreWrong" style="color:#FF4757">-</strong></div>
+    </div>
+    <button class="btn-retry" onclick="location.reload()">🔄 Làm lại bài</button>
+  </div>
+</div>
+
+<div class="wrapper">
+  <!-- HEADER -->
+  <header>
+    <div class="header-title">
+      <h1>🤖 Science & Technology Quiz</h1>
+      <span>Giáo viên tạo: MS Chí Nên ULIS</span>
+    </div>
+    <div class="timer-zone">
+      <div id="timerDisplay">10:00</div>
+      <button class="btn-timer" id="btnStart" onclick="startTimer()">▶ Bắt đầu tính giờ</button>
+      <button class="btn-pause" id="btnPause" onclick="togglePause()">⏸ Tạm dừng</button>
+    </div>
+  </header>
+
+  <!-- MAIN SPLIT -->
+  <div class="main-split">
+    <!-- ======= LEFT PANEL - PASSAGES ======= -->
+    <div class="left-panel">
+
+      <!-- EXERCISE 1 HEADER -->
+      <div class="section-divider">📖 Bài đọc hiểu</div>
+
+      <!-- PASSAGE 1 -->
+      <div class="passage-card">
+        <div class="passage-badge">📘 Exercise 1 · Passage ①</div>
+        <div class="passage-title">Science & Technology in Education</div>
+
+        <!-- Para 1 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Developments in science and technology have brought a number of advantages in education. First, it increases efficiency and motivation for students. Students learn more <span class="blank">(1) ______</span> through visual presentations or videos. They can also feel more motivated to learn in this way.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t1a')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t1a"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t1a')">✕</button></div>Những phát triển trong khoa học và công nghệ đã mang lại nhiều lợi thế trong giáo dục. Thứ nhất, nó làm tăng hiệu quả và động lực học tập cho học sinh. Học sinh học <strong>(1) ______</strong> hơn thông qua các bài thuyết trình trực quan hoặc video. Họ cũng có thể cảm thấy có động lực học tập hơn theo cách này.</div>
+        </div>
+
+        <!-- Para 2 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Secondly, digital search and internet <span class="blank">(2) ______</span> have a positive impact on the research habits of learners. Technology has opened doors for learners to access information sources to find <span class="blank">(3) ______</span> to problems by themselves. Thus, students feel willing to do research on their own.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t1b')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t1b"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t1b')">✕</button></div>Thứ hai, tìm kiếm kỹ thuật số và <strong>(2) ______</strong> internet có tác động tích cực đến thói quen nghiên cứu của người học. Công nghệ đã mở ra cánh cửa cho người học tiếp cận các nguồn thông tin để tự tìm <strong>(3) ______</strong> cho các vấn đề. Do đó, học sinh sẵn sàng tự nghiên cứu.</div>
+        </div>
+
+        <!-- Para 3 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Third, students can access more information when they study. For example, learners who desire to write quality essays can find samples to guide them in their writing process. They can learn the best ways to present and structure their essays.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t1c')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t1c"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t1c')">✕</button></div>Thứ ba, học sinh có thể tiếp cận nhiều thông tin hơn khi học. Ví dụ, những người học muốn viết các bài luận chất lượng có thể tìm mẫu để hướng dẫn quá trình viết của họ. Họ có thể học những cách tốt nhất để trình bày và cấu trúc bài luận.</div>
+        </div>
+
+        <!-- Para 4 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Moreover, <span class="blank">(4) ______</span> in science and technology can increase flexibility for learning. With online classes, students don't need to <span class="blank">(5) ______</span> lessons at specific times, especially when there is a pandemic or in stormy weather. They can read materials online and complete their assignments when they have time.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t1d')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t1d"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t1d')">✕</button></div>Hơn nữa, <strong>(4) ______</strong> trong khoa học và công nghệ có thể tăng tính linh hoạt trong học tập. Với các lớp học trực tuyến, học sinh không cần phải <strong>(5) ______</strong> các bài học vào những thời điểm cụ thể, đặc biệt là khi có đại dịch hoặc thời tiết bão tố. Họ có thể đọc tài liệu trực tuyến và hoàn thành bài tập khi có thời gian.</div>
+        </div>
+
+        <p style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;"><em>(Adapted from: https://fadmagazine.com)</em></p>
+      </div>
+
+      <!-- PASSAGE 2 -->
+      <div class="passage-card">
+        <div class="passage-badge">📘 Exercise 1 · Passage ②</div>
+        <div class="passage-title">Computers in Daily Life</div>
+
+        <!-- Para 1 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Computers are helpful in many ways. First, they are fast. They can work with information even <span class="blank">(1) ______</span> than a person. Second, computers can work with a lot of information at the same time. Third, they can store information for a long time. They do not forget things that the common people do.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t2a')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t2a"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t2a')">✕</button></div>Máy tính rất hữu ích theo nhiều cách. Thứ nhất, chúng nhanh. Chúng có thể xử lý thông tin thậm chí <strong>(1) ______</strong> hơn con người. Thứ hai, máy tính có thể xử lý nhiều thông tin cùng một lúc. Thứ ba, chúng có thể lưu trữ thông tin trong thời gian dài. Chúng không quên những thứ mà người thường hay quên.</div>
+        </div>
+
+        <!-- Para 2 -->
+        <div class="para-block">
+          <div class="passage-text"><p><span class="blank">(2) ______</span>, computers are almost always correct. They are not perfect, but they usually do not make mistakes.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t2b')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t2b"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t2b')">✕</button></div><strong>(2) ______</strong>, máy tính hầu như luôn luôn chính xác. Chúng không hoàn hảo, nhưng thường không mắc lỗi.</div>
+        </div>
+
+        <!-- Para 3 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Recently, it is important <span class="blank">(3) ______</span> about computers. There are a number of things to learn. Many companies have computers at work. In addition, most universities <span class="blank">(4) ______</span> day and night courses in Computer Science. Another way to learn is from a book, or from a friend. After a few hours of practice, you can <span class="blank">(5) ______</span> with computers.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t2c')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t2c"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t2c')">✕</button></div>Gần đây, điều quan trọng là phải <strong>(3) ______</strong> về máy tính. Có nhiều thứ cần học. Nhiều công ty có máy tính tại nơi làm việc. Ngoài ra, hầu hết các trường đại học <strong>(4) ______</strong> các khóa học ban ngày và ban đêm về Khoa học Máy tính. Một cách học khác là từ sách, hoặc từ bạn bè. Sau vài giờ thực hành, bạn có thể <strong>(5) ______</strong> với máy tính.</div>
+        </div>
+      </div>
+
+      <!-- PASSAGE 3 - READING COMPREHENSION -->
+      <div class="passage-card">
+        <div class="passage-badge">📗 Exercise 2 · Reading Comprehension</div>
+        <div class="passage-title">Robotics & AI Assistants</div>
+
+        <!-- Para 1 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Science and technology is changing the world, and the developments in robotics change the world for humanity. We can already talk with Alexa, Siri, Jibo, Tapia and other personal AI assistants. We can not only direct them to do things around like office work at workplaces or deliver pizza, but also have a real conversation with them.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t3a')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t3a"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t3a')">✕</button></div>Khoa học và công nghệ đang thay đổi thế giới, và những phát triển trong lĩnh vực robot học đang thay đổi thế giới vì lợi ích của nhân loại. Chúng ta đã có thể nói chuyện với Alexa, Siri, Jibo, Tapia và các trợ lý AI cá nhân khác. Chúng ta không chỉ có thể chỉ đạo chúng làm các công việc xung quanh như công việc văn phòng tại nơi làm việc hoặc giao pizza, mà còn có thể có một cuộc trò chuyện thực sự với chúng.</div>
+        </div>
+
+        <!-- Para 2 -->
+        <div class="para-block">
+          <div class="passage-text"><p>Now as machines are getting better at understanding natural languages, its applications are becoming more important to us. They help us to take notes, do translation, or even do teaching jobs. More than that, robots' hands can handle objects and learning, and it teaches itself to perform various tasks.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t3b')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t3b"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t3b')">✕</button></div>Bây giờ khi các máy móc ngày càng hiểu ngôn ngữ tự nhiên tốt hơn, các ứng dụng của chúng ngày càng trở nên quan trọng với chúng ta. Chúng giúp chúng ta ghi chú, dịch thuật, hoặc thậm chí làm công việc giảng dạy. Hơn thế nữa, tay robot có thể xử lý các vật thể và học hỏi, và tự dạy mình thực hiện các nhiệm vụ khác nhau.</div>
+        </div>
+
+        <!-- Para 3 -->
+        <div class="para-block">
+          <div class="passage-text"><p>We can expect robotic limbs will soon take a big part of the workload off of humanity's shoulders. For example, in factories, they can do assembling work, carry heavy things around. At home, they can do washing dishes and boring household chores. Robots will be ideal for people who are missing limbs or are disabled in some ways.</p></div>
+          <button class="btn-translate" onclick="toggleTranslate('t3c')"><span class="star">🌟</span> Dịch đoạn này</button>
+          <div class="translate-box" id="t3c"><div class="translate-box-header"><span>📝 Bản dịch</span><button class="translate-close" onclick="toggleTranslate('t3c')">✕</button></div>Chúng ta có thể kỳ vọng các chi thể robot sẽ sớm gánh bớt một phần lớn công việc khỏi vai của nhân loại. Ví dụ, trong các nhà máy, chúng có thể làm công việc lắp ráp, mang vác đồ vật nặng. Ở nhà, chúng có thể rửa bát đĩa và làm các công việc gia đình nhàm chán. Robot sẽ là lý tưởng cho những người bị mất chi thể hoặc khuyết tật theo một cách nào đó.</div>
+        </div>
+
+        <p style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;"><em>(Adapted from: https://techjury.net)</em></p>
+      </div>
+
+      <!-- GLOSSARY -->
+      <div class="glossary-card">
+        <div class="glossary-title">📚 Glossary – Từ vựng học thuật nổi bật</div>
+        <table class="glossary-table">
+          <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr></thead>
+          <tbody>
+            <tr><td class="word-col">efficiency</td><td class="type-col">n.</td><td>hiệu quả, tính hiệu quả</td></tr>
+            <tr><td class="word-col">motivation</td><td class="type-col">n.</td><td>động lực, sự thúc đẩy</td></tr>
+            <tr><td class="word-col">visual</td><td class="type-col">adj.</td><td>trực quan, thuộc về thị giác</td></tr>
+            <tr><td class="word-col">impact</td><td class="type-col">n.</td><td>tác động, ảnh hưởng</td></tr>
+            <tr><td class="word-col">pandemic</td><td class="type-col">n.</td><td>đại dịch (bệnh bùng phát toàn cầu)</td></tr>
+            <tr><td class="word-col">flexibility</td><td class="type-col">n.</td><td>tính linh hoạt</td></tr>
+            <tr><td class="word-col">application</td><td class="type-col">n.</td><td>ứng dụng, sự áp dụng</td></tr>
+            <tr><td class="word-col">translation</td><td class="type-col">n.</td><td>dịch thuật, bản dịch</td></tr>
+            <tr><td class="word-col">robotics</td><td class="type-col">n.</td><td>kỹ thuật robot học</td></tr>
+            <tr><td class="word-col">limbs</td><td class="type-col">n.</td><td>chi thể (tay, chân người/động vật)</td></tr>
+            <tr><td class="word-col">assembling</td><td class="type-col">v./adj.</td><td>lắp ráp, công việc lắp ráp</td></tr>
+            <tr><td class="word-col">household chores</td><td class="type-col">n.phr.</td><td>công việc nội trợ, việc nhà</td></tr>
+            <tr><td class="word-col">disabled</td><td class="type-col">adj.</td><td>khuyết tật, bị tàn tật</td></tr>
+            <tr><td class="word-col">workload</td><td class="type-col">n.</td><td>khối lượng công việc</td></tr>
+            <tr><td class="word-col">effectively</td><td class="type-col">adv.</td><td>một cách hiệu quả</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- end left-panel -->
+
+    <!-- ======= RIGHT PANEL - EXERCISES ======= -->
+    <div class="right-panel" id="rightPanel">
+
+      <!-- EXERCISE 1 PASSAGE 1 -->
+      <div class="ex-section">
+        <div class="ex-header">
+          <span class="ex-badge">📝 Exercise 1 · ①</span>
+          <span class="ex-desc">Điền từ thích hợp vào chỗ trống</span>
+        </div>
+        <div id="ex1p1"></div>
+      </div>
+
+      <!-- EXERCISE 1 PASSAGE 2 -->
+      <div class="ex-section">
+        <div class="ex-header">
+          <span class="ex-badge">📝 Exercise 1 · ②</span>
+          <span class="ex-desc">Điền từ thích hợp vào chỗ trống</span>
+        </div>
+        <div id="ex1p2"></div>
+      </div>
+
+      <!-- EXERCISE 2 -->
+      <div class="ex-section">
+        <div class="ex-header">
+          <span class="ex-badge">📗 Exercise 2</span>
+          <span class="ex-desc">Chọn đáp án đúng cho câu hỏi đọc hiểu</span>
+        </div>
+        <div id="ex2"></div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="submit-zone">
+        <button class="btn-submit" onclick="submitAll()">🏆 Nộp bài & xem điểm</button>
+      </div>
+
+    </div><!-- end right-panel -->
+  </div><!-- end main-split -->
+</div><!-- end wrapper -->
+
+<!-- Score Counter -->
+<div class="score-counter">
+  <span class="score-icon">⭐</span>
+  <span>Điểm: </span>
+  <span class="score-val" id="liveScore">0</span>
+  <span style="color:var(--text-muted)">/15</span>
+</div>
+
+<script>
+// ==============================
+// DATA
+// ==============================
+const ex1p1Questions = [
+  {
+    num: "Câu 1",
+    text: "Students learn more <span class='blank-q'>(1) ______</span> through visual presentations or videos.",
+    options: [
+      { label: "A", text: "effectively", isCorrect: true },
+      { label: "B", text: "effect", isCorrect: false },
+      { label: "C", text: "efficiency", isCorrect: false },
+      { label: "D", text: "affected", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='correct-answer'>A. effectively (adv - trạng từ):</span> một cách hiệu quả ✅<br>
+    • <span class='wrong-item'>B. effect (n - danh từ):</span> tác dụng, kết quả ❌<br>
+    • <span class='wrong-item'>C. efficiency (n - danh từ):</span> tính hiệu quả ❌<br>
+    • <span class='wrong-item'>D. affected (v/adj - động từ/tính từ):</span> bị ảnh hưởng ❌<br><br>
+    <strong>🔑 Tại sao chọn A?</strong><br>
+    Câu cần một <strong>trạng từ (adverb)</strong> để bổ nghĩa cho động từ "learn" (học). Trong câu "learn more ______", chúng ta cần một trạng từ chỉ cách thức. <em>Effectively</em> là trạng từ duy nhất trong 4 đáp án. B, C là danh từ; D là tính từ/động từ — đều không phù hợp về mặt ngữ pháp.<br><br>
+    <strong>💬 Dịch câu:</strong> "Học sinh học <em>hiệu quả hơn</em> thông qua các bài thuyết trình trực quan hoặc video."`
+  },
+  {
+    num: "Câu 2",
+    text: "Digital search and internet <span class='blank-q'>(2) ______</span> have a positive impact on the research habits of learners.",
+    options: [
+      { label: "A", text: "utensils", isCorrect: false },
+      { label: "B", text: "tools", isCorrect: true },
+      { label: "C", text: "equipment", isCorrect: false },
+      { label: "D", text: "gadgets", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. utensils (n):</span> dụng cụ nhà bếp (thìa, nĩa...) ❌<br>
+    • <span class='correct-answer'>B. tools (n):</span> công cụ (nói chung, kể cả phi vật lý) ✅<br>
+    • <span class='wrong-item'>C. equipment (n):</span> thiết bị, trang thiết bị (thường là đồ vật/máy móc cụ thể) ❌<br>
+    • <span class='wrong-item'>D. gadgets (n):</span> thiết bị nhỏ gọn, đồ chơi công nghệ ❌<br><br>
+    <strong>🔑 Tại sao chọn B?</strong><br>
+    "Digital search" và "internet tools" là cụm từ cố định trong tiếng Anh học thuật, chỉ các <strong>công cụ kỹ thuật số phi vật lý</strong>. "Utensils" chỉ dùng cho đồ dùng nhà bếp; "equipment" dùng cho thiết bị vật lý; "gadgets" là đồ chơi công nghệ nhỏ gọn — đều không phù hợp nghĩa trong văn cảnh giáo dục/nghiên cứu.<br><br>
+    <strong>💬 Dịch câu:</strong> "Tìm kiếm kỹ thuật số và <em>công cụ</em> internet có tác động tích cực đến thói quen nghiên cứu của người học."`
+  },
+  {
+    num: "Câu 3",
+    text: "Technology has opened doors for learners to find <span class='blank-q'>(3) ______</span> to problems by themselves.",
+    options: [
+      { label: "A", text: "answers", isCorrect: false },
+      { label: "B", text: "questions", isCorrect: false },
+      { label: "C", text: "solutions", isCorrect: true },
+      { label: "D", text: "options", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. answers (n):</span> câu trả lời — thường đi với "answer to a question" ❌<br>
+    • <span class='wrong-item'>B. questions (n):</span> câu hỏi — ngữ nghĩa không phù hợp ❌<br>
+    • <span class='correct-answer'>C. solutions (n):</span> giải pháp — đi cố định với "solution to a problem" ✅<br>
+    • <span class='wrong-item'>D. options (n):</span> lựa chọn — không phù hợp nghĩa ❌<br><br>
+    <strong>🔑 Tại sao chọn C?</strong><br>
+    Cụm từ cố định trong tiếng Anh: <strong>"solution to a problem"</strong> (giải pháp cho một vấn đề). Đây là collocation (kết hợp từ) quan trọng cần nhớ. "Answer" đi với "question"; "options" không phù hợp nghĩa trong ngữ cảnh này.<br><br>
+    <strong>💬 Dịch câu:</strong> "Công nghệ đã mở ra cơ hội cho người học tiếp cận các nguồn thông tin để tự tìm <em>giải pháp</em> cho các vấn đề."`
+  },
+  {
+    num: "Câu 4",
+    text: "Moreover, <span class='blank-q'>(4) ______</span> in science and technology can increase flexibility for learning.",
+    options: [
+      { label: "A", text: "growth", isCorrect: false },
+      { label: "B", text: "increase", isCorrect: false },
+      { label: "C", text: "progress", isCorrect: false },
+      { label: "D", text: "development", isCorrect: true }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. growth (n):</span> sự tăng trưởng (về số lượng, kích thước) — thường dùng cho kinh tế, sinh học ❌<br>
+    • <span class='wrong-item'>B. increase (n/v):</span> sự gia tăng (số lượng, mức độ) — không phù hợp ngữ cảnh ❌<br>
+    • <span class='wrong-item'>C. progress (n):</span> tiến bộ (nhưng "progress in S&T" ít dùng hơn) ❌<br>
+    • <span class='correct-answer'>D. development (n):</span> sự phát triển — "developments in science and technology" là cụm từ học thuật chuẩn ✅<br><br>
+    <strong>🔑 Tại sao chọn D?</strong><br>
+    Câu đầu của bài đọc đã dùng "Developments in science and technology" — đây là sự <strong>lặp từ vựng có chủ đích (lexical cohesion)</strong>. "Development" là từ học thuật (C1) phù hợp nhất trong ngữ cảnh công nghệ - giáo dục.<br><br>
+    <strong>💬 Dịch câu:</strong> "Hơn nữa, sự <em>phát triển</em> trong khoa học và công nghệ có thể tăng tính linh hoạt cho việc học."`
+  },
+  {
+    num: "Câu 5",
+    text: "Students don't need to <span class='blank-q'>(5) ______</span> lessons at specific times.",
+    options: [
+      { label: "A", text: "come", isCorrect: false },
+      { label: "B", text: "attend", isCorrect: true },
+      { label: "C", text: "learn", isCorrect: false },
+      { label: "D", text: "study", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. come (v):</span> đến — cần giới từ "come to lessons", không đứng một mình ❌<br>
+    • <span class='correct-answer'>B. attend (v):</span> tham gia, tham dự — "attend lessons/classes" là cụm từ cố định ✅<br>
+    • <span class='wrong-item'>C. learn (v):</span> học — "learn lessons" không mang nghĩa "đi học tại lớp" ❌<br>
+    • <span class='wrong-item'>D. study (v):</span> học, nghiên cứu — không phù hợp ngữ cảnh "đến lớp đúng giờ" ❌<br><br>
+    <strong>🔑 Tại sao chọn B?</strong><br>
+    Collocation cố định: <strong>"attend lessons/classes"</strong> = tham dự buổi học (có mặt trực tiếp). Câu nói về việc học trực tuyến không cần đến lớp vào giờ cố định, nên "attend" là từ duy nhất mang đúng nghĩa này.<br><br>
+    <strong>💬 Dịch câu:</strong> "Học sinh không cần phải <em>tham dự</em> các buổi học vào những thời điểm cụ thể."`
+  }
+];
+
+const ex1p2Questions = [
+  {
+    num: "Câu 1",
+    text: "They can work with information even <span class='blank-q'>(1) ______</span> than a person.",
+    options: [
+      { label: "A", text: "quickly", isCorrect: false },
+      { label: "B", text: "quicklier", isCorrect: false },
+      { label: "C", text: "more quickly", isCorrect: true },
+      { label: "D", text: "most quickly", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. quickly (adv):</span> nhanh chóng — đây là dạng trạng từ gốc, không có nghĩa so sánh ❌<br>
+    • <span class='wrong-item'>B. quicklier:</span> KHÔNG TỒN TẠI trong tiếng Anh — đây là cạm bẫy! ❌<br>
+    • <span class='correct-answer'>C. more quickly (adv - comparative):</span> nhanh hơn — so sánh hơn đúng chuẩn ✅<br>
+    • <span class='wrong-item'>D. most quickly (adv - superlative):</span> nhanh nhất — so sánh nhất, không phù hợp cấu trúc "than" ❌<br><br>
+    <strong>🔑 Tại sao chọn C?</strong><br>
+    Cấu trúc: <strong>even + comparative + than</strong> = thậm chí còn ... hơn. Vì "quickly" là trạng từ dài (2 âm tiết trở lên), dạng so sánh hơn phải là <strong>"more quickly"</strong> (KHÔNG dùng -er). "Quicklier" không phải từ có thật trong tiếng Anh!<br><br>
+    <strong>💬 Dịch câu:</strong> "Chúng có thể xử lý thông tin thậm chí còn <em>nhanh hơn</em> con người."`
+  },
+  {
+    num: "Câu 2",
+    text: "<span class='blank-q'>(2) ______</span>, computers are almost always correct.",
+    options: [
+      { label: "A", text: "Finally", isCorrect: true },
+      { label: "B", text: "Finish", isCorrect: false },
+      { label: "C", text: "Final", isCorrect: false },
+      { label: "D", text: "Finishing", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='correct-answer'>A. Finally (adv - trạng từ liên kết):</span> cuối cùng — dùng để giới thiệu luận điểm cuối trong danh sách ✅<br>
+    • <span class='wrong-item'>B. Finish (v/n):</span> hoàn thành, kết thúc — không dùng làm trạng từ liên kết ❌<br>
+    • <span class='wrong-item'>C. Final (adj):</span> cuối cùng, cuối — tính từ, không thể đứng đầu câu làm connective ❌<br>
+    • <span class='wrong-item'>D. Finishing (v-ing):</span> đang hoàn thành — không phù hợp ngữ pháp ❌<br><br>
+    <strong>🔑 Tại sao chọn A?</strong><br>
+    Đây là câu hỏi về <strong>linking words (từ liên kết)</strong>. Bài đã dùng "First", "Second", "Third" → câu này cần "Finally" (trạng từ) để kết thúc danh sách. Chỉ có trạng từ mới làm được chức năng này.<br><br>
+    <strong>💬 Dịch câu:</strong> "<em>Cuối cùng</em>, máy tính hầu như luôn chính xác."`
+  },
+  {
+    num: "Câu 3",
+    text: "Recently, it is important <span class='blank-q'>(3) ______</span> about computers.",
+    options: [
+      { label: "A", text: "know", isCorrect: false },
+      { label: "B", text: "knew", isCorrect: false },
+      { label: "C", text: "knowing", isCorrect: false },
+      { label: "D", text: "to know", isCorrect: true }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. know:</span> động từ nguyên mẫu không "to" — sai ngữ pháp ❌<br>
+    • <span class='wrong-item'>B. knew:</span> quá khứ đơn — câu ở hiện tại, sai thì ❌<br>
+    • <span class='wrong-item'>C. knowing:</span> hiện tại phân từ/danh động từ — sai cấu trúc ❌<br>
+    • <span class='correct-answer'>D. to know:</span> động từ nguyên mẫu có "to" ✅<br><br>
+    <strong>🔑 Tại sao chọn D?</strong><br>
+    Cấu trúc ngữ pháp quan trọng: <strong>It is + adjective + to-infinitive</strong><br>
+    = It is important <strong>to know</strong> about... = Điều quan trọng là phải biết về...<br>
+    Đây là cấu trúc cố định rất phổ biến trong tiếng Anh. "Knowing" đi trong cấu trúc khác: "Knowing about computers is important."<br><br>
+    <strong>💬 Dịch câu:</strong> "Gần đây, điều quan trọng là phải <em>biết</em> về máy tính."`
+  },
+  {
+    num: "Câu 4",
+    text: "Most universities <span class='blank-q'>(4) ______</span> day and night courses in Computer Science.",
+    options: [
+      { label: "A", text: "have", isCorrect: true },
+      { label: "B", text: "has", isCorrect: false },
+      { label: "C", text: "had", isCorrect: false },
+      { label: "D", text: "having", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='correct-answer'>A. have:</span> hiện tại đơn, số nhiều — phù hợp với chủ ngữ "most universities" ✅<br>
+    • <span class='wrong-item'>B. has:</span> hiện tại đơn số ít — "universities" là số nhiều, sai ❌<br>
+    • <span class='wrong-item'>C. had:</span> quá khứ đơn — câu nói về sự thật hiện tại ❌<br>
+    • <span class='wrong-item'>D. having:</span> hiện tại phân từ — không phù hợp làm động từ chính ❌<br><br>
+    <strong>🔑 Tại sao chọn A?</strong><br>
+    Chủ ngữ "most universities" là <strong>danh từ số nhiều</strong> → động từ chia theo số nhiều: <strong>have</strong> (không phải has). Câu nói về sự thật hiện tại (general truth) → dùng <strong>Present Simple</strong>.<br><br>
+    <strong>💬 Dịch câu:</strong> "Hầu hết các trường đại học <em>có</em> các khóa học ban ngày và ban đêm về Khoa học Máy tính."`
+  },
+  {
+    num: "Câu 5",
+    text: "After a few hours of practice, you can <span class='blank-q'>(5) ______</span> with computers.",
+    options: [
+      { label: "A", text: "do", isCorrect: false },
+      { label: "B", text: "play", isCorrect: false },
+      { label: "C", text: "get", isCorrect: false },
+      { label: "D", text: "work", isCorrect: true }
+    ],
+    explanation: `<strong>📌 Phân tích 4 đáp án:</strong><br>
+    • <span class='wrong-item'>A. do with:</span> "do with computers" không phải cụm từ tự nhiên ❌<br>
+    • <span class='wrong-item'>B. play with:</span> "chơi với máy tính" — không phù hợp văn cảnh nghiêm túc/học tập ❌<br>
+    • <span class='wrong-item'>C. get with:</span> không phải cụm từ thông dụng về máy tính ❌<br>
+    • <span class='correct-answer'>D. work with:</span> làm việc với — "work with computers" là cụm từ chuẩn ✅<br><br>
+    <strong>🔑 Tại sao chọn D?</strong><br>
+    Collocation quan trọng: <strong>"work with computers"</strong> = sử dụng/làm việc với máy tính — đây là cụm từ cố định phổ biến trong tiếng Anh. Ngữ cảnh bài nói về việc thực hành sử dụng máy tính, nên "work" là từ chính xác nhất.<br><br>
+    <strong>💬 Dịch câu:</strong> "Sau vài giờ thực hành, bạn có thể <em>làm việc</em> với máy tính."`
+  }
+];
+
+const ex2Questions = [
+  {
+    num: "Câu 1",
+    text: "Technology changes the world for ________.",
+    options: [
+      { label: "A", text: "better human life", isCorrect: true },
+      { label: "B", text: "the benefits of producers", isCorrect: false },
+      { label: "C", text: "the worst", isCorrect: false },
+      { label: "D", text: "workers", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Câu hỏi:</strong> Công nghệ thay đổi thế giới vì mục đích gì?<br><br>
+    <strong>🔑 Dẫn chứng trong bài:</strong> Câu đầu tiên: <em>"the developments in robotics <strong>change the world for humanity</strong>"</em> — robotics thay đổi thế giới <strong>vì nhân loại</strong>.<br><br>
+    • <span class='correct-answer'>A. better human life</span> = cuộc sống tốt hơn cho con người ✅ — đồng nghĩa với "for humanity"<br>
+    • <span class='wrong-item'>B.</span> không nhắc đến nhà sản xuất ❌<br>
+    • <span class='wrong-item'>C.</span> "the worst" — ngược nghĩa hoàn toàn ❌<br>
+    • <span class='wrong-item'>D.</span> "workers" — quá hẹp, bài nói về toàn nhân loại ❌<br><br>
+    <strong>💬 Dịch câu hỏi:</strong> "Công nghệ thay đổi thế giới vì ________."`,
+    isReading: true
+  },
+  {
+    num: "Câu 2",
+    text: "Which robot can't talk?",
+    options: [
+      { label: "A", text: "Siri", isCorrect: false },
+      { label: "B", text: "Alexa", isCorrect: false },
+      { label: "C", text: "Robota", isCorrect: true },
+      { label: "D", text: "Tapia", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Câu hỏi:</strong> Robot nào KHÔNG nói chuyện được?<br><br>
+    <strong>🔑 Dẫn chứng trong bài:</strong> <em>"We can already talk with <strong>Alexa, Siri, Jibo, Tapia</strong> and other personal AI assistants."</em><br><br>
+    Bài đọc chỉ nhắc đến: Alexa, Siri, Jibo, Tapia. <strong>Robota</strong> không xuất hiện trong bài → đây là robot KHÔNG được nhắc đến (không có chức năng nói chuyện theo bài).<br><br>
+    • <span class='wrong-item'>A. Siri</span> — có trong bài, nói được ❌<br>
+    • <span class='wrong-item'>B. Alexa</span> — có trong bài, nói được ❌<br>
+    • <span class='correct-answer'>C. Robota</span> — KHÔNG có trong bài ✅<br>
+    • <span class='wrong-item'>D. Tapia</span> — có trong bài, nói được ❌<br><br>
+    <strong>💬 Dịch câu hỏi:</strong> "Robot nào không thể nói chuyện?"`,
+    isReading: true
+  },
+  {
+    num: "Câu 3",
+    text: "Which is mentioned as a thing that a speaking robot can do?",
+    options: [
+      { label: "A", text: "Nursing", isCorrect: false },
+      { label: "B", text: "Cleaning", isCorrect: false },
+      { label: "C", text: "Taking notes", isCorrect: true },
+      { label: "D", text: "Guiding around", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Câu hỏi:</strong> Điều gì được đề cập là việc một robot nói được có thể làm?<br><br>
+    <strong>🔑 Dẫn chứng trong bài:</strong> <em>"They help us to <strong>take notes</strong>, do translation, or even do teaching jobs."</em><br><br>
+    • <span class='wrong-item'>A. Nursing</span> — không được nhắc đến ❌<br>
+    • <span class='wrong-item'>B. Cleaning</span> — không được nhắc đến trong phần AI assistant ❌<br>
+    • <span class='correct-answer'>C. Taking notes</span> — được nêu rõ "help us to <strong>take notes</strong>" ✅<br>
+    • <span class='wrong-item'>D. Guiding around</span> — không được nhắc đến ❌<br><br>
+    <strong>💬 Dịch câu hỏi:</strong> "Điều nào được đề cập là việc mà một robot nói chuyện được có thể làm?"`,
+    isReading: true
+  },
+  {
+    num: "Câu 4",
+    text: "What does the word 'limbs' mean?",
+    options: [
+      { label: "A", text: "brains", isCorrect: false },
+      { label: "B", text: "shoulders", isCorrect: false },
+      { label: "C", text: "hearts", isCorrect: false },
+      { label: "D", text: "arms", isCorrect: true }
+    ],
+    explanation: `<strong>📌 Câu hỏi:</strong> Từ "limbs" có nghĩa là gì?<br><br>
+    <strong>🔑 Dẫn chứng trong bài:</strong> <em>"Robots will be ideal for people who are <strong>missing limbs</strong> or are disabled in some ways."</em><br><br>
+    <strong>Limbs</strong> (n, số nhiều) = chi thể của cơ thể người/động vật, bao gồm tay và chân (arms and legs). Trong ngữ cảnh bài, "missing limbs" = mất đi tay hoặc chân.<br><br>
+    • <span class='wrong-item'>A. brains</span> = não bộ ❌<br>
+    • <span class='wrong-item'>B. shoulders</span> = vai ❌<br>
+    • <span class='wrong-item'>C. hearts</span> = trái tim ❌<br>
+    • <span class='correct-answer'>D. arms</span> = tay, cánh tay (đại diện cho chi thể) ✅<br><br>
+    <strong>💬 Dịch câu trong bài:</strong> "Robot sẽ lý tưởng cho những người bị mất <em>chi thể</em> hoặc khuyết tật theo một cách nào đó."`,
+    isReading: true
+  },
+  {
+    num: "Câu 5",
+    text: "The passage is mainly about ________.",
+    options: [
+      { label: "A", text: "different types of robots", isCorrect: false },
+      { label: "B", text: "advantages of robots", isCorrect: true },
+      { label: "C", text: "the role of robots to our home", isCorrect: false },
+      { label: "D", text: "the role of robots in a factory", isCorrect: false }
+    ],
+    explanation: `<strong>📌 Câu hỏi:</strong> Đoạn văn chủ yếu nói về điều gì?<br><br>
+    <strong>🔑 Phân tích toàn bài:</strong><br>
+    Bài đọc đề cập đến nhiều <strong>lợi thế</strong> của robot: trò chuyện, ghi chú, dịch thuật, dạy học, lắp ráp trong nhà máy, việc nhà, hỗ trợ người khuyết tật.<br><br>
+    • <span class='wrong-item'>A.</span> Bài không phân loại các loại robot khác nhau ❌<br>
+    • <span class='correct-answer'>B. advantages of robots</span> = những ưu điểm, lợi ích của robot ✅<br>
+    • <span class='wrong-item'>C.</span> Vai trò ở nhà chỉ là một phần nhỏ, không phải chủ đề chính ❌<br>
+    • <span class='wrong-item'>D.</span> Vai trò trong nhà máy cũng chỉ là một ví dụ ❌<br><br>
+    <strong>💡 Cách làm:</strong> Câu hỏi "main idea" cần đọc TOÀN BÀI, không chỉ một đoạn. Ý bao quát nhất là "lợi ích của robot".`,
+    isReading: true
+  }
+];
+
+// ==============================
+// RENDER ENGINE
+// ==============================
+let answeredMap = {}; // questionId -> {correct: bool}
+let liveScoreCount = 0;
+const TOTAL = 15;
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderQuestions(container, questions, prefix) {
+  questions.forEach((q, idx) => {
+    const qId = `${prefix}_${idx}`;
+    const shuffled = shuffleArray(q.options);
+    const gridClass = q.isReading ? 'reading-q-options' : 'options-grid';
+
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-number">${q.num}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="${gridClass}" id="opts_${qId}">
+        ${shuffled.map((opt, oi) => `
+          <button class="option-btn" id="opt_${qId}_${oi}" onclick="handleAnswer('${qId}', ${opt.isCorrect}, this, 'opts_${qId}', '${qId}_explain')">
+            <span class="option-label">${opt.label}</span>
+            ${opt.text}
+          </button>
+        `).join('')}
+      </div>
+      <div class="explain-box" id="${qId}_explain">${q.explanation}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function handleAnswer(qId, isCorrect, btn, optsId, explainId) {
+  if (answeredMap[qId] !== undefined) return; // already answered
+
+  const optsContainer = document.getElementById(optsId);
+  const btns = optsContainer.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    answeredMap[qId] = true;
+    liveScoreCount++;
+    document.getElementById('liveScore').textContent = liveScoreCount;
+    playSound(true);
+    launchConfetti(btn);
+  } else {
+    btn.classList.add('wrong');
+    answeredMap[qId] = false;
+    playSound(false);
+    // highlight correct
+    btns.forEach(b => {
+      if (b.textContent.trim() !== btn.textContent.trim()) {
+        // find correct
+      }
+    });
+    // Show correct answer
+    btns.forEach(b => {
+      const txt = b.querySelector('.option-label').nextSibling;
+      // We need to match original options
+    });
+    // Simpler: mark all buttons - find the correct one by re-checking
+    btns.forEach(b => {
+      if (!b.classList.contains('wrong') && b !== btn) {
+        // Check if this is the correct button by evaluating onclick
+        const onc = b.getAttribute('onclick');
+        if (onc && onc.includes('true')) {
+          b.classList.add('correct');
+        }
+      }
+    });
+  }
+
+  const explainBox = document.getElementById(explainId);
+  explainBox.classList.add('visible');
+}
+
+// ==============================
+// AUDIO
+// ==============================
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playSound(correct) {
+  try {
+    const ctx = getAudioCtx();
+    if (correct) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523, ctx.currentTime);
+      osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
+    } else {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(200, ctx.currentTime);
+      osc.frequency.setValueAtTime(150, ctx.currentTime + 0.15);
+      osc.frequency.setValueAtTime(100, ctx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
+    }
+  } catch(e) {}
+}
+
+// ==============================
+// CONFETTI
+// ==============================
+function launchConfetti(el) {
+  const colors = ['#6C63FF','#00C9A7','#FDCB6E','#FF4757','#fd79a8','#74b9ff'];
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 22; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = (rect.left + Math.random() * rect.width) + 'px';
+    c.style.top = rect.top + 'px';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = (6 + Math.random() * 8) + 'px';
+    c.style.height = (6 + Math.random() * 8) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    const duration = 0.8 + Math.random() * 0.8;
+    c.style.animationDuration = duration + 's';
+    c.style.animationDelay = (Math.random() * 0.2) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), (duration + 0.3) * 1000);
+  }
+}
+
+// ==============================
+// TIMER
+// ==============================
+let timerSec = 600;
+let timerInterval = null;
+let timerRunning = false;
+let timerStarted = false;
+
+function startTimer() {
+  if (timerStarted) return;
+  timerStarted = true;
+  timerRunning = true;
+  document.getElementById('timerDisplay').style.display = 'block';
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnPause').style.display = 'inline-block';
+  timerInterval = setInterval(tickTimer, 1000);
+}
+
+function tickTimer() {
+  if (!timerRunning) return;
+  timerSec--;
+  const m = Math.floor(timerSec / 60);
+  const s = timerSec % 60;
+  const disp = document.getElementById('timerDisplay');
+  disp.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (timerSec <= 60) disp.classList.add('warning');
+  if (timerSec <= 0) {
+    clearInterval(timerInterval);
+    disp.textContent = '00:00';
+    document.getElementById('btnPause').style.display = 'none';
+    document.getElementById('timeAlert').classList.add('show');
+    playTimeUpSound();
+  }
+}
+
+function playTimeUpSound() {
+  try {
+    const ctx = getAudioCtx();
+    [400,350,300].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.25, ctx.currentTime + i*0.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.2 + 0.4);
+      osc.start(ctx.currentTime + i*0.2);
+      osc.stop(ctx.currentTime + i*0.2 + 0.4);
+    });
+  } catch(e) {}
+}
+
+function togglePause() {
+  timerRunning = !timerRunning;
+  document.getElementById('btnPause').textContent = timerRunning ? '⏸ Tạm dừng' : '▶ Tiếp tục';
+}
+
+// ==============================
+// TRANSLATE TOGGLE
+// ==============================
+let activeTranslate = null;
+
+function toggleTranslate(id) {
+  const box = document.getElementById(id);
+  const isOpen = box.classList.contains('open');
+
+  // close any open popup first
+  if (activeTranslate && activeTranslate !== id) {
+    const prev = document.getElementById(activeTranslate);
+    if (prev) prev.classList.remove('open');
+  }
+
+  if (isOpen) {
+    box.classList.remove('open');
+    activeTranslate = null;
+  } else {
+    box.classList.add('open');
+    activeTranslate = id;
+  }
+}
+
+// Click outside popup to close
+document.addEventListener('click', function(e) {
+  if (!activeTranslate) return;
+  const box = document.getElementById(activeTranslate);
+  if (!box) return;
+  if (!box.contains(e.target) && !e.target.closest('.btn-translate')) {
+    box.classList.remove('open');
+    activeTranslate = null;
+  }
+});
+
+// ==============================
+// SUBMIT
+// ==============================
+function submitAll() {
+  let total = 0, correct = 0;
+  const allSets = [
+    { qs: ex1p1Questions, prefix: 'e1p1' },
+    { qs: ex1p2Questions, prefix: 'e1p2' },
+    { qs: ex2Questions, prefix: 'e2' }
+  ];
+
+  let score1 = 0, score2 = 0, score3 = 0;
+  allSets.forEach(({ qs, prefix }, si) => {
+    qs.forEach((q, idx) => {
+      const qId = `${prefix}_${idx}`;
+      total++;
+      if (answeredMap[qId] === true) {
+        correct++;
+        if (si === 0) score1++;
+        else if (si === 1) score2++;
+        else score3++;
+      }
+    });
+  });
+
+  const pct = correct / total;
+  let emoji, title, msg;
+  if (pct === 1) { emoji = '🏆'; title = 'THIÊN TÀI!'; msg = 'Bạn đạt điểm tuyệt đối! Bạn thực sự xuất sắc! Hãy tiếp tục phát huy nhé! 🌟'; }
+  else if (pct >= 0.85) { emoji = '🎉'; title = 'Xuất sắc!'; msg = 'Làm tốt lắm! Chỉ sai vài câu thôi. Bạn nắm chắc kiến thức rồi đó! 🎯'; }
+  else if (pct >= 0.7) { emoji = '😊'; title = 'Làm tốt lắm!'; msg = 'Khá ổn đấy! Hãy xem lại các câu sai và đọc giải thích chi tiết nhé! 📚'; }
+  else if (pct >= 0.5) { emoji = '💪'; title = 'Cố lên nhé!'; msg = 'Bạn đang tiến bộ! Đọc lại bài và chú ý phần từ vựng & ngữ pháp hơn nhé! 📖'; }
+  else { emoji = '🌱'; title = 'Hãy cố gắng hơn!'; msg = 'Đừng nản lòng! Hãy đọc kỹ bài, học từ vựng trong Glossary và làm lại bài nhé! You can do it! 💙'; }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = `${correct}/${total}`;
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('score1').textContent = `${score1 + score2}/10`;
+  document.getElementById('score2').textContent = `${score3}/5`;
+  document.getElementById('scoreCorrect').textContent = correct;
+  document.getElementById('scoreWrong').textContent = total - correct;
+
+  document.getElementById('resultModal').classList.add('active');
+
+  if (pct >= 0.7) {
+    setTimeout(() => {
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const c = document.createElement('div');
+          c.className = 'confetti-piece';
+          const colors = ['#6C63FF','#00C9A7','#FDCB6E','#FF4757','#fd79a8','#74b9ff','#a29bfe'];
+          c.style.left = Math.random() * window.innerWidth + 'px';
+          c.style.top = '-20px';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.width = (8 + Math.random() * 10) + 'px';
+          c.style.height = (8 + Math.random() * 10) + 'px';
+          c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+          const dur = 1.5 + Math.random() * 1.5;
+          c.style.animationDuration = dur + 's';
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), dur * 1000 + 500);
+        }, i * 50);
+      }
+    }, 300);
+  }
+}
+
+// ==============================
+// INIT
+// ==============================
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestions(document.getElementById('ex1p1'), ex1p1Questions, 'e1p1');
+  renderQuestions(document.getElementById('ex1p2'), ex1p2Questions, 'e1p2');
+  renderQuestions(document.getElementById('ex2'), ex2Questions, 'e2');
+});
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

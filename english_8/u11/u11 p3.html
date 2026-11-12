@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Test – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:60px;}
+
+/* ===== ANIMATED GRADIENT BG ===== */
+.bg-wrap{position:fixed;inset:0;z-index:-2;}
+.bg-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#c471ed,#f7971e,#00c9a7,#f64f59,#4776e6,#8e54e9);
+  background-size:500% 500%;
+  animation:gradShift 14s ease infinite;
+}
+@keyframes gradShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.bg-pattern{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext x='10' y='40' font-size='28' opacity='.18'%3E⭐%3C/text%3E%3Ctext x='100' y='30' font-size='22' opacity='.15'%3E🌸%3C/text%3E%3Ctext x='160' y='60' font-size='26' opacity='.18'%3E🍎%3C/text%3E%3Ctext x='20' y='110' font-size='24' opacity='.15'%3E☁️%3C/text%3E%3Ctext x='120' y='100' font-size='20' opacity='.18'%3E🌟%3C/text%3E%3Ctext x='60' y='170' font-size='26' opacity='.15'%3E🐱%3C/text%3E%3Ctext x='150' y='160' font-size='22' opacity='.18'%3E🍓%3C/text%3E%3Ctext x='80' y='70' font-size='18' opacity='.12'%3E💫%3C/text%3E%3Ctext x='30' y='185' font-size='20' opacity='.15'%3E🌼%3C/text%3E%3Ctext x='170' y='120' font-size='22' opacity='.15'%3E🍋%3C/text%3E%3C/svg%3E");
+  background-repeat:repeat;
+  mix-blend-mode:overlay;
+  animation:floatPat 25s linear infinite alternate;
+}
+@keyframes floatPat{0%{transform:translateY(0) rotate(0deg) scale(1);}100%{transform:translateY(-30px) rotate(3deg) scale(1.05);}}
+
+/* ===== HEADER ===== */
+.header{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(12px);
+  border-bottom:2px solid rgba(255,255,255,0.3);
+  padding:12px 20px;
+  text-align:center;
+  position:sticky;top:0;z-index:50;
+}
+.header h2{font-size:1.15rem;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.header p{font-size:.78rem;color:rgba(255,255,255,0.9);font-weight:600;}
+
+/* ===== CONTAINER ===== */
+.container{max-width:860px;margin:0 auto;padding:16px;}
+
+/* ===== SECTION TITLE ===== */
+.section-title{
+  background:rgba(255,255,255,0.92);
+  border-radius:18px;
+  padding:14px 22px;
+  margin:22px 0 14px;
+  font-size:1rem;font-weight:900;
+  color:#5a1ed3;
+  box-shadow:0 5px 18px rgba(0,0,0,0.12);
+  border-left:6px solid #FDCB6E;
+}
+.section-title .tag{
+  display:inline-block;background:linear-gradient(135deg,#8854C0,#FF6B9D);
+  color:#fff;border-radius:8px;padding:2px 10px;font-size:.8rem;margin-right:8px;
+}
+
+/* ===== QUESTION CARD ===== */
+.q-card{
+  background:rgba(255,255,255,0.96);
+  border-radius:20px;
+  padding:20px 24px;
+  margin-bottom:14px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.10);
+  transition:transform .2s;
+}
+.q-card:hover{transform:translateY(-2px);}
+.q-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.q-num{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#8854C0,#FF6B9D);
+  color:#fff;border-radius:50%;min-width:34px;height:34px;
+  font-weight:900;font-size:.9rem;flex-shrink:0;
+  box-shadow:0 3px 8px rgba(136,84,192,.4);
+}
+.q-text{font-size:.97rem;font-weight:700;color:#2d1b6e;line-height:1.65;}
+.q-hint{font-size:.82rem;color:#9b59b6;font-weight:700;background:#f3eeff;padding:2px 8px;border-radius:6px;margin-left:6px;}
+
+/* ===== OPTIONS GRID ===== */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+@media(max-width:500px){.opts{grid-template-columns:1fr;}}
+.opt-btn{
+  background:#fff;border:3px solid #e0d4f7;border-radius:16px;
+  padding:12px 16px;font-family:'Nunito',sans-serif;font-size:.92rem;
+  font-weight:700;cursor:pointer;transition:all .18s;
+  box-shadow:0 4px 0 #c9b8ef;text-align:left;color:#2d1b6e;
+  display:flex;align-items:center;gap:8px;
+}
+.opt-btn .opt-label{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#8854C0,#c471ed);color:#fff;
+  border-radius:50%;min-width:26px;height:26px;font-size:.8rem;font-weight:900;flex-shrink:0;
+}
+.opt-btn:hover:not(:disabled){transform:scale(1.04);background:#f3eeff;border-color:#8854C0;}
+.opt-btn.correct{background:#00D26A;border-color:#00a854;color:#fff;box-shadow:0 4px 0 #007a3d;}
+.opt-btn.correct .opt-label{background:rgba(255,255,255,0.3);}
+.opt-btn.wrong{background:#FF4757;border-color:#cc1a29;color:#fff;box-shadow:0 4px 0 #991222;animation:shake .5s;}
+.opt-btn.wrong .opt-label{background:rgba(255,255,255,0.3);}
+.opt-btn.reveal{background:#00D26A;border-color:#00a854;color:#fff;box-shadow:0 4px 0 #007a3d;}
+.opt-btn.reveal .opt-label{background:rgba(255,255,255,0.3);}
+.opt-btn:disabled{cursor:default;}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-9px);}
+  40%{transform:translateX(9px);}
+  60%{transform:translateX(-9px);}
+  80%{transform:translateX(9px);}
+}
+
+/* ===== EXPLANATION ===== */
+.expl{
+  margin-top:14px;padding:14px 16px;
+  background:linear-gradient(135deg,#fff9e6,#e8f4ff);
+  border-radius:14px;border-left:5px solid #FDCB6E;
+  font-size:.88rem;line-height:1.75;color:#2d1b6e;
+  display:none;
+}
+.expl.show{display:block;animation:fadeIn .35s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.expl b{color:#8854C0;}
+.expl .correct-tag{color:#00a854;font-weight:900;}
+.expl .wrong-tag{color:#cc1a29;font-weight:900;}
+
+/* ===== GAP FILL ===== */
+.gap-blank{
+  display:inline-block;min-width:140px;
+  border-bottom:3px dashed #8854C0;padding:2px 10px;
+  cursor:pointer;font-weight:900;color:#8854C0;
+  transition:all .2s;border-radius:6px 6px 0 0;
+}
+.gap-blank:hover{background:#f3eeff;}
+.gap-blank.gf-correct{color:#00a854;border-bottom-color:#00a854;background:#e8fff4;}
+.gap-blank.gf-wrong{color:#cc1a29;border-bottom-color:#cc1a29;background:#ffe8ea;}
+
+/* ===== POPUP ===== */
+.popup-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:200;display:flex;align-items:center;justify-content:center;display:none;
+}
+.popup-overlay.show{display:flex;}
+.popup-box{
+  background:#fff;border-radius:24px;padding:28px;max-width:380px;width:92%;
+  box-shadow:0 24px 70px rgba(0,0,0,.35);
+}
+.popup-box h3{font-size:1rem;color:#5a1ed3;margin-bottom:14px;font-weight:900;}
+.popup-opts{display:flex;flex-direction:column;gap:10px;}
+.popup-opt{
+  background:#f3eeff;border:3px solid #c9b8ef;border-radius:12px;
+  padding:11px 16px;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-weight:700;font-size:.95rem;color:#2d1b6e;transition:all .18s;
+}
+.popup-opt:hover{background:#8854C0;color:#fff;transform:scale(1.02);}
+.popup-close{
+  margin-top:14px;padding:8px 22px;border:none;background:#e0d4f7;
+  border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-weight:700;font-size:.9rem;color:#5a1ed3;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-wrap{text-align:center;margin:30px 0 10px;}
+.submit-btn{
+  padding:17px 55px;
+  background:linear-gradient(135deg,#8854C0,#FF6B9D);
+  color:#fff;border:none;border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:1.15rem;font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 0 #5a1e8a,0 10px 30px rgba(136,84,192,.45);
+  transition:all .2s;letter-spacing:.5px;
+}
+.submit-btn:hover{transform:translateY(-4px);box-shadow:0 10px 0 #5a1e8a,0 18px 40px rgba(136,84,192,.5);}
+
+/* ===== RESULT POPUP ===== */
+.result-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:300;display:none;align-items:center;justify-content:center;
+}
+.result-overlay.show{display:flex;}
+.result-box{
+  background:#fff;border-radius:30px;padding:42px 36px;max-width:480px;width:92%;
+  text-align:center;box-shadow:0 30px 90px rgba(0,0,0,.4);
+}
+.result-box .emoji{font-size:4.5rem;margin-bottom:12px;}
+.result-box h2{font-size:1.6rem;font-weight:900;color:#5a1ed3;margin-bottom:8px;}
+.result-box .score{font-size:3rem;font-weight:900;color:#FF6B9D;margin:10px 0;}
+.result-box p{font-size:1rem;color:#555;font-weight:700;}
+.result-btn{
+  margin-top:22px;padding:13px 34px;
+  background:linear-gradient(135deg,#8854C0,#FF6B9D);
+  color:#fff;border:none;border-radius:28px;
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;
+}
+
+/* ===== CONFETTI CANVAS ===== */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:999;}
+
+/* ===== SCORE BAR ===== */
+.score-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);
+  border-top:2px solid rgba(136,84,192,.3);
+  padding:8px 20px;display:flex;align-items:center;justify-content:center;
+  gap:20px;z-index:60;
+  box-shadow:0 -4px 20px rgba(0,0,0,.08);
+}
+.score-bar span{font-weight:900;font-size:.95rem;color:#5a1ed3;}
+.score-bar .score-num{color:#FF6B9D;font-size:1.2rem;}
+
+u{text-decoration:underline;text-decoration-color:#8854C0;text-underline-offset:3px;}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="bg-wrap"><div class="bg-gradient"></div><div class="bg-pattern"></div></div>
+
+<div class="header">
+  <h2>📚 English Interactive Test</h2>
+  <p>Giáo viên tạo: MS Chí Nên – ULIS</p>
+</div>
+
+<div class="container" id="quiz-container"></div>
+
+<div class="submit-wrap">
+  <button class="submit-btn" onclick="submitQuiz()">🎯 Nộp Bài &amp; Xem Kết Quả</button>
+</div>
+
+<!-- Gap-fill popup -->
+<div class="popup-overlay" id="gfPopup">
+  <div class="popup-box">
+    <h3 id="popupTitle">🔤 Chọn dạng đúng của từ:</h3>
+    <div class="popup-opts" id="popupOpts"></div>
+    <button class="popup-close" onclick="closePopup()">✕ Đóng</button>
+  </div>
+</div>
+
+<!-- Result popup -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="emoji" id="rEmoji"></div>
+    <h2 id="rTitle"></h2>
+    <div class="score" id="rScore"></div>
+    <p id="rComment"></p>
+    <button class="result-btn" onclick="location.reload()">🔄 Làm Lại</button>
+  </div>
+</div>
+
+<!-- Score bar -->
+<div class="score-bar">
+  <span>✅ Đúng: <span class="score-num" id="barCorrect">0</span></span>
+  <span>❌ Sai: <span class="score-num" id="barWrong">0</span></span>
+  <span>📊 Tổng: <span class="score-num" id="barTotal">0</span>/45</span>
+</div>
+
+<script>
+// ===================== QUESTIONS DATA =====================
+const QUESTIONS = [
+// ── EXERCISE 6: Word Form ──
+{id:1,ex:6,type:'gf',
+ pre:'Penicillin is one of the most important',post:'of all time.',hint:'(invent)',
+ opts:['invention','inventions','invented','inventive'],ans:'inventions',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>invention</b> (n, số ít): sự phát minh → SAI vì cần số nhiều<br>• <b>inventions</b> (n, số nhiều): các phát minh ✅<br>• <b>invented</b> (v, quá khứ): đã phát minh → SAI vì cần danh từ<br>• <b>inventive</b> (adj): sáng tạo → SAI vì cần danh từ<br><br><b>🔑 Quy tắc:</b> Sau cấu trúc "one of the most + adj" cần danh từ số nhiều. Gốc từ "invent" (v) → <b>inventions</b> (n số nhiều). <br><b>🌏 Dịch nghĩa:</b> "Penicillin là một trong những <u>phát minh</u> quan trọng nhất mọi thời đại."'},
+
+{id:2,ex:6,type:'gf',
+ pre:'Scientific and',post:'advancements have made many important changes throughout history.',hint:'(technology)',
+ opts:['technological','technology','technologist','technically'],ans:'technological',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>technological</b> (adj): thuộc về công nghệ ✅<br>• <b>technology</b> (n): công nghệ → SAI vì cần tính từ<br>• <b>technologist</b> (n): nhà công nghệ học → SAI vì cần tính từ<br>• <b>technically</b> (adv): về mặt kỹ thuật → SAI vì cần tính từ<br><br><b>🔑 Quy tắc:</b> "Scientific and ___" → cần tính từ song song với "scientific". Gốc từ "technology" (n) → <b>technological</b> (adj, thêm hậu tố -ical). <br><b>🌏 Dịch nghĩa:</b> "Những tiến bộ khoa học và <u>công nghệ</u> đã tạo ra nhiều thay đổi quan trọng trong suốt lịch sử."'},
+
+{id:3,ex:6,type:'gf',
+ pre:'Uncle John is a skillful and',post:'mechanic.',hint:'(effort)',
+ opts:['effort','effortful','effortless','effortlessly'],ans:'effortless',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>effort</b> (n): sự nỗ lực → SAI vì cần tính từ<br>• <b>effortful</b> (adj): cần nhiều nỗ lực → SAI về nghĩa<br>• <b>effortless</b> (adj): dễ dàng, không tốn sức → ✅<br>• <b>effortlessly</b> (adv): một cách dễ dàng → SAI vì cần tính từ<br><br><b>🔑 Quy tắc:</b> "skillful and ___ mechanic" → cần tính từ bổ nghĩa cho danh từ. "Skillful and effortless" = khéo léo và dễ dàng → mô tả thợ cơ khí tài giỏi làm việc rất nhẹ nhàng. <br><b>🌏 Dịch nghĩa:</b> "Chú John là một thợ cơ khí tài giỏi và <u>dễ dàng/thuần thục</u>."'},
+
+{id:4,ex:6,type:'gf',
+ pre:'',post:'! Happy that you have just won a scholarship this term.',hint:'(Congratulate)',
+ opts:['Congratulate','Congratulation','Congratulations','Congratulating'],ans:'Congratulations',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>Congratulate</b> (v): chúc mừng → SAI vì cần danh từ thán từ<br>• <b>Congratulation</b> (n, số ít): lời chúc mừng → SAI vì thường dùng số nhiều<br>• <b>Congratulations</b> (n, số nhiều): lời chúc mừng! ✅<br>• <b>Congratulating</b> (v-ing): đang chúc mừng → SAI<br><br><b>🔑 Quy tắc:</b> Trong tiếng Anh, "Congratulations!" luôn dùng ở dạng số nhiều khi dùng như thán từ (exclamation). Không bao giờ nói "Congratulation!" (số ít). <br><b>🌏 Dịch nghĩa:</b> "<u>Chúc mừng!</u> Vui mừng vì bạn vừa đạt học bổng kỳ này."'},
+
+{id:5,ex:6,type:'gf',
+ pre:'Can robots',post:'what will happen in the future?',hint:'(predictor)',
+ opts:['predictor','predicted','predict','prediction'],ans:'predict',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>predictor</b> (n): người/vật dự đoán → SAI vì cần động từ<br>• <b>predicted</b> (v, quá khứ/bị động): đã dự đoán → SAI vì sau "can" cần V nguyên thể<br>• <b>predict</b> (v): dự đoán ✅<br>• <b>prediction</b> (n): sự dự đoán → SAI vì cần động từ<br><br><b>🔑 Quy tắc:</b> Sau modal verb "can" → động từ nguyên thể không "to" (bare infinitive). "Can + predict". <br><b>🌏 Dịch nghĩa:</b> "Robots có thể <u>dự đoán</u> những gì sẽ xảy ra trong tương lai không?"'},
+
+{id:6,ex:6,type:'gf',
+ pre:'Thomas Edison',post:'invented the incandescent light bulb in 1878.',hint:'(success)',
+ opts:['success','successful','successfully','successive'],ans:'successfully',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>success</b> (n): sự thành công → SAI vì cần trạng từ<br>• <b>successful</b> (adj): thành công → SAI vì cần trạng từ bổ nghĩa cho động từ<br>• <b>successfully</b> (adv): một cách thành công ✅<br>• <b>successive</b> (adj): liên tiếp → SAI về nghĩa và loại từ<br><br><b>🔑 Quy tắc:</b> "Thomas Edison ___ invented" → trạng từ (adverb) bổ nghĩa cho động từ "invented". "success" (n) → "successful" (adj) → <b>successfully</b> (adv, thêm -ly). <br><b>🌏 Dịch nghĩa:</b> "Thomas Edison đã <u>thành công</u> phát minh ra bóng đèn sợi đốt vào năm 1878."'},
+
+{id:7,ex:6,type:'gf',
+ pre:'Marie Curie and Pierre Curie',post:'the existence of the elements radium and polonium in 1898.',hint:'(discover)',
+ opts:['discover','discovers','discovered','discovering'],ans:'discovered',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>discover</b> (v nguyên thể): khám phá → SAI (cần chia thì)<br>• <b>discovers</b> (v, hiện tại số ít): → SAI về thì và chủ ngữ số nhiều<br>• <b>discovered</b> (v, quá khứ đơn): đã khám phá ✅<br>• <b>discovering</b> (v-ing): đang khám phá → SAI về cấu trúc<br><br><b>🔑 Quy tắc:</b> Năm 1898 = thời gian xác định trong quá khứ → dùng thì <b>Past Simple</b>. "Marie Curie and Pierre Curie" = chủ ngữ số nhiều → "discovered". <br><b>🌏 Dịch nghĩa:</b> "Marie Curie và Pierre Curie đã <u>khám phá</u> sự tồn tại của các nguyên tố radium và polonium vào năm 1898."'},
+
+{id:8,ex:6,type:'gf',
+ pre:'An employee',post:'application lets people.',hint:'(attend)',
+ opts:['attend','attendant','attendance','attending'],ans:'attendance',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>attend</b> (v): tham dự → SAI vì cần danh từ<br>• <b>attendant</b> (n): người hầu, tiếp viên → SAI về nghĩa<br>• <b>attendance</b> (n): sự tham dự, điểm danh ✅<br>• <b>attending</b> (v-ing/adj): đang tham dự → SAI về vị trí<br><br><b>🔑 Quy tắc:</b> "___ application" → cần danh từ làm modifier (danh từ bổ nghĩa cho danh từ khác). "attend" (v) → <b>attendance</b> (n). "Attendance application" = ứng dụng điểm danh. <br><b>🌏 Dịch nghĩa:</b> "Một ứng dụng <u>điểm danh</u> nhân viên cho phép mọi người [thực hiện việc đó]."'},
+
+{id:9,ex:6,type:'gf',
+ pre:'Many students find it hard to',post:"when learning online, don't they?",hint:'(concentration)',
+ opts:['concentration','concentrated','concentrate','concentrating'],ans:'concentrate',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>concentration</b> (n): sự tập trung → SAI vì cần động từ<br>• <b>concentrated</b> (adj/v quá khứ): tập trung (đã) → SAI vì cần V nguyên thể<br>• <b>concentrate</b> (v): tập trung ✅<br>• <b>concentrating</b> (v-ing): đang tập trung → SAI vì cần V nguyên thể<br><br><b>🔑 Quy tắc:</b> "find it hard to ___" → cấu trúc "find it + adj + to-infinitive" → sau "to" cần V nguyên thể. "concentration" (n) → <b>concentrate</b> (v). <br><b>🌏 Dịch nghĩa:</b> "Nhiều học sinh thấy khó <u>tập trung</u> khi học trực tuyến, phải không?"'},
+
+{id:10,ex:6,type:'gf',
+ pre:'Three of these newest',post:'elements were named after the places where they were discovered. Their names are Nihonium, Moscovium and Tennessine.',hint:'(chemistry)',
+ opts:['chemistry','chemist','chemical','chemically'],ans:'chemical',
+ expl:'<b>📝 Phân tích từ vựng:</b><br>• <b>chemistry</b> (n): hóa học → SAI vì cần tính từ<br>• <b>chemist</b> (n): nhà hóa học → SAI vì cần tính từ<br>• <b>chemical</b> (adj): thuộc về hóa học ✅<br>• <b>chemically</b> (adv): về mặt hóa học → SAI vì cần tính từ<br><br><b>🔑 Quy tắc:</b> "___ elements" → cần tính từ bổ nghĩa cho danh từ "elements". "chemistry" (n) → <b>chemical</b> (adj, thêm -al). "Chemical elements" = các nguyên tố hóa học. <br><b>🌏 Dịch nghĩa:</b> "Ba trong số những <u>nguyên tố hóa học</u> mới nhất này được đặt tên theo những nơi chúng được tìm thấy."'},
+
+// ── EXERCISE 7: Synonyms ──
+{id:11,ex:7,type:'mc',
+ text:'Robots would be able to mark our work and give us <u>feedback</u>.',
+ opts:['pilotless','driven','comment','controlled'],ans:'comment',
+ expl:'<b>📝 Từ cần tìm đồng nghĩa:</b> <b>feedback</b> (n) = thông tin phản hồi, nhận xét<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. pilotless</b> (adj): không người lái → SAI về nghĩa<br>• <b>B. driven</b> (adj/v): được điều khiển → SAI<br>• <b>C. comment</b> (n): nhận xét, bình luận ✅ → ĐỒNG NGHĨA với feedback<br>• <b>D. controlled</b> (adj): được kiểm soát → SAI<br><br><b>🔑 Giải thích:</b> "feedback" = ý kiến đánh giá về kết quả công việc, tương đương "comment" (nhận xét). <br><b>🌏 Dịch nghĩa:</b> "Robots sẽ có thể chấm bài và đưa ra <u>nhận xét/phản hồi</u> cho chúng ta."'},
+
+{id:12,ex:7,type:'mc',
+ text:'My grandmother is <u>familiar with</u> this new mobile phone.',
+ opts:['neglect','distract','concern','accustomed to'],ans:'accustomed to',
+ expl:'<b>📝 Từ cần tìm đồng nghĩa:</b> <b>familiar with</b> = quen thuộc với, thành thạo về<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. neglect</b> (v): sao nhãng, bỏ bê → SAI hoàn toàn<br>• <b>B. distract</b> (v): phân tâm, gây mất tập trung → SAI<br>• <b>C. concern</b> (v/n): quan tâm/lo lắng → SAI về nghĩa<br>• <b>D. accustomed to</b> (adj): quen với, đã thích nghi với ✅ → ĐỒNG NGHĨA<br><br><b>🔑 Giải thích:</b> "be familiar with" = "be accustomed to" = quen thuộc, thành thạo với điều gì đó. <br><b>🌏 Dịch nghĩa:</b> "Bà tôi đã <u>quen với</u> chiếc điện thoại di động mới này."'},
+
+{id:13,ex:7,type:'mc',
+ text:'Oil has been <u>discovered</u> under the North Sea.',
+ opts:['found','hidden','dug','covered'],ans:'found',
+ expl:'<b>📝 Từ cần tìm đồng nghĩa:</b> <b>discovered</b> (v) = khám phá ra, phát hiện ra<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. found</b> (v): tìm thấy, phát hiện ✅ → ĐỒNG NGHĨA (find-found-found)<br>• <b>B. hidden</b> (adj/v): bị ẩn giấu → SAI về nghĩa (trái nghĩa với discovered)<br>• <b>C. dug</b> (v): đào → SAI (không đồng nghĩa)<br>• <b>D. covered</b> (v): bao phủ → SAI về nghĩa<br><br><b>🔑 Giải thích:</b> "discover" = "find" = tìm ra, phát hiện. Không phải "hidden" (che giấu) hay "covered" (bao phủ). <br><b>🌏 Dịch nghĩa:</b> "Dầu mỏ đã được <u>phát hiện/tìm thấy</u> dưới Biển Bắc."'},
+
+{id:14,ex:7,type:'mc',
+ text:'Is there a high rate of <u>truancy</u> amongst schoolchildren?',
+ opts:['arrival','attendance','absence','presence'],ans:'absence',
+ expl:'<b>📝 Từ cần tìm đồng nghĩa:</b> <b>truancy</b> (n) = sự trốn học, bỏ học không phép<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. arrival</b> (n): sự đến nơi → SAI (trái nghĩa)<br>• <b>B. attendance</b> (n): sự có mặt, chuyên cần → SAI (trái nghĩa với truancy)<br>• <b>C. absence</b> (n): sự vắng mặt, không đến trường ✅ → ĐỒNG NGHĨA<br>• <b>D. presence</b> (n): sự hiện diện → SAI (trái nghĩa)<br><br><b>🔑 Giải thích:</b> "truancy" = hành vi trốn học → đồng nghĩa với "absence" (sự vắng mặt/bỏ học). <b>Chú ý bẫy:</b> "attendance" (chuyên cần) là TRÁI nghĩa! <br><b>🌏 Dịch nghĩa:</b> "Có tỷ lệ <u>bỏ học/trốn học</u> cao trong học sinh tiểu học không?"'},
+
+{id:15,ex:7,type:'mc',
+ text:'Students seem to be unable to <u>concentrate</u> for very long in their classes.',
+ opts:['focus','distract','ignore','attract'],ans:'focus',
+ expl:'<b>📝 Từ cần tìm đồng nghĩa:</b> <b>concentrate</b> (v) = tập trung, chú tâm<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. focus</b> (v): tập trung, chú tâm vào ✅ → ĐỒNG NGHĨA<br>• <b>B. distract</b> (v): gây mất tập trung, phân tâm → SAI (trái nghĩa!)<br>• <b>C. ignore</b> (v): bỏ qua, phớt lờ → SAI về nghĩa<br>• <b>D. attract</b> (v): thu hút → SAI về nghĩa<br><br><b>🔑 Giải thích:</b> "concentrate" = "focus" = tập trung chú ý vào một việc. <b>Chú ý bẫy:</b> "distract" là TRÁI nghĩa! <br><b>🌏 Dịch nghĩa:</b> "Học sinh dường như không thể <u>tập trung</u> trong suốt tiết học."'},
+
+// ── EXERCISE 8: Antonyms ──
+{id:16,ex:8,type:'mc',
+ text:"It's quite <u>convenient</u> when using Google Meet for video conferencing.",
+ opts:['inconvenient','helpful','supporting','useless'],ans:'inconvenient',
+ expl:'<b>📝 Từ cần tìm TRÁI nghĩa:</b> <b>convenient</b> (adj) = tiện lợi, thuận tiện<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. inconvenient</b> (adj): bất tiện, không thuận tiện ✅ → TRÁI NGHĨA (thêm tiền tố in-)<br>• <b>B. helpful</b> (adj): hữu ích, hữu dụng → SAI (không phải trái nghĩa trực tiếp)<br>• <b>C. supporting</b> (adj): hỗ trợ → SAI<br>• <b>D. useless</b> (adj): vô dụng → SAI (không phải trái nghĩa chính xác nhất)<br><br><b>🔑 Giải thích:</b> "convenient" ↔ "inconvenient" = cặp trái nghĩa cổ điển với tiền tố in-. <br><b>🌏 Dịch nghĩa:</b> "Khá <u>tiện lợi/BẤT TIỆN</u> khi dùng Google Meet để hội nghị trực tuyến."'},
+
+{id:17,ex:8,type:'mc',
+ text:'3D contact lenses will be <u>available</u>.',
+ opts:['accessible','vacant','unavailable','offered'],ans:'unavailable',
+ expl:'<b>📝 Từ cần tìm TRÁI nghĩa:</b> <b>available</b> (adj) = có sẵn, có thể sử dụng được<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. accessible</b> (adj): có thể tiếp cận → SAI (gần đồng nghĩa với available)<br>• <b>B. vacant</b> (adj): trống, không có người → SAI (nghĩa khác)<br>• <b>C. unavailable</b> (adj): không có sẵn, không thể dùng được ✅ → TRÁI NGHĨA<br>• <b>D. offered</b> (adj): được đề nghị → SAI<br><br><b>🔑 Giải thích:</b> "available" ↔ "unavailable" = cặp trái nghĩa với tiền tố un-. <br><b>🌏 Dịch nghĩa:</b> "Kính áp tròng 3D sẽ <u>có sẵn/KHÔNG CÓ SẴN</u>."'},
+
+{id:18,ex:8,type:'mc',
+ text:'Do your children feel more <u>stressed</u> when learning online?',
+ opts:['worried','anxious','tensed','relaxed'],ans:'relaxed',
+ expl:'<b>📝 Từ cần tìm TRÁI nghĩa:</b> <b>stressed</b> (adj) = căng thẳng, bị stress<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. worried</b> (adj): lo lắng → SAI (gần đồng nghĩa với stressed)<br>• <b>B. anxious</b> (adj): lo âu, bồn chồn → SAI (đồng nghĩa)<br>• <b>C. tensed</b> (adj): căng thẳng → SAI (gần đồng nghĩa)<br>• <b>D. relaxed</b> (adj): thoải mái, thư giãn ✅ → TRÁI NGHĨA<br><br><b>🔑 Giải thích:</b> "stressed" ↔ "relaxed" = trạng thái tâm lý hoàn toàn đối lập. A, B, C đều là các từ đồng nghĩa với stressed – đây là bẫy! <br><b>🌏 Dịch nghĩa:</b> "Các con bạn có cảm thấy <u>căng thẳng/THƯ GIÃN hơn</u> khi học trực tuyến không?"'},
+
+{id:19,ex:8,type:'mc',
+ text:'Nano-learning makes students learn <u>effortlessly</u>.',
+ opts:['uncomplicatedly','hard','badly','challenging'],ans:'hard',
+ expl:'<b>📝 Từ cần tìm TRÁI nghĩa:</b> <b>effortlessly</b> (adv) = một cách dễ dàng, không tốn sức<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. uncomplicatedly</b> (adv): một cách đơn giản → SAI (gần đồng nghĩa)<br>• <b>B. hard</b> (adv): một cách vất vả, khó khăn ✅ → TRÁI NGHĨA ("learn hard" = học vất vả)<br>• <b>C. badly</b> (adv): một cách tệ → SAI về nghĩa<br>• <b>D. challenging</b> (adj): thử thách → SAI về loại từ (cần trạng từ)<br><br><b>🔑 Giải thích:</b> "effortlessly" = không cần nỗ lực ↔ "hard" = một cách vất vả, tốn nhiều công sức. <b>Lưu ý:</b> "hard" ở đây là adverb (không phải adjective). <br><b>🌏 Dịch nghĩa:</b> "Nano-learning giúp học sinh học một cách <u>dễ dàng/VẤT VẢ</u>."'},
+
+{id:20,ex:8,type:'mc',
+ text:'Schools can use biometric applications for students who <u>borrow</u> books and equipment.',
+ opts:['receive','get','lend','take'],ans:'lend',
+ expl:'<b>📝 Từ cần tìm TRÁI nghĩa:</b> <b>borrow</b> (v) = mượn (nhận từ người khác tạm thời)<br><br><b>Phân tích 4 đáp án:</b><br>• <b>A. receive</b> (v): nhận được → SAI (không phải trái nghĩa)<br>• <b>B. get</b> (v): lấy, nhận → SAI (gần đồng nghĩa)<br>• <b>C. lend</b> (v): cho mượn (đưa cho người khác dùng tạm) ✅ → TRÁI NGHĨA<br>• <b>D. take</b> (v): lấy → SAI<br><br><b>🔑 Giải thích:</b> "borrow" ↔ "lend" = cặp trái nghĩa kinh điển. Borrow = mượn của ai đó; Lend = cho ai đó mượn. <br><b>🌏 Dịch nghĩa:</b> "Trường học có thể dùng ứng dụng sinh trắc học cho học sinh <u>mượn/CHO MƯỢN</u> sách và thiết bị."'},
+
+// ── EXERCISE 9: Reported Speech ──
+{id:21,ex:9,type:'mc',
+ text:'Hanna said, "I will meet you outside the post office tomorrow."',
+ opts:['Hanna said that she would meet me outside the post office the next day.','Hanna said that she will meet you outside the post office tomorrow.','Hanna said that she would meet you outside the post office the next day.','Hanna said that I would meet her outside the post office tomorrow.'],
+ ans:'Hanna said that she would meet me outside the post office the next day.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>she</b> (đổi đại từ chủ ngữ theo chủ thể câu chuyện)<br>• <b>will</b> → <b>would</b> (backshift: tương lai → tương lai trong quá khứ)<br>• <b>you</b> → <b>me</b> (đổi đại từ tân ngữ người nghe)<br>• <b>tomorrow</b> → <b>the next day / the following day</b> (đổi trạng từ thời gian)<br><br><b>❌ Tại sao B sai?</b> Giữ "will" và "you/tomorrow" – không backshift.<br><b>❌ Tại sao C sai?</b> Giữ "you" thay vì đổi thành "me".<br><b>❌ Tại sao D sai?</b> Đổi nhầm "I" → "I" thay vì "she"; đổi nhầm "you" → "her".<br><br><b>✅ Câu đúng:</b> Hanna said that she would meet me outside the post office the next day.'},
+
+{id:22,ex:9,type:'mc',
+ text:'Our teacher told us, "The boiling point of water is 100°C."',
+ opts:['Our teacher told us that the boiling point of water was 100°C.','Our teacher told us that the boiling point of water is 100°C.','Our teacher told us that the boiling point of water had been 100°C.','Our teacher told us that the boiling point of water will be 100°C.'],
+ ans:'Our teacher told us that the boiling point of water is 100°C.',
+ expl:'<b>📝 Quy tắc đặc biệt: Sự thật khoa học (Scientific/Universal Truth)</b><br>Khi mệnh đề phụ trong reported speech là một <b>sự thật khoa học</b> hoặc <b>chân lý bất biến</b>, thì <b>KHÔNG backshift</b> (không đổi thì).<br><br>• "The boiling point of water is 100°C" = sự thật khoa học → giữ nguyên thì hiện tại đơn "is".<br><br><b>❌ Tại sao A sai?</b> "was" = đã áp dụng backshift không cần thiết cho sự thật khoa học.<br><b>❌ Tại sao C sai?</b> "had been" = backshift quá mức hoàn toàn sai.<br><b>❌ Tại sao D sai?</b> "will be" = sai về nghĩa.<br><br><b>✅ Câu đúng:</b> Our teacher told us that the boiling point of water is 100°C.'},
+
+{id:23,ex:9,type:'mc',
+ text:'Naomi says, "I will invite you to lunch for helping me with the project."',
+ opts:['Naomi says that she will invite me to lunch for helping her with the project.','Naomi said that she would invite me to lunch for helping her with the project.','Naomi says that I will invite her to lunch for helping me with the project.','Naomi says that she invited me to lunch for helping her with the project.'],
+ ans:'Naomi says that she will invite me to lunch for helping her with the project.',
+ expl:'<b>📝 Quy tắc đặc biệt: Động từ tường thuật ở thì hiện tại</b><br>Khi động từ tường thuật là <b>says</b> (hiện tại), <b>KHÔNG backshift</b> thì trong mệnh đề phụ.<br><br>• <b>says</b> (hiện tại) → giữ "will" (không đổi thành "would")<br>• <b>I</b> → <b>she</b>; <b>you</b> → <b>me</b>; <b>me</b> → <b>her</b><br><br><b>❌ Tại sao B sai?</b> "said/would" = đổi sang quá khứ nhưng động từ tường thuật là "says" (hiện tại).<br><b>❌ Tại sao C sai?</b> Đổi nhầm đại từ ("I" → "I" và "her" → "me").<br><b>❌ Tại sao D sai?</b> "invited" = backshift không cần thiết; sai thì.<br><br><b>✅ Câu đúng:</b> Naomi says that she will invite me to lunch for helping her with the project.'},
+
+{id:24,ex:9,type:'mc',
+ text:'The girl said, "I have seen you somewhere before."',
+ opts:['The girl said that she has seen me somewhere before.','The girl said that I had seen her somewhere before.','The girl said that she saw me somewhere before.','The girl said that she had seen me somewhere before.'],
+ ans:'The girl said that she had seen me somewhere before.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>she</b><br>• <b>have seen</b> (Present Perfect) → <b>had seen</b> (Past Perfect) [backshift]<br>• <b>you</b> → <b>me</b><br><br><b>❌ Tại sao A sai?</b> Giữ "has seen" – không backshift; sai đại từ "I" thay vì "she".<br><b>❌ Tại sao B sai?</b> Đổi nhầm "I" → "I" và "you" → "her" (bị đổi ngược).<br><b>❌ Tại sao C sai?</b> "saw" = Past Simple, không phải Past Perfect (backshift từ Present Perfect phải thành Past Perfect).<br><br><b>✅ Câu đúng:</b> The girl said that she had seen me somewhere before.'},
+
+{id:25,ex:9,type:'mc',
+ text:'Tuan said, "My brother is playing in his room."',
+ opts:['Tuan said that his brother played in his room.','Tuan said that his brother is playing in his room.','Tuan said that his brother was playing in his room.','Tuan said that my brother was playing in his room.'],
+ ans:'Tuan said that his brother was playing in his room.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>My</b> → <b>his</b> (đại từ sở hữu của Tuan)<br>• <b>is playing</b> (Present Continuous) → <b>was playing</b> (Past Continuous) [backshift]<br><br><b>❌ Tại sao A sai?</b> "played" = Past Simple, không phải Past Continuous (backshift từ Present Continuous phải thành Past Continuous).<br><b>❌ Tại sao B sai?</b> Giữ "is playing" – không backshift.<br><b>❌ Tại sao D sai?</b> Giữ "my" thay vì đổi thành "his".<br><br><b>✅ Câu đúng:</b> Tuan said that his brother was playing in his room.'},
+
+{id:26,ex:9,type:'mc',
+ text:'"I like computer programming," said Christ.',
+ opts:['Christ said that he likes computer programming.','Christ said that he liked computer programming.','Christ said that I liked computer programming.','Christ said that he had liked computer programming.'],
+ ans:'Christ said that he liked computer programming.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b> (Christ nói về bản thân)<br>• <b>like</b> (Present Simple) → <b>liked</b> (Past Simple) [backshift]<br><br><b>❌ Tại sao A sai?</b> Giữ "likes" – không backshift (dùng "said" = quá khứ → phải backshift).<br><b>❌ Tại sao C sai?</b> Giữ "I" thay vì đổi thành "he".<br><b>❌ Tại sao D sai?</b> "had liked" = Past Perfect, quá mức (backshift từ Present Simple chỉ cần thành Past Simple).<br><br><b>✅ Câu đúng:</b> Christ said that he liked computer programming.'},
+
+{id:27,ex:9,type:'mc',
+ text:'"I have never seen a real robot," said Mark.',
+ opts:['Mark said that he never saw a real robot.','Mark said that he has never seen a real robot.','Mark said that he had never seen a real robot.','Mark said that I had never seen a real robot.'],
+ ans:'Mark said that he had never seen a real robot.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b><br>• <b>have never seen</b> (Present Perfect) → <b>had never seen</b> (Past Perfect) [backshift]<br><br><b>❌ Tại sao A sai?</b> "never saw" = Past Simple, không phải Past Perfect.<br><b>❌ Tại sao B sai?</b> Giữ "has never seen" – không backshift.<br><b>❌ Tại sao D sai?</b> Giữ "I" thay vì đổi thành "he".<br><br><b>✅ Câu đúng:</b> Mark said that he had never seen a real robot.'},
+
+{id:28,ex:9,type:'mc',
+ text:'Sinclair said, "I will attend a science conference next week."',
+ opts:['Sinclair said that he will attend a science conference next week.','Sinclair said that he had attended a science conference the following week.','Sinclair said that he would attend a science conference the following week.','Sinclair said that he attended a science conference the following week.'],
+ ans:'Sinclair said that he would attend a science conference the following week.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b><br>• <b>will</b> → <b>would</b> (backshift: will → would)<br>• <b>next week</b> → <b>the following week</b> (đổi trạng từ thời gian)<br><br><b>❌ Tại sao A sai?</b> Giữ "will" và "next week" – không backshift và không đổi trạng từ.<br><b>❌ Tại sao B sai?</b> "had attended" = Past Perfect, sai hoàn toàn.<br><b>❌ Tại sao D sai?</b> "attended" = Past Simple, không phải "would attend".<br><br><b>✅ Câu đúng:</b> Sinclair said that he would attend a science conference the following week.'},
+
+{id:29,ex:9,type:'mc',
+ text:'Dent remarked, "You are riding my bicycle."',
+ opts:['Dent remarked that I was riding my bicycle.','Dent remarked that you were riding his bicycle.','Dent remarked that I was riding his bicycle.','Dent remarked that he was riding my bicycle.'],
+ ans:'Dent remarked that I was riding his bicycle.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>You</b> → <b>I</b> (Dent nói chuyện với "tôi" – người tường thuật)<br>• <b>are riding</b> → <b>was riding</b> (backshift)<br>• <b>my</b> → <b>his</b> (xe đạp của Dent → của anh ấy)<br><br><b>❌ Tại sao A sai?</b> Đổi đúng "you" → "I" nhưng giữ "my" – phải đổi thành "his".<br><b>❌ Tại sao B sai?</b> Giữ "you" thay vì đổi thành "I"; không backshift tốt.<br><b>❌ Tại sao D sai?</b> Đổi nhầm hoàn toàn: "you" → "he" và "my" → "my".<br><br><b>✅ Câu đúng:</b> Dent remarked that I was riding his bicycle.'},
+
+{id:30,ex:9,type:'mc',
+ text:'"I\'m trying to imagine new technologies in the future," Paul said.',
+ opts:['Paul said that he is trying to imagine new technologies in the future.','Paul said that he was trying to imagine new technologies in the future.','Paul said that I was trying to imagine new technologies in the future.','Paul said that he tried to imagine new technologies in the future.'],
+ ans:'Paul said that he was trying to imagine new technologies in the future.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b> (Paul nói về bản thân)<br>• <b>am trying</b> (Present Continuous) → <b>was trying</b> (Past Continuous) [backshift]<br>• "in the future" giữ nguyên (chỉ thời điểm tương lai, không thay đổi)<br><br><b>❌ Tại sao A sai?</b> Giữ "is trying" – không backshift.<br><b>❌ Tại sao C sai?</b> Giữ "I" thay vì đổi thành "he".<br><b>❌ Tại sao D sai?</b> "tried" = Past Simple, không phải Past Continuous (phải giữ dạng -ing sau backshift).<br><br><b>✅ Câu đúng:</b> Paul said that he was trying to imagine new technologies in the future.'},
+
+{id:31,ex:9,type:'mc',
+ text:'Tom said, "I want to buy a pocket calculator for my father."',
+ opts:['Tom said that he wants to buy a pocket calculator for his father.','Tom said that he wanted to buy a pocket calculator for his father.','Tom said that he had wanted to buy a pocket calculator for his father.','Tom said that I wanted to buy a pocket calculator for my father.'],
+ ans:'Tom said that he wanted to buy a pocket calculator for his father.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b><br>• <b>want</b> (Present Simple) → <b>wanted</b> (Past Simple) [backshift]<br>• <b>my</b> → <b>his</b><br><br><b>❌ Tại sao A sai?</b> Giữ "wants" – không backshift; sai đại từ (cần "he", không phải ẩn chứa "I").<br><b>❌ Tại sao C sai?</b> "had wanted" = Past Perfect, backshift quá mức từ Present Simple.<br><b>❌ Tại sao D sai?</b> Giữ "I" và "my" thay vì đổi thành "he" và "his".<br><br><b>✅ Câu đúng:</b> Tom said that he wanted to buy a pocket calculator for his father.'},
+
+{id:32,ex:9,type:'mc',
+ text:'She said, "I once spent a summer in this village."',
+ opts:['She said that she spent a summer in this village.','She said that she once spent a summer in that village.','She said that she had once spent a summer in that village.','She said that she once had spent a summer in this village.'],
+ ans:'She said that she had once spent a summer in that village.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>she</b><br>• <b>spent</b> (Past Simple) → <b>had spent</b> (Past Perfect) [backshift]<br>• <b>this</b> → <b>that</b> (đổi từ chỉ thị gần → xa)<br><br><b>❌ Tại sao A sai?</b> Giữ "spent" – không backshift; giữ "this" – không đổi.<br><b>❌ Tại sao B sai?</b> Giữ "spent" – không backshift (đúng "that" nhưng sai thì).<br><b>❌ Tại sao D sai?</b> "once had spent" = cấu trúc sai; "this" không đổi.<br><br><b>✅ Câu đúng:</b> She said that she had once spent a summer in that village.'},
+
+{id:33,ex:9,type:'mc',
+ text:'The nurse said, "The patient in this room didn\'t obey your orders, doctor."',
+ opts:["The nurse said that the patient in this room didn't obey the doctor's orders.","The nurse told the doctor that the patient in that room hadn't obeyed his orders.","The nurse said that the patient in that room didn't obey his orders.","The nurse told the doctor that the patient in this room hadn't obeyed his orders."],
+ ans:"The nurse told the doctor that the patient in that room hadn't obeyed his orders.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>said</b> → <b>told the doctor</b> (vì y tá nói với bác sĩ)<br>• <b>this</b> → <b>that</b><br>• <b>didn't obey</b> (Past Simple) → <b>hadn't obeyed</b> (Past Perfect) [backshift]<br>• <b>your orders</b> (của bác sĩ) → <b>his orders</b><br><br><b>❌ Tại sao A sai?</b> Dùng 'said' thay vì 'told the doctor'; giữ 'this'; không backshift.<br><b>❌ Tại sao C sai?</b> Dùng 'said' thay vì 'told the doctor'; không backshift.<br><b>❌ Tại sao D sai?</b> Giữ 'this' thay vì đổi thành 'that'.<br><br><b>✅ Câu đúng:</b> The nurse told the doctor that the patient in that room hadn't obeyed his orders."},
+
+{id:34,ex:9,type:'mc',
+ text:'They said to me, "You taught us English last year."',
+ opts:['They told me that I taught them English last year.','They said to me that they had taught me English the previous year.','They told me that you had taught them English the year before.','They told me that I had taught them English the previous year.'],
+ ans:'They told me that I had taught them English the previous year.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>said to me</b> → <b>told me</b><br>• <b>You</b> → <b>I</b> (họ nói chuyện với "tôi" – người tường thuật)<br>• <b>taught</b> (Past Simple) → <b>had taught</b> (Past Perfect) [backshift]<br>• <b>us</b> → <b>them</b><br>• <b>last year</b> → <b>the previous year / the year before</b><br><br><b>❌ Tại sao A sai?</b> Không backshift "taught" → "had taught".<br><b>❌ Tại sao B sai?</b> Đổi nhầm vai vế: "they had taught me" (sai hoàn toàn nghĩa).<br><b>❌ Tại sao C sai?</b> Giữ "you" thay vì đổi thành "I"; dùng "said to me".<br><br><b>✅ Câu đúng:</b> They told me that I had taught them English the previous year.'},
+
+{id:35,ex:9,type:'mc',
+ text:'Mr. Brown said, "Our trip cost us two thousand dollars."',
+ opts:['Mr. Brown said that their trip cost them two thousand dollars.','Mr. Brown said that his trip had cost him two thousand dollars.','Mr. Brown said that their trip had cost them two thousand dollars.','Mr. Brown said that our trip had cost us two thousand dollars.'],
+ ans:'Mr. Brown said that their trip had cost them two thousand dollars.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>Our</b> → <b>their</b> (Mr. Brown và những người đi cùng → của họ)<br>• <b>cost</b> (Past Simple) → <b>had cost</b> (Past Perfect) [backshift]<br>• <b>us</b> → <b>them</b><br><br><b>❌ Tại sao A sai?</b> Giữ "cost" – không backshift.<br><b>❌ Tại sao B sai?</b> Đổi "our" → "his" và "us" → "him" – sai vì đây là chuyến đi chung của nhiều người.<br><b>❌ Tại sao D sai?</b> Giữ "our" và "us" – phải đổi thành "their" và "them".<br><br><b>✅ Câu đúng:</b> Mr. Brown said that their trip had cost them two thousand dollars.'},
+
+{id:36,ex:9,type:'mc',
+ text:'He said to her, "I can\'t find my hat anywhere in this room."',
+ opts:["He told her that he can't find his hat anywhere in this room.","He told her that I couldn't find my hat anywhere in that room.","He told her that he couldn't find his hat anywhere in that room.","He said her that he couldn't find his hat anywhere in that room."],
+ ans:"He told her that he couldn't find his hat anywhere in that room.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>said to her</b> → <b>told her</b><br>• <b>I</b> → <b>he</b><br>• <b>can't</b> → <b>couldn't</b> [backshift]<br>• <b>my</b> → <b>his</b><br>• <b>this</b> → <b>that</b><br><br><b>❌ Tại sao A sai?</b> Giữ 'can't' – không backshift; giữ 'this'.<br><b>❌ Tại sao B sai?</b> Giữ 'I' và 'my' thay vì đổi thành 'he' và 'his'.<br><b>❌ Tại sao D sai?</b> 'said her' = SAI ngữ pháp (phải là 'told her').<br><br><b>✅ Câu đúng:</b> He told her that he couldn't find his hat anywhere in that room."},
+
+{id:37,ex:9,type:'mc',
+ text:'My father said to them, "My secretary is going to finish this job."',
+ opts:["My father told them that his secretary is going to finish this job.","My father said to them that his secretary was going to finish that job.","My father told them that his secretary was going to finish that job.","My father told them that my secretary was going to finish that job."],
+ ans:'My father told them that his secretary was going to finish that job.',
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>said to them</b> → <b>told them</b><br>• <b>My</b> (của cha tôi) → <b>his</b><br>• <b>is going to</b> → <b>was going to</b> [backshift]<br>• <b>this</b> → <b>that</b><br><br><b>❌ Tại sao A sai?</b> Giữ "is going to" – không backshift; giữ "this".<br><b>❌ Tại sao B sai?</b> Dùng "said to them" thay vì "told them".<br><b>❌ Tại sao D sai?</b> Giữ "my" thay vì đổi thành "his".<br><br><b>✅ Câu đúng:</b> My father told them that his secretary was going to finish that job.'},
+
+{id:38,ex:9,type:'mc',
+ text:'They said, "We can\'t meet you here either today or tomorrow."',
+ opts:["They said that they can't meet me here either today or tomorrow.","They said that they couldn't meet you there either that day or the next day.","They said that they couldn't meet me there either that day or the next day.","They said that we couldn't meet them there either that day or the next day."],
+ ans:"They said that they couldn't meet me there either that day or the next day.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>We</b> → <b>they</b><br>• <b>can't</b> → <b>couldn't</b> [backshift]<br>• <b>you</b> → <b>me</b> (người họ nói chuyện cùng → tôi)<br>• <b>here</b> → <b>there</b><br>• <b>today</b> → <b>that day</b><br>• <b>tomorrow</b> → <b>the next day</b><br><br><b>❌ Tại sao A sai?</b> Giữ 'can't', 'here', 'today', 'tomorrow' – không thay đổi.<br><b>❌ Tại sao B sai?</b> Giữ 'you' thay vì đổi thành 'me'.<br><b>❌ Tại sao D sai?</b> Giữ 'we' → 'we' và sai 'them'.<br><br><b>✅ Câu đúng:</b> They said that they couldn't meet me there either that day or the next day."},
+
+{id:39,ex:9,type:'mc',
+ text:'My mother said, "I think it won\'t rain tomorrow."',
+ opts:["My mother said that she thought it won't rain tomorrow.","My mother said that she thinks it wouldn't rain the next day.","My mother said that she thought it wouldn't rain the next day.","My mother said that I thought it wouldn't rain the next day."],
+ ans:"My mother said that she thought it wouldn't rain the next day.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>she</b><br>• <b>think</b> → <b>thought</b> [backshift]<br>• <b>won't</b> → <b>wouldn't</b> [backshift: will not → would not]<br>• <b>tomorrow</b> → <b>the next day</b><br><br><b>❌ Tại sao A sai?</b> Giữ 'won't' và 'tomorrow' – không backshift và không đổi trạng từ.<br><b>❌ Tại sao B sai?</b> Giữ 'thinks' – không backshift.<br><b>❌ Tại sao D sai?</b> Giữ 'I' thay vì đổi thành 'she'.<br><br><b>✅ Câu đúng:</b> My mother said that she thought it wouldn't rain the next day."},
+
+{id:40,ex:9,type:'mc',
+ text:'He said, "Your car has been stolen, John."',
+ opts:["He said to John that your car has been stolen.","He told John that his car was stolen.","He told John that your car had been stolen.","He told John that his car had been stolen."],
+ ans:"He told John that his car had been stolen.",
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>said</b> (+ tên) → <b>told John</b><br>• <b>Your car</b> (xe của John) → <b>his car</b><br>• <b>has been stolen</b> (Present Perfect Passive) → <b>had been stolen</b> (Past Perfect Passive) [backshift]<br><br><b>❌ Tại sao A sai?</b> Dùng "said to John" và không backshift "has been".<br><b>❌ Tại sao B sai?</b> "was stolen" = Past Simple Passive, không phải Past Perfect Passive.<br><b>❌ Tại sao C sai?</b> Giữ "your" thay vì đổi thành "his".<br><br><b>✅ Câu đúng:</b> He told John that his car had been stolen.'},
+
+{id:41,ex:9,type:'mc',
+ text:'They said, "The river is rising early this year."',
+ opts:["They said that the river is rising early this year.","They said that the river was rising early this year.","They said that the river was rising early that year.","They said that the river had risen early that year."],
+ ans:"They said that the river was rising early that year.",
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>is rising</b> (Present Continuous) → <b>was rising</b> (Past Continuous) [backshift]<br>• <b>this year</b> → <b>that year</b><br><br><b>❌ Tại sao A sai?</b> Giữ "is rising" và "this year" – không có thay đổi gì.<br><b>❌ Tại sao B sai?</b> Backshift đúng "was rising" nhưng giữ "this year" thay vì "that year".<br><b>❌ Tại sao D sai?</b> "had risen" = Past Perfect, backshift quá mức từ Present Continuous.<br><br><b>✅ Câu đúng:</b> They said that the river was rising early that year.'},
+
+{id:42,ex:9,type:'mc',
+ text:'He said, "I\'ll expect her to come soon."',
+ opts:["He said that he will expect her to come soon.","He said that he would expect her to come soon.","He said that he expects her to come soon.","He said that he had expected her to come soon."],
+ ans:"He said that he would expect her to come soon.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b><br>• <b>'ll (will)</b> → <b>would</b> [backshift]<br><br><b>❌ Tại sao A sai?</b> Giữ 'will' – không backshift.<br><b>❌ Tại sao C sai?</b> 'expects' = Present Simple, sai hoàn toàn.<br><b>❌ Tại sao D sai?</b> 'had expected' = Past Perfect, không phải kết quả backshift của 'will'.<br><br><b>✅ Câu đúng:</b> He said that he would expect her to come soon."},
+
+{id:43,ex:9,type:'mc',
+ text:'Our teacher said, "World War II broke out in 1939."',
+ opts:["Our teacher said that World War II breaks out in 1939.","Our teacher said that World War II broke out in 1939.","Our teacher said that World War II had broken out in 1939.","Our teacher said that World War II was breaking out in 1939."],
+ ans:"Our teacher said that World War II had broken out in 1939.",
+ expl:'<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>broke out</b> (Past Simple) → <b>had broken out</b> (Past Perfect) [backshift chính thức]<br><br><b>⚠️ Lưu ý quan trọng:</b> Đây là sự kiện lịch sử (historical fact). Trong một số sách giáo khoa, câu B "broke out" cũng được chấp nhận (không backshift vì là sự kiện lịch sử). Tuy nhiên, đáp án <b>C (had broken out)</b> là đáp án theo quy tắc backshift tiêu chuẩn trong chương trình học.<br><br><b>❌ Tại sao A sai?</b> "breaks out" = Present Simple, sai hoàn toàn (không phải sự thật hiện tại).<br><b>❌ Tại sao D sai?</b> "was breaking out" = Past Continuous, không hợp nghĩa (WWII không "đang nổ ra").<br><br><b>✅ Câu đúng:</b> Our teacher said that World War II had broken out in 1939.'},
+
+{id:44,ex:9,type:'mc',
+ text:"The students said, \"We'll be sitting for our next exam next Monday.\"",
+ opts:["The students said that they will be sitting for their exam next Monday.","The students said that they would be sitting for their exam the following Monday.","The students said that they were sitting for their exam the following Monday.","The students said that we would be sitting for our next exam the following Monday."],
+ ans:"The students said that they would be sitting for their exam the following Monday.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>We</b> → <b>they</b><br>• <b>'ll be sitting</b> (Future Continuous) → <b>would be sitting</b> (Future Cont. in the past) [backshift]<br>• <b>our</b> → <b>their</b><br>• <b>next Monday</b> → <b>the following Monday</b><br><br><b>❌ Tại sao A sai?</b> Giữ 'will' và 'next Monday' – không backshift, không đổi trạng từ.<br><b>❌ Tại sao C sai?</b> 'were sitting' = Past Continuous, không phải 'would be sitting'.<br><b>❌ Tại sao D sai?</b> Giữ 'we' và 'our' thay vì đổi thành 'they' và 'their'.<br><br><b>✅ Câu đúng:</b> The students said that they would be sitting for their exam the following Monday."},
+
+{id:45,ex:9,type:'mc',
+ text:'He said, "I\'m going to finish this work."',
+ opts:["He said that he is going to finish this work.","He said that he is going to finish that work.","He said that he was going to finish that work.","He said that he will be going to finish that work."],
+ ans:"He said that he was going to finish that work.",
+ expl:"<b>📝 Các thay đổi trong Reported Speech:</b><br>• <b>I</b> → <b>he</b><br>• <b>am going to</b> → <b>was going to</b> [backshift: am/is/are → was/were]<br>• <b>this</b> → <b>that</b><br><br><b>❌ Tại sao A sai?</b> Giữ 'is going to' và 'this' – không backshift, không đổi từ chỉ thị.<br><b>❌ Tại sao B sai?</b> Đổi đúng 'this' → 'that' nhưng không backshift 'is going to'.<br><b>❌ Tại sao D sai?</b> 'will be going to' = cấu trúc sai hoàn toàn.<br><br><b>✅ Câu đúng:</b> He said that he was going to finish that work."}
+];
+
+// ===================== STATE =====================
+let score={correct:0,wrong:0,answered:{}};
+let activeGF=null; // {qid, opts, ans}
+
+// ===================== SHUFFLE =====================
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ===================== RENDER =====================
+function render(){
+  const container=document.getElementById('quiz-container');
+  let html='';
+  let exMap={6:'Exercise 6: Word Form – Write the correct form of the words in brackets',
+             7:'Exercise 7: Synonyms – Choose the word CLOSEST in meaning to the underlined word(s)',
+             8:'Exercise 8: Antonyms – Choose the word OPPOSITE in meaning to the underlined word(s)',
+             9:'Exercise 9: Reported Speech – Choose the correct reported speech'};
+  let lastEx=0;
+
+  QUESTIONS.forEach(q=>{
+    if(q.ex!==lastEx){
+      html+=`<div class="section-title"><span class="tag">Ex ${q.ex}</span>${exMap[q.ex]}</div>`;
+      lastEx=q.ex;
+    }
+    html+=`<div class="q-card" id="qcard-${q.id}">`;
+    html+=`<div class="q-header"><div class="q-num">${q.id}</div><div class="q-text">`;
+
+    if(q.type==='gf'){
+      // Gap fill
+      html+=`${q.pre} <span class="gap-blank" id="blank-${q.id}" onclick="openPopup(${q.id})" title="Bấm để chọn đáp án">___</span> ${q.post} <span class="q-hint">${q.hint}</span>`;
+    } else {
+      html+=q.text;
+    }
+    html+='</div></div>';
+
+    if(q.type==='mc'){
+      const shuffled=shuffle(q.opts);
+      const labels=['A','B','C','D'];
+      html+=`<div class="opts" id="opts-${q.id}">`;
+      shuffled.forEach((opt,i)=>{
+        html+=`<button class="opt-btn" id="opt-${q.id}-${i}" onclick="chooseMC(${q.id},this,'${opt.replace(/'/g,"\\'")}')">
+          <span class="opt-label">${labels[i]}</span><span>${opt}</span>
+        </button>`;
+      });
+      html+='</div>';
+    }
+
+    html+=`<div class="expl" id="expl-${q.id}">${q.expl}</div>`;
+    html+='</div>';
+  });
+  container.innerHTML=html;
+  document.getElementById('barTotal').textContent=QUESTIONS.length;
+}
+
+// ===================== MULTIPLE CHOICE =====================
+function chooseMC(qid,btn,chosen){
+  if(score.answered[qid])return;
+  score.answered[qid]=true;
+  const q=QUESTIONS.find(x=>x.id===qid);
+  const isCorrect=(chosen===q.ans);
+
+  // Disable all options
+  const opts=document.querySelectorAll(`#opts-${qid} .opt-btn`);
+  opts.forEach(b=>{
+    b.disabled=true;
+    const txt=b.querySelector('span:last-child').textContent;
+    if(txt===q.ans) b.classList.add('reveal');
+  });
+
+  btn.classList.add(isCorrect?'correct':'wrong');
+
+  if(isCorrect){score.correct++;playCorrect();launchConfetti();}
+  else{score.wrong++;playWrong();}
+
+  document.getElementById(`expl-${qid}`).classList.add('show');
+  updateBar();
+}
+
+// ===================== GAP FILL =====================
+function openPopup(qid){
+  if(score.answered[qid])return;
+  const q=QUESTIONS.find(x=>x.id===qid);
+  activeGF={qid,ans:q.ans};
+  document.getElementById('popupTitle').textContent='🔤 Chọn dạng đúng của từ ' + q.hint + ':';
+  const shuffled=shuffle(q.opts);
+  const optsDiv=document.getElementById('popupOpts');
+  optsDiv.innerHTML='';
+  shuffled.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='popup-opt';
+    btn.textContent=opt;
+    btn.onclick=()=>chooseGF(opt);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('gfPopup').classList.add('show');
+}
+
+function chooseGF(chosen){
+  if(!activeGF)return;
+  const {qid,ans}=activeGF;
+  document.getElementById('gfPopup').classList.remove('show');
+  score.answered[qid]=true;
+  const blank=document.getElementById(`blank-${qid}`);
+  blank.textContent=chosen;
+  blank.onclick=null;
+  const isCorrect=(chosen===ans);
+  blank.classList.add(isCorrect?'gf-correct':'gf-wrong');
+
+  if(isCorrect){score.correct++;playCorrect();launchConfetti();}
+  else{score.wrong++;playWrong();}
+
+  document.getElementById(`expl-${qid}`).classList.add('show');
+  updateBar();
+  activeGF=null;
+}
+
+function closePopup(){
+  document.getElementById('gfPopup').classList.remove('show');
+  activeGF=null;
+}
+
+// ===================== SCORE =====================
+function updateBar(){
+  document.getElementById('barCorrect').textContent=score.correct;
+  document.getElementById('barWrong').textContent=score.wrong;
+}
+
+function submitQuiz(){
+  const total=QUESTIONS.length;
+  const c=score.correct;
+  const pct=Math.round((c/total)*100);
+  let emoji,title,comment;
+  if(pct>=90){emoji='🏆';title='Xuất sắc!';comment='Em học giỏi quá! Thầy/Cô rất tự hào về em! 🌟';}
+  else if(pct>=75){emoji='🎉';title='Giỏi lắm!';comment='Em làm bài rất tốt! Cố gắng thêm một chút là hoàn hảo rồi! 💪';}
+  else if(pct>=60){emoji='😊';title='Khá tốt!';comment='Em đã nỗ lực rất nhiều! Ôn thêm phần sai để tiến bộ nhé! 📚';}
+  else if(pct>=40){emoji='🌱';title='Cần cố gắng thêm!';comment='Đừng nản lòng! Xem lại phần giải thích và ôn luyện thêm nhé! 💡';}
+  else{emoji='💪';title='Cố lên nhé!';comment='Hãy đọc kỹ phần giải thích và thử lại! Lần sau sẽ tốt hơn! 🌈';}
+
+  document.getElementById('rEmoji').textContent=emoji;
+  document.getElementById('rTitle').textContent=title;
+  document.getElementById('rScore').textContent=`${c} / ${total}`;
+  document.getElementById('rComment').textContent=comment;
+  document.getElementById('resultOverlay').classList.add('show');
+  if(pct>=60) launchConfettiBig();
+}
+
+// ===================== AUDIO =====================
+function playCorrect(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[523,.0],[659,.12],[784,.24],[1047,.36]].forEach(([f,t])=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0.25,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.2);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.25);
+    });
+  }catch(e){}
+}
+function playWrong(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[220,.0],[185,.15],[155,.3]].forEach(([f,t])=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sawtooth';o.frequency.value=f;
+      g.gain.setValueAtTime(0.18,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.18);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.22);
+    });
+  }catch(e){}
+}
+
+// ===================== CONFETTI =====================
+function launchConfetti(big=false){
+  const canvas=document.getElementById('confetti-canvas');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const N=big?200:80;
+  const colors=['#8854C0','#FDCB6E','#00C9A7','#FF6B9D','#4ECDC4','#FF4757','#FFF176','#B2EBF2'];
+  const particles=[];
+  for(let i=0;i<N;i++){
+    particles.push({
+      x:Math.random()*canvas.width,y:big?Math.random()*-100:-20,
+      vx:(Math.random()-0.5)*5,vy:Math.random()*5+2,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      size:Math.random()*9+4,rot:Math.random()*360,rs:(Math.random()-.5)*12,
+      shape:Math.random()>.5?'rect':'circle'
+    });
+  }
+  let frame=0;
+  const maxF=big?160:90;
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(0,1-frame/maxF);
+      if(p.shape==='rect') ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+      else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+      ctx.restore();
+    });
+    frame++;
+    if(frame<maxF) requestAnimationFrame(animate);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  animate();
+}
+function launchConfettiBig(){launchConfetti(true);}
+
+// ===================== INIT =====================
+render();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

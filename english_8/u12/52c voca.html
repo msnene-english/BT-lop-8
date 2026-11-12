@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài Kiểm Tra Tiếng Anh 8 – Space & The Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#8854C0;--secondary:#FDCB6E;--accent:#00C9A7;--correct:#00D26A;--wrong:#FF4757;--card:#ffffffef;--sh:0 8px 32px rgba(136,84,192,0.18)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg-grad{position:fixed;inset:0;background:linear-gradient(-45deg,#667eea,#764ba2,#f093fb,#8854C0,#FDCB6E,#00C9A7,#fd79a8);background-size:400% 400%;animation:gm 14s ease infinite;z-index:-2}
+@keyframes gm{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.bg-pat{position:fixed;inset:0;z-index:-1;opacity:.35;mix-blend-mode:overlay;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Ccircle cx='18' cy='18' r='3' fill='white' opacity='.7'/%3E%3Ccircle cx='80' cy='45' r='2' fill='white' opacity='.5'/%3E%3Ccircle cx='160' cy='28' r='5' fill='%23FDCB6E' opacity='.55'/%3E%3Cpolygon points='58,8 64,20 52,20' fill='white' opacity='.5'/%3E%3Ccircle cx='110' cy='110' r='9' fill='none' stroke='%2300C9A7' stroke-width='2' opacity='.4'/%3E%3Ccircle cx='110' cy='110' r='5' fill='%2300C9A7' opacity='.25'/%3E%3Ccircle cx='38' cy='170' r='6' fill='%23FDCB6E' opacity='.45'/%3E%3Cpolygon points='135,148 141,162 129,162' fill='white' opacity='.45'/%3E%3Ccircle cx='185' cy='145' r='3' fill='white' opacity='.65'/%3E%3Ccircle cx='200' cy='60' r='4' fill='%23fd79a8' opacity='.5'/%3E%3Crect x='60' cy='130' width='8' height='8' rx='2' fill='%23FDCB6E' opacity='.4' transform='rotate(30 64 134)'/%3E%3Ccircle cx='45' cy='95' r='2' fill='white' opacity='.5'/%3E%3Cpolygon points='190,190 197,205 183,205' fill='%23fd79a8' opacity='.4'/%3E%3C/svg%3E");
+animation:pf 25s linear infinite}
+@keyframes pf{0%{background-position:0 0}100%{background-position:220px 220px}}
+
+/* HEADER */
+.header{background:rgba(255,255,255,.15);backdrop-filter:blur(12px);padding:10px 18px;text-align:center;border-bottom:2px solid rgba(255,255,255,.3);position:sticky;top:0;z-index:200}
+.header h1{font-size:1.25rem;font-weight:900;color:#fff;text-shadow:2px 2px 8px rgba(0,0,0,.3)}
+.header p{font-size:.8rem;color:rgba(255,255,255,.9);margin-top:1px}
+
+/* PROGRESS */
+.prog-wrap{padding:8px 18px;background:rgba(255,255,255,.1)}
+.prog-out{background:rgba(255,255,255,.3);border-radius:20px;height:11px;overflow:hidden}
+.prog-in{height:100%;background:linear-gradient(90deg,#00D26A,#FDCB6E);border-radius:20px;transition:width .4s ease;width:0%}
+.prog-txt{text-align:center;color:#fff;font-size:.82rem;font-weight:700;margin-top:3px}
+
+/* CONTAINER */
+.container{max-width:840px;margin:0 auto;padding:16px 14px 10px}
+
+/* SECTION HEADER */
+.sec-head{background:rgba(255,255,255,.22);backdrop-filter:blur(8px);border-radius:16px;padding:11px 18px;margin:22px 0 10px;border-left:5px solid var(--secondary)}
+.sec-head h2{font-size:1.05rem;font-weight:900;color:#fff;text-shadow:1px 1px 4px rgba(0,0,0,.3)}
+.sec-head p{font-size:.82rem;color:rgba(255,255,255,.88);margin-top:2px}
+
+/* WORD BANK */
+.wb{background:rgba(253,203,110,.22);border:2px solid rgba(253,203,110,.6);border-radius:12px;padding:11px;margin-bottom:12px}
+.wb-title{font-size:.88rem;font-weight:900;color:#7c5e0a;margin-bottom:7px}
+.wb-inner{display:flex;flex-wrap:wrap;gap:7px}
+.wb-chip{background:#fff;border:2px solid rgba(253,203,110,.9);border-radius:10px;padding:3px 11px;font-size:.9rem;font-weight:700;color:#92700e}
+
+/* QUESTION CARD */
+.qcard{background:var(--card);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .2s}
+.qcard::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent))}
+.q-num{font-size:.78rem;font-weight:800;color:var(--primary);background:rgba(136,84,192,.1);display:inline-block;padding:2px 9px;border-radius:20px;margin-bottom:7px}
+.q-txt{font-size:1.15rem;font-weight:700;color:#2d3748;line-height:1.65;margin-bottom:12px}
+.q-txt .blank{display:inline-block;min-width:110px;background:rgba(136,84,192,.1);border:2px dashed var(--primary);border-radius:8px;padding:1px 9px;text-align:center;cursor:pointer;transition:all .2s;font-weight:800;color:var(--primary);font-size:1rem}
+.q-txt .blank:hover{background:rgba(136,84,192,.2);transform:scale(1.05)}
+.q-txt .blank.fc{background:rgba(0,210,106,.15);border:2px solid var(--correct);color:var(--correct);cursor:default}
+.q-txt .blank.fw{background:rgba(255,71,87,.15);border:2px solid var(--wrong);color:var(--wrong);cursor:default}
+
+/* MCQ OPTIONS */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.obtn{background:#fff;border:2.5px solid #e2e8f0;border-radius:15px;padding:9px 13px;font-size:1.08rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:all .2s;text-align:left;box-shadow:0 4px 10px rgba(0,0,0,.07),0 4px 0 #d1d5db;color:#4a5568;position:relative}
+.obtn:hover:not(:disabled){transform:scale(1.03) translateY(-2px);border-color:var(--primary);color:var(--primary);box-shadow:0 6px 14px rgba(136,84,192,.18),0 4px 0 var(--primary)}
+.obtn.cor{background:rgba(0,210,106,.12);border-color:var(--correct);color:var(--correct);box-shadow:0 4px 10px rgba(0,210,106,.18),0 4px 0 #00a854}
+.obtn.cor::after{content:' ✓';font-weight:900}
+.obtn.wrg{background:rgba(255,71,87,.12);border-color:var(--wrong);color:var(--wrong);animation:shake .5s ease;box-shadow:0 4px 10px rgba(255,71,87,.18),0 4px 0 #cc3342}
+.obtn.wrg::after{content:' ✗';font-weight:900}
+.obtn.reveal-cor{background:rgba(0,210,106,.07);border-color:var(--correct);color:var(--correct)}
+.obtn:disabled{cursor:default}
+
+/* BINARY */
+.bin-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.bbtn{background:#fff;border:2.5px solid #e2e8f0;border-radius:15px;padding:9px 20px;font-size:1.08rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:all .2s;box-shadow:0 4px 0 #d1d5db;color:#4a5568}
+.bbtn:hover:not(:disabled){transform:scale(1.05) translateY(-2px);border-color:var(--primary);color:var(--primary)}
+.bbtn.cor{background:rgba(0,210,106,.12);border-color:var(--correct);color:var(--correct);box-shadow:0 4px 0 #00a854}
+.bbtn.cor::after{content:' ✓';font-weight:900}
+.bbtn.wrg{background:rgba(255,71,87,.12);border-color:var(--wrong);color:var(--wrong);animation:shake .5s ease;box-shadow:0 4px 0 #cc3342}
+.bbtn.wrg::after{content:' ✗';font-weight:900}
+.bbtn:disabled{cursor:default}
+
+/* EXPLANATION */
+.exp{display:none;margin-top:13px;background:linear-gradient(135deg,rgba(136,84,192,.07),rgba(0,201,167,.07));border:2px solid rgba(136,84,192,.2);border-radius:14px;padding:13px;font-size:1rem;line-height:1.75;color:#4a5568;animation:fi .3s ease}
+.exp.show{display:block}
+.exp h4{font-size:.98rem;font-weight:900;color:var(--primary);margin-bottom:7px}
+.exp .ca{font-size:1.03rem;font-weight:800;color:var(--correct);margin-bottom:6px}
+.exp ul{margin-left:18px;margin-top:4px}
+.exp li{margin-bottom:3px}
+.exp strong{color:var(--primary)}
+.exp em{color:#e17055;font-style:normal;font-weight:700}
+
+/* ANIMATIONS */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes fi{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* CONFETTI */
+#cvc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+
+/* MODAL - WORD SELECT */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center}
+.mo.on{display:flex}
+.mo-box{background:#fff;border-radius:20px;padding:22px;max-width:440px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s ease}
+.mo-title{font-size:1.05rem;font-weight:900;color:var(--primary);margin-bottom:12px;text-align:center}
+.mo-words{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.mwbtn{background:#fff;border:2.5px solid var(--primary);border-radius:12px;padding:7px 15px;font-size:.98rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;color:var(--primary);transition:all .15s;box-shadow:0 3px 0 var(--primary)}
+.mwbtn:hover{background:var(--primary);color:#fff;transform:translateY(-2px)}
+
+/* SUBMIT */
+.sub-btn{display:block;margin:28px auto;background:linear-gradient(135deg,#FDCB6E,#e17055);color:#fff;border:none;border-radius:20px;padding:15px 46px;font-size:1.2rem;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 28px rgba(253,203,110,.4);transition:all .2s;letter-spacing:.5px}
+.sub-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 0 rgba(0,0,0,.15),0 15px 38px rgba(253,203,110,.5)}
+
+/* RESULT MODAL */
+.rm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;justify-content:center;align-items:center}
+.rm.on{display:flex}
+.rm-box{background:#fff;border-radius:24px;padding:34px;max-width:420px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .4s ease}
+.rm-emoji{font-size:4rem}
+.rm-score{font-size:2.5rem;font-weight:900;color:var(--primary);margin:10px 0}
+.rm-msg{font-size:1.05rem;font-weight:700;color:#4a5568;margin-bottom:18px;line-height:1.5}
+.rm-close{background:var(--primary);color:#fff;border:none;border-radius:14px;padding:11px 34px;font-size:.98rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 0 #6b3fa0}
+.rm-close:hover{transform:translateY(-2px)}
+.rm-detail{font-size:.88rem;color:#718096;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="bg-grad"></div>
+<div class="bg-pat"></div>
+<canvas id="cvc"></canvas>
+
+<div class="header">
+  <h1>🚀 Bài Kiểm Tra Tiếng Anh 8 – Space &amp; The Universe</h1>
+  <p>Giáo viên tạo: MS Chí Nên ULIS</p>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-out"><div class="prog-in" id="progBar"></div></div>
+  <div class="prog-txt" id="progTxt">0 / 52 câu đã trả lời</div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+<button class="sub-btn" onclick="submitQuiz()">📊 Nộp Bài &amp; Xem Điểm 🎓</button>
+
+<!-- Word select modal -->
+<div class="mo" id="wordModal">
+  <div class="mo-box">
+    <div class="mo-title">👆 Chọn từ thích hợp điền vào chỗ trống</div>
+    <div class="mo-words" id="modalWords"></div>
+    <p style="text-align:center;margin-top:12px;font-size:.82rem;color:#a0aec0;cursor:pointer" onclick="closeWordModal()">✖ Đóng</p>
+  </div>
+</div>
+
+<!-- Result modal -->
+<div class="rm" id="resultModal">
+  <div class="rm-box">
+    <div class="rm-emoji" id="rmEmoji">🎉</div>
+    <div class="rm-score" id="rmScore"></div>
+    <div class="rm-detail" id="rmDetail"></div>
+    <div class="rm-msg" id="rmMsg"></div>
+    <button class="rm-close" onclick="closeResult()">Đóng lại 😊</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  QUIZ DATA
+// ============================================================
+const WORD_BANK = ["traces","explore","possibility","thrilling","telescope","conditions","galaxy","climate","science fiction","jupiter"];
+
+const quizData = [
+// -------- SECTION 1: MCQ (Exercise 1 + Q50) --------
+{sec:"📚 Phần 1: Trắc Nghiệm Nhiều Lựa Chọn (Exercise 1 + Câu 50)",secDesc:"Bấm chọn đáp án đúng để xem giải thích ngay lập tức.",type:"mcq",id:"q34",num:"Câu 34",
+q:"I wish I could travel ________ outer space.",
+opts:["away","into","from","out of"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>B. into</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Tôi ước mình có thể du hành <em>vào trong</em> không gian vũ trụ."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. away</strong> (adv): đi xa, rời đi – "travel away" = bỏ đi, rời đi. <em>Sai</em> vì không diễn tả hướng đi vào không gian.</li>
+<li><strong>B. into ✓</strong> (prep): vào bên trong – "travel into outer space" = du hành vào trong không gian. <em>Đúng</em> – đây là cụm từ chuẩn trong thiên văn học.</li>
+<li><strong>C. from</strong> (prep): từ – "travel from outer space" = đi từ không gian ra. <em>Sai</em> vì ngược chiều.</li>
+<li><strong>D. out of</strong> (prep): ra ngoài – "travel out of outer space" = rời khỏi không gian. <em>Sai</em> vì ngược chiều.</li>
+</ul>
+<p>💡 <strong>Giải thích:</strong> Giới từ <em>into</em> chỉ sự chuyển động đi vào bên trong một không gian. "Travel into space" là cụm từ tiêu chuẩn = du hành vào không gian.</p>`},
+
+{type:"mcq",id:"q35",num:"Câu 35",
+q:"Saturn is called a ________ giant. It is made primarily of hydrogen and helium.",
+opts:["soil","gas","water","air"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>B. gas</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Sao Thổ được gọi là người khổng lồ <em>khí</em>. Nó được tạo thành chủ yếu từ hydro và heli."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. soil</strong> (n): đất – "soil giant" = không phải thuật ngữ thiên văn học. <em>Sai.</em></li>
+<li><strong>B. gas ✓</strong> (n): khí – "gas giant" = hành tinh khổng lồ khí. <em>Đúng</em> – thuật ngữ thiên văn học chuẩn.</li>
+<li><strong>C. water</strong> (n): nước – "water giant" không phải thuật ngữ phân loại hành tinh chuẩn. <em>Sai.</em></li>
+<li><strong>D. air</strong> (n): không khí – "air giant" không tồn tại trong thiên văn học. <em>Sai.</em></li>
+</ul>
+<p>💡 <strong>Giải thích:</strong> <em>Gas giant</em> (hành tinh khổng lồ khí) là thuật ngữ thiên văn học chỉ các hành tinh cấu tạo chủ yếu từ khí (hydro, heli). Sao Thổ (Saturn) và Sao Mộc (Jupiter) đều là "gas giants". Vế sau "made primarily of hydrogen and helium" là gợi ý rõ ràng.</p>`},
+
+{type:"mcq",id:"q36",num:"Câu 36",
+q:"We peered over the lip of the ________ into the volcano.",
+opts:["UFO","rocket","telescope","craters"],ans:3,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>D. craters</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Chúng tôi nhìn qua miệng <em>hố núi lửa</em> vào trong núi lửa."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. UFO</strong>: vật thể bay không xác định – không có "lip of the UFO". <em>Vô nghĩa, sai.</em></li>
+<li><strong>B. rocket</strong> (n): tên lửa – không có "lip of the rocket" trong ngữ cảnh này. <em>Sai.</em></li>
+<li><strong>C. telescope</strong> (n): kính viễn vọng – kính viễn vọng không có "lip". <em>Sai.</em></li>
+<li><strong>D. craters ✓</strong> (n): miệng hố núi lửa / hố thiên thạch – "the lip of the crater" = mép/miệng hố núi lửa. <em>Đúng.</em></li>
+</ul>
+<p>💡 <strong>Giải thích:</strong> <em>Crater</em> = miệng/hố núi lửa hoặc hố do thiên thạch. "The lip of the crater" = mép miệng hố. Câu nói "nhìn qua mép miệng hố vào trong núi lửa" hoàn toàn hợp nghĩa địa chất.</p>`},
+
+{type:"mcq",id:"q37",num:"Câu 37",
+q:"The Earth takes a year to ________ the sun.",
+opts:["orbit","touch","move","cycle"],ans:0,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>A. orbit</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Trái Đất mất một năm để <em>quay quanh quỹ đạo</em> Mặt Trời."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. orbit ✓</strong> (v): quay quanh theo quỹ đạo – "orbit the sun" = quay quanh Mặt Trời. <em>Đúng</em> – câu khoa học chuẩn.</li>
+<li><strong>B. touch</strong> (v): chạm vào – Trái Đất không thể chạm Mặt Trời. <em>Sai, vô lý.</em></li>
+<li><strong>C. move</strong> (v): di chuyển – "move the sun" = di chuyển Mặt Trời (như thể dịch chuyển nó). <em>Sai ngữ nghĩa.</em></li>
+<li><strong>D. cycle</strong> (n/v): chu kỳ – thường là danh từ; "cycle the sun" không phải cách nói chuẩn trong tiếng Anh. <em>Sai.</em></li>
+</ul>
+<p>💡 <strong>Giải thích:</strong> <em>Orbit</em> (v) = quay quanh theo quỹ đạo. "The Earth orbits the Sun once a year" là câu khoa học cơ bản. Orbit còn là danh từ = quỹ đạo.</p>`},
+
+{type:"mcq",id:"q50",num:"Câu 50",
+q:'<strong>Jane</strong>: "Are you sure I have passed the French exam?"<br><strong>Hoa</strong>: "__________ I\'ve just heard it from our teacher."',
+opts:["I'm sorry to hear that.","I'm absolutely sure.","I'm not certain.","Wow, that's great!"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>B. I'm absolutely sure.</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> Jane: "Bạn có chắc chắn là tôi đã qua kỳ thi tiếng Pháp không?" Hoa: "<em>Tôi hoàn toàn chắc chắn.</em> Tôi vừa nghe từ giáo viên của chúng ta."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. I'm sorry to hear that.</strong>: Tôi tiếc khi nghe điều đó – dùng khi nghe <em>tin xấu</em>. Ở đây Jane qua thi là tin tốt. <em>Sai ngữ cảnh.</em></li>
+<li><strong>B. I'm absolutely sure. ✓</strong>: Tôi hoàn toàn chắc chắn – phù hợp với câu hỏi "Are you sure?" và có bằng chứng "I've just heard it from our teacher". <em>Đúng.</em></li>
+<li><strong>C. I'm not certain.</strong>: Tôi không chắc – <em>Mâu thuẫn</em> với vế tiếp theo "I've just heard it from our teacher" (đã có nguồn tin chắc chắn). <em>Sai.</em></li>
+<li><strong>D. Wow, that's great!</strong>: Ồ, tuyệt vời! – Đây là phản ứng cảm xúc, không phải trả lời cho câu hỏi "Are you sure?" <em>Sai ngữ cảnh.</em></li>
+</ul>
+<p>💡 <strong>Key phrase:</strong> "I've just heard it from our teacher" = vừa nghe từ giáo viên → nguồn tin đáng tin cậy → "I'm absolutely sure" (Tôi hoàn toàn chắc chắn) là câu trả lời chính xác nhất.</p>`},
+
+// -------- SECTION 2: GAP FILL (Exercise 3) --------
+{sec:"📝 Phần 2: Điền Từ Vào Chỗ Trống (Exercise 3)",secDesc:"Bấm vào ô trống → Chọn từ trong hộp từ → Xem kết quả ngay!",type:"gapfill",id:"ex3_1",num:"Câu 1",
+pre:"Scientists haven't found any",suf:"of life on the other planets.",ans:"traces",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>traces</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các nhà khoa học chưa tìm thấy <em>dấu vết</em> nào của sự sống trên các hành tinh khác."</p>
+<p>💡 <strong>traces (n - số nhiều)</strong>: dấu vết, vết tích. <strong>"traces of life"</strong> = dấu vết của sự sống – là cụm từ cố định hay dùng trong khoa học. Ví dụ: traces of water, traces of DNA.</p>
+<p><em>Các từ khác sai vì:</em> "explore/possibility/thrilling..." đều không hợp nghĩa với cấu trúc "any ___ of life".</p>`},
+
+{type:"gapfill",id:"ex3_2",num:"Câu 2",
+pre:"The story has attracted lots of people because it is",suf:".",ans:"thrilling",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>thrilling</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Câu chuyện đã thu hút nhiều người vì nó <em>rất hồi hộp/ly kỳ</em>."</p>
+<p>💡 <strong>thrilling (adj)</strong>: hồi hộp, gay cấn, kịch tính, ly kỳ. Dùng sau động từ "to be" (is thrilling). Chủ ngữ là "story" → tính từ mô tả cảm xúc người đọc cảm nhận.</p>
+<p><em>Lưu ý:</em> "thrilling" (gây cảm giác hồi hộp) vs "thrilled" (cảm thấy hồi hộp). Chủ ngữ là sự vật (story) nên dùng "thrilling".</p>`},
+
+{type:"gapfill",id:"ex3_3",num:"Câu 3",
+pre:"Water is one of the",suf:"that we need to be able to live on a planet.",ans:"conditions",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>conditions</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Nước là một trong những <em>điều kiện</em> mà chúng ta cần để có thể sống trên một hành tinh."</p>
+<p>💡 <strong>conditions (n - số nhiều)</strong>: điều kiện, hoàn cảnh. <strong>"conditions for life"</strong> = điều kiện để sống sót – cụm từ khoa học phổ biến. Động từ "need" ở đây đòi hỏi danh từ số nhiều.</p>
+<p><em>Phân biệt:</em> conditions (điều kiện cụ thể) vs possibility (khả năng). "One of the conditions" = một trong các điều kiện cụ thể cần có.</p>`},
+
+{type:"gapfill",id:"ex3_4",num:"Câu 4",
+pre:"Scientists are planning to send people to",suf:"Mars.",ans:"explore",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>explore</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các nhà khoa học đang lên kế hoạch đưa người đến để <em>khám phá</em> Sao Hỏa."</p>
+<p>💡 <strong>explore (v)</strong>: khám phá, tìm hiểu. Sau "to send people to" cần một <strong>động từ nguyên thể</strong> (bare infinitive). "Explore Mars" = khám phá Sao Hỏa.</p>
+<p><em>Cấu trúc:</em> send + người + to + động từ nguyên thể. Ví dụ: send scientists to explore, send astronauts to study...</p>`},
+
+{type:"gapfill",id:"ex3_5",num:"Câu 5",
+pre:"There is a",suf:"the people might live on the moon in one hundred years.",ans:"possibility",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>possibility</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Có một <em>khả năng</em> là con người có thể sống trên mặt trăng trong một trăm năm nữa."</p>
+<p>💡 <strong>Cấu trúc:</strong> <strong>"There is a possibility (that) + mệnh đề"</strong> = Có khả năng là... Đây là cấu trúc cố định trong tiếng Anh.</p>
+<p><em>Phân biệt:</em> possibility (khả năng xảy ra) vs conditions (điều kiện vật chất). "There is a possibility" + mệnh đề là cấu trúc đúng.</p>`},
+
+{type:"gapfill",id:"ex3_6",num:"Câu 6",
+pre:"People might be living on Mars or",suf:"in 50 years' time.",ans:"galaxy",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>galaxy</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Mọi người có thể đang sống trên Sao Hỏa hoặc một <em>thiên hà</em> nào đó trong 50 năm tới."</p>
+<p>💡 <strong>galaxy (n)</strong>: thiên hà – một hệ thống hàng tỷ ngôi sao. Trong câu này "Mars or galaxy" = Sao Hỏa hoặc thiên hà (chỉ nơi ở trong không gian).</p>
+<p><em>Lưu ý:</em> galaxy được dùng theo nghĩa rộng ở đây để chỉ không gian vũ trụ xa hơn. Milky Way = Dải Ngân Hà là một galaxy.</p>`},
+
+{type:"gapfill",id:"ex3_7",num:"Câu 7",
+pre:"The",suf:"on Mars is too cold.",ans:"climate",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>climate</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "<em>Khí hậu</em> trên Sao Hỏa quá lạnh."</p>
+<p>💡 <strong>climate (n)</strong>: khí hậu (điều kiện thời tiết trung bình theo thời gian dài). <strong>"The climate on Mars"</strong> = khí hậu của Sao Hỏa. Nhiệt độ trung bình trên Sao Hỏa khoảng -60°C.</p>
+<p><em>Phân biệt:</em> climate (khí hậu – dài hạn) vs weather (thời tiết – ngắn hạn).</p>`},
+
+{type:"gapfill",id:"ex3_8",num:"Câu 8",
+pre:"A journey back to Soduka is a",suf:"book.",ans:"science fiction",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>science fiction</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Hành trình trở về Soduka là một cuốn sách <em>khoa học viễn tưởng</em>."</p>
+<p>💡 <strong>science fiction (n)</strong>: khoa học viễn tưởng – thể loại văn học/phim ảnh về khoa học tương lai, người ngoài hành tinh, du hành vũ trụ... Viết tắt là "sci-fi".</p>
+<p><em>Ví dụ:</em> Star Wars, Star Trek, The Martian đều là science fiction.</p>`},
+
+{type:"gapfill",id:"ex3_9",num:"Câu 9",
+pre:"",suf:"is a planet in the solar system.",ans:"jupiter",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>Jupiter</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "<em>Sao Mộc</em> là một hành tinh trong hệ Mặt Trời."</p>
+<p>💡 <strong>Jupiter (n)</strong>: Sao Mộc – hành tinh lớn nhất trong hệ Mặt Trời, thuộc loại "gas giant". Vị trí: hành tinh thứ 5 tính từ Mặt Trời. Tên trong hộp là "jupiter" (chữ thường) nhưng đây là danh từ riêng, viết hoa là Jupiter.</p>`},
+
+{type:"gapfill",id:"ex3_10",num:"Câu 10",
+pre:"You can see craters on the moon with a",suf:".",ans:"telescope",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>telescope</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Bạn có thể nhìn thấy các miệng hố trên mặt trăng bằng một chiếc <em>kính viễn vọng</em>."</p>
+<p>💡 <strong>telescope (n)</strong>: kính viễn vọng – dụng cụ quang học dùng để quan sát các vật thể ở xa như sao, hành tinh, mặt trăng. "See craters with a telescope" = nhìn miệng hố bằng kính viễn vọng.</p>`},
+
+// -------- SECTION 3: BINARY CHOICE (Exercise 4) --------
+{sec:"🔤 Phần 3: Chọn Từ Đúng (Exercise 4)",secDesc:"Đọc câu và bấm vào từ đúng trong hai lựa chọn.",type:"binary",id:"ex4_1",num:"Câu 16",
+pre:"A spaceship is a",ch1:"creature",ch2:"vehicle",suf:"used for travel in space.",ans:"vehicle",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>vehicle</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Tàu vũ trụ là một <em>phương tiện</em> dùng để du hành trong không gian."</p>
+<ul>
+<li><strong>vehicle (n)</strong>: phương tiện di chuyển (xe cộ, tàu vũ trụ...). Spaceship = phương tiện → đúng.</li>
+<li><strong>creature (n)</strong>: sinh vật, tạo vật → Sai vì tàu vũ trụ không phải sinh vật.</li>
+</ul>`},
+
+{type:"binary",id:"ex4_2",num:"Câu 17",
+pre:"",ch1:"Galaxy",ch2:"Mercury",suf:"is the smallest planet in our solar system.",ans:"Mercury",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>Mercury</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "<em>Sao Thủy</em> là hành tinh nhỏ nhất trong hệ Mặt Trời của chúng ta."</p>
+<ul>
+<li><strong>Mercury (n)</strong>: Sao Thủy – hành tinh nhỏ nhất và gần Mặt Trời nhất trong hệ Mặt Trời. <em>Đúng.</em></li>
+<li><strong>Galaxy (n)</strong>: thiên hà – một hệ thống lớn gồm hàng tỷ ngôi sao, không phải hành tinh. <em>Sai.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_3",num:"Câu 18",
+pre:"They launched a",ch1:"moon",ch2:"rocket",suf:"to the planet Venus.",ans:"rocket",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>rocket</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Họ đã phóng một <em>tên lửa</em> đến hành tinh Sao Kim."</p>
+<ul>
+<li><strong>rocket (n)</strong>: tên lửa – phương tiện dùng để phóng vào không gian. "launch a rocket" = phóng tên lửa. <em>Đúng.</em></li>
+<li><strong>moon (n)</strong>: mặt trăng (vệ tinh tự nhiên) – không thể "launch a moon". <em>Sai.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_4",num:"Câu 19",
+pre:"Scientists are working hard to find",ch1:"habitat",ch2:"habitable",suf:"planets.",ans:"habitable",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>habitable</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các nhà khoa học đang nỗ lực tìm kiếm những hành tinh <em>có thể ở được</em>."</p>
+<ul>
+<li><strong>habitable (adj)</strong>: có thể sinh sống được, phù hợp để ở. Đứng trước danh từ "planets" → cần tính từ. <em>Đúng.</em></li>
+<li><strong>habitat (n)</strong>: môi trường sống, môi sinh – là danh từ, không thể đứng trước danh từ làm tính ngữ như vậy. <em>Sai từ loại.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_5",num:"Câu 20",
+pre:"You can see craters on the moon with a",ch1:"spaceship",ch2:"telescope",suf:".",ans:"telescope",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>telescope</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Bạn có thể nhìn thấy các hố va chạm trên mặt trăng bằng một chiếc <em>kính viễn vọng</em>."</p>
+<ul>
+<li><strong>telescope (n)</strong>: kính viễn vọng – dụng cụ quan sát thiên văn. Dùng để quan sát chi tiết bề mặt mặt trăng. <em>Đúng.</em></li>
+<li><strong>spaceship (n)</strong>: tàu vũ trụ – phương tiện bay vào không gian, không phải dụng cụ quan sát. <em>Sai ngữ cảnh.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_6",num:"Câu 21",
+pre:"Creature is a living thing that",ch1:"can",ch2:"can't",suf:"move independently.",ans:"can",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>can</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Sinh vật là một thực thể sống <em>có thể</em> tự di chuyển."</p>
+<ul>
+<li><strong>can</strong>: có thể – Sinh vật (creature) là sinh vật sống có khả năng tự di chuyển, đây là đặc điểm phân biệt với thực vật và vật vô tri. <em>Đúng.</em></li>
+<li><strong>can't</strong>: không thể – Sai về mặt sinh học. Sinh vật có khả năng di chuyển (trái với thực vật). <em>Sai.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_7",num:"Câu 22",
+pre:"In a weightless environment, everything floats",ch1:"controllably",ch2:"uncontrollably",suf:".",ans:"uncontrollably",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>uncontrollably</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Trong môi trường không trọng lực, mọi thứ bay lơ lửng <em>không kiểm soát được</em>."</p>
+<ul>
+<li><strong>uncontrollably (adv)</strong>: một cách không kiểm soát được – Trong môi trường không trọng lực, các vật thể bay lung tung không theo ý muốn. <em>Đúng.</em></li>
+<li><strong>controllably (adv)</strong>: một cách có kiểm soát – Sai về mặt vật lý trong môi trường không trọng lực. <em>Sai.</em></li>
+</ul>
+<p>💡 Tiền tố <strong>un-</strong> = phủ định: controllably → uncontrollably (không kiểm soát được).</p>`},
+
+{type:"binary",id:"ex4_8",num:"Câu 23",
+pre:"The Milky Way is the galaxy that",ch1:"excludes",ch2:"includes",suf:"our solar system.",ans:"includes",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>includes</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Dải Ngân Hà là thiên hà <em>bao gồm</em> hệ Mặt Trời của chúng ta."</p>
+<ul>
+<li><strong>includes (v)</strong>: bao gồm – Hệ Mặt Trời của chúng ta nằm trong Dải Ngân Hà (Milky Way). <em>Đúng.</em></li>
+<li><strong>excludes (v)</strong>: loại trừ, không bao gồm – Sai về mặt thiên văn học. <em>Sai.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_9",num:"Câu 24",
+pre:"The atmosphere in the room was so",ch1:"fresh",ch2:"stuffy",suf:"I could hardly breathe.",ans:"stuffy",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>stuffy</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Không khí trong phòng <em>ngột ngạt</em> đến mức tôi hầu như không thở được."</p>
+<ul>
+<li><strong>stuffy (adj)</strong>: ngột ngạt, bí bách, thiếu không khí – phù hợp với kết quả "could hardly breathe" (khó thở). <em>Đúng.</em></li>
+<li><strong>fresh (adj)</strong>: trong lành, tươi mát – nếu không khí trong lành thì sẽ thở được bình thường. <em>Mâu thuẫn với vế sau.</em></li>
+</ul>
+<p>💡 Cấu trúc: <strong>so + adj + that clause</strong>. Kết quả tiêu cực "could hardly breathe" → nguyên nhân phải tiêu cực → stuffy.</p>`},
+
+{type:"binary",id:"ex4_10",num:"Câu 25",
+pre:"He made friends with some",ch1:"aliens",ch2:"UFOs",suf:"who came from another planet.",ans:"aliens",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>aliens</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Anh ấy đã kết bạn với một số <em>người ngoài hành tinh</em> đến từ hành tinh khác."</p>
+<ul>
+<li><strong>aliens (n)</strong>: người ngoài hành tinh, sinh vật ngoài Trái Đất – Đại từ quan hệ "who" chỉ người/sinh vật có ý thức. <em>Đúng.</em></li>
+<li><strong>UFOs (n)</strong>: vật thể bay không xác định – là đồ vật, không dùng đại từ quan hệ "who". Phải dùng "which" nếu là UFOs. <em>Sai ngữ pháp.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_11",num:"Câu 26",
+pre:"He is a",ch1:"promise",ch2:"promising",suf:"young scientist.",ans:"promising",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>promising</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Anh ấy là một nhà khoa học trẻ <em>đầy triển vọng</em>."</p>
+<ul>
+<li><strong>promising (adj)</strong>: đầy hứa hẹn, có triển vọng – tính từ, đứng trước danh từ "scientist". <em>Đúng.</em></li>
+<li><strong>promise (n/v)</strong>: lời hứa / hứa hẹn – là danh từ hoặc động từ, không thể đứng trước danh từ làm tính ngữ. <em>Sai từ loại.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_12",num:"Câu 27",
+pre:"",ch1:"Saturn",ch2:"Mercury",suf:"is the closest planet to the Sun.",ans:"Mercury",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>Mercury</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "<em>Sao Thủy</em> là hành tinh gần Mặt Trời nhất."</p>
+<ul>
+<li><strong>Mercury (n)</strong>: Sao Thủy – hành tinh gần Mặt Trời nhất (cách 57.9 triệu km). <em>Đúng.</em></li>
+<li><strong>Saturn (n)</strong>: Sao Thổ – hành tinh thứ 6 tính từ Mặt Trời (cách 1.4 tỷ km). Nổi tiếng với vành đai. <em>Sai.</em></li>
+</ul>
+<p>💡 Thứ tự 8 hành tinh từ Mặt Trời: <strong>Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.</strong></p>`},
+
+{type:"binary",id:"ex4_13",num:"Câu 28",
+pre:"Scientists are working to find",ch1:"habit",ch2:"habitable",suf:"planets.",ans:"habitable",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>habitable</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các nhà khoa học đang nỗ lực tìm kiếm những hành tinh <em>có thể ở được</em>."</p>
+<ul>
+<li><strong>habitable (adj)</strong>: có thể sinh sống được – tính từ đứng trước "planets". <em>Đúng.</em></li>
+<li><strong>habit (n)</strong>: thói quen, tập quán – danh từ, không liên quan đến hành tinh. <em>Sai hoàn toàn.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_14",num:"Câu 29",
+pre:"The story has attracted my attention because it is",ch1:"thrilling",ch2:"unsuitable",suf:".",ans:"thrilling",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>thrilling</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Câu chuyện đã thu hút sự chú ý của tôi vì nó <em>rất hồi hộp/ly kỳ</em>."</p>
+<ul>
+<li><strong>thrilling (adj)</strong>: hồi hộp, kịch tính, ly kỳ – phù hợp với lý do "attracted my attention" (thu hút sự chú ý). <em>Đúng.</em></li>
+<li><strong>unsuitable (adj)</strong>: không phù hợp – nếu câu chuyện không phù hợp thì không thu hút được. <em>Mâu thuẫn với ngữ cảnh.</em></li>
+</ul>`},
+
+{type:"binary",id:"ex4_15",num:"Câu 30",
+pre:"Water is one of the",ch1:"conditions",ch2:"possibilities",suf:"that we need to be able to live on a planet.",ans:"conditions",
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>conditions</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Nước là một trong những <em>điều kiện</em> mà chúng ta cần để có thể sống trên một hành tinh."</p>
+<ul>
+<li><strong>conditions (n)</strong>: điều kiện – nước là điều kiện vật chất thiết yếu cho sự sống. "Conditions for life" = điều kiện để sống. <em>Đúng.</em></li>
+<li><strong>possibilities (n)</strong>: khả năng – "Water is one of the possibilities" = Nước là một trong các khả năng. Câu này thiếu logic vì nước là điều kiện cụ thể, không phải "khả năng". <em>Sai nghĩa.</em></li>
+</ul>`},
+
+// -------- SECTION 4: WORD FORMS (Exercise 5) --------
+{sec:"✏️ Phần 4: Biến Đổi Dạng Từ (Exercise 5)",secDesc:"Chọn dạng từ đúng để hoàn thành câu.",type:"mcq",id:"ex5_1",num:"Câu 1",
+q:"The film was about five strange ________ invading the Earth. (CREATE)",
+opts:["creature","creatures","creation","creative"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>creatures</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Bộ phim kể về năm <em>sinh vật</em> kỳ lạ xâm chiếm Trái Đất."</p>
+<ul>
+<li><strong>creatures ✓</strong> (n - số nhiều): sinh vật – "five strange creatures" = 5 sinh vật kỳ lạ. Số đếm "five" → danh từ số nhiều.</li>
+<li><strong>creature</strong>: số ít – sai vì "five" đòi hỏi số nhiều.</li>
+<li><strong>creation</strong>: sự sáng tạo, tác phẩm – sai ngữ nghĩa.</li>
+<li><strong>creative</strong>: sáng tạo (adj) – sai từ loại, cần danh từ.</li>
+</ul>
+<p>💡 CREATE → creature (danh từ - sinh vật), creation (sự sáng tạo), creative (tính từ), creator (người tạo ra).</p>`},
+
+{type:"mcq",id:"ex5_2",num:"Câu 2",
+q:"Is there any ________ of life on other planets? (POSSIBLE)",
+opts:["possible","possibility","possibly","possibilities"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>possibility</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Có <em>khả năng</em> nào về sự sống trên các hành tinh khác không?"</p>
+<ul>
+<li><strong>possibility ✓</strong> (n - số ít): khả năng – "any possibility of" = bất kỳ khả năng nào về. Cấu trúc "any + danh từ" cần danh từ.</li>
+<li><strong>possible</strong> (adj): có thể – sai từ loại, cần danh từ sau "any".</li>
+<li><strong>possibly</strong> (adv): có thể – trạng từ, sai từ loại.</li>
+<li><strong>possibilities</strong> (n - số nhiều): Sau "any" thường dùng số ít (possibility) khi hỏi có/không.</li>
+</ul>
+<p>💡 POSSIBLE → possible (adj), possibly (adv), <strong>possibility</strong> (n).</p>`},
+
+{type:"mcq",id:"ex5_3",num:"Câu 3",
+q:"This type of behaviour is no longer ________ acceptable. (SOCIAL)",
+opts:["social","society","socially","sociable"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>socially</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Kiểu hành vi này không còn được chấp nhận về mặt <em>xã hội</em> nữa."</p>
+<ul>
+<li><strong>socially ✓</strong> (adv): về mặt xã hội – bổ nghĩa cho tính từ "acceptable" (từ trước). Cần trạng từ để bổ nghĩa cho tính từ.</li>
+<li><strong>social</strong> (adj): thuộc xã hội – sai vì hai tính từ không đứng cạnh nhau như vậy.</li>
+<li><strong>society</strong> (n): xã hội – danh từ, sai từ loại.</li>
+<li><strong>sociable</strong> (adj): hòa đồng, thân thiện – sai nghĩa và sai từ loại.</li>
+</ul>
+<p>💡 SOCIAL → social (adj), socially (adv), society (n), <strong>socially acceptable</strong> = được xã hội chấp nhận.</p>`},
+
+{type:"mcq",id:"ex5_4",num:"Câu 4",
+q:"Mars is too cold, so it is ________ for human life. (SUIT)",
+opts:["suitable","unsuitable","suitability","suitably"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>unsuitable</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Sao Hỏa quá lạnh, vì vậy nó <em>không phù hợp</em> cho sự sống của con người."</p>
+<ul>
+<li><strong>unsuitable ✓</strong> (adj): không phù hợp – tiền tố "un-" tạo nghĩa phủ định. "Too cold" → kết luận tiêu cực "unsuitable". Sau "it is" cần tính từ.</li>
+<li><strong>suitable</strong> (adj): phù hợp – nghĩa tích cực, mâu thuẫn với "too cold". Sai nghĩa.</li>
+<li><strong>suitability</strong> (n): sự phù hợp – danh từ, sai từ loại sau "it is".</li>
+<li><strong>suitably</strong> (adv): một cách phù hợp – trạng từ, sai vị trí.</li>
+</ul>
+<p>💡 SUIT → suitable (phù hợp), <strong>unsuitable</strong> (không phù hợp), suitability (n).</p>`},
+
+{type:"mcq",id:"ex5_5",num:"Câu 5",
+q:"In the story, the strange creature ________ that it will kill Tom. (THREAT)",
+opts:["threat","threatened","threatens","threatening"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>threatens</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Trong câu chuyện, sinh vật kỳ lạ <em>đe dọa</em> rằng nó sẽ giết Tom."</p>
+<ul>
+<li><strong>threatens ✓</strong> (v): đe dọa – ngôi 3 số ít (the strange creature) → thêm "-s". Câu ở thì hiện tại đơn (truyện kể). "threatens that..." = đe dọa rằng.</li>
+<li><strong>threat</strong> (n): sự đe dọa, lời đe dọa – danh từ, sai từ loại (cần động từ).</li>
+<li><strong>threatened</strong>: quá khứ đơn – không phù hợp với thì hiện tại của truyện kể.</li>
+<li><strong>threatening</strong> (adj/v-ing): đang đe dọa – thiếu tobe nếu dùng tiếp diễn.</li>
+</ul>
+<p>💡 THREAT → threat (n - danh từ), threaten (v - động từ), threatening (adj - đáng sợ), <strong>threatens</strong> (V-s hiện tại).</p>`},
+
+{type:"mcq",id:"ex5_6",num:"Câu 6",
+q:"The ________ skills he acquired during his wilderness training were useful when he got lost in the forest. (SURVIVE)",
+opts:["survive","survivor","survival","surviving"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>survival</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Những kỹ năng <em>sinh tồn</em> mà anh ấy học được trong quá trình luyện tập ở vùng hoang dã rất hữu ích khi anh bị lạc trong rừng."</p>
+<ul>
+<li><strong>survival ✓</strong> (n): sự sinh tồn – "survival skills" = kỹ năng sinh tồn. Danh từ làm tính ngữ đứng trước "skills".</li>
+<li><strong>survive</strong> (v): sống sót – động từ, không đứng trước danh từ làm tính ngữ.</li>
+<li><strong>survivor</strong> (n): người sống sót – sai nghĩa khi kết hợp với "skills".</li>
+<li><strong>surviving</strong> (v-ing/adj): đang sống sót – "surviving skills" không phải cụm từ đúng.</li>
+</ul>
+<p>💡 SURVIVE → survive (v), survivor (n - người), <strong>survival</strong> (n - trạng thái). "Survival skills" = kỹ năng sinh tồn là cụm danh từ chuẩn.</p>`},
+
+{type:"mcq",id:"ex5_7",num:"Câu 7",
+q:"Astronauts experience ________ in the environment of space, allowing them to float inside the spacecraft. (WEIGHT)",
+opts:["weightless","weighty","weightlessly","weightlessness"],ans:3,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>weightlessness</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các phi hành gia trải nghiệm <em>trạng thái không trọng lực</em> trong môi trường vũ trụ, cho phép họ bay lơ lửng bên trong tàu vũ trụ."</p>
+<ul>
+<li><strong>weightlessness ✓</strong> (n): trạng thái không có trọng lượng, không trọng lực – sau "experience" cần danh từ. "Experience weightlessness" = trải nghiệm trạng thái không trọng lực.</li>
+<li><strong>weightless</strong> (adj): không trọng lượng – tính từ, sai từ loại sau "experience".</li>
+<li><strong>weighty</strong> (adj): nặng nề, quan trọng – sai nghĩa hoàn toàn.</li>
+<li><strong>weightlessly</strong> (adv): một cách không trọng lượng – trạng từ, sai từ loại.</li>
+</ul>
+<p>💡 WEIGHT → weight (n), weighty (adj), weightless (adj), <strong>weightlessness</strong> (n), weightlessly (adv). Suffix <strong>-ness</strong> biến tính từ thành danh từ.</p>`},
+
+{type:"mcq",id:"ex5_8",num:"Câu 8",
+q:"Scientists are curious about the ________ of alien life beyond Earth. (EXIST)",
+opts:["exist","existing","existence","existed"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>existence</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các nhà khoa học tò mò về <em>sự tồn tại</em> của sự sống ngoài hành tinh ngoài Trái Đất."</p>
+<ul>
+<li><strong>existence ✓</strong> (n): sự tồn tại – sau "the" và "about" cần danh từ. "The existence of..." = sự tồn tại của...</li>
+<li><strong>exist</strong> (v): tồn tại – động từ, sai từ loại sau mạo từ "the".</li>
+<li><strong>existing</strong> (adj/v-ing): đang tồn tại – không dùng sau "the ___of".</li>
+<li><strong>existed</strong>: quá khứ đơn – động từ, sai từ loại.</li>
+</ul>
+<p>💡 EXIST → exist (v), <strong>existence</strong> (n), existing (adj). Suffix <strong>-ence</strong> biến động từ thành danh từ.</p>`},
+
+{type:"mcq",id:"ex5_9",num:"Câu 9",
+q:"The unions are in ________ to the government over the issue of increasing the minimum wage. (OPPOSE)",
+opts:["oppose","opposite","opposition","opposing"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>opposition</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Các công đoàn đang <em>phản đối</em> chính phủ về vấn đề tăng lương tối thiểu."</p>
+<ul>
+<li><strong>opposition ✓</strong> (n): sự phản đối – cấu trúc cố định: <strong>"be in opposition to"</strong> = phản đối, chống lại. Sau "in" cần danh từ.</li>
+<li><strong>oppose</strong> (v): phản đối – động từ, không dùng sau giới từ "in".</li>
+<li><strong>opposite</strong> (adj/prep/n): đối diện, trái ngược – sai nghĩa trong cấu trúc này.</li>
+<li><strong>opposing</strong> (adj/v-ing): đang phản đối – không hợp cấu trúc "in ___ to".</li>
+</ul>
+<p>💡 Cấu trúc: <strong>in opposition to</strong> = phản đối. OPPOSE → oppose (v), opponent (n - đối thủ), <strong>opposition</strong> (n - sự phản đối), opposite (adj/n).</p>`},
+
+{type:"mcq",id:"ex5_10",num:"Câu 10",
+q:"Her school report described her as a very ________ student. (PROMISE)",
+opts:["promise","promised","promising","promisingly"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>promising</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Học bạ của cô ấy mô tả cô ấy là một học sinh rất <em>có triển vọng</em>."</p>
+<ul>
+<li><strong>promising ✓</strong> (adj): đầy hứa hẹn, có triển vọng – tính từ đứng trước danh từ "student". "A promising student" = học sinh có triển vọng.</li>
+<li><strong>promise</strong> (n/v): lời hứa/hứa hẹn – sai từ loại trước danh từ.</li>
+<li><strong>promised</strong>: đã hứa – tính từ dạng quá khứ phân từ, sai nghĩa.</li>
+<li><strong>promisingly</strong> (adv): một cách đầy hứa hẹn – trạng từ, sai vị trí trước danh từ.</li>
+</ul>
+<p>💡 PROMISE → promise (n/v), <strong>promising</strong> (adj - đầy hứa hẹn), promisingly (adv). "A promising student/scientist/athlete" là cụm thường gặp.</p>`},
+
+{type:"mcq",id:"ex5_11",num:"Câu 11",
+q:"Only planets within the liquid-water ________ zone can support life on their surfaces. (HABITAT)",
+opts:["habit","habitat","habitable","habitually"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>habitable</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Chỉ những hành tinh nằm trong vùng <em>có thể sinh sống được</em> với nước lỏng mới có thể duy trì sự sống trên bề mặt của chúng."</p>
+<ul>
+<li><strong>habitable ✓</strong> (adj): có thể ở được, phù hợp để sinh sống – "habitable zone" = vùng có thể ở được (thuật ngữ thiên văn học cho khu vực xung quanh sao mà hành tinh có thể có nước lỏng).</li>
+<li><strong>habit</strong> (n): thói quen – sai nghĩa và từ loại.</li>
+<li><strong>habitat</strong> (n): môi trường sống – "habitat zone" không phải thuật ngữ đúng; cần tính từ.</li>
+<li><strong>habitually</strong> (adv): theo thói quen – trạng từ, sai từ loại.</li>
+</ul>
+<p>💡 HABITAT → habitat (n), <strong>habitable</strong> (adj), inhabit (v), inhabitant (n - cư dân), uninhabited (adj - không có người ở).</p>`},
+
+{type:"mcq",id:"ex5_12",num:"Câu 12",
+q:"Within our own galaxy there are probably tens of thousands of ________ systems. (PLANET)",
+opts:["planet","planets","planetary","planetarium"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>planetary</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Trong thiên hà của chúng ta, có lẽ có hàng chục nghìn hệ <em>hành tinh</em>."</p>
+<ul>
+<li><strong>planetary ✓</strong> (adj): thuộc về hành tinh – "planetary systems" = các hệ hành tinh. Tính từ đứng trước danh từ "systems".</li>
+<li><strong>planet / planets</strong> (n): hành tinh – danh từ, không dùng làm tính ngữ như vậy (có thể dùng "planet systems" nhưng "planetary systems" là thuật ngữ khoa học chuẩn).</li>
+<li><strong>planetarium</strong> (n): cung thiên văn – loại công trình kiến trúc, sai ngữ nghĩa.</li>
+</ul>
+<p>💡 PLANET → planet (n), planets (số nhiều), <strong>planetary</strong> (adj - thuộc hành tinh). Suffix <strong>-ary</strong> tạo tính từ từ danh từ.</p>`},
+
+// -------- SECTION 5: CLOSEST MEANING (Exercise 6) --------
+{sec:"🔍 Phần 5: Từ Đồng Nghĩa – CLOSEST in Meaning (Exercise 6)",secDesc:"Chọn từ/cụm từ có nghĩa GẦN NHẤT với từ được gạch chân.",type:"mcq",id:"ex6_1",num:"Câu 1",
+q:'The shuttle\'s three main engines continue burning to carry the <u>spaceship</u> into orbit.',
+opts:["spacecraft","boat","ferry","tanker"],ans:0,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>A. spacecraft</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Ba động cơ chính của tàu con thoi tiếp tục đốt cháy để đưa <u>tàu vũ trụ</u> vào quỹ đạo."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. spacecraft ✓</strong>: tàu vũ trụ – đồng nghĩa hoàn toàn với "spaceship". Cả hai đều chỉ phương tiện bay vào không gian.</li>
+<li><strong>B. boat</strong>: thuyền, tàu nhỏ – phương tiện đường thủy. Sai.</li>
+<li><strong>C. ferry</strong>: phà, tàu phà – phương tiện đường thủy. Sai.</li>
+<li><strong>D. tanker</strong>: tàu chở dầu/hàng lỏng – phương tiện đường biển. Sai.</li>
+</ul>
+<p>💡 <strong>spaceship = spacecraft</strong> = tàu vũ trụ. "Into orbit" = vào quỹ đạo.</p>`},
+
+{type:"mcq",id:"ex6_2",num:"Câu 2",
+q:'Anna said that she wanted to have a telescope to <u>observe</u> the distant stars at night.',
+opts:["stare","see","look","watch"],ans:3,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>D. watch</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Anna nói rằng cô ấy muốn có kính viễn vọng để <u>quan sát</u> những ngôi sao xa vào ban đêm."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. stare</strong>: nhìn chằm chằm (thường với ánh mắt cố định, đôi khi bất lịch sự) – không đồng nghĩa với observe.</li>
+<li><strong>B. see</strong>: nhìn thấy (thụ động, không cố ý) – observe mang tính chủ động và có mục đích hơn.</li>
+<li><strong>C. look</strong>: nhìn (chủ động nhưng ngắn) – look at = nhìn vào, không cụ thể và sâu như observe.</li>
+<li><strong>D. watch ✓</strong>: quan sát, theo dõi (chủ động, chú ý, kéo dài) – gần nghĩa nhất với "observe" trong ngữ cảnh xem sao qua kính thiên văn.</li>
+</ul>
+<p>💡 <strong>observe ≈ watch</strong> = quan sát có chủ đích. "Observe stars" = "watch stars" = quan sát các ngôi sao.</p>`},
+
+{type:"mcq",id:"ex6_3",num:"Câu 3",
+q:'Soldiers have to <u>obey</u> their commander\'s orders.',
+opts:["hear","comply with","flow","listen"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>B. comply with</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Binh lính phải <u>tuân theo</u> lệnh của chỉ huy."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. hear</strong>: nghe thấy (thụ động, giác quan) – không có nghĩa tuân thủ.</li>
+<li><strong>B. comply with ✓</strong>: tuân theo, chấp hành (quy định, lệnh) – đồng nghĩa với "obey". Ví dụ: comply with the rules = obey the rules.</li>
+<li><strong>C. flow</strong>: chảy, lưu thông – không liên quan.</li>
+<li><strong>D. listen</strong>: nghe (chủ động) – có nghĩa gần nhưng "listen to orders" không đồng nghĩa hoàn toàn với "obey orders".</li>
+</ul>
+<p>💡 <strong>obey = comply with</strong> = tuân theo. "Comply with orders/rules/regulations" là cụm từ phổ biến trong tiếng Anh chính thức.</p>`},
+
+{type:"mcq",id:"ex6_4",num:"Câu 4",
+q:'Is there a possibility that Earth might be <u>attacked</u> by aliens?',
+opts:["saved","helped","invaded","protected"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>C. invaded</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Liệu có khả năng Trái Đất bị người ngoài hành tinh <u>tấn công/xâm lược</u> không?"</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. saved</strong>: được cứu – nghĩa trái ngược. Sai.</li>
+<li><strong>B. helped</strong>: được giúp đỡ – không liên quan đến tấn công. Sai.</li>
+<li><strong>C. invaded ✓</strong>: bị xâm lược, bị chiếm đóng – "attacked by aliens" = "invaded by aliens" = bị người ngoài hành tinh xâm lược. Đây là từ đồng nghĩa mạnh nhất.</li>
+<li><strong>D. protected</strong>: được bảo vệ – nghĩa trái ngược. Sai.</li>
+</ul>
+<p>💡 <strong>attacked ≈ invaded</strong> trong ngữ cảnh quân sự/ngoại xâm. "Invaded by aliens" là cụm từ phổ biến trong khoa học viễn tưởng.</p>`},
+
+{type:"mcq",id:"ex6_5",num:"Câu 5",
+q:'Yuri Alekseyevich Gagarin was a Soviet pilot and <u>spaceman</u> who became the first human to journey into outer space.',
+opts:["astronaut","driver","guider","weatherman"],ans:0,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>A. astronaut</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Yuri Alekseyevich Gagarin là một phi công và <u>phi hành gia</u> người Liên Xô, người đầu tiên trong lịch sử loài người bay vào không gian vũ trụ."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. astronaut ✓</strong>: phi hành gia – đồng nghĩa với "spaceman". Cả hai đều chỉ người bay vào không gian.</li>
+<li><strong>B. driver</strong>: lái xe – không liên quan đến không gian vũ trụ. Sai.</li>
+<li><strong>C. guider</strong>: người hướng dẫn – không phải phi hành gia. Sai.</li>
+<li><strong>D. weatherman</strong>: người dự báo thời tiết – không liên quan. Sai.</li>
+</ul>
+<p>💡 <strong>spaceman = astronaut</strong> = phi hành gia. Yuri Gagarin bay vào không gian ngày 12/4/1961 trên tàu Vostok 1.</p>`},
+
+// -------- SECTION 6: OPPOSITE MEANING (Exercise 7) --------
+{sec:"↔️ Phần 6: Từ Trái Nghĩa – OPPOSITE in Meaning (Exercise 7)",secDesc:"Chọn từ/cụm từ có nghĩa TRÁI NHẤT với từ được gạch chân.",type:"mcq",id:"ex7_1",num:"Câu 1",
+q:'Some people <u>oppose</u> sending spaceships to explore other planets.',
+opts:["agree","refuse","support","object"],ans:0,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>A. agree</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Một số người <u>phản đối</u> việc gửi tàu vũ trụ để khám phá các hành tinh khác."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. agree ✓</strong>: đồng ý, tán thành – trái nghĩa trực tiếp với "oppose" (phản đối). <em>Đúng.</em></li>
+<li><strong>B. refuse</strong>: từ chối – không trái nghĩa với oppose (refuse = không làm, oppose = phản đối việc khác).</li>
+<li><strong>C. support</strong>: ủng hộ – gần với trái nghĩa nhưng "agree" là trực tiếp hơn.</li>
+<li><strong>D. object</strong>: phản đối – đồng nghĩa với oppose, không phải trái nghĩa.</li>
+</ul>
+<p>💡 <strong>oppose ↔ agree</strong>. oppose = phản đối; agree = đồng ý, tán thành.</p>`},
+
+{type:"mcq",id:"ex7_2",num:"Câu 2",
+q:'Jupiter <u>is rich in</u> hydrogen and helium.',
+opts:["shortage","empty","full of","lacks"],ans:3,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>D. lacks</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Sao Mộc <u>giàu</u> hydro và heli."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. shortage</strong>: sự thiếu hụt – là danh từ, không thể thay "is rich in" (cụm động từ). Sai từ loại về cấu trúc.</li>
+<li><strong>B. empty</strong>: trống rỗng, không có gì – tính từ, không thay được cụm "is rich in". Sai từ loại.</li>
+<li><strong>C. full of</strong>: đầy ắp – đồng nghĩa với "rich in", không phải trái nghĩa. Sai.</li>
+<li><strong>D. lacks ✓</strong>: thiếu, không có – động từ, cùng cấu trúc "Jupiter lacks hydrogen" = Sao Mộc thiếu hydro. Trái nghĩa với "is rich in".</li>
+</ul>
+<p>💡 <strong>is rich in ↔ lacks</strong>. rich in = giàu có về; lacks = thiếu, không đủ.</p>`},
+
+{type:"mcq",id:"ex7_3",num:"Câu 3",
+q:'Mars is one of the most <u>promising</u> planets for life in our solar system.',
+opts:["disappointing","encouraging","hopeful","positive"],ans:0,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>A. disappointing</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Sao Hỏa là một trong những hành tinh <u>có triển vọng nhất</u> về sự sống trong hệ Mặt Trời của chúng ta."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. disappointing ✓</strong>: gây thất vọng, không đạt kỳ vọng – trái nghĩa với "promising" (đầy hứa hẹn). <em>Đúng.</em></li>
+<li><strong>B. encouraging</strong>: khích lệ, động viên – có nghĩa tích cực, không phải trái nghĩa. Sai.</li>
+<li><strong>C. hopeful</strong>: hy vọng – nghĩa tích cực, gần nghĩa với promising. Sai.</li>
+<li><strong>D. positive</strong>: tích cực – cùng nhóm nghĩa tích cực với promising. Sai.</li>
+</ul>
+<p>💡 <strong>promising ↔ disappointing</strong>. promising = đầy hứa hẹn; disappointing = gây thất vọng.</p>`},
+
+{type:"mcq",id:"ex7_4",num:"Câu 4",
+q:'Proxima Centauri b (or Proxima b) is sometimes referred to as the closest <u>habitable</u> planet from Earth.',
+opts:["stay","uninhabited","liveable","suitable"],ans:1,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>B. uninhabited</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Proxima Centauri b đôi khi được nhắc đến là hành tinh <u>có thể ở được</u> gần Trái Đất nhất."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. stay</strong>: ở lại – động từ, sai từ loại (cần tính từ). Sai.</li>
+<li><strong>B. uninhabited ✓</strong>: không có người ở, hoang vắng – tiền tố "un-" + inhabited (có người ở). Trái nghĩa với habitable (có thể ở được). <em>Đúng.</em></li>
+<li><strong>C. liveable</strong>: có thể ở được – đồng nghĩa với habitable. Sai.</li>
+<li><strong>D. suitable</strong>: phù hợp – đồng nghĩa gần với habitable. Sai.</li>
+</ul>
+<p>💡 <strong>habitable ↔ uninhabited</strong>. habitable = có thể sinh sống được; uninhabited = không có người ở (= không ai sống ở đó). Proxima Centauri b cách Trái Đất 4.2 năm ánh sáng.</p>`},
+
+{type:"mcq",id:"ex7_5",num:"Câu 5",
+q:'Your body has no difficulty swallowing or digesting food in <u>weightlessness</u>.',
+opts:["weight","levity","gravity","zero gravity"],ans:2,
+exp:`<div class='ca'>✅ Đáp án đúng: <strong>C. gravity</strong></div>
+<p><strong>🇻🇳 Dịch câu:</strong> "Cơ thể bạn không gặp khó khăn gì khi nuốt hoặc tiêu hóa thức ăn trong <u>trạng thái không trọng lực</u>."</p>
+<p><strong>📖 Phân tích 4 đáp án:</strong></p>
+<ul>
+<li><strong>A. weight</strong> (n): trọng lượng – gần với weightlessness nhưng không phải trái nghĩa trực tiếp của trạng thái.</li>
+<li><strong>B. levity</strong> (n): sự nhẹ nhàng, sự hài hước – có nghĩa "lightness" nhưng không dùng trong ngữ cảnh vật lý. Sai nghĩa trong khoa học.</li>
+<li><strong>C. gravity ✓</strong>: lực hút trái đất, trọng lực – trái nghĩa trực tiếp với "weightlessness" (không có trọng lực). <em>Đúng.</em></li>
+<li><strong>D. zero gravity</strong>: trọng lực bằng không – đồng nghĩa với weightlessness, không phải trái nghĩa. Sai.</li>
+</ul>
+<p>💡 <strong>weightlessness ↔ gravity</strong>. weightlessness = trạng thái không có trọng lực; gravity = lực hút trọng trường. Trong môi trường không gian → weightlessness; trên Trái Đất → gravity.</p>`}
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let answered = {};
+let totalQ = quizData.filter(q=>!q.sec||q.type).length;
+let totalAnswered = 0;
+let totalCorrect = 0;
+let currentBlankId = null;
+
+// ============================================================
+//  AUDIO
+// ============================================================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getACtx(){if(!actx)actx=new AudioCtx();return actx;}
+
+function playCorrect(){
+  try{
+    const ac=getACtx();
+    [880,1100,1320].forEach((f,i)=>{
+      const o=ac.createOscillator(),g=ac.createGain();
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0,ac.currentTime+i*.08);
+      g.gain.linearRampToValueAtTime(.3,ac.currentTime+i*.08+.03);
+      g.gain.linearRampToValueAtTime(0,ac.currentTime+i*.08+.2);
+      o.connect(g);g.connect(ac.destination);
+      o.start(ac.currentTime+i*.08);o.stop(ac.currentTime+i*.08+.25);
+    });
+  }catch(e){}
+}
+
+function playWrong(){
+  try{
+    const ac=getACtx();
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(400,ac.currentTime);
+    o.frequency.linearRampToValueAtTime(200,ac.currentTime+.4);
+    g.gain.setValueAtTime(.3,ac.currentTime);
+    g.gain.linearRampToValueAtTime(0,ac.currentTime+.4);
+    o.connect(g);g.connect(ac.destination);
+    o.start();o.stop(ac.currentTime+.45);
+  }catch(e){}
+}
+
+// ============================================================
+//  CONFETTI
+// ============================================================
+function triggerConfetti(){
+  const canvas=document.getElementById('cvc');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const pieces=[];
+  const colors=['#FDCB6E','#00C9A7','#8854C0','#FF4757','#fd79a8','#00D26A','#74b9ff'];
+  for(let i=0;i<90;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:-20,
+      w:8+Math.random()*10,
+      h:6+Math.random()*8,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      vx:(Math.random()-0.5)*5,
+      vy:3+Math.random()*4,
+      rot:Math.random()*360,
+      vr:(Math.random()-0.5)*8
+    });
+  }
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=.05;
+    });
+    frame++;
+    if(frame<120)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+// ============================================================
+//  PROGRESS
+// ============================================================
+function updateProgress(){
+  const pct=(totalAnswered/totalQ)*100;
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('progTxt').textContent=`${totalAnswered} / ${totalQ} câu đã trả lời`;
+}
+
+// ============================================================
+//  SHUFFLE
+// ============================================================
+function shuffleArr(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function renderQuiz(){
+  const container=document.getElementById('quizContainer');
+  let html='';
+  let lastSec='';
+
+  quizData.forEach((q,qi)=>{
+    if(q.sec && q.sec!==lastSec){
+      lastSec=q.sec;
+      html+=`<div class="sec-head"><h2>${q.sec}</h2>${q.secDesc?`<p>${q.secDesc}</p>`:''}</div>`;
+      // Word bank for exercise 3
+      if(q.sec.includes('Exercise 3')){
+        html+=`<div class="wb"><div class="wb-title">📦 Hộp từ (Word Box):</div><div class="wb-inner">${WORD_BANK.map(w=>`<span class="wb-chip">${w}</span>`).join('')}</div></div>`;
+      }
+    }
+
+    if(q.type==='mcq'){
+      // Shuffle options
+      const idxMap=shuffleArr([0,1,2,3]);
+      const shuffledOpts=idxMap.map(i=>q.opts[i]);
+      const newAnsIdx=idxMap.indexOf(q.ans);
+      html+=`<div class="qcard" id="card_${q.id}">
+        <span class="q-num">${q.num}</span>
+        <div class="q-txt">${q.q}</div>
+        <div class="opts" id="opts_${q.id}">
+          ${shuffledOpts.map((o,i)=>`<button class="obtn" onclick="handleMCQ('${q.id}',${i},${newAnsIdx},this)" data-qi="${qi}">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="exp" id="exp_${q.id}">${q.exp}</div>
+      </div>`;
+    } else if(q.type==='gapfill'){
+      const pre=q.pre?q.pre+' ':'';
+      const suf=q.suf?' '+q.suf:'';
+      html+=`<div class="qcard" id="card_${q.id}">
+        <span class="q-num">${q.num}</span>
+        <div class="q-txt">${pre}<button class="blank" id="blank_${q.id}" onclick="openWordModal('${q.id}','${q.ans}')">______</button>${suf}</div>
+        <div class="exp" id="exp_${q.id}">${q.exp}</div>
+      </div>`;
+    } else if(q.type==='binary'){
+      const pre=q.pre?q.pre+' ':'';
+      const suf=q.suf?' '+q.suf:'';
+      html+=`<div class="qcard" id="card_${q.id}">
+        <span class="q-num">${q.num}</span>
+        <div class="q-txt">${pre}</div>
+        <div class="bin-grid">
+          <button class="bbtn" onclick="handleBinary('${q.id}','${q.ch1}','${q.ans}',this)">${q.ch1}</button>
+          <button class="bbtn" onclick="handleBinary('${q.id}','${q.ch2}','${q.ans}',this)">${q.ch2}</button>
+        </div>
+        <div class="q-txt" style="margin-top:6px;font-size:1rem;color:#718096">${suf}</div>
+        <div class="exp" id="exp_${q.id}">${q.exp}</div>
+      </div>`;
+    }
+  });
+
+  container.innerHTML=html;
+  updateProgress();
+}
+
+// ============================================================
+//  MCQ HANDLER
+// ============================================================
+function handleMCQ(qid,chosen,correct,btn){
+  if(answered[qid]!==undefined)return;
+  const allBtns=document.querySelectorAll(`#opts_${qid} .obtn`);
+  allBtns.forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('cor');
+    playCorrect();
+    triggerConfetti();
+    answered[qid]=true;
+    totalCorrect++;
+  } else {
+    btn.classList.add('wrg');
+    allBtns[correct].classList.add('reveal-cor');
+    playWrong();
+    answered[qid]=false;
+  }
+  totalAnswered++;
+  showExp(qid);
+  updateProgress();
+}
+
+// ============================================================
+//  BINARY HANDLER
+// ============================================================
+function handleBinary(qid,chosen,correct,btn){
+  if(answered[qid]!==undefined)return;
+  const allBtns=document.querySelectorAll(`#card_${qid} .bbtn`);
+  allBtns.forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('cor');
+    playCorrect();
+    triggerConfetti();
+    answered[qid]=true;
+    totalCorrect++;
+  } else {
+    btn.classList.add('wrg');
+    allBtns.forEach(b=>{if(b.textContent.trim()===correct)b.classList.add('cor');});
+    playWrong();
+    answered[qid]=false;
+  }
+  totalAnswered++;
+  showExp(qid);
+  updateProgress();
+}
+
+// ============================================================
+//  GAP FILL (WORD MODAL)
+// ============================================================
+function openWordModal(qid,correctAns){
+  if(answered[qid]!==undefined)return;
+  currentBlankId=qid;
+  const modal=document.getElementById('wordModal');
+  const mw=document.getElementById('modalWords');
+  // Shuffle word bank for display
+  const shuffled=shuffleArr([...WORD_BANK]);
+  mw.innerHTML=shuffled.map(w=>`<button class="mwbtn" onclick="selectWord('${w}','${correctAns}')">${w}</button>`).join('');
+  modal.classList.add('on');
+}
+
+function closeWordModal(){
+  document.getElementById('wordModal').classList.remove('on');
+  currentBlankId=null;
+}
+
+function selectWord(chosen,correct){
+  const qid=currentBlankId;
+  if(!qid)return;
+  document.getElementById('wordModal').classList.remove('on');
+  const blankBtn=document.getElementById('blank_'+qid);
+  // Case-insensitive comparison
+  const isCorrect=chosen.toLowerCase().trim()===correct.toLowerCase().trim();
+  blankBtn.textContent=chosen;
+  blankBtn.style.cursor='default';
+  blankBtn.onclick=null;
+  if(isCorrect){
+    blankBtn.classList.add('fc');
+    playCorrect();
+    triggerConfetti();
+    answered[qid]=true;
+    totalCorrect++;
+  } else {
+    blankBtn.classList.add('fw');
+    playWrong();
+    answered[qid]=false;
+    // Show correct answer hint in button title
+    blankBtn.title='Đáp án đúng: '+correct;
+  }
+  totalAnswered++;
+  showExp(qid);
+  updateProgress();
+  currentBlankId=null;
+}
+
+// ============================================================
+//  SHOW EXPLANATION
+// ============================================================
+function showExp(qid){
+  const el=document.getElementById('exp_'+qid);
+  if(el)el.classList.add('show');
+}
+
+// ============================================================
+//  SUBMIT & RESULT
+// ============================================================
+function submitQuiz(){
+  const pct=Math.round((totalCorrect/totalQ)*100);
+  let emoji,msg;
+  if(pct>=90){emoji='🏆';msg='Xuất sắc! Em thật tuyệt vời! Cô rất tự hào về em! 🌟';}
+  else if(pct>=75){emoji='🎉';msg='Giỏi lắm! Em đã nắm vững phần lớn kiến thức rồi! Cố lên nhé! 💪';}
+  else if(pct>=60){emoji='😊';msg='Khá tốt! Em cần ôn lại một số phần nhé. Cô tin em làm được! 📚';}
+  else if(pct>=40){emoji='🌱';msg='Cố gắng lên em nhé! Ôn kỹ lại từ vựng và ngữ pháp là em sẽ làm tốt hơn! 💡';}
+  else{emoji='💝';msg='Đừng nản lòng nha em! Đọc kỹ phần giải thích và làm lại bài nhé! Cô luôn ủng hộ em! ❤️';}
+  
+  document.getElementById('rmEmoji').textContent=emoji;
+  document.getElementById('rmScore').textContent=`${totalCorrect} / ${totalQ} điểm`;
+  document.getElementById('rmDetail').textContent=`Tỉ lệ đúng: ${pct}% | Đã trả lời: ${totalAnswered}/${totalQ} câu`;
+  document.getElementById('rmMsg').textContent=msg;
+  document.getElementById('resultModal').classList.add('on');
+  
+  if(pct>=75)triggerConfetti();
+}
+
+function closeResult(){
+  document.getElementById('resultModal').classList.remove('on');
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+renderQuiz();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

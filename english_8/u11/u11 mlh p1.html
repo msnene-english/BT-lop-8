@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 11: Science & Technology Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --purple: #8854C0;
+    --yellow: #FDCB6E;
+    --teal: #00C9A7;
+    --green: #00D26A;
+    --red: #FF4757;
+    --blue: #4ECDC4;
+    --orange: #FF8C42;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #a855f7, #f59e0b);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .pattern-layer {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ctext y='30' font-size='22' opacity='0.13'%3E🌟%3C/text%3E%3Ctext x='60' y='70' font-size='18' opacity='0.12'%3E🍎%3C/text%3E%3Ctext x='130' y='50' font-size='20' opacity='0.11'%3E🌸%3C/text%3E%3Ctext x='20' y='110' font-size='16' opacity='0.13'%3E🐱%3C/text%3E%3Ctext x='90' y='130' font-size='22' opacity='0.10'%3E⭐%3C/text%3E%3Ctext x='155' y='100' font-size='18' opacity='0.12'%3E🍋%3C/text%3E%3Ctext x='40' y='165' font-size='20' opacity='0.11'%3E🌈%3C/text%3E%3Ctext x='110' y='180' font-size='16' opacity='0.13'%3E🎈%3C/text%3E%3Ctext x='170' y='160' font-size='18' opacity='0.10'%3E🦋%3C/text%3E%3Ctext x='0' y='195' font-size='14' opacity='0.12'%3E🍓%3C/text%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    mix-blend-mode: overlay;
+    animation: floatPattern 20s linear infinite;
+  }
+
+  @keyframes floatPattern {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-200px, -200px); }
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  .header {
+    text-align: center;
+    background: rgba(255,255,255,0.92);
+    border-radius: 20px;
+    padding: 16px 20px 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+  }
+
+  .header h1 {
+    font-size: 1.4em;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .header p {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 600;
+  }
+
+  .section-title {
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: white;
+    border-radius: 16px;
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: 800;
+    margin: 24px 0 14px;
+    box-shadow: 0 4px 15px rgba(136, 84, 192, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s;
+  }
+
+  .card:hover { transform: translateY(-2px); }
+
+  .question-text {
+    font-size: 1em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .question-num {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    border-radius: 50%;
+    width: 28px; height: 28px;
+    text-align: center;
+    line-height: 28px;
+    font-size: 0.85em;
+    font-weight: 800;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Gap fill blanks */
+  .blank {
+    display: inline-block;
+    min-width: 130px;
+    border-bottom: 3px solid var(--purple);
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--purple);
+    text-align: center;
+    padding: 0 6px;
+    transition: all 0.2s;
+    border-radius: 4px;
+    background: rgba(136,84,192,0.07);
+    vertical-align: middle;
+  }
+
+  .blank:hover { background: rgba(136,84,192,0.18); }
+  .blank.correct-blank { background: rgba(0,210,106,0.18); border-color: var(--green); color: var(--green); }
+  .blank.wrong-blank { background: rgba(255,71,87,0.18); border-color: var(--red); color: var(--red); animation: shake 0.5s; }
+
+  /* Multiple choice buttons */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .opt-btn {
+    background: linear-gradient(135deg, #f8f0ff, #e8f4ff);
+    border: 2.5px solid #d8c5f0;
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.92em;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 3px 0 #d0bde8;
+    text-align: left;
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    transform: scale(1.03) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(136,84,192,0.25), 0 3px 0 #b8a0d4;
+    border-color: var(--purple);
+    background: linear-gradient(135deg, #efe5ff, #d8f0ff);
+  }
+
+  .opt-btn.correct {
+    background: linear-gradient(135deg, #d4f7e7, #a8f0cc) !important;
+    border-color: var(--green) !important;
+    color: #006633 !important;
+    box-shadow: 0 4px 12px rgba(0,210,106,0.3), 0 3px 0 #00aa55 !important;
+  }
+
+  .opt-btn.wrong {
+    background: linear-gradient(135deg, #ffe0e3, #ffc0c6) !important;
+    border-color: var(--red) !important;
+    color: #aa0011 !important;
+    box-shadow: 0 4px 12px rgba(255,71,87,0.3), 0 3px 0 #cc2233 !important;
+    animation: shake 0.5s;
+  }
+
+  .opt-btn:disabled { cursor: default; }
+
+  /* Underline choice */
+  .underline-opts {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .ul-btn {
+    background: linear-gradient(135deg, #fff9e6, #fff0d6);
+    border: 2.5px solid #f0c040;
+    border-radius: 14px;
+    padding: 10px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08), 0 3px 0 #d4a800;
+    font-style: italic;
+  }
+
+  .ul-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(253,203,110,0.4), 0 3px 0 #b88a00;
+  }
+
+  .ul-btn.correct {
+    background: linear-gradient(135deg, #d4f7e7, #a8f0cc) !important;
+    border-color: var(--green) !important;
+    color: #006633 !important;
+    box-shadow: 0 4px 12px rgba(0,210,106,0.3), 0 3px 0 #00aa55 !important;
+  }
+
+  .ul-btn.wrong {
+    background: linear-gradient(135deg, #ffe0e3, #ffc0c6) !important;
+    border-color: var(--red) !important;
+    color: #aa0011 !important;
+    animation: shake 0.5s;
+  }
+
+  .ul-btn:disabled { cursor: default; }
+
+  /* Explanation box */
+  .explanation {
+    display: none;
+    margin-top: 14px;
+    background: linear-gradient(135deg, #fffbf0, #f0f8ff);
+    border-left: 5px solid var(--yellow);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.88em;
+    color: #444;
+    line-height: 1.7;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .explanation.show { display: block; animation: fadeIn 0.4s ease; }
+
+  .explanation strong { color: var(--purple); }
+  .explanation .correct-answer { color: var(--green); font-weight: 800; }
+  .explanation .wrong-reason { color: var(--red); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
+  /* Popup for gap fill */
+  .popup-overlay {
+    display: none;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-overlay.show { display: flex; }
+
+  .popup-box {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: popIn 0.3s ease;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .popup-title {
+    font-size: 1.05em;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .popup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .popup-opt {
+    background: linear-gradient(135deg, #f5f0ff, #e8f4ff);
+    border: 2px solid #d0c0f0;
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .popup-opt:hover {
+    background: linear-gradient(135deg, #ebe0ff, #d4ecff);
+    border-color: var(--purple);
+    transform: scale(1.02);
+  }
+
+  .popup-cancel {
+    margin-top: 12px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 12px;
+    padding: 8px;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #888;
+    cursor: pointer;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 380px;
+    margin: 32px auto 0;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15em;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(136,84,192,0.4), 0 4px 0 #5a2d8a;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(136,84,192,0.5), 0 4px 0 #5a2d8a;
+  }
+
+  /* Result popup */
+  .result-overlay {
+    display: none;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .result-overlay.show { display: flex; }
+
+  .result-box {
+    background: white;
+    border-radius: 28px;
+    padding: 36px 28px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    animation: popIn 0.4s ease;
+  }
+
+  .result-emoji { font-size: 3.5em; margin-bottom: 12px; }
+
+  .result-score {
+    font-size: 2.5em;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .result-message {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .result-close {
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,201,167,0.4);
+  }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall 1.5s ease-in forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(300px) rotate(720deg) scale(0.3); }
+  }
+
+  .word-bank {
+    background: linear-gradient(135deg, #fff9e0, #fff0f5);
+    border: 2px dashed var(--yellow);
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  .word-bank span {
+    display: inline-block;
+    background: white;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    padding: 2px 10px;
+    margin: 3px 4px;
+    color: var(--purple);
+    font-weight: 800;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .ul-btn { font-size: 0.85em; padding: 8px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="pattern-layer"></div>
+<div class="container">
+
+  <div class="header">
+    <h1>🔬 Unit 11: Science & Technology</h1>
+    <p>Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong> &nbsp;|&nbsp; Tiếng Anh 8 – Vocabulary & Grammar</p>
+  </div>
+
+  <!-- PART I -->
+  <div class="section-title">📸 Part I – Write a phrase from the box under each picture</div>
+  <div class="word-bank">
+    <strong>Word Box:</strong>
+    <span>fingerprint scanner</span><span>breakout room</span><span>eye tracking</span><span>face recognition</span><span>video conferencing</span><span>3D contact lenses</span><span>robot teacher</span><span>experiment</span>
+  </div>
+
+  <div id="part1-questions"></div>
+
+  <!-- PART II -->
+  <div class="section-title">✏️ Part II – Complete sentences (words from Part I)</div>
+  <div id="part2-questions"></div>
+
+  <!-- PART III -->
+  <div class="section-title">📝 Part III – Complete sentences with words from the box</div>
+  <div class="word-bank">
+    <strong>Word Box:</strong>
+    <span>technologies</span><span>epidemic</span><span>inventions</span><span>available</span><span>biometrics</span><span>feedback</span><span>convenient</span><span>attendance</span><span>digital</span><span>application</span>
+  </div>
+  <div id="part3-questions"></div>
+
+  <!-- PART IV -->
+  <div class="section-title">🔍 Part IV – Underline the correct answer</div>
+  <div id="part4-questions"></div>
+
+  <!-- PART V -->
+  <div class="section-title">💬 Part V – Choose the best expression in response</div>
+  <div id="part5-questions"></div>
+
+  <button class="submit-btn" onclick="submitQuiz()">🎓 Nộp bài & Xem kết quả</button>
+</div>
+
+<!-- Popup for gap fill -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-box">
+    <div class="popup-title" id="popupTitle">Chọn từ đúng:</div>
+    <div class="popup-options" id="popupOptions"></div>
+    <button class="popup-cancel" onclick="closePopup()">✕ Hủy</button>
+  </div>
+</div>
+
+<!-- Result popup -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="result-emoji" id="resultEmoji">🎉</div>
+    <div class="result-score" id="resultScore">0/0</div>
+    <div class="result-message" id="resultMessage"></div>
+    <button class="result-close" onclick="document.getElementById('resultOverlay').classList.remove('show')">🔄 Xem lại bài</button>
+  </div>
+</div>
+
+<script>
+// ====== DATA ======
+
+const part1Data = [
+  { num: 1, imgDesc: "Ảnh: Khuôn mặt phụ nữ với vòng quét kỹ thuật số", answer: "face recognition" },
+  { num: 2, imgDesc: "Ảnh: Nhóm người ngồi họp trong phòng", answer: "video conferencing" },
+  { num: 3, imgDesc: "Ảnh: Máy quét dấu vân tay sáng lên", answer: "fingerprint scanner" },
+  { num: 4, imgDesc: "Ảnh: Giáo viên và học sinh làm thí nghiệm trong phòng lab", answer: "experiment" },
+  { num: 5, imgDesc: "Ảnh: Mắt người với vòng tròn theo dõi chuyển động", answer: "eye tracking" },
+  { num: 6, imgDesc: "Ảnh: Hai chiếc kính áp tròng trong suốt", answer: "3D contact lenses" },
+  { num: 7, imgDesc: "Ảnh: Màn hình hiển thị nhiều người đang họp trực tuyến", answer: "breakout room" },
+  { num: 8, imgDesc: "Ảnh: Robot humanoid đứng cạnh học sinh và đọc sách", answer: "robot teacher" },
+];
+
+const part1WordBank = ["face recognition","video conferencing","fingerprint scanner","experiment","eye tracking","3D contact lenses","breakout room","robot teacher"];
+
+const part2Data = [
+  {
+    num: 1,
+    sentence: "Some people are against conducting ___ on animals.",
+    answer: "experiments",
+    options: ["experiments", "3D contact lenses", "face recognition", "robot teachers"],
+    explanation: `<strong>Đáp án: experiments</strong><br>Dịch: "Một số người phản đối việc tiến hành <strong>thí nghiệm</strong> trên động vật."<br><strong>Giải thích:</strong> "conduct experiments" = tiến hành thí nghiệm – đây là collocation cố định. Lưu ý dùng dạng số nhiều <em>experiments</em> vì "conducting" đi kèm danh từ có thể đếm được.`
+  },
+  {
+    num: 2,
+    sentence: "___ will be able to help relieve tired eyes.",
+    answer: "3D contact lenses",
+    options: ["3D contact lenses", "Fingerprint scanners", "Robot teachers", "Breakout rooms"],
+    explanation: `<strong>Đáp án: 3D contact lenses</strong><br>Dịch: "<strong>Kính áp tròng 3D</strong> sẽ có thể giúp làm dịu đôi mắt mệt mỏi."<br><strong>Giải thích:</strong> Kính áp tròng 3D là thiết bị đặt trực tiếp lên mắt nên phù hợp nhất với mô tả "relieve tired eyes" (làm giảm mỏi mắt).`
+  },
+  {
+    num: 3,
+    sentence: "Most modern smartphones can quickly unlock with a fingerprint or ___.",
+    answer: "face recognition",
+    options: ["face recognition", "eye tracking", "video conferencing", "breakout room"],
+    explanation: `<strong>Đáp án: face recognition</strong><br>Dịch: "Hầu hết điện thoại thông minh hiện đại có thể mở khóa nhanh bằng vân tay hoặc <strong>nhận diện khuôn mặt</strong>."<br><strong>Giải thích:</strong> Câu nói về các phương pháp mở khóa điện thoại – dấu vân tay và nhận diện khuôn mặt là hai phương pháp biometric phổ biến nhất.`
+  },
+  {
+    num: 4,
+    sentence: "Shalu is the world's first ___ to teach more than 6 subjects in 47 different languages.",
+    answer: "robot teacher",
+    options: ["robot teacher", "face recognition", "fingerprint scanner", "experiment"],
+    explanation: `<strong>Đáp án: robot teacher</strong><br>Dịch: "Shalu là <strong>giáo viên robot</strong> đầu tiên trên thế giới có thể dạy hơn 6 môn học bằng 47 ngôn ngữ khác nhau."<br><strong>Giải thích:</strong> Shalu là robot giáo viên thực sự được chế tạo ở Ấn Độ. Chỉ "robot teacher" mới phù hợp với ngữ cảnh "dạy học".`
+  },
+  {
+    num: 5,
+    sentence: "Employees have to press their finger on this ___ to check attendance.",
+    answer: "fingerprint scanner",
+    options: ["fingerprint scanner", "eye tracking", "breakout room", "video conferencing"],
+    explanation: `<strong>Đáp án: fingerprint scanner</strong><br>Dịch: "Nhân viên phải ấn ngón tay vào <strong>máy quét vân tay</strong> này để điểm danh."<br><strong>Giải thích:</strong> "Press their finger" (ấn ngón tay) → liên quan trực tiếp đến máy quét vân tay (fingerprint scanner).`
+  },
+  {
+    num: 6,
+    sentence: "___ allow users to split the Zoom meeting into separate sessions.",
+    answer: "Breakout rooms",
+    options: ["Breakout rooms", "3D contact lenses", "Robot teachers", "Fingerprint scanners"],
+    explanation: `<strong>Đáp án: Breakout rooms</strong><br>Dịch: "<strong>Phòng nhóm nhỏ (Breakout rooms)</strong> cho phép người dùng chia cuộc họp Zoom thành các phiên riêng biệt."<br><strong>Giải thích:</strong> Breakout rooms là tính năng của Zoom/Meet cho phép chia nhóm nhỏ trong cuộc họp. Dùng số nhiều vì chủ ngữ số nhiều.`
+  },
+  {
+    num: 7,
+    sentence: "___ technology can help decode eye movements of a person.",
+    answer: "Eye tracking",
+    options: ["Eye tracking", "Face recognition", "Video conferencing", "Fingerprint scanner"],
+    explanation: `<strong>Đáp án: Eye tracking</strong><br>Dịch: "Công nghệ <strong>theo dõi mắt</strong> có thể giúp giải mã chuyển động của mắt một người."<br><strong>Giải thích:</strong> "Decode eye movements" = phân tích chuyển động của mắt → đây chính xác là chức năng của Eye tracking technology.`
+  },
+  {
+    num: 8,
+    sentence: "Zoom and Google Meet are the two most popular tools for ___.",
+    answer: "video conferencing",
+    options: ["video conferencing", "eye tracking", "face recognition", "fingerprint scanning"],
+    explanation: `<strong>Đáp án: video conferencing</strong><br>Dịch: "Zoom và Google Meet là hai công cụ phổ biến nhất để <strong>hội nghị truyền hình</strong>."<br><strong>Giải thích:</strong> Zoom và Google Meet đều là nền tảng video conferencing (gọi video nhóm trực tuyến). Đây là kiến thức thực tế.`
+  },
+];
+
+const part3Data = [
+  {
+    num: 1,
+    sentence: "In the future, security cameras will scan our faces to check ___.",
+    answer: "attendance",
+    options: ["attendance", "biometrics", "feedback", "application"],
+    explanation: `<strong>Đáp án: attendance</strong><br>Dịch: "Trong tương lai, camera an ninh sẽ quét khuôn mặt chúng ta để kiểm tra <strong>điểm danh</strong>."<br>• attendance (n): sự có mặt, điểm danh<br>• biometrics (n): công nghệ sinh trắc học<br>• feedback (n): phản hồi<br>• application (n): ứng dụng<br><strong>Vì sao đúng:</strong> "scan faces" = nhận diện khuôn mặt → dùng để kiểm tra "attendance" (sự có mặt).`
+  },
+  {
+    num: 2,
+    sentence: "Students can download Quizlet ___ and search for a quiz made by their teacher.",
+    answer: "application",
+    options: ["application", "digital", "feedback", "convenient"],
+    explanation: `<strong>Đáp án: application</strong><br>Dịch: "Học sinh có thể tải xuống <strong>ứng dụng</strong> Quizlet và tìm kiếm bài kiểm tra do giáo viên tạo."<br>• application (n): ứng dụng (app)<br>• digital (adj): kỹ thuật số (tính từ, không phù hợp vị trí sau "Quizlet")<br>• feedback (n): phản hồi<br>• convenient (adj): tiện lợi (tính từ, không phù hợp)<br><strong>Vì sao đúng:</strong> "Download Quizlet ___" cần danh từ chỉ phần mềm → "application" (ứng dụng).`
+  },
+  {
+    num: 3,
+    sentence: "Many students find online learning ___ because it allows them to learn at their own pace and on their own schedule.",
+    answer: "convenient",
+    options: ["convenient", "available", "digital", "epidemic"],
+    explanation: `<strong>Đáp án: convenient</strong><br>Dịch: "Nhiều học sinh thấy học trực tuyến <strong>tiện lợi</strong> vì nó cho phép họ học theo tốc độ và lịch trình của riêng mình."<br>• convenient (adj): tiện lợi, thuận tiện<br>• available (adj): có sẵn, có thể dùng được<br>• digital (adj): kỹ thuật số<br>• epidemic (n): dịch bệnh (danh từ, không phù hợp)<br><strong>Vì sao đúng:</strong> Vế sau "allows them to learn at their own pace" giải thích lý do → lý do đó thể hiện sự "tiện lợi" (convenient).`
+  },
+  {
+    num: 4,
+    sentence: "The ongoing Ebola ___ has sparked fears around the world.",
+    answer: "epidemic",
+    options: ["epidemic", "invention", "technology", "biometrics"],
+    explanation: `<strong>Đáp án: epidemic</strong><br>Dịch: "Dịch <strong>Ebola</strong> đang diễn ra đã làm dấy lên nỗi lo sợ trên toàn thế giới."<br>• epidemic (n): dịch bệnh, nạn dịch<br>• invention (n): phát minh<br>• technology (n): công nghệ<br>• biometrics (n): sinh trắc học<br><strong>Vì sao đúng:</strong> Ebola là một loại bệnh truyền nhiễm → "epidemic" (dịch bệnh) là từ duy nhất phù hợp ngữ nghĩa.`
+  },
+  {
+    num: 5,
+    sentence: "The Internet is one of the greatest ___ in human history.",
+    answer: "inventions",
+    options: ["inventions", "technologies", "applications", "feedbacks"],
+    explanation: `<strong>Đáp án: inventions</strong><br>Dịch: "Internet là một trong những <strong>phát minh</strong> vĩ đại nhất trong lịch sử loài người."<br>• inventions (n, số nhiều): những phát minh<br>• technologies (n): công nghệ<br>• applications (n): ứng dụng<br>• feedbacks: không dùng số nhiều (feedback là uncountable)<br><strong>Vì sao đúng:</strong> "One of the greatest ___" cần danh từ số nhiều. Internet là một "invention" (phát minh), không phải technology hay application.`
+  },
+  {
+    num: 6,
+    sentence: "Elias Robot provides teachers with ___ on each student's progress.",
+    answer: "feedback",
+    options: ["feedback", "attendance", "biometrics", "application"],
+    explanation: `<strong>Đáp án: feedback</strong><br>Dịch: "Robot Elias cung cấp cho giáo viên <strong>phản hồi</strong> về tiến độ của từng học sinh."<br>• feedback (n): phản hồi, ý kiến đánh giá<br>• attendance (n): điểm danh<br>• biometrics (n): sinh trắc học<br>• application (n): ứng dụng<br><strong>Vì sao đúng:</strong> "Provide sb with ___" = cung cấp cái gì cho ai. Robot cung cấp thông tin về tiến độ học sinh → "feedback" phù hợp nhất.`
+  },
+  {
+    num: 7,
+    sentence: "Engineers are developing new ___ that can make vehicles more environmentally-friendly.",
+    answer: "technologies",
+    options: ["technologies", "inventions", "applications", "epidemics"],
+    explanation: `<strong>Đáp án: technologies</strong><br>Dịch: "Các kỹ sư đang phát triển <strong>công nghệ</strong> mới có thể làm cho các phương tiện thân thiện với môi trường hơn."<br>• technologies (n): các công nghệ<br>• inventions (n): phát minh (thường là sản phẩm cuối, không phải quá trình)<br>• applications (n): ứng dụng phần mềm<br>• epidemics (n): dịch bệnh<br><strong>Vì sao đúng:</strong> "Develop new technologies" = phát triển công nghệ mới – đây là collocation tự nhiên trong lĩnh vực kỹ thuật.`
+  },
+  {
+    num: 8,
+    sentence: "I think 3D contact lenses will be ___ for purchase in a few years.",
+    answer: "available",
+    options: ["available", "convenient", "digital", "biometric"],
+    explanation: `<strong>Đáp án: available</strong><br>Dịch: "Tôi nghĩ kính áp tròng 3D sẽ <strong>có sẵn</strong> để mua trong vài năm tới."<br>• available (adj): có sẵn, có thể mua được<br>• convenient (adj): tiện lợi (không phù hợp với "for purchase")<br>• digital (adj): kỹ thuật số<br>• biometric (adj): sinh trắc học<br><strong>Vì sao đúng:</strong> "Be available for purchase" = có thể mua được – đây là cụm từ cố định thông dụng.`
+  },
+  {
+    num: 9,
+    sentence: "By using ___ such as fingerprints and facial recognition, smartphones offer enhanced levels of security.",
+    answer: "biometrics",
+    options: ["biometrics", "digital", "feedback", "technologies"],
+    explanation: `<strong>Đáp án: biometrics</strong><br>Dịch: "Bằng cách sử dụng <strong>sinh trắc học</strong> như dấu vân tay và nhận diện khuôn mặt, điện thoại thông minh cung cấp mức độ bảo mật nâng cao."<br>• biometrics (n): sinh trắc học (nhận dạng qua đặc điểm cơ thể)<br>• digital (adj): tính từ, không đứng sau "using"<br>• feedback (n): phản hồi<br>• technologies (n): có thể dùng nhưng "biometrics" chính xác hơn vì ví dụ "fingerprints and facial recognition" đều là biometrics.`
+  },
+  {
+    num: 10,
+    sentence: "___ communication can provide governments with a way to communicate with citizens.",
+    answer: "Digital",
+    options: ["Digital", "Convenient", "Available", "Epidemic"],
+    explanation: `<strong>Đáp án: Digital</strong><br>Dịch: "Giao tiếp <strong>kỹ thuật số</strong> có thể cung cấp cho chính phủ một cách thức liên lạc với công dân."<br>• Digital (adj): kỹ thuật số – bổ nghĩa cho "communication"<br>• Convenient (adj): tiện lợi (không phải loại hình giao tiếp)<br>• Available (adj): có sẵn (không phải loại hình giao tiếp)<br>• Epidemic (n): danh từ, không thể bổ nghĩa cho danh từ<br><strong>Vì sao đúng:</strong> "Digital communication" = giao tiếp kỹ thuật số – collocation phổ biến trong ngữ cảnh chính phủ và công nghệ.`
+  },
+];
+
+const part4Data = [
+  {
+    num: 1,
+    sentence: "Video conferencing allows employees to ___ with each other in real time.",
+    opts: ["interact", "recognise"],
+    answer: "interact",
+    explanation: `<strong>Đáp án: interact</strong><br>Dịch: "Hội nghị truyền hình cho phép nhân viên <strong>tương tác</strong> với nhau trong thời gian thực."<br>• interact (v): tương tác, giao tiếp qua lại<br>• recognise (v): nhận ra, nhận diện<br><strong>Vì sao đúng:</strong> "Interact with each other" = tương tác với nhau – phù hợp với ngữ cảnh giao tiếp qua video. "Recognise" không phù hợp vì video conferencing không phải để nhận diện ai.`
+  },
+  {
+    num: 2,
+    sentence: "Alexander Graham Bell ___ the telephone when he made a mistake while doing an experiment.",
+    opts: ["created", "invented"],
+    answer: "invented",
+    explanation: `<strong>Đáp án: invented</strong><br>Dịch: "Alexander Graham Bell đã <strong>phát minh</strong> ra điện thoại khi ông mắc một lỗi lầm trong khi thực hiện thí nghiệm."<br>• invented (v): phát minh ra (tạo ra thứ gì hoàn toàn mới lần đầu tiên)<br>• created (v): tạo ra, sáng tác (nghĩa rộng hơn, dùng cho nghệ thuật, thiết kế)<br><strong>Vì sao đúng:</strong> "Invent" được dùng đặc biệt cho các phát minh khoa học, kỹ thuật. Bell là người PHÁT MINH ra điện thoại → "invented" là từ chuyên dụng đúng ngữ cảnh.`
+  },
+  {
+    num: 3,
+    sentence: "Researchers has ___ new methods to produce energy and materials from the harmful greenhouse.",
+    opts: ["developed", "discovered"],
+    answer: "developed",
+    explanation: `<strong>Đáp án: developed</strong><br>Dịch: "Các nhà nghiên cứu đã <strong>phát triển</strong> các phương pháp mới để tạo ra năng lượng và vật liệu từ khí nhà kính độc hại."<br>• developed (v): phát triển, hoàn thiện (một phương pháp, kỹ thuật có sẵn)<br>• discovered (v): khám phá ra (tìm thấy thứ gì đã tồn tại trong tự nhiên)<br><strong>Vì sao đúng:</strong> "Methods" (phương pháp) được "develop" (xây dựng, phát triển), không phải "discover". Discover dùng cho khám phá thiên nhiên (discover a new planet, discover a disease).`
+  },
+  {
+    num: 4,
+    sentence: "It's a free app development software that ___ Android apps and iPhone apps with ease.",
+    opts: ["creates", "develops"],
+    answer: "creates",
+    explanation: `<strong>Đáp án: creates</strong><br>Dịch: "Đây là phần mềm phát triển ứng dụng miễn phí <strong>tạo ra</strong> các ứng dụng Android và iPhone một cách dễ dàng."<br>• creates (v): tạo ra (sản phẩm cuối cùng)<br>• develops (v): phát triển (quá trình lâu dài)<br><strong>Vì sao đúng:</strong> Phần mềm "tạo ra" (creates) ứng dụng một cách tự động "with ease" – nhấn mạnh hành động tạo ra sản phẩm. "Develops" ít tự nhiên hơn trong ngữ cảnh này.`
+  },
+  {
+    num: 5,
+    sentence: "Scientists are now trying to ___ the nearby planet Mars for its possibility to become our second home.",
+    opts: ["create", "explore"],
+    answer: "explore",
+    explanation: `<strong>Đáp án: explore</strong><br>Dịch: "Các nhà khoa học hiện đang cố gắng <strong>khám phá</strong> hành tinh lân cận Sao Hỏa về khả năng trở thành ngôi nhà thứ hai của chúng ta."<br>• explore (v): khám phá, thám hiểm<br>• create (v): tạo ra<br><strong>Vì sao đúng:</strong> Sao Hỏa đã tồn tại, không thể "tạo ra" nó. Các nhà khoa học "explore" (khám phá, nghiên cứu) hành tinh.`
+  },
+  {
+    num: 6,
+    sentence: "Astronomers have ___ a new planet that resembles our own Uranus.",
+    opts: ["discovered", "developed"],
+    answer: "discovered",
+    explanation: `<strong>Đáp án: discovered</strong><br>Dịch: "Các nhà thiên văn học đã <strong>khám phá ra</strong> một hành tinh mới giống với Sao Thiên Vương của chúng ta."<br>• discovered (v): khám phá ra (tìm thấy thứ đã tồn tại trong vũ trụ)<br>• developed (v): phát triển<br><strong>Vì sao đúng:</strong> Hành tinh tồn tại trong vũ trụ từ trước, các nhà thiên văn "discover" (tìm ra) chứ không "develop" (phát triển) hành tinh.`
+  },
+  {
+    num: 7,
+    sentence: "Scientists are working hard to ___ new vaccines for complex viruses.",
+    opts: ["create", "invent"],
+    answer: "create",
+    explanation: `<strong>Đáp án: create</strong><br>Dịch: "Các nhà khoa học đang nỗ lực <strong>tạo ra</strong> vắc-xin mới cho các loại virus phức tạp."<br>• create (v): tạo ra, chế tạo<br>• invent (v): phát minh ra<br><strong>Vì sao đúng:</strong> Vaccines không phải là "invention" theo nghĩa hẹp. "Create new vaccines" là cách dùng tự nhiên và chính xác nhất trong y học – nghĩa là "phát triển/tổng hợp" vắc-xin mới.`
+  },
+  {
+    num: 8,
+    sentence: "The program ___ the suspect's face from the security camera footage.",
+    opts: ["recognised", "explored"],
+    answer: "recognised",
+    explanation: `<strong>Đáp án: recognised</strong><br>Dịch: "Chương trình đã <strong>nhận diện</strong> khuôn mặt của nghi phạm từ cảnh quay camera an ninh."<br>• recognised (v): nhận ra, nhận diện<br>• explored (v): khám phá<br><strong>Vì sao đúng:</strong> Chương trình nhận diện khuôn mặt (face recognition) "recognises" khuôn mặt. "Explore" không phù hợp ngữ nghĩa ở đây.`
+  },
+  {
+    num: 9,
+    sentence: "They're ___ a new technology that could help provide clean water.",
+    opts: ["developing", "creating"],
+    answer: "developing",
+    explanation: `<strong>Đáp án: developing</strong><br>Dịch: "Họ đang <strong>phát triển</strong> một công nghệ mới có thể giúp cung cấp nước sạch."<br>• developing (v, hiện tại tiếp diễn): đang phát triển<br>• creating (v, hiện tại tiếp diễn): đang tạo ra<br><strong>Vì sao đúng:</strong> "Develop a technology" = phát triển/nghiên cứu một công nghệ (quá trình lâu dài, chưa hoàn thành). Đây là collocation tự nhiên và chính xác hơn "creating a technology".`
+  },
+  {
+    num: 10,
+    sentence: "You have to ___ / interact to the Internet all the time during your online lesson.",
+    opts: ["connect", "interact"],
+    answer: "connect",
+    explanation: `<strong>Đáp án: connect</strong><br>Dịch: "Bạn phải <strong>kết nối</strong> Internet mọi lúc trong buổi học trực tuyến."<br>• connect to (v): kết nối đến (Internet, mạng)<br>• interact with (v): tương tác với (người, hệ thống) – giới từ đi kèm phải là "with", không phải "to"<br><strong>Vì sao đúng:</strong> "Connect to the Internet" là collocation cố định. "Interact to" là SAI ngữ pháp – phải là "interact with".`
+  },
+];
+
+const part5Data = [
+  {
+    num: 1,
+    stimulus: "'We may be able to live longer in the future thanks to medical advances.'",
+    answer: "c",
+    options: [
+      { key: "a", text: "Why not?" },
+      { key: "b", text: "Sounds fun." },
+      { key: "c", text: "Great news for us!" },
+      { key: "d", text: "Hold on." },
+    ],
+    explanation: `<strong>Đáp án: C – "Great news for us!"</strong><br>Dịch câu gốc: "Chúng ta có thể sống lâu hơn trong tương lai nhờ những tiến bộ y học."<br>• A. "Why not?" = Tại sao không? (hỏi vặn, không hợp ngữ cảnh)<br>• B. "Sounds fun." = Nghe có vẻ vui (nhẹ nhàng quá, thiếu trân trọng)<br>• C. "Great news for us!" = Tin tuyệt vời cho chúng ta! ✅ (phản ứng tích cực, phù hợp)<br>• D. "Hold on." = Khoan đã (thể hiện hoài nghi hoặc ngắt lời)<br><strong>Vì sao đúng:</strong> Đây là tin vui về y học → phản ứng tích cực "Great news for us!" là phù hợp nhất.`
+  },
+  {
+    num: 2,
+    stimulus: "'My parents will get me a new tablet when I go to high school.'",
+    answer: "a",
+    options: [
+      { key: "a", text: "Congratulations!" },
+      { key: "b", text: "Such a relief!" },
+      { key: "c", text: "That's terrible." },
+      { key: "d", text: "For the better?" },
+    ],
+    explanation: `<strong>Đáp án: A – "Congratulations!"</strong><br>Dịch: "Bố mẹ sẽ mua cho mình một cái máy tính bảng mới khi mình vào cấp 3."<br>• A. "Congratulations!" = Chúc mừng! ✅ (mừng cho bạn được quà)<br>• B. "Such a relief!" = May quá! (dùng khi thoát khỏi điều lo lắng)<br>• C. "That's terrible." = Thật tệ quá (phản ứng tiêu cực, không phù hợp)<br>• D. "For the better?" = Để tốt hơn à? (câu hỏi nghi vấn, không phù hợp)<br><strong>Vì sao đúng:</strong> Nhận được quà tặng → "Congratulations!" (chúc mừng) là phản ứng thân thiện, phù hợp nhất.`
+  },
+  {
+    num: 3,
+    stimulus: "'In 50 years, homes might be located underground or on water.'",
+    answer: "b",
+    options: [
+      { key: "a", text: "Yes, of course." },
+      { key: "b", text: "Great!" },
+      { key: "c", text: "Exactly how I feel." },
+      { key: "d", text: "Sorry to hear that." },
+    ],
+    explanation: `<strong>Đáp án: B – "Great!"</strong><br>Dịch: "Trong 50 năm, những ngôi nhà có thể được đặt dưới lòng đất hoặc trên mặt nước."<br>• A. "Yes, of course." = Tất nhiên rồi (thể hiện sự đồng ý, nhưng hơi máy móc)<br>• B. "Great!" = Tuyệt vời! ✅ (phản ứng thích thú với ý tưởng tương lai thú vị)<br>• C. "Exactly how I feel." = Đúng như cảm giác của tôi (không tự nhiên với thông tin)<br>• D. "Sorry to hear that." = Xin lỗi khi nghe điều đó (phản ứng tiêu cực, không phù hợp)<br><strong>Vì sao đúng:</strong> Ý tưởng nhà dưới lòng đất/trên mặt nước nghe thú vị → "Great!" thể hiện sự hứng thú phù hợp.`
+  },
+  {
+    num: 4,
+    stimulus: "'Scientists have made significant progress in the fight against HIV/AIDS.'",
+    answer: "a",
+    options: [
+      { key: "a", text: "Fantastic!" },
+      { key: "b", text: "Oh, I get it now." },
+      { key: "c", text: "It's lots of fun." },
+      { key: "d", text: "OK. That's fine." },
+    ],
+    explanation: `<strong>Đáp án: A – "Fantastic!"</strong><br>Dịch: "Các nhà khoa học đã đạt được tiến bộ đáng kể trong cuộc chiến chống lại HIV/AIDS."<br>• A. "Fantastic!" = Tuyệt vời! ✅ (phản ứng nhiệt tình, phù hợp với tin tốt)<br>• B. "Oh, I get it now." = Ồ, bây giờ tôi hiểu rồi (dùng khi vừa hiểu ra điều gì)<br>• C. "It's lots of fun." = Thật là vui (không phù hợp với chủ đề y học nghiêm túc)<br>• D. "OK. That's fine." = Ổn rồi (phản ứng quá lạnh nhạt với tin quan trọng)<br><strong>Vì sao đúng:</strong> Đây là tin tốt quan trọng về y học → "Fantastic!" thể hiện đúng sự phấn khởi.`
+  },
+  {
+    num: 5,
+    stimulus: "'Our school will have a vending machine at the canteen next semester.'",
+    answer: "d",
+    options: [
+      { key: "a", text: "I'd love to." },
+      { key: "b", text: "You're welcome." },
+      { key: "c", text: "Oh, I envy them!" },
+      { key: "d", text: "How awesome!" },
+    ],
+    explanation: `<strong>Đáp án: D – "How awesome!"</strong><br>Dịch: "Trường chúng ta sẽ có máy bán hàng tự động tại căng tin vào học kỳ tới."<br>• A. "I'd love to." = Tôi rất muốn (dùng để nhận lời mời)<br>• B. "You're welcome." = Không có gì (dùng sau khi được cảm ơn)<br>• C. "Oh, I envy them!" = Ồ, tôi ghen tị với họ (dùng khi nói về người khác, không phải "our school")<br>• D. "How awesome!" = Thật tuyệt vời làm sao! ✅ (phản ứng thích thú, phù hợp)<br><strong>Vì sao đúng:</strong> Tin tốt về trường mình → "How awesome!" thể hiện sự vui mừng tự nhiên nhất.`
+  },
+  {
+    num: 6,
+    stimulus: "'Robots can do chores such as cleaning, cooking and washing.'",
+    answer: "b",
+    options: [
+      { key: "a", text: "Sorry for interrupting." },
+      { key: "b", text: "Wow, that's brilliant!" },
+      { key: "c", text: "It's a good idea." },
+      { key: "d", text: "This looks so cute!" },
+    ],
+    explanation: `<strong>Đáp án: B – "Wow, that's brilliant!"</strong><br>Dịch: "Robot có thể làm việc nhà như dọn dẹp, nấu ăn và giặt giũ."<br>• A. "Sorry for interrupting." = Xin lỗi vì đã ngắt lời (không liên quan)<br>• B. "Wow, that's brilliant!" = Ồ, thật tuyệt vời! ✅ (phản ứng ngạc nhiên tích cực)<br>• C. "It's a good idea." = Đó là ý hay (robot làm việc nhà không chỉ là "ý hay", nó đã là thực tế)<br>• D. "This looks so cute!" = Trông thật dễ thương (không phù hợp với nội dung nói về tính năng hữu ích)<br><strong>Vì sao đúng:</strong> Khả năng của robot rất ấn tượng → "Wow, that's brilliant!" thể hiện sự ngạc nhiên và khâm phục tự nhiên.`
+  },
+  {
+    num: 7,
+    stimulus: "'I've got a 10 for my essay about Thomas Edison.'",
+    answer: "a",
+    options: [
+      { key: "a", text: "Congrats!" },
+      { key: "b", text: "Certainly!" },
+      { key: "c", text: "How awful!" },
+      { key: "d", text: "That's interesting." },
+    ],
+    explanation: `<strong>Đáp án: A – "Congrats!"</strong><br>Dịch: "Mình được 10 điểm cho bài luận về Thomas Edison."<br>• A. "Congrats!" = Chúc mừng! ✅ (viết tắt của Congratulations, phản ứng tự nhiên khi bạn đạt điểm cao)<br>• B. "Certainly!" = Chắc chắn rồi! (dùng để xác nhận hoặc đồng ý)<br>• C. "How awful!" = Thật tệ quá (phản ứng tiêu cực, trái ngược với điểm 10)<br>• D. "That's interesting." = Thú vị đấy (quá lạnh nhạt với tin vui)<br><strong>Vì sao đúng:</strong> Được điểm 10 là tin vui → "Congrats!" là phản ứng nhiệt tình, thân thiện và tự nhiên nhất.`
+  },
+  {
+    num: 8,
+    stimulus: "'Children in mountainous regions will be able to learn via Zoom soon.'",
+    answer: "d",
+    options: [
+      { key: "a", text: "Yes, sure!" },
+      { key: "b", text: "How unfortunate!" },
+      { key: "c", text: "That's awful." },
+      { key: "d", text: "That's such good news." },
+    ],
+    explanation: `<strong>Đáp án: D – "That's such good news."</strong><br>Dịch: "Trẻ em ở vùng núi sẽ có thể học qua Zoom sớm thôi."<br>• A. "Yes, sure!" = Vâng chắc chắn! (đồng ý hoặc xác nhận, không phải phản ứng với tin tức)<br>• B. "How unfortunate!" = Thật đáng tiếc! (phản ứng tiêu cực, sai ngữ cảnh)<br>• C. "That's awful." = Thật tệ (phản ứng tiêu cực, hoàn toàn trái ngược)<br>• D. "That's such good news." = Đó thật là tin tốt. ✅ (phản ứng tích cực, phù hợp với cơ hội học tập mới)<br><strong>Vì sao đúng:</strong> Trẻ em vùng núi được học qua Zoom là tin tích cực → "That's such good news" là phản ứng phù hợp nhất.`
+  },
+  {
+    num: 9,
+    stimulus: "'Many villas in Ho Chi Minh City is switching to solar power.'",
+    answer: "c",
+    options: [
+      { key: "a", text: "I disagree." },
+      { key: "b", text: "Thank you for that." },
+      { key: "c", text: "How terrific!" },
+      { key: "d", text: "I hope it'll happen soon." },
+    ],
+    explanation: `<strong>Đáp án: C – "How terrific!"</strong><br>Dịch: "Nhiều biệt thự ở Thành phố Hồ Chí Minh đang chuyển sang năng lượng mặt trời."<br>• A. "I disagree." = Tôi không đồng ý (phản ứng tiêu cực, không phù hợp)<br>• B. "Thank you for that." = Cảm ơn vì điều đó (cảm ơn thường dùng sau khi được giúp đỡ)<br>• C. "How terrific!" = Thật tuyệt vời làm sao! ✅ (phản ứng tích cực với xu hướng xanh)<br>• D. "I hope it'll happen soon." = Tôi hy vọng nó sẽ xảy ra sớm (nhưng câu nói đã xác nhận điều này đang diễn ra rồi, nên D không phù hợp)<br><strong>Vì sao đúng:</strong> Việc chuyển sang năng lượng mặt trời là tin tốt cho môi trường → "How terrific!" thể hiện sự hứng khởi tự nhiên.`
+  },
+  {
+    num: 10,
+    stimulus: "'Mummy, I won the second prize in a tech competition at school.'",
+    answer: "b",
+    options: [
+      { key: "a", text: "Thank you for it." },
+      { key: "b", text: "I'm so proud of you!" },
+      { key: "c", text: "Great news for them." },
+      { key: "d", text: "Fantastic! I can't wait." },
+    ],
+    explanation: `<strong>Đáp án: B – "I'm so proud of you!"</strong><br>Dịch: "Mẹ ơi, con đã giành giải nhì trong cuộc thi công nghệ ở trường."<br>• A. "Thank you for it." = Cảm ơn con vì điều đó (nghe lạ, không tự nhiên từ phụ huynh)<br>• B. "I'm so proud of you!" = Mẹ rất tự hào về con! ✅ (phản ứng cảm xúc tự nhiên của người mẹ)<br>• C. "Great news for them." = Tin tốt cho họ (sai – người nói là "mummy" nên phải dùng "you" không phải "them")<br>• D. "Fantastic! I can't wait." = Tuyệt vời! Tôi không thể chờ được (không phù hợp – "can't wait" dùng cho sự kiện sắp xảy ra, không phải đã xảy ra)<br><strong>Vì sao đúng:</strong> Con giành giải thưởng → phản ứng của mẹ là tự hào → "I'm so proud of you!" hoàn toàn tự nhiên và đúng ngữ cảnh.`
+  },
+];
+
+// ====== STATE ======
+let answeredQuestions = {};
+let currentBlankInfo = null;
+
+// ====== AUDIO ======
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+
+function playCorrect() {
+  try {
+    const ctx = new AudioCtx();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine'; o.frequency.setValueAtTime(880, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1100, ctx.currentTime + 0.1);
+    g.gain.setValueAtTime(0.4, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    o.start(); o.stop(ctx.currentTime + 0.5);
+  } catch(e) {}
+}
+
+function playWrong() {
+  try {
+    const ctx = new AudioCtx();
+    [200, 180, 160].forEach((freq, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sawtooth'; o.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
+      g.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.15);
+      o.start(ctx.currentTime + i * 0.1);
+      o.stop(ctx.currentTime + i * 0.1 + 0.15);
+    });
+  } catch(e) {}
+}
+
+// ====== CONFETTI ======
+function launchConfetti(x, y) {
+  const colors = ['#FF6B9D','#FDCB6E','#00C9A7','#8854C0','#FF8C42','#4ECDC4'];
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti-piece';
+    d.style.cssText = `left:${x + (Math.random()-0.5)*100}px;top:${y}px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;`;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 1600);
+  }
+}
+
+// ====== SHUFFLE ======
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ====== BUILD PART I ======
+function buildPart1() {
+  const container = document.getElementById('part1-questions');
+  part1Data.forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `p1q${q.num}`;
+
+    const shuffledBank = shuffle([...part1WordBank]);
+    const optionsHTML = shuffledBank.map(w =>
+      `<button class="opt-btn" onclick="checkP1(${q.num}, '${w}', this)" id="p1q${q.num}_opt_${w.replace(/\s/g,'_')}">${w}</button>`
+    ).join('');
+
+    div.innerHTML = `
+      <div class="question-text"><span class="question-num">${q.num}</span> 🖼️ ${q.imgDesc}</div>
+      <div class="options-grid">${optionsHTML}</div>
+      <div class="explanation" id="p1q${q.num}_exp"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function checkP1(num, chosen, btn) {
+  const key = `p1_${num}`;
+  if (answeredQuestions[key]) return;
+  const q = part1Data.find(x => x.num === num);
+  const expEl = document.getElementById(`p1q${num}_exp`);
+  const card = document.getElementById(`p1q${num}`);
+  const allBtns = card.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (chosen === q.answer) {
+    btn.classList.add('correct');
+    playCorrect();
+    const r = btn.getBoundingClientRect();
+    launchConfetti(r.left + r.width/2, r.top);
+    expEl.innerHTML = `✅ <strong>Đúng rồi! "${q.answer}"</strong> là từ khóa phù hợp với hình ảnh số ${num}.`;
+    answeredQuestions[key] = 'correct';
+  } else {
+    btn.classList.add('wrong');
+    playWrong();
+    allBtns.forEach(b => {
+      if (b.textContent.trim() === q.answer) b.classList.add('correct');
+    });
+    expEl.innerHTML = `❌ Chưa đúng. <strong class="correct-answer">Đáp án đúng: "${q.answer}"</strong>`;
+    answeredQuestions[key] = 'wrong';
+  }
+  expEl.classList.add('show');
+}
+
+// ====== BUILD PART II ======
+function buildPart2() {
+  const container = document.getElementById('part2-questions');
+  part2Data.forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `p2q${q.num}`;
+
+    const shuffledOpts = shuffle(q.options);
+    const optsHTML = shuffledOpts.map(opt =>
+      `<button class="opt-btn" onclick="checkGapFill('p2',${q.num},'${opt.replace(/'/g,"\\'")}',this)">${opt}</button>`
+    ).join('');
+
+    const sentenceHTML = q.sentence.replace('___', `<span class="blank" id="p2q${q.num}_blank">___</span>`);
+
+    div.innerHTML = `
+      <div class="question-text"><span class="question-num">${q.num}</span> ${sentenceHTML}</div>
+      <div class="options-grid">${optsHTML}</div>
+      <div class="explanation" id="p2q${q.num}_exp"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ====== BUILD PART III ======
+function buildPart3() {
+  const container = document.getElementById('part3-questions');
+  const wordBank3 = ["technologies","epidemic","inventions","available","biometrics","feedback","convenient","attendance","digital","application"];
+
+  part3Data.forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `p3q${q.num}`;
+
+    const shuffledOpts = shuffle(q.options);
+    const optsHTML = shuffledOpts.map(opt =>
+      `<button class="opt-btn" onclick="checkGapFill('p3',${q.num},'${opt.replace(/'/g,"\\'")}',this)">${opt}</button>`
+    ).join('');
+
+    const sentenceHTML = q.sentence.replace('___', `<span class="blank" id="p3q${q.num}_blank">___</span>`);
+
+    div.innerHTML = `
+      <div class="question-text"><span class="question-num">${q.num}</span> ${sentenceHTML}</div>
+      <div class="options-grid">${optsHTML}</div>
+      <div class="explanation" id="p3q${q.num}_exp"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function checkGapFill(part, num, chosen, btn) {
+  const key = `${part}_${num}`;
+  if (answeredQuestions[key]) return;
+  const dataSet = part === 'p2' ? part2Data : part3Data;
+  const q = dataSet.find(x => x.num === num);
+  const expEl = document.getElementById(`${part}q${num}_exp`);
+  const blank = document.getElementById(`${part}q${num}_blank`);
+  const card = document.getElementById(`${part}q${num}`);
+  const allBtns = card.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const isCorrect = chosen.toLowerCase() === q.answer.toLowerCase();
+  blank.textContent = chosen;
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    blank.classList.add('correct-blank');
+    playCorrect();
+    const r = btn.getBoundingClientRect();
+    launchConfetti(r.left + r.width/2, r.top);
+    answeredQuestions[key] = 'correct';
+  } else {
+    btn.classList.add('wrong');
+    blank.classList.add('wrong-blank');
+    blank.textContent = chosen + ' ✗';
+    playWrong();
+    allBtns.forEach(b => {
+      if (b.textContent.trim().toLowerCase() === q.answer.toLowerCase()) b.classList.add('correct');
+    });
+    answeredQuestions[key] = 'wrong';
+  }
+  expEl.innerHTML = q.explanation;
+  expEl.classList.add('show');
+}
+
+// ====== BUILD PART IV ======
+function buildPart4() {
+  const container = document.getElementById('part4-questions');
+  part4Data.forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `p4q${q.num}`;
+
+    const shuffledOpts = Math.random() > 0.5 ? q.opts : [...q.opts].reverse();
+    const optsHTML = shuffledOpts.map(opt =>
+      `<button class="ul-btn" onclick="checkUnderline(${q.num},'${opt}',this)"><u>${opt}</u></button>`
+    ).join(' / ');
+
+    const sentenceHTML = q.sentence.replace('___', optsHTML);
+
+    div.innerHTML = `
+      <div class="question-text"><span class="question-num">${q.num}</span> ${sentenceHTML}</div>
+      <div class="explanation" id="p4q${q.num}_exp"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function checkUnderline(num, chosen, btn) {
+  const key = `p4_${num}`;
+  if (answeredQuestions[key]) return;
+  const q = part4Data.find(x => x.num === num);
+  const expEl = document.getElementById(`p4q${num}_exp`);
+  const card = document.getElementById(`p4q${num}`);
+  const allBtns = card.querySelectorAll('.ul-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (chosen === q.answer) {
+    btn.classList.add('correct');
+    playCorrect();
+    const r = btn.getBoundingClientRect();
+    launchConfetti(r.left + r.width/2, r.top);
+    answeredQuestions[key] = 'correct';
+  } else {
+    btn.classList.add('wrong');
+    playWrong();
+    allBtns.forEach(b => {
+      if (b.textContent.trim() === q.answer) b.classList.add('correct');
+    });
+    answeredQuestions[key] = 'wrong';
+  }
+  expEl.innerHTML = q.explanation;
+  expEl.classList.add('show');
+}
+
+// ====== BUILD PART V ======
+function buildPart5() {
+  const container = document.getElementById('part5-questions');
+  part5Data.forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `p5q${q.num}`;
+
+    const shuffledOpts = shuffle(q.options);
+    const optsHTML = shuffledOpts.map(opt =>
+      `<button class="opt-btn" onclick="checkP5(${q.num},'${opt.key}',this)"><strong>${opt.key.toUpperCase()}.</strong> ${opt.text}</button>`
+    ).join('');
+
+    div.innerHTML = `
+      <div class="question-text"><span class="question-num">${q.num}</span> ${q.stimulus} <em>'_____'</em></div>
+      <div class="options-grid">${optsHTML}</div>
+      <div class="explanation" id="p5q${q.num}_exp"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function checkP5(num, chosenKey, btn) {
+  const key = `p5_${num}`;
+  if (answeredQuestions[key]) return;
+  const q = part5Data.find(x => x.num === num);
+  const expEl = document.getElementById(`p5q${num}_exp`);
+  const card = document.getElementById(`p5q${num}`);
+  const allBtns = card.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (chosenKey === q.answer) {
+    btn.classList.add('correct');
+    playCorrect();
+    const r = btn.getBoundingClientRect();
+    launchConfetti(r.left + r.width/2, r.top);
+    answeredQuestions[key] = 'correct';
+  } else {
+    btn.classList.add('wrong');
+    playWrong();
+    const correctOpt = q.options.find(o => o.key === q.answer);
+    allBtns.forEach(b => {
+      if (b.textContent.trim().includes(correctOpt.text)) b.classList.add('correct');
+    });
+    answeredQuestions[key] = 'wrong';
+  }
+  expEl.innerHTML = q.explanation;
+  expEl.classList.add('show');
+}
+
+// ====== SUBMIT ======
+function submitQuiz() {
+  const total = part1Data.length + part2Data.length + part3Data.length + part4Data.length + part5Data.length;
+  const correct = Object.values(answeredQuestions).filter(v => v === 'correct').length;
+  const answered = Object.keys(answeredQuestions).length;
+  const pct = Math.round(correct / total * 100);
+
+  let emoji, message;
+  if (pct === 100) { emoji = '🏆'; message = 'Xuất sắc tuyệt vời! Em là thiên tài! 100 điểm hoàn hảo! 🌟'; }
+  else if (pct >= 80) { emoji = '🎉'; message = 'Giỏi lắm! Em học rất chăm chỉ và hiểu bài rất tốt! 💪'; }
+  else if (pct >= 60) { emoji = '👍'; message = 'Tốt lắm! Em cần ôn thêm một chút nữa thôi. Cố lên! 📚'; }
+  else if (pct >= 40) { emoji = '💡'; message = 'Được rồi! Hãy xem lại phần giải thích bên dưới mỗi câu nhé. Cố gắng lên! 🌈'; }
+  else { emoji = '🌱'; message = 'Đừng nản lòng! Học từ sai lầm là cách tốt nhất. Cố gắng lên em! ❤️'; }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultScore').textContent = `${correct}/${total} (${pct}%)`;
+  document.getElementById('resultMessage').textContent = message + `\n(Đã trả lời: ${answered}/${total} câu)`;
+  document.getElementById('resultOverlay').classList.add('show');
+
+  // Big confetti burst
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => launchConfetti(window.innerWidth/2 + (Math.random()-0.5)*300, window.innerHeight/3), i * 200);
+  }
+}
+
+function closePopup() {
+  document.getElementById('popupOverlay').classList.remove('show');
+}
+
+// ====== INIT ======
+buildPart1();
+buildPart2();
+buildPart3();
+buildPart4();
+buildPart5();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

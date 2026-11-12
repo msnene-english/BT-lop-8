@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 12: Life on Other Planets – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#00D26A;--red:#FF4757;--gold:#FDCB6E;--purple:#8854C0;
+  --teal:#00C9A7;--pink:#FF6B9D;--blue:#4ECDC4;
+  --card-bg:rgba(255,255,255,0.97);
+}
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#8854C0,#c471ed,#f64f59,#FDCB6E,#00C9A7,#4ECDC4);
+  background-size:400% 400%;
+  animation:bgAnim 10s ease infinite;
+  position:relative;overflow-x:hidden;
+}
+@keyframes bgAnim{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* SVG floating pattern */
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Ctext y='40' font-size='28' opacity='0.18'%3E🌟%3C/text%3E%3Ctext x='60' y='90' font-size='22' opacity='0.15'%3E🪐%3C/text%3E%3Ctext x='130' y='50' font-size='20' opacity='0.15'%3E🌸%3C/text%3E%3Ctext x='10' y='150' font-size='26' opacity='0.13'%3E☁️%3C/text%3E%3Ctext x='90' y='170' font-size='22' opacity='0.15'%3E⭐%3C/text%3E%3Ctext x='160' y='130' font-size='24' opacity='0.13'%3E🚀%3C/text%3E%3Ctext x='30' y='210' font-size='20' opacity='0.15'%3E🌙%3C/text%3E%3Ctext x='150' y='200' font-size='18' opacity='0.13'%3E💫%3C/text%3E%3C/svg%3E");
+  background-repeat:repeat;
+  pointer-events:none;z-index:0;
+  animation:patternFloat 20s linear infinite;
+}
+@keyframes patternFloat{0%{background-position:0 0}100%{background-position:220px 220px}}
+
+.wrap{max-width:920px;margin:0 auto;padding:16px 14px 80px;position:relative;z-index:1}
+
+/* ─── HEADER ─── */
+.header{
+  background:rgba(255,255,255,0.96);
+  border-radius:20px;padding:16px 20px 12px;
+  text-align:center;margin-bottom:20px;
+  box-shadow:0 6px 28px rgba(136,84,192,0.25);
+  border:3px solid rgba(136,84,192,0.2);
+}
+.header h1{font-size:1.45rem;font-weight:900;
+  background:linear-gradient(135deg,#8854C0,#f64f59,#FDCB6E);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:3px}
+.header .sub{font-size:0.82rem;color:#777;font-weight:600}
+.header .teacher{font-size:0.78rem;color:#8854C0;font-weight:700;margin-top:2px}
+
+/* ─── SCORE BAR ─── */
+.scorebar{
+  background:rgba(255,255,255,0.92);border-radius:14px;padding:10px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,0.12);
+  font-weight:800;font-size:0.95rem;
+}
+.scorebar .live{color:#8854C0}
+.scorebar .prog{
+  flex:1;margin:0 14px;height:10px;background:#eee;border-radius:10px;overflow:hidden;
+}
+.scorebar .prog-fill{height:100%;background:linear-gradient(90deg,#8854C0,#00C9A7);border-radius:10px;transition:width .4s}
+
+/* ─── SECTION CARD ─── */
+.section-card{
+  background:var(--card-bg);border-radius:22px;padding:22px 22px 18px;
+  margin-bottom:24px;
+  box-shadow:0 8px 32px rgba(136,84,192,0.18);
+  border:2px solid rgba(136,84,192,0.12);
+}
+.section-title{
+  font-size:1.15rem;font-weight:900;
+  background:linear-gradient(90deg,#8854C0,#f64f59);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;padding-bottom:8px;border-bottom:2px solid rgba(136,84,192,0.15);
+}
+.section-instr{font-size:0.92rem;color:#555;font-weight:700;margin-bottom:14px}
+
+/* ─── OPTION BOX (A–H) ─── */
+.option-box{
+  background:linear-gradient(135deg,rgba(136,84,192,0.07),rgba(0,201,167,0.06));
+  border:2px solid rgba(136,84,192,0.18);border-radius:14px;
+  padding:12px 16px;margin-bottom:18px;
+}
+.option-box .opt-row{
+  font-size:0.88rem;line-height:1.65;color:#333;
+}
+.option-box .opt-row b{color:#8854C0;margin-right:3px}
+
+/* ─── DIALOGUE ─── */
+.dialogue{display:flex;flex-direction:column;gap:6px}
+.d-line{display:flex;align-items:flex-start;gap:8px;padding:5px 0}
+.d-speaker{
+  font-weight:900;min-width:52px;font-size:0.88rem;
+  background:linear-gradient(135deg,#8854C0,#c471ed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.d-text{font-size:0.9rem;color:#333;font-weight:600;flex:1;line-height:1.5}
+.blank-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,rgba(136,84,192,0.12),rgba(0,201,167,0.1));
+  border:2.5px dashed #8854C0;border-radius:12px;
+  padding:4px 14px;cursor:pointer;font-weight:800;font-size:0.88rem;color:#8854C0;
+  transition:transform .2s,box-shadow .2s;min-width:60px;
+}
+.blank-btn:hover:not(.answered){transform:scale(1.05);box-shadow:0 4px 14px rgba(136,84,192,0.25)}
+.blank-btn.correct-ans{background:#e8faf0;border-color:var(--green);color:#006d35;border-style:solid}
+.blank-btn.wrong-ans{background:#fff0f2;border-color:var(--red);color:#c00;border-style:solid}
+.blank-btn.answered{cursor:default}
+
+/* ─── QUESTION CARD ─── */
+.q-card{
+  background:#fafbff;border:2px solid rgba(136,84,192,0.1);
+  border-radius:18px;padding:16px;margin-bottom:16px;
+  transition:box-shadow .2s;
+}
+.q-card:hover{box-shadow:0 4px 18px rgba(136,84,192,0.1)}
+.q-num{
+  display:inline-block;background:linear-gradient(135deg,#8854C0,#c471ed);
+  color:#fff;border-radius:8px;padding:2px 9px;font-size:0.78rem;font-weight:800;margin-bottom:7px;
+}
+.q-text{font-size:1.05rem;font-weight:700;color:#2d2d2d;margin-bottom:4px;line-height:1.6}
+.q-words{
+  background:rgba(253,203,110,0.18);border:1.5px dashed #FDCB6E;
+  border-radius:10px;padding:7px 12px;font-size:0.88rem;color:#555;font-weight:600;
+  margin-bottom:12px;line-height:1.7;
+}
+.q-words b{color:#8854C0}
+
+/* ─── ANSWER OPTIONS ─── */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt-btn{
+  background:#fff;border:2.5px solid rgba(136,84,192,0.2);
+  border-radius:15px;padding:10px 16px;cursor:pointer;
+  font-size:1rem;font-weight:700;color:#333;text-align:left;
+  transition:transform .15s,box-shadow .15s,background .2s,border-color .2s;
+  box-shadow:0 3px 0 rgba(136,84,192,0.12);
+  line-height:1.5;
+}
+.opt-btn:hover:not(.locked){
+  transform:scale(1.02) translateY(-2px);
+  box-shadow:0 6px 16px rgba(136,84,192,0.2);
+  border-color:#8854C0;background:rgba(136,84,192,0.04);
+}
+.opt-btn.correct{background:#e8faf0;border-color:var(--green);color:#005b2a;box-shadow:0 3px 0 #00a855}
+.opt-btn.wrong{background:#fff0f2;border-color:var(--red);color:#a00;box-shadow:0 3px 0 #cc3333}
+.opt-btn.reveal{background:rgba(0,210,106,0.08);border-color:var(--green);color:#005b2a}
+.opt-btn.locked{cursor:default}
+.opt-btn .lbl{display:inline-block;background:linear-gradient(135deg,#8854C0,#c471ed);color:#fff;border-radius:6px;padding:1px 8px;font-size:0.75rem;margin-right:8px}
+.opt-btn.correct .lbl{background:var(--green)}
+.opt-btn.wrong .lbl{background:var(--red)}
+.opt-btn.reveal .lbl{background:var(--green)}
+
+/* ─── EXPLANATION ─── */
+.explanation{
+  display:none;margin-top:10px;
+  background:linear-gradient(135deg,rgba(136,84,192,0.06),rgba(0,201,167,0.05));
+  border-left:4px solid #8854C0;border-radius:0 12px 12px 0;
+  padding:12px 14px;font-size:0.92rem;color:#333;line-height:1.7;
+  animation:fadeIn .4s ease;
+}
+.explanation.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.explanation .ex-title{font-weight:900;color:#8854C0;font-size:0.95rem;margin-bottom:6px}
+.explanation em{color:#f64f59;font-style:normal;font-weight:700}
+.explanation .correct-tag{
+  display:inline-block;background:var(--green);color:#fff;
+  border-radius:6px;padding:1px 8px;font-size:0.75rem;font-weight:800;margin-right:4px;
+}
+
+/* ─── SPEAKING MODAL ─── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.55);z-index:1000;
+  align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:#fff;border-radius:22px;padding:24px 22px;
+  max-width:560px;width:calc(100% - 32px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+  animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-title{font-size:1.05rem;font-weight:900;color:#8854C0;margin-bottom:12px;text-align:center}
+.modal-opts{display:flex;flex-direction:column;gap:8px}
+.modal-opt{
+  background:#fafbff;border:2px solid rgba(136,84,192,0.2);border-radius:13px;
+  padding:9px 14px;cursor:pointer;font-size:0.88rem;font-weight:700;color:#333;
+  transition:all .15s;
+}
+.modal-opt:hover{background:rgba(136,84,192,0.07);border-color:#8854C0;transform:scale(1.01)}
+.modal-opt b{color:#8854C0;margin-right:5px}
+.modal-close{
+  display:block;margin-top:14px;width:100%;padding:10px;
+  background:linear-gradient(135deg,#8854C0,#c471ed);
+  color:#fff;border:none;border-radius:13px;font-size:0.9rem;font-weight:800;cursor:pointer;
+}
+
+/* ─── EXPLANATION (speaking) ─── */
+.sp-expl{
+  display:none;margin:4px 0 6px 60px;
+  background:linear-gradient(135deg,rgba(136,84,192,0.06),rgba(0,201,167,0.05));
+  border-left:4px solid #8854C0;border-radius:0 12px 12px 0;
+  padding:10px 14px;font-size:0.88rem;color:#333;line-height:1.7;
+}
+.sp-expl.show{display:block}
+
+/* ─── SUBMIT AREA ─── */
+.submit-area{
+  text-align:center;padding:20px 0 10px;
+}
+.submit-btn{
+  background:linear-gradient(135deg,#f64f59,#c471ed,#8854C0);
+  color:#fff;border:none;border-radius:20px;
+  padding:14px 48px;font-size:1.1rem;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 0 rgba(136,84,192,0.35),0 10px 28px rgba(136,84,192,0.3);
+  transition:transform .2s,box-shadow .2s;
+}
+.submit-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 9px 0 rgba(136,84,192,0.3),0 14px 36px rgba(136,84,192,0.35)}
+.submit-btn:active{transform:translateY(1px);box-shadow:0 3px 0 rgba(136,84,192,0.35)}
+
+/* ─── SCORE POPUP ─── */
+.score-popup{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.6);z-index:2000;
+  align-items:center;justify-content:center;
+}
+.score-popup.open{display:flex}
+.score-box{
+  background:linear-gradient(135deg,#ffecd2,#fcb69f);
+  border-radius:26px;padding:32px 36px;text-align:center;
+  max-width:440px;width:calc(100% - 32px);
+  box-shadow:0 24px 64px rgba(0,0,0,0.4);
+  animation:modalIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.score-emoji{font-size:3.5rem;margin-bottom:8px}
+.score-title{font-size:1.6rem;font-weight:900;color:#333;margin-bottom:6px}
+.score-num{font-size:2.5rem;font-weight:900;
+  background:linear-gradient(135deg,#8854C0,#f64f59);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.score-msg{font-size:1rem;color:#555;font-weight:700;margin-top:10px;line-height:1.5}
+.score-close{
+  margin-top:20px;padding:12px 36px;
+  background:linear-gradient(135deg,#8854C0,#c471ed);
+  color:#fff;border:none;border-radius:14px;font-size:1rem;font-weight:800;cursor:pointer;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+.shake{animation:shake .5s ease}
+
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.pop-in{animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
+
+/* ─── CANVAS (confetti) ─── */
+#confetti-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:3000;
+}
+
+/* ─── GRID FOR 2-COL OPTS (writing) ─── */
+@media(min-width:620px){
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+}
+
+.q-given{
+  background:rgba(253,203,110,0.15);border:1.5px solid rgba(253,203,110,0.6);
+  border-radius:10px;padding:8px 12px;font-size:0.88rem;color:#444;font-weight:600;
+  margin-bottom:10px;line-height:1.6;
+}
+.q-given b{color:#8854C0}
+
+.partial{color:#8854C0;font-weight:800}
+
+/* divider */
+.divider{height:2px;background:linear-gradient(90deg,transparent,rgba(136,84,192,0.2),transparent);margin:18px 0}
+
+/* ─── FREE-TEXT INPUT (Writing II) ─── */
+.ft-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.ft-starter{
+  font-size:1rem;font-weight:800;color:#8854C0;
+  background:rgba(136,84,192,0.08);border-radius:8px;
+  padding:6px 12px;white-space:nowrap;
+}
+.ft-input{
+  flex:1;min-width:200px;
+  border:2.5px solid rgba(136,84,192,0.3);border-radius:12px;
+  padding:8px 14px;font-size:0.95rem;font-family:'Nunito',sans-serif;font-weight:600;
+  color:#333;background:#fff;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.ft-input:focus{border-color:#8854C0;box-shadow:0 0 0 3px rgba(136,84,192,0.12)}
+.ft-input.ft-correct{border-color:var(--green);background:#edfff5;color:#005b2a}
+.ft-input.ft-wrong{border-color:var(--red);background:#fff0f2;color:#a00}
+.ft-input:disabled{cursor:default}
+.ft-check-btn{
+  background:linear-gradient(135deg,#8854C0,#c471ed);
+  color:#fff;border:none;border-radius:12px;
+  padding:9px 20px;font-size:0.88rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 0 rgba(136,84,192,0.3);
+  transition:transform .15s,box-shadow .15s;white-space:nowrap;
+}
+.ft-check-btn:hover:not(:disabled){transform:translateY(-2px) scale(1.03);box-shadow:0 6px 0 rgba(136,84,192,0.25)}
+.ft-check-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.ft-result{
+  display:none;padding:7px 14px;border-radius:10px;
+  font-size:0.9rem;font-weight:700;margin-top:4px;
+}
+.ft-result.show{display:block}
+.ft-result.r-correct{background:#e8faf0;color:#005b2a;border:1.5px solid var(--green)}
+.ft-result.r-wrong{background:#fff0f2;color:#a00;border:1.5px solid var(--red)}
+.ft-answer-reveal{
+  margin-top:6px;padding:8px 12px;
+  background:rgba(0,210,106,0.08);border:1.5px dashed var(--green);
+  border-radius:10px;font-size:0.88rem;color:#005b2a;font-weight:700;
+  display:none;
+}
+.ft-answer-reveal.show{display:block}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Modal for Speaking -->
+<div class="modal-overlay" id="speak-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">Chọn câu phù hợp</div>
+    <div class="modal-opts" id="modal-opts"></div>
+    <button class="modal-close" onclick="closeModal()">✕ Đóng</button>
+  </div>
+</div>
+
+<!-- Score Popup -->
+<div class="score-popup" id="score-popup">
+  <div class="score-box">
+    <div class="score-emoji" id="sc-emoji">🏆</div>
+    <div class="score-title">Kết Quả Bài Thi!</div>
+    <div class="score-num" id="sc-num"></div>
+    <div class="score-msg" id="sc-msg"></div>
+    <button class="score-close" onclick="document.getElementById('score-popup').classList.remove('open')">🔄 Xem Lại Bài</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🪐 Unit 12: Life on Other Planets 🌍</h1>
+    <div class="sub">Speaking &amp; Writing Practice Test</div>
+    <div class="teacher">✏️ Giáo viên tạo: MS Chí Nên ULIS</div>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="scorebar">
+    <span class="live">⭐ <span id="live-score">0</span> điểm</span>
+    <div class="prog"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span style="color:#f64f59">📝 <span id="answered-count">0</span>/28</span>
+  </div>
+
+  <!-- ========= C. SPEAKING ========= -->
+  <div class="section-card">
+    <div class="section-title">🗣️ C. SPEAKING</div>
+    <div class="section-instr">I. Complete the dialogue with the appropriate sentences (A – H).</div>
+
+    <div class="option-box">
+      <div class="opt-row">
+        <b>A.</b> It's so interesting!<br>
+        <b>B.</b> It's a ring of icy bodies just outside of Neptune's orbit.<br>
+        <b>C.</b> It's a dwarf planet that lies in the Kuiper Belt.<br>
+        <b>D.</b> Because it did not meet the three criteria the IAU uses to define a full-sized planet. It is not big enough to clear smaller bodies close to it.<br>
+        <b>E.</b> Well, you should read astronomy books.<br>
+        <b>F.</b> Sure. Eight planets.<br>
+        <b>G.</b> Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.<br>
+        <b>H.</b> Yes. A while back, Pluto was the ninth planet from the sun, but it is not counted as a planet any more.
+      </div>
+    </div>
+
+    <div class="dialogue" id="dialogue-container"></div>
+  </div>
+
+  <!-- ========= E. WRITING ========= -->
+  <div class="section-card">
+    <div class="section-title">✍️ E. WRITING</div>
+
+    <!-- Part I -->
+    <div class="section-instr">I. Reorder the words to make sentences. (Chọn câu được sắp xếp đúng)</div>
+    <div id="writing1-container"></div>
+
+    <div class="divider"></div>
+
+    <!-- Part II -->
+    <div class="section-instr">II. Write the second sentence so that it has the same meaning as the first one. (Chọn câu biến đổi đúng)</div>
+    <div id="writing2-container"></div>
+  </div>
+
+  <div class="submit-area">
+    <button class="submit-btn" onclick="submitQuiz()">🚀 Nộp Bài &amp; Xem Điểm</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+
+const SPEAKING_OPTIONS = {
+  A: "It's so interesting!",
+  B: "It's a ring of icy bodies just outside of Neptune's orbit.",
+  C: "It's a dwarf planet that lies in the Kuiper Belt.",
+  D: "Because it did not meet the three criteria the IAU uses to define a full-sized planet. It is not big enough to clear smaller bodies close to it.",
+  E: "Well, you should read astronomy books.",
+  F: "Sure. Eight planets.",
+  G: "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
+  H: "Yes. A while back, Pluto was the ninth planet from the sun, but it is not counted as a planet any more."
+};
+
+const SPEAKING_ANSWERS = {1:'F',2:'G',3:'H',4:'D',5:'C',6:'B',7:'A',8:'E'};
+
+const DIALOGUE = [
+  {speaker:'Minh', text:"Emily! Do you know how many planets there are in our solar system?"},
+  {speaker:'Emily', blank:1},
+  {speaker:'Minh', text:"What are they?"},
+  {speaker:'Emily', blank:2},
+  {speaker:'Minh', text:"How about Pluto? Have you ever heard about it?"},
+  {speaker:'Emily', blank:3},
+  {speaker:'Minh', text:"Why is Pluto no longer a planet?"},
+  {speaker:'Emily', blank:4},
+  {speaker:'Minh', text:"So what is Pluto?"},
+  {speaker:'Emily', blank:5},
+  {speaker:'Minh', text:"I still don't know much about this. What's the Kuiper Belt?"},
+  {speaker:'Emily', blank:6},
+  {speaker:'Minh', text:"Oh... I think I'll have to learn more about astronomy."},
+  {speaker:'', blank:7},
+  {speaker:'Emily', blank:8, suffix:"There are plenty of great books on space and universe."}
+];
+
+const SPEAKING_EXPL = {
+  1: `<span class="ex-title">📌 Đáp án: F – "Sure. Eight planets."</span><br>
+<em>Dịch: "Chắc chắn rồi. Tám hành tinh."</em><br><br>
+<b>Phân tích:</b> Minh hỏi <em>"Bạn có biết trong hệ mặt trời có bao nhiêu hành tinh không?"</em> → Emily phải trả lời số lượng cụ thể.<br>
+<b>Tại sao F đúng:</b> Đây là câu trả lời trực tiếp cho câu hỏi số lượng hành tinh.<br>
+<b>Tại sao các đáp án khác sai:</b><br>
+• A ("Thật thú vị!") → Cảm xúc, không phải câu trả lời cho câu hỏi số lượng<br>
+• G (liệt kê tên hành tinh) → Phù hợp hơn khi Minh hỏi "Chúng là gì?" (câu 2)<br>
+• H, B, C, D, E → Chưa phù hợp với ngữ cảnh câu hỏi này`,
+
+  2: `<span class="ex-title">📌 Đáp án: G – "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune."</span><br>
+<em>Dịch: "Sao Thủy, Sao Kim, Trái Đất, Sao Hỏa, Sao Mộc, Sao Thổ, Sao Thiên Vương và Sao Hải Vương."</em><br><br>
+<b>Phân tích:</b> Minh hỏi <em>"Chúng là gì?"</em> → Emily liệt kê tên 8 hành tinh vừa đề cập ở câu 1.<br>
+<b>Tại sao G đúng:</b> Câu hỏi "What are they?" cần câu trả lời liệt kê tên, đúng với 8 hành tinh trong hệ mặt trời.<br>
+<b>Logic hội thoại:</b> Câu 1 (F) nói "Tám hành tinh" → Câu 2 (G) liệt kê ra tên 8 hành tinh đó – chuỗi logic hoàn chỉnh.`,
+
+  3: `<span class="ex-title">📌 Đáp án: H – "Yes. A while back, Pluto was the ninth planet from the sun, but it is not counted as a planet any more."</span><br>
+<em>Dịch: "Có. Một thời gian trước, Sao Diêm Vương là hành tinh thứ chín từ Mặt Trời, nhưng giờ nó không còn được tính là hành tinh nữa."</em><br><br>
+<b>Phân tích:</b> Minh hỏi về Pluto: <em>"How about Pluto? Have you ever heard about it?"</em><br>
+<b>Tại sao H đúng:</b> Emily trả lời "Yes" → xác nhận biết Pluto, rồi giải thích lịch sử của nó.<br>
+<b>Từ khóa:</b> "A while back" = trước đây; "is not counted as a planet any more" = không còn được coi là hành tinh nữa.`,
+
+  4: `<span class="ex-title">📌 Đáp án: D – "Because it did not meet the three criteria the IAU uses to define a full-sized planet. It is not big enough to clear smaller bodies close to it."</span><br>
+<em>Dịch: "Vì nó không đáp ứng ba tiêu chí mà IAU dùng để định nghĩa một hành tinh đầy đủ. Nó không đủ lớn để dọn sạch các thiên thể nhỏ hơn gần nó."</em><br><br>
+<b>Phân tích:</b> Minh hỏi <em>"Tại sao Pluto không còn là hành tinh?"</em> → Cần câu giải thích lý do.<br>
+<b>Từ khóa:</b> "criteria" = tiêu chí; "IAU" = International Astronomical Union (Liên minh Thiên văn Quốc tế); "clear smaller bodies" = dọn sạch các thiên thể nhỏ hơn.`,
+
+  5: `<span class="ex-title">📌 Đáp án: C – "It's a dwarf planet that lies in the Kuiper Belt."</span><br>
+<em>Dịch: "Nó là một hành tinh lùn nằm trong Vành đai Kuiper."</em><br><br>
+<b>Phân tích:</b> Minh hỏi <em>"Vậy Pluto là gì?"</em> → Cần câu định nghĩa Pluto.<br>
+<b>Từ khóa:</b> "dwarf planet" = hành tinh lùn; "Kuiper Belt" = Vành đai Kuiper (vùng ngoài hệ mặt trời).<br>
+<b>Logic:</b> Sau khi giải thích lý do (câu 4), câu 5 xác định Pluto thuộc loại nào.`,
+
+  6: `<span class="ex-title">📌 Đáp án: B – "It's a ring of icy bodies just outside of Neptune's orbit."</span><br>
+<em>Dịch: "Đó là một vành đai các thiên thể băng giá nằm ngay bên ngoài quỹ đạo của Sao Hải Vương."</em><br><br>
+<b>Phân tích:</b> Minh hỏi <em>"Vành đai Kuiper là gì?"</em> → Cần định nghĩa về Kuiper Belt.<br>
+<b>Từ khóa:</b> "ring of icy bodies" = vành đai các thiên thể băng giá; "Neptune's orbit" = quỹ đạo của Sao Hải Vương.<br>
+<b>Logic:</b> Câu 5 (C) đề cập đến Kuiper Belt → Câu 6 (B) giải thích nó là gì.`,
+
+  7: `<span class="ex-title">📌 Đáp án: A – "It's so interesting!"</span><br>
+<em>Dịch: "Thật thú vị quá!"</em><br><br>
+<b>Phân tích:</b> Sau khi Minh nói "Tôi nghĩ tôi cần học thêm về thiên văn học", Emily (hoặc Minh tiếp tục) bày tỏ cảm xúc hứng thú.<br>
+<b>Tại sao A đúng:</b> "It's so interesting!" là câu cảm thán thể hiện sự hứng thú với chủ đề vừa thảo luận.<br>
+<b>Lưu ý:</b> Đây là phản ứng tự nhiên trước khi đưa ra lời khuyên ở câu tiếp theo.`,
+
+  8: `<span class="ex-title">📌 Đáp án: E – "Well, you should read astronomy books."</span><br>
+<em>Dịch: "Thế thì, bạn nên đọc các cuốn sách thiên văn học."</em><br><br>
+<b>Phân tích:</b> Emily kết thúc hội thoại bằng lời khuyên thực tế cho Minh.<br>
+<b>Từ khóa:</b> "should" = nên (lời khuyên); "astronomy books" = sách thiên văn học.<br>
+<b>Logic:</b> Câu tiếp theo "There are plenty of great books on space and universe." là Emily tiếp tục nhấn mạnh thêm → Cả câu E + câu đó tạo thành lời kết hoàn chỉnh.`
+};
+
+// ─── WRITING PART I ───
+const WRITING1 = [
+  {
+    id:'w1_1',
+    scramble:"there/ Susan/ was/ Mars/ her teacher/ if/ water/ asked/ on",
+    opts:[
+      "Susan asked her teacher if there was water on Mars.",
+      "Susan asked if her teacher was water there on Mars.",
+      "Susan's teacher asked her if there was water on Mars.",
+      "Susan asked her teacher if was there water on Mars."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Susan asked her teacher if there was water on Mars.</span><br>
+<em>Dịch: "Susan đã hỏi giáo viên của mình xem có nước trên Sao Hỏa không."</em><br><br>
+<b>Cấu trúc Reported Question (Câu hỏi gián tiếp – Yes/No):</b><br>
+S + asked + O + <em>if/whether</em> + S + V (lùi thì)<br>
+→ Susan (S) / asked (V) / her teacher (O) / if / there was / water / on Mars<br><br>
+<b>Lùi thì:</b> "is there water?" → "if there was water" (Present Simple → Past Simple)<br>
+<b>Lưu ý:</b> Trong câu hỏi gián tiếp, KHÔNG đảo ngữ (was there → there was).`
+  },
+  {
+    id:'w1_2',
+    scramble:"too/ because/ it's/ close/ There/ the sun/ might not/ life/ on Mercury/ to/ be",
+    opts:[
+      "There might not be life on Mercury because it's too close to the sun.",
+      "Mercury might not there be life because it's too close to the sun.",
+      "There might not life be on Mercury because it's close too to the sun.",
+      "Life might not be there on Mercury because it's too close to the sun."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: There might not be life on Mercury because it's too close to the sun.</span><br>
+<em>Dịch: "Có thể không có sự sống trên Sao Thủy vì nó quá gần Mặt Trời."</em><br><br>
+<b>Cấu trúc "There + modal + be":</b> There might (not) be + N = Có thể (không) có...<br>
+<b>Cấu trúc "too + adj + to + V":</b> "too close to the sun" = gần mặt trời quá → ngụ ý không thể tồn tại sự sống<br>
+<b>Từ khóa:</b> "might not" = có thể không; "because" = bởi vì (nối nguyên nhân).`
+  },
+  {
+    id:'w1_3',
+    scramble:"Scientists/ we/ beyond Earth/ evidence/ say that/ life/ may/ for/ find/ within the next decades",
+    opts:[
+      "Scientists say that we may find evidence for life beyond Earth within the next decades.",
+      "Scientists say that evidence we may find for life beyond Earth within the next decades.",
+      "Scientists say that we may find for life evidence beyond Earth within the next decades.",
+      "Scientists say we may that find evidence for life beyond Earth within the next decades."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Scientists say that we may find evidence for life beyond Earth within the next decades.</span><br>
+<em>Dịch: "Các nhà khoa học nói rằng chúng ta có thể tìm thấy bằng chứng về sự sống ngoài Trái Đất trong vài thập kỷ tới."</em><br><br>
+<b>Cấu trúc:</b> S + say that + S + may + V (bare inf)<br>
+<b>Từ khóa:</b><br>
+• "evidence for life" = bằng chứng về sự sống<br>
+• "beyond Earth" = ngoài Trái Đất (beyond = vượt ra ngoài, bên ngoài)<br>
+• "within the next decades" = trong vài thập kỷ tới<br>
+• "may find" = modal verb + bare infinitive (KHÔNG thêm 's' hay 'ed')`
+  },
+  {
+    id:'w1_4',
+    scramble:"first/ Jenny/ wanted to know/ contact/ we/ with/ aliens/ how/ make/ would",
+    opts:[
+      "Jenny wanted to know how we would make first contact with aliens.",
+      "Jenny wanted to know how first contact we would make with aliens.",
+      "Jenny wanted to know how would we make first contact with aliens.",
+      "Jenny wanted how to know we would make first contact with aliens."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Jenny wanted to know how we would make first contact with aliens.</span><br>
+<em>Dịch: "Jenny muốn biết làm thế nào chúng ta sẽ liên lạc lần đầu với người ngoài hành tinh."</em><br><br>
+<b>Cấu trúc Indirect Question (câu hỏi WH gián tiếp):</b><br>
+S + wanted to know + how/what/when... + S + would + V<br>
+→ KHÔNG đảo ngữ sau "how": "how we would make" ✅ (không phải "how would we make")<br>
+<b>Từ khóa:</b> "make first contact with" = liên lạc lần đầu với; "aliens" = người ngoài hành tinh.`
+  },
+  {
+    id:'w1_5',
+    scramble:"three/ from/ Mercury/ farther/ times/ Earth/ is/ the sun/ than",
+    opts:[
+      "Earth is three times farther from the sun than Mercury.",
+      "Mercury is three times farther from the sun than Earth.",
+      "Earth is farther three times from the sun than Mercury.",
+      "Earth is three times far from the sun than Mercury."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Earth is three times farther from the sun than Mercury.</span><br>
+<em>Dịch: "Trái Đất xa Mặt Trời hơn Sao Thủy ba lần."</em><br><br>
+<b>Cấu trúc so sánh bội số:</b> S + is + <em>number + times + comparative adj</em> + than + O<br>
+→ "three times farther" = xa hơn ba lần<br>
+<b>Lưu ý:</b> "farther" = comparative of "far" (xa hơn); KHÔNG dùng "more far"<br>
+<b>Phân biệt:</b><br>
+• B sai vì đảo ngược chủ ngữ (Mercury xa hơn Earth? → sai thực tế)<br>
+• C sai vì "farther three times" → sai word order<br>
+• D sai vì "three times far" → "far" không phải comparative form`
+  },
+  {
+    id:'w1_6',
+    scramble:"in/ that/ the interviewer/ like/ a/ the UFO/ looked/ Nick/ big disc/ told/ the sky",
+    opts:[
+      "Nick told the interviewer that the UFO looked like a big disc in the sky.",
+      "Nick told the interviewer that the UFO looked as like a big disc in the sky.",
+      "Nick told the interviewer that the UFO looked like big disc a in the sky.",
+      "Nick told the interviewer that the UFO in the sky looked like a big disc."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Nick told the interviewer that the UFO looked like a big disc in the sky.</span><br>
+<em>Dịch: "Nick đã nói với người phỏng vấn rằng UFO trông giống như một đĩa lớn trên bầu trời."</em><br><br>
+<b>Cấu trúc Reported Statement:</b> S + told + O + that + clause<br>
+<b>Cụm từ:</b> "look like + N" = trông giống như + danh từ (KHÔNG dùng "as like")<br>
+<b>Lùi thì:</b> "looks" → "looked" (Present → Past)<br>
+<b>Từ khóa:</b> "disc" = đĩa; "in the sky" = trên bầu trời → cụm từ bổ sung nghĩa cho "disc".`
+  },
+  {
+    id:'w1_7',
+    scramble:"A day/ Earth's/ to/ on/ Mars/ similar/ are/ for/ seasons/ its/ 24.5 hours/ and",
+    opts:[
+      "A day on Mars lasts for 24.5 hours and its seasons are similar to Earth's.",
+      "A day on Mars lasts for 24.5 hours and similar seasons are to its Earth's.",
+      "A day on Mars lasts 24.5 hours for and its seasons are similar to Earth's.",
+      "A day on Mars lasts for 24.5 hours and its seasons are similar as Earth's."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: A day on Mars lasts for 24.5 hours and its seasons are similar to Earth's.</span><br>
+<em>Dịch: "Một ngày trên Sao Hỏa kéo dài 24,5 giờ và các mùa của nó tương tự như của Trái Đất."</em><br><br>
+<b>Cụm từ quan trọng:</b><br>
+• "last for + time" = kéo dài (VD: "lasts for 24.5 hours")<br>
+• "similar to + N" = tương tự với (KHÔNG dùng "similar as")<br>
+• "Earth's" = possessive → "Earth's seasons" (các mùa của Trái Đất)<br>
+<b>Lưu ý:</b> D sai vì "similar as" → Sai cấu trúc. Phải dùng "similar to".`
+  },
+  {
+    id:'w1_8',
+    scramble:"fastest/ of/ to/ the Sun/ the planets/ Mercury/ orbit/ is/ the/ all",
+    opts:[
+      "Mercury is the fastest of all the planets to orbit the Sun.",
+      "The fastest of all the planets to orbit the Sun Mercury is.",
+      "Mercury is the most fast of all the planets to orbit the Sun.",
+      "Mercury is fastest of all the planets to orbit the Sun."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Mercury is the fastest of all the planets to orbit the Sun.</span><br>
+<em>Dịch: "Sao Thủy là hành tinh quay quanh Mặt Trời nhanh nhất trong tất cả các hành tinh."</em><br><br>
+<b>Cấu trúc Superlative (so sánh nhất):</b><br>
+S + is + <em>the + adj-est</em> + of all + N + to-infinitive<br>
+→ "the fastest of all the planets" = nhanh nhất trong tất cả hành tinh<br>
+• C sai: "most fast" → Sai! "fast" là tính từ ngắn → dùng "-est" (fastest)<br>
+• D sai: thiếu mạo từ "the" trước "fastest" trong superlative<br>
+<b>Từ khóa:</b> "orbit the Sun" = quay quanh Mặt Trời (to-infinitive bổ nghĩa cho "planets")`
+  },
+  {
+    id:'w1_9',
+    scramble:"other/ life/ on/ Do/ planets/ you/ intelligent/ exists/ think?",
+    opts:[
+      "Do you think intelligent life exists on other planets?",
+      "Do you think exists intelligent life on other planets?",
+      "Do you intelligent think life exists on other planets?",
+      "Think you do intelligent life exists on other planets?"
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: Do you think intelligent life exists on other planets?</span><br>
+<em>Dịch: "Bạn có nghĩ rằng sự sống thông minh tồn tại trên các hành tinh khác không?"</em><br><br>
+<b>Cấu trúc:</b> Do + S + think + (that) + S + V...?<br>
+→ Câu hỏi với "Do you think..." → mệnh đề sau KHÔNG đảo ngữ<br>
+• B sai: "exists intelligent life" → Đảo ngữ sai trong mệnh đề phụ<br>
+<b>Từ khóa:</b><br>
+• "intelligent life" = sự sống thông minh<br>
+• "exists on" = tồn tại trên (exist là nội động từ, không cần tân ngữ)`
+  },
+  {
+    id:'w1_10',
+    scramble:"if/ me/ what/ I/ asked/ would/ She/ do/ I/ a UFO/ saw",
+    opts:[
+      "She asked me what I would do if I saw a UFO.",
+      "She asked me what would I do if I saw a UFO.",
+      "She asked me that I would do what if I saw a UFO.",
+      "She asked what I would do if I saw me a UFO."
+    ],
+    correct:0,
+    expl:`<span class="ex-title">📌 Đáp án: She asked me what I would do if I saw a UFO.</span><br>
+<em>Dịch: "Cô ấy hỏi tôi tôi sẽ làm gì nếu nhìn thấy một UFO."</em><br><br>
+<b>Cấu trúc Indirect Question + Conditional:</b><br>
+S + asked + O + <em>what + S + would + V</em> + if + S + V(past)<br>
+→ "what I would do" = WH-question gián tiếp, KHÔNG đảo ngữ<br>
+→ "if I saw" = câu điều kiện loại 2 (Past Simple) trong câu gián tiếp<br>
+<b>Lưu ý:</b><br>
+• B sai: "what would I do" → Đảo ngữ sai trong câu gián tiếp<br>
+• C sai: "that I would do what" → Sai cấu trúc<br>
+• "would do" = lùi thì của "will do" trong reported speech`
+  }
+];
+
+// ─── WRITING PART II (Free-text) ───
+const WRITING2 = [
+  {
+    id:'w2_1',
+    given:"Mars lacks oxygen to support human life, so it is unsuitable for human.",
+    partial:"Mars is",
+    fullCorrect:"Mars is unsuitable for human because it lacks oxygen to support human life.",
+    // accepted = normalized completions AFTER the partial starter
+    accepted:[
+      "unsuitable for human because it lacks oxygen to support human life",
+      "unsuitable for humans because it lacks oxygen to support human life"
+    ],
+    keyPhrases:["unsuitable","because","lacks oxygen"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: Mars is <em>unsuitable for human because it lacks oxygen to support human life.</em></span><br>
+<em>🇻🇳 Dịch: "Sao Hỏa không phù hợp cho con người vì nó thiếu oxy để duy trì sự sống của con người."</em><br><br>
+<b>📐 Cấu trúc biến đổi:</b><br>
+"S + lacks..., <b>so</b> it is unsuitable" → "S is unsuitable <b>because</b> S + lacks..."<br>
+✅ "so" (đứng đầu vế kết quả) được thay bằng "because" (đứng đầu vế nguyên nhân).<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "although" = mặc dù → đảo ngược nghĩa, hoàn toàn sai<br>
+• "lacking of oxygen" → Sai! Đúng: "lack oxygen" (V) hoặc "lacking in oxygen"<br>
+• "it lack oxygen" → Thiếu –s ở ngôi thứ 3 số ít: "it lacks"`
+  },
+  {
+    id:'w2_2',
+    given:"'Can NASA prove that there is life on a moon of Jupiter?'",
+    partial:"He asked",
+    fullCorrect:"He asked if/whether NASA could prove that there was life on a moon of Jupiter.",
+    accepted:[
+      "if nasa could prove that there was life on a moon of jupiter",
+      "whether nasa could prove that there was life on a moon of jupiter",
+      "if nasa could prove that there was life on a moon of jupiter.",
+      "whether nasa could prove that there was life on a moon of jupiter."
+    ],
+    keyPhrases:["could prove","there was life","moon of jupiter"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: He asked <em>if/whether NASA could prove that there was life on a moon of Jupiter.</em></span><br>
+<em>🇻🇳 Dịch: "Anh ấy hỏi liệu NASA có thể chứng minh rằng có sự sống trên một mặt trăng của Sao Mộc không."</em><br><br>
+<b>📐 Câu hỏi gián tiếp Yes/No:</b><br>
+S + asked + <b>if/whether</b> + S + V (lùi thì)<br><br>
+<b>🕐 Lùi thì trong Reported Speech:</b><br>
+• "Can" → <b>could</b> &nbsp;|&nbsp; "is" → <b>was</b><br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• Dùng "can / is" (không lùi thì) → Sai<br>
+• Dùng "that if" → Không dùng "that" trước "if/whether" trong câu hỏi gián tiếp<br>
+• Đảo ngữ "could NASA prove" → Sai! Câu gián tiếp KHÔNG đảo ngữ`
+  },
+  {
+    id:'w2_3',
+    given:"The student wanted to know how long it took to get to red planet.",
+    partial:"The student asked, '",
+    fullCorrect:"The student asked, 'How long does it take to get to red planet?'",
+    accepted:[
+      "how long does it take to get to red planet?'",
+      "how long does it take to get to red planet?",
+      "how long does it take to get to the red planet?'",
+      "how long does it take to get to the red planet?"
+    ],
+    keyPhrases:["how long does it take","to get to"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: The student asked, '<em>How long does it take to get to red planet?'</em></span><br>
+<em>🇻🇳 Dịch: "Học sinh hỏi: 'Mất bao lâu để đến hành tinh đỏ?'"</em><br><br>
+<b>📐 Chuyển từ Gián tiếp → Trực tiếp:</b><br>
+Khôi phục lại thì gốc: "took" (Past) → <b>"take"</b> (Present Simple)<br>
+Câu trực tiếp dùng đảo ngữ: <b>How long does it take...?</b><br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "did it take" → Past Simple không phù hợp với câu hỏi chung chung (thói quen)<br>
+• "does it took" → Lỗi thì: does + bare infinitive (KHÔNG dùng "took")<br>
+• "has it taken" → Present Perfect không phù hợp ngữ cảnh này`
+  },
+  {
+    id:'w2_4',
+    given:"Is The Martian one of his science fiction books?",
+    partial:"Is The Martian a",
+    fullCorrect:"Is The Martian a science fiction book of his?",
+    accepted:[
+      "science fiction book of his?",
+      "science fiction book of his",
+      "science-fiction book of his?",
+      "science-fiction book of his"
+    ],
+    keyPhrases:["science fiction book","of his"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: Is The Martian a <em>science fiction book of his?</em></span><br>
+<em>🇻🇳 Dịch: "The Martian có phải là một cuốn sách khoa học viễn tưởng của anh ấy không?"</em><br><br>
+<b>📐 Biến đổi cấu trúc (Double Genitive):</b><br>
+"one of his science fiction <b>books</b>" → "a science fiction <b>book</b> of <b>his</b>"<br>
+• "one of his + số nhiều" = "a + số ít + of his" → hai cách diễn đạt tương đương<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "of <b>him</b>" → Sai! Sau "of" dùng <b>sở hữu đại từ</b> (his/hers/mine...), không dùng tân ngữ (him/her/me)<br>
+• "a science fiction his book" → Sai word order`
+  },
+  {
+    id:'w2_5',
+    given:"The heavy snow made it impossible for the plane to take off on time.",
+    partial:"The heavy snow prevented",
+    fullCorrect:"The heavy snow prevented the plane from taking off on time.",
+    accepted:[
+      "the plane from taking off on time",
+      "the plane from taking off on time.",
+      "the airplane from taking off on time",
+      "the airplane from taking off on time."
+    ],
+    keyPhrases:["the plane","from taking off","on time"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: The heavy snow prevented <em>the plane from taking off on time.</em></span><br>
+<em>🇻🇳 Dịch: "Tuyết rơi dày đã ngăn máy bay cất cánh đúng giờ."</em><br><br>
+<b>📐 Cấu trúc "prevent":</b><br>
+prevent + O + <b>from + V-ing</b> = ngăn ai/cái gì làm gì<br><br>
+<b>🔁 Biến đổi tương đương:</b><br>
+"make it impossible for O to V" ⟺ "prevent O <b>from V-ing</b>"<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "prevent the plane <b>to take off</b>" → Sau "prevent...from" KHÔNG dùng to-infinitive<br>
+• "prevent the plane <b>from to take</b>" → Không bao giờ dùng "from to"<br>
+• "prevent the plane <b>taking off</b>" → Thiếu "from" → cấu trúc cố định bắt buộc có "from"`
+  },
+  {
+    id:'w2_6',
+    given:"'What time will you visit the space museum tomorrow?'",
+    partial:"My parents asked",
+    fullCorrect:"My parents asked what time I would visit the space museum the next day / the following day.",
+    accepted:[
+      "what time i would visit the space museum the next day",
+      "what time i would visit the space museum the next day.",
+      "what time i would visit the space museum the following day",
+      "what time i would visit the space museum the following day."
+    ],
+    keyPhrases:["what time i would visit","space museum","next day"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: My parents asked <em>what time I would visit the space museum the next day / the following day.</em></span><br>
+<em>🇻🇳 Dịch: "Bố mẹ tôi hỏi mấy giờ tôi sẽ đến thăm bảo tàng vũ trụ vào ngày hôm sau."</em><br><br>
+<b>📐 Chuyển sang Câu Hỏi Gián Tiếp WH:</b><br>
+• "will you" → <b>I would</b> (lùi thì + đổi đại từ)<br>
+• "tomorrow" → <b>the next day / the following day</b><br>
+• Không đảo ngữ: "what time <b>I would visit</b>" ✅ (không phải "would I visit")<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "what time <b>will I</b>" → Đảo ngữ sai trong câu gián tiếp<br>
+• Giữ nguyên "tomorrow" → Không đổi trạng từ thời gian`
+  },
+  {
+    id:'w2_7',
+    given:"It's possible that Lucy isn't at home now.",
+    partial:"Lucy might",
+    fullCorrect:"Lucy might not be at home now.",
+    accepted:[
+      "not be at home now",
+      "not be at home now.",
+      "not be home now",
+      "not be home now."
+    ],
+    keyPhrases:["not be","at home","now"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: Lucy might <em>not be at home now.</em></span><br>
+<em>🇻🇳 Dịch: "Lucy có thể không ở nhà lúc này."</em><br><br>
+<b>📐 Biến đổi cấu trúc:</b><br>
+"It's possible that S <b>isn't</b>..." → "S + <b>might not be</b>..."<br>
+• "It's possible that" biểu đạt khả năng ~50% → tương đương với "might"<br><br>
+<b>📍 Vị trí "not":</b> Modal + <b>not</b> + bare infinitive → "might <b>not</b> be" ✅<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "might <b>be not</b>" → "not" phải đứng TRƯỚC "be", không phải sau<br>
+• "might not <b>have been</b>" → Perfect modal = diễn tả quá khứ, không hợp với "now"<br>
+• "may <b>be not</b>" → Đúng phải là "may not be"`
+  },
+  {
+    id:'w2_8',
+    given:"The rover was exploring the surface of Mars when a dust storm buried it.",
+    partial:"While",
+    fullCorrect:"While the rover was exploring the surface of Mars, a dust storm buried it.",
+    accepted:[
+      "the rover was exploring the surface of mars, a dust storm buried it",
+      "the rover was exploring the surface of mars, a dust storm buried it.",
+      "the rover was exploring the surface of mars a dust storm buried it",
+      "the rover was exploring the surface of mars a dust storm buried it."
+    ],
+    keyPhrases:["rover was exploring","surface of mars","dust storm buried"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: While <em>the rover was exploring the surface of Mars, a dust storm buried it.</em></span><br>
+<em>🇻🇳 Dịch: "Trong khi chiếc xe thám hiểm đang khám phá bề mặt Sao Hỏa, một cơn bão bụi đã vùi lấp nó."</em><br><br>
+<b>📐 Cấu trúc While/When + Past Tenses:</b><br>
+<b>While</b> + Past Continuous (hành động đang diễn ra kéo dài)<br>
++ Past Simple (hành động xảy ra đột ngột, cắt ngang)<br>
+→ "While + <b>was exploring</b>" + "<b>buried</b>" ✅<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• "While the rover <b>explored</b>" → Không diễn tả hành động đang diễn ra<br>
+• "a dust storm <b>was burying</b>" → Bão bụi là sự kiện đột ngột → Past Simple<br>
+• Khi "when" → "while": vế <em>while</em> BẮT BUỘC dùng Past Continuous`
+  },
+  {
+    id:'w2_9',
+    given:"'We are meeting Tony at 8 o'clock tonight.'",
+    partial:"She said that",
+    fullCorrect:"She said that they were meeting Tony at 8 o'clock that night.",
+    accepted:[
+      "they were meeting tony at 8 o'clock that night",
+      "they were meeting tony at 8 o'clock that night.",
+      "they were meeting tony at 8 oclock that night",
+      "they were meeting tony at 8 o'clock that night.",
+      "they were meeting tony at eight o'clock that night"
+    ],
+    keyPhrases:["they were meeting tony","that night"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: She said that <em>they were meeting Tony at 8 o'clock that night.</em></span><br>
+<em>🇻🇳 Dịch: "Cô ấy nói rằng họ đang gặp Tony lúc 8 giờ đêm hôm đó."</em><br><br>
+<b>📐 Chuyển sang Reported Speech:</b><br>
+• "We" → <b>they</b> (đổi đại từ nhân xưng)<br>
+• "are meeting" → <b>were meeting</b> (Present Cont. → Past Cont. – lùi thì)<br>
+• "tonight" → <b>that night</b> (đổi trạng từ thời gian)<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• Không lùi thì ("are meeting" → giữ nguyên) → Sai<br>
+• Giữ nguyên "tonight" → Phải đổi thành "that night"<br>
+• "met" → Past Simple mất đi nghĩa "đang gặp" (lịch đã sắp xếp)`
+  },
+  {
+    id:'w2_10',
+    given:"Sam told me that he was very stressed then because of the final test the following week.",
+    partial:"Sam said to me, '",
+    fullCorrect:"Sam said to me, 'I am very stressed now because of the final test next week.'",
+    accepted:[
+      "i am very stressed now because of the final test next week.'",
+      "i am very stressed now because of the final test next week.'",
+      "i am very stressed now because of the final test next week",
+      "i am very stressed now because of the final test next week.",
+      "i'm very stressed now because of the final test next week.'",
+      "i'm very stressed now because of the final test next week."
+    ],
+    keyPhrases:["i am","stressed now","final test next week"],
+    expl:`<span class="ex-title">📌 Đáp án đúng: Sam said to me, '<em>I am very stressed now because of the final test next week.'</em></span><br>
+<em>🇻🇳 Dịch: "Sam nói với tôi rằng: 'Tôi đang rất căng thẳng lúc này vì bài kiểm tra cuối kỳ tuần tới.'"</em><br><br>
+<b>📐 Chuyển từ Gián tiếp → Trực tiếp (Restore Direct Speech):</b><br>
+• "he" → <b>I</b> (người nói tự xưng = Sam)<br>
+• "was" → <b>am</b> (khôi phục thì gốc: Past → Present)<br>
+• "then" → <b>now</b> (khôi phục trạng từ thời gian)<br>
+• "the following week" → <b>next week</b> (khôi phục trạng từ thời gian)<br><br>
+<b>⚠️ Lỗi thường gặp:</b><br>
+• Giữ nguyên "was...then" → Không khôi phục thì<br>
+• Dùng "He is stressed" → Trong direct speech, Sam tự gọi mình là "I" chứ không phải "He"`
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let speakingState = {}; // blank -> selected letter
+let writingState = {};  // w1 qid -> chosen text
+let writing2State = {}; // w2 qid -> {typed, isCorrect}
+let totalAnswered = 0;
+let totalCorrect = 0;
+let currentBlank = null;
+const TOTAL_QUESTIONS = 8 + 10 + 10; // 28
+
+// ═══════════════════════════════════════════════════════
+//  AUDIO
+// ═══════════════════════════════════════════════════════
+let audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+function playCorrect(){
+  try{
+    const ctx = getAudioCtx();
+    [523.25,659.25,783.99].forEach((f,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=f;o.type='sine';
+      const t=ctx.currentTime+i*0.1;
+      g.gain.setValueAtTime(0.3,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.4);
+      o.start(t);o.stop(t+0.4);
+    });
+  }catch(e){}
+}
+function playWrong(){
+  try{
+    const ctx = getAudioCtx();
+    [220,196,174.61].forEach((f,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=f;o.type='sawtooth';
+      const t=ctx.currentTime+i*0.12;
+      g.gain.setValueAtTime(0.25,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.35);
+      o.start(t);o.stop(t+0.35);
+    });
+  }catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONFETTI
+// ═══════════════════════════════════════════════════════
+const canvas = document.getElementById('confetti-canvas');
+const ctx2d = canvas.getContext('2d');
+let confettis = [];
+let confettiRunning = false;
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function launchConfetti(){
+  const colors=['#8854C0','#FDCB6E','#00C9A7','#f64f59','#4ECDC4','#FF6B9D'];
+  for(let i=0;i<80;i++){
+    confettis.push({
+      x: Math.random()*canvas.width,
+      y: -10,
+      vx: (Math.random()-0.5)*6,
+      vy: Math.random()*4+2,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      size: Math.random()*8+4,
+      rot: Math.random()*360,
+      rotV: (Math.random()-0.5)*8
+    });
+  }
+  if(!confettiRunning) animateConfetti();
+}
+function animateConfetti(){
+  confettiRunning = true;
+  ctx2d.clearRect(0,0,canvas.width,canvas.height);
+  confettis.forEach(c=>{
+    c.x+=c.vx; c.y+=c.vy; c.rot+=c.rotV; c.vy+=0.05;
+    ctx2d.save();
+    ctx2d.translate(c.x,c.y);
+    ctx2d.rotate(c.rot*Math.PI/180);
+    ctx2d.fillStyle=c.color;
+    ctx2d.fillRect(-c.size/2,-c.size/4,c.size,c.size/2);
+    ctx2d.restore();
+  });
+  confettis = confettis.filter(c=>c.y<canvas.height+20);
+  if(confettis.length>0) requestAnimationFrame(animateConfetti);
+  else confettiRunning=false;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCORE BAR UPDATE
+// ═══════════════════════════════════════════════════════
+function updateScoreBar(){
+  document.getElementById('live-score').textContent = totalCorrect;
+  document.getElementById('answered-count').textContent = totalAnswered;
+  const pct = (totalAnswered/TOTAL_QUESTIONS*100).toFixed(0);
+  document.getElementById('prog-fill').style.width = pct+'%';
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER SPEAKING
+// ═══════════════════════════════════════════════════════
+function renderSpeaking(){
+  const container = document.getElementById('dialogue-container');
+  container.innerHTML = '';
+  DIALOGUE.forEach(line=>{
+    const div = document.createElement('div');
+    div.className = 'd-line';
+    if(line.blank !== undefined){
+      const blankNum = line.blank;
+      const answered = speakingState[blankNum];
+      const correct = answered === SPEAKING_ANSWERS[blankNum];
+      let btnClass = 'blank-btn';
+      if(answered) btnClass += correct ? ' correct-ans answered' : ' wrong-ans answered';
+      let btnText = answered ? `(${blankNum}) ${answered}: ${SPEAKING_OPTIONS[answered]}` : `(${blankNum}) _____ Click to choose`;
+      div.innerHTML = `
+        <span class="d-speaker">${line.speaker ? line.speaker+':' : ''}</span>
+        <span class="d-text">
+          <button class="${btnClass}" id="blank-btn-${blankNum}" onclick="openModal(${blankNum})">${btnText}</button>
+          ${line.suffix ? `<span style="margin-left:6px;font-size:0.88rem;color:#444">${line.suffix}</span>` : ''}
+        </span>
+      `;
+      container.appendChild(div);
+      // Explanation
+      const exDiv = document.createElement('div');
+      exDiv.className = 'sp-expl' + (answered ? ' show' : '');
+      exDiv.id = `sp-expl-${blankNum}`;
+      exDiv.innerHTML = SPEAKING_EXPL[blankNum] || '';
+      container.appendChild(exDiv);
+    } else {
+      div.innerHTML = `
+        <span class="d-speaker">${line.speaker ? line.speaker+':' : ''}</span>
+        <span class="d-text">${line.text}</span>
+      `;
+      container.appendChild(div);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  MODAL (Speaking)
+// ═══════════════════════════════════════════════════════
+function openModal(blankNum){
+  if(speakingState[blankNum]) return; // already answered
+  currentBlank = blankNum;
+  document.getElementById('modal-title').textContent = `Chọn câu cho ô (${blankNum})`;
+  const optsDiv = document.getElementById('modal-opts');
+  optsDiv.innerHTML = '';
+  // Show only unused options
+  const used = new Set(Object.values(speakingState));
+  Object.entries(SPEAKING_OPTIONS).forEach(([letter, text])=>{
+    if(used.has(letter)) return;
+    const btn = document.createElement('button');
+    btn.className = 'modal-opt';
+    btn.innerHTML = `<b>${letter}.</b> ${text}`;
+    btn.onclick = () => chooseModalOpt(letter);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('speak-modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('speak-modal').classList.remove('open');
+  currentBlank = null;
+}
+
+function chooseModalOpt(letter){
+  const blankNum = currentBlank;
+  closeModal();
+  const correct = letter === SPEAKING_ANSWERS[blankNum];
+  speakingState[blankNum] = letter;
+  totalAnswered++;
+  if(correct){ totalCorrect++; playCorrect(); launchConfetti(); }
+  else { playWrong(); }
+  updateScoreBar();
+  // Re-render dialogue
+  renderSpeaking();
+  // Shake if wrong
+  if(!correct){
+    const btn = document.getElementById(`blank-btn-${blankNum}`);
+    if(btn){ btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'),600); }
+  }
+  // Show explanation
+  const exDiv = document.getElementById(`sp-expl-${blankNum}`);
+  if(exDiv) exDiv.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER WRITING
+// ═══════════════════════════════════════════════════════
+function shuffleArray(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function renderWriting1(){
+  const container = document.getElementById('writing1-container');
+  container.innerHTML = '';
+  WRITING1.forEach((q, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'q-card pop-in';
+    card.id = `card-${q.id}`;
+    // Shuffle options but track correct
+    const indexed = q.opts.map((o,i)=>({text:o, isCorrect: i===q.correct}));
+    const shuffled = shuffleArray(indexed);
+    const labels = ['A','B','C','D'];
+    const st = writingState[q.id];
+    let optsHTML = '<div class="opts opts-grid">';
+    shuffled.forEach((opt, i)=>{
+      let cls = 'opt-btn';
+      if(st){
+        cls += ' locked';
+        if(opt.isCorrect) cls += ' reveal';
+        else if(st === opt.text && !opt.isCorrect) cls += ' wrong';
+      }
+      optsHTML += `<button class="${cls}" onclick="chooseWriting('${q.id}','${q.opts[q.correct]}','${escapeQ(opt.text)}',${opt.isCorrect})">
+        <span class="lbl">${labels[i]}</span>${opt.text}
+      </button>`;
+    });
+    optsHTML += '</div>';
+    const expl = st ? `<div class="explanation show" id="expl-${q.id}">${q.expl}</div>` : `<div class="explanation" id="expl-${q.id}">${q.expl}</div>`;
+    card.innerHTML = `
+      <span class="q-num">Câu ${idx+1}</span>
+      <div class="q-words"><b>Sắp xếp:</b> ${q.scramble}</div>
+      ${optsHTML}
+      ${expl}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderWriting2(){
+  const container = document.getElementById('writing2-container');
+  container.innerHTML = '';
+  WRITING2.forEach((q, idx)=>{
+    const st = writing2State[q.id]; // {typed, isCorrect} or null
+    const locked = !!st;
+
+    // Input value
+    const inputVal = st ? st.typed : '';
+    const inputCls = st ? (st.isCorrect ? 'ft-input ft-correct' : 'ft-input ft-wrong') : 'ft-input';
+
+    // Result badge
+    let resultHTML = '';
+    if(st){
+      if(st.isCorrect){
+        resultHTML = `<div class="ft-result r-correct show">✅ Chính xác! Rất giỏi!</div>`;
+      } else {
+        resultHTML = `
+          <div class="ft-result r-wrong show">❌ Chưa đúng. Câu trả lời của bạn: <em>${escapeHtml(st.typed)}</em></div>
+          <div class="ft-answer-reveal show">💡 Đáp án đúng: <b>${q.fullCorrect}</b></div>`;
+      }
+    }
+
+    const expl = st
+      ? `<div class="explanation show" id="expl-${q.id}">${q.expl}</div>`
+      : `<div class="explanation" id="expl-${q.id}">${q.expl}</div>`;
+
+    const card = document.createElement('div');
+    card.className = 'q-card pop-in';
+    card.id = `card-${q.id}`;
+    card.innerHTML = `
+      <span class="q-num">Câu ${idx+1}</span>
+      <div class="q-given">
+        <b>Câu gốc:</b> ${q.given}
+      </div>
+      <div class="ft-row">
+        <span class="ft-starter">${q.partial}</span>
+        <input
+          class="${inputCls}"
+          id="input-${q.id}"
+          type="text"
+          placeholder="Gõ phần còn lại của câu vào đây..."
+          value="${escapeAttr(inputVal)}"
+          ${locked ? 'disabled' : ''}
+          onkeydown="if(event.key==='Enter') checkW2('${q.id}')"
+        />
+        <button
+          class="ft-check-btn"
+          id="chk-btn-${q.id}"
+          onclick="checkW2('${q.id}')"
+          ${locked ? 'disabled' : ''}
+        >Kiểm tra ✓</button>
+      </div>
+      ${resultHTML}
+      ${expl}
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ─── normalize helper ───
+function normalizeAns(str){
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/['\u2018\u2019]/g,"'")  // smart quotes → straight
+    .replace(/\s+/g,' ')
+    .replace(/[.?!,']+$/,'')           // strip trailing punct
+    .trim();
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escapeAttr(s){
+  return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─── Smart answer checker ───
+function isAnswerCorrect(typed, q){
+  const norm = normalizeAns(typed);
+  if(!norm) return false;
+
+  // 1. Exact match against accepted list
+  for(const acc of q.accepted){
+    if(norm === normalizeAns(acc)) return true;
+  }
+
+  // 2. Key-phrase fallback: all key phrases must appear in student's answer
+  const lc = norm;
+  if(q.keyPhrases && q.keyPhrases.every(kp => lc.includes(normalizeAns(kp)))){
+    return true;
+  }
+  return false;
+}
+
+function checkW2(qid){
+  if(writing2State[qid]) return; // already checked
+  const input = document.getElementById(`input-${qid}`);
+  if(!input) return;
+  const typed = input.value.trim();
+  if(!typed){
+    input.style.borderColor = '#f64f59';
+    input.placeholder = '⚠️ Vui lòng gõ câu trả lời!';
+    setTimeout(()=>{input.style.borderColor='';input.placeholder='Gõ phần còn lại của câu vào đây...'},2000);
+    return;
+  }
+  const q = WRITING2.find(x=>x.id===qid);
+  const isCorrect = isAnswerCorrect(typed, q);
+  writing2State[qid] = {typed, isCorrect};
+  totalAnswered++;
+  if(isCorrect){ totalCorrect++; playCorrect(); launchConfetti(); }
+  else { playWrong(); }
+  updateScoreBar();
+  renderWriting2();
+  if(!isCorrect){
+    const card = document.getElementById(`card-${qid}`);
+    if(card){ card.classList.add('shake'); setTimeout(()=>card.classList.remove('shake'),600); }
+  }
+  const expl = document.getElementById(`expl-${qid}`);
+  if(expl){
+    expl.classList.add('show');
+    setTimeout(()=>expl.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
+  }
+}
+
+function escapeQ(str){
+  return str.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+
+function chooseWriting(qid, correctText, chosenText, isCorrect){
+  if(writingState[qid]) return;
+  writingState[qid] = chosenText;
+  totalAnswered++;
+  if(isCorrect){ totalCorrect++; playCorrect(); launchConfetti(); }
+  else { playWrong(); }
+  updateScoreBar();
+  renderWriting1();
+  // Shake wrong card
+  if(!isCorrect){
+    const card = document.getElementById(`card-${qid}`);
+    if(card){ card.classList.add('shake'); setTimeout(()=>card.classList.remove('shake'),600); }
+  }
+  // Scroll explanation into view
+  const expl = document.getElementById(`expl-${qid}`);
+  if(expl){
+    expl.classList.add('show');
+    setTimeout(()=>expl.scrollIntoView({behavior:'smooth',block:'nearest'}),200);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  SUBMIT
+// ═══════════════════════════════════════════════════════
+function submitQuiz(){
+  const total = TOTAL_QUESTIONS;
+  const score = totalCorrect;
+  const pct = Math.round(score/total*100);
+  let emoji, msg;
+  if(pct===100){ emoji='🏆'; msg='Xuất sắc! Bạn đã đạt điểm tuyệt đối! MS Chí Nên ULIS rất tự hào về bạn! 🌟'; }
+  else if(pct>=80){ emoji='🎉'; msg='Tuyệt vời! Bạn làm bài rất tốt! Hãy xem lại những câu sai để hoàn thiện hơn nhé! 💪'; }
+  else if(pct>=60){ emoji='😊'; msg='Khá tốt! Bạn đang tiến bộ! Hãy ôn luyện thêm phần ngữ pháp Reported Speech nhé! 📚'; }
+  else if(pct>=40){ emoji='🤔'; msg='Cố gắng lên! Hãy đọc kỹ phần giải thích của từng câu, bạn sẽ làm tốt hơn lần sau! 🔥'; }
+  else{ emoji='💡'; msg='Đừng nản! Hãy ôn lại lý thuyết và thử lại nhé! MS Chí Nên tin bạn làm được! 🌈'; }
+  
+  document.getElementById('sc-emoji').textContent = emoji;
+  document.getElementById('sc-num').textContent = `${score} / ${total} câu đúng (${pct}%)`;
+  document.getElementById('sc-msg').textContent = msg;
+  document.getElementById('score-popup').classList.add('open');
+  if(pct >= 60) launchConfetti();
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+renderSpeaking();
+renderWriting1();
+renderWriting2();
+updateScoreBar();
+
+// Close modal on overlay click
+document.getElementById('speak-modal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

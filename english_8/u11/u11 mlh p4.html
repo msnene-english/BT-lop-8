@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Tiếng Anh - MS Chí Nên ULIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #FDCB6E;
+            --accent: #00C9A7;
+            --correct: #00D26A;
+            --correct-shadow: #00A352;
+            --wrong: #FF4757;
+            --wrong-shadow: #D83A46;
+            --btn-bg: #ffffff;
+            --btn-shadow: #E2E8F0;
+            --text: #2D3748;
+            --bg-card: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            color: var(--text);
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #FF9A9E);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Nền chuyển màu loang */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Họa tiết lơ lửng */
+        .pattern-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10l7 20h21l-17 13 6 21-17-14-17 14 6-21-17-13h21z' fill='rgba(255,255,255,0.15)' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: floatPattern 30s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes floatPattern {
+            from { background-position: 0 0; }
+            to { background-position: 400px 400px; }
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 700;
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 3px solid white;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 10px;
+            border-bottom: 2px dashed var(--primary);
+            padding-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .btn-option {
+            background: var(--btn-bg);
+            border: 2px solid #E2E8F0;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+            box-shadow: 0 6px 0 var(--btn-shadow);
+            transition: all 0.1s ease;
+            position: relative;
+        }
+
+        .btn-option:hover {
+            transform: scale(1.02) translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .btn-option:active {
+            transform: scale(1) translateY(6px);
+            box-shadow: 0 0 0 transparent;
+        }
+
+        .btn-option.correct {
+            background: var(--correct);
+            border-color: var(--correct);
+            color: white;
+            box-shadow: 0 6px 0 var(--correct-shadow);
+            pointer-events: none;
+        }
+
+        .btn-option.wrong {
+            background: var(--wrong);
+            border-color: var(--wrong);
+            color: white;
+            box-shadow: 0 6px 0 var(--wrong-shadow);
+            pointer-events: none;
+        }
+
+        .btn-option.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Hiệu ứng rung lắc khi sai */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Khung giải thích */
+        .explanation {
+            margin-top: 20px;
+            background: #F8FAFC;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid var(--accent);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exp-step {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .exp-step b {
+            color: var(--primary);
+        }
+
+        /* Nút Nộp Bài */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 40px auto;
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: 0 8px 0 #D83A46;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        .submit-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 transparent;
+        }
+
+        /* Popup Điểm */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .popup {
+            background: white; border-radius: 25px; padding: 40px;
+            text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .popup h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 10px; }
+        .popup p { font-size: 1.2rem; color: #4A5568; margin-bottom: 20px; }
+        .popup button {
+            background: var(--accent); color: white; border: none;
+            padding: 12px 30px; font-size: 1.2rem; font-weight: bold;
+            border-radius: 15px; cursor: pointer; box-shadow: 0 5px 0 #00A352;
+        }
+        .popup button:active { transform: translateY(5px); box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <div class="pattern-overlay"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h2>Giáo viên tạo: MS Chí Nên ULIS</h2>
+        </header>
+
+        <div id="quiz-container">
+            </div>
+
+        <button class="submit-btn" onclick="showScore()">NỘP BÀI!</button>
+    </div>
+
+    <div class="overlay" id="score-overlay">
+        <div class="popup">
+            <h1>Hoàn Thành!</h1>
+            <p id="score-text">Bạn đã làm đúng 0/18 câu.</p>
+            <p id="motivational-text" style="font-weight: bold; color: var(--secondary); font-size: 1.5rem;"></p>
+            <button onclick="location.reload()">Làm Lại</button>
+        </div>
+    </div>
+
+<script>
+    // --- 1. DỮ LIỆU ĐỀ BÀI ---
+    const quizData = [
+        // PHẦN I: REORDER
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "1. can/ have/ so that/ In the future/ we/ flying cars/ will/ we/ faster and further/ travel",
+            correctAnswer: "In the future, we will have flying cars so that we can travel faster and further.",
+            options: [
+                "In the future, we will have flying cars so that we can travel faster and further.",
+                "In the future, we can have flying cars so that we will travel faster and further.",
+                "We will have flying cars in the future so that travel we can faster and further.",
+                "So that we can travel faster and further, flying cars we will have in the future."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp các từ để tạo thành câu hoàn chỉnh.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. In the future, we will have flying cars so that we can travel faster and further. (Trong tương lai, chúng ta sẽ có ô tô bay để chúng ta có thể đi lại nhanh hơn và xa hơn.)<br>
+                B. In the future, we can have flying cars so that we will travel... (Trong tương lai, chúng ta CÓ THỂ có ô tô bay để chúng ta SẼ đi lại... - <i>Sai logic ngữ pháp từ khuyết thiếu</i>)<br>
+                C. ...so that travel we can... (Sai trật tự từ cơ bản)<br>
+                D. So that we can travel..., flying cars we will have... (Đảo ngữ không hợp lý, sai trật tự từ)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Đáp án đúng tuân thủ cấu trúc chỉ mục đích: Mệnh đề chính (S + will + V) + <b>so that</b> + Mệnh đề chỉ mục đích (S + can/could + V). Trật tự thời gian "In the future" đặt đầu câu hợp lý.</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai vì hoán đổi vị trí của "will" và "can" làm sai lệch ý nghĩa thực tế; C và D sai hoàn toàn về trật tự ngữ pháp trong tiếng Anh.</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "2. self-driving cars / be/ Experts/ said/ 2025/ that/ on/ would/ the road/ in",
+            correctAnswer: "Experts said that self-driving cars would be on the road in 2025.",
+            options: [
+                "Experts said that self-driving cars would be on the road in 2025.",
+                "Experts said that self-driving cars will be on the road in 2025.",
+                "Experts would said that self-driving cars be on the road in 2025.",
+                "Self-driving cars said that experts would be on the road in 2025."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp các từ để tạo thành câu hoàn chỉnh.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. Experts said that self-driving cars would be on the road in 2025. (Các chuyên gia nói rằng xe tự lái sẽ xuất hiện trên đường vào năm 2025.)<br>
+                B. ...will be on the road... (Sai vì chưa lùi thì)<br>
+                C. Experts would said... (Sai cấu trúc động từ 'would said')<br>
+                D. Self-driving cars said that experts... (Xe tự lái nói rằng chuyên gia... - Sai nghĩa hoàn toàn)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Đây là cấu trúc Câu Tường Thuật (Reported Speech). Động từ tường thuật "said" ở quá khứ, nên mệnh đề sau "that" phải lùi thì từ "will" thành "would".</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B thiếu lùi thì ("will" thay vì "would"); C sai ngữ pháp cơ bản sau modal verb phải là V nguyên thể (would say chứ không phải would said); D sai logic chủ ngữ thực hiện hành động "nói".</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "3. in/ household chores/ handle/ Will/ all/ robots/ the near future?",
+            correctAnswer: "Will robots handle all household chores in the near future?",
+            options: [
+                "Will robots handle all household chores in the near future?",
+                "Will handle robots all household chores in the near future?",
+                "Will robots household chores handle all in the near future?",
+                "Will all household chores handle robots in the near future?"
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp các từ để tạo thành câu nghi vấn hoàn chỉnh.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. Will robots handle all household chores in the near future? (Robot sẽ xử lý tất cả việc nhà trong tương lai gần chứ?)<br>
+                B. Will handle robots... (Sai trật tự câu hỏi)<br>
+                C. Will robots household chores handle... (Sai vị trí động từ)<br>
+                D. Will all household chores handle robots... (Tất cả việc nhà sẽ xử lý robot... - Sai nghĩa chủ động/bị động)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Đúng cấu trúc câu nghi vấn của thì Tương lai đơn: <b>Will + S + V(nguyên thể) + O + Trạng từ thời gian?</b> (Will + robots + handle + all household chores + in the near future?).</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai trật tự (Will + V thay vì Will + S); C sai vị trí động từ "handle"; D bị ngược vai trò Chủ ngữ - Tân ngữ khiến nghĩa của câu trở nên vô lý (việc nhà xử lý robot).</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "4. easy/ nanolearning/ to learn/ The goal/ for people/ of/ to make/ quickly and efficiently/ it/ is",
+            correctAnswer: "The goal of nanolearning is to make it easy for people to learn quickly and efficiently.",
+            options: [
+                "The goal of nanolearning is to make it easy for people to learn quickly and efficiently.",
+                "The goal is of nanolearning to make it easy for people to learn quickly and efficiently.",
+                "To make it easy for people to learn quickly and efficiently is the goal nanolearning of.",
+                "The goal of nanolearning is to make easy it for people to learn quickly and efficiently."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp các từ để tạo thành câu hoàn chỉnh.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. The goal of nanolearning is to make it easy for people to learn quickly and efficiently. (Mục tiêu của việc học vi mô là làm cho việc học nhanh chóng và hiệu quả trở nên dễ dàng đối với mọi người.)<br>
+                B. The goal is of nanolearning... (Sai trật tự cụm danh từ chủ ngữ)<br>
+                C. ...is the goal nanolearning of. (Sai trật tự giới từ)<br>
+                D. ...to make easy it... (Sai cấu trúc "make it + adj")</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Câu sử dụng đúng cụm chủ ngữ "The goal of nanolearning" và cấu trúc giả định cực hay: <b>make it + adj + for sb + to do sth</b> (làm cho việc gì đó trở nên như thế nào đối với ai đó).</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B tách rời cụm "The goal of"; C để giới từ "of" lơ lửng cuối câu sai cấu trúc; D sai cấu trúc "make it adj" (đảo lộn thành make easy it).</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "5. identification/ biometric technology/ mainly/ attendance/ We/ for/ and checking/ use",
+            correctAnswer: "We mainly use biometric technology for identification and checking attendance.",
+            options: [
+                "We mainly use biometric technology for identification and checking attendance.",
+                "We use mainly biometric technology for checking identification and attendance.",
+                "For identification and checking attendance we use biometric mainly technology.",
+                "We mainly use biometric technology and identification for checking attendance."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp các từ thành câu hoàn chỉnh.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. We mainly use biometric technology for identification and checking attendance. (Chúng tôi chủ yếu sử dụng công nghệ sinh trắc học để nhận dạng và điểm danh.)<br>
+                B. ...use mainly biometric... (Trạng từ 'mainly' đặt chưa chuẩn tự nhiên bằng việc đặt trước động từ chính 'use')<br>
+                C. ...biometric mainly technology. (Sai vị trí trạng từ chen giữa tính từ và danh từ)<br>
+                D. ...biometric technology and identification for checking attendance. (Sai nghĩa logic: dùng công nghệ VÀ sự nhận dạng để điểm danh)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Cấu trúc S + adv + V + O + for + V-ing/Noun chỉ mục đích. Trạng từ "mainly" bổ nghĩa cho động từ "use". Sau giới từ "for" là sự nối kết hai danh từ/cụm danh động từ: "identification" (nhận dạng) và "checking attendance" (điểm danh).</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai logic từ vựng (checking identification - không có cụm này ở đề gốc tách rời); C sai vị trí trạng từ "mainly"; D sai cấu trúc song song và ý nghĩa logic.</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "6. received/ January 1880/ for/ patent/ Thomas Edison/ light bulb/ his/ a/ in",
+            correctAnswer: "Thomas Edison received a patent for his light bulb in January 1880.",
+            options: [
+                "Thomas Edison received a patent for his light bulb in January 1880.",
+                "Thomas Edison received his light bulb for a patent in January 1880.",
+                "In January 1880, a patent received Thomas Edison for his light bulb.",
+                "Thomas Edison received a patent in January 1880 for his light bulb."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp từ.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. Thomas Edison received a patent for his light bulb in January 1880. (Thomas Edison đã nhận bằng sáng chế cho bóng đèn của ông vào tháng 1 năm 1880.)<br>
+                B. ...received his light bulb for a patent... (Nhận bóng đèn cho bằng sáng chế -> Sai nghĩa)<br>
+                C. ...a patent received Thomas Edison... (Bằng sáng chế nhận Thomas Edison -> Sai chủ thể hành động)<br>
+                D. ...received a patent in January 1880 for his light bulb. (Sai trật tự trạng từ thời gian, thường đặt cuối câu)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Cấu trúc câu chuẩn: <b>S (Thomas Edison) + V (received) + O (a patent) + for + Noun (his light bulb) + Trạng từ thời gian (in January 1880)</b>. "Receive a patent for sth": Nhận bằng sáng chế cho cái gì.</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai nghĩa; C đảo lộn chủ ngữ - tân ngữ; D đặt trạng từ thời gian vào giữa câu làm gãy sự liên kết "patent for his light bulb". Đáp án theo đúng đáp án chuẩn của sách.</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "7. The director/ scan/ the office/ said/ entering/ that/ before/ all employees/ their finger/ must",
+            correctAnswer: "The director said that all employees must scan their finger before entering the office.",
+            options: [
+                "The director said that all employees must scan their finger before entering the office.",
+                "The director said that must all employees scan their finger before entering the office.",
+                "All employees said that the director must scan their finger before entering the office.",
+                "The director said that all employees scan must their finger before entering the office."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp thành câu tường thuật.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. The director said that all employees must scan their finger before entering the office. (Giám đốc nói rằng tất cả nhân viên phải quét vân tay trước khi vào văn phòng.)<br>
+                B. ...must all employees scan... (Sai trật tự, dạng câu hỏi đảo ngữ)<br>
+                C. All employees said that the director... (Nhân viên nói rằng giám đốc phải quét vân tay HỌ -> Vô lý về nghĩa "their finger")<br>
+                D. ...scan must their finger... (Sai trật tự động từ khuyết thiếu)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Đây là câu Tường Thuật. Cấu trúc: <b>S1 + said that + S2 + must + V-inf + O + before + V-ing</b>. Mệnh đề sau 'that' phải có chủ ngữ (all employees) + động từ khuyết thiếu (must) + động từ chính (scan).</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B đảo "must" lên trước chủ ngữ là sai ngữ pháp mệnh đề khẳng định; C sai logic nghĩa (nhân viên bắt giám đốc quét tay của... nhân viên); D sai vị trí từ "must".</div>`
+        },
+        {
+            section: "I. Reorder the words to make sentences.",
+            question: "8. and group/ These students/ discussions/ often/ Google Meet/ online learning/ use/ for",
+            correctAnswer: "These students often use Google Meet for online learning and group discussions.",
+            options: [
+                "These students often use Google Meet for online learning and group discussions.",
+                "These students use often Google Meet for online learning and group discussions.",
+                "These students often use online learning for Google Meet and group discussions.",
+                "Google Meet often use these students for online learning and group discussions."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Sắp xếp từ.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. These students often use Google Meet for online learning and group discussions. (Những học sinh này thường sử dụng Google Meet cho việc học trực tuyến và thảo luận nhóm.)<br>
+                B. ...use often... (Sai vị trí trạng từ tần suất)<br>
+                C. ...use online learning for Google Meet... (Dùng việc học cho Google Meet -> Sai logic)<br>
+                D. Google Meet often use these students... (Google Meet sử dụng những học sinh này -> Sai chủ thể, Google Meet không tự thực hiện hành động)</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Cấu trúc: <b>S + Trạng từ tần suất (often) + V (use) + O (Google Meet) + for + V-ing/N (mục đích)</b>. "online learning" và "group discussions" được nối bằng "and".</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B Trạng từ tần suất "often" phải đứng trước động từ thường "use"; C và D sai hoàn toàn về ý nghĩa logic của các chủ thể.</div>`
+        },
+        
+        // PHẦN II: REWRITE
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "1. 'There is no Internet connection in this region at present.'<br>→ The tour guide said __________________",
+            correctAnswer: "The tour guide said (that) there was no Internet connection in that region at present.",
+            options: [
+                "The tour guide said (that) there was no Internet connection in that region at present.",
+                "The tour guide said (that) there is no Internet connection in that region at present.",
+                "The tour guide said (that) there was no Internet connection in this region at present.",
+                "The tour guide said (that) there was no Internet connection in that region at that present."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Hướng dẫn viên nói: "Hiện tại không có kết nối Internet ở khu vực này." -> Chuyển sang câu gián tiếp.</div>
+                <div class="exp-step"><b>2. Phân tích 4 đáp án:</b><br>
+                A. The tour guide said (that) there <u>was</u> no Internet connection in <u>that</u> region at present. (Đúng quy tắc)<br>
+                B. ...there <u>is</u> no Internet... (Sai vì chưa lùi thì)<br>
+                C. ...in <u>this</u> region... (Sai vì chưa đổi đại từ chỉ định)<br>
+                D. ...at <u>that present</u>. (Sai từ vựng, không có cụm này, "at present" ở đây đóng vai trò như danh từ chỉ hiện tại hoặc được giữ nguyên trong một số trường hợp tùy sách, nhưng đáp án sách giữ nguyên 'at present' hoặc đổi thành 'at that time'. Đáp án A theo sát key của sách nhất).</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng:</b> Quy tắc chuyển từ Trực tiếp sang Gián tiếp: Động từ lùi thì (is -> was) và đổi đại từ chỉ định (this -> that).</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B thiếu lùi thì. C quên đổi "this" thành "that". D tự chế ra cụm "at that present".</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "2. 'You'll be able to get a taxi here or catch a taxi outside the airport.'<br>→ The guard told me __________________",
+            correctAnswer: "The guard told me (that) I would be able to get a taxi there or catch a taxi outside the airport.",
+            options: [
+                "The guard told me (that) I would be able to get a taxi there or catch a taxi outside the airport.",
+                "The guard told me (that) you would be able to get a taxi there or catch a taxi outside the airport.",
+                "The guard told me (that) I will be able to get a taxi there or catch a taxi outside the airport.",
+                "The guard told me (that) I would be able to get a taxi here or catch a taxi outside the airport."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Bảo vệ nói: "Bạn sẽ có thể bắt taxi ở đây hoặc ngoài sân bay." -> Chuyển câu gián tiếp.</div>
+                <div class="exp-step"><b>2. Phân tích các đáp án:</b> Cần áp dụng 3 quy tắc: Đổi đại từ nhân xưng (You -> I), Lùi thì (will -> would), Đổi trạng từ nơi chốn (here -> there).</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng (A):</b> Đáp án A thực hiện hoàn hảo cả 3 bước đổi: "I", "would", "there".</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai đại từ (vẫn giữ you); C sai thì (vẫn giữ will); D sai trạng từ (vẫn giữ here).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "3. Tablets aren't as convenient as smartphones.<br>→ Smartphones are much __________________",
+            correctAnswer: "Smartphones are much more convenient than tablets.",
+            options: [
+                "Smartphones are much more convenient than tablets.",
+                "Smartphones are much as convenient as tablets.",
+                "Smartphones are much more convenient to tablets.",
+                "Smartphones are much the most convenient than tablets."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch câu hỏi:</b> Máy tính bảng không tiện lợi BẰNG điện thoại thông minh. -> Viết lại bằng câu so sánh HƠN.</div>
+                <div class="exp-step"><b>2. Phân tích:</b> Cấu trúc chuyển từ so sánh Bằng/Không bằng sang So sánh Hơn. "A không bằng B" => "B hơn A". "convenient" là tính từ dài.</div>
+                <div class="exp-step"><b>3. Tại sao chọn đáp án đúng (A):</b> Cấu trúc so sánh hơn với tính từ dài: <b>more + adj + than</b>. Từ "much" đứng trước để nhấn mạnh (nhiều hơn). Đúng cấu trúc: "much more convenient than".</div>
+                <div class="exp-step"><b>4. Tại sao các đáp án còn lại sai:</b> B sai cấu trúc (much as... as); C dùng sai giới từ "to" (phải là "than"); D sai vì ghép so sánh nhất (the most) vào so sánh hơn (than).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "4. 'I can't come in today, because I'm sick.'<br>→ Two days ago, Tom phoned me and said __________________",
+            correctAnswer: "Two days ago, Tom phoned me and said (that) he couldn't come in that day because he was sick.",
+            options: [
+                "Two days ago, Tom phoned me and said (that) he couldn't come in that day because he was sick.",
+                "Two days ago, Tom phoned me and said (that) I couldn't come in that day because he was sick.",
+                "Two days ago, Tom phoned me and said (that) he can't come in that day because he is sick.",
+                "Two days ago, Tom phoned me and said (that) he couldn't come in today because he was sick."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> "Hôm nay tôi không thể đến được vì tôi ốm." -> Hai ngày trước, Tom gọi cho tôi và nói...</div>
+                <div class="exp-step"><b>2. Phân tích quy tắc Gián tiếp:</b><br>- Đại từ: I -> he (Tom).<br>- Lùi thì: can't -> couldn't; am sick -> was sick.<br>- Trạng từ: today -> that day.</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Đáp án A thực hiện đúng và đủ 3 sự thay đổi bắt buộc trên.</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B sai đại từ (I); C chưa lùi thì (can't, is); D quên đổi trạng từ thời gian (giữ nguyên today).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "5. We were having a group discussion on Zoom when the storm caused power cut.<br>→ While __________________",
+            correctAnswer: "While we were having a group discussion on Zoom, the storm caused power cut.",
+            options: [
+                "While we were having a group discussion on Zoom, the storm caused power cut.",
+                "While the storm caused power cut, we were having a group discussion on Zoom.",
+                "While we had a group discussion on Zoom, the storm was causing power cut.",
+                "While having a group discussion on Zoom when the storm caused power cut."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Chúng tôi đang có một buổi thảo luận nhóm trên Zoom thì cơn bão gây ra mất điện.</div>
+                <div class="exp-step"><b>2. Ngữ pháp Quá khứ tiếp diễn kết hợp Quá khứ đơn:</b> Hành động đang xảy ra (chia QKTD) thì có hành động khác xen vào (chia QKĐ). Từ "While" (trong khi) phải đi kèm với hành động đang diễn ra kéo dài.</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> "While" đặt trước hành động kéo dài "we were having a group discussion on Zoom", ngăn cách bằng dấu phẩy, sau đó là hành động xen vào "the storm caused...".</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B đặt While trước hành động xen vào (ngắn) là sai; C chia sai thì của cả 2 vế; D sai ngữ pháp trầm trọng (thừa từ when, thiếu chủ ngữ).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "6. In spite of the freezing weather, we had a great holiday in Canada.<br>→ Even though __________________",
+            correctAnswer: "Even though the weather was freezing, we had a great holiday in Canada.",
+            options: [
+                "Even though the weather was freezing, we had a great holiday in Canada.",
+                "Even though of the freezing weather, we had a great holiday in Canada.",
+                "Even though the freezing weather, we had a great holiday in Canada.",
+                "Even though the weather is freezing, we had a great holiday in Canada."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Mặc dù thời tiết lạnh cóng, chúng tôi đã có một kỳ nghỉ tuyệt vời ở Canada.</div>
+                <div class="exp-step"><b>2. Phân tích cấu trúc:</b> "In spite of + Noun Phrase (cụm danh từ)" -> Đổi sang "Even though + Clause (Mệnh đề S + V)". Cụm "the freezing weather" phải tách thành S (the weather) + V (was) + Adj (freezing). Chú ý vế sau ở quá khứ (had) nên động từ "tobe" cũng phải ở quá khứ (was).</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Biến đổi cụm danh từ thành mệnh đề hoàn chỉnh và đúng thì: "the weather was freezing".</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B thừa giới từ "of" (Even though không đi với of); C thiếu động từ tobe (chưa tạo thành mệnh đề); D chia sai thì hiện tại (is) trong khi ngữ cảnh là quá khứ.</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "7. We found the exhibits shown in the Future World Exhibition very amazing.<br>→ We were __________________",
+            correctAnswer: "We were very amazed at the exhibits shown in the Future World Exhibition.",
+            options: [
+                "We were very amazed at the exhibits shown in the Future World Exhibition.",
+                "We were very amazing at the exhibits shown in the Future World Exhibition.",
+                "We were found the exhibits shown in the Future World Exhibition very amazed.",
+                "We were amazed the exhibits shown in the Future World Exhibition very."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Chúng tôi thấy các hiện vật trưng bày ở Triển lãm Thế giới Tương lai rất kinh ngạc.</div>
+                <div class="exp-step"><b>2. Phân tích:</b> Cấu trúc <b>find + O + Adj(V-ing)</b> (thấy cái gì đó mang tính chất gì) -> Cấu trúc chỉ cảm xúc con người: <b>S + tobe + Adj(V-ed) + giới từ (at/by/about) + sth</b>. Tính từ "amazing" (chỉ vật) chuyển thành "amazed" (chỉ người). "Amazed" đi với giới từ "at" hoặc "by".</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Sử dụng đúng tính từ đuôi -ed "amazed" cho chủ ngữ chỉ người (We) và dùng đúng giới từ "at". (Key sách dùng at).</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B dùng sai tính từ đuôi -ing (chỉ bản chất, không chỉ cảm xúc bị tác động); C sai cấu trúc bị động lộn xộn; D thiếu giới từ "at" và sai vị trí từ "very".</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "8. Don't look at your phone screen for too long, or you'll have eye strain.<br>→ If __________________",
+            correctAnswer: "If you look at your phone screen for too long, you'll have eye strain.",
+            options: [
+                "If you look at your phone screen for too long, you'll have eye strain.",
+                "If you don't look at your phone screen for too long, you'll have eye strain.",
+                "If you look at your phone screen for too long, you won't have eye strain.",
+                "If you looked at your phone screen for too long, you would have eye strain."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Đừng nhìn vào màn hình điện thoại quá lâu, nếu không bạn sẽ bị mỏi mắt.</div>
+                <div class="exp-step"><b>2. Phân tích cấu trúc:</b> Câu mệnh lệnh phủ định (Don't V) + or (nếu không thì) + mệnh đề tương lai -> Đổi sang Câu điều kiện loại 1 (nếu làm cái này thì hậu quả là cái kia). Bỏ "Don't" và "or", chuyển thành: Nếu bạn V, bạn sẽ...</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Logic hoàn hảo: Nếu bạn nhìn màn hình điện thoại quá lâu (If you look...), bạn sẽ bị mỏi mắt (...you'll have eye strain).</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B sai nghĩa (Nếu KHÔNG nhìn quá lâu, bạn SẼ bị mỏi mắt -> Vô lý); C sai nghĩa (Nếu nhìn quá lâu, KHÔNG bị mỏi mắt); D sai loại câu điều kiện (Đây là sự việc có thật ở hiện tại/tương lai nên phải dùng loại 1, đáp án D là loại 2 không có thật).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "9. Jennifer said that she was attending a tech conference the following week.<br>→ Jennifer said, '__________________'",
+            correctAnswer: "Jennifer said, 'I am attending a tech conference next week.'",
+            options: [
+                "Jennifer said, 'I am attending a tech conference next week.'",
+                "Jennifer said, 'She is attending a tech conference next week.'",
+                "Jennifer said, 'I was attending a tech conference next week.'",
+                "Jennifer said, 'I am attending a tech conference the following week.'"
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Jennifer nói rằng cô ấy đang tham dự một hội nghị công nghệ vào tuần tới. -> Chuyển TỪ Gián tiếp VỀ Trực tiếp.</div>
+                <div class="exp-step"><b>2. Phân tích:</b> Cần "đảo ngược" các quy tắc lùi thì. <br>- Đại từ: she -> I.<br>- Thì: was attending (QKTD) -> am attending (HTTD mang nghĩa tương lai).<br>- Trạng từ: the following week -> next week.</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Phục hồi chính xác mọi thành tố: I, am attending, next week.</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B chưa đổi đại từ (vẫn để She); C chưa phục hồi thì (vẫn để was); D chưa phục hồi trạng từ thời gian (vẫn để the following week).</div>`
+        },
+        {
+            section: "II. Complete the second sentence so that it has the same meaning.",
+            question: "10. Paula can't wait to hear the band's new album.<br>→ Paula is really looking __________________",
+            correctAnswer: "Paula is really looking forward to hearing the band's new album.",
+            options: [
+                "Paula is really looking forward to hearing the band's new album.",
+                "Paula is really looking forward to hear the band's new album.",
+                "Paula is really looking for hearing the band's new album.",
+                "Paula is really looking forward hearing the band's new album."
+            ],
+            explanation: `
+                <div class="exp-step"><b>1. Dịch đề:</b> Paula không thể chờ đợi được nghe album mới của ban nhạc. (Rất háo hức).</div>
+                <div class="exp-step"><b>2. Phân tích:</b> Cấu trúc đồng nghĩa kinh điển: <b>can't wait to + V-inf</b> (nóng lòng muốn làm gì) = <b>look forward to + V-ing</b> (trông mong/háo hức làm gì). Chú ý bắt buộc phải có "to" và động từ thêm đuôi "-ing".</div>
+                <div class="exp-step"><b>3. Tại sao chọn A:</b> Dùng đúng cụm phrasal verb "looking forward to" và sau đó chia động từ dạng V-ing "hearing".</div>
+                <div class="exp-step"><b>4. Tại sao B, C, D sai:</b> B sai vì dùng V-inf "hear" (sau look forward to phải là V-ing); C thiếu từ "forward" làm sai hoàn toàn nghĩa (look for = tìm kiếm); D thiếu giới từ "to".</div>`
+        }
+    ];
+
+    let currentScore = 0;
+    let answeredCount = 0;
+
+    // --- 2. CÔNG CỤ ÂM THANH (Web Audio API) ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playDing() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); // A6
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+    }
+
+    function playBuzz() {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    // --- 3. HIỆU ỨNG PHÁO GIẤY (Confetti) ---
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+
+    function fireConfetti() {
+        for(let i = 0; i < 50; i++) {
+            particles.push({
+                x: window.innerWidth / 2,
+                y: window.innerHeight / 2,
+                r: Math.random() * 6 + 2,
+                dx: Math.random() * 10 - 5,
+                dy: Math.random() * -10 - 2,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`
+            });
+        }
+    }
+
+    function animateConfetti() {
+        requestAnimationFrame(animateConfetti);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let i = 0; i < particles.length; i++) {
+            let p = particles[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+            p.x += p.dx;
+            p.y += p.dy;
+            p.dy += 0.2; // Gravity
+            if(p.y > canvas.height) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    animateConfetti();
+
+    // --- 4. LOGIC QUIZ ---
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function renderQuiz() {
+        const container = document.getElementById("quiz-container");
+        let html = "";
+        
+        quizData.forEach((item, index) => {
+            let shuffledOptions = shuffleArray([...item.options]);
+            
+            let optionsHtml = shuffledOptions.map(opt => `
+                <button class="btn-option" onclick="checkAnswer(this, ${index}, \`${opt.replace(/'/g, "\\'")}\`)">
+                    ${opt}
+                </button>
+            `).join("");
+
+            html += `
+                <div class="card" id="q-card-${index}">
+                    <div class="section-title">${item.section}</div>
+                    <div class="question-text">${item.question}</div>
+                    <div class="options-grid" id="options-${index}">
+                        ${optionsHtml}
+                    </div>
+                    <div class="explanation" id="exp-${index}">
+                        ${item.explanation}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function checkAnswer(btn, index, selectedStr) {
+        initAudio(); // Initialize audio context on first user interaction
+        
+        const isCorrect = selectedStr === quizData[index].correctAnswer;
+        const optionsDiv = document.getElementById(`options-${index}`);
+        const expDiv = document.getElementById(`exp-${index}`);
+        const card = document.getElementById(`q-card-${index}`);
+
+        // Disable all buttons in this question
+        Array.from(optionsDiv.children).forEach(child => {
+            child.classList.add("disabled");
+            if(child.innerText.trim() === quizData[index].correctAnswer.trim()) {
+                child.classList.add("correct"); // Luôn show đáp án đúng
+            }
+        });
+
+        if(isCorrect) {
+            btn.classList.add("correct");
+            playDing();
+            fireConfetti();
+            currentScore++;
+        } else {
+            btn.classList.add("wrong");
+            card.classList.add("shake-anim");
+            setTimeout(() => card.classList.remove("shake-anim"), 400);
+            playBuzz();
+        }
+
+        expDiv.style.display = "block";
+        answeredCount++;
+    }
+
+    function showScore() {
+        document.getElementById('score-overlay').style.display = 'flex';
+        document.getElementById('score-text').innerText = `Bạn đã làm đúng ${currentScore} / ${quizData.length} câu.`;
+        
+        let quote = "";
+        let ratio = currentScore / quizData.length;
+        if(ratio === 1) quote = "Xuất sắc! Điểm tuyệt đối! 🌟🌟🌟";
+        else if(ratio >= 0.8) quote = "Rất Giỏi! Chỉ chút xíu nữa thôi! 🤩";
+        else if(ratio >= 0.5) quote = "Làm tốt lắm! Hãy cố gắng hơn nhé! 😊";
+        else quote = "Đừng buồn, xem kỹ lại giải thích nha! 💪";
+        
+        document.getElementById('motivational-text').innerText = quote;
+    }
+
+    // Khởi chạy
+    renderQuiz();
+</script>
+
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

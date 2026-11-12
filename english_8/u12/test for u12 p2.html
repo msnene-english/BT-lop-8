@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Quiz - MS Chí Nên ULIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #FDCB6E;
+            --accent: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-main: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+
+        body {
+            background: linear-gradient(-45deg, var(--primary), var(--secondary), var(--accent), #FF9A9E);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .pattern-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 200%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg"><text x="10" y="30" font-size="20">🌟</text><text x="80" y="80" font-size="24">🍉</text><text x="30" y="120" font-size="22">🍦</text><text x="120" y="40" font-size="20">🌺</text><text x="100" y="140" font-size="25">🐱</text></svg>');
+            animation: floatUp 40s linear infinite;
+            opacity: 0.6;
+            mix-blend-mode: overlay;
+        }
+
+        header { text-align: center; padding: 20px; position: relative; z-index: 10; }
+        .teacher-heading { font-size: 1.2rem; color: #fff; background: rgba(0,0,0,0.3); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-bottom: 10px; font-weight: 700; backdrop-filter: blur(5px); }
+        h1 { font-size: 2.5rem; color: #fff; text-shadow: 2px 2px 0px rgba(0,0,0,0.2); font-weight: 900; }
+        
+        .score-bar { position: sticky; top: 10px; background: var(--bg-card); padding: 15px 30px; border-radius: 30px; display: inline-block; font-size: 1.5rem; font-weight: 900; color: var(--primary); box-shadow: 0 8px 0 rgba(0,0,0,0.1); z-index: 100; left: 50%; transform: translateX(-50%); margin-bottom: 20px; border: 3px solid #fff; }
+
+        .quiz-container { max-width: 900px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
+        .card { background: var(--bg-card); border-radius: 20px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 0 rgba(0,0,0,0.1); border: 4px solid #fff; transition: transform 0.2s; }
+        .section-title { font-size: 1.3rem; color: var(--primary); margin-bottom: 15px; font-weight: 900; text-transform: uppercase; border-bottom: 3px dashed var(--secondary); padding-bottom: 5px; }
+        .question-text { font-size: 1.15rem; font-weight: 700; margin-bottom: 20px; line-height: 1.5; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 600px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+
+        .option-btn { background: #fff; border: 3px solid #e0e0e0; border-radius: 15px; padding: 15px; font-size: 1.08rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.2s; box-shadow: 0 6px 0 #e0e0e0; color: var(--text-main); }
+        .option-btn:hover:not(:disabled) { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 0 #d1d1d1; border-color: var(--secondary); }
+        .option-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 4px 0 #e0e0e0; }
+        .option-btn.correct { background: var(--correct); border-color: #00A352; color: #fff; box-shadow: 0 6px 0 #00A352; }
+        .option-btn.wrong { background: var(--wrong); border-color: #CC3945; color: #fff; box-shadow: 0 6px 0 #CC3945; }
+        .option-btn:disabled { cursor: default; opacity: 0.9; }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+        .shake { animation: shake 0.5s; }
+
+        .explanation { margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 6px solid var(--accent); border-radius: 10px; display: none; font-size: 1rem; line-height: 1.6; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation h4 { color: var(--primary); margin-bottom: 10px; font-size: 1.15rem; }
+        .explanation ul { margin-left: 20px; margin-bottom: 10px; }
+        .explanation li { margin-bottom: 8px; }
+
+        .submit-btn { display: block; width: 100%; max-width: 400px; margin: 40px auto; background: var(--primary); color: #fff; font-size: 1.5rem; font-weight: 900; padding: 20px; border: none; border-radius: 20px; box-shadow: 0 10px 0 #5f3a87; cursor: pointer; transition: all 0.2s; text-transform: uppercase; position: relative; z-index: 10;}
+        .submit-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 0 #5f3a87; }
+        .submit-btn:active { transform: translateY(5px); box-shadow: 0 0px 0 #5f3a87; }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 999; justify-content: center; align-items: center; }
+        .popup { background: #fff; padding: 40px; border-radius: 30px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 15px 30px rgba(0,0,0,0.3); border: 5px solid var(--secondary); animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .popup h2 { color: var(--primary); font-size: 2.5rem; margin-bottom: 15px; }
+        .popup p { font-size: 1.3rem; margin-bottom: 25px; font-weight: 700; }
+        .close-popup { background: var(--accent); color: #fff; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 15px; box-shadow: 0 6px 0 #00967d; cursor: pointer; }
+
+        #confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
+        .confetti-piece { position: absolute; width: 10px; height: 10px; background-color: #f00; opacity: 0.8; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="pattern-overlay"></div>
+    <div id="confetti-container"></div>
+
+    <header>
+        <div class="teacher-heading">Giáo viên tạo: MS Chí Nên ULIS</div>
+        <h1>SUMMER ENGLISH ADVENTURE 🍉</h1>
+    </header>
+
+    <div class="score-bar">Điểm: <span id="score">0</span> / 38</div>
+    <div class="quiz-container" id="quiz-container"></div>
+    <button class="submit-btn" onclick="showFinalScore()">Nộp bài 🎉</button>
+
+    <div class="overlay" id="popup-overlay">
+        <div class="popup">
+            <h2 id="popup-title">Tuyệt vời!</h2>
+            <p id="popup-message"></p>
+            <button class="close-popup" onclick="closePopup()">Chơi lại nào!</button>
+        </div>
+    </div>
+
+<script>
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+function playTone(freq, type, duration, vol) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration);
+}
+function playCorrect() { playTone(600, 'sine', 0.1, 0.3); setTimeout(() => playTone(800, 'sine', 0.2, 0.3), 100); }
+function playWrong() { playTone(300, 'sawtooth', 0.3, 0.2); setTimeout(() => playTone(200, 'sawtooth', 0.4, 0.2), 150); }
+
+function shootConfetti() {
+    const container = document.getElementById('confetti-container');
+    const colors = ['#FF4757', '#FDCB6E', '#00D26A', '#00C9A7', '#8854C0', '#ffffff'];
+    for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div'); piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw'; piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 1) + 's'; piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(piece); setTimeout(() => piece.remove(), 3000);
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; }
+    return array;
+}
+
+// ---------------- DỮ LIỆU ĐẦY ĐỦ 38 CÂU (KHÔNG CẮT XÉN) ----------------
+const quizData = [
+    // --- PHẦN VI (10 CÂU) ---
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "1. In 1947 pilot Kenneth Arnold ______ (spot) nine shiny, unidentified flying objects flying past Mount Rainier.", options: [{text: "spotted", isCorrect: true}, {text: "spots", isCorrect: false}, {text: "has spotted", isCorrect: false}, {text: "was spotting", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Năm 1947, phi công Kenneth Arnold đã phát hiện 9 vật thể bay lạ.</li><li><b>2. Nghĩa 4 đáp án:</b> A. spotted (Quá khứ đơn), B. spots (Hiện tại đơn), C. has spotted (Hiện tại hoàn thành), D. was spotting (Quá khứ tiếp diễn).</li><li><b>3. Tại sao chọn 'spotted'?</b> Có mốc thời gian rõ ràng trong quá khứ 'In 1947' -> Dùng Quá khứ đơn.</li><li><b>4. Tại sao sai?</b> Các thì còn lại không phù hợp với hành động đã chấm dứt hoàn toàn ở một năm cụ thể. Hành động 'spot' (phát hiện) là tức thời, không dùng tiếp diễn.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "2. I wondered if a giant asteroid ______ (hit) Earth in the future.", options: [{text: "would hit", isCorrect: true}, {text: "will hit", isCorrect: false}, {text: "hit", isCorrect: false}, {text: "hits", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Tôi tự hỏi liệu một tiểu hành tinh khổng lồ có đâm vào Trái Đất trong tương lai không.</li><li><b>2. Nghĩa 4 đáp án:</b> A. would hit (Tương lai trong quá khứ), B. will hit (Tương lai đơn), C. hit (Quá khứ đơn), D. hits (Hiện tại đơn).</li><li><b>3. Tại sao chọn 'would hit'?</b> Động từ tường thuật 'wondered' ở quá khứ, nên động từ ở mệnh đề sau phải lùi thì. 'in the future' đáng lẽ dùng 'will hit', lùi thành 'would hit'.</li><li><b>4. Tại sao sai?</b> B chưa lùi thì. C, D không mang nghĩa tương lai.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "3. Sue asked her teacher how long it ______ (take) to travel to Mars.", options: [{text: "took", isCorrect: true}, {text: "takes", isCorrect: false}, {text: "is taking", isCorrect: false}, {text: "has taken", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Sue hỏi giáo viên mất bao lâu để đến Sao Hỏa.</li><li><b>2. Phân tích:</b> A. took (QK đơn), B. takes (HT đơn), C. is taking (HT tiếp diễn), D. has taken (HT hoàn thành).</li><li><b>3. Tại sao đúng:</b> Câu gián tiếp, động từ tường thuật 'asked' ở quá khứ -> Lùi thì Hiện tại đơn 'takes' thành Quá khứ đơn 'took'.</li><li><b>4. Tại sao sai:</b> Các đáp án B, C, D đều chưa tuân thủ quy tắc lùi thì của câu gián tiếp.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "4. Almost the same as Earth, a day on Mars ______ (have) 24 hours, 39 minutes and 35 seconds.", options: [{text: "has", isCorrect: true}, {text: "have", isCorrect: false}, {text: "had", isCorrect: false}, {text: "is having", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Gần giống Trái Đất, một ngày trên Sao Hỏa có 24 giờ, 39 phút và 35 giây.</li><li><b>2. Phân tích:</b> A. has (có - số ít), B. have (có - số nhiều), C. had (đã có), D. is having (đang có).</li><li><b>3. Tại sao đúng:</b> Diễn tả một sự thật hiển nhiên (fact) -> Dùng Hiện tại đơn. Chủ ngữ 'a day' số ít -> dùng 'has'.</li><li><b>4. Tại sao sai:</b> B sai chủ vị. C sai vì đây là sự thật không phải chuyện quá khứ. D sai vì 'have' mang nghĩa sở hữu không dùng tiếp diễn.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "5. Nick phoned me and said two black silent UFOs ______ (hover) above his back garden then.", options: [{text: "were hovering", isCorrect: true}, {text: "are hovering", isCorrect: false}, {text: "hovered", isCorrect: false}, {text: "have hovered", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Nick gọi tôi và nói rằng có hai UFO màu đen đang lơ lửng trên vườn lúc đó.</li><li><b>2. Phân tích:</b> A. were hovering (QKTD), B. are hovering (HTTD), C. hovered (QKĐ), D. have hovered (HTHT).</li><li><b>3. Tại sao đúng:</b> Có từ 'then' (lúc đó - chuyển từ 'now'). Câu gián tiếp lùi thì từ HTTD sang QKTD. Chủ ngữ 'UFOs' số nhiều -> 'were hovering'.</li><li><b>4. Tại sao sai:</b> B chưa lùi thì. C không diễn tả tính đang xảy ra. D sai thì.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "6. Captain Ray Bowyer gained clear views of two UFOs when he ______ (fly) in the English Channel.", options: [{text: "was flying", isCorrect: true}, {text: "flew", isCorrect: false}, {text: "flies", isCorrect: false}, {text: "has flown", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Cơ trưởng Ray có góc nhìn rõ 2 UFO khi ông đang bay qua eo biển Manche.</li><li><b>2. Phân tích:</b> A. was flying (đang bay), B. flew (đã bay), C. flies (bay), D. has flown (đã bay).</li><li><b>3. Tại sao đúng:</b> Diễn tả hành động đang xảy ra trong quá khứ (đang bay) thì có hành động khác xen vào (nhìn thấy UFO). Dùng Quá khứ tiếp diễn.</li><li><b>4. Tại sao sai:</b> Các thì còn lại không diễn tả được tính tiếp diễn 'đang xảy ra' trong quá khứ.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "7. NASA is planning ______ (launch) two new scientific missions to Venus.", options: [{text: "to launch", isCorrect: true}, {text: "launching", isCorrect: false}, {text: "launched", isCorrect: false}, {text: "launch", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> NASA đang lên kế hoạch phóng hai sứ mệnh khoa học mới tới Sao Kim.</li><li><b>2. Phân tích:</b> A. to launch (để phóng), B. launching (việc phóng), C. launched (đã phóng), D. launch (phóng).</li><li><b>3. Tại sao đúng:</b> Cấu trúc cố định: 'plan + to V' (lên kế hoạch làm gì).</li><li><b>4. Tại sao sai:</b> Các dạng V-ing, V-ed, V-nguyên thể đều sai cấu trúc của động từ 'plan'.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "8. What ______ (happen) if we discovered a message from an alien planet?", options: [{text: "would happen", isCorrect: true}, {text: "will happen", isCorrect: false}, {text: "happens", isCorrect: false}, {text: "happened", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Điều gì sẽ xảy ra nếu chúng ta phát hiện ra một thông điệp từ hành tinh ngoài hành tinh?</li><li><b>2. Phân tích:</b> A. would happen, B. will happen, C. happens, D. happened.</li><li><b>3. Tại sao đúng:</b> Mệnh đề If dùng thì Quá khứ đơn 'discovered' -> Đây là Câu điều kiện loại 2 (giả định không có thật). Mệnh đề chính dùng 'would + V'.</li><li><b>4. Tại sao sai:</b> B, C dùng cho loại 1. D sai cấu trúc mệnh đề chính câu đk.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "9. They managed to stop the commander from ______ (destroy) Earth.", options: [{text: "destroying", isCorrect: true}, {text: "destroy", isCorrect: false}, {text: "to destroy", isCorrect: false}, {text: "destroyed", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Họ đã xoay sở ngăn chặn người chỉ huy khỏi việc tiêu diệt Trái Đất.</li><li><b>2. Phân tích:</b> A. destroying (V-ing), B. destroy (V-infinitive), C. to destroy (to V), D. destroyed (V-ed).</li><li><b>3. Tại sao đúng:</b> Cấu trúc: 'stop somebody from + V-ing' (Ngăn cản ai đó làm gì).</li><li><b>4. Tại sao sai:</b> Giới từ 'from' bắt buộc đi với V-ing, các dạng khác đều vi phạm ngữ pháp.</li></ul>"
+    },
+    { section: "VI. Write the correct tense or form of the verbs in brackets.", question: "10. NASA hope they ______ (be) able to send people to Mars by 2030.", options: [{text: "will be", isCorrect: true}, {text: "are", isCorrect: false}, {text: "were", isCorrect: false}, {text: "would be", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> NASA hi vọng họ sẽ có thể đưa con người lên Sao Hỏa trước năm 2030.</li><li><b>2. Phân tích:</b> A. will be (sẽ), B. are (hiện tại), C. were (quá khứ), D. would be (sẽ - lùi thì).</li><li><b>3. Tại sao đúng:</b> Mốc thời gian 'by 2030' (tương lai) và động từ 'hope' (hiện tại) -> Dùng thì Tương lai đơn 'will be'.</li><li><b>4. Tại sao sai:</b> B, C sai thì. D chỉ dùng khi câu tường thuật ở quá khứ (hoped).</li></ul>"
+    },
+
+    // --- PHẦN VII (10 CÂU) ---
+    { section: "VII. Supply the correct form of the words in brackets.", question: "1. The Saturn V is the largest and the most ______ rocket ever made. (power)", options: [{text: "powerful", isCorrect: true}, {text: "powerless", isCorrect: false}, {text: "powerfully", isCorrect: false}, {text: "power", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Saturn V là tên lửa lớn nhất và mạnh mẽ nhất từng được chế tạo.</li><li><b>2. Nghĩa:</b> A. powerful (mạnh mẽ), B. powerless (yếu đuối/bất lực), C. powerfully (một cách mạnh mẽ), D. power (sức mạnh).</li><li><b>3. Tại sao đúng:</b> Sau 'the most' cần Tính từ bổ nghĩa cho 'rocket'. Nghĩa tích cực -> powerful.</li><li><b>4. Tại sao sai:</b> B sai nghĩa. C là trạng từ. D là danh từ.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "2. How long ago did humans first ______ the Earth? (habitable)", options: [{text: "inhabit", isCorrect: true}, {text: "habitat", isCorrect: false}, {text: "habitation", isCorrect: false}, {text: "habitable", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Con người đã sinh sống trên Trái Đất lần đầu tiên cách đây bao lâu?</li><li><b>2. Nghĩa:</b> A. inhabit (v: cư trú), B. habitat (n: môi trường sống), C. habitation (n: sự cư trú), D. habitable (adj: có thể sống được).</li><li><b>3. Tại sao đúng:</b> Sau trợ động từ 'did' và chủ ngữ 'humans' cần một Động từ nguyên thể -> 'inhabit'.</li><li><b>4. Tại sao sai:</b> B, C là danh từ. D là tính từ, sai từ loại hoàn toàn.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "3. Astronomer Clyde Tombaugh made the remarkable ______ of Pluto in 1930. (discover)", options: [{text: "discovery", isCorrect: true}, {text: "discoverer", isCorrect: false}, {text: "discovered", isCorrect: false}, {text: "discovering", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Nhà thiên văn học Clyde Tombaugh đã thực hiện sự khám phá đáng chú ý về sao Diêm Vương năm 1930.</li><li><b>2. Nghĩa:</b> A. discovery (n: sự khám phá), B. discoverer (n: người khám phá), C. discovered (v-ed), D. discovering (v-ing).</li><li><b>3. Tại sao đúng:</b> Sau mạo từ 'the' và tính từ 'remarkable' cần một Danh từ chỉ vật/sự việc -> 'discovery'.</li><li><b>4. Tại sao sai:</b> B sai nghĩa (người). C, D là động từ sai ngữ pháp.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "4. Venus is ______ for life because its atmosphere is too dense and hot. (suit)", options: [{text: "unsuitable", isCorrect: true}, {text: "suitable", isCorrect: false}, {text: "suitably", isCorrect: false}, {text: "suitability", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Sao Kim không phù hợp cho sự sống vì khí quyển quá dày và nóng.</li><li><b>2. Nghĩa:</b> A. unsuitable (adj: không phù hợp), B. suitable (adj: phù hợp), C. suitably (adv), D. suitability (n).</li><li><b>3. Tại sao đúng:</b> Sau to be 'is' cần Tính từ. Vì khí quyển nóng/dày -> mang nghĩa phủ định (không phù hợp) -> thêm tiền tố 'un-'.</li><li><b>4. Tại sao sai:</b> B sai logic. C là trạng từ. D là danh từ.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "5. Mars is a focal point of modern space ______. (explore)", options: [{text: "exploration", isCorrect: true}, {text: "explorer", isCorrect: false}, {text: "exploratory", isCorrect: false}, {text: "explore", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Sao Hỏa là tâm điểm của sự khám phá không gian hiện đại.</li><li><b>2. Nghĩa:</b> A. exploration (n: sự thám hiểm), B. explorer (n: nhà thám hiểm), C. exploratory (adj), D. explore (v).</li><li><b>3. Tại sao đúng:</b> Sau giới từ 'of' và cụm danh từ 'modern space' cần một Danh từ gốc để tạo danh từ ghép 'space exploration' (thám hiểm vũ trụ).</li><li><b>4. Tại sao sai:</b> B sai logic (nhà thám hiểm vũ trụ). C, D sai từ loại.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "6. Do you believe in the ______ of extraterrestrial aliens? (exist)", options: [{text: "existence", isCorrect: true}, {text: "existent", isCorrect: false}, {text: "exist", isCorrect: false}, {text: "existing", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Bạn có tin vào sự tồn tại của người ngoài hành tinh không?</li><li><b>2. Nghĩa:</b> A. existence (n: sự tồn tại), B. existent (adj: đang tồn tại), C. exist (v), D. existing (adj/v-ing).</li><li><b>3. Tại sao đúng:</b> Sau mạo từ 'the' bắt buộc phải là Danh từ -> existence.</li><li><b>4. Tại sao sai:</b> B, C, D đều sai từ loại.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "7. ______ are still trying to understand how stars and galaxies formed in the early universe. (science)", options: [{text: "Scientists", isCorrect: true}, {text: "Science", isCorrect: false}, {text: "Scientific", isCorrect: false}, {text: "Scientifically", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Các nhà khoa học vẫn đang cố gắng hiểu cách các vì sao hình thành.</li><li><b>2. Nghĩa:</b> A. Scientists (n: các nhà KH), B. Science (n: khoa học), C. Scientific (adj), D. Scientifically (adv).</li><li><b>3. Tại sao đúng:</b> Đứng đầu câu làm chủ ngữ chỉ người (thực hiện hành động 'try to understand') và đi với to be 'are' (số nhiều) -> Scientists.</li><li><b>4. Tại sao sai:</b> B chỉ vật (khoa học không thể 'cố gắng hiểu'). C, D sai từ loại.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "8. NASA's rover will collect ______ samples of Mars rock and soil that could be brought back to Earth. (promise)", options: [{text: "promising", isCorrect: true}, {text: "promise", isCorrect: false}, {text: "promised", isCorrect: false}, {text: "promises", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Tàu thám hiểm sẽ thu thập các mẫu đá đầy hứa hẹn...</li><li><b>2. Nghĩa:</b> A. promising (adj: đầy hứa hẹn/tiềm năng), B. promise (n/v), C. promised (v-ed), D. promises (v/n).</li><li><b>3. Tại sao đúng:</b> Đứng trước danh từ 'samples' cần một Tính từ bổ nghĩa -> promising (có triển vọng).</li><li><b>4. Tại sao sai:</b> Các đáp án còn lại sai từ loại.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "9. Scientists discovered that Mars had some ______ to Earth. (similar)", options: [{text: "similarities", isCorrect: true}, {text: "similarity", isCorrect: false}, {text: "similarly", isCorrect: false}, {text: "similar", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Các nhà khoa học phát hiện Sao Hỏa có một vài điểm tương đồng với Trái Đất.</li><li><b>2. Nghĩa:</b> A. similarities (n - số nhiều), B. similarity (n - số ít), C. similarly (adv), D. similar (adj).</li><li><b>3. Tại sao đúng:</b> Sau lượng từ 'some' cần Danh từ đếm được số nhiều -> similarities.</li><li><b>4. Tại sao sai:</b> B thiếu 's' (sau some). C, D sai từ loại.</li></ul>"
+    },
+    { section: "VII. Supply the correct form of the words in brackets.", question: "10. They hope the telescope will help them find a ______ habitable exoplanet. (possible)", options: [{text: "possibly", isCorrect: true}, {text: "possible", isCorrect: false}, {text: "possibility", isCorrect: false}, {text: "impossibly", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Họ hi vọng kính viễn vọng sẽ giúp họ tìm ra một ngoại hành tinh có khả năng sống được.</li><li><b>2. Nghĩa:</b> A. possibly (adv: có thể), B. possible (adj), C. possibility (n), D. impossibly (adv: không thể).</li><li><b>3. Tại sao đúng:</b> Đứng trước tính từ 'habitable' để bổ nghĩa cho tính từ đó thì phải dùng Trạng từ -> possibly.</li><li><b>4. Tại sao sai:</b> B, C sai từ loại. D sai ngữ nghĩa (hành tinh không thể sống thì tìm làm gì).</li></ul>"
+    },
+
+    // --- PHẦN VIII (8 CÂU NỐI MATCHING -> MCQ ĐỂ CHẤM ĐIỂM) ---
+    { section: "VIII. Match the questions to the answers.", question: "1. Why do scientists want to find another habitable planet?", options: [{text: "Because it seems that our planet can't cope with overpopulation.", isCorrect: true}, {text: "Liquid water, right temperatures and atmosphere.", isCorrect: false}, {text: "I hope we will.", isCorrect: false}, {text: "It's Mars.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Tại sao các nhà khoa học muốn tìm một hành tinh có thể sống được khác?</li><li><b>2. Dịch đáp án:</b> A. Vì Trái Đất không thể đối phó với bùng nổ dân số. B. Nước lỏng, nhiệt độ... C. Tôi hi vọng thế. D. Đó là sao Hỏa.</li><li><b>3. Tại sao đúng:</b> Câu hỏi bắt đầu bằng 'Why' (Tại sao) -> Trả lời bằng 'Because' (Bởi vì).</li><li><b>4. Tại sao sai:</b> Các đáp án khác không trả lời cho câu hỏi nguyên nhân.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "2. Will we be able to find any signs of life on other planets?", options: [{text: "I hope we will.", isCorrect: true}, {text: "In 1947.", isCorrect: false}, {text: "Liquid water, right temperatures...", isCorrect: false}, {text: "It's Mars.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Liệu chúng ta có thể tìm thấy dấu hiệu sự sống trên hành tinh khác không?</li><li><b>2. Phân tích:</b> Đây là câu hỏi Yes/No ở thì Tương lai (Will we...).</li><li><b>3. Tại sao đúng:</b> Đáp án 'I hope we will' (Tôi hi vọng chúng ta sẽ thế) trả lời trực tiếp cho kỳ vọng ở tương lai.</li><li><b>4. Tại sao sai:</b> Các đáp án kia trả lời cho When, What, Which.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "3. What are needed for life to exist on other planet?", options: [{text: "Liquid water, right temperatures and atmosphere.", isCorrect: true}, {text: "Because it seems that our planet...", isCorrect: false}, {text: "Neil Alden Armstrong.", isCorrect: false}, {text: "140 million miles.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Những gì là cần thiết để sự sống tồn tại trên hành tinh khác?</li><li><b>2. Phân tích:</b> Câu hỏi liệt kê 'What' (Cái gì).</li><li><b>3. Tại sao đúng:</b> Đáp án liệt kê các yếu tố: Nước lỏng, nhiệt độ thích hợp và khí quyển.</li><li><b>4. Tại sao sai:</b> Các đáp án kia là lý do (Because), Người (Neil), Khoảng cách.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "4. Which planet is the most habitable besides Earth?", options: [{text: "It's Mars.", isCorrect: true}, {text: "Neil Alden Armstrong.", isCorrect: false}, {text: "I'll believe it when I see it.", isCorrect: false}, {text: "In 1947.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Hành tinh nào đáng sống nhất bên cạnh Trái Đất?</li><li><b>2. Phân tích:</b> Câu hỏi 'Which planet' (Hành tinh nào).</li><li><b>3. Tại sao đúng:</b> 'It's Mars' (Đó là sao Hỏa) trả lời đúng trọng tâm tên hành tinh.</li><li><b>4. Tại sao sai:</b> Các đáp án kia không phải tên hành tinh.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "5. When did the first UFO sighting occur?", options: [{text: "In 1947.", isCorrect: true}, {text: "140 million miles.", isCorrect: false}, {text: "Neil Alden Armstrong.", isCorrect: false}, {text: "I hope we will.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Lần phát hiện UFO đầu tiên xảy ra KHI NÀO?</li><li><b>2. Phân tích:</b> Câu hỏi 'When' (Khi nào) đòi hỏi mốc thời gian.</li><li><b>3. Tại sao đúng:</b> 'In 1947' là mốc thời gian duy nhất trong các lựa chọn.</li><li><b>4. Tại sao sai:</b> Các đáp án kia chỉ khoảng cách, tên người.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "6. Do you believe that extraterrestrial life exists?", options: [{text: "I'll believe it when I see it.", isCorrect: true}, {text: "It's Mars.", isCorrect: false}, {text: "Because it seems...", isCorrect: false}, {text: "In 1947.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Bạn có tin rằng sự sống ngoài hành tinh tồn tại không?</li><li><b>2. Phân tích:</b> Câu hỏi Yes/No về quan điểm cá nhân (Do you believe).</li><li><b>3. Tại sao đúng:</b> 'I'll believe it when I see it' (Tôi sẽ tin khi tận mắt thấy) là một cách trả lời quan điểm rất tự nhiên.</li><li><b>4. Tại sao sai:</b> Các đáp án kia không diễn đạt quan điểm cá nhân.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "7. Who was the first person to walk on the moon?", options: [{text: "Neil Alden Armstrong.", isCorrect: true}, {text: "It's Mars.", isCorrect: false}, {text: "140 million miles.", isCorrect: false}, {text: "In 1947.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> AI là người đầu tiên đi bộ trên mặt trăng?</li><li><b>2. Phân tích:</b> Câu hỏi 'Who' đòi hỏi tên người.</li><li><b>3. Tại sao đúng:</b> 'Neil Alden Armstrong' là tên người duy nhất.</li><li><b>4. Tại sao sai:</b> Không đáp án nào khác là tên người.</li></ul>"
+    },
+    { section: "VIII. Match the questions to the answers.", question: "8. How far is it from Earth to Mars?", options: [{text: "140 million miles.", isCorrect: true}, {text: "In 1947.", isCorrect: false}, {text: "Liquid water...", isCorrect: false}, {text: "I hope we will.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch câu hỏi:</b> Khoảng cách từ Trái Đất đến Sao Hỏa là BAO XA?</li><li><b>2. Phân tích:</b> Câu hỏi 'How far' đòi hỏi số đo khoảng cách.</li><li><b>3. Tại sao đúng:</b> '140 million miles' (140 triệu dặm) là số đo khoảng cách.</li><li><b>4. Tại sao sai:</b> Các đáp án kia là thời gian, vật chất.</li></ul>"
+    },
+
+    // --- PHẦN XI (10 CÂU VIẾT LẠI CÂU) ---
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "1. Candy asked me if I liked reading astronomy books.", options: [{text: "'Do you like reading astronomy books?' Candy asked me.", isCorrect: true}, {text: "'Did you like reading astronomy books?' Candy asked me.", isCorrect: false}, {text: "'Do I like reading astronomy books?' Candy asked me.", isCorrect: false}, {text: "Candy asked me to like reading astronomy books.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Candy hỏi tôi liệu tôi có thích đọc sách thiên văn không.</li><li><b>2. Phân tích:</b> Chuyển từ gián tiếp (if/liked) sang trực tiếp (ngoặc kép/hiện tại).</li><li><b>3. Tại sao đúng:</b> Lùi ngược thì QKĐ 'liked' về HTĐ câu hỏi Yes/No -> 'Do you like'. Ngôi 'I' chuyển thành 'you' (vì Candy hỏi tôi).</li><li><b>4. Tại sao sai:</b> B sai thì (không được dùng quá khứ). C sai đại từ (Candy không hỏi chính cô ấy). D sai cấu trúc.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "2. 'I'll let you know if I have any more problems,' Carol told her father.", options: [{text: "Carol told her father (that) she would let him know if she had any more problems.", isCorrect: true}, {text: "Carol told her father (that) she will let him know if she has any more problems.", isCorrect: false}, {text: "Carol told her father (that) I would let you know if I had any more problems.", isCorrect: false}, {text: "Carol told her father (that) she would let him know if she has any more problems.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> 'Con sẽ cho bố biết nếu con có thêm vấn đề gì,' Carol nói với bố.</li><li><b>2. Phân tích:</b> Câu trực tiếp -> Gián tiếp. Cần đổi đại từ và lùi thì.</li><li><b>3. Tại sao đúng:</b> 'I' -> 'she'; 'you' -> 'him'; 'will let' -> 'would let'; 'have' -> 'had'.</li><li><b>4. Tại sao sai:</b> B chưa lùi thì. C chưa đổi đại từ. D lùi thì thiếu vế sau (has -> had).</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "3. The professor told us that the Moon was more than 380,000 km from the Earth.", options: [{text: "'The Moon is more than 380,000 km from the Earth,' the professor told us.", isCorrect: true}, {text: "'The Moon was more than 380,000 km from the Earth,' the professor told us.", isCorrect: false}, {text: "'The Moon has been more than 380,000 km from the Earth,' the professor told us.", isCorrect: false}, {text: "'Is the Moon more than 380,000 km from the Earth?' the professor told us.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Giáo sư bảo chúng tôi rằng Mặt trăng cách TĐ hơn 380,000 km.</li><li><b>2. Phân tích:</b> Gián tiếp -> Trực tiếp. Sự thật hiển nhiên.</li><li><b>3. Tại sao đúng:</b> Trong câu trực tiếp, sự thật hiển nhiên luôn dùng thì Hiện Tại Đơn -> 'is'.</li><li><b>4. Tại sao sai:</b> B dùng quá khứ là sai thực tế khoa học. C sai thì. D sai loại câu (đây là câu kể, không phải câu hỏi).</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "4. 'When will NASA's Perseverence Rover return to Earth?' Mark wanted to know.", options: [{text: "Mark wanted to know when NASA's Perseverence Rover would return to Earth.", isCorrect: true}, {text: "Mark wanted to know when would NASA's Perseverence Rover return to Earth.", isCorrect: false}, {text: "Mark wanted to know when NASA's Perseverence Rover returned to Earth.", isCorrect: false}, {text: "Mark wanted to know when will NASA's Perseverence Rover return to Earth.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> 'Khi nào Tàu thám hiểm sẽ trở về TĐ?' Mark muốn biết.</li><li><b>2. Phân tích:</b> Trực tiếp -> Gián tiếp câu hỏi Wh-. Bỏ đảo ngữ, lùi thì.</li><li><b>3. Tại sao đúng:</b> Từ để hỏi 'when' + Chủ ngữ (NASA's...) + Động từ lùi thì (will -> would return).</li><li><b>4. Tại sao sai:</b> B còn giữ đảo ngữ (would đứng trước CN). C lùi thì sai nguyên tắc. D chưa lùi thì.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "5. Daniel asked me if I was going to see lunar eclipse the following day.", options: [{text: "'Are you going to see lunar eclipse tomorrow?' Daniel asked me.", isCorrect: true}, {text: "'Am I going to see lunar eclipse tomorrow?' Daniel asked me.", isCorrect: false}, {text: "'Were you going to see lunar eclipse the following day?' Daniel asked me.", isCorrect: false}, {text: "'Are you going to see lunar eclipse the following day?' Daniel asked me.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Daniel hỏi tôi liệu tôi có định đi xem nguyệt thực vào ngày hôm sau không.</li><li><b>2. Phân tích:</b> Gián tiếp -> Trực tiếp câu hỏi Yes/No. Đổi 'if' thành câu hỏi.</li><li><b>3. Tại sao đúng:</b> 'I was going' lùi ngược thành 'Are you going' (vì hỏi người nghe). 'the following day' trả về 'tomorrow'.</li><li><b>4. Tại sao sai:</b> B sai đại từ. C sai thì. D chưa đổi trạng từ thời gian.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "6. The astronauts said that they were looking forward to the space mission that year.", options: [{text: "'We are looking forward to the space mission this year,' the astronauts said.", isCorrect: true}, {text: "'They are looking forward to the space mission this year,' the astronauts said.", isCorrect: false}, {text: "'We were looking forward to the space mission that year,' the astronauts said.", isCorrect: false}, {text: "'We are looking forward to the space mission that year,' the astronauts said.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Các phi hành gia nói họ đang mong chờ sứ mệnh không gian năm đó.</li><li><b>2. Phân tích:</b> Gián tiếp -> Trực tiếp.</li><li><b>3. Tại sao đúng:</b> 'they' lùi ngược thành 'We' (chúng tôi). 'were looking' về 'are looking'. 'that year' về 'this year'.</li><li><b>4. Tại sao sai:</b> B sai đại từ. C sai thì (chưa lùi ngược). D chưa đổi trạng từ thời gian.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "7. 'Can you help me with this tricky math question?' Tim asked his sister.", options: [{text: "Tim asked his sister if she could help him with that tricky math question.", isCorrect: true}, {text: "Tim asked his sister if you could help me with that tricky math question.", isCorrect: false}, {text: "Tim asked his sister if she can help him with this tricky math question.", isCorrect: false}, {text: "Tim asked his sister to help him with this tricky math question.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> 'Chị có thể giúp em câu toán hóc búa này không?' Tim hỏi chị cậu ấy.</li><li><b>2. Phân tích:</b> Trực tiếp -> Gián tiếp câu Yes/No. Thêm 'if', lùi thì, đổi đại từ/từ chỉ định.</li><li><b>3. Tại sao đúng:</b> 'you' -> 'she'; 'me' -> 'him'; 'can' -> 'could'; 'this' -> 'that'.</li><li><b>4. Tại sao sai:</b> B chưa đổi đại từ. C chưa lùi thì và chưa đổi 'this'. D là cấu trúc mệnh lệnh, sai bản chất câu hỏi gốc.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "8. 'NASA is sending a helicopter to Mars next year,' NASA's administrator said.", options: [{text: "NASA's administrator said (that) NASA was sending a helicopter to Mars the next year.", isCorrect: true}, {text: "NASA's administrator said (that) NASA is sending a helicopter to Mars the next year.", isCorrect: false}, {text: "NASA's administrator said (that) NASA was sending a helicopter to Mars next year.", isCorrect: false}, {text: "NASA's administrator said (that) NASA sent a helicopter to Mars the next year.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> 'NASA sẽ gửi 1 trực thăng lên Sao Hỏa năm sau,' quản trị viên nói.</li><li><b>2. Phân tích:</b> Trực tiếp -> Gián tiếp câu kể.</li><li><b>3. Tại sao đúng:</b> Lùi thì 'is sending' -> 'was sending'. Đổi trạng từ 'next year' -> 'the next year / the following year'.</li><li><b>4. Tại sao sai:</b> B chưa lùi thì. C chưa đổi trạng từ. D lùi thì sai cấu trúc.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "9. They wondered where on Mars humans might first land.", options: [{text: "'Where on Mars may humans first land?' they wondered.", isCorrect: true}, {text: "'Where on Mars might humans first land?' they wondered.", isCorrect: false}, {text: "'Where on Mars do humans first land?' they wondered.", isCorrect: false}, {text: "'Where on Mars humans may first land?' they wondered.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> Họ tự hỏi con người có thể hạ cánh lần đầu tiên ở đâu trên Sao Hỏa.</li><li><b>2. Phân tích:</b> Gián tiếp -> Trực tiếp câu hỏi Wh-. Khôi phục đảo ngữ, lùi thì ngược lại.</li><li><b>3. Tại sao đúng:</b> 'might' lùi ngược thành 'may'. Câu hỏi trực tiếp phải có đảo ngữ: 'may humans...'.</li><li><b>4. Tại sao sai:</b> B chưa lùi thì ngược lại. C sai thì/ngữ cảnh. D thiếu đảo ngữ trong câu hỏi trực tiếp.</li></ul>"
+    },
+    { section: "XI. Change the following sentences into indirect speech or vice versa.", question: "10. 'Is Voyager 2 the only spacecraft ever to fly by Neptune and Uranus?' Sam asked.", options: [{text: "Sam asked if Voyager 2 was the only spacecraft ever to fly by Neptune and Uranus.", isCorrect: true}, {text: "Sam asked if is Voyager 2 the only spacecraft ever to fly by Neptune and Uranus.", isCorrect: false}, {text: "Sam asked if Voyager 2 is the only spacecraft ever to fly by Neptune and Uranus.", isCorrect: false}, {text: "Sam asked that Voyager 2 was the only spacecraft ever to fly by Neptune and Uranus.", isCorrect: false}],
+      explanation: "<h4>GIẢI THÍCH CHI TIẾT:</h4><ul><li><b>1. Dịch:</b> 'Voyager 2 có phải là tàu vũ trụ duy nhất bay qua sao Hải Vương và sao Thiên Vương không?' Sam hỏi.</li><li><b>2. Phân tích:</b> Trực tiếp -> Gián tiếp câu Yes/No. Dùng 'if', lùi thì, bỏ đảo ngữ.</li><li><b>3. Tại sao đúng:</b> Thêm 'if'. Đưa to be ra sau chủ ngữ và lùi thì 'is' -> 'was'.</li><li><b>4. Tại sao sai:</b> B còn đảo ngữ. C chưa lùi thì. D dùng 'that' thay vì 'if' là sai cấu trúc câu hỏi.</li></ul>"
+    }
+];
+
+let currentScore = 0;
+let answeredQuestions = 0;
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    quizData.forEach((q, index) => {
+        const shuffledOptions = shuffleArray([...q.options]);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="section-title">${q.section}</div>
+            <div class="question-text">${q.question}</div>
+            <div class="options-grid" id="options-${index}">
+                ${shuffledOptions.map((opt, optIndex) => `
+                    <button class="option-btn" onclick="handleAnswer(this, ${index}, ${opt.isCorrect})">
+                        ${String.fromCharCode(65 + optIndex)}. ${opt.text}
+                    </button>
+                `).join('')}
+            </div>
+            <div class="explanation" id="expl-${index}">${q.explanation}</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function handleAnswer(button, questionIndex, isCorrect) {
+    if (button.disabled) return;
+    const optionsGrid = document.getElementById(`options-${questionIndex}`);
+    const explanation = document.getElementById(`expl-${questionIndex}`);
+    const allButtons = optionsGrid.querySelectorAll('.option-btn');
+    
+    allButtons.forEach(btn => btn.disabled = true);
+
+    if (isCorrect) {
+        button.classList.add('correct'); playCorrect(); shootConfetti();
+        currentScore++; document.getElementById('score').innerText = currentScore;
+    } else {
+        button.classList.add('wrong', 'shake'); playWrong();
+        allButtons.forEach(btn => {
+            const origOpt = quizData[questionIndex].options.find(o => o.text === btn.innerText.substring(3));
+            if(origOpt && origOpt.isCorrect) btn.classList.add('correct');
+        });
+    }
+    explanation.style.display = 'block';
+    answeredQuestions++;
+}
+
+function showFinalScore() {
+    const overlay = document.getElementById('popup-overlay');
+    const msg = document.getElementById('popup-message');
+    let percent = (currentScore / quizData.length) * 100;
+    
+    if (percent === 100) { msg.innerText = `Đúng ${currentScore}/${quizData.length}. Bạn là một thiên tài Tiếng Anh!`; shootConfetti(); playCorrect(); } 
+    else if (percent >= 70) { msg.innerText = `Đúng ${currentScore}/${quizData.length}. Chỉ một chút nữa thôi là hoàn hảo!`; playCorrect(); } 
+    else { msg.innerText = `Bạn đúng ${currentScore}/${quizData.length}. Hãy đọc kỹ phần giải thích bên dưới nhé!`; }
+    
+    overlay.style.display = 'flex';
+}
+
+function closePopup() { document.getElementById('popup-overlay').style.display = 'none'; }
+window.onload = renderQuiz;
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

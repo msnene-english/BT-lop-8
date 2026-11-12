@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 12 – Life on Other Planets | MS Chí Nên ULIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--p:#7C3AED;--s:#06B6D4;--acc:#F59E0B;--ok:#00D26A;--err:#FF4757;--txt:#E2E8F0;--muted:#94A3B8;--bdr:rgba(124,58,237,.28);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;min-height:100vh;color:var(--txt);overflow-x:hidden;background:#07071a;}
+
+/* BG */
+.bg-grad{position:fixed;inset:0;z-index:-3;background:linear-gradient(135deg,#07071a 0%,#180a3c 25%,#091a3c 55%,#0d1b3d 80%,#07071a 100%);background-size:400% 400%;animation:gshift 18s ease infinite;}
+@keyframes gshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.bg-pat{position:fixed;inset:0;z-index:-2;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Ctext x='10' y='70' font-size='48'%3E%F0%9F%9A%80%3C/text%3E%3Ctext x='130' y='145' font-size='42'%3E%F0%9F%AA%90%3C/text%3E%3Ctext x='55' y='210' font-size='36'%3E%F0%9F%91%BD%3C/text%3E%3Ctext x='168' y='38' font-size='30'%3E%E2%AD%90%3C/text%3E%3C/svg%3E");background-size:240px 240px;animation:pdrift 40s linear infinite;}
+@keyframes pdrift{0%{transform:translate(0,0)}100%{transform:translate(240px,240px)}}
+.stars-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;}
+.st{position:absolute;background:#fff;border-radius:50%;animation:twkl 3s infinite alternate;}
+@keyframes twkl{0%{opacity:.1;transform:scale(1)}100%{opacity:.95;transform:scale(1.5)}}
+
+/* HEADER */
+.hdr{text-align:center;padding:10px 20px 8px;background:rgba(7,7,26,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:200;}
+.hdr h1{font-size:1.3rem;font-weight:900;letter-spacing:1.2px;background:linear-gradient(90deg,#9333ea,#06b6d4,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{font-size:.72rem;color:var(--muted);margin-top:1px;}
+
+/* TIMER */
+.tbar{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 20px;background:rgba(12,6,38,.7);border-bottom:1px solid var(--bdr);}
+#startBtn{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;padding:8px 24px;border-radius:24px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;box-shadow:0 4px 18px rgba(124,58,237,.5);transition:all .25s;}
+#startBtn:hover{transform:scale(1.06);}
+.tdsp{font-size:2rem;font-weight:900;color:var(--s);display:none;text-shadow:0 0 24px rgba(6,182,212,.65);min-width:88px;text-align:center;}
+.tdsp.urg{color:var(--err);animation:upls .5s infinite alternate;}
+@keyframes upls{from{transform:scale(1)}to{transform:scale(1.08)}}
+.pauseBtn{background:rgba(124,58,237,.22);color:#fff;border:1px solid var(--p);padding:6px 15px;border-radius:14px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;display:none;font-size:.8rem;transition:all .2s;}
+.expire-toast{display:none;position:fixed;top:78px;left:50%;transform:translateX(-50%);background:rgba(255,71,87,.12);border:1px solid var(--err);color:#ffc3ca;padding:11px 22px;border-radius:12px;font-size:.86rem;font-weight:700;z-index:600;max-width:480px;text-align:center;backdrop-filter:blur(10px);line-height:1.6;}
+
+/* SPLIT */
+.split{display:flex;height:calc(100vh - 108px);}
+.lp{width:44%;overflow-y:auto;padding:16px 14px 28px;background:rgba(8,6,30,.96);border-right:2px solid var(--bdr);}
+.rp{width:56%;overflow-y:auto;padding:16px 16px 28px;background:rgba(10,4,28,.96);}
+.lp::-webkit-scrollbar,.rp::-webkit-scrollbar{width:5px;}
+.lp::-webkit-scrollbar-thumb,.rp::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px;}
+
+/* LEFT */
+.sbadge{display:inline-block;background:rgba(6,182,212,.16);border:1px solid rgba(6,182,212,.38);color:var(--s);padding:3px 12px;border-radius:18px;font-size:.7rem;font-weight:800;letter-spacing:.8px;margin-bottom:5px;}
+.ptitle{font-size:1rem;font-weight:900;color:var(--acc);padding:6px 11px;background:rgba(245,158,11,.1);border-left:4px solid var(--acc);border-radius:0 8px 8px 0;margin:12px 0 8px;text-transform:uppercase;letter-spacing:.7px;}
+.rtitle{font-size:1.05rem;font-weight:900;color:var(--s);text-align:center;margin:8px 0 7px;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 18px rgba(6,182,212,.5);}
+.ppara{background:rgba(255,255,255,.035);border-radius:10px;padding:10px 12px;margin-bottom:9px;border:1px solid rgba(255,255,255,.055);font-size:.88rem;line-height:1.76;}
+.bw{font-weight:800;color:#fde68a;border-bottom:1px dashed rgba(253,230,138,.4);}
+.vnt{font-size:.74rem;color:var(--muted);margin-top:6px;padding-top:5px;border-top:1px dashed rgba(255,255,255,.09);}
+.tbtn{background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(6,182,212,.25));border:1px solid rgba(124,58,237,.36);color:#a78bfa;padding:5px 13px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.76rem;font-weight:700;margin-top:7px;transition:all .28s;display:inline-block;}
+.tbtn:hover{background:linear-gradient(135deg,rgba(124,58,237,.48),rgba(6,182,212,.48));transform:translateY(-1px);}
+.tbox{display:none;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.25);border-radius:8px;padding:10px 12px;margin-top:7px;font-size:.82rem;line-height:1.76;color:#bae6fd;font-style:italic;}
+.gls-wrap{margin-top:16px;background:rgba(245,158,11,.055);border:1px solid rgba(245,158,11,.2);border-radius:12px;overflow:hidden;}
+.gls-ttl{background:rgba(245,158,11,.16);padding:7px 13px;font-size:.85rem;font-weight:800;color:#fde68a;letter-spacing:.7px;}
+.gtbl{width:100%;border-collapse:collapse;font-size:.78rem;}
+.gtbl th{background:rgba(245,158,11,.1);padding:5px 8px;color:#fde68a;font-weight:800;text-align:left;border-bottom:1px solid rgba(245,158,11,.18);}
+.gtbl td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.048);}
+.gtbl tr:last-child td{border-bottom:none;}
+.gtbl tr:hover td{background:rgba(255,255,255,.025);}
+.wc{color:#93c5fd;font-weight:700;}.pc{color:#a78bfa;font-style:italic;font-size:.73rem;}
+.lv{display:inline-block;padding:1px 5px;border-radius:6px;font-size:.64rem;font-weight:700;background:rgba(124,58,237,.28);color:#c4b5fd;}
+.blnk{display:inline-block;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.45);border-radius:6px;padding:1px 9px;min-width:72px;text-align:center;font-weight:700;color:#a78bfa;font-size:.8rem;transition:all .3s;vertical-align:middle;}
+.blnk.revealed{background:rgba(0,210,106,.18);border-color:var(--ok);color:var(--ok);}
+
+/* RIGHT */
+.exhdr{font-size:.94rem;font-weight:900;color:var(--acc);padding:8px 12px;background:rgba(245,158,11,.09);border-radius:10px;margin:12px 0 8px;border-left:4px solid var(--acc);}
+.exinstr{font-size:.82rem;color:var(--muted);margin-bottom:10px;padding:7px 11px;background:rgba(255,255,255,.03);border-radius:8px;border-left:3px solid rgba(245,158,11,.4);font-style:italic;}
+.pbar-c{background:rgba(255,255,255,.07);border-radius:8px;height:6px;margin:0 0 12px;overflow:hidden;}
+.pbar-f{height:100%;background:linear-gradient(90deg,#7c3aed,#06b6d4);border-radius:8px;transition:width .5s ease;width:0%;}
+.lvscore{position:fixed;top:66px;right:13px;background:rgba(7,7,26,.92);border:1px solid var(--p);border-radius:9px;padding:5px 12px;font-size:.82rem;font-weight:800;color:var(--acc);z-index:300;display:none;}
+.qcard{background:rgba(255,255,255,.038);border:1px solid rgba(255,255,255,.075);border-radius:14px;padding:12px;margin-bottom:12px;transition:border-color .3s;}
+.qcard.ok-card{border-color:var(--ok);background:rgba(0,210,106,.05);}
+.qcard.err-card{border-color:var(--err);background:rgba(255,71,87,.05);}
+.qnum{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;width:24px;height:24px;border-radius:50%;font-size:.74rem;font-weight:900;margin-right:6px;flex-shrink:0;}
+.qtxt{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:8px;line-height:1.5;display:flex;align-items:flex-start;}
+.qctx{font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:8px;padding:5px 9px;background:rgba(255,255,255,.04);border-radius:6px;border-left:3px solid var(--p);line-height:1.62;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.opts.single{grid-template-columns:1fr;}
+.obtn{background:rgba(255,255,255,.055);border:2px solid rgba(255,255,255,.085);color:var(--txt);padding:9px 11px;border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:600;text-align:left;transition:all .22s;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.obtn:hover:not(:disabled){background:rgba(124,58,237,.2);border-color:var(--p);transform:translateY(-2px) scale(1.01);box-shadow:0 5px 18px rgba(124,58,237,.32);}
+.obtn.correct{background:rgba(0,210,106,.2);border-color:var(--ok);color:var(--ok);}
+.obtn.wrong{background:rgba(255,71,87,.2);border-color:var(--err);color:var(--err);animation:shake .5s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-7px)}20%,40%,60%,80%{transform:translateX(7px)}}
+.olbl{display:inline-flex;align-items:center;justify-content:center;background:rgba(124,58,237,.28);color:#c4b5fd;width:22px;height:22px;border-radius:5px;font-size:.72rem;font-weight:800;margin-right:6px;flex-shrink:0;}
+.expbox{display:none;margin-top:10px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.22);border-radius:10px;padding:11px 13px;font-size:.85rem;line-height:1.72;color:#bae6fd;}
+.expbox.show{display:block;animation:fadein .4s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.expbox h4{color:var(--s);font-size:.86rem;margin-bottom:6px;font-weight:800;}
+.eit{margin-bottom:4px;}.eok{color:#86efac;font-weight:700;}.enot{color:#fca5a5;}
+.etrans{background:rgba(245,158,11,.1);border-left:3px solid var(--acc);padding:6px 10px;border-radius:0 6px 6px 0;color:#fde68a;margin:7px 0;font-style:italic;}
+
+/* MATCHING */
+.mrow{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:rgba(255,255,255,.035);border-radius:9px;margin-bottom:7px;border:1px solid rgba(255,255,255,.065);}
+.mnum{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;width:22px;height:22px;min-width:22px;border-radius:50%;font-size:.72rem;font-weight:900;margin-top:3px;}
+.mdef{flex:1;font-size:.87rem;color:var(--txt);line-height:1.5;padding-top:2px;}
+.mright{display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
+.msel{appearance:none;-webkit-appearance:none;background:rgba(124,58,237,.18);border:2px solid rgba(124,58,237,.4);color:#a78bfa;padding:6px 28px 6px 11px;border-radius:9px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.84rem;font-weight:700;min-width:155px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a78bfa' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:all .3s;}
+.msel:focus{outline:none;border-color:var(--p);}
+.msel.ok{background-color:rgba(0,210,106,.18);border-color:var(--ok);color:var(--ok);}
+.msel.err{background-color:rgba(255,71,87,.18);border-color:var(--err);color:var(--err);animation:shake .5s ease;}
+.msel option{background:#1a0a3d;color:var(--txt);}
+.mexp{display:none;font-size:.78rem;color:#bae6fd;padding:5px 9px;background:rgba(6,182,212,.07);border-radius:6px;border-left:2px solid var(--s);max-width:340px;line-height:1.55;}
+.mexp.show{display:block;animation:fadein .4s ease;}
+
+/* SUBMIT */
+.sub-area{text-align:center;padding:24px 0 18px;}
+.subbtn{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;padding:14px 44px;border-radius:28px;font-family:'Nunito',sans-serif;font-size:1.06rem;font-weight:900;cursor:pointer;box-shadow:0 6px 28px rgba(124,58,237,.52);transition:all .3s;letter-spacing:.8px;}
+.subbtn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 10px 38px rgba(124,58,237,.72);}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(9px);z-index:1000;align-items:center;justify-content:center;}
+.modal-ov.show{display:flex;}
+.mbox{background:linear-gradient(135deg,#0d0d2b,#1a0a3d);border:2px solid var(--p);border-radius:24px;padding:38px 32px;max-width:480px;width:93%;text-align:center;box-shadow:0 0 68px rgba(124,58,237,.52);animation:mpop .5s ease;}
+@keyframes mpop{from{transform:scale(.7) translateY(50px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.memoji{font-size:3.8rem;margin-bottom:12px;}
+.mtitle{font-size:1.5rem;font-weight:900;margin-bottom:6px;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mscore{font-size:3.4rem;font-weight:900;color:var(--acc);text-shadow:0 0 32px rgba(245,158,11,.5);margin:14px 0;}
+.mmsg{font-size:.98rem;color:#bae6fd;line-height:1.68;margin-bottom:16px;}
+.mbkd{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin:14px 0 22px;}
+.bdi{background:rgba(255,255,255,.07);border-radius:9px;padding:9px;}
+.bdl{font-size:.7rem;color:var(--muted);margin-bottom:3px;}
+.bds{font-size:1.22rem;font-weight:900;color:var(--s);}
+.mclosebtn{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;padding:11px 28px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .3s;}
+.mclosebtn:hover{transform:scale(1.06);}
+
+/* CONFETTI */
+.cpce{position:fixed;pointer-events:none;z-index:9999;animation:cfall 2s ease forwards;}
+@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="bg-grad"></div>
+<div class="bg-pat"></div>
+<div class="stars-layer" id="starsDiv"></div>
+
+<header class="hdr">
+  <h1>🌌 LIFE ON OTHER PLANETS — UNIT 12</h1>
+  <p>Giáo viên tạo: MS Chí Nên ULIS &nbsp;|&nbsp; 22 câu &nbsp;|&nbsp; Thời gian: 10 phút</p>
+</header>
+
+<div class="tbar">
+  <button id="startBtn" onclick="startTimer()">🚀 BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+  <div class="tdsp" id="tdsp">10:00</div>
+  <button class="pauseBtn" id="pauseBtn" onclick="togglePause()">⏸ Tạm dừng</button>
+</div>
+<div class="expire-toast" id="expireToast">
+  ⏰ <strong>Đã hết giờ làm bài!</strong><br>
+  Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.
+</div>
+<div class="lvscore" id="lvscore">✅ 0 / 22</div>
+
+<div class="split">
+
+<!-- ============ LEFT ============ -->
+<div class="lp">
+  <div class="sbadge">SECTION IX</div>
+  <p class="ptitle">IX. Choose the word which best fits each gap</p>
+  <h2 class="rtitle">🛸 ARE THERE ANY ALIENS OUT THERE?</h2>
+
+  <div class="ppara">
+    <p>For years we Earthlings have wondered <span class="blnk" id="b1">(1)_____</span> we are alone in the universe or we've got company in the shape of aliens. People have claimed to have met aliens, seen UFOs and some people even say they've been abducted by extraterrestrials. But what do we really know about them – if they <span class="blnk" id="b2">(2)_____</span> at all?</p>
+    <div class="vnt">📌 <em>extraterrestrial</em> (n): sinh vật ngoài Trái Đất &nbsp;|&nbsp; <em>abduct</em> (v): bắt cóc</div>
+    <button class="tbtn" onclick="togT('t1',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="t1"><strong>📖 Bản dịch đầy đủ:</strong><br>Trong nhiều năm qua, chúng ta – những người Trái Đất – đã tự hỏi <strong>liệu rằng</strong> chúng ta có đơn độc trong vũ trụ này hay chúng ta có bạn đồng hành dưới hình dạng người ngoài hành tinh. Nhiều người đã tự nhận là đã gặp người ngoài hành tinh, nhìn thấy UFO, và một số người thậm chí nói rằng họ đã bị bắt cóc bởi những sinh vật ngoài Trái Đất. Nhưng thực ra chúng ta biết gì về họ – nếu họ có <strong>tồn tại</strong> không?</div>
+  </div>
+
+  <div class="ppara">
+    <p>Ever since we realised there <span class="blnk" id="b3">(3)_____</span> be something out there, our imaginations have created thousands of bizarre creatures. But at the moment no one knows what an alien might look like. Even if we do ever come <span class="blnk" id="b4">(4)_____</span> aliens in space, most scientists agree they probably won't look like little green men. <span class="blnk" id="b5">(5)_____</span> aliens exist, experts reckon they're probably very small and look something like a bug.</p>
+    <div class="vnt">📌 <em>bizarre</em> (adj): kỳ lạ, quái dị &nbsp;|&nbsp; <em>reckon</em> (v): cho rằng (informal)</div>
+    <button class="tbtn" onclick="togT('t2',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="t2"><strong>📖 Bản dịch đầy đủ:</strong><br>Kể từ khi chúng ta nhận ra rằng <strong>có thể có</strong> điều gì đó ở ngoài kia, trí tưởng tượng của con người đã tạo ra hàng nghìn sinh vật kỳ lạ. Nhưng cho đến thời điểm này, không ai biết người ngoài hành tinh trông như thế nào. Dù nếu chúng ta có <strong>tình cờ gặp</strong> người ngoài hành tinh trong vũ trụ, hầu hết các nhà khoa học đồng ý rằng họ có lẽ sẽ không trông giống những người đàn ông xanh nhỏ bé. <strong>Nếu</strong> người ngoài hành tinh tồn tại, các chuyên gia cho rằng họ có lẽ rất nhỏ và trông giống như một con bọ.</div>
+  </div>
+
+  <div class="ppara">
+    <p>Over the years thousands of people have been <span class="blnk" id="b6">(6)_____</span> that we Earthlings have been visited by aliens from other civilisations. But there's one problem with this – the number of aliens <span class="blnk" id="b7">(7)_____</span> discovered is zero. There are lots of photos and films of apparent <span class="blnk" id="b8">(8)_____</span> but most have a logical explanation like aeroplanes and military exercises. Or they're hoaxes!</p>
+    <div class="vnt">📌 <em>civilisation</em> (n): nền văn minh &nbsp;|&nbsp; <em>hoax</em> (n): trò bịp bợm</div>
+    <button class="tbtn" onclick="togT('t3',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="t3"><strong>📖 Bản dịch đầy đủ:</strong><br>Trong nhiều năm qua, hàng nghìn người đã <strong>bị thuyết phục</strong> rằng chúng ta – những người Trái Đất – đã được viếng thăm bởi người ngoài hành tinh từ các nền văn minh khác. Nhưng có một vấn đề với điều này – số lượng người ngoài hành tinh <strong>thực sự</strong> được phát hiện là bằng không. Có rất nhiều ảnh và phim về các <strong>vụ nhìn thấy UFO</strong> được cho là có thật, nhưng hầu hết đều có giải thích hợp lý như máy bay và các cuộc tập trận quân sự. Hoặc đó chỉ là những trò bịp bợm!</div>
+  </div>
+
+  <div class="gls-wrap">
+    <div class="gls-ttl">📚 GLOSSARY – SECTION IX</div>
+    <table class="gtbl">
+      <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Cấp</th><th>Nghĩa tiếng Việt</th></tr></thead>
+      <tbody>
+        <tr><td class="wc">extraterrestrial</td><td class="pc">n/adj</td><td><span class="lv">C1</span></td><td>sinh vật ngoài Trái Đất</td></tr>
+        <tr><td class="wc">abduct</td><td class="pc">v</td><td><span class="lv">C1</span></td><td>bắt cóc, bắt đi cưỡng ép</td></tr>
+        <tr><td class="wc">civilisation</td><td class="pc">n</td><td><span class="lv">B2</span></td><td>nền văn minh</td></tr>
+        <tr><td class="wc">bizarre</td><td class="pc">adj</td><td><span class="lv">B2</span></td><td>kỳ lạ, quái dị, kỳ quặc</td></tr>
+        <tr><td class="wc">imagination</td><td class="pc">n</td><td><span class="lv">B1</span></td><td>trí tưởng tượng</td></tr>
+        <tr><td class="wc">reckon</td><td class="pc">v</td><td><span class="lv">B1</span></td><td>cho rằng, nghĩ rằng (informal)</td></tr>
+        <tr><td class="wc">convinced</td><td class="pc">adj</td><td><span class="lv">B2</span></td><td>bị thuyết phục, tin chắc</td></tr>
+        <tr><td class="wc">apparent</td><td class="pc">adj</td><td><span class="lv">B2</span></td><td>bề ngoài có vẻ như là; rõ ràng</td></tr>
+        <tr><td class="wc">sighting</td><td class="pc">n</td><td><span class="lv">B2</span></td><td>vụ/lần nhìn thấy (UFO, sinh vật lạ)</td></tr>
+        <tr><td class="wc">hoax</td><td class="pc">n</td><td><span class="lv">C1</span></td><td>trò lừa bịp, trò bịp bợm</td></tr>
+        <tr><td class="wc">universe</td><td class="pc">n</td><td><span class="lv">B1</span></td><td>vũ trụ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sbadge" style="margin-top:26px;">SECTION X</div>
+  <p class="ptitle">X. Read the passage carefully, then do the tasks</p>
+  <h2 class="rtitle">🔭 HOW MANY PLANETS ARE THERE?</h2>
+
+  <div class="ppara">
+    <p>How many planets are there in our galaxy? That's a <span class="bw">tricky</span> question to answer. Are there other planets that support life? That's exactly what the Kepler mission hopes to discover.</p>
+    <button class="tbtn" onclick="togT('tx1',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="tx1"><strong>📖 Bản dịch đầy đủ:</strong><br>Có bao nhiêu hành tinh trong thiên hà của chúng ta? Đó là một câu hỏi <strong>khó</strong> để trả lời. Liệu có các hành tinh khác hỗ trợ sự sống không? Đó chính xác là điều mà nhiệm vụ Kepler hy vọng khám phá.</div>
+  </div>
+
+  <div class="ppara">
+    <p>NASA launched the Kepler space telescope, designed to find <span class="bw">habitable</span> planets, in 2009. So far it has discovered five new Earth-sized planets <span class="bw">beyond</span> our solar system. These planets are hotter than the Earth – much too hot for life as we know it. The Kepler team predict that they will need <span class="bw">at least</span> three years to find an Earth-like planet.</p>
+    <div class="vnt">📌 <em>habitable</em> (adj): có thể ở được &nbsp;|&nbsp; <em>beyond</em> (prep): ngoài, vượt ra &nbsp;|&nbsp; <em>at least</em>: ít nhất</div>
+    <button class="tbtn" onclick="togT('tx2',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="tx2"><strong>📖 Bản dịch đầy đủ:</strong><br>NASA đã phóng kính viễn vọng không gian Kepler, được thiết kế để tìm kiếm các hành tinh <strong>có thể ở được</strong>, vào năm 2009. Cho đến nay, nó đã phát hiện năm hành tinh mới có kích thước bằng Trái Đất nằm <strong>ngoài</strong> hệ mặt trời của chúng ta. Những hành tinh này nóng hơn Trái Đất – quá nóng để sự sống như chúng ta biết có thể tồn tại. Nhóm Kepler dự đoán rằng họ sẽ cần <strong>ít nhất</strong> ba năm để tìm thấy một hành tinh giống Trái Đất.</div>
+  </div>
+
+  <div class="ppara">
+    <p>The simplest requirement for a planet to have life is for there to be liquid water so the distance from the planet's sun and therefore temperature are important. There also needs to be the correct amount of air. If a planet is as small as Mars (half the size of Earth) its weak <span class="bw">gravity</span> means that it can't hold on to air molecules. If a planet is Neptune sized (four times bigger than Earth) it has very strong gravity and too much air. So size matters too.</p>
+    <div class="vnt">📌 <em>gravity</em> (n): lực hấp dẫn &nbsp;|&nbsp; <em>molecule</em> (n): phân tử</div>
+    <button class="tbtn" onclick="togT('tx3',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="tx3"><strong>📖 Bản dịch đầy đủ:</strong><br>Yêu cầu đơn giản nhất để một hành tinh có sự sống là phải có nước lỏng, vì vậy khoảng cách từ hành tinh đến mặt trời của nó, và do đó nhiệt độ, là rất quan trọng. Ngoài ra cũng cần phải có lượng không khí phù hợp. Nếu một hành tinh nhỏ bằng Sao Hỏa (bằng một nửa kích thước Trái Đất), lực hấp dẫn yếu của nó có nghĩa là nó không thể giữ các phân tử không khí. Nếu một hành tinh có kích thước bằng Sao Hải Vương (lớn hơn Trái Đất bốn lần), nó có lực hấp dẫn rất mạnh và quá nhiều không khí. Vì vậy kích thước cũng quan trọng.</div>
+  </div>
+
+  <div class="ppara">
+    <p>The cost of the mission is <span class="bw">approximately</span> six hundred million dollars. It is scheduled to observe until 2013 but this could be extended. Will we be sad if we discover we are <span class="bw">alone</span> in our galaxy or happy if we find that we share it with other life forms?</p>
+    <div class="vnt">📌 <em>approximately</em> (adv): khoảng, xấp xỉ &nbsp;|&nbsp; <em>alone</em> (adj): đơn độc</div>
+    <button class="tbtn" onclick="togT('tx4',this)">🌟 Mở dịch đoạn này</button>
+    <div class="tbox" id="tx4"><strong>📖 Bản dịch đầy đủ:</strong><br>Chi phí của nhiệm vụ là <strong>khoảng</strong> sáu trăm triệu đô la. Dự kiến sẽ quan sát đến năm 2013 nhưng điều này có thể được kéo dài. Chúng ta sẽ buồn nếu phát hiện ra rằng chúng ta <strong>đơn độc</strong> trong thiên hà này, hay vui mừng nếu chúng ta thấy rằng chúng ta chia sẻ nó với các dạng sự sống khác?</div>
+  </div>
+
+  <div class="gls-wrap" style="margin-bottom:28px;">
+    <div class="gls-ttl">📚 GLOSSARY – SECTION X</div>
+    <table class="gtbl">
+      <thead><tr><th>Từ vựng</th><th>Loại từ</th><th>Cấp</th><th>Nghĩa tiếng Việt</th></tr></thead>
+      <tbody>
+        <tr><td class="wc">habitable</td><td class="pc">adj</td><td><span class="lv">B2</span></td><td>có thể ở được, thích hợp để sinh sống</td></tr>
+        <tr><td class="wc">tricky</td><td class="pc">adj</td><td><span class="lv">B1</span></td><td>khó khăn, phức tạp; xảo quyệt</td></tr>
+        <tr><td class="wc">gravity</td><td class="pc">n</td><td><span class="lv">B2</span></td><td>lực hấp dẫn</td></tr>
+        <tr><td class="wc">approximately</td><td class="pc">adv</td><td><span class="lv">B2</span></td><td>khoảng, xấp xỉ, gần đúng</td></tr>
+        <tr><td class="wc">beyond</td><td class="pc">prep/adv</td><td><span class="lv">B1</span></td><td>ngoài, vượt ra khỏi, xa hơn</td></tr>
+        <tr><td class="wc">at least</td><td class="pc">phrase</td><td><span class="lv">A2</span></td><td>ít nhất, tối thiểu là</td></tr>
+        <tr><td class="wc">alone</td><td class="pc">adj/adv</td><td><span class="lv">A2</span></td><td>một mình, đơn độc</td></tr>
+        <tr><td class="wc">molecule</td><td class="pc">n</td><td><span class="lv">B2</span></td><td>phân tử</td></tr>
+        <tr><td class="wc">requirement</td><td class="pc">n</td><td><span class="lv">B2</span></td><td>yêu cầu, điều kiện cần thiết</td></tr>
+        <tr><td class="wc">predict</td><td class="pc">v</td><td><span class="lv">B1</span></td><td>dự đoán, tiên đoán</td></tr>
+        <tr><td class="wc">extend</td><td class="pc">v</td><td><span class="lv">B1</span></td><td>kéo dài, mở rộng</td></tr>
+        <tr><td class="wc">scheduled</td><td class="pc">adj</td><td><span class="lv">B1</span></td><td>được lên lịch, theo kế hoạch</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div><!-- end lp -->
+
+<!-- ============ RIGHT ============ -->
+<div class="rp">
+  <div class="pbar-c"><div class="pbar-f" id="pbar"></div></div>
+
+  <div class="exhdr">🛸 SECTION IX – Chọn từ thích hợp (Câu 1–8)</div>
+  <div class="exinstr">💡 Click vào đáp án bạn chọn. ✅ Đúng → xanh lá + giải thích chi tiết | ❌ Sai → đỏ + hiện ngay đáp án đúng và lý giải</div>
+  <div id="ixCont"></div>
+
+  <div class="exhdr" style="margin-top:22px;">🔭 SECTION X – A. Match bold words with definitions (Câu 1–7)</div>
+  <div class="exinstr">💡 Chọn từ đúng từ danh sách xổ xuống cho mỗi định nghĩa. Giải thích hiện sau khi bạn chọn.</div>
+  <div id="xaCont"></div>
+
+  <div class="exhdr" style="margin-top:22px;">🔭 SECTION X – B. Choose the correct answers (Câu 1–7)</div>
+  <div class="exinstr">💡 Click vào đáp án bạn cho là đúng. Giải thích chi tiết hiện ngay sau khi chọn.</div>
+  <div id="xbCont"></div>
+
+  <div class="sub-area">
+    <button class="subbtn" onclick="submitQuiz()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+  </div>
+</div>
+</div><!-- end split -->
+
+<div class="modal-ov" id="scoreModal">
+  <div class="mbox">
+    <div class="memoji" id="mEmoji">🏆</div>
+    <div class="mtitle">KẾT QUẢ BÀI THI</div>
+    <div class="mscore" id="mScore">0 / 22</div>
+    <div class="mmsg" id="mMsg"></div>
+    <div class="mbkd">
+      <div class="bdi"><div class="bdl">Section IX</div><div class="bds" id="sIX">–</div></div>
+      <div class="bdi"><div class="bdl">Section X.A</div><div class="bds" id="sXA">–</div></div>
+      <div class="bdi"><div class="bdl">Section X.B</div><div class="bds" id="sXB">–</div></div>
+    </div>
+    <button class="mclosebtn" onclick="closeModal()">🔄 Xem lại bài làm</button>
+  </div>
+</div>
+<div id="ccont"></div>
+
+<script>
+/* STARS */
+(function(){const c=document.getElementById('starsDiv');for(let i=0;i<120;i++){const s=document.createElement('div');s.className='st';s.style.cssText=`width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*5}s;animation-duration:${2+Math.random()*4}s;`;c.appendChild(s);}})();
+
+/* AUDIO */
+let actx;function gac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function playOK(){try{const c=gac();[523.25,659.25,783.99].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;const t=c.currentTime+i*.1;g.gain.setValueAtTime(.3,t);g.gain.exponentialRampToValueAtTime(.001,t+.32);o.start(t);o.stop(t+.32);});}catch(e){}}
+function playFail(){try{const c=gac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(280,c.currentTime);o.frequency.exponentialRampToValueAtTime(80,c.currentTime+.48);g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.48);o.start(c.currentTime);o.stop(c.currentTime+.52);}catch(e){}}
+
+/* CONFETTI */
+function confetti(x,y){const cols=['#7c3aed','#06b6d4','#f59e0b','#00d26a','#ff6bff','#00ffd1','#f472b6'];const cc=document.getElementById('ccont');for(let i=0;i<34;i++){const p=document.createElement('div');p.className='cpce';p.style.cssText=`left:${x+(Math.random()-.5)*240}px;top:${y}px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${5+Math.random()*9}px;height:${5+Math.random()*9}px;border-radius:${Math.random()>.5?'50%':'4px'};animation-duration:${1.2+Math.random()*1.6}s;animation-delay:${Math.random()*.35}s;`;cc.appendChild(p);setTimeout(()=>p.remove(),2500);}}
+
+/* TIMER */
+let tLeft=600,tRunning=false,tPaused=false,tDone=false;
+function startTimer(){if(tRunning)return;tRunning=true;document.getElementById('startBtn').style.display='none';document.getElementById('tdsp').style.display='block';document.getElementById('pauseBtn').style.display='block';document.getElementById('lvscore').style.display='block';setInterval(()=>{if(tDone||tPaused)return;tLeft--;const m=String(Math.floor(tLeft/60)).padStart(2,'0'),s=String(tLeft%60).padStart(2,'0');const d=document.getElementById('tdsp');d.textContent=m+':'+s;if(tLeft<=60)d.classList.add('urg');if(tLeft<=0){tDone=true;d.textContent='00:00';const t=document.getElementById('expireToast');t.style.display='block';setTimeout(()=>t.style.display='none',14000);}},1000);}
+function togglePause(){tPaused=!tPaused;document.getElementById('pauseBtn').textContent=tPaused?'▶ Tiếp tục':'⏸ Tạm dừng';}
+
+/* TRANSLATION */
+function togT(id,btn){const b=document.getElementById(id);if(b.style.display==='block'){b.style.display='none';btn.textContent='🌟 Mở dịch đoạn này';}else{b.style.display='block';btn.textContent='🌙 Đóng bản dịch';}}
+
+/* PROGRESS */
+let answered=0,correct=0;const userAns={ix:{},xa:{},xb:{}};
+function updProg(){document.getElementById('pbar').style.width=(answered/22*100)+'%';document.getElementById('lvscore').textContent='✅ '+correct+' / 22';}
+
+/* SHUFFLE */
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+
+/* ====== SECTION IX DATA ====== */
+const IXQ=[
+  {id:'ix1',blnk:'b1',ctx:'Context: "For years we Earthlings have wondered (1)_____ we are alone in the universe or we\'ve got company in the shape of aliens."',
+   opts:[{l:'A',w:'when',c:false},{l:'B',w:'where',c:false},{l:'C',w:'whether',c:true},{l:'D',w:'whereas',c:false}],
+   exp:`<h4>📝 Phân tích 4 đáp án:</h4>
+<div class="eit">A. <strong>when</strong> (adv): <em>khi nào</em> — chỉ thời điểm/thời gian. Không phù hợp vì câu không hỏi về thời gian.</div>
+<div class="eit">B. <strong>where</strong> (adv): <em>ở đâu</em> — chỉ địa điểm. Không phù hợp vì câu không hỏi về nơi chốn.</div>
+<div class="eit eok">✅ C. <strong>whether</strong> (conj): <em>liệu có… hay không</em> — dùng khi đưa ra 2 khả năng đối lập.</div>
+<div class="eit">D. <strong>whereas</strong> (conj): <em>trong khi đó</em> — dùng để đối lập 2 mệnh đề độc lập, không dùng cho mệnh đề danh ngữ.</div>
+<div class="etrans">🔤 Dịch: "Trong nhiều năm, người Trái Đất đã tự hỏi <strong>liệu</strong> chúng ta có đơn độc trong vũ trụ <strong>hay</strong> có bạn đồng hành dưới dạng người ngoài hành tinh."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn C:</strong> Cấu trúc cố định <strong>"wonder whether A or B"</strong> = tự hỏi liệu A hay B. Câu đưa ra 2 lựa chọn đối lập: "alone" (cô đơn) HOẶC "got company" (có bạn). Chỉ "whether" mới tạo được cấu trúc 2 vế này.</div>`},
+
+  {id:'ix2',blnk:'b2',ctx:'Context: "…what do we really know about them – if they (2)_____ at all?"',
+   opts:[{l:'A',w:'exist',c:true},{l:'B',w:'happen',c:false},{l:'C',w:'live',c:false},{l:'D',w:'survive',c:false}],
+   exp:`<h4>📝 Phân tích 4 đáp án:</h4>
+<div class="eit eok">✅ A. <strong>exist</strong> (v): <em>tồn tại, hiện hữu</em> — dùng cho sự vật/sinh vật chưa được xác nhận là có thật.</div>
+<div class="eit">B. <strong>happen</strong> (v): <em>xảy ra</em> — nói về sự kiện, biến cố. Không dùng cho sinh vật.</div>
+<div class="eit">C. <strong>live</strong> (v): <em>sống, cư ngụ</em> — thường kèm địa điểm (live somewhere). Nghĩa hẹp hơn "exist".</div>
+<div class="eit">D. <strong>survive</strong> (v): <em>sống sót</em> — hàm ý đã có nguy hiểm cần vượt qua. Không phù hợp ngữ cảnh này.</div>
+<div class="etrans">🔤 Dịch: "Nhưng thực ra chúng ta biết gì về họ – nếu họ có <strong>tồn tại</strong> không?"</div>
+<div class="eit eok">🎯 <strong>Lý do chọn A:</strong> Cụm <strong>"if they exist at all"</strong> = nếu họ thực sự tồn tại (nghi ngờ về sự hiện diện). Đây là collocations phổ biến khi bàn về điều chưa được xác nhận. Các từ còn lại không diễn đạt được khái niệm "sự tồn tại" (existence).</div>`},
+
+  {id:'ix3',blnk:'b3',ctx:'Context: "Ever since we realised there (3)_____ be something out there, our imaginations have created thousands of bizarre creatures."',
+   opts:[{l:'A',w:'can',c:false},{l:'B',w:'must',c:false},{l:'C',w:'may',c:false},{l:'D',w:'might',c:true}],
+   exp:`<h4>📝 Phân tích 4 Modal Verbs:</h4>
+<div class="eit">A. <strong>can</strong>: <em>có thể</em> — khả năng tổng quát/hiện tại. Không diễn đạt được sự không chắc chắn mờ nhạt.</div>
+<div class="eit">B. <strong>must</strong>: <em>chắc chắn là</em> — mức độ chắc chắn rất cao (~90%). Không phù hợp vì đây là suy đoán mơ hồ về vũ trụ.</div>
+<div class="eit">C. <strong>may</strong>: <em>có lẽ</em> — khả năng ~50%. Gần đúng, nhưng "might" mang sắc thái không chắc hơn, phù hợp hơn với suy đoán xa vời.</div>
+<div class="eit eok">✅ D. <strong>might</strong>: <em>biết đâu, có thể có</em> — khả năng thấp (~30-40%), sắc thái suy đoán mờ nhạt nhất trong 4 lựa chọn.</div>
+<div class="etrans">🔤 Dịch: "Kể từ khi chúng ta nhận ra rằng <strong>biết đâu có</strong> điều gì đó ở ngoài kia, trí tưởng tượng của chúng ta đã tạo ra hàng nghìn sinh vật kỳ lạ."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn D:</strong> <strong>"there might be"</strong> = có lẽ có (mức độ không chắc cao nhất). Mức độ: must (chắc chắn) &gt; may (có lẽ) &gt; might (biết đâu). Trong ngữ cảnh vũ trụ và người ngoài hành tinh chưa được chứng minh → dùng "might" để thể hiện sự không chắc tối đa.</div>`},
+
+  {id:'ix4',blnk:'b4',ctx:'Context: "Even if we do ever come (4)_____ aliens in space, most scientists agree they probably won\'t look like little green men."',
+   opts:[{l:'A',w:'over',c:false},{l:'B',w:'through',c:false},{l:'C',w:'across',c:true},{l:'D',w:'along',c:false}],
+   exp:`<h4>📝 Phân tích Phrasal Verbs với "come":</h4>
+<div class="eit">A. <strong>come over</strong>: <em>đến thăm; thay đổi thái độ</em> — không mang nghĩa gặp tình cờ sinh vật lạ.</div>
+<div class="eit">B. <strong>come through</strong>: <em>vượt qua khó khăn, đi xuyên qua</em> — không phù hợp ngữ cảnh gặp gỡ.</div>
+<div class="eit eok">✅ C. <strong>come across</strong>: <em>tình cờ gặp, tình cờ phát hiện</em> — Phrasal Verb cố định = encounter unexpectedly.</div>
+<div class="eit">D. <strong>come along</strong>: <em>đi cùng; tiến triển</em> — không phù hợp ngữ cảnh.</div>
+<div class="etrans">🔤 Dịch: "Dù nếu chúng ta có <strong>tình cờ gặp</strong> người ngoài hành tinh trong vũ trụ, hầu hết các nhà khoa học đồng ý rằng họ có lẽ sẽ không trông giống những người đàn ông xanh nhỏ bé."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn C:</strong> <strong>"come across"</strong> = tình cờ gặp/tìm thấy (B1-B2). Phrasal Verb cố định cực phổ biến. Ví dụ: "I came across an interesting book." = Tôi tình cờ tìm được một cuốn sách hay. Ba đáp án còn lại không tạo Phrasal Verb có nghĩa phù hợp.</div>`},
+
+  {id:'ix5',blnk:'b5',ctx:'Context: "(5)_____ aliens exist, experts reckon they\'re probably very small and look something like a bug."',
+   opts:[{l:'A',w:'Although',c:false},{l:'B',w:'If',c:true},{l:'C',w:'Because',c:false},{l:'D',w:'Since',c:false}],
+   exp:`<h4>📝 Phân tích 4 Liên từ:</h4>
+<div class="eit">A. <strong>Although</strong>: <em>mặc dù</em> — tương phản. "Although aliens exist, they're small" → vô lý vì không có gì tương phản ở đây.</div>
+<div class="eit eok">✅ B. <strong>If</strong>: <em>nếu</em> — điều kiện. Phù hợp nhất vì aliens chưa được xác nhận tồn tại.</div>
+<div class="eit">C. <strong>Because</strong>: <em>vì, bởi vì</em> — nguyên nhân. "Because aliens exist" hàm ý aliens chắc chắn tồn tại, trái thực tế.</div>
+<div class="eit">D. <strong>Since</strong>: <em>từ khi; vì</em> — cả hai nghĩa đều không tạo ra điều kiện giả định.</div>
+<div class="etrans">🔤 Dịch: "<strong>Nếu</strong> người ngoài hành tinh tồn tại, các chuyên gia cho rằng họ có lẽ rất nhỏ và trông giống như một con bọ."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn B:</strong> Câu điều kiện loại 1: <strong>"If + hiện tại đơn, S + probably + V"</strong>. Tác giả dùng "If" vì sự tồn tại của aliens vẫn chỉ là giả thuyết — chưa ai chứng minh được. "Although/Because/Since" đều không tạo ra ý nghĩa điều kiện giả định cần thiết này.</div>`},
+
+  {id:'ix6',blnk:'b6',ctx:'Context: "Over the years thousands of people have been (6)_____ that we Earthlings have been visited by aliens from other civilisations."',
+   opts:[{l:'A',w:'convinced',c:true},{l:'B',w:'satisfied',c:false},{l:'C',w:'affected',c:false},{l:'D',w:'consulted',c:false}],
+   exp:`<h4>📝 Phân tích 4 đáp án:</h4>
+<div class="eit eok">✅ A. <strong>convinced</strong> (adj): <em>bị thuyết phục, tin chắc</em> — <strong>"be convinced that + clause"</strong> là collocations cố định!</div>
+<div class="eit">B. <strong>satisfied</strong> (adj): <em>hài lòng</em> — kết hợp "be satisfied with + N", không kết hợp "that-clause" theo nghĩa này.</div>
+<div class="eit">C. <strong>affected</strong> (adj): <em>bị ảnh hưởng</em> — "be affected by + N". Không phù hợp ngữ nghĩa câu.</div>
+<div class="eit">D. <strong>consulted</strong> (v): <em>được tư vấn</em> — không mang nghĩa "bị thuyết phục tin vào điều gì".</div>
+<div class="etrans">🔤 Dịch: "Trong nhiều năm qua, hàng nghìn người đã <strong>bị thuyết phục</strong> rằng chúng ta đã được viếng thăm bởi người ngoài hành tinh từ các nền văn minh khác."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn A:</strong> Collocations cố định: <strong>"be convinced that + S + V"</strong> = tin chắc rằng… (B2). Chỉ "convinced" mới kết hợp được với "that + mệnh đề" theo nghĩa "bị thuyết phục tin vào điều gì đó". Đây là cấu trúc hay gặp trong văn học thuật.</div>`},
+
+  {id:'ix7',blnk:'b7',ctx:'Context: "…the number of aliens (7)_____ discovered is zero."',
+   opts:[{l:'A',w:'absolutely',c:false},{l:'B',w:'mainly',c:false},{l:'C',w:'immediately',c:false},{l:'D',w:'actually',c:true}],
+   exp:`<h4>📝 Phân tích 4 Trạng từ:</h4>
+<div class="eit">A. <strong>absolutely</strong>: <em>hoàn toàn, tuyệt đối</em> — thường bổ nghĩa cho tính từ (absolutely correct). Không tự nhiên khi đứng trước past participle "discovered" trong ngữ cảnh này.</div>
+<div class="eit">B. <strong>mainly</strong>: <em>chủ yếu là</em> — "mainly discovered = 0" vô lý vì con số bằng 0 thì không thể nói "chủ yếu".</div>
+<div class="eit">C. <strong>immediately</strong>: <em>ngay lập tức</em> — liên quan đến thời gian, không phù hợp ngữ cảnh.</div>
+<div class="eit eok">✅ D. <strong>actually</strong>: <em>thực ra, thực sự (trên thực tế)</em> — nhấn mạnh sự thật bất ngờ, trái với kỳ vọng.</div>
+<div class="etrans">🔤 Dịch: "…số lượng người ngoài hành tinh <strong>thực sự</strong> được phát hiện (xác nhận) là bằng không."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn D:</strong> <strong>"Actually"</strong> tạo hiệu ứng đối lập bất ngờ — dù hàng nghìn người bị thuyết phục (câu 6), nhưng trên thực tế số aliens được xác nhận = 0. Đây là kỹ thuật viết văn: đưa nhận định → bác bỏ bằng số liệu thực tế với "actually".</div>`},
+
+  {id:'ix8',blnk:'b8',ctx:'Context: "There are lots of photos and films of apparent (8)_____ but most have a logical explanation like aeroplanes and military exercises."',
+   opts:[{l:'A',w:'visions',c:false},{l:'B',w:'sightings',c:true},{l:'C',w:'signs',c:false},{l:'D',w:'signals',c:false}],
+   exp:`<h4>📝 Phân tích 4 đáp án:</h4>
+<div class="eit">A. <strong>visions</strong> (n): <em>tầm nhìn; ảo giác</em> — thường dùng: "visions of the future", ảo giác tôn giáo/giấc mơ. Không collocate với "UFO".</div>
+<div class="eit eok">✅ B. <strong>sightings</strong> (n): <em>những vụ/lần nhìn thấy</em> — <strong>"UFO sightings"</strong> là collocations cố định trong tiếng Anh!</div>
+<div class="eit">C. <strong>signs</strong> (n): <em>dấu hiệu, biển báo</em> — chỉ bằng chứng gián tiếp. Câu đề cập "photos and films" = bằng chứng trực tiếp nhìn thấy bằng mắt.</div>
+<div class="eit">D. <strong>signals</strong> (n): <em>tín hiệu (điện tử/vô tuyến)</em> — không phù hợp ngữ cảnh ảnh và phim.</div>
+<div class="etrans">🔤 Dịch: "Có rất nhiều ảnh và phim về những <strong>vụ nhìn thấy UFO</strong> bề ngoài có vẻ thật, nhưng hầu hết đều có giải thích hợp lý như máy bay và các cuộc tập trận quân sự."</div>
+<div class="eit eok">🎯 <strong>Lý do chọn B:</strong> <strong>"UFO sightings"</strong> = những lần nhìn thấy UFO — collocations cố định. "Sighting" = hành động nhìn thấy điều gì đó hiếm/bất ngờ, dùng cụ thể với UFO, động vật quý hiếm. Câu nhắc đến "photos and films" → bằng chứng về những vụ nhìn thấy trực tiếp.</div>`}
+];
+
+/* ====== SECTION X.A DATA ====== */
+const XAW=['alone','gravity','tricky','habitable','approximately','beyond','at least'];
+const XAQ=[
+  {id:'xa1',def:'with no other people',ans:'alone',
+   exp:'<strong>"alone"</strong> (adj/adv): không có người khác = một mình, đơn độc. Trong bài: <em>"Will we be sad if we discover we are alone in our galaxy"</em> → chúng ta đơn độc trong thiên hà.'},
+  {id:'xa2',def:'the force that attracts objects towards each other',ans:'gravity',
+   exp:'<strong>"gravity"</strong> (n): lực hút vật thể lại với nhau = lực hấp dẫn. Trong bài: <em>"its weak gravity means that it can\'t hold on to air molecules"</em> → lực hút yếu không giữ được không khí.'},
+  {id:'xa3',def:'difficult',ans:'tricky',
+   exp:'<strong>"tricky"</strong> (adj): khó khăn, phức tạp (informal, B1). Đồng nghĩa: difficult, challenging. Trong bài: <em>"That\'s a tricky question to answer"</em> → câu hỏi khó trả lời.'},
+  {id:'xa4',def:'suitable for people to live in',ans:'habitable',
+   exp:'<strong>"habitable"</strong> (adj): có thể ở được, phù hợp để sinh sống (gốc Latin: habitare = ở, cư ngụ). Trong bài: <em>"designed to find habitable planets"</em> → tìm các hành tinh có thể ở được.'},
+  {id:'xa5',def:'close to but not exactly',ans:'approximately',
+   exp:'<strong>"approximately"</strong> (adv): xấp xỉ, gần đúng, không chính xác tuyệt đối. Đồng nghĩa: about, around, roughly. Trong bài: <em>"approximately six hundred million dollars"</em> → khoảng 600 triệu đô.'},
+  {id:'xa6',def:'outside',ans:'beyond',
+   exp:'<strong>"beyond"</strong> (prep/adv): ngoài, phía bên kia, vượt ra khỏi ranh giới. Trong bài: <em>"five new Earth-sized planets beyond our solar system"</em> → ngoài hệ mặt trời của chúng ta.'},
+  {id:'xa7',def:'not less than',ans:'at least',
+   exp:'<strong>"at least"</strong> (phrase): không ít hơn, tối thiểu là (có thể nhiều hơn). Đối lập: "at most" (tối đa). Trong bài: <em>"they will need at least three years"</em> → cần ít nhất ba năm (có thể hơn).'}
+];
+
+/* ====== SECTION X.B DATA ====== */
+const XBQ=[
+  {id:'xb1',q:'1. What is the passage about?',
+   opts:[{l:'A',w:'Planets in our solar system',c:false},{l:'B',w:'The difference between Earth and other planets',c:false},{l:'C',w:'Space exploration to find habitable planets',c:true},{l:'D',w:"NASA's missions to explore the outer planets",c:false}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit">A. "Planets in our solar system" ❌ — Kepler đang tìm kiếm NGOÀI hệ mặt trời ("beyond our solar system"), không phải trong hệ mặt trời.</div>
+<div class="eit">B. "The difference between Earth and other planets" ❌ — Việc so sánh kích thước (Mars, Neptune) chỉ là thông tin phụ để giải thích điều kiện sống, không phải chủ đề chính.</div>
+<div class="eit eok">✅ C. "Space exploration to find habitable planets" ✓ — Chủ đề bao quát nhất: nhiệm vụ Kepler tìm hành tinh có thể ở được, thảo luận điều kiện hỗ trợ sự sống.</div>
+<div class="eit">D. "NASA's missions to explore the outer planets" ❌ — Bài chỉ đề cập 1 nhiệm vụ duy nhất (Kepler), không nói về nhiều missions.</div>
+<div class="etrans">🔤 Câu mở đầu: "Are there other planets that support life? That's exactly what the Kepler mission hopes to discover." → Chủ đề: khám phá không gian để tìm hành tinh có thể ở được.</div>`},
+
+  {id:'xb2',q:'2. The Kepler space telescope is looking for ___________.',
+   opts:[{l:'A',w:'new planets in our galaxy',c:false},{l:'B',w:'life on other planets',c:true},{l:'C',w:'liquid water on other planets',c:false},{l:'D',w:'Earth-sized planets in the solar system',c:false}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit">A. "new planets in our galaxy" ❌ — Kepler tìm kiếm NGOÀI hệ mặt trời ("beyond our solar system"), và mục tiêu không chỉ là "hành tinh mới".</div>
+<div class="eit eok">✅ B. "life on other planets" ✓ — Bài viết nêu rõ: <em>"Are there other planets that support life? That's exactly what the Kepler mission hopes to discover."</em> Mục tiêu tối thượng là tìm sự sống.</div>
+<div class="eit">C. "liquid water on other planets" ❌ — Nước lỏng chỉ là 1 yêu cầu/điều kiện được đề cập, không phải thứ Kepler đang trực tiếp tìm kiếm.</div>
+<div class="eit">D. "Earth-sized planets in the solar system" ❌ — Kepler tìm hành tinh NGOÀI hệ mặt trời ("beyond our solar system"), không phải trong hệ mặt trời.</div>
+<div class="etrans">🔤 Dịch: "Kính viễn vọng không gian Kepler đang tìm kiếm _____." → sự sống trên các hành tinh khác.</div>`},
+
+  {id:'xb3',q:'3. Kepler has found five planets that ___________.',
+   opts:[{l:'A',w:'have water and air',c:false},{l:'B',w:'are similar to Earth',c:false},{l:'C',w:'are not too far away from the Earth',c:false},{l:'D',w:'are not in our solar system',c:true}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit">A. "have water and air" ❌ — Bài nói ngược lại: "These planets are hotter than the Earth – much too hot for life as we know it." → không có điều kiện thích hợp cho sự sống.</div>
+<div class="eit">B. "are similar to Earth" ❌ — Bài nói chúng là "Earth-SIZED" (cùng kích thước) nhưng nóng hơn nhiều, không similar về điều kiện.</div>
+<div class="eit">C. "are not too far away from the Earth" ❌ — Bài không đề cập khoảng cách từ Trái Đất đến 5 hành tinh này.</div>
+<div class="eit eok">✅ D. "are not in our solar system" ✓ — Bài viết rõ: <em>"five new Earth-sized planets <strong>beyond</strong> our solar system"</em> = ngoài hệ mặt trời của chúng ta.</div>
+<div class="etrans">🔤 Dịch: "Kepler đã tìm thấy 5 hành tinh mà _____." → "beyond our solar system" = không nằm trong hệ mặt trời.</div>`},
+
+  {id:'xb4',q:'4. The Kepler team predict that they will need _____ to find an Earth-like planet.',
+   opts:[{l:'A',w:'three years and possibly longer',c:true},{l:'B',w:'as much as three years',c:false},{l:'C',w:'no more than three years',c:false},{l:'D',w:'approximately three years',c:false}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit eok">✅ A. "three years and possibly longer" ✓ — Bài dùng <strong>"at least three years"</strong> = ít nhất 3 năm. "At least" = minimum, có thể nhiều hơn → "three years and possibly longer" diễn đạt đúng nghĩa "at least".</div>
+<div class="eit">B. "as much as three years" ❌ — "as much as" = tối đa là 3 năm. Trái nghĩa với "at least" (tối thiểu).</div>
+<div class="eit">C. "no more than three years" ❌ — "no more than" = không nhiều hơn 3 năm. Cũng trái nghĩa với "at least".</div>
+<div class="eit">D. "approximately three years" ❌ — "approximately" = khoảng (có thể ít hoặc nhiều hơn). "At least" nhấn mạnh không thể ÍT HƠN 3 năm.</div>
+<div class="etrans">🔤 "at least three years" = không ít hơn 3 năm = 3 năm và có thể lâu hơn.</div>`},
+
+  {id:'xb5',q:'5. What are the primary factors that make a planet habitable?',
+   opts:[{l:'A',w:'Liquid water and living things',c:false},{l:'B',w:'Size and distance from the Sun',c:true},{l:'C',w:'Hot temperature and weak gravity',c:false},{l:'D',w:'Strong gravity and too much air',c:false}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit">A. "Liquid water and living things" ❌ — Nước lỏng đúng, nhưng "living things" (sinh vật sống) là KẾT QUẢ chứ không phải điều kiện để có sự sống.</div>
+<div class="eit eok">✅ B. "Size and distance from the Sun" ✓ — Bài nêu 2 yếu tố chính: (1) Khoảng cách → nhiệt độ → nước lỏng: <em>"distance from the planet's sun and therefore temperature are important"</em>; (2) Kích thước → lực hấp dẫn → lượng không khí: <em>"So size matters too."</em></div>
+<div class="eit">C. "Hot temperature and weak gravity" ❌ — Nhiệt độ CAO và trọng lực YẾU là VẤN ĐỀ, không phải yếu tố tích cực để tạo ra khả năng ở được.</div>
+<div class="eit">D. "Strong gravity and too much air" ❌ — Đây là ví dụ về hành tinh KHÔNG ở được (như Neptune), không phải yếu tố tích cực.</div>
+<div class="etrans">🔤 Khoảng cách từ mặt trời (→ nhiệt độ phù hợp → nước lỏng) và kích thước (→ lực hấp dẫn vừa phải → lượng không khí đúng) là 2 yếu tố chính.</div>`},
+
+  {id:'xb6',q:'6. How much does the Kepler mission cost?',
+   opts:[{l:'A',w:'Exactly $600 million',c:false},{l:'B',w:'About $600 million',c:true},{l:'C',w:'More than $600 million',c:false},{l:'D',w:'Less than $600 million',c:false}],
+   exp:`<h4>📝 Phân tích từng đáp án:</h4>
+<div class="eit">A. "Exactly $600 million" ❌ — Bài dùng "approximately" = không chính xác tuyệt đối, loại ngay đáp án "exactly" (chính xác).</div>
+<div class="eit eok">✅ B. "About $600 million" ✓ — Bài viết: <em>"approximately six hundred million dollars"</em>. "Approximately" = "about" = khoảng, xấp xỉ → "About $600 million".</div>
+<div class="eit">C. "More than $600 million" ❌ — "approximately" không có nghĩa "nhiều hơn".</div>
+<div class="eit">D. "Less than $600 million" ❌ — "approximately" không có nghĩa "ít hơn".</div>
+<div class="etrans">🔤 "approximately six hundred million dollars" = khoảng 600 triệu đô = "about $600 million".</div>`},
+
+  {id:'xb7',q:'7. Which of the following statements is NOT true?',
+   opts:[{l:'A',w:'The planet can support life if it has water and air.',c:false},{l:'B',w:'A very small planet will not have enough air.',c:false},{l:'C',w:'Earth is four times as big as Neptune.',c:true},{l:'D',w:'Kepler mission is scheduled to end in 2013.',c:false}],
+   exp:`<h4>📝 Phân tích từng phát biểu (tìm phát biểu SAI):</h4>
+<div class="eit">A. "The planet can support life if it has water and air." → ĐÚNG ✓ — Bài xác nhận nước lỏng và lượng không khí phù hợp là yêu cầu cơ bản.</div>
+<div class="eit">B. "A very small planet will not have enough air." → ĐÚNG ✓ — Bài viết: <em>"If a planet is as small as Mars…its weak gravity means that it can't hold on to air molecules."</em> → hành tinh nhỏ, trọng lực yếu, không giữ được không khí.</div>
+<div class="eit eok">✅ C. "Earth is four times as big as Neptune." → SAI ✗ — Đây là phát biểu KHÔNG ĐÚNG! Bài viết: <em>"If a planet is Neptune sized (<strong>four times bigger than Earth</strong>)"</em> → NEPTUNE lớn hơn TRÁI ĐẤT 4 lần, không phải ngược lại!</div>
+<div class="eit">D. "Kepler mission is scheduled to end in 2013." → ĐÚNG ✓ — Bài viết: <em>"It is scheduled to observe until 2013"</em> → dự kiến kết thúc vào 2013.</div>
+<div class="etrans">🔤 Dịch câu hỏi: "Phát biểu nào sau đây KHÔNG đúng?" → C sai vì: bài nói Neptune TO HƠN Trái Đất 4 lần, không phải Trái Đất to hơn Neptune 4 lần.</div>`}
+];
+
+/* ====== RENDER IX ====== */
+function renderIX(){
+  const cont=document.getElementById('ixCont');
+  IXQ.forEach((q,qi)=>{
+    const sOpts=shuffle(q.opts);
+    const div=document.createElement('div');div.className='qcard';div.id='card_'+q.id;
+    let oh='<div class="opts">';
+    sOpts.forEach((o,oi)=>{
+      oh+=`<button class="obtn" id="o_${q.id}_${oi}" data-correct="${o.c}" data-word="${o.w}" onclick="ansIX('${q.id}',${o.c},this,'${q.blnk}',event)"><span class="olbl">${String.fromCharCode(65+oi)}</span>${o.w}</button>`;
+    });
+    oh+='</div>';
+    div.innerHTML=`<div class="qtxt"><span class="qnum">${qi+1}</span><span>Câu ${qi+1} – Chọn từ thích hợp</span></div><div class="qctx">${q.ctx}</div>${oh}<div class="expbox" id="exp_${q.id}">${q.exp}</div>`;
+    cont.appendChild(div);
+  });
+}
+
+function ansIX(qid,isC,btn,blnkId,e){
+  const card=document.getElementById('card_'+qid);
+  if(card.classList.contains('ok-card')||card.classList.contains('err-card'))return;
+  const btns=card.querySelectorAll('.obtn');btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById('exp_'+qid);
+  if(isC){
+    btn.classList.add('correct');card.classList.add('ok-card');exp.classList.add('show');playOK();confetti(e.clientX,e.clientY);
+    const bl=document.getElementById(blnkId);if(bl){bl.textContent=btn.getAttribute('data-word');bl.classList.add('revealed');}
+    if(!userAns.ix[qid]){correct++;answered++;userAns.ix[qid]=true;}
+  }else{
+    btn.classList.add('wrong');card.classList.add('err-card');playFail();
+    btns.forEach(b=>{if(b.getAttribute('data-correct')==='true'){b.classList.add('correct');const bl=document.getElementById(blnkId);if(bl){bl.textContent=b.getAttribute('data-word');bl.classList.add('revealed');}}});
+    exp.classList.add('show');
+    if(!userAns.ix[qid]){answered++;userAns.ix[qid]=false;}
+  }
+  updProg();
+}
+
+/* ====== RENDER X.A ====== */
+function renderXA(){
+  const cont=document.getElementById('xaCont');
+  XAQ.forEach((q,qi)=>{
+    const row=document.createElement('div');row.className='mrow';row.id='mrow_'+q.id;
+    let opts='<option value="">-- Chọn từ --</option>';
+    XAW.forEach(w=>opts+=`<option value="${w}">${w}</option>`);
+    row.innerHTML=`<span class="mnum">${qi+1}</span><span class="mdef">${q.def}</span><div class="mright"><select class="msel" id="ms_${q.id}" onchange="ansXA('${q.id}','${q.ans}',this)">${opts}</select><div class="mexp" id="me_${q.id}">${q.exp}</div></div>`;
+    cont.appendChild(row);
+  });
+}
+
+function ansXA(qid,ans,sel){
+  if(sel.disabled)return;
+  const exp=document.getElementById('me_'+qid);
+  if(sel.value===ans){
+    sel.classList.add('ok');sel.disabled=true;exp.classList.add('show');playOK();
+    if(!userAns.xa[qid]){correct++;answered++;userAns.xa[qid]=true;}
+  }else{
+    sel.classList.add('err');playFail();exp.classList.add('show');
+    setTimeout(()=>{sel.classList.remove('err');sel.value=ans;sel.classList.add('ok');sel.disabled=true;},700);
+    if(!userAns.xa[qid]){answered++;userAns.xa[qid]=false;}
+  }
+  updProg();
+}
+
+/* ====== RENDER X.B ====== */
+function renderXB(){
+  const cont=document.getElementById('xbCont');
+  XBQ.forEach((q,qi)=>{
+    const sOpts=shuffle(q.opts);
+    const div=document.createElement('div');div.className='qcard';div.id='card_'+q.id;
+    let oh='<div class="opts single">';
+    sOpts.forEach((o,oi)=>{
+      oh+=`<button class="obtn" id="o_${q.id}_${oi}" data-correct="${o.c}" onclick="ansXB('${q.id}',${o.c},this,event)"><span class="olbl">${String.fromCharCode(65+oi)}</span>${o.w}</button>`;
+    });
+    oh+='</div>';
+    div.innerHTML=`<div class="qtxt"><span class="qnum">${qi+1}</span><span style="font-size:1rem;">${q.q}</span></div>${oh}<div class="expbox" id="exp_${q.id}">${q.exp}</div>`;
+    cont.appendChild(div);
+  });
+}
+
+function ansXB(qid,isC,btn,e){
+  const card=document.getElementById('card_'+qid);
+  if(card.classList.contains('ok-card')||card.classList.contains('err-card'))return;
+  const btns=card.querySelectorAll('.obtn');btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById('exp_'+qid);
+  if(isC){
+    btn.classList.add('correct');card.classList.add('ok-card');exp.classList.add('show');playOK();confetti(e.clientX,e.clientY);
+    if(!userAns.xb[qid]){correct++;answered++;userAns.xb[qid]=true;}
+  }else{
+    btn.classList.add('wrong');card.classList.add('err-card');playFail();
+    btns.forEach(b=>{if(b.getAttribute('data-correct')==='true')b.classList.add('correct');});
+    exp.classList.add('show');
+    if(!userAns.xb[qid]){answered++;userAns.xb[qid]=false;}
+  }
+  updProg();
+}
+
+/* ====== SUBMIT ====== */
+function submitQuiz(){
+  const ixC=Object.values(userAns.ix).filter(v=>v===true).length;
+  const xaC=Object.values(userAns.xa).filter(v=>v===true).length;
+  const xbC=Object.values(userAns.xb).filter(v=>v===true).length;
+  const tot=ixC+xaC+xbC;const pct=tot/22;
+  document.getElementById('mScore').textContent=tot+' / 22';
+  document.getElementById('sIX').textContent=ixC+'/8';
+  document.getElementById('sXA').textContent=xaC+'/7';
+  document.getElementById('sXB').textContent=xbC+'/7';
+  let emoji,msg;
+  if(pct>=.95){emoji='🏆';msg='<strong>THIÊN TÀI! 🌌</strong><br>Xuất sắc tuyệt đối! Bạn nắm vững toàn bộ ngữ pháp và từ vựng. Tiếp tục phát huy nhé!';}
+  else if(pct>=.82){emoji='🚀';msg='<strong>TUYỆT VỜI! 🌟</strong><br>Làm tốt lắm! Bạn hiểu rất sâu nội dung bài đọc. Xem lại vài câu còn sai để hoàn thiện thêm.';}
+  else if(pct>=.68){emoji='⭐';msg='<strong>KHÁ TỐT! 💪</strong><br>Bạn đã hiểu được phần lớn bài đọc. Xem kỹ lại phần giải thích các câu sai để củng cố thêm!';}
+  else if(pct>=.50){emoji='📚';msg='<strong>CỐ LÊN NHÉ! 🌱</strong><br>Bạn đã cố gắng tốt. Hãy đọc lại bài văn và xem kỹ phần giải thích để hiểu sâu hơn về từ vựng và ngữ pháp.';}
+  else{emoji='👽';msg='<strong>NGƯỜI NGOÀI HÀNH TINH ĐÃ GHÉP NỐI! 🛸</strong><br>Không sao, đây là bài khó! Hãy đọc kỹ bài đọc bên trái và từng phần giải thích chi tiết, rồi thử lại nhé!';}
+  document.getElementById('mEmoji').textContent=emoji;
+  document.getElementById('mMsg').innerHTML=msg;
+  document.getElementById('scoreModal').classList.add('show');
+  for(let i=0;i<5;i++)setTimeout(()=>confetti(Math.random()*window.innerWidth,Math.random()*300+80),i*300);
+}
+function closeModal(){document.getElementById('scoreModal').classList.remove('show');}
+
+/* INIT */
+renderIX();renderXA();renderXB();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

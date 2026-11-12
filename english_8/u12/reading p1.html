@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C. READING – Tiếng Anh 8 | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6C63FF;
+  --secondary: #00C9A7;
+  --accent: #FDCB6E;
+  --danger: #FF4757;
+  --success: #00D26A;
+  --bg1: #0d0d2b;
+  --bg2: #1a1a4e;
+  --card: rgba(255,255,255,0.07);
+  --card-border: rgba(255,255,255,0.15);
+  --text: #f0f0ff;
+  --text-dim: #a0a0cc;
+  --radius: 18px;
+  --shadow: 0 8px 32px rgba(108,99,255,0.25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  33%      { transform: translateY(-18px) rotate(5deg); }
+  66%      { transform: translateY(-8px) rotate(-4deg); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-6px); }
+  80%      { transform: translateX(6px); }
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes confettiDrop {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+}
+@keyframes timerPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(108,99,255,0.5); }
+  50%      { box-shadow: 0 0 0 10px rgba(108,99,255,0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #0d0d2b 0%, #1a1a4e 30%, #0a1628 60%, #1a0d3d 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SVG STAR BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Ctext x='30' y='80' font-size='40' opacity='0.12'%3E🚀%3C/text%3E%3Ctext x='200' y='150' font-size='55' opacity='0.10'%3E🪐%3C/text%3E%3Ctext x='420' y='90' font-size='35' opacity='0.12'%3E⭐%3C/text%3E%3Ctext x='100' y='300' font-size='45' opacity='0.08'%3E🌙%3C/text%3E%3Ctext x='380' y='280' font-size='38' opacity='0.10'%3E🛸%3C/text%3E%3Ctext x='520' y='350' font-size='42' opacity='0.09'%3E🌍%3C/text%3E%3Ctext x='50' y='480' font-size='50' opacity='0.10'%3E🪐%3C/text%3E%3Ctext x='300' y='520' font-size='36' opacity='0.11'%3E🚀%3C/text%3E%3Ctext x='480' y='520' font-size='44' opacity='0.08'%3E⭐%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 600px 600px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,13,43,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.header-left h1 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #a78bfa, #34d399, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+.header-left p {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.timer-display {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 2px;
+  animation: timerPulse 2s infinite;
+  display: none;
+}
+.timer-display.urgent { color: var(--danger); }
+.timer-controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn:hover { transform: translateY(-2px) scale(1.04); }
+.btn:active { transform: scale(0.97); }
+.btn-start  { background: linear-gradient(135deg,#6C63FF,#a78bfa); color:#fff; padding:8px 18px; font-size:0.85rem; box-shadow:0 4px 15px rgba(108,99,255,0.5); }
+.btn-pause  { background: linear-gradient(135deg,#FDCB6E,#f39c12); color:#2d2d2d; padding:7px 15px; font-size:0.82rem; display:none; }
+.btn-submit { background: linear-gradient(135deg,#00C9A7,#00b894); color:#fff; padding:9px 22px; font-size:0.9rem; box-shadow:0 4px 15px rgba(0,201,167,0.5); }
+
+.score-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px; padding: 5px 14px;
+}
+.score-bar span { font-size: 0.85rem; color: var(--text-dim); }
+.score-bar strong { font-size: 1rem; color: var(--accent); }
+
+/* ── MAIN SPLIT LAYOUT ── */
+.split-wrapper {
+  display: flex;
+  height: calc(100vh - 70px);
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+.left-pane, .right-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+.left-pane {
+  border-right: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.02);
+}
+.right-pane {
+  background: rgba(0,0,0,0.1);
+}
+
+/* Scrollbar */
+.left-pane::-webkit-scrollbar, .right-pane::-webkit-scrollbar { width: 6px; }
+.left-pane::-webkit-scrollbar-track, .right-pane::-webkit-scrollbar-track { background: transparent; }
+.left-pane::-webkit-scrollbar-thumb, .right-pane::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.4); border-radius: 10px; }
+
+/* ── PASSAGE CARD ── */
+.passage-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 18px;
+  animation: slideIn 0.5s ease both;
+}
+.passage-label {
+  font-family: 'Baloo 2', cursive;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.paragraph-block {
+  margin-bottom: 22px;
+}
+.passage-text {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: #dde;
+}
+.passage-text .blank {
+  display: inline-block;
+  border-bottom: 2px dashed var(--accent);
+  min-width: 70px;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+}
+.source {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  text-align: right;
+}
+
+/* Translation btn */
+.btn-translate {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 8px;
+  background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,201,167,0.15));
+  border: 1px solid rgba(108,99,255,0.4);
+  color: #c4b5fd;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-translate:hover { background: rgba(108,99,255,0.3); transform: scale(1.02); }
+.translation-box {
+  display: none;
+  margin-top: 10px;
+  background: rgba(0,201,167,0.08);
+  border-left: 3px solid var(--secondary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #b0f0e0;
+  animation: slideIn 0.3s ease;
+}
+
+/* ── GLOSSARY ── */
+.glossary-card {
+  background: var(--card);
+  border: 1px solid rgba(253,203,110,0.3);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.glossary-card h3 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.glossary-table { width: 100%; border-collapse: collapse; }
+.glossary-table th {
+  background: rgba(253,203,110,0.15);
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  text-align: left;
+  color: var(--accent);
+  border-bottom: 1px solid rgba(253,203,110,0.2);
+}
+.glossary-table td {
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: #dde;
+}
+.glossary-table tr:hover td { background: rgba(108,99,255,0.08); }
+.pos-badge {
+  background: rgba(108,99,255,0.25);
+  color: #a78bfa;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ── EXERCISE SECTION ── */
+.exercise-section { margin-bottom: 28px; }
+.section-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #a78bfa;
+  margin-bottom: 14px;
+  padding: 8px 14px;
+  background: rgba(108,99,255,0.15);
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* Question card */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: border 0.2s;
+  animation: slideIn 0.4s ease both;
+}
+.q-card.answered-correct { border-color: var(--success); }
+.q-card.answered-wrong   { border-color: var(--danger); }
+
+.q-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--primary), #a78bfa);
+  border-radius: 50%;
+  font-size: 0.8rem; font-weight: 800;
+  color: #fff;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.q-text {
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 0;
+  flex-wrap: wrap;
+}
+.q-text-inner { flex: 1; }
+
+/* Options */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.option-btn {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 10px 13px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex; align-items: flex-start; gap: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  line-height: 1.4;
+}
+.option-btn:hover:not(:disabled) {
+  transform: scale(1.03);
+  border-color: var(--primary);
+  background: rgba(108,99,255,0.15);
+  box-shadow: 0 6px 18px rgba(108,99,255,0.3);
+}
+.option-btn:disabled { cursor: default; }
+.option-btn.correct {
+  background: rgba(0,210,106,0.2);
+  border-color: var(--success);
+  color: #6fffa3;
+}
+.option-btn.wrong {
+  background: rgba(255,71,87,0.2);
+  border-color: var(--danger);
+  color: #ff8b95;
+  animation: shake 0.4s ease;
+}
+.opt-letter {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  font-size: 0.78rem; font-weight: 800;
+  flex-shrink: 0;
+}
+.option-btn.correct .opt-letter { background: rgba(0,210,106,0.3); }
+.option-btn.wrong   .opt-letter { background: rgba(255,71,87,0.3); }
+
+/* Explanation */
+.explanation {
+  display: none;
+  margin-top: 12px;
+  background: rgba(108,99,255,0.1);
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 12px;
+  padding: 13px 15px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #ccd;
+  animation: slideIn 0.3s ease;
+}
+.explanation.show { display: block; }
+.explanation h4 {
+  font-size: 0.88rem;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 800;
+}
+.explanation .correct-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(0,210,106,0.2);
+  color: var(--success);
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+.explanation .why { color: #b0c4ff; }
+.explanation .trans { color: #7dffd1; font-style: italic; margin-top: 4px; }
+.exp-row { margin-bottom: 5px; }
+
+/* ── MODAL OVERLAY ── */
+#result-modal {
+  display: none;
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(8px);
+  justify-content: center; align-items: center;
+}
+#result-modal.show { display: flex; }
+.result-card {
+  background: linear-gradient(135deg, #1a1a4e, #0d0d2b);
+  border: 2px solid rgba(108,99,255,0.5);
+  border-radius: 24px;
+  padding: 36px 40px;
+  text-align: center;
+  max-width: 480px; width: 90%;
+  animation: popIn 0.5s ease;
+  box-shadow: 0 20px 60px rgba(108,99,255,0.4);
+}
+.result-emoji { font-size: 4rem; margin-bottom: 10px; }
+.result-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #a78bfa, #34d399, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.result-score {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--accent);
+  margin: 10px 0;
+}
+.result-msg {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.result-breakdown {
+  background: rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  text-align: left;
+  font-size: 0.87rem;
+  color: #ccd;
+  line-height: 1.8;
+}
+.btn-retry {
+  background: linear-gradient(135deg,#6C63FF,#a78bfa);
+  color:#fff; padding:12px 28px; font-size:1rem;
+  box-shadow:0 4px 20px rgba(108,99,255,0.5);
+}
+
+/* ── CONFETTI ── */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiDrop linear forwards;
+}
+
+/* ── TIMER WARNING ── */
+.time-warning-banner {
+  display: none;
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: rgba(255,71,87,0.92);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  z-index: 200;
+  animation: popIn 0.4s ease, pulse 1s infinite;
+  text-align: center;
+  max-width: 90vw;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+  .split-wrapper { flex-direction: column; height: auto; }
+  .left-pane, .right-pane { height: auto; }
+  .options-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <h1>🚀 C. READING – Tiếng Anh 8 (Global Success)</h1>
+    <p>Giáo viên tạo: MS Chí Nên ULIS &nbsp;|&nbsp; Chủ đề: Space & Planets</p>
+  </div>
+  <div class="header-center">
+    <div class="timer-display" id="timerDisplay">10:00</div>
+    <div class="timer-controls">
+      <button class="btn btn-start" id="btnStart" onclick="startTimer()">⏱ BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+      <button class="btn btn-pause" id="btnPause" onclick="togglePause()">⏸ Tạm dừng</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+    <div class="score-bar">
+      <span>Điểm:</span>
+      <strong id="liveScore">0 / 15</strong>
+    </div>
+    <button class="btn btn-submit" onclick="submitQuiz()">🏁 NỘP BÀI</button>
+  </div>
+</header>
+
+<div class="time-warning-banner" id="timeWarning">
+  ⚠️ Đã hết giờ làm bài! Bạn vẫn có thể tiếp tục, nhưng trong phòng thi thật mỗi bài đọc chỉ nên làm trong 10 phút thôi nhé! 🎯
+</div>
+
+<div class="split-wrapper">
+
+  <div class="left-pane" id="leftPane">
+
+    <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:14px;padding:10px 14px;background:rgba(253,203,110,0.1);border-radius:12px;border-left:4px solid var(--accent);">
+      📖 EXERCISE 1 – Fill in the blanks
+    </div>
+
+    <div class="passage-card">
+      <div class="passage-label">① Passage 1: Mars, Europa & Titan</div>
+      <div class="source">(Adapted from <em>Oxford Read &amp; Discover</em>)</div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">The temperature on Mars is very cold, so all the water on <span class="blank">(1) _______</span> surface is ice—scientists think that there is water in the soil or even in underground rivers. There may be life on Mars, too. At the moment, robots <span class="blank">(2) _______</span> from the Earth are exploring Mars and looking for life.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t1_1')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t1_1">
+          Nhiệt độ trên Sao Hỏa rất lạnh, vì vậy tất cả nước trên <em>bề mặt của nó</em> đều ở dạng băng — các nhà khoa học nghĩ rằng có nước trong đất hoặc thậm chí trong các dòng sông ngầm. Có thể có sự sống trên Sao Hỏa. Hiện tại, các robot <em>từ</em> Trái Đất đang khám phá Sao Hỏa và tìm kiếm sự sống.
+        </div>
+      </div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">Europa is one of Jupiter's moons and it's covered in ice. Although the surface is very cold, scientists think it's warmer inside. There may be oceans under the ice and bacteria or other <span class="blank">(3) _______</span> things in the oceans. One-day people will send robots to explore this planet to look for life.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t1_2')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t1_2">
+          Europa là một trong những mặt trăng của Sao Mộc và được bao phủ bởi băng. Mặc dù bề mặt rất lạnh, các nhà khoa học nghĩ rằng bên trong ấm hơn. Có thể có các đại dương bên dưới lớp băng và vi khuẩn hoặc các <em>sinh vật sống</em> khác trong đó. Một ngày nào đó người ta sẽ gửi robot đến khám phá hành tinh này để tìm kiếm sự sống.
+        </div>
+      </div>
+
+      <div class="paragraph-block" style="margin-bottom: 0;">
+        <div class="passage-text">Titan is the largest moon in Saturn. It is the only moon in the solar <span class="blank">(4) _______</span> with atmosphere. It has rivers, lakes, rain and clouds. These are made of chemicals called hydrocarbons, and scientists think that there is water under the surface of Titan, too. Living things are made of hydrocarbons and water. One day we will <span class="blank">(5) _______</span> life on Titan.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t1_3')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t1_3">
+          Titan là mặt trăng lớn nhất của Sao Thổ. Đây là mặt trăng duy nhất trong <em>hệ</em> mặt trời có bầu khí quyển. Nó có sông, hồ, mưa và mây. Những thứ này được tạo ra từ các hóa chất gọi là hydrocarbon, và các nhà khoa học nghĩ rằng cũng có nước bên dưới bề mặt Titan. Sinh vật sống được tạo ra từ hydrocarbon và nước. Một ngày nào đó chúng ta sẽ <em>khám phá</em> ra sự sống trên Titan.
+        </div>
+      </div>
+    </div>
+
+    <div class="passage-card">
+      <div class="passage-label">② Passage 2: Mercury – The Smallest Planet</div>
+      <div class="source">(Adapted from <a href="https://spaceplace.nasa.gov" style="color:#7dffd1;">spaceplace.nasa.gov</a>)</div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">Mercury is the smallest planet in our solar system. It's just a little bigger than the Earth's moon. It is the closest planet to the sun, <span class="blank">(1) _______</span> it's actually not the hottest. Venus is hotter.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t2_1')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t2_1">
+          Sao Thủy là hành tinh nhỏ nhất trong hệ mặt trời của chúng ta. Nó chỉ lớn hơn mặt trăng của Trái Đất một chút. Đây là hành tinh gần mặt trời nhất, <em>nhưng</em> thực ra nó không phải là hành tinh nóng nhất. Sao Kim còn nóng hơn.
+        </div>
+      </div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">Along with Venus, Earth, and Mars, Mercury is <span class="blank">(2) _______</span> of the rocky planets. It has a solid surface that is covered with craters. It has no atmosphere, and it doesn't have any moons.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t2_2')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t2_2">
+          Cùng với Sao Kim, Trái Đất và Sao Hỏa, Sao Thủy là <em>một</em> trong những hành tinh đất đá. Nó có bề mặt cứng được bao phủ bởi các miệng hố. Nó không có bầu khí quyển và không có mặt trăng nào.
+        </div>
+      </div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">This small planet spins around slowly compared to Earth, so one day lasts a long time. Mercury takes 59 Earth days to <span class="blank">(3) _______</span> one full rotation. A year on Mercury goes by fast. Because it's the closest planet to the sun, it doesn't take very long to go all the way around. It completes one revolution around the sun in just 88 Earth days.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t2_3')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t2_3">
+          Hành tinh nhỏ này quay chậm hơn so với Trái Đất, vì vậy một ngày kéo dài rất lâu. Sao Thủy mất 59 ngày Trái Đất để <em>thực hiện</em> một vòng quay hoàn chỉnh. Một năm trên Sao Thủy trôi qua rất nhanh. Vì nó là hành tinh gần mặt trời nhất, nên không mất nhiều thời gian để đi hết một vòng. Nó hoàn thành một vòng quanh mặt trời chỉ trong 88 ngày Trái Đất.
+        </div>
+      </div>
+
+      <div class="paragraph-block" style="margin-bottom: 0;">
+        <div class="passage-text">A day on Mercury is not <span class="blank">(4) _______</span> a day here on Earth. For us, the sun rises and sets each and every day. <span class="blank">(5) _______</span> Mercury has a slow spin and a short year, it takes a long time for the sun to rise and set there. Mercury only has one sunrise every 180 Earth days!</div>
+        <button class="btn-translate" onclick="toggleTranslate('t2_4')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t2_4">
+          Một ngày trên Sao Thủy không <em>giống</em> một ngày ở đây trên Trái Đất. Đối với chúng ta, mặt trời mọc và lặn mỗi ngày. <em>Bởi vì</em> Sao Thủy quay chậm và có năm ngắn, nên mặt trời mọc và lặn ở đó rất lâu. Sao Thủy chỉ có một lần bình minh sau mỗi 180 ngày Trái Đất!
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#34d399;margin:20px 0 14px;padding:10px 14px;background:rgba(52,211,153,0.1);border-radius:12px;border-left:4px solid #34d399;">
+      📖 EXERCISE 2 – Multiple Choice Comprehension
+    </div>
+
+    <div class="passage-card">
+      <div class="passage-label">① Passage 3: Life on Other Planets – The Kelper Mission</div>
+      <div class="source">(Adapted from <a href="https://www.teachingenglish.org.uk" style="color:#7dffd1;">teachingenglish.org.uk</a>)</div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">Nobody knows how many planets there are in our galaxy and whether there is life on other planets. And the Kelper has the mission to find the answer to those questions.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t3_1')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t3_1">
+          Không ai biết có bao nhiêu hành tinh trong dải ngân hà của chúng ta và liệu có sự sống trên các hành tinh khác không. Và Kelper có nhiệm vụ tìm câu trả lời cho những câu hỏi đó.
+        </div>
+      </div>
+
+      <div class="paragraph-block">
+        <div class="passage-text">In 2009, NASA launched the Kelper space telescope to find planets that support life. It has discovered five new Earth-sized planets beyond our solar system so far. These planets are hotter than the Earth. The Kelper team predicted that it will take them at least three years to find an Earth-like planet. This mission costs about six hundred million dollars.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t3_2')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t3_2">
+          Năm 2009, NASA đã phóng kính thiên văn vũ trụ Kelper để tìm các hành tinh có thể hỗ trợ sự sống. Đến nay, nó đã phát hiện ra năm hành tinh có kích thước Trái Đất mới ngoài hệ mặt trời của chúng ta. Những hành tinh này nóng hơn Trái Đất. Nhóm Kelper dự đoán rằng sẽ mất ít nhất ba năm để tìm ra một hành tinh giống Trái Đất. Nhiệm vụ này tốn khoảng sáu trăm triệu đô la.
+        </div>
+      </div>
+
+      <div class="paragraph-block" style="margin-bottom: 0;">
+        <div class="passage-text">The simplest requirement for a planet to have life is water (not frozen or gas), so the distance from the planet's sun and therefore temperature is important. The planet also needs a certain amount of air. If a planet is as small as Mars (half the size of Earth), it can't hold on to air molecules because of weak gravity. If a planet is four times bigger than Earth - Neptune size - it has very strong gravity and too much air. So the size of those planets also matter.</div>
+        <button class="btn-translate" onclick="toggleTranslate('t3_3')">🌟 Mở dịch đoạn này</button>
+        <div class="translation-box" id="t3_3">
+          Yêu cầu đơn giản nhất để một hành tinh có sự sống là nước (không bị đóng băng hoặc ở dạng khí), vì vậy khoảng cách từ mặt trời của hành tinh và do đó nhiệt độ rất quan trọng. Hành tinh cũng cần một lượng không khí nhất định. Nếu một hành tinh nhỏ như Sao Hỏa (bằng nửa kích thước Trái Đất), nó không thể giữ các phân tử không khí vì lực hấp dẫn yếu. Nếu một hành tinh lớn gấp bốn lần Trái Đất - kích thước Sao Hải Vương - nó có lực hấp dẫn rất mạnh và quá nhiều không khí. Vì vậy kích thước của những hành tinh đó cũng quan trọng.
+        </div>
+      </div>
+    </div>
+
+    <div class="glossary-card">
+      <h3>📚 Glossary – Từ vựng học thuật (B1–C2)</h3>
+      <table class="glossary-table">
+        <thead>
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>atmosphere</strong></td><td><span class="pos-badge">n</span></td><td>bầu khí quyển</td></tr>
+          <tr><td><strong>hydrocarbon</strong></td><td><span class="pos-badge">n</span></td><td>hợp chất hydrocarbon (hóa học)</td></tr>
+          <tr><td><strong>rotation</strong></td><td><span class="pos-badge">n</span></td><td>sự tự quay (của hành tinh)</td></tr>
+          <tr><td><strong>revolution</strong></td><td><span class="pos-badge">n</span></td><td>vòng quay quanh mặt trời</td></tr>
+          <tr><td><strong>crater</strong></td><td><span class="pos-badge">n</span></td><td>miệng hố (trên bề mặt hành tinh)</td></tr>
+          <tr><td><strong>gravity</strong></td><td><span class="pos-badge">n</span></td><td>lực hấp dẫn</td></tr>
+          <tr><td><strong>molecule</strong></td><td><span class="pos-badge">n</span></td><td>phân tử</td></tr>
+          <tr><td><strong>telescope</strong></td><td><span class="pos-badge">n</span></td><td>kính thiên văn</td></tr>
+          <tr><td><strong>galaxy</strong></td><td><span class="pos-badge">n</span></td><td>thiên hà, dải ngân hà</td></tr>
+          <tr><td><strong>requirement</strong></td><td><span class="pos-badge">n</span></td><td>yêu cầu, điều kiện cần thiết</td></tr>
+          <tr><td><strong>predict</strong></td><td><span class="pos-badge">v</span></td><td>dự đoán, dự báo</td></tr>
+          <tr><td><strong>launch</strong></td><td><span class="pos-badge">v</span></td><td>phóng (tàu vũ trụ/kính thiên văn)</td></tr>
+          <tr><td><strong>bacteria</strong></td><td><span class="pos-badge">n</span></td><td>vi khuẩn</td></tr>
+          <tr><td><strong>underground</strong></td><td><span class="pos-badge">adj</span></td><td>dưới lòng đất, ngầm</td></tr>
+          <tr><td><strong>solid</strong></td><td><span class="pos-badge">adj</span></td><td>cứng, rắn (bề mặt)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><div class="right-pane" id="rightPane">
+
+    <div class="exercise-section">
+      <div class="section-title">✏️ Exercise 1 – Passage ① (Mars / Europa / Titan)</div>
+
+      <div class="q-card" id="qcard-e1p1q1">
+        <div class="q-text"><span class="q-num">1</span><span class="q-text-inner">The temperature on Mars is very cold, so all the water on ________ surface is ice.</span></div>
+        <div class="options-grid" id="opts-e1p1q1"></div>
+        <div class="explanation" id="exp-e1p1q1">
+          <div class="correct-tag">✅ Đáp án đúng: B. its</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>it</strong> (đại từ chủ ngữ): "nó" – không dùng trước danh từ.<br>
+            B. <strong>its</strong> (tính từ sở hữu): "của nó" – dùng trước danh từ (its surface).<br>
+            C. <strong>their</strong> (tính từ sở hữu số nhiều): "của họ/chúng" – Mars là số ít.<br>
+            D. <strong>the</strong> (mạo từ xác định) – không thể hiện sở hữu của Mars.
+          </div>
+          <div class="trans">🇻🇳 "Nhiệt độ trên Sao Hỏa rất lạnh, vì vậy tất cả nước trên <em>bề mặt của nó</em> đều là băng."</div>
+          <div class="why">💡 Tại sao chọn B? Chủ từ câu là "Mars" (số ít, vật thể), cần tính từ sở hữu số ít trung tính → <strong>its</strong>. "It" là đại từ chủ ngữ không đứng trước danh từ. "Their" dùng cho số nhiều. "The" không thể hiện sở hữu.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p1q2">
+        <div class="q-text"><span class="q-num">2</span><span class="q-text-inner">Robots ________ the Earth are exploring Mars and looking for life.</span></div>
+        <div class="options-grid" id="opts-e1p1q2"></div>
+        <div class="explanation" id="exp-e1p1q2">
+          <div class="correct-tag">✅ Đáp án đúng: C. from</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>in</strong>: "trong" – robots in the Earth = robot trong lòng Trái Đất → vô nghĩa.<br>
+            B. <strong>on</strong>: "trên" – robots on the Earth cũng có thể dùng, nhưng "from" tự nhiên hơn trong ngữ cảnh "xuất phát từ".<br>
+            C. <strong>from</strong>: "từ" – robots from the Earth = các robot từ/xuất phát từ Trái Đất ✓<br>
+            D. <strong>to</strong>: "đến" – ngược chiều; robots đang đến Sao Hỏa, không phải đến Trái Đất.
+          </div>
+          <div class="trans">🇻🇳 "Các robot <em>từ</em> Trái Đất đang khám phá Sao Hỏa và tìm kiếm sự sống."</div>
+          <div class="why">💡 Tại sao chọn C? "From" chỉ nguồn gốc/xuất phát. Robot được chế tạo và phóng từ Trái Đất → "robots from the Earth". Đây là cụm danh từ (noun phrase) với giới từ chỉ nguồn gốc.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p1q3">
+        <div class="q-text"><span class="q-num">3</span><span class="q-text-inner">There may be oceans under the ice and bacteria or other ________ things in the oceans.</span></div>
+        <div class="options-grid" id="opts-e1p1q3"></div>
+        <div class="explanation" id="exp-e1p1q3">
+          <div class="correct-tag">✅ Đáp án đúng: A. living</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>living</strong> (adj): "đang sống, có sự sống" → living things = sinh vật sống ✓<br>
+            B. <strong>alive</strong> (adj - vị ngữ): chỉ dùng sau động từ (is alive), không dùng trước danh từ.<br>
+            C. <strong>lively</strong> (adj): "sôi nổi, linh hoạt" – chỉ tính cách/phong cách, không dùng cho sinh vật nói chung.<br>
+            D. <strong>live</strong> (adj): "trực tiếp, còn sống" – thường dùng cho chương trình TV hoặc động vật còn sống tại chỗ; "live things" không phải cụm cố định.
+          </div>
+          <div class="trans">🇻🇳 "Có thể có các đại dương bên dưới lớp băng và vi khuẩn hoặc các <em>sinh vật sống</em> khác trong đó."</div>
+          <div class="why">💡 Tại sao chọn A? "Living things" là cụm danh từ cố định nghĩa là "sinh vật sống". "Alive" không thể đứng trước danh từ (attributive position). "Lively" mang nghĩa "năng động" không phù hợp ngữ cảnh khoa học.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p1q4">
+        <div class="q-text"><span class="q-num">4</span><span class="q-text-inner">Titan is the only moon in the solar ________ with atmosphere.</span></div>
+        <div class="options-grid" id="opts-e1p1q4"></div>
+        <div class="explanation" id="exp-e1p1q4">
+          <div class="correct-tag">✅ Đáp án đúng: D. system</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>body</strong>: "thiên thể" – "solar body" không phải cụm từ cố định.<br>
+            B. <strong>organisation</strong>: "tổ chức" – hoàn toàn không phù hợp ngữ cảnh khoa học vũ trụ.<br>
+            C. <strong>space</strong>: "không gian" – "solar space" không phải cụm từ đúng.<br>
+            D. <strong>system</strong>: "hệ thống" → solar system = hệ mặt trời ✓
+          </div>
+          <div class="trans">🇻🇳 "Titan là mặt trăng duy nhất trong <em>hệ mặt trời</em> có bầu khí quyển."</div>
+          <div class="why">💡 Tại sao chọn D? "Solar system" (hệ mặt trời) là cụm danh từ cố định và duy nhất đúng về mặt khoa học trong 4 lựa chọn.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p1q5">
+        <div class="q-text"><span class="q-num">5</span><span class="q-text-inner">One day we will ________ life on Titan.</span></div>
+        <div class="options-grid" id="opts-e1p1q5"></div>
+        <div class="explanation" id="exp-e1p1q5">
+          <div class="correct-tag">✅ Đáp án đúng: B. discover</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>save</strong>: "cứu" – save life = cứu sống, không hợp với ngữ cảnh tìm sự sống.<br>
+            B. <strong>discover</strong>: "khám phá ra, tìm thấy" → discover life = tìm thấy sự sống ✓<br>
+            C. <strong>learn</strong>: "học" – learn life không có nghĩa tự nhiên trong ngữ cảnh này.<br>
+            D. <strong>explain</strong>: "giải thích" – không thể "giải thích sự sống", cần "khám phá" trước.
+          </div>
+          <div class="trans">🇻🇳 "Một ngày nào đó chúng ta sẽ <em>khám phá ra</em> sự sống trên Titan."</div>
+          <div class="why">💡 Tại sao chọn B? Toàn bộ đoạn văn nói về việc tìm kiếm sự sống → "discover life" = phát hiện/tìm thấy sự sống là logic nhất. Bài cũng nói "looking for life" ở đoạn trên, và mục tiêu cuối cùng là "discover".</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-section">
+      <div class="section-title">✏️ Exercise 1 – Passage ② (Mercury)</div>
+
+      <div class="q-card" id="qcard-e1p2q1">
+        <div class="q-text"><span class="q-num">6</span><span class="q-text-inner">Mercury is the closest planet to the sun, ________ it's actually not the hottest.</span></div>
+        <div class="options-grid" id="opts-e1p2q1"></div>
+        <div class="explanation" id="exp-e1p2q1">
+          <div class="correct-tag">✅ Đáp án đúng: A. but</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>but</strong>: liên từ tương phản "nhưng" → diễn tả sự đối lập: gần nhất nhưng không nóng nhất ✓<br>
+            B. <strong>so</strong>: "vì vậy" – kết quả; nếu dùng "so" thì nghĩa là "gần nhất, vì vậy không nóng nhất" → vô lý.<br>
+            C. <strong>and</strong>: "và" – thêm thông tin, không diễn tả tương phản.<br>
+            D. <strong>or</strong>: "hoặc" – lựa chọn, không phù hợp.
+          </div>
+          <div class="trans">🇻🇳 "Đây là hành tinh gần mặt trời nhất, <em>nhưng</em> thực ra nó không phải là hành tinh nóng nhất."</div>
+          <div class="why">💡 Tại sao chọn A? Hai mệnh đề có sự đối lập logic: "gần mặt trời nhất" ↔ "không phải nóng nhất". Liên từ tương phản "but" (nhưng) là duy nhất phù hợp để nối hai ý trái ngược này.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p2q2">
+        <div class="q-text"><span class="q-num">7</span><span class="q-text-inner">Mercury is ________ of the rocky planets.</span></div>
+        <div class="options-grid" id="opts-e1p2q2"></div>
+        <div class="explanation" id="exp-e1p2q2">
+          <div class="correct-tag">✅ Đáp án đúng: C. one</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>first</strong>: "đầu tiên" – "the first of" sẽ cần "the" trước; không có nghĩa phù hợp ở đây.<br>
+            B. <strong>another</strong>: "một cái khác" – "another of" không chuẩn về cú pháp.<br>
+            C. <strong>one</strong>: "một trong số" → one of the rocky planets = một trong những hành tinh đất đá ✓<br>
+            D. <strong>other</strong>: "khác" – "other of" không phải cụm từ đúng.
+          </div>
+          <div class="trans">🇻🇳 "Sao Thủy là <em>một</em> trong những hành tinh đất đá."</div>
+          <div class="why">💡 Tại sao chọn C? Cấu trúc <strong>"one of + the + danh từ số nhiều"</strong> = "một trong những..." là cấu trúc cố định trong tiếng Anh. Đây là cấu trúc ngữ pháp cơ bản cần nhớ.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p2q3">
+        <div class="q-text"><span class="q-num">8</span><span class="q-text-inner">Mercury takes 59 Earth days to ________ one full rotation.</span></div>
+        <div class="options-grid" id="opts-e1p2q3"></div>
+        <div class="explanation" id="exp-e1p2q3">
+          <div class="correct-tag">✅ Đáp án đúng: D. make</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>take</strong>: "mất (thời gian)" – take a rotation không phải collocation tự nhiên.<br>
+            B. <strong>do</strong>: "làm" – do a rotation không phải collocation chuẩn.<br>
+            C. <strong>get</strong>: "lấy, đến" – get a rotation hoàn toàn không có nghĩa.<br>
+            D. <strong>make</strong>: "thực hiện" → make a rotation = thực hiện một vòng quay ✓
+          </div>
+          <div class="trans">🇻🇳 "Sao Thủy mất 59 ngày Trái Đất để <em>thực hiện</em> một vòng quay hoàn chỉnh."</div>
+          <div class="why">💡 Tại sao chọn D? "Make a rotation/revolution" là collocation (kết hợp từ vựng) chuẩn trong tiếng Anh khoa học. Tương tự: make a turn, make a move, make an effort.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p2q4">
+        <div class="q-text"><span class="q-num">9</span><span class="q-text-inner">A day on Mercury is not ________ a day here on Earth.</span></div>
+        <div class="options-grid" id="opts-e1p2q4"></div>
+        <div class="explanation" id="exp-e1p2q4">
+          <div class="correct-tag">✅ Đáp án đúng: C. like</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>same</strong>: "giống nhau" – cần cấu trúc "the same as", không thể dùng "same + danh từ".<br>
+            B. <strong>similar</strong>: "tương tự" – cần "similar to", không phải "similar + danh từ".<br>
+            C. <strong>like</strong>: "giống như" → not like = không giống như ✓ (giới từ so sánh)<br>
+            D. <strong>different</strong>: "khác" – cần "different from", không thể dùng mình "different + danh từ".
+          </div>
+          <div class="trans">🇻🇳 "Một ngày trên Sao Thủy không <em>giống</em> một ngày ở đây trên Trái Đất."</div>
+          <div class="why">💡 Tại sao chọn C? "Like" đóng vai trò <strong>giới từ so sánh</strong>, đứng trực tiếp trước danh từ/cụm danh từ. Cấu trúc: "not like + noun" = không giống như... Đây là dùng "like" như prep, khác với "like" là động từ (thích).</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e1p2q5">
+        <div class="q-text"><span class="q-num">10</span><span class="q-text-inner">________ Mercury has a slow spin and a short year, it takes a long time for the sun to rise and set there.</span></div>
+        <div class="options-grid" id="opts-e1p2q5"></div>
+        <div class="explanation" id="exp-e1p2q5">
+          <div class="correct-tag">✅ Đáp án đúng: D. Because</div>
+          <div class="exp-row"><h4>📝 Phân tích 4 đáp án:</h4>
+            A. <strong>Therefore</strong>: "Vì vậy" – liên từ kết quả, không thể đứng đầu mệnh đề phụ.<br>
+            B. <strong>When</strong>: "Khi" – liên từ thời gian, không diễn tả nguyên nhân.<br>
+            C. <strong>If</strong>: "Nếu" – liên từ điều kiện, không hợp logic ở đây.<br>
+            D. <strong>Because</strong>: "Bởi vì" → diễn tả nguyên nhân: vì quay chậm → mặt trời mọc/lặn chậm ✓
+          </div>
+          <div class="trans">🇻🇳 "<em>Bởi vì</em> Sao Thủy quay chậm và có năm ngắn, nên mặt trời mọc và lặn ở đó rất lâu."</div>
+          <div class="why">💡 Tại sao chọn D? Mệnh đề thứ nhất giải thích <strong>nguyên nhân</strong>: quay chậm → dẫn đến <strong>kết quả</strong>: mặt trời mọc/lặn lâu. Liên từ nhân quả "Because" là phù hợp. "Therefore" không đứng đầu mệnh đề phụ; "When/If" không diễn tả nguyên nhân.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-section">
+      <div class="section-title">🔍 Exercise 2 – Comprehension (Kelper Mission)</div>
+
+      <div class="q-card" id="qcard-e2q1">
+        <div class="q-text"><span class="q-num">11</span><span class="q-text-inner">How many people know the number of planets in our galaxy?</span></div>
+        <div class="options-grid" id="opts-e2q1"></div>
+        <div class="explanation" id="exp-e2q1">
+          <div class="correct-tag">✅ Đáp án đúng: B. None</div>
+          <div class="exp-row"><h4>📝 Dẫn chứng từ bài đọc:</h4>
+            Câu đầu bài: <em>"Nobody knows how many planets there are in our galaxy..."</em><br>
+            → "Nobody" = "Không ai" = None (zero people).
+          </div>
+          <div class="trans">🇻🇳 "Không ai biết có bao nhiêu hành tinh trong dải ngân hà của chúng ta..."</div>
+          <div class="why">💡 Tại sao chọn B? "Nobody" đồng nghĩa với "None" (không ai). Loại A (Not many) vì bài không nói "không nhiều", loại C (Many people) và D (Everybody) vì "nobody" phủ định hoàn toàn.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e2q2">
+        <div class="q-text"><span class="q-num">12</span><span class="q-text-inner">What is the mission of the Kelper?</span></div>
+        <div class="options-grid" id="opts-e2q2"></div>
+        <div class="explanation" id="exp-e2q2">
+          <div class="correct-tag">✅ Đáp án đúng: C. To find life on other planets</div>
+          <div class="exp-row"><h4>📝 Dẫn chứng từ bài đọc:</h4>
+            Câu 1: <em>"the Kelper has the mission to find the answer to those questions"</em><br>
+            "those questions" = liệu có sự sống trên hành tinh khác không → mission = tìm sự sống ngoài Trái Đất.
+          </div>
+          <div class="trans">🇻🇳 "Kelper có nhiệm vụ tìm câu trả lời cho những câu hỏi đó [về sự sống trên các hành tinh khác]."</div>
+          <div class="why">💡 Loại A (trả lời câu hỏi về Trái Đất) vì câu hỏi là về <em>các hành tinh khác</em>. Loại B (xây dựng hành tinh) – không có trong bài. Loại D (tìm hành tinh kích thước Trái Đất) – đây là hoạt động cụ thể, không phải mission chính.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e2q3">
+        <div class="q-text"><span class="q-num">13</span><span class="q-text-inner">What is the main difference between the Earth and five new Earth-sized planets?</span></div>
+        <div class="options-grid" id="opts-e2q3"></div>
+        <div class="explanation" id="exp-e2q3">
+          <div class="correct-tag">✅ Đáp án đúng: A. Their temperature</div>
+          <div class="exp-row"><h4>📝 Dẫn chứng từ bài đọc:</h4>
+            <em>"It has discovered five new Earth-sized planets beyond our solar system so far. These planets are hotter than the Earth."</em>
+          </div>
+          <div class="trans">🇻🇳 "Nó đã phát hiện năm hành tinh mới có kích thước Trái Đất. <em>Những hành tinh này nóng hơn Trái Đất.</em>"</div>
+          <div class="why">💡 Tại sao chọn A? Điểm khác biệt được nhắc đến rõ ràng duy nhất là nhiệt độ: "hotter than the Earth". Về kích thước chúng giống Trái Đất (Earth-sized). Tuổi (D) và hệ thống (C) không được đề cập.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e2q4">
+        <div class="q-text"><span class="q-num">14</span><span class="q-text-inner">What does "<em>it</em>" refer to in: "If a planet is four times bigger than Earth – Neptune size – <em>it</em> has very strong gravity and too much air."</span></div>
+        <div class="options-grid" id="opts-e2q4"></div>
+        <div class="explanation" id="exp-e2q4">
+          <div class="correct-tag">✅ Đáp án đúng: D. A planet</div>
+          <div class="exp-row"><h4>📝 Dẫn chứng từ bài đọc:</h4>
+            <em>"If a planet is four times bigger than Earth - Neptune size - it has very strong gravity..."</em><br>
+            "it" thay thế cho danh từ gần nhất trong mệnh đề điều kiện: "a planet".
+          </div>
+          <div class="trans">🇻🇳 "Nếu một <em>hành tinh</em> lớn gấp bốn lần Trái Đất - kích thước Sao Hải Vương - <em>nó</em> có lực hấp dẫn rất mạnh..."</div>
+          <div class="why">💡 Tại sao chọn D? Quy tắc đại từ: "it" thay thế cho danh từ số ít đã nhắc trước đó trong cùng câu/mệnh đề. Chủ từ của mệnh đề điều kiện là "a planet" → "it" = "a planet". Trái Đất (A) và Sao Hỏa (B) chỉ được dùng để so sánh kích thước, không phải chủ từ của mệnh đề này.</div>
+        </div>
+      </div>
+
+      <div class="q-card" id="qcard-e2q5">
+        <div class="q-text"><span class="q-num">15</span><span class="q-text-inner">What is the best title for this text?</span></div>
+        <div class="options-grid" id="opts-e2q5"></div>
+        <div class="explanation" id="exp-e2q5">
+          <div class="correct-tag">✅ Đáp án đúng: C. Requirements for life on other planets</div>
+          <div class="exp-row"><h4>📝 Phân tích toàn bài:</h4>
+            Đoạn 1: Giới thiệu câu hỏi về sự sống trên hành tinh khác.<br>
+            Đoạn 2: Kelper tìm hành tinh hỗ trợ sự sống (điều kiện về nhiệt độ).<br>
+            Đoạn 3: Phân tích điều kiện: nước, không khí, kích thước, trọng lực.
+          </div>
+          <div class="trans">🇻🇳 Nhan đề tốt nhất: "<em>Những yêu cầu cho sự sống trên các hành tinh khác</em>"</div>
+          <div class="why">💡 Loại A (Hệ mặt trời) – quá rộng. Loại B (Sự sống trên Trái Đất) – bài nói về hành tinh <em>khác</em>. Loại D (Bí ẩn vũ trụ) – không chính xác, bài phân tích điều kiện cụ thể. C là đúng vì toàn bài tập trung vào <strong>yêu cầu/điều kiện</strong> (requirements) để có sự sống: nhiệt độ, nước, không khí, kích thước.</div>
+        </div>
+      </div>
+
+    </div></div></div><div id="result-modal">
+  <div class="result-card">
+    <div class="result-emoji" id="res-emoji">🏆</div>
+    <div class="result-title" id="res-title">Thiên Tài Vũ Trụ!</div>
+    <div class="result-score" id="res-score">15/15</div>
+    <div class="result-msg" id="res-msg">Xuất sắc! Bạn thật sự là nhà thiên văn học tài năng! 🚀⭐</div>
+    <div class="result-breakdown" id="res-breakdown"></div>
+    <button class="btn btn-retry" onclick="retryQuiz()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const questions = [
+  // EXERCISE 1 PASSAGE 1
+  { id:'e1p1q1', opts:['A. it','B. its','C. their','D. the'], correct:1 },
+  { id:'e1p1q2', opts:['A. in','B. on','C. from','D. to'], correct:2 },
+  { id:'e1p1q3', opts:['A. living','B. alive','C. lively','D. live'], correct:0 },
+  { id:'e1p1q4', opts:['A. body','B. organisation','C. space','D. system'], correct:3 },
+  { id:'e1p1q5', opts:['A. save','B. discover','C. learn','D. explain'], correct:1 },
+  // EXERCISE 1 PASSAGE 2
+  { id:'e1p2q1', opts:['A. but','B. so','C. and','D. or'], correct:0 },
+  { id:'e1p2q2', opts:['A. first','B. another','C. one','D. other'], correct:2 },
+  { id:'e1p2q3', opts:['A. take','B. do','C. get','D. make'], correct:3 },
+  { id:'e1p2q4', opts:['A. same','B. similar','C. like','D. different'], correct:2 },
+  { id:'e1p2q5', opts:['A. Therefore','B. When','C. If','D. Because'], correct:3 },
+  // EXERCISE 2
+  { id:'e2q1', opts:['A. Not many','B. None','C. Many people','D. Everybody'], correct:1 },
+  { id:'e2q2', opts:['A. To answer the questions about the Earth','B. To build an Earth-like planet','C. To find life on other planets','D. To find new Earth-sized planets'], correct:2 },
+  { id:'e2q3', opts:['A. Their temperature','B. Their sizes','C. Their systems','D. Their age'], correct:0 },
+  { id:'e2q4', opts:['A. The Earth','B. The Mars','C. Gravity','D. A planet'], correct:3 },
+  { id:'e2q5', opts:['A. The solar system','B. Life on the Earth','C. Requirements for life on other planets','D. The mysteries about the outer space'], correct:2 },
+];
+
+const letters = ['A','B','C','D'];
+let answered = {}; // qid -> {chosen, correct}
+let shuffledOpts = {}; // qid -> shuffled array with original indices
+
+function shuffleArray(arr) {
+  const a = arr.map((v,i)=>({v,i}));
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER QUESTIONS
+// ══════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', ()=>{
+  questions.forEach(q => {
+    const container = document.getElementById('opts-'+q.id);
+    if(!container) return;
+    const shuffled = shuffleArray(q.opts);
+    shuffledOpts[q.id] = shuffled;
+    shuffled.forEach((item, displayIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.id = 'btn-'+q.id+'-'+displayIdx;
+      btn.innerHTML = `<span class="opt-letter">${letters[displayIdx]}</span><span>${item.v.replace(/^[A-D]\. /,'')}</span>`;
+      btn.onclick = () => handleAnswer(q.id, displayIdx, item.i === q.correct);
+      container.appendChild(btn);
+    });
+  });
+});
+
+// ══════════════════════════════════════════════
+//  ANSWER HANDLER
+// ══════════════════════════════════════════════
+function handleAnswer(qid, displayIdx, isCorrect) {
+  if(answered[qid]) return;
+  answered[qid] = { chosen: displayIdx, isCorrect };
+
+  const q = questions.find(x=>x.id===qid);
+  const shuffled = shuffledOpts[qid];
+  const qcard = document.getElementById('qcard-'+qid);
+  const exp = document.getElementById('exp-'+qid);
+  const allBtns = document.querySelectorAll(`#opts-${qid} .option-btn`);
+
+  allBtns.forEach((btn,i) => {
+    btn.disabled = true;
+    if(shuffled[i].i === q.correct) btn.classList.add('correct');
+    else if(i === displayIdx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  if(isCorrect) {
+    qcard.classList.add('answered-correct');
+    playSound(true);
+    launchConfetti();
+  } else {
+    qcard.classList.add('answered-wrong');
+    playSound(false);
+    document.getElementById('btn-'+qid+'-'+displayIdx).classList.add('wrong');
+  }
+
+  exp.classList.add('show');
+  updateScore();
+}
+
+// ══════════════════════════════════════════════
+//  SCORE
+// ══════════════════════════════════════════════
+function updateScore() {
+  const correct = Object.values(answered).filter(a=>a.isCorrect).length;
+  document.getElementById('liveScore').textContent = correct + ' / 15';
+}
+
+// ══════════════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════════════
+function submitQuiz() {
+  const total = questions.length;
+  const correct = Object.values(answered).filter(a=>a.isCorrect).length;
+  const unanswered = total - Object.keys(answered).length;
+
+  // reveal all unanswered
+  questions.forEach(q => {
+    if(!answered[q.id]) {
+      const shuffled = shuffledOpts[q.id];
+      const allBtns = document.querySelectorAll(`#opts-${q.id} .option-btn`);
+      allBtns.forEach((btn,i) => {
+        btn.disabled = true;
+        if(shuffled[i].i === q.correct) btn.classList.add('correct');
+      });
+      document.getElementById('exp-'+q.id).classList.add('show');
+    }
+  });
+
+  const pct = correct/total;
+  let emoji, title, msg;
+  if(pct===1)       { emoji='🏆'; title='THIÊN TÀI VŨ TRỤ!'; msg='Tuyệt vời! Bạn trả lời đúng toàn bộ! Bạn xứng đáng trở thành nhà du hành vũ trụ! 🚀🌟'; }
+  else if(pct>=0.8) { emoji='⭐'; title='Xuất sắc!'; msg='Làm tốt lắm! Chỉ vài câu nhỏ chưa chắc, hãy ôn lại nhé! 💪'; }
+  else if(pct>=0.6) { emoji='👍'; title='Khá giỏi!'; msg='Bạn đã hiểu bài khá tốt! Xem lại phần giải thích để hoàn thiện hơn nhé! 📚'; }
+  else if(pct>=0.4) { emoji='😊'; title='Cố lên nhé!'; msg='Bạn đang tiến bộ! Đọc lại bài văn và phần giải thích sẽ giúp ích nhiều! 🌱'; }
+  else              { emoji='💫'; title='Khởi đầu thôi!'; msg='Đừng nản! Vũ trụ rộng lớn và bạn mới bắt đầu khám phá. Thử lại nhé! 🌙'; }
+
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-score').textContent = correct + '/' + total;
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('res-breakdown').innerHTML =
+    `✅ Số câu đúng: <strong>${correct}</strong> / ${total}<br>` +
+    `❌ Số câu sai: <strong>${Object.values(answered).filter(a=>!a.isCorrect).length}</strong><br>` +
+    `⬜ Bỏ qua: <strong>${unanswered}</strong> câu<br>` +
+    `📊 Tỉ lệ: <strong>${Math.round(pct*100)}%</strong>`;
+
+  document.getElementById('result-modal').classList.add('show');
+  if(pct >= 0.6) launchConfetti(40);
+}
+
+function retryQuiz() {
+  location.reload();
+}
+
+// ══════════════════════════════════════════════
+//  TIMER
+// ══════════════════════════════════════════════
+let timerInterval = null;
+let secondsLeft = 600;
+let paused = false;
+let started = false;
+
+function startTimer() {
+  if(started) return;
+  started = true;
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('timerDisplay').style.display = 'block';
+  document.getElementById('btnPause').style.display = 'inline-flex';
+  timerInterval = setInterval(tickTimer, 1000);
+}
+
+function tickTimer() {
+  if(paused) return;
+  secondsLeft--;
+  const m = Math.floor(secondsLeft/60).toString().padStart(2,'0');
+  const s = (secondsLeft%60).toString().padStart(2,'0');
+  const disp = document.getElementById('timerDisplay');
+  disp.textContent = m+':'+s;
+  if(secondsLeft <= 60) disp.classList.add('urgent');
+  if(secondsLeft <= 0) {
+    clearInterval(timerInterval);
+    disp.textContent = '00:00';
+    document.getElementById('btnPause').style.display = 'none';
+    document.getElementById('timeWarning').style.display = 'block';
+  }
+}
+
+function togglePause() {
+  paused = !paused;
+  document.getElementById('btnPause').textContent = paused ? '▶ Tiếp tục' : '⏸ Tạm dừng';
+}
+
+// ══════════════════════════════════════════════
+//  TRANSLATION TOGGLE
+// ══════════════════════════════════════════════
+function toggleTranslate(id) {
+  const box = document.getElementById(id);
+  const btn = box.previousElementSibling;
+  if(box.style.display === 'block') {
+    box.style.display = 'none';
+    btn.innerHTML = '🌟 Mở dịch đoạn này';
+  } else {
+    box.style.display = 'block';
+    btn.innerHTML = '🌟 Đóng bản dịch';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  AUDIO (Web Audio API)
+// ══════════════════════════════════════════════
+function playSound(correct) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(correct) {
+      [523,659,784].forEach((f,i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = f;
+        o.type = 'sine';
+        g.gain.setValueAtTime(0.2, ctx.currentTime + i*0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.1 + 0.3);
+        o.start(ctx.currentTime + i*0.1);
+        o.stop(ctx.currentTime + i*0.1 + 0.3);
+      });
+    } else {
+      [300,250,200].forEach((f,i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = f;
+        o.type = 'sawtooth';
+        g.gain.setValueAtTime(0.15, ctx.currentTime + i*0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.12 + 0.25);
+        o.start(ctx.currentTime + i*0.12);
+        o.stop(ctx.currentTime + i*0.12 + 0.25);
+      });
+    }
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+//  CONFETTI
+// ══════════════════════════════════════════════
+function launchConfetti(count=20) {
+  const colors = ['#6C63FF','#00C9A7','#FDCB6E','#FF4757','#a78bfa','#34d399','#fbbf24'];
+  for(let i=0;i<count;i++) {
+    const div = document.createElement('div');
+    div.className = 'confetti-piece';
+    div.style.left = Math.random()*100+'vw';
+    div.style.top = '-10px';
+    div.style.background = colors[Math.floor(Math.random()*colors.length)];
+    div.style.width = (8+Math.random()*8)+'px';
+    div.style.height = (8+Math.random()*8)+'px';
+    div.style.borderRadius = Math.random()>0.5 ? '50%' : '2px';
+    div.style.animationDuration = (1.5+Math.random()*2)+'s';
+    div.style.animationDelay = (Math.random()*0.5)+'s';
+    document.body.appendChild(div);
+    div.addEventListener('animationend', ()=>div.remove());
+  }
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

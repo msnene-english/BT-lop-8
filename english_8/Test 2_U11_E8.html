@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 02 - Unit 11 Science and Technology | MS Chí Nên ULIS</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #f0f8ff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --text-dark: #333;
+            --text-light: #666;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --bg-body: #f4f6f9;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            margin: 0;
+            padding-bottom: 80px; /* Space for footer */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--primary);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        h3 { margin: 5px 0; color: var(--text-light); font-weight: normal; font-size: 1rem; }
+        .exam-info { font-size: 0.9rem; color: #888; margin-top: 10px; }
+
+        /* SECTION & CARDS */
+        .section-title {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 30px 0 15px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+            position: relative;
+            border-left: 4px solid transparent;
+        }
+
+        .question-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .question-card.correct { border-left-color: var(--success); }
+        .question-card.wrong { border-left-color: var(--danger); }
+        .question-card.unanswered { border-left-color: var(--warning); }
+
+        .q-text { font-weight: 600; margin-bottom: 15px; font-size: 1.05rem; }
+        .q-number { color: var(--primary); margin-right: 5px; }
+
+        /* OPTIONS */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 600px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover { background-color: var(--secondary); border-color: var(--primary); }
+        
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        /* Correct/Wrong Styles applied via JS */
+        .option-label.correct-answer { background-color: #d4edda; border-color: var(--success); color: #155724; font-weight: bold; }
+        .option-label.wrong-selection { background-color: #f8d7da; border-color: var(--danger); color: #721c24; }
+        
+        /* DATA BOX (Reading Passages) */
+        .data-box {
+            background: #eef5fa;
+            border: 1px solid #b8daff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* GAP FILL LAYOUT */
+        .gap-fill-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .gap-options-box {
+            background: #fff3cd;
+            padding: 15px;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        /* EXPLANATION */
+        .explanation-box {
+            display: none; /* Hidden by default */
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            font-size: 0.95rem;
+        }
+        
+        .explanation-box.show { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .exp-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 5px;
+            color: white;
+        }
+        .tag-noun { background: #17a2b8; }
+        .tag-verb { background: #28a745; }
+        .tag-adj { background: #fd7e14; }
+        .tag-adv { background: #6f42c1; }
+        .tag-phrase { background: #6c757d; }
+
+        .exp-detail p { margin: 5px 0; }
+        .exp-translate { font-style: italic; color: #555; margin-bottom: 8px; display: block; }
+
+        /* BUTTONS */
+        .check-btn {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .check-btn:hover { background: var(--secondary); }
+
+        .footer-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,86,179,0.3);
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #004494; transform: translateY(-2px); }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: none;
+        }
+
+        /* GLOSSARY TABLE */
+        .glossary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            background: white;
+        }
+        .glossary-table th, .glossary-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .glossary-table th { background-color: var(--secondary); color: var(--primary); }
+
+        /* CUSTOM IMAGES VIA CSS */
+        .sign-container {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        /* Q29 Sign */
+        .sign-nodiving {
+            width: 150px;
+            height: 200px;
+            border: 5px solid #d9534f;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px;
+            position: relative;
+        }
+        .sign-header {
+            background: #d9534f;
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 2px 0;
+            border-radius: 3px;
+        }
+        .sign-icon {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #d9534f;
+            border-radius: 50%;
+            margin: 10px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .sign-icon::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 80px;
+            background: #d9534f;
+            transform: rotate(-45deg);
+        }
+        .diver-shape {
+            font-size: 40px;
+            font-weight: bold;
+            color: black;
+            transform: rotate(45deg);
+        }
+        .sign-text {
+            font-weight: 900;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        /* Q30 Notice */
+        .notice-board {
+            border: 2px solid blue;
+            background-color: #fffacd;
+            padding: 15px;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .notice-text { font-style: italic; font-weight: bold; color: #333; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h3>Giáo viên tạo: MS Chí Nên ULIS</h3>
+        <h1>UNIT 11 – SCIENCE AND TECHNOLOGY</h1>
+        <div class="exam-info">TEST 02 | Thời gian: 45 phút | Số câu: 40</div>
+    </header>
+
+    <form id="quizForm">
+        <div id="quiz-content"></div>
+    </form>
+</div>
+
+<div class="footer-bar">
+    <div class="score-display" id="scoreDisplay"></div>
+    <button type="button" class="submit-btn" onclick="submitQuiz()">NỘP BÀI</button>
+</div>
+
+<script>
+    const quizData = [
+        // PHONETICS
+        {
+            id: 1,
+            type: "phonetics",
+            section: "Pronunciation: Mark the letter A, B, C or D to indicate the word whose underlined part differs from the other three.",
+            question: "Question 1:",
+            options: [
+                { id: "A", text: "dr<u>a</u>ma" },
+                { id: "B", text: "m<u>a</u>mmal" },
+                { id: "C", text: "d<u>a</u>mage" },
+                { id: "D", text: "gr<u>a</u>mmar" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Chọn từ có phần gạch chân phát âm khác.</span><br>
+                A. drama /ˈdrɑː.mə/ (âm /ɑː/ - a dài)<br>
+                B. mammal /ˈmæm.əl/ (âm /æ/ - a bẹt)<br>
+                C. damage /ˈdæm.ɪdʒ/ (âm /æ/)<br>
+                D. grammar /ˈɡræm.ər/ (âm /æ/)<br>
+                ➔ <strong>Đáp án A</strong> là /ɑː/, còn lại là /æ/.
+            `
+        },
+        {
+            id: 2,
+            type: "phonetics",
+            question: "Question 2:",
+            options: [
+                { id: "A", text: "coll<u>ege</u>" },
+                { id: "B", text: "privil<u>ege</u>" },
+                { id: "C", text: "coll<u>age</u>" },
+                { id: "D", text: "mess<u>age</u>" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Chọn từ có phần gạch chân phát âm khác.</span><br>
+                A. college /ˈkɒl.ɪdʒ/ (âm /ɪdʒ/)<br>
+                B. privilege /ˈprɪv.əl.ɪdʒ/ (âm /ɪdʒ/)<br>
+                C. collage /kɒˈlɑːʒ/ (âm /ɑːʒ/) - tranh cắt dán<br>
+                D. message /ˈmes.ɪdʒ/ (âm /ɪdʒ/)<br>
+                ➔ <strong>Đáp án C</strong> phát âm là /ɑːʒ/, các từ còn lại đuôi -age phát âm là /ɪdʒ/.
+            `
+        },
+        // STRESS
+        {
+            id: 3,
+            type: "stress",
+            section: "Stress: Mark the letter A, B, C or D to indicate the word that differs from the other three in the position of primary stress.",
+            question: "Question 3:",
+            options: [
+                { id: "A", text: "comment" },
+                { id: "B", text: "online" },
+                { id: "C", text: "discuss" },
+                { id: "D", text: "breakout" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Chọn từ có trọng âm khác.</span><br>
+                A. comment /ˈkɒm.ent/ (trọng âm 1)<br>
+                B. online /ˈɒn.laɪn/ (trọng âm 1 - danh từ/tính từ thường nhấn 1, dù động từ có thể nhấn 2 nhưng ở đây xét theo nhóm)<br>
+                C. discuss /dɪˈskʌs/ (trọng âm 2)<br>
+                D. breakout /ˈbreɪk.aʊt/ (trọng âm 1 - danh từ)<br>
+                ➔ <strong>Đáp án C</strong> trọng âm 2, còn lại trọng âm 1.
+            `
+        },
+        {
+            id: 4,
+            type: "stress",
+            question: "Question 4:",
+            options: [
+                { id: "A", text: "development" },
+                { id: "B", text: "information" },
+                { id: "C", text: "understanding" },
+                { id: "D", text: "biometric" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Chọn từ có trọng âm khác.</span><br>
+                A. development /dɪˈvel.əp.mənt/ (trọng âm 2)<br>
+                B. information /ˌɪn.fəˈmeɪ.ʃən/ (trọng âm 3)<br>
+                C. understanding /ˌʌn.dəˈstæn.dɪŋ/ (trọng âm 3)<br>
+                D. biometric /ˌbaɪ.əʊˈmet.rɪk/ (trọng âm 3)<br>
+                ➔ <strong>Đáp án A</strong> trọng âm 2, còn lại trọng âm 3.
+            `
+        },
+        // GRAMMAR & VOCAB
+        {
+            id: 5,
+            type: "multiple_choice",
+            section: "Grammar & Vocabulary: Mark the letter A, B, C or D to indicate the correct answer.",
+            question: "Question 5: People said that the internet ______ about a revolution in the way people communicated with each other.",
+            options: [
+                { id: "A", text: "bring" },
+                { id: "B", text: "have brought" },
+                { id: "C", text: "brought" },
+                { id: "D", text: "had brought" }
+            ],
+            correct: "D",
+            explanation: `
+                <span class="exp-translate">Mọi người nói rằng internet đã mang lại một cuộc cách mạng trong cách mọi người giao tiếp với nhau.</span><br>
+                <strong>Giải thích:</strong><br>
+                - Động từ tường thuật "said" ở quá khứ.<br>
+                - Hành động "mang lại cuộc cách mạng" xảy ra trước khi "nói" -> Dùng <strong>Past Perfect (Quá khứ hoàn thành)</strong>.<br>
+                - Cấu trúc: S + said + (that) + S + had V3/ed.<br>
+                ➔ <strong>Đáp án D</strong> (had brought).
+            `
+        },
+        {
+            id: 6,
+            type: "multiple_choice",
+            question: "Question 6: Nam said that he ________ her since they ______ school.",
+            options: [
+                { id: "A", text: "Hasn’t met – left" },
+                { id: "B", text: "hadn’t met – left" },
+                { id: "C", text: "hadn’t met – had left" },
+                { id: "D", text: "hadn't met – had left" }
+            ],
+            correct: "B",
+            explanation: `
+                <span class="exp-translate">Nam nói rằng cậu ấy đã không gặp cô ấy kể từ khi họ ra trường.</span><br>
+                <strong>Giải thích:</strong><br>
+                - Câu gián tiếp với "since".<br>
+                - Câu trực tiếp: "I haven't met (Present Perfect) her since we left (Past Simple) school".<br>
+                - Chuyển sang gián tiếp: Lùi thì.<br>
+                + Present Perfect -> Past Perfect (hadn't met).<br>
+                + Past Simple trong mệnh đề 'since' giữ nguyên hoặc lùi về Past Perfect (nhưng thường giữ nguyên 'left' để mốc thời gian rõ ràng). Tuy nhiên, đáp án chuẩn nhất trong ngữ cảnh này là mệnh đề chính lùi, mệnh đề since giữ Past Simple.<br>
+                ➔ <strong>Đáp án B</strong> (hadn’t met – left).
+            `
+        },
+        {
+            id: 7,
+            type: "multiple_choice",
+            question: "Question 7: The object of their expedition was to ___ the source of the River Nile.",
+            options: [
+                { id: "A", text: "produce" },
+                { id: "B", text: "invent" },
+                { id: "C", text: "discover" },
+                { id: "D", text: "develop" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Mục tiêu của cuộc thám hiểm là khám phá ra nguồn của sông Nile.</span><br>
+                <strong>Từ vựng:</strong><br>
+                - <span class="exp-tag tag-verb">Verb</span> Produce: sản xuất.<br>
+                - <span class="exp-tag tag-verb">Verb</span> Invent: phát minh (tạo ra cái chưa từng có).<br>
+                - <span class="exp-tag tag-verb">Verb</span> Discover: khám phá (tìm ra cái đã tồn tại nhưng chưa ai biết).<br>
+                - <span class="exp-tag tag-verb">Verb</span> Develop: phát triển.<br>
+                ➔ Nguồn sông Nile đã có sẵn, họ chỉ tìm ra nó -> Chọn <strong>Discover</strong> (Đáp án C).
+            `
+        },
+        {
+            id: 8,
+            type: "multiple_choice",
+            question: "Question 8: ______ products are chemical compounds or substances produced by living organisms.",
+            options: [
+                { id: "A", text: "Artificial" },
+                { id: "B", text: "Natural" },
+                { id: "C", text: "Homemade" },
+                { id: "D", text: "Manmade" }
+            ],
+            correct: "B",
+            explanation: `
+                <span class="exp-translate">Các sản phẩm tự nhiên là các hợp chất hóa học hoặc chất được tạo ra bởi các sinh vật sống.</span><br>
+                <strong>Từ vựng:</strong><br>
+                - <span class="exp-tag tag-adj">Adj</span> Artificial: nhân tạo.<br>
+                - <span class="exp-tag tag-adj">Adj</span> Natural: tự nhiên (thuộc về thiên nhiên/sinh vật sống).<br>
+                - <span class="exp-tag tag-adj">Adj</span> Homemade: nhà làm.<br>
+                - <span class="exp-tag tag-adj">Adj</span> Manmade: do con người làm ra.<br>
+                ➔ Định nghĩa "produced by living organisms" (sinh vật sống) tương ứng với <strong>Natural</strong> (Đáp án B).
+            `
+        },
+        {
+            id: 9,
+            type: "multiple_choice",
+            question: "Question 9: She said that she was going to study abroad ______.",
+            options: [
+                { id: "A", text: "the following year" },
+                { id: "B", text: "next year" },
+                { id: "C", text: "the previous year" },
+                { id: "D", text: "last year" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Cô ấy nói rằng cô ấy sẽ đi du học vào năm sau.</span><br>
+                <strong>Giải thích:</strong><br>
+                - Câu gián tiếp (She said...).<br>
+                - Trạng từ thời gian "next year" trong câu trực tiếp phải đổi thành "the following year" hoặc "the next year".<br>
+                - "Last year" -> "the previous year".<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        {
+            id: 10,
+            type: "multiple_choice",
+            question: "Question 10: Although the students learn online, they receive both _____ and physical support from their teachers and schools.",
+            options: [
+                { id: "A", text: "spiritual" },
+                { id: "B", text: "virtual" },
+                { id: "C", text: "material" },
+                { id: "D", text: "offline" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Dù học sinh học trực tuyến, các em vẫn nhận được sự hỗ trợ cả về tinh thần và thể chất từ giáo viên.</span><br>
+                <strong>Từ vựng:</strong><br>
+                - <span class="exp-tag tag-adj">Adj</span> Spiritual: thuộc về tinh thần.<br>
+                - <span class="exp-tag tag-adj">Adj</span> Virtual: ảo.<br>
+                - <span class="exp-tag tag-adj">Adj</span> Material: vật chất.<br>
+                - <span class="exp-tag tag-adj">Adj</span> Offline: ngoại tuyến.<br>
+                ➔ Cụm từ "both spiritual and physical" (cả tinh thần và thể chất) là cặp từ thường đi đôi.<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        {
+            id: 11,
+            type: "multiple_choice",
+            question: "Question 11: Sue wants to go to the supermarket to buy some _____ bulbs.",
+            options: [
+                { id: "A", text: "precise" },
+                { id: "B", text: "field" },
+                { id: "C", text: "light" },
+                { id: "D", text: "steam" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Sue muốn đi siêu thị để mua vài cái bóng đèn.</span><br>
+                <strong>Collocation (Cụm từ cố định):</strong><br>
+                - Light bulb: bóng đèn.<br>
+                - Precise: chính xác.<br>
+                - Field: cánh đồng/lĩnh vực.<br>
+                - Steam: hơi nước.<br>
+                ➔ <strong>Đáp án C</strong>.
+            `
+        },
+        {
+            id: 12,
+            type: "multiple_choice",
+            question: "Question 12: Teacher: “How often do you use electronic devices for learning?”<br>Tom: “_____”",
+            options: [
+                { id: "A", text: "You’re welcome" },
+                { id: "B", text: "Not really" },
+                { id: "C", text: "Very often" },
+                { id: "D", text: "Thank you" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Giáo viên: "Em có thường xuyên sử dụng thiết bị điện tử để học không?" - Tom: "Rất thường xuyên ạ."</span><br>
+                <strong>Giải thích giao tiếp:</strong><br>
+                - Câu hỏi "How often" hỏi về tần suất.<br>
+                - A. Không có chi (Đáp lại lời cảm ơn).<br>
+                - B. Không hẳn (Trả lời cho câu hỏi Yes/No hoặc quan điểm).<br>
+                - C. Rất thường xuyên (Trả lời tần suất).<br>
+                - D. Cảm ơn.<br>
+                ➔ <strong>Đáp án C</strong>.
+            `
+        },
+        // READING 1: PARK RULES
+        {
+            id: "reading1",
+            type: "reading_group",
+            section: "Reading 1: Read the announcement and mark the letter A, B, C or D.",
+            content: `
+                <h3>PARK RULES</h3>
+                <p>When visiting the park, please follow these rules to keep the environment clean and safe for everyone.</p>
+                <ul>
+                    <li>Please (13) ____ the trash in the bins</li>
+                    <li>Remember (14) _____ on the walking paths to protect the grass.</li>
+                    <li>(15) _____ pets on a leash at all times for the safety of others</li>
+                    <li>Do not (16) _____ any plants or flowers in the park.</li>
+                </ul>
+            `,
+            questions: [
+                {
+                    id: 13,
+                    question: "Question 13:",
+                    options: [
+                        { id: "A", text: "drop" },
+                        { id: "B", text: "place" },
+                        { id: "C", text: "leave" },
+                        { id: "D", text: "forget" }
+                    ],
+                    correct: "B",
+                    explanation: `
+                        <span class="exp-translate">Vui lòng bỏ rác vào thùng.</span><br>
+                        - Drop: đánh rơi (thường dùng drop litter - xả rác).<br>
+                        - Place: đặt, để (lịch sự, vào đúng vị trí).<br>
+                        - Leave: để lại.<br>
+                        - Forget: quên.<br>
+                        ➔ Trong ngữ cảnh quy tắc trang trọng "in the bins", dùng <strong>Place</strong> (đặt vào) là phù hợp nhất. Mặc dù "put" phổ biến hơn, nhưng trong các lựa chọn này, Place tốt hơn Drop (thường mang nghĩa tiêu cực là làm rơi).<br>
+                        ➔ <strong>Đáp án B</strong>.
+                    `
+                },
+                {
+                    id: 14,
+                    question: "Question 14:",
+                    options: [
+                        { id: "A", text: "walking" },
+                        { id: "B", text: "walked" },
+                        { id: "C", text: "to walk" },
+                        { id: "D", text: "walks" }
+                    ],
+                    correct: "C",
+                    explanation: `
+                        <span class="exp-translate">Hãy nhớ đi trên lối đi bộ...</span><br>
+                        - Cấu trúc: <strong>Remember + to V</strong>: Nhớ phải làm gì (bổn phận/nhiệm vụ).<br>
+                        - Remember + V-ing: Nhớ đã làm gì trong quá khứ.<br>
+                        ➔ Đây là quy tắc (việc cần làm) -> Dùng To walk.<br>
+                        ➔ <strong>Đáp án C</strong>.
+                    `
+                },
+                {
+                    id: 15,
+                    question: "Question 15:",
+                    options: [
+                        { id: "A", text: "Keep" },
+                        { id: "B", text: "Keeps" },
+                        { id: "C", text: "Keeping" },
+                        { id: "D", text: "Kept" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Hãy giữ thú cưng có dây xích mọi lúc...</span><br>
+                        - Câu mệnh lệnh (Imperative) bắt đầu bằng Động từ nguyên thể.<br>
+                        ➔ <strong>Đáp án A</strong> (Keep).
+                    `
+                },
+                {
+                    id: 16,
+                    question: "Question 16:",
+                    options: [
+                        { id: "A", text: "pick" },
+                        { id: "B", text: "pick up" },
+                        { id: "C", text: "picks" },
+                        { id: "D", text: "picking" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Không hái bất kỳ cây hoặc hoa nào...</span><br>
+                        - Cấu trúc mệnh lệnh phủ định: Do not + V(nguyên thể).<br>
+                        - Pick (flowers): hái hoa.<br>
+                        - Pick up: nhặt lên.<br>
+                        ➔ Ngữ cảnh là cấm phá hoại cây cối -> <strong>Pick</strong>.<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                }
+            ]
+        },
+        // SENTENCE ARRANGEMENT
+        {
+            id: 17,
+            type: "multiple_choice",
+            section: "Sentence Arrangement & Reconstruction",
+            dataBox: "<strong>Given Sentences for Question 17:</strong><br>a. The program provides recycling bins to every household<br>b. Many people in the town have started recycling more regularly<br>c. The town introduced the program to help protect the environment.",
+            question: "Question 17: Our town recently started a new recycling program. The program is going well. ______.",
+            options: [
+                { id: "A", text: "c-a-b" },
+                { id: "B", text: "a-c-b" },
+                { id: "C", text: "b-a-c" },
+                { id: "D", text: "c-b-a" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Sắp xếp trật tự các câu để tạo đoạn văn logic.</span><br>
+                1. Câu mở đầu đề bài: "Thị trấn gần đây bắt đầu chương trình tái chế..."<br>
+                2. Tiếp theo nên là mục đích của chương trình (Câu c: ...introduced to help protect...).<br>
+                3. Sau đó là chi tiết cách thức hoạt động (Câu a: ...provides bins to every household...).<br>
+                4. Cuối cùng là kết quả (Câu b: Many people... started recycling...).<br>
+                ➔ Trật tự: <strong>c - a - b</strong>.<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        {
+            id: 18,
+            type: "multiple_choice",
+            question: "Question 18: Choose the sentence that can end the text (in Question 17) most appropriately.",
+            options: [
+                { id: "A", text: "The recycling program has helped reduce waste in the town" },
+                { id: "B", text: "Some people found it hard to separate their trash" },
+                { id: "C", text: "The town plans to offer recycling classes for residents" },
+                { id: "D", text: "The program faced problems due to a shortage of bins" }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Chọn câu kết bài phù hợp nhất.</span><br>
+                - Đoạn văn đang có giọng điệu tích cực ("program is going well", "people started recycling").<br>
+                - Câu kết nên tóm tắt kết quả tích cực.<br>
+                - A. Chương trình đã giúp giảm rác thải (Tích cực - Phù hợp).<br>
+                - B, D. Tiêu cực (Khó phân loại, thiếu thùng) -> Không hợp logic "going well".<br>
+                - C. Kế hoạch tương lai (Cũng được nhưng A là kết quả trực tiếp logic hơn).<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        // READING 2: COMPUTERS
+        {
+            id: "reading2",
+            type: "reading_group",
+            section: "Reading 2: Read the passage and mark the letter A, B, C or D.",
+            content: `
+                <p>Computers are helpful in many ways. First, they are fast. They can work with information even (19) ____ than a person. Second, computers can work with a lot of information at the same time. Third, they can store information for a long time. They do not forget things that the common people do. (20)_____, computers are almost always correct. They are not perfect, but they usually do not make mistakes. Recently, it is important (21) ____ about computers. There are a number of things to learn. Many companies have computers at work. (22) ____, most universities (23)____ day and night courses in Computer Science. Another way to learn is from a book, or from a friend. After a few hours of practice, you can (24) ______ with computers.</p>
+                
+                <h4>Glossary (Từ vựng):</h4>
+                <table class="glossary-table">
+                    <tr><th>Word</th><th>Meaning</th></tr>
+                    <tr><td>Store (v)</td><td>Lưu trữ</td></tr>
+                    <tr><td>Common (adj)</td><td>Thông thường</td></tr>
+                    <tr><td>Mistake (n)</td><td>Lỗi sai</td></tr>
+                    <tr><td>Computer Science</td><td>Khoa học máy tính</td></tr>
+                </table>
+            `,
+            questions: [
+                {
+                    id: 19,
+                    question: "Question 19:",
+                    options: [
+                        { id: "A", text: "quickly" },
+                        { id: "B", text: "quicklier" },
+                        { id: "C", text: "more quickly" },
+                        { id: "D", text: "most quickly" }
+                    ],
+                    correct: "C",
+                    explanation: `
+                        <span class="exp-translate">Chúng làm việc với thông tin thậm chí nhanh hơn con người.</span><br>
+                        - Cấu trúc so sánh hơn với trạng từ dài "quickly" -> <strong>more quickly</strong>.<br>
+                        - "Quicklier" là sai ngữ pháp.<br>
+                        ➔ <strong>Đáp án C</strong>.
+                    `
+                },
+                {
+                    id: 20,
+                    question: "Question 20:",
+                    options: [
+                        { id: "A", text: "Finally" },
+                        { id: "B", text: "Finish" },
+                        { id: "C", text: "Final" },
+                        { id: "D", text: "Finishing" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Cuối cùng, máy tính hầu như luôn chính xác.</span><br>
+                        - Bài văn liệt kê: First, Second, Third... -> Từ nối tiếp theo là <strong>Finally</strong> (Cuối cùng).<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 21,
+                    question: "Question 21:",
+                    options: [
+                        { id: "A", text: "know" },
+                        { id: "B", text: "knew" },
+                        { id: "C", text: "knowing" },
+                        { id: "D", text: "to know" }
+                    ],
+                    correct: "D",
+                    explanation: `
+                        <span class="exp-translate">Gần đây, việc biết về máy tính rất quan trọng.</span><br>
+                        - Cấu trúc: It is + Adj + <strong>to V</strong>.<br>
+                        ➔ It is important <strong>to know</strong>.<br>
+                        ➔ <strong>Đáp án D</strong>.
+                    `
+                },
+                {
+                    id: 22,
+                    question: "Question 22:",
+                    options: [
+                        { id: "A", text: "In addition" },
+                        { id: "B", text: "However" },
+                        { id: "C", text: "Therefore" },
+                        { id: "D", text: "So" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Thêm vào đó, hầu hết các trường đại học...</span><br>
+                        - Câu trước: Nhiều công ty có máy tính. Câu sau: Đại học mở khóa học.<br>
+                        - Hai ý bổ sung cho nhau về sự phổ biến/cần thiết -> Dùng <strong>In addition</strong> (Ngoài ra/Thêm vào đó).<br>
+                        - However (Tuy nhiên) không hợp nghĩa.<br>
+                        - Therefore (Vì vậy) - Việc công ty có máy tính không phải là nguyên nhân trực tiếp *duy nhất* khiến ĐH mở lớp, mà là ý bổ trợ cho việc "cần học". In addition hợp lý hơn trong ngữ cảnh liệt kê nơi học.<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 23,
+                    question: "Question 23:",
+                    options: [
+                        { id: "A", text: "have" },
+                        { id: "B", text: "has" },
+                        { id: "C", text: "had" },
+                        { id: "D", text: "having" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Hầu hết các trường đại học có các khóa học...</span><br>
+                        - Chủ ngữ "most universities" là số nhiều -> Động từ số nhiều.<br>
+                        - Thì hiện tại đơn (sự thật hiển nhiên).<br>
+                        ➔ <strong>have</strong>.<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 24,
+                    question: "Question 24:",
+                    options: [
+                        { id: "A", text: "do" },
+                        { id: "B", text: "play" },
+                        { id: "C", text: "get" },
+                        { id: "D", text: "work" }
+                    ],
+                    correct: "D",
+                    explanation: `
+                        <span class="exp-translate">Bạn có thể làm việc với máy tính.</span><br>
+                        - Cụm từ: <strong>work with computers</strong> (làm việc với máy tính/sử dụng máy tính để làm việc).<br>
+                        - "Play with" thường dùng cho đồ chơi hoặc đùa nghịch.<br>
+                        ➔ <strong>Đáp án D</strong>.
+                    `
+                }
+            ]
+        },
+        // TRANSFORMATION & SENTENCE BUILDING
+        {
+            id: 25,
+            type: "multiple_choice",
+            section: "Sentence Transformation",
+            question: 'Question 25: The head of technology department said: "Space tourism will broaden our knowledge of space".',
+            options: [
+                { id: "A", text: "The head of technology department said that space tourism will broaden our knowledge of space." },
+                { id: "B", text: "The head of technology department said that space tourism would broaden our knowledge of space." },
+                { id: "C", text: "The head of technology department said that space tourism would have broadened our knowledge of space." },
+                { id: "D", text: "The head of technology department said that space tourism broadened our knowledge of space." }
+            ],
+            correct: "B",
+            explanation: `
+                <span class="exp-translate">Trưởng phòng công nghệ nói: "Du lịch vũ trụ sẽ mở rộng kiến thức của chúng ta".</span><br>
+                - Câu tường thuật: lùi thì.<br>
+                - Will -> <strong>Would</strong>.<br>
+                - Our -> Our/Their (tuỳ ngữ cảnh, nhưng quan trọng nhất là động từ).<br>
+                ➔ <strong>Đáp án B</strong> (would broaden).
+            `
+        },
+        {
+            id: 26,
+            type: "multiple_choice",
+            question: "Question 26: The factory's manager said that they were going to hire a group of robots the following week.",
+            options: [
+                { id: "A", text: 'The factory\'s manager said: "We are going to hire a group of robots the following week".' },
+                { id: "B", text: 'The factory\'s manager said: "We were going to hire a group of robots the following week"' },
+                { id: "C", text: 'The factory\'s manager said: "They are going to hire a group of robots next week".' },
+                { id: "D", text: 'The factory\'s manager said: "We are going to hire a group of robots next week"' }
+            ],
+            correct: "D",
+            explanation: `
+                <span class="exp-translate">Chuyển từ gián tiếp sang trực tiếp.</span><br>
+                - Gián tiếp: "they were going to... the following week".<br>
+                - Trực tiếp: <br>
+                + they -> <strong>We</strong> (Người quản lý nói về nhóm mình).<br>
+                + were going to -> <strong>are going to</strong>.<br>
+                + the following week -> <strong>next week</strong>.<br>
+                ➔ <strong>Đáp án D</strong>.
+            `
+        },
+        {
+            id: 27,
+            type: "multiple_choice",
+            question: "Question 27: The students / study / hard / pass / the exam / with good results.",
+            options: [
+                { id: "A", text: "The students should study hard to pass the exam with good results." },
+                { id: "B", text: "The students pass the exam hard with good results to study." },
+                { id: "C", text: "To passing the exam, the students study hard with good results." },
+                { id: "D", text: "The students study hard passing the exam with good results." }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Học sinh nên học chăm chỉ để thi đỗ với kết quả tốt.</span><br>
+                - A: Cấu trúc hợp lý (S + should V + to V chỉ mục đích).<br>
+                - B: Sai nghĩa (Thi đỗ... để học?).<br>
+                - C: Sai ngữ pháp (To passing -> To pass).<br>
+                - D: Sai cấu trúc (study hard passing?).<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        {
+            id: 28,
+            type: "multiple_choice",
+            question: "Question 28: The company / announce / they / launch / a new product / next month.",
+            options: [
+                { id: "A", text: "The company announces that they will launch a new product next month." },
+                { id: "B", text: "The company announce launching a new product next month." },
+                { id: "C", text: "They announce the company launching a new product next month." },
+                { id: "D", text: "The company announce they launch a new product next month." }
+            ],
+            correct: "A",
+            explanation: `
+                <span class="exp-translate">Công ty thông báo rằng họ sẽ ra mắt sản phẩm mới vào tháng sau.</span><br>
+                - "Next month" -> Tương lai đơn (will launch).<br>
+                - Cấu trúc: Announce that + Clause.<br>
+                - Announce chia số ít (announces) hoặc quá khứ, nhưng câu A (announces... will launch) là hợp lý nhất về ngữ pháp và nghĩa.<br>
+                ➔ <strong>Đáp án A</strong>.
+            `
+        },
+        // SIGNS & NOTICES
+        {
+            id: 29,
+            type: "multiple_choice",
+            section: "Signs & Notices",
+            question: "Question 29: What does the sign instruct?",
+            customContent: `
+                <div class="sign-container">
+                    <div class="sign-nodiving">
+                        <div class="sign-header">ATTENTION</div>
+                        <div class="sign-icon">
+                            <div class="diver-shape">🏊</div>
+                        </div>
+                        <div class="sign-text">NO<br>DIVING</div>
+                    </div>
+                </div>
+            `,
+            options: [
+                { id: "A", text: "The shallow water is only for children." },
+                { id: "B", text: "Do not dive here because it is not safe; the water is shallow" },
+                { id: "C", text: "Diving is allowed here; so you should dive into the water" },
+                { id: "D", text: "Swimming is not allowed here, so you cannot enter the water" }
+            ],
+            correct: "B",
+            explanation: `
+                <span class="exp-translate">Biển báo hướng dẫn điều gì?</span><br>
+                - Biển báo: <strong>NO DIVING</strong> (Cấm lặn/nhảy chúi đầu).<br>
+                - Lý do thường thấy: Nước nông (shallow) gây nguy hiểm.<br>
+                - A: Sai (chỉ nói về trẻ em).<br>
+                - B: "Đừng lặn ở đây vì không an toàn; nước nông" -> <strong>Đúng</strong>.<br>
+                - C: Sai (Cho phép lặn).<br>
+                - D: Sai (Cấm bơi - Swimming).<br>
+                ➔ <strong>Đáp án B</strong>.
+            `
+        },
+        {
+            id: 30,
+            type: "multiple_choice",
+            question: "Question 30: Which information is correct from the announcement?",
+            customContent: `
+                <div class="sign-container">
+                    <div class="notice-board">
+                        <strong>From 1 October.</strong><br>
+                        <p class="notice-text">Please do not enter the pool before you have used the shower.</p>
+                    </div>
+                </div>
+            `,
+            options: [
+                { id: "A", text: "A picnic basket" },
+                { id: "B", text: "Gloves and a bottle of water" },
+                { id: "C", text: "A towel" },
+                { id: "D", text: "Sunglasses" }
+            ],
+            correct: "C",
+            explanation: `
+                <span class="exp-translate">Thông tin nào đúng từ thông báo? (Hàm ý bạn cần gì?)</span><br>
+                - Thông báo: "Không xuống hồ bơi trước khi tắm tráng (shower)".<br>
+                - Để tắm (shower), bạn cần vật dụng gì trong các đáp án?<br>
+                - A: Giỏ picnic (Không liên quan).<br>
+                - B: Găng tay (Không).<br>
+                - C: <strong>A towel</strong> (Khăn tắm) -> Cần thiết để lau khô sau khi tắm hoặc bơi.<br>
+                - D: Kính râm.<br>
+                ➔ Đây là dạng câu hỏi suy luận. Vật dụng liên quan nhất đến hành động "shower/pool" là Khăn tắm.<br>
+                ➔ <strong>Đáp án C</strong>.
+            `
+        },
+        // READING 3: GREEN TECH
+        {
+            id: "reading3",
+            type: "reading_group",
+            section: "Reading 3: Read the passage and mark the letter A, B, C or D.",
+            content: `
+                <p>As the name implies green technology is the one that has a "green" purpose. Green inventions are environmentally friendly inventions that often involve: energy efficiency, recycling, safety and health concerns, renewable resources, and more. One of the best known examples of green technology would be the solar cell. A solar cell directly converts the energy in light into electrical energy. Generating electricity from solar energy means less consumption of fossil fuels, reducing pollution and greenhouse gas emissions. Another simple invention that can be considered green is the reusable water bottle. Drinking lots of water is healthy. Reducing plastic waste is great for the environment. Hence, trendy reusable water bottles that you can refill yourself are health-promoting, eco-friendly, and green. Inventors should know that green inventions and clean technologies are good business. These are fast growing markets with growing profits. Consumers should know that buying green inventions can reduce your energy bill and that green inventions are often safer and healthier products.</p>
+                
+                <h4>Glossary (Từ vựng B1+):</h4>
+                <table class="glossary-table">
+                    <tr><th>Word</th><th>Meaning</th></tr>
+                    <tr><td>Imply (v)</td><td>Ngụ ý, ám chỉ</td></tr>
+                    <tr><td>Efficiency (n)</td><td>Hiệu quả, năng suất</td></tr>
+                    <tr><td>Convert (v)</td><td>Chuyển đổi</td></tr>
+                    <tr><td>Consumption (n)</td><td>Sự tiêu thụ</td></tr>
+                    <tr><td>Emission (n)</td><td>Sự phát thải (khí)</td></tr>
+                    <tr><td>Renewable (adj)</td><td>Có thể tái tạo</td></tr>
+                </table>
+            `,
+            questions: [
+                {
+                    id: 31,
+                    question: "Question 31: Which can be the topic of the passage?",
+                    options: [
+                        { id: "A", text: "A brief introduction to green technology" },
+                        { id: "B", text: "A deep investigation into green technology" },
+                        { id: "C", text: "A comparison between green and traditional technology" },
+                        { id: "D", text: "The development of green technology" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Chủ đề của đoạn văn là gì?</span><br>
+                        - Đoạn văn định nghĩa "green technology", đưa ra ví dụ (solar cell, reusable bottle) và lợi ích.<br>
+                        - Đây là một cái nhìn tổng quan/giới thiệu.<br>
+                        - B: Deep investigation (Nghiên cứu sâu) -> Sai, bài viết khá cơ bản.<br>
+                        - C: So sánh -> Không tập trung so sánh.<br>
+                        - D: Phát triển -> Chỉ nói 1 phần nhỏ ở cuối.<br>
+                        ➔ <strong>Đáp án A</strong> (Giới thiệu ngắn gọn).
+                    `
+                },
+                {
+                    id: 32,
+                    question: "Question 32: Which item is NOT MENTIONED as an example of green technology?",
+                    options: [
+                        { id: "A", text: "Solar cell" },
+                        { id: "B", text: "Reusable water bottle" },
+                        { id: "C", text: "Refillable water bottle" },
+                        { id: "D", text: "Fossil fuel" }
+                    ],
+                    correct: "D",
+                    explanation: `
+                        <span class="exp-translate">Cái nào KHÔNG được đề cập như một ví dụ của công nghệ xanh?</span><br>
+                        - Solar cell: Có.<br>
+                        - Reusable/Refillable water bottle: Có.<br>
+                        - Fossil fuel (Nhiên liệu hóa thạch): Được nhắc đến là cái cần *giảm bớt tiêu thụ*, không phải là ví dụ của công nghệ xanh.<br>
+                        ➔ <strong>Đáp án D</strong>.
+                    `
+                },
+                {
+                    id: 33,
+                    question: "Question 33: Why should green technology be a good choice for consumers?",
+                    options: [
+                        { id: "A", text: "Because it can help consumer save money" },
+                        { id: "B", text: "Because its products are often safer" },
+                        { id: "C", text: "Because its products are often healthier" },
+                        { id: "D", text: "All are correct" }
+                    ],
+                    correct: "D",
+                    explanation: `
+                        <span class="exp-translate">Tại sao công nghệ xanh là lựa chọn tốt cho người tiêu dùng?</span><br>
+                        - Cuối bài: "...reduce your energy bill (tiết kiệm tiền/A), often safer (an toàn hơn/B) and healthier (tốt cho sức khỏe hơn/C)."<br>
+                        ➔ Cả 3 đều đúng.<br>
+                        ➔ <strong>Đáp án D</strong>.
+                    `
+                },
+                {
+                    id: 34,
+                    question: "Question 34: Which sentence is NOT TRUE according to the passage?",
+                    options: [
+                        { id: "A", text: "A solar cell indirectly converts the energy in light into electrical energy" },
+                        { id: "B", text: "Using solar cells can reduce greenhouse gas emissions." },
+                        { id: "C", text: "Green technology is a fast-growing market" },
+                        { id: "D", text: "Green inventions are environmentally friendly" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Câu nào KHÔNG ĐÚNG?</span><br>
+                        - Bài đọc: "A solar cell <strong>directly</strong> converts..." (Chuyển đổi trực tiếp).<br>
+                        - Đáp án A: "...<strong>indirectly</strong> converts..." (Chuyển đổi gián tiếp) -> Sai.<br>
+                        - Các câu B, C, D đều có thông tin trong bài.<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 35,
+                    question: "Question 35: The word “convert” is CLOSEST in meaning to ____.",
+                    options: [
+                        { id: "A", text: "Change" },
+                        { id: "B", text: "mix" },
+                        { id: "C", text: "create" },
+                        { id: "D", text: "produce" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Từ "convert" (chuyển đổi) gần nghĩa nhất với?</span><br>
+                        - Change: thay đổi/chuyển đổi.<br>
+                        - Mix: trộn.<br>
+                        - Create: tạo ra.<br>
+                        - Produce: sản xuất.<br>
+                        ➔ Convert energy = Change energy form.<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 36,
+                    question: "Question 36: The word “efficiency” is OPPOSITE in meaning to ____.",
+                    options: [
+                        { id: "A", text: "Wasteful" },
+                        { id: "B", text: "effective" },
+                        { id: "C", text: "well-done" },
+                        { id: "D", text: "unproductiveness" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Từ "efficiency" (sự hiệu quả/năng suất) trái nghĩa với?</span><br>
+                        - Efficiency (noun): Khả năng làm việc tốt mà không lãng phí.<br>
+                        - Wasteful (adj): Lãng phí. (Dù khác từ loại nhưng xét về nghĩa gốc trong ngữ cảnh Energy efficiency vs Energy waste).<br>
+                        - Effective (adj): Hiệu quả (đồng nghĩa).<br>
+                        - Unproductiveness (noun): Sự không năng suất.<br>
+                        *Lưu ý: Trong trắc nghiệm tiếng Anh, đôi khi đối lập về ý nghĩa được ưu tiên. "Wastefulness" (Sự lãng phí) là đối lập trực tiếp của Efficiency. Ở đây "Wasteful" (tính từ) là từ mang nghĩa đối lập rõ nhất so với các từ còn lại.*<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                }
+            ]
+        },
+        // GAP FILL: SENTENCES
+        {
+            id: "gapfill_sentences",
+            type: "gap_fill_group",
+            section: "Gap Fill: Choose the correct phrase/sentence (A-D) to fill in the blanks (37-40).",
+            optionsList: [
+                "A – students are using advanced technology to shape the way they learn.",
+                "B – This widespread adoption of technology has changed how teachers and students work.",
+                "C – Results from another study even shows that technology indeed helps students remember what they learn",
+                "D – they believe that it makes learning more interesting and fun"
+            ],
+            content: `
+                The impact that technology has had on today’s schools has been quite significant. <strong>(37) _____</strong>. Teachers are learning how to teach with emerging technologies (tablets, iPads, Smart Boards, digital cameras, computers), <strong>(38) _____</strong>.<br><br>
+                According to a study by IT Trade Association CompTIA, students prefer technology as <strong>(39) _____</strong>. They especially like laptops and tablets. Subjects that students find challenging or boring can become more interesting with virtual lessons, through a video, or when using a tablet. <strong>(40) _____</strong>.
+            `,
+            questions: [
+                {
+                    id: 37,
+                    question: "Question 37",
+                    options: [
+                        { id: "A", text: "Option A" }, { id: "B", text: "Option B" }, { id: "C", text: "Option C" }, { id: "D", text: "Option D" }
+                    ],
+                    correct: "B",
+                    explanation: `
+                        <span class="exp-translate">Vị trí 37 cần một câu khái quát tiếp nối câu đầu về "tác động to lớn".</span><br>
+                        - Câu B: "Sự áp dụng rộng rãi này đã thay đổi cách giáo viên và học sinh làm việc" -> Phù hợp nhất để mở đầu đoạn.<br>
+                        ➔ <strong>Đáp án B</strong>.
+                    `
+                },
+                {
+                    id: 38,
+                    question: "Question 38",
+                    options: [
+                        { id: "A", text: "Option A" }, { id: "B", text: "Option B" }, { id: "C", text: "Option C" }, { id: "D", text: "Option D" }
+                    ],
+                    correct: "A",
+                    explanation: `
+                        <span class="exp-translate">Vị trí 38 cần một mệnh đề song song với "Teachers are learning...".</span><br>
+                        - Cấu trúc: Teachers làm X, Students làm Y.<br>
+                        - Câu A: "...students are using advanced technology..." (Học sinh đang sử dụng công nghệ...).<br>
+                        ➔ <strong>Đáp án A</strong>.
+                    `
+                },
+                {
+                    id: 39,
+                    question: "Question 39",
+                    options: [
+                        { id: "A", text: "Option A" }, { id: "B", text: "Option B" }, { id: "C", text: "Option C" }, { id: "D", text: "Option D" }
+                    ],
+                    correct: "D",
+                    explanation: `
+                        <span class="exp-translate">Vị trí 39 giải thích lý do "students prefer technology as...".</span><br>
+                        - As (bởi vì) + mệnh đề.<br>
+                        - Câu D: "...they believe that it makes learning more interesting and fun" (họ tin rằng nó làm việc học thú vị hơn).<br>
+                        ➔ <strong>Đáp án D</strong>.
+                    `
+                },
+                {
+                    id: 40,
+                    question: "Question 40",
+                    options: [
+                        { id: "A", text: "Option A" }, { id: "B", text: "Option B" }, { id: "C", text: "Option C" }, { id: "D", text: "Option D" }
+                    ],
+                    correct: "C",
+                    explanation: `
+                        <span class="exp-translate">Vị trí 40 là câu kết, bổ sung thêm lợi ích.</span><br>
+                        - Câu C: "Kết quả từ nghiên cứu khác thậm chí chỉ ra rằng công nghệ giúp học sinh ghi nhớ..." -> Chốt lại lợi ích.<br>
+                        ➔ <strong>Đáp án C</strong>.
+                    `
+                }
+            ]
+        }
+    ];
+
+    const quizContent = document.getElementById('quiz-content');
+
+    function renderQuiz() {
+        quizData.forEach(item => {
+            // Render Section Title if exists
+            if (item.section) {
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'section-title';
+                sectionTitle.innerText = item.section;
+                quizContent.appendChild(sectionTitle);
+            }
+
+            // Render Reading Content / Gap Fill Options Box
+            if (item.type === 'reading_group' || item.type === 'gap_fill_group') {
+                const dataBox = document.createElement('div');
+                dataBox.className = 'data-box';
+                
+                if (item.type === 'gap_fill_group') {
+                    let optionsHtml = '<div class="gap-options-box">OPTIONS:<br>';
+                    item.optionsList.forEach(opt => optionsHtml += `<div>${opt}</div>`);
+                    optionsHtml += '</div><br>';
+                    dataBox.innerHTML = optionsHtml + item.content;
+                } else {
+                    dataBox.innerHTML = item.content;
+                }
+                
+                quizContent.appendChild(dataBox);
+
+                // Render sub-questions
+                item.questions.forEach(q => renderQuestionCard(q));
+            } else {
+                // Render Single Question
+                if (item.dataBox) { // For sentence arrangement
+                    const db = document.createElement('div');
+                    db.className = 'data-box';
+                    db.innerHTML = item.dataBox;
+                    quizContent.appendChild(db);
+                }
+                renderQuestionCard(item);
+            }
+        });
+    }
+
+    function renderQuestionCard(q) {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `card-${q.id}`;
+
+        let html = `
+            <div class="q-text">
+                <span class="q-number">${q.question}</span>
+                ${q.type !== 'phonetics' && q.type !== 'stress' && !q.question.includes('Question') ? '' : ''}
+            </div>
+        `;
+
+        if (q.customContent) {
+            html += q.customContent;
+        }
+
+        html += `<div class="options-grid">`;
+        
+        q.options.forEach(opt => {
+            html += `
+                <label class="option-label" id="opt-${q.id}-${opt.id}">
+                    <input type="radio" name="q${q.id}" value="${opt.id}" onchange="selectOption(${q.id}, '${opt.id}')">
+                    <span><strong>${opt.id}.</strong> ${opt.text}</span>
+                </label>
+            `;
+        });
+
+        html += `</div>`;
+        
+        // Check Button
+        html += `<button type="button" class="check-btn" onclick="checkSingleQuestion(${q.id})">💡 Kiểm tra & Xem giải thích</button>`;
+
+        // Explanation Box
+        html += `
+            <div class="explanation-box" id="exp-${q.id}">
+                <strong>Đáp án đúng: <span style="color:var(--success)">${q.correct}</span></strong>
+                <div class="exp-detail">${q.explanation}</div>
+            </div>
+        `;
+
+        card.innerHTML = html;
+        quizContent.appendChild(card);
+    }
+
+    function selectOption(qId, optId) {
+        // Just UI update if needed, currently native radio behavior is fine
+        // Can remove "unanswered" style if previously set
+        const card = document.getElementById(`card-${qId}`);
+        if(card.classList.contains('unanswered')) {
+            card.classList.remove('unanswered');
+        }
+    }
+
+    function checkSingleQuestion(qId) {
+        // Find the question data (search in flat or groups)
+        let questionData = null;
+        for (let item of quizData) {
+            if (item.id === qId) {
+                questionData = item;
+                break;
+            }
+            if (item.questions) {
+                const found = item.questions.find(q => q.id === qId);
+                if (found) {
+                    questionData = found;
+                    break;
+                }
+            }
+        }
+
+        if (!questionData) return;
+
+        const selected = document.querySelector(`input[name="q${qId}"]:checked`);
+        const expBox = document.getElementById(`exp-${qId}`);
+        const card = document.getElementById(`card-${qId}`);
+        
+        // Show explanation
+        expBox.classList.add('show');
+        
+        // Reset styles
+        const labels = card.querySelectorAll('.option-label');
+        labels.forEach(l => l.classList.remove('correct-answer', 'wrong-selection'));
+
+        // Highlight correct answer
+        const correctLabel = document.getElementById(`opt-${qId}-${questionData.correct}`);
+        if(correctLabel) correctLabel.classList.add('correct-answer');
+
+        if (selected) {
+            if (selected.value === questionData.correct) {
+                card.classList.add('correct');
+                card.classList.remove('wrong');
+            } else {
+                card.classList.add('wrong');
+                card.classList.remove('correct');
+                const wrongLabel = document.getElementById(`opt-${qId}-${selected.value}`);
+                if(wrongLabel) wrongLabel.classList.add('wrong-selection');
+            }
+        } else {
+            // Not answered but asked to check
+            card.classList.add('unanswered');
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let total = 40;
+        let unanswered = 0;
+
+        // Loop through all 40 questions
+        for (let i = 1; i <= 40; i++) {
+            checkSingleQuestion(i); // Reuse check logic to show results
+            
+            // Calculate Score
+            // Need to find correct answer again
+            let correctAns = "";
+            for (let item of quizData) {
+                if (item.id === i) correctAns = item.correct;
+                if (item.questions) {
+                    const f = item.questions.find(q => q.id === i);
+                    if(f) correctAns = f.correct;
+                }
+            }
+
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) {
+                if (selected.value === correctAns) score++;
+            } else {
+                unanswered++;
+            }
+        }
+
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        scoreDisplay.style.display = 'block';
+        scoreDisplay.innerText = `Kết quả: ${score}/${total}`;
+
+        if (unanswered > 0) {
+            alert(`Bạn đã nộp bài! \nĐiểm số: ${score}/${total}\nCó ${unanswered} câu chưa làm (Màu vàng).`);
+        } else {
+            alert(`Chúc mừng bạn đã hoàn thành!\nĐiểm số: ${score}/${total}`);
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize
+    renderQuiz();
+
+</script>
+
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

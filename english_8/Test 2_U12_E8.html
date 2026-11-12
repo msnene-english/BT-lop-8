@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 12: Life on Other Planets - MS Chí Nên ULIS</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #e9ecef;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --text-color: #333;
+            --bg-color: #f4f6f9;
+            --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding-bottom: 80px; /* Space for sticky footer */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #004494);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Reading / Data Box */
+        .data-box {
+            background: #fff;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        .data-box h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .glossary {
+            margin-top: 15px;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .glossary-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .q-num {
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .q-text {
+            flex-grow: 1;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        /* Image Simulation */
+        .visual-box {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .sign-simulation {
+            border: 3px solid #000;
+            background-color: #ffd700;
+            color: #003399;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            border-radius: 4px;
+        }
+        
+        .sign-title {
+            font-size: 28px;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .sign-body {
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .web-simulation {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        .browser-bar {
+            background: #e0e0e0;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #999; }
+        .browser-content {
+            padding: 15px;
+            background: white;
+            color: #333;
+        }
+        .theatre-title { color: #003366; font-size: 18px; font-weight: bold; }
+        .theatre-text { font-size: 13px; color: #555; margin-top: 5px; }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f8f9fa;
+            border-color: #cbd3da;
+        }
+
+        .option-input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* States */
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .wrong-answer {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .btn-check {
+            background-color: #17a2b8; /* Teal for immediate check */
+            margin-top: 15px;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+        
+        .btn:hover { opacity: 0.9; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            text-align: center;
+        }
+
+        /* Explanation */
+        .explanation {
+            display: none; /* Hidden by default */
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e7f5ff;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .expl-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .badge-n { background: #e2e3e5; color: #383d41; } /* Noun */
+        .badge-v { background: #d1ecf1; color: #0c5460; } /* Verb */
+        .badge-adj { background: #fff3cd; color: #856404; } /* Adj */
+
+        /* Modal Result */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>UNIT 12 – LIFE ON OTHER PLANETS</h1>
+    <h2>Test 02 - Teacher: MS Chí Nên ULIS</h2>
+</header>
+
+<div class="container" id="quiz-container">
+    </div>
+
+<div class="sticky-footer">
+    <div class="container">
+        <button class="btn btn-submit" onclick="submitQuiz()">NỘP BÀI (SUBMIT)</button>
+    </div>
+</div>
+
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <h2>Kết Quả Bài Làm</h2>
+        <div class="score-display" id="finalScore">0/40</div>
+        <p id="scoreMessage">Bạn hãy xem chi tiết giải thích bên dưới nhé!</p>
+        <button class="btn" onclick="closeModal()">Xem chi tiết lời giải</button>
+    </div>
+</div>
+
+<script>
+// Database câu hỏi
+const quizData = [
+    // --- PHONETICS ---
+    {
+        id: 1,
+        type: 'phonetics',
+        question: "Mark the letter A, B, C or D to indicate the word whose underlined part differs from the other three in pronunciation.",
+        options: [
+            { text: "sp<u>a</u>cemen", value: "A" },
+            { text: "d<u>a</u>ytime", value: "B" },
+            { text: "f<u>a</u>vorite", value: "C" },
+            { text: "surf<u>a</u>ce", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Giải thích chi tiết:</span>
+            <ul>
+                <li><strong>A. spacemen</strong> /ˈspeɪs.mən/: âm /eɪ/</li>
+                <li><strong>B. daytime</strong> /ˈdeɪ.taɪm/: âm /eɪ/</li>
+                <li><strong>C. favorite</strong> /ˈfeɪ.vər.ɪt/: âm /eɪ/</li>
+                <li><strong>D. surface</strong> /ˈsɜː.fɪs/: âm /ɪ/</li>
+            </ul>
+            => Đáp án D phát âm là /ɪ/, các từ còn lại là /eɪ/.
+        `
+    },
+    {
+        id: 2,
+        type: 'phonetics',
+        question: "Mark the letter A, B, C or D to indicate the word whose underlined part differs from the other three in pronunciation.",
+        options: [
+            { text: "expl<u>o</u>re", value: "A" },
+            { text: "imp<u>o</u>rtant", value: "B" },
+            { text: "n<u>o</u>vel", value: "C" },
+            { text: "st<u>o</u>rmy", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Giải thích chi tiết:</span>
+            <ul>
+                <li><strong>A. explore</strong> /ɪkˈsplɔːr/: âm /ɔː/ (o dài)</li>
+                <li><strong>B. important</strong> /ɪmˈpɔːtnt/: âm /ɔː/ (o dài)</li>
+                <li><strong>C. novel</strong> /ˈnɒv.əl/ (UK) hoặc /ˈnɑː.vəl/ (US): âm /ɒ/ hoặc /ɑː/ (o ngắn)</li>
+                <li><strong>D. stormy</strong> /ˈstɔː.mi/: âm /ɔː/ (o dài)</li>
+            </ul>
+            => Đáp án C khác biệt.
+        `
+    },
+    // --- STRESS ---
+    {
+        id: 3,
+        type: 'stress',
+        question: "Mark the letter A, B, C or D to indicate the word that differs from the other three in the position of primary stress.",
+        options: [
+            { text: "wonder", value: "A" },
+            { text: "maintain", value: "B" },
+            { text: "oppose", value: "C" },
+            { text: "invent", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Giải thích trọng âm:</span>
+            <ul>
+                <li><strong>A. wonder</strong> /ˈwʌn.də(r)/: Trọng âm 1.</li>
+                <li><strong>B. maintain</strong> /meɪnˈteɪn/: Trọng âm 2 (động từ ghép/kết thúc ain).</li>
+                <li><strong>C. oppose</strong> /əˈpəʊz/: Trọng âm 2.</li>
+                <li><strong>D. invent</strong> /ɪnˈvent/: Trọng âm 2.</li>
+            </ul>
+            => Chọn A.
+        `
+    },
+    {
+        id: 4,
+        type: 'stress',
+        question: "Mark the letter A, B, C or D to indicate the word that differs from the other three in the position of primary stress.",
+        options: [
+            { text: "atmosphere", value: "A" },
+            { text: "pollution", value: "B" },
+            { text: "telescope", value: "C" },
+            { text: "alien", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Giải thích trọng âm:</span>
+            <ul>
+                <li><strong>A. atmosphere</strong> /ˈætməsfɪə(r)/: Trọng âm 1.</li>
+                <li><strong>B. pollution</strong> /pəˈluːʃn/: Trọng âm 2 (trước đuôi -tion).</li>
+                <li><strong>C. telescope</strong> /ˈtelɪskəʊp/: Trọng âm 1.</li>
+                <li><strong>D. alien</strong> /ˈeɪliən/: Trọng âm 1.</li>
+            </ul>
+            => Chọn B.
+        `
+    },
+    // --- VOCAB & GRAMMAR ---
+    {
+        id: 5,
+        type: 'mcq',
+        question: "The ______ is the whole of space and everything in it including the earth, the planets and the stars.",
+        options: [
+            { text: "air", value: "A" },
+            { text: "atmosphere", value: "B" },
+            { text: "sky", value: "C" },
+            { text: "universe", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Từ vựng & Định nghĩa:</span>
+            Câu này định nghĩa về "Vũ trụ".
+            <ul>
+                <li><strong>A. Air</strong> (n): Không khí.</li>
+                <li><strong>B. Atmosphere</strong> (n): Bầu khí quyển.</li>
+                <li><strong>C. Sky</strong> (n): Bầu trời.</li>
+                <li><strong>D. Universe</strong> (n): Vũ trụ (bao gồm không gian, trái đất, hành tinh, sao...).</li>
+            </ul>
+            => Dịch: Vũ trụ là toàn bộ không gian và mọi thứ trong đó bao gồm Trái Đất, các hành tinh và các vì sao.
+        `
+    },
+    {
+        id: 6,
+        type: 'mcq',
+        question: "My neighbour said that he sometimes saw _____ flying in the sky.",
+        options: [
+            { text: "UFOs", value: "A" },
+            { text: "craters", value: "B" },
+            { text: "stars", value: "C" },
+            { text: "planets", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Ngữ cảnh:</span>
+            "Thấy vật thể bay trên bầu trời" thường ám chỉ UFO trong bối cảnh bài học.
+            <ul>
+                <li><strong>A. UFOs</strong> (n): Vật thể bay không xác định.</li>
+                <li><strong>B. craters</strong> (n): Miệng núi lửa (thường trên mặt đất/mặt trăng).</li>
+                <li><strong>C. stars</strong> (n): Ngôi sao (không "bay" mà ở cố định hoặc di chuyển theo quỹ đạo rất chậm mắt thường khó thấy bay vèo vèo).</li>
+                <li><strong>D. planets</strong> (n): Hành tinh.</li>
+            </ul>
+        `
+    },
+    {
+        id: 7,
+        type: 'mcq',
+        question: "_____ is the force that causes something to fall to the ground.",
+        options: [
+            { text: "Habitat", value: "A" },
+            { text: "Creature", value: "B" },
+            { text: "Gravity", value: "C" },
+            { text: "Possibility", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Kiến thức Vật lý/Từ vựng:</span>
+            <ul>
+                <li><strong>A. Habitat</strong>: Môi trường sống.</li>
+                <li><strong>B. Creature</strong>: Sinh vật.</li>
+                <li><strong>C. Gravity</strong> (Trọng lực): Lực khiến mọi vật rơi xuống đất.</li>
+                <li><strong>D. Possibility</strong>: Khả năng.</li>
+            </ul>
+        `
+    },
+    {
+        id: 8,
+        type: 'mcq',
+        question: "He wondered which planet in our solar system ___ life on it.",
+        options: [
+            { text: "will have", value: "A" },
+            { text: "would have", value: "B" },
+            { text: "have", value: "C" },
+            { text: "to have", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Ngữ pháp: Câu tường thuật (Reported Speech)</span>
+            <ul>
+                <li>Mệnh đề chính "He wondered" ở quá khứ.</li>
+                <li>Mệnh đề phụ phải lùi thì. "Will have" -> <strong>would have</strong> (Tương lai trong quá khứ).</li>
+                <li>Đáp án A sai thì. C sai ngữ pháp (số ít/nhiều và thì). D sai cấu trúc.</li>
+            </ul>
+        `
+    },
+    {
+        id: 9,
+        type: 'mcq',
+        question: "Mary wanted to know who ___.",
+        options: [
+            { text: "was the first to step on the moon", value: "A" },
+            { text: "step on the moon was the first", value: "B" },
+            { text: "the first was step on the moon", value: "C" },
+            { text: "the first to step on the moon", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Ngữ pháp: Câu hỏi gián tiếp với từ để hỏi làm chủ ngữ</span>
+            <ul>
+                <li>Cấu trúc: S + wanted to know + Wh-word (làm chủ ngữ) + V + O.</li>
+                <li>Ở đây "Who" đóng vai trò chủ ngữ cho động từ "was".</li>
+                <li><strong>A. was the first...</strong>: Đúng trật tự (Who was...).</li>
+                <li>Các đáp án khác sai trật tự từ nghiêm trọng.</li>
+            </ul>
+            Dịch: Mary muốn biết ai là người đầu tiên đặt chân lên mặt trăng.
+        `
+    },
+    {
+        id: 10,
+        type: 'mcq',
+        question: "I wish I could travel _____ outer space.",
+        options: [
+            { text: "away", value: "A" },
+            { text: "into", value: "B" },
+            { text: "from", value: "C" },
+            { text: "out of", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Collocation (Cụm từ):</span>
+            <ul>
+                <li><strong>Travel into space/outer space</strong>: Du hành vào không gian.</li>
+                <li>"Away", "from", "out of" không phù hợp ngữ cảnh muốn đi "vào" vũ trụ.</li>
+            </ul>
+        `
+    },
+    {
+        id: 11,
+        type: 'mcq',
+        question: "He asked the children why they ____ too much noise.",
+        options: [
+            { text: "not to make", value: "A" },
+            { text: "were making", value: "B" },
+            { text: "are making", value: "C" },
+            { text: "making", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Ngữ pháp: Câu tường thuật</span>
+            <ul>
+                <li>Động từ tường thuật "asked" (quá khứ).</li>
+                <li>Câu trực tiếp có thể là "Why are you making...?".</li>
+                <li>Khi chuyển sang gián tiếp: Lùi thì HT Tiếp diễn (are making) -> QK Tiếp diễn (<strong>were making</strong>).</li>
+            </ul>
+        `
+    },
+    {
+        id: 12,
+        type: 'mcq',
+        question: "Nick: “Do you think we will live on the moon one day?” - Hoa: “ __”",
+        options: [
+            { text: "No, I can’t", value: "A" },
+            { text: "I won’t live on the moon", value: "B" },
+            { text: "I’m not sure about it", value: "C" },
+            { text: "Yeah", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Giao tiếp xã hội:</span>
+            <ul>
+                <li>Câu hỏi: "Bạn có nghĩ chúng ta sẽ sống trên mặt trăng...?" (Hỏi ý kiến/dự đoán).</li>
+                <li><strong>C. I’m not sure about it</strong>: Tôi không chắc lắm. (Câu trả lời tự nhiên, lịch sự thể hiện sự hoài nghi hợp lý).</li>
+                <li>A. Sai trợ động từ (hỏi will/do, trả lời can't).</li>
+                <li>B. Trả lời cụt lủn và hơi thô lỗ về bản thân mình.</li>
+                <li>D. "Yeah" quá suồng sã trong bài thi (trừ khi ngữ cảnh rất thân mật, nhưng C vẫn an toàn nhất).</li>
+            </ul>
+        `
+    },
+    // --- GAP FILL: RESTAURANT ---
+    {
+        id: 13,
+        type: 'gapfill',
+        passageId: "p1",
+        question: "Question 13 (Gap 13): After you sit down, (13) ____ the menu...",
+        options: [
+            { text: "look", value: "A" },
+            { text: "search", value: "B" },
+            { text: "read", value: "C" },
+            { text: "take", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Kết hợp từ (Collocation):</span>
+            <ul>
+                <li><strong>Read the menu</strong>: Đọc thực đơn.</li>
+                <li>"Look" phải đi với "at" (Look at the menu).</li>
+                <li>"Search" là tìm kiếm (không hợp nghĩa xem món).</li>
+            </ul>
+        `
+    },
+    {
+        id: 14,
+        type: 'gapfill',
+        passageId: "p1",
+        question: "Question 14 (Gap 14): Please wait (14) _____ a waiter...",
+        options: [
+            { text: "with", value: "A" },
+            { text: "for", value: "B" },
+            { text: "at", value: "C" },
+            { text: "on", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Giới từ:</span>
+            <ul>
+                <li><strong>Wait for somebody</strong>: Chờ đợi ai đó.</li>
+            </ul>
+        `
+    },
+    {
+        id: 15,
+        type: 'gapfill',
+        passageId: "p1",
+        question: "Question 15 (Gap 15): ...tell (15) _____ staff before you order.",
+        options: [
+            { text: "the", value: "A" },
+            { text: "a", value: "B" },
+            { text: "an", value: "C" },
+            { text: "X", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Mạo từ:</span>
+            <ul>
+                <li>Dùng <strong>the</strong> vì "staff" (nhân viên) ở đây được xác định trong ngữ cảnh nhà hàng đó.</li>
+            </ul>
+        `
+    },
+    {
+        id: 16,
+        type: 'gapfill',
+        passageId: "p1",
+        question: "Question 16 (Gap 16): ...try to be (16) _____ with what you want...",
+        options: [
+            { text: "exact", value: "A" },
+            { text: "clear", value: "B" },
+            { text: "specific", value: "C" },
+            { text: "detailed", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Từ vựng:</span>
+            <ul>
+                <li><strong>Be specific</strong>: Cụ thể, rõ ràng (về yêu cầu của mình).</li>
+                <li>"Clear" cũng đúng nhưng "Be specific" là cụm từ thường dùng khi nói về việc đưa ra yêu cầu chi tiết (đặc biệt là food restrictions). Tuy nhiên "Clear" đi với "speak clearly" phía sau. Ở đây chọn "Specific" để bổ sung ý: Cần chỉ rõ món gì, dị ứng gì.</li>
+            </ul>
+        `
+    },
+    // --- SENTENCE ARRANGEMENT ---
+    {
+        id: 17,
+        type: 'arrange',
+        passageId: "p2",
+        question: "Question 17: Rearrange the sentences.",
+        options: [
+            { text: "b-a-c", value: "A" },
+            { text: "a-b-c", value: "B" },
+            { text: "c-b-a", value: "C" },
+            { text: "b-c-a", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Logic đoạn văn:</span>
+            <ol>
+                <li><strong>(b)</strong> The town decided to build a new library... (Giới thiệu dự án/Mục đích).</li>
+                <li><strong>(c)</strong> The library offered free books... (Chi tiết hoạt động/lợi ích).</li>
+                <li><strong>(a)</strong> Many people visited... (Kết quả/Phản hồi của người dân).</li>
+            </ol>
+            => Thứ tự: b - c - a.
+        `
+    },
+    {
+        id: 18,
+        type: 'mcq',
+        question: "Question 18: Choose the sentence that you can end the text (in question 17) most appropriately.",
+        options: [
+            { text: "The library became a popular place for learning and meeting friends.", value: "A" },
+            { text: "The library organized reading competitions for children.", value: "B" },
+            { text: "The town planned to build more libraries in other areas.", value: "C" },
+            { text: "The library faced problems with damaged books.", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Câu kết luận:</span>
+            <ul>
+                <li>Đoạn văn đang nói về sự thành công của thư viện (xây dựng -> cung cấp sách -> nhiều người đến).</li>
+                <li><strong>A.</strong> Tổng kết lại vai trò tích cực của thư viện (nơi phổ biến để học và gặp gỡ).</li>
+                <li>Các câu B, C là chi tiết mới. D là tiêu cực, không hợp mạch.</li>
+            </ul>
+        `
+    },
+    // --- READING GAP FILL: MERCURY ---
+    {
+        id: 19,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 19 (Gap 19): It's just (19) _____ bigger than the Earth's moon.",
+        options: [
+            { text: "a little", value: "A" },
+            { text: "a few", value: "B" },
+            { text: "many", value: "C" },
+            { text: "little", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Lượng từ so sánh:</span>
+            <ul>
+                <li><strong>A little + Comparative adj</strong>: Lớn hơn <em>một chút</em>.</li>
+                <li>"A few" dùng cho danh từ đếm được.</li>
+            </ul>
+        `
+    },
+    {
+        id: 20,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 20 (Gap 20): It is the closest planet to the sun, (20) _____ it's actually not the hottest.",
+        options: [
+            { text: "but", value: "A" },
+            { text: "so", value: "B" },
+            { text: "and", value: "C" },
+            { text: "or", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Liên từ:</span>
+            <ul>
+                <li>Hai mệnh đề đối lập: Gần mặt trời nhất (đáng lẽ phải nóng nhất) >< thực tế không phải nóng nhất.</li>
+                <li>Dùng <strong>but</strong> (nhưng).</li>
+            </ul>
+        `
+    },
+    {
+        id: 21,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 21 (Gap 21): Mercury is (21) ____ of the rocky planets.",
+        options: [
+            { text: "first", value: "A" },
+            { text: "another", value: "B" },
+            { text: "one", value: "C" },
+            { text: "other", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Cụm từ:</span>
+            <ul>
+                <li><strong>One of the + Noun(plural)</strong>: Một trong những...</li>
+                <li>Mercury is <strong>one</strong> of the rocky planets.</li>
+            </ul>
+        `
+    },
+    {
+        id: 22,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 22 (Gap 22): Mercury takes 59 Earth days to (22) ____ one full rotation.",
+        options: [
+            { text: "take", value: "A" },
+            { text: "do", value: "B" },
+            { text: "get", value: "C" },
+            { text: "make", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Collocation (Kết hợp từ):</span>
+            <ul>
+                <li><strong>Make a rotation</strong> / <strong>Complete a rotation</strong>: Thực hiện một vòng quay.</li>
+                <li>Trong các đáp án, "make" phù hợp nhất.</li>
+            </ul>
+        `
+    },
+    {
+        id: 23,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 23 (Gap 23): A day on Mercury is not (23) _____ a day here on Earth.",
+        options: [
+            { text: "same", value: "A" },
+            { text: "similar", value: "B" },
+            { text: "like", value: "C" },
+            { text: "different", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">So sánh:</span>
+            <ul>
+                <li><strong>Be like</strong>: Giống như. "Is not like" = Không giống như.</li>
+                <li>"Same" cần "the same as".</li>
+                <li>"Similar" cần "to".</li>
+            </ul>
+        `
+    },
+    {
+        id: 24,
+        type: 'gapfill',
+        passageId: "p3",
+        question: "Question 24 (Gap 24): (24) ____ Mercury has a slow spin... It takes a long time...",
+        options: [
+            { text: "Therefore", value: "A" },
+            { text: "When", value: "B" },
+            { text: "If", value: "C" },
+            { text: "Because", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Nguyên nhân - Kết quả:</span>
+            <ul>
+                <li>Mệnh đề: "Mercury has a slow spin" là <strong>nguyên nhân</strong>.</li>
+                <li>Kết quả: "It takes a long time for the sun to rise...".</li>
+                <li>Dùng <strong>Because</strong> (Bởi vì).</li>
+            </ul>
+        `
+    },
+    // --- TRANSFORMATION ---
+    {
+        id: 25,
+        type: 'mcq',
+        question: "“How many stars are there in our galaxy?” Tom asked.",
+        options: [
+            { text: "Tom asked how many stars there were in our galaxy.", value: "A" },
+            { text: "Tom asked how many stars are there in our galaxy", value: "B" },
+            { text: "Tom asked how many would stars be there in our galaxy", value: "C" },
+            { text: "Tom asked how many stars having in our galaxy", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Ngữ pháp: Câu hỏi gián tiếp</span>
+            <ul>
+                <li>Lùi thì: are -> were.</li>
+                <li>Đổi trật tự từ: V + S (are there) -> S + V (there were).</li>
+                <li>Chọn A.</li>
+            </ul>
+        `
+    },
+    {
+        id: 26,
+        type: 'mcq',
+        question: "“Where did you go last night?” the Mom talked to the son.",
+        options: [
+            { text: "The mom talked to the son where he had gone the previous night.", value: "A" },
+            { text: "The mom asked the son where he had gone the previous night.", value: "B" },
+            { text: "The mom talked to the son where had he gone the previous night.", value: "C" },
+            { text: "The mom asked the son where had he gone previous night.", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Ngữ pháp: Câu hỏi gián tiếp</span>
+            <ul>
+                <li>Động từ dẫn: "asked" (hỏi) thay vì "talked to".</li>
+                <li>Thì: Quá khứ đơn (did go) -> Quá khứ hoàn thành (had gone).</li>
+                <li>Trạng từ: last night -> the previous night.</li>
+                <li>Trật tự: S + V (he had gone).</li>
+                <li>Chọn B.</li>
+            </ul>
+        `
+    },
+    {
+        id: 27,
+        type: 'mcq',
+        question: "Sentence building: Alice/ told/ Tom/ she/ want/ buy/ ice cream.",
+        options: [
+            { text: "Alice told to Tom that she wanted to buy an ice cream", value: "A" },
+            { text: "Alice told Tom that she wanted buy an ice cream", value: "B" },
+            { text: "Alice told Tom that she wanted to buy an ice cream", value: "C" },
+            { text: "Alice told Tom she wants to buy an ice cream", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Cấu trúc:</span>
+            <ul>
+                <li>Tell sb (that)... (Không dùng tell to sb).</li>
+                <li>Want to V.</li>
+                <li>Thì quá khứ (told) nên mệnh đề sau cũng nên là quá khứ (wanted).</li>
+                <li>Chọn C.</li>
+            </ul>
+        `
+    },
+    {
+        id: 28,
+        type: 'mcq',
+        question: "Sentence building: Huy/ ask/ Linh/ prefer/ quiet/ or/ bustling places.",
+        options: [
+            { text: "Huy asked Linh if prefered quiet or bustling places", value: "A" },
+            { text: "Huy asked Linh would she prefers quiet or bustling places", value: "B" },
+            { text: "Huy asked Linh if she prefers quiet or bustling places", value: "C" },
+            { text: "Huy asked if Linh prefered quiet or bustling places", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Cấu trúc câu hỏi Yes/No gián tiếp:</span>
+            <ul>
+                <li>S + asked + (O) + if/whether + S + V.</li>
+                <li>Đáp án D có cấu trúc "asked if Linh..." (Hỏi xem liệu Linh...).</li>
+                <li>Lưu ý: Đáp án gốc có lỗi chính tả từ "prefered" (đúng là preferred), nhưng xét về cấu trúc ngữ pháp và sự chuyển đổi thì (lùi về quá khứ), D là đáp án chấp nhận được nhất so với các câu sai ngữ pháp còn lại.</li>
+                <li>Đáp án C không lùi thì (prefers).</li>
+            </ul>
+        `
+    },
+    // --- SIGNS ---
+    {
+        id: 29,
+        type: 'image_sim',
+        question: "What does the sign mean?",
+        visualType: "sign",
+        options: [
+            { text: "The door should always be open and you should never lock it unless there is no one around.", value: "A" },
+            { text: "You should always make sure to close the door after use.", value: "B" },
+            { text: "You should open the door at specific times.", value: "C" },
+            { text: "You should leave the door open at all times and never close it.", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Giải thích biển báo:</span>
+            <ul>
+                <li>Biển báo ghi: <strong>"PLEASE KEEP THE DOOR CLOSED"</strong> (Làm ơn giữ cửa đóng).</li>
+                <li>Đáp án B: "You should always make sure to close the door after use" (Bạn luôn phải đảm bảo đóng cửa sau khi dùng) -> Đồng nghĩa.</li>
+                <li>Đáp án A, D bảo mở cửa (open) là sai.</li>
+            </ul>
+        `
+    },
+    {
+        id: 30,
+        type: 'image_sim',
+        question: "What can’t theatre customers do?",
+        visualType: "web",
+        options: [
+            { text: "Ask for different seats after they’ve paid", value: "A" },
+            { text: "Choose where they sit before they book", value: "B" },
+            { text: "Get their money back on tickets", value: "C" },
+            { text: "Buy tickets at the City Theatre", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Giải thích thông báo:</span>
+            <ul>
+                <li>Thông báo ghi: <strong>"We cannot change your seats after you have booked tickets."</strong> (Chúng tôi không thể đổi chỗ sau khi bạn đã đặt vé).</li>
+                <li>Câu hỏi: Khách hàng KHÔNG THỂ làm gì?</li>
+                <li>Đáp án A: "Ask for different seats after they've paid" (Yêu cầu chỗ khác sau khi đã trả tiền) -> Khớp với thông báo.</li>
+            </ul>
+        `
+    },
+    // --- READING 2: ASTRONOMY ---
+    {
+        id: 31,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 31: What is the main idea of the passage?",
+        options: [
+            { text: "The invention of telescopes", value: "A" },
+            { text: "The discoveries made by astronomers about the universe", value: "B" },
+            { text: "The structure of the Milky Way galaxy", value: "C" },
+            { text: "Galileo’s contributions to astronomy", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Ý chính đoạn văn:</span>
+            <ul>
+                <li>Đoạn văn nói về Thiên văn học, kính thiên văn, phát hiện của Galileo, Dải Ngân Hà, và phát hiện của Hubble về các thiên hà khác.</li>
+                <li>Nó tổng hợp các phát kiến về vũ trụ theo thời gian.</li>
+                <li><strong>B</strong> là bao quát nhất. A, C, D quá chi tiết.</li>
+            </ul>
+        `
+    },
+    {
+        id: 32,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 32: The word has the OPPOSITE meaning of bigger as used in the text?",
+        options: [
+            { text: "Smaller", value: "A" },
+            { text: "Larger", value: "B" },
+            { text: "Wider", value: "C" },
+            { text: "Heavier", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Từ trái nghĩa:</span>
+            <ul>
+                <li>Bigger (to hơn) >< <strong>Smaller</strong> (nhỏ hơn).</li>
+            </ul>
+        `
+    },
+    {
+        id: 33,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 33: The word has the CLOSEST meaning of 'discovered' as used in the text?",
+        options: [
+            { text: "Observed", value: "A" },
+            { text: "Lost", value: "B" },
+            { text: "Imagined", value: "C" },
+            { text: "Created", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Từ đồng nghĩa:</span>
+            <ul>
+                <li>Discovered: Khám phá ra, tìm ra, nhìn thấy lần đầu.</li>
+                <li>Trong ngữ cảnh thiên văn học (nhìn qua kính thiên văn), <strong>Observed</strong> (quan sát thấy) là gần nghĩa nhất.</li>
+            </ul>
+        `
+    },
+    {
+        id: 34,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 34: Which of the following statements is NOT true according to the passage?",
+        options: [
+            { text: "Galileo used a telescope to see Jupiter’s moons.", value: "A" },
+            { text: "Edwin Hubble discovered the Milky Way galaxy.", value: "B" },
+            { text: "Early telescopes were very small.", value: "C" },
+            { text: "The Milky Way is made of many stars.", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Tìm thông tin sai:</span>
+            <ul>
+                <li>Bài đọc nói: "Later, people discovered... Milky Way... Then in 1930... Hubble discovered <strong>another galaxy</strong>." (Hubble tìm ra thiên hà KHÁC, không phải tìm ra Milky Way).</li>
+                <li>=> Câu B sai.</li>
+            </ul>
+        `
+    },
+    {
+        id: 35,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 35: What did Galileo observe on the Moon when he used his telescope?",
+        options: [
+            { text: "Mountains and craters", value: "A" },
+            { text: "Oceans and craters", value: "B" },
+            { text: "Valleys and rivers", value: "C" },
+            { text: "Rings and craters", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Chi tiết bài đọc:</span>
+            <ul>
+                <li>Dẫn chứng: "He saw mountains and craters on the Moon..."</li>
+                <li>Chọn A.</li>
+            </ul>
+        `
+    },
+    {
+        id: 36,
+        type: 'mcq',
+        passageId: "p4",
+        question: "Question 36: Who discovered that there are billions of galaxies in the universe?",
+        options: [
+            { text: "Galileo Galilei", value: "A" },
+            { text: "Edwin Hubble", value: "B" },
+            { text: "Isaac Newton", value: "C" },
+            { text: "Nicolaus Copernicus", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Chi tiết suy luận:</span>
+            <ul>
+                <li>Dẫn chứng: "Edwin Hubble discovered another galaxy. Now we know that there are billions..."</li>
+                <li>Công trình của Hubble mở ra kiến thức về các thiên hà khác. Trong bài, Hubble là người được nhắc đến gắn liền với việc mở rộng tầm nhìn ra ngoài Milky Way.</li>
+                <li>Chọn B.</li>
+            </ul>
+        `
+    },
+    // --- SENTENCE INSERTION: MARS ---
+    {
+        id: 37,
+        type: 'gapfill',
+        passageId: "p5",
+        question: "Question 37",
+        options: [
+            { text: "A", value: "A" },
+            { text: "B", value: "B" },
+            { text: "C", value: "C" },
+            { text: "D", value: "D" }
+        ],
+        correct: "C",
+        explanation: `
+            <span class="expl-title">Điền câu:</span>
+            <ul>
+                <li>Vị trí (37) sau câu giới thiệu về Sao Hỏa (Red Planet).</li>
+                <li>Câu tiếp theo: "Scientists hope that we can find another planet..."</li>
+                <li>Câu <strong>C. There have been many explorations to Mars...</strong> (Có nhiều cuộc thám hiểm...) là cầu nối hợp lý nhất dẫn đến việc các nhà khoa học hy vọng tìm thấy sự sống.</li>
+            </ul>
+        `
+    },
+    {
+        id: 38,
+        type: 'gapfill',
+        passageId: "p5",
+        question: "Question 38",
+        options: [
+            { text: "A", value: "A" },
+            { text: "B", value: "B" },
+            { text: "C", value: "C" },
+            { text: "D", value: "D" }
+        ],
+        correct: "A",
+        explanation: `
+            <span class="expl-title">Điền câu:</span>
+            <ul>
+                <li>Trước (38) nói về nhiệt độ thấp.</li>
+                <li>Sau (38) nói về khí quyển CO2.</li>
+                <li>Câu <strong>A. But the bigger problem is the lack of oxygen</strong> (Nhưng vấn đề lớn hơn là thiếu oxy) là câu chuyển ý tuyệt vời. Nó kết nối ý "nhiệt độ tệ" -> "thiếu oxy/CO2 còn tệ hơn".</li>
+            </ul>
+        `
+    },
+    {
+        id: 39,
+        type: 'gapfill',
+        passageId: "p5",
+        question: "Question 39",
+        options: [
+            { text: "A", value: "A" },
+            { text: "B", value: "B" },
+            { text: "C", value: "C" },
+            { text: "D", value: "D" }
+        ],
+        correct: "B",
+        explanation: `
+            <span class="expl-title">Điền câu:</span>
+            <ul>
+                <li>Trước (39): "95% of the atmosphere is carbon dioxide (CO2), ..."</li>
+                <li>Câu <strong>B. and this is poisonous to breathe</strong> (...và khí này độc khi hít thở) bổ sung ý nghĩa trực tiếp cho việc CO2 chiếm 95%.</li>
+            </ul>
+        `
+    },
+    {
+        id: 40,
+        type: 'gapfill',
+        passageId: "p5",
+        question: "Question 40",
+        options: [
+            { text: "A", value: "A" },
+            { text: "B", value: "B" },
+            { text: "C", value: "C" },
+            { text: "D", value: "D" }
+        ],
+        correct: "D",
+        explanation: `
+            <span class="expl-title">Điền câu:</span>
+            <ul>
+                <li>Trước (40): Một ngày trên Hỏa giống Trái Đất.</li>
+                <li>Sau (40): "However, the seasons are twice as long..." (Tuy nhiên các mùa dài gấp đôi).</li>
+                <li>Để nói về "mùa" ở câu sau, câu trước phải giới thiệu về mùa.</li>
+                <li>Câu <strong>D. Mars also experiences seasons just as Earth does</strong> (Sao Hỏa cũng có các mùa giống Trái Đất) phù hợp hoàn hảo.</li>
+            </ul>
+        `
+    }
+];
+
+// Data bài đọc
+const passages = {
+    p1: {
+        title: "RESTAURANT ORDERING GUIDE",
+        content: `
+            <p>Follow these steps to make your dining experience easy and pleasant:</p>
+            <ul>
+                <li>After you sit down, (13) ____ the menu and decide what to order</li>
+                <li>Please wait (14) _____ a waiter or waitress to come and take your order</li>
+                <li>If you have any food restrictions, tell (15) _____ staff before you order.</li>
+                <li>To get your food faster, try to be (16) _____ with what you want and speak clearly.</li>
+            </ul>
+        `,
+        glossary: [
+            {word: "Restriction", type: "n", mean: "Sự hạn chế (ở đây là kiêng khem món ăn)"},
+            {word: "Pleasant", type: "adj", mean: "Dễ chịu, thoải mái"}
+        ]
+    },
+    p2: {
+        title: "SENTENCE ARRANGEMENT: LIBRARY PROJECT",
+        content: `
+            <p><strong>The local news talked about a new library project. The details are as follows.</strong></p>
+            <p>(a) Many people visited the library and used the resources often.</p>
+            <p>(b) The town decided to build a new library to help students and families.</p>
+            <p>(c) The library offered free books and study materials for everyone.</p>
+        `,
+        glossary: []
+    },
+    p3: {
+        title: "MERCURY - THE SMALLEST PLANET",
+        content: `
+            <p>Mercury is the smallest planet in our solar system. It's just (19) _____ bigger than the Earth's moon. It is the closest planet to the sun, (20) _____ it's actually not the hottest. Venus is hotter. Along with Venus, Earth, and Mars, Mercury is (21) ____ of the rocky planets. It has a solid surface that is covered with craters. It has no atmosphere, and it doesn't have any moons. This small planet spins around slowly compared to Earth, so one day lasts a long time. Mercury takes 59 Earth days to (22) ____ one full rotation. A year on Mercury goes by fast. Because it's the closest planet to the sun, it doesn't take very long to go all the way around. It completes one revolution around the sun in just 88 Earth days. A day on Mercury is not (23) _____ a day here on Earth. For us, the sun rises and sets each and every day. (24) ____ Mercury has a slow spin and a short year. It takes a long time for the sun to rise and set there. Mercury only has one sunrise every 180 Earth days!</p>
+        `,
+        glossary: [
+            {word: "Craters", type: "n", mean: "Miệng núi lửa/hố va chạm"},
+            {word: "Rotation", type: "n", mean: "Sự tự quay quanh trục"},
+            {word: "Revolution", type: "n", mean: "Sự quay quanh mặt trời (chu kỳ năm)"}
+        ]
+    },
+    p4: {
+        title: "ASTRONOMY",
+        content: `
+            <p>Astronomy is the studying of the planets and the stars, and people who study astronomy are astronomers. Telescopes help people to learn about our solar system. In 1609, Galileo used one of the first telescopes to look at the night sky. He saw mountains and craters on the Moon, and four moons around Jupiter. The first telescopes were very small. Later, people made bigger telescopes, and they discovered new planets and moons. When Galileo looked at a bright area in the night sky, he discovered that it was made of many stars. Later, people discovered that this is the center of our galaxy, the Milky Way. For a long time, astronomers thought that the Milky Way was the only galaxy in the universe. Then in 1930, an American astronomer called Edwin Hubble discovered another galaxy. Now we know that there are billions of galaxies in the universe.</p>
+        `,
+        glossary: [
+            {word: "Astronomy", type: "n", mean: "Thiên văn học"},
+            {word: "Telescope", type: "n", mean: "Kính thiên văn"},
+            {word: "Galaxy", type: "n", mean: "Thiên hà"}
+        ]
+    },
+    p5: {
+        title: "LIFE ON MARS?",
+        content: `
+            <div style="background:#f9f9f9; padding:10px; border:1px dashed #ccc; margin-bottom:15px;">
+                <strong>Options to insert:</strong><br>
+                A - But the bigger problem is the lack of oxygen<br>
+                B - and this is poisonous to breathe<br>
+                C - There have been many explorations to Mars by humans since the mid-20th century<br>
+                D - Mars also experiences seasons just as Earth does
+            </div>
+            <p>Mars is called the Red Planet because of its reddish surface. (37) _____. Scientists hope that we can find another planet to accommodate human life. There are major reasons why the climate on Mars is unsuitable for human life. Temperatures on Mars can be as low as -87 degrees Celsius and rarely get above 0 degrees Celsius. (38) _____. 95% of the atmosphere is carbon dioxide (CO2), (39) _____. Moreover, there is no water on Mars even though scientists have found traces of it. However, as early as the mid-19th century, scientists discovered that Mars had some similarities to Earth. A day on Mars is 24 hours, 39 minutes and 35 seconds, almost the same as a day on Earth. (40) ____. However, the seasons are twice as long because a year on Mars lasts about twice as long as an Earth year.</p>
+        `,
+        glossary: [
+            {word: "Accommodate", type: "v", mean: "Cung cấp chỗ ở/đáp ứng"},
+            {word: "Poisonous", type: "adj", mean: "Có độc"}
+        ]
+    }
+};
+
+// Render logic
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    let currentPassageId = null;
+
+    quizData.forEach((item, index) => {
+        // Check if we need to render a passage block first
+        if (item.passageId && item.passageId !== currentPassageId) {
+            currentPassageId = item.passageId;
+            const passage = passages[currentPassageId];
+            
+            let glossaryHtml = '';
+            if (passage.glossary && passage.glossary.length > 0) {
+                glossaryHtml = `
+                    <div class="glossary">
+                        <span class="glossary-title">GLOSSARY (TỪ VỰNG):</span>
+                        ${passage.glossary.map(g => 
+                            `<div><span class="badge badge-${g.type === 'n' ? 'n' : g.type === 'v' ? 'v' : 'adj'}">${g.type}</span> <strong>${g.word}</strong>: ${g.mean}</div>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+
+            container.innerHTML += `
+                <div class="data-box">
+                    <h3>${passage.title}</h3>
+                    <div class="reading-text">${passage.content}</div>
+                    ${glossaryHtml}
+                </div>
+            `;
+        }
+
+        // Question HTML
+        let visualHtml = '';
+        if (item.type === 'image_sim') {
+            if (item.visualType === 'sign') {
+                visualHtml = `
+                    <div class="visual-box">
+                        <div class="sign-simulation">
+                            <div class="sign-title">PLEASE</div>
+                            <div class="sign-body">KEEP THE DOOR<br>CLOSED</div>
+                            <div style="font-size:30px; margin-top:10px;">🚪</div>
+                        </div>
+                    </div>
+                `;
+            } else if (item.visualType === 'web') {
+                visualHtml = `
+                    <div class="visual-box">
+                        <div class="web-simulation">
+                            <div class="browser-bar">
+                                <div class="dot" style="background:#ff5f56"></div>
+                                <div class="dot" style="background:#ffbd2e"></div>
+                                <div class="dot" style="background:#27c93f"></div>
+                                <div style="background:white; border-radius:3px; flex-grow:1; height:10px; margin-left:10px;"></div>
+                            </div>
+                            <div class="browser-content">
+                                <div class="theatre-title">City Theatre</div>
+                                <div class="theatre-text">We cannot change your seats after you have booked tickets.</div>
+                                <div style="margin-top:10px; opacity:0.3; font-size:40px;">🎟️</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        const optionsHtml = item.options.map(opt => `
+            <label class="option-label" id="lbl-${item.id}-${opt.value}">
+                <input type="radio" name="q${item.id}" value="${opt.value}" class="option-input" onchange="resetCardState(${item.id})">
+                ${opt.value}. ${opt.text}
+            </label>
+        `).join('');
+
+        const cardHtml = `
+            <div class="question-card" id="card-${item.id}">
+                <div class="question-header">
+                    <span class="q-num">Câu ${item.id}</span>
+                    <span class="q-text">${item.question}</span>
+                </div>
+                ${visualHtml}
+                <div class="options-grid">
+                    ${optionsHtml}
+                </div>
+                <button class="btn btn-check" onclick="checkAnswer(${item.id})">Check Answer</button>
+                <div class="explanation" id="expl-${item.id}">
+                    ${item.explanation}
+                </div>
+            </div>
+        `;
+
+        container.innerHTML += cardHtml;
+    });
+}
+
+function resetCardState(id) {
+    // UI reset when user changes selection before checking
+    const labels = document.querySelectorAll(`#card-${id} .option-label`);
+    labels.forEach(l => {
+        l.classList.remove('correct-answer', 'wrong-answer');
+    });
+    document.getElementById(`expl-${id}`).style.display = 'none';
+}
+
+function checkAnswer(id) {
+    const selected = document.querySelector(`input[name="q${id}"]:checked`);
+    if (!selected) {
+        alert("Bạn chưa chọn đáp án nào!");
+        return;
+    }
+
+    const question = quizData.find(q => q.id === id);
+    const labels = document.querySelectorAll(`#card-${id} .option-label`);
+    const expl = document.getElementById(`expl-${id}`);
+
+    // Reset styles
+    labels.forEach(l => l.classList.remove('correct-answer', 'wrong-answer'));
+
+    // Highlight
+    const selectedLabel = document.getElementById(`lbl-${id}-${selected.value}`);
+    const correctLabel = document.getElementById(`lbl-${id}-${question.correct}`);
+
+    if (selected.value === question.correct) {
+        selectedLabel.classList.add('correct-answer');
+    } else {
+        selectedLabel.classList.add('wrong-answer');
+        correctLabel.classList.add('correct-answer');
+    }
+
+    // Show explanation
+    expl.style.display = 'block';
+}
+
+function submitQuiz() {
+    let score = 0;
+    let unanswer = 0;
+
+    quizData.forEach(q => {
+        const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (selected) {
+            if (selected.value === q.correct) {
+                score++;
+            }
+        } else {
+            unanswer++;
+        }
+        // Force check all to show results
+        const question = quizData.find(item => item.id === q.id);
+        const correctLabel = document.getElementById(`lbl-${q.id}-${question.correct}`);
+        const expl = document.getElementById(`expl-${q.id}`);
+        
+        // Highlight correct if not already done
+        correctLabel.classList.add('correct-answer');
+        if (selected && selected.value !== q.correct) {
+            document.getElementById(`lbl-${q.id}-${selected.value}`).classList.add('wrong-answer');
+        }
+        expl.style.display = 'block';
+        
+        // Mark unanswered with warning border
+        if (!selected) {
+            document.getElementById(`card-${q.id}`).style.border = "2px solid #ffc107";
+        }
+    });
+
+    const modal = document.getElementById('resultModal');
+    const scoreDisplay = document.getElementById('finalScore');
+    const message = document.getElementById('scoreMessage');
+
+    scoreDisplay.innerText = `${score}/${quizData.length}`;
+    
+    if (unanswer > 0) {
+        message.innerText = `Bạn đã bỏ trống ${unanswer} câu. Hãy xem lại lời giải bên dưới nhé!`;
+    } else if (score === quizData.length) {
+        message.innerText = "Tuyệt vời! Bạn đã làm đúng tất cả!";
+    } else {
+        message.innerText = "Đừng lo, hãy xem kỹ phần giải thích để rút kinh nghiệm nhé.";
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('resultModal').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+window.onload = renderQuiz;
+
+</script>
+
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>
+

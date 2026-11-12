@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Unit 11: Science & Technology Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#f8a5c2,#a29bfe,#74b9ff,#55efc4,#ffeaa7);background-size:400% 400%;animation:gs 10s ease infinite;overflow-x:hidden;position:relative}
+@keyframes gs{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+.pat{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Ctext y='30' font-size='26'%3E%E2%AD%90%3C/text%3E%3Ctext x='60' y='65' font-size='22'%3E%F0%9F%8C%B8%3C/text%3E%3Ctext x='120' y='35' font-size='24'%3E%F0%9F%8D%8E%3C/text%3E%3Ctext x='15' y='110' font-size='22'%3E%E2%98%81%EF%B8%8F%3C/text%3E%3Ctext x='90' y='125' font-size='20'%3E%F0%9F%90%B1%3C/text%3E%3Ctext x='145' y='95' font-size='20'%3E%F0%9F%8C%9F%3C/text%3E%3Ctext x='35' y='165' font-size='24'%3E%F0%9F%8D%8B%3C/text%3E%3Ctext x='125' y='170' font-size='19'%3E%F0%9F%8C%BA%3C/text%3E%3C/svg%3E");background-repeat:repeat}
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+.hdr{text-align:center;background:rgba(255,255,255,.92);border-radius:20px;padding:14px 20px;margin-bottom:22px;box-shadow:0 6px 24px rgba(136,84,192,.18)}
+.hdr h1{font-size:1.3rem;font-weight:900;background:linear-gradient(90deg,#8854C0,#00C9A7,#FDCB6E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr p{font-size:.8rem;color:#888;margin-top:3px}
+.sec{font-size:1rem;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.2);margin:26px 0 12px;padding:8px 18px;background:linear-gradient(90deg,#8854C0,#c84b9e);border-radius:14px;display:inline-block}
+.card{background:rgba(255,255,255,.93);border-radius:20px;padding:22px;margin-bottom:16px;box-shadow:0 8px 28px rgba(136,84,192,.1);transition:transform .2s}
+.card:hover{transform:translateY(-2px)}
+.qnum{font-size:.75rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#8854C0,#c84b9e);border-radius:20px;padding:2px 12px;display:inline-block;margin-bottom:10px}
+.qtxt{font-size:.95rem;font-weight:700;color:#333;line-height:1.65;margin-bottom:6px}
+
+/* Dịch câu hỏi */
+.qtrans{font-size:.82rem;font-weight:700;color:#8854C0;background:linear-gradient(135deg,#f5eeff,#eef8ff);border-radius:10px;padding:6px 12px;margin-bottom:14px;border-left:3px solid #c084fc;font-style:italic}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.obtn{background:#f0f0ff;border:2.5px solid #d4d0ff;border-radius:16px;padding:11px 16px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#444;cursor:pointer;text-align:left;transition:transform .15s,background .2s;box-shadow:0 4px 10px rgba(0,0,0,.06),0 3px 0 #c0bfff}
+.obtn:hover:not(:disabled){transform:scale(1.025);background:#e8e4ff}
+.obtn.ok{background:#d4fbe8!important;border-color:#00D26A!important;color:#00703a!important;box-shadow:0 4px 14px rgba(0,210,106,.2),0 3px 0 #00a854!important}
+.obtn.no{background:#ffe0e3!important;border-color:#FF4757!important;color:#c0002a!important;animation:shk .4s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.exp{display:none;margin-top:13px;background:linear-gradient(135deg,#fff9e6,#f0fff8);border-left:5px solid #00C9A7;border-radius:14px;padding:14px 17px;font-size:.86rem;color:#333;line-height:1.85;box-shadow:0 3px 10px rgba(0,201,167,.1)}
+.exp.show{display:block}
+.exp strong{color:#8854C0}
+
+/* Word bank */
+.wb{background:linear-gradient(135deg,#ffeef8,#f0f0ff);border-radius:13px;padding:11px 15px;margin-bottom:14px;font-size:.88rem;font-weight:700;color:#555}
+.wb span{display:inline-block;background:#fff;border:2px solid #c0bfff;border-radius:9px;padding:2px 9px;margin:2px 3px;color:#8854C0;font-weight:800}
+
+/* Passage text */
+.ptxt{font-size:.92rem;color:#333;line-height:2.3}
+
+/* Dịch đoạn văn passage */
+.ptrans{font-size:.82rem;color:#6b4ca0;background:linear-gradient(135deg,#f8f0ff,#f0fff8);border-radius:12px;padding:10px 14px;margin-top:14px;border-left:3px solid #c084fc;font-style:italic;line-height:1.8}
+.ptrans strong{color:#8854C0;font-style:normal}
+
+/* Gap buttons */
+.gbtn{display:inline-block;min-width:108px;background:linear-gradient(135deg,#f0e6ff,#e6f8ff);border:2.5px dashed #8854C0;border-radius:10px;padding:2px 9px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;color:#8854C0;cursor:pointer;text-align:center;transition:all .2s;vertical-align:middle;margin:0 2px}
+.gbtn:hover:not(.ans){background:#e8d5ff;transform:scale(1.04)}
+.gbtn.ok{background:#d4fbe8!important;border:2.5px solid #00D26A!important;color:#007a3d!important;cursor:default}
+.gbtn.no{background:#ffe0e3!important;border:2.5px solid #FF4757!important;color:#c0002a!important;cursor:default}
+
+/* Popup */
+.pop{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
+.pop.show{display:flex}
+.pbox{background:#fff;border-radius:20px;padding:24px 26px;max-width:400px;width:92%;box-shadow:0 12px 40px rgba(136,84,192,.28);text-align:center}
+.pbox h3{font-size:.97rem;font-weight:800;color:#8854C0;margin-bottom:13px}
+.popts{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.popt{background:linear-gradient(135deg,#f0e6ff,#e6f8ff);border:2.5px solid #c0bfff;border-radius:13px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:.93rem;font-weight:800;color:#8854C0;cursor:pointer;transition:all .18s;box-shadow:0 3px 10px rgba(136,84,192,.12),0 3px 0 #c0bfff}
+.popt:hover{background:#e8d5ff;transform:scale(1.07)}
+
+/* Matching */
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.ml{background:linear-gradient(135deg,#ffeef8,#f5f0ff);border-radius:14px;padding:10px 13px}
+.mi{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px dashed #e0d4f8;font-size:.88rem;font-weight:700;color:#444}
+.mi:last-child{border-bottom:none}
+.mn{font-size:.78rem;font-weight:800;color:#fff;background:#8854C0;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.msel{border:2.5px solid #c0bfff;border-radius:9px;padding:5px 8px;font-family:'Nunito',sans-serif;font-size:.83rem;font-weight:700;color:#555;background:#fff;cursor:pointer;outline:none;width:100%;margin-top:5px}
+.msel.ok{border-color:#00D26A;background:#d4fbe8;color:#007a3d}
+.msel.no{border-color:#FF4757;background:#ffe0e3;color:#c0002a}
+.mr{background:linear-gradient(135deg,#e6fff8,#f0f8ff);border-radius:14px;padding:10px 13px}
+.mri{font-size:.85rem;color:#333;padding:6px 0;border-bottom:1px dashed #c8f0e8;display:flex;gap:7px}
+.mri:last-child{border-bottom:none}
+.mlt{font-size:.8rem;font-weight:900;color:#00C9A7;flex-shrink:0}
+.ckbtn{margin-top:13px;background:linear-gradient(135deg,#8854C0,#c84b9e);color:#fff;border:none;border-radius:13px;padding:10px 26px;font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;box-shadow:0 5px 14px rgba(136,84,192,.28),0 3px 0 #6a3aa0;transition:transform .15s}
+.ckbtn:hover{transform:scale(1.04)}
+
+/* Reading passage */
+.rp{background:linear-gradient(135deg,#fffdf0,#f5f0ff);border-radius:16px;padding:18px 20px;font-size:.88rem;line-height:1.9;color:#333;margin-bottom:16px;box-shadow:0 4px 14px rgba(136,84,192,.08);border-left:5px solid #FDCB6E}
+.rp h3{font-size:1.02rem;font-weight:900;color:#8854C0;text-align:center;margin-bottom:9px}
+
+/* Dịch trong reading passage */
+.rptrans{display:block;font-size:.8rem;color:#7c5cbf;background:rgba(200,180,255,.13);border-radius:8px;padding:5px 10px;margin-top:6px;margin-bottom:4px;font-style:italic;border-left:3px solid #c084fc;line-height:1.7}
+
+/* Submit */
+.sub{display:block;margin:30px auto 0;background:linear-gradient(135deg,#00C9A7,#8854C0);color:#fff;border:none;border-radius:20px;padding:14px 50px;font-family:'Nunito',sans-serif;font-size:1.08rem;font-weight:900;cursor:pointer;box-shadow:0 8px 24px rgba(0,201,167,.28),0 4px 0 #007a65;transition:transform .2s;letter-spacing:.5px}
+.sub:hover{transform:scale(1.05)}
+
+/* Result overlay */
+.ro{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center}
+.ro.show{display:flex}
+.rb{background:linear-gradient(135deg,#fff9f0,#f0f0ff);border-radius:24px;padding:34px 38px;max-width:420px;width:92%;text-align:center;box-shadow:0 16px 50px rgba(136,84,192,.3)}
+.re{font-size:3.2rem;margin-bottom:8px}
+.rs{font-size:2rem;font-weight:900;background:linear-gradient(90deg,#8854C0,#00C9A7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rm{font-size:.95rem;font-weight:700;color:#555;margin-top:7px}
+.rc{margin-top:18px;background:linear-gradient(135deg,#8854C0,#c84b9e);color:#fff;border:none;border-radius:13px;padding:10px 30px;font-family:'Nunito',sans-serif;font-size:.97rem;font-weight:800;cursor:pointer;box-shadow:0 5px 14px rgba(136,84,192,.3)}
+
+/* Confetti */
+.cf{position:fixed;width:10px;height:10px;border-radius:2px;opacity:0;animation:cff 1.4s ease forwards;z-index:999;pointer-events:none}
+@keyframes cff{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(320px) rotate(720deg)}}
+
+@media(max-width:580px){.mg{grid-template-columns:1fr}.card{padding:15px 13px}}
+</style>
+</head>
+<body>
+<div class="pat"></div>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1>🖥️ Unit 11: Science &amp; Technology</h1>
+  <p>Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong> &nbsp;|&nbsp; Bài tập Tiếng Anh 8</p>
+</div>
+
+<!-- PART D.I GAP FILL -->
+<div class="sec">📖 D. READING – Part I: Complete the Passage</div>
+<div class="card">
+  <span class="qnum">Gap Fill – 8 chỗ trống (click vào ô để chọn từ)</span>
+  <div class="wb">📦 <strong>Word Bank:</strong>
+    <span>while</span><span>through</span><span>vision</span><span>network</span>
+    <span>communicate</span><span>invented</span><span>accessible</span><span>much</span>
+  </div>
+
+  <div class="ptxt">
+    &nbsp;&nbsp;&nbsp;The Internet is a huge (1)<button class="gbtn" id="g1" onclick="openP(1)">________</button> of computers all connected together, but it was the world wide web that made the technology into something that linked information together and made it (2)<button class="gbtn" id="g2" onclick="openP(2)">________</button> to everyone.
+  </div>
+  <div class="ptrans">🇻🇳 Internet là một <strong>mạng lưới</strong> máy tính khổng lồ được kết nối với nhau, nhưng chính World Wide Web đã biến công nghệ này thành thứ gì đó liên kết thông tin lại và làm cho nó <strong>có thể truy cập được</strong> với tất cả mọi người.</div>
+
+  <div class="ptxt" style="margin-top:14px">
+    &nbsp;&nbsp;&nbsp;The world wide web was (3)<button class="gbtn" id="g3" onclick="openP(3)">________</button> by Sir Tim Berners-Lee in 1989 – originally he was trying to find a new way for scientists to easily share the data from their experiments. Berners-Lee created the world wide web (4)<button class="gbtn" id="g4" onclick="openP(4)">________</button> he was working at CERN, Switzerland. His (5)<button class="gbtn" id="g5" onclick="openP(5)">________</button> soon went beyond a network for scientists to share information, in that he wanted it to be a universal and free 'information space' to share knowledge, to (6)<button class="gbtn" id="g6" onclick="openP(6)">________</button>, and to collaborate.
+  </div>
+  <div class="ptrans">🇻🇳 World Wide Web được <strong>phát minh</strong> bởi Sir Tim Berners-Lee vào năm 1989 – ban đầu ông đang cố tìm cách mới để các nhà khoa học dễ dàng chia sẻ dữ liệu từ thí nghiệm của họ. Berners-Lee tạo ra WWW <strong>trong khi</strong> ông đang làm việc tại CERN, Thụy Sĩ. <strong>Tầm nhìn</strong> của ông sớm vượt ra ngoài một mạng lưới cho các nhà khoa học, ông muốn nó là một 'không gian thông tin' phổ quát và miễn phí để chia sẻ kiến thức, để <strong>giao tiếp</strong> và hợp tác.</div>
+
+  <div class="ptxt" style="margin-top:14px">
+    &nbsp;&nbsp;&nbsp;The world wide web opened up the Internet to everyone, not just scientists. It connected the world in a way that made it (7)<button class="gbtn" id="g7" onclick="openP(7)">________</button> easier for people to get information, share, and communicate. It has since allowed people to share their work and thoughts (8)<button class="gbtn" id="g8" onclick="openP(8)">________</button> social networking sites, blogs, video sharing, and more.
+  </div>
+  <div class="ptrans">🇻🇳 WWW đã mở rộng Internet đến tất cả mọi người, không chỉ các nhà khoa học. Nó kết nối thế giới theo cách làm cho việc tìm kiếm thông tin, chia sẻ và giao tiếp trở nên dễ dàng hơn <strong>rất nhiều</strong>. Từ đó, nó cho phép mọi người chia sẻ công việc và suy nghĩ <strong>thông qua</strong> các trang mạng xã hội, blog, chia sẻ video và nhiều hơn nữa.</div>
+
+  <div class="exp" id="gexp" style="margin-top:16px"></div>
+</div>
+
+<!-- READING PASSAGE -->
+<div class="sec">📰 Reading Text: Future of Technology</div>
+<div class="rp">
+  <h3>FUTURE OF TECHNOLOGY</h3>
+
+  Technology is growing <strong>by leaps and bounds</strong>. Proper use of technology holds a bright future for us. So, how can technology shape up the future in a better way? Let's take a look!
+  <span class="rptrans">🇻🇳 Công nghệ đang phát triển <strong>vượt bậc</strong>. Sử dụng công nghệ đúng cách mang lại một tương lai tươi sáng cho chúng ta. Vậy, công nghệ có thể định hình tương lai theo cách tốt hơn như thế nào? Hãy cùng xem nhé!</span>
+
+  <strong>Clean Energy – Năng lượng sạch</strong><br>
+  Global energy consumption is increasing and we will face a shortage of fossil fuels in the coming decades. However, technology is helping us deal with this problem by developing clean energy. Development in the field of solar power technology has drastically reduced the cost of solar cells. Generation of electricity through wind turbines has also grown rapidly in the recent years. So, in the near future, technology can help us <strong>do away with</strong> dependence on fossil fuels and <strong>embrace</strong> clean and green energy solutions.
+  <span class="rptrans">🇻🇳 Tiêu thụ năng lượng toàn cầu đang gia tăng và chúng ta sẽ phải đối mặt với tình trạng thiếu hụt nhiên liệu hóa thạch trong những thập kỷ tới. Tuy nhiên, công nghệ đang giúp chúng ta giải quyết vấn đề này bằng cách phát triển năng lượng sạch. Sự phát triển trong lĩnh vực công nghệ năng lượng mặt trời đã giảm đáng kể chi phí pin mặt trời. Trong tương lai gần, công nghệ có thể giúp chúng ta <strong>loại bỏ</strong> sự phụ thuộc vào nhiên liệu hóa thạch và <strong>chấp nhận</strong> các giải pháp năng lượng sạch.</span>
+
+  <br><strong>Virtual Reality (VR) – Thực tế ảo</strong><br>
+  Remember Pokemon Go? Well, that was one of the earliest examples of virtual reality. Tech giants like Google, Facebook, and Nokia are spending a huge amount of money to make VR experience better for the customers. However, with time and further developments, VR can be used for communication through <strong>holograms</strong>, for interacting with 3-D objects and other useful and educational purposes.
+  <span class="rptrans">🇻🇳 Bạn còn nhớ Pokemon Go không? Đó là một trong những ví dụ sớm nhất về thực tế ảo. Các ông lớn công nghệ như Google, Facebook và Nokia đang chi một lượng tiền khổng lồ để cải thiện trải nghiệm VR cho khách hàng. Tuy nhiên, theo thời gian, VR có thể được dùng để giao tiếp qua <strong>hình ảnh ba chiều (hologram)</strong>, tương tác với các vật thể 3D và các mục đích hữu ích, giáo dục khác.</span>
+
+  <br><strong>Flying cars – Xe bay</strong><br>
+  This sounds straight out of a movie, but flying cars might soon be <strong>mainstream</strong>. Amazon has already started delivering goods with the help of its <strong>drones</strong>, and Google is working on building its own powerful drones. A couple of <strong>start-ups</strong> are also working on building flying cars. A flying car for all intents and purposes is a drone that is capable of carrying people. There are already a handful of flying vehicle <strong>prototypes</strong>: Terrafugia has TF-X; Pal-V has the Pal-V1; I-TEC has the Maverick LSA "Flying Car"; and lastly AeroMobil s.r.o. has the AeroMobil 3.0.
+  <span class="rptrans">🇻🇳 Nghe có vẻ như trong phim, nhưng xe bay có thể sớm trở thành <strong>phổ biến</strong>. Amazon đã bắt đầu giao hàng bằng <strong>máy bay không người lái (drone)</strong>, Google đang xây dựng drone mạnh mẽ của riêng mình. Một vài <strong>công ty khởi nghiệp</strong> cũng đang nghiên cứu xe bay. Thực chất xe bay là một drone có thể chở người. Đã có một số ít <strong>nguyên mẫu</strong> xe bay: Terrafugia có TF-X; Pal-V có Pal-V1; I-TEC có Maverick LSA; AeroMobil có AeroMobil 3.0.</span>
+
+  <br><br>These are just a few of the amazing technologies that we will have in the coming years. And what's next? Teleporting? Anything is possible!
+  <span class="rptrans">🇻🇳 Đây chỉ là một vài trong số những công nghệ tuyệt vời mà chúng ta sẽ có trong những năm tới. Và tiếp theo là gì? Dịch chuyển tức thời? Mọi thứ đều có thể!</span>
+</div>
+
+<!-- PART A MATCHING -->
+<div class="sec">🔗 Part A – Match words with meanings</div>
+<div class="card">
+  <span class="qnum">Matching – 8 cặp từ vựng</span>
+  <p style="font-size:.83rem;color:#888;margin-bottom:4px">Chọn nghĩa đúng cho từng từ/cụm từ in đậm trong bài đọc.</p>
+  <p class="qtrans" style="margin-bottom:13px">🇻🇳 Nối các từ/cụm từ với nghĩa tương ứng của chúng.</p>
+  <div class="mg">
+    <div class="ml" id="mleft"></div>
+    <div class="mr" id="mright"></div>
+  </div>
+  <button class="ckbtn" onclick="chkMatch()">✅ Kiểm tra Matching</button>
+  <div class="exp" id="mexp"></div>
+</div>
+
+<!-- PART B MCQ -->
+<div class="sec">✏️ Part B – Choose the correct answers</div>
+
+<div class="card"><span class="qnum">Question B1</span>
+  <div class="qtxt">1. According to the passage, technology can help ______.</div>
+  <div class="qtrans">🇻🇳 Theo đoạn văn, công nghệ có thể giúp ______.</div>
+  <div class="opts" id="ob1"></div><div class="exp" id="eb1"></div>
+</div>
+
+<div class="card"><span class="qnum">Question B2</span>
+  <div class="qtxt">2. In the future, virtual reality can be used for ______.</div>
+  <div class="qtrans">🇻🇳 Trong tương lai, thực tế ảo có thể được sử dụng cho ______.</div>
+  <div class="opts" id="ob2"></div><div class="exp" id="eb2"></div>
+</div>
+
+<div class="card"><span class="qnum">Question B3</span>
+  <div class="qtxt">3. Which statement is true about flying cars?</div>
+  <div class="qtrans">🇻🇳 Câu nào sau đây đúng về xe bay?</div>
+  <div class="opts" id="ob3"></div><div class="exp" id="eb3"></div>
+</div>
+
+<div class="card"><span class="qnum">Question B4</span>
+  <div class="qtxt">4. In the sentence "There are already a handful of flying vehicle prototypes...", what does "a handful of" mean?</div>
+  <div class="qtrans">🇻🇳 Trong câu "Đã có một số ít nguyên mẫu xe bay...", cụm "a handful of" có nghĩa là gì?</div>
+  <div class="opts" id="ob4"></div><div class="exp" id="eb4"></div>
+</div>
+
+<div class="card"><span class="qnum">Question B5</span>
+  <div class="qtxt">5. The flying car TF-X has been developed by ______.</div>
+  <div class="qtrans">🇻🇳 Xe bay TF-X được phát triển bởi công ty ______.</div>
+  <div class="opts" id="ob5"></div><div class="exp" id="eb5"></div>
+</div>
+
+<div class="card"><span class="qnum">Question B6</span>
+  <div class="qtxt">6. Which of the following statements is NOT true?</div>
+  <div class="qtrans">🇻🇳 Câu nào sau đây KHÔNG đúng với nội dung bài đọc?</div>
+  <div class="opts" id="ob6"></div><div class="exp" id="eb6"></div>
+</div>
+
+<button class="sub" onclick="submitAll()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+</div>
+
+<!-- WORD POPUP -->
+<div class="pop" id="wpop">
+  <div class="pbox">
+    <h3 id="ptitle">Chọn từ đúng:</h3>
+    <div class="popts" id="popts"></div>
+  </div>
+</div>
+
+<!-- RESULT POPUP -->
+<div class="ro" id="roverlay">
+  <div class="rb">
+    <div class="re" id="remoji">🎉</div>
+    <div class="rs" id="rscore"></div>
+    <div class="rm" id="rmsg"></div>
+    <button class="rc" onclick="document.getElementById('roverlay').classList.remove('show')">✅ Đóng</button>
+  </div>
+</div>
+
+<script>
+// AUDIO
+const AC=window.AudioContext||window.webkitAudioContext;let ac;
+function gac(){if(!ac)ac=new AC();return ac;}
+function ding(){try{const c=gac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(880,c.currentTime);o.frequency.exponentialRampToValueAtTime(1320,c.currentTime+.15);g.gain.setValueAtTime(.4,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.6);o.start();o.stop(c.currentTime+.6);}catch(e){}}
+function buzz(){try{const c=gac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(220,c.currentTime);o.frequency.exponentialRampToValueAtTime(90,c.currentTime+.35);g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.4);o.start();o.stop(c.currentTime+.4);}catch(e){}}
+
+// CONFETTI
+function confetti(x,y){const cl=['#f9ca24','#6c5ce7','#fd79a8','#00cec9','#e17055','#55efc4','#fdcb6e'];for(let i=0;i<28;i++){const e=document.createElement('div');e.className='cf';e.style.left=(x+(Math.random()-.5)*180)+'px';e.style.top=(y-30)+'px';e.style.background=cl[~~(Math.random()*cl.length)];e.style.width=(6+Math.random()*10)+'px';e.style.height=(6+Math.random()*10)+'px';e.style.borderRadius=Math.random()>.5?'50%':'2px';e.style.animationDuration=(.9+Math.random()*.8)+'s';e.style.animationDelay=(Math.random()*.2)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),2200);}}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ===== GAP FILL =====
+const GA={1:'network',2:'accessible',3:'invented',4:'while',5:'vision',6:'communicate',7:'much',8:'through'};
+const GE={
+  1:`<strong>✅ Đáp án: network (mạng lưới)</strong><br>
+Dịch: "The Internet is a huge <em>network</em> of computers" = Internet là một <strong>mạng lưới</strong> máy tính khổng lồ.<br><br>
+<strong>Phân tích từ loại:</strong><br>
+• <strong>network</strong> (n) = mạng, hệ thống kết nối ✅ → đứng sau "a huge" làm danh từ<br>
+• <em>vision</em> (n) = tầm nhìn ❌ không hợp nghĩa trong câu này<br>
+• <em>communicate</em> (v) = giao tiếp ❌ động từ, không dùng sau mạo từ "a"<br>
+• <em>invented</em> (v-pp) = được phát minh ❌ sai từ loại`,
+
+  2:`<strong>✅ Đáp án: accessible (có thể truy cập được)</strong><br>
+Dịch: "made it <em>accessible</em> to everyone" = làm cho mọi người có thể truy cập được.<br><br>
+<strong>Cấu trúc ngữ pháp:</strong> <em>make + O + Adj</em> (làm cho O trở nên...)<br>
+• <strong>accessible</strong> (adj) = có thể tiếp cận, truy cập được ✅<br>
+• <em>much</em> ❌ trạng từ/tính từ, không hợp cấu trúc này<br>
+• <em>through</em> ❌ giới từ, không phải tính từ`,
+
+  3:`<strong>✅ Đáp án: invented (được phát minh)</strong><br>
+Dịch: "The world wide web was <em>invented</em> by Sir Tim Berners-Lee" = WWW được phát minh bởi Sir Tim Berners-Lee.<br><br>
+<strong>Cấu trúc Bị động (Passive Voice):</strong> <em>was/were + V-pp</em><br>
+• <strong>invented</strong> (V-pp của invent) ✅<br>
+• <em>vision/network</em> ❌ danh từ, không dùng trong cấu trúc bị động<br>
+• <em>accessible</em> ❌ tính từ, sai vị trí`,
+
+  4:`<strong>✅ Đáp án: while (trong khi)</strong><br>
+Dịch: "Berners-Lee created the WWW <em>while</em> he was working at CERN" = Trong khi ông đang làm việc tại CERN, Thụy Sĩ.<br><br>
+<strong>Ngữ pháp:</strong> <em>while</em> = liên từ thời gian, nối 2 hành động xảy ra <strong>đồng thời</strong> ✅<br>
+• <em>through</em> ❌ giới từ, không thể nối 2 mệnh đề<br>
+• <em>much</em> ❌ sai từ loại hoàn toàn`,
+
+  5:`<strong>✅ Đáp án: vision (tầm nhìn)</strong><br>
+Dịch: "His <em>vision</em> soon went beyond a network for scientists" = Tầm nhìn của ông sớm vượt ra ngoài một mạng lưới cho các nhà khoa học.<br><br>
+• <strong>vision</strong> (n) = tầm nhìn, ý tưởng, khát vọng lớn ✅<br>
+• <em>network</em> ❌ vô nghĩa: "His network went beyond..." → không logic<br>
+• <em>while</em> ❌ liên từ, sai từ loại`,
+
+  6:`<strong>✅ Đáp án: communicate (giao tiếp)</strong><br>
+Dịch: "to share knowledge, to <em>communicate</em>, and to collaborate" = chia sẻ kiến thức, giao tiếp và hợp tác.<br><br>
+<strong>Cấu trúc song song (Parallel Structure):</strong> <em>to + V, to + V, and to + V</em><br>
+• <strong>communicate</strong> (v) ✅ → khớp cấu trúc to + verb<br>
+• <em>vision / network</em> ❌ danh từ, phá vỡ cấu trúc song song`,
+
+  7:`<strong>✅ Đáp án: much (rất nhiều hơn)</strong><br>
+Dịch: "made it <em>much</em> easier for people" = làm cho việc đó dễ dàng hơn <strong>rất nhiều</strong> đối với mọi người.<br><br>
+<strong>Cấu trúc:</strong> <em>much + comparative adjective</em> (nhấn mạnh mức độ so sánh hơn)<br>
+• <strong>much easier</strong> = dễ hơn rất nhiều ✅<br>
+• <em>while / through</em> ❌ sai từ loại, không thể bổ nghĩa cho tính từ so sánh`,
+
+  8:`<strong>✅ Đáp án: through (thông qua)</strong><br>
+Dịch: "share their thoughts <em>through</em> social networking sites" = chia sẻ suy nghĩ <strong>thông qua</strong> các trang mạng xã hội.<br><br>
+<strong>Ngữ pháp:</strong> <em>through</em> (prep) = qua, thông qua – giới từ chỉ <strong>phương tiện/cách thức</strong> ✅<br>
+• <em>while</em> ❌ liên từ, không làm giới từ chỉ phương tiện<br>
+• <em>much</em> ❌ sai từ loại hoàn toàn`
+};
+
+const gDone={};
+const WORDS=['while','through','vision','network','communicate','invented','accessible','much'];
+
+function openP(n){
+  if(gDone[n])return;
+  document.getElementById('ptitle').textContent='Chọn từ cho chỗ trống số ('+n+'):';
+  const d=document.getElementById('popts');d.innerHTML='';
+  shuffle([...WORDS]).forEach(w=>{
+    const b=document.createElement('button');b.className='popt';b.textContent=w;
+    b.onclick=()=>pickWord(n,w);d.appendChild(b);
+  });
+  document.getElementById('wpop').classList.add('show');
+}
+
+function pickWord(n,w){
+  document.getElementById('wpop').classList.remove('show');
+  const ok=GA[n];const b=document.getElementById('g'+n);
+  b.textContent=w;b.classList.add('ans');
+  const right=w.toLowerCase()===ok.toLowerCase();
+  b.classList.add(right?'ok':'no');
+  if(!right)b.textContent=w+' ✗ (→ '+ok+')';
+  gDone[n]={w,right};
+  if(right){ding();const r=b.getBoundingClientRect();confetti(r.left+r.width/2,r.top);}
+  else buzz();
+  showGExp(n);
+}
+
+function showGExp(n){
+  const d=document.getElementById('gexp');
+  d.style.display='block';
+  const total=Object.keys(gDone).length;
+  if(total>=8){
+    let h='<strong style="color:#8854C0;font-size:.96rem">📝 Giải thích toàn bộ 8 chỗ trống:</strong><br><br>';
+    for(let i=1;i<=8;i++){
+      h+='<p style="margin-bottom:11px"><strong>Chỗ trống ('+i+'):</strong><br>'+GE[i]+'</p>';
+      if(i<8)h+='<hr style="border:none;border-top:1px dashed #ddd;margin:5px 0">';
+    }
+    d.innerHTML=h;
+  } else {
+    if(!document.getElementById('ge-'+n)){
+      const p=document.createElement('p');p.id='ge-'+n;p.style.marginBottom='10px';
+      p.innerHTML='<strong>Chỗ trống ('+n+'):</strong><br>'+GE[n];
+      d.appendChild(p);
+      const hr=document.createElement('hr');hr.style.cssText='border:none;border-top:1px dashed #ddd;margin:5px 0';
+      d.appendChild(hr);
+    }
+  }
+}
+
+// ===== MATCHING =====
+const MW=[{n:1,p:'by leaps and bounds'},{n:2,p:'do away with'},{n:3,p:'embrace'},{n:4,p:'hologram'},{n:5,p:'mainstream'},{n:6,p:'drone'},{n:7,p:'start-up'},{n:8,p:'prototype'}];
+const MM=[{l:'a',t:'completely accept'},{l:'b',t:'considered normal and used by most people'},{l:'c',t:'a company that is just beginning to operate'},{l:'d',t:'very quickly'},{l:'e',t:'an aircraft without a pilot, controlled from the ground'},{l:'f',t:'the first model of something new'},{l:'g',t:'a three-dimensional image'},{l:'h',t:'put an end to'}];
+const MC={1:'d',2:'h',3:'a',4:'g',5:'b',6:'e',7:'c',8:'f'};
+
+function buildMatch(){
+  const L=document.getElementById('mleft'),R=document.getElementById('mright');
+  MW.forEach(w=>{
+    const d=document.createElement('div');d.className='mi';
+    d.innerHTML='<span class="mn">'+w.n+'</span><div style="flex:1"><div style="font-weight:800;color:#444">'+w.p+'</div><select class="msel" id="ms'+w.n+'"><option value="">-- chọn nghĩa --</option>'+MM.map(m=>'<option value="'+m.l+'">'+m.l+'. '+m.t+'</option>').join('')+'</select></div>';
+    L.appendChild(d);
+  });
+  MM.forEach(m=>{
+    const d=document.createElement('div');d.className='mri';
+    d.innerHTML='<span class="mlt">'+m.l+'.</span><span>'+m.t+'</span>';
+    R.appendChild(d);
+  });
+}
+
+function chkMatch(){
+  let sc=0;
+  MW.forEach(w=>{
+    const s=document.getElementById('ms'+w.n);const ok=MC[w.n];
+    if(s.value===ok){s.classList.add('ok');sc++;}
+    else{s.classList.add('no');const co=s.querySelector('option[value="'+ok+'"]');if(co)co.style.color='#007a3d';}
+    s.disabled=true;
+  });
+  const d=document.getElementById('mexp');d.classList.add('show');
+  d.innerHTML='<strong>📊 Kết quả Matching: '+sc+'/8 câu đúng</strong><br><br>'
+  +'<strong>Đáp án đúng kèm dịch nghĩa tiếng Việt:</strong><br><br>'
+  +'<b>1 – d:</b> <em>by leaps and bounds</em> = <strong>very quickly</strong> → <span style="color:#8854C0">rất nhanh, vượt bậc</span> (dùng mô tả tốc độ tăng trưởng)<br>'
+  +'<b>2 – h:</b> <em>do away with</em> = <strong>put an end to</strong> → <span style="color:#8854C0">chấm dứt, loại bỏ</span> (phrasal verb)<br>'
+  +'<b>3 – a:</b> <em>embrace</em> = <strong>completely accept</strong> → <span style="color:#8854C0">chấp nhận hoàn toàn, đón nhận tích cực</span><br>'
+  +'<b>4 – g:</b> <em>hologram</em> = <strong>a three-dimensional image</strong> → <span style="color:#8854C0">hình ảnh ba chiều (3D)</span><br>'
+  +'<b>5 – b:</b> <em>mainstream</em> = <strong>considered normal and used by most people</strong> → <span style="color:#8854C0">phổ biến, được đại đa số sử dụng</span><br>'
+  +'<b>6 – e:</b> <em>drone</em> = <strong>an aircraft without a pilot, controlled from the ground</strong> → <span style="color:#8854C0">máy bay không người lái</span><br>'
+  +'<b>7 – c:</b> <em>start-up</em> = <strong>a company that is just beginning to operate</strong> → <span style="color:#8854C0">công ty khởi nghiệp</span><br>'
+  +'<b>8 – f:</b> <em>prototype</em> = <strong>the first model of something new</strong> → <span style="color:#8854C0">nguyên mẫu đầu tiên</span>';
+  if(sc===8){ding();confetti(window.innerWidth/2,window.innerHeight/2);}
+}
+
+// ===== MCQ =====
+const QS=[
+  {id:'b1',
+   opts:[{k:'a',t:'create an energy shortage'},{k:'b',t:'reduce energy consumption'},{k:'c',t:'end our dependence on fossil fuels'},{k:'d',t:'stop using clean energy'}],
+   ans:'c',
+   exp:'<strong>✅ Đáp án đúng: c – end our dependence on fossil fuels</strong><br>'
+   +'<em>Dịch câu hỏi:</em> "Theo đoạn văn, công nghệ có thể giúp ______."<br><br>'
+   +'<strong>Phân tích 4 đáp án:</strong><br>'
+   +'a. create an energy shortage = <span style="color:#8854C0">tạo ra tình trạng thiếu năng lượng</span> ❌ ngược lại với bài<br>'
+   +'b. reduce energy consumption = <span style="color:#8854C0">giảm tiêu thụ năng lượng</span> ❌ bài không đề cập trực tiếp<br>'
+   +'<strong style="color:#00D26A">c. end our dependence on fossil fuels = chấm dứt phụ thuộc nhiên liệu hóa thạch ✅</strong><br>'
+   +'d. stop using clean energy = <span style="color:#8854C0">ngừng dùng năng lượng sạch</span> ❌ hoàn toàn ngược!<br><br>'
+   +'<strong>Bằng chứng:</strong> "technology can help us <strong>do away with</strong> dependence on fossil fuels" → <em>do away with</em> = loại bỏ/chấm dứt → C đúng nhất.'},
+
+  {id:'b2',
+   opts:[{k:'a',t:'interacting with 3-D objects'},{k:'b',t:'teaching and learning'},{k:'c',t:'holographic communication'},{k:'d',t:'all of the above'}],
+   ans:'d',
+   exp:'<strong>✅ Đáp án đúng: d – all of the above (tất cả các ý trên)</strong><br>'
+   +'<em>Dịch:</em> "Trong tương lai, thực tế ảo có thể được sử dụng cho ______."<br><br>'
+   +'<strong>Kiểm tra từng đáp án trong bài:</strong><br>'
+   +'a. interacting with 3-D objects = <span style="color:#8854C0">tương tác với vật thể 3D</span> ✅ → "for interacting with <strong>3-D objects</strong>"<br>'
+   +'b. teaching and learning = <span style="color:#8854C0">dạy và học</span> ✅ → "other useful and <strong>educational</strong> purposes"<br>'
+   +'c. holographic communication = <span style="color:#8854C0">giao tiếp bằng hologram</span> ✅ → "communication through <strong>holograms</strong>"<br>'
+   +'<strong style="color:#00D26A">d. all of the above = tất cả các ý trên ✅</strong> → Cả 3 ứng dụng đều có trong bài!'},
+
+  {id:'b3',
+   opts:[{k:'a',t:'They are just science fiction.'},{k:'b',t:'They are presently at the prototype stage.'},{k:'c',t:'They are produced in large quantities.'},{k:'d',t:'They will be launched in the coming year.'}],
+   ans:'b',
+   exp:'<strong>✅ Đáp án đúng: b – They are presently at the prototype stage.</strong><br>'
+   +'<em>Dịch:</em> "Câu nào sau đây đúng về xe bay?"<br><br>'
+   +'a. They are just science fiction = <span style="color:#8854C0">Chúng chỉ là khoa học viễn tưởng</span> ❌ không đúng, chúng đang được phát triển thật sự<br>'
+   +'<strong style="color:#00D26A">b. They are presently at the prototype stage = Hiện đang ở giai đoạn nguyên mẫu ✅</strong><br>'
+   +'c. They are produced in large quantities = <span style="color:#8854C0">Được sản xuất hàng loạt</span> ❌ chưa có trong bài<br>'
+   +'d. They will be launched in the coming year = <span style="color:#8854C0">Sẽ ra mắt trong năm tới</span> ❌ bài không nêu cụ thể năm<br><br>'
+   +'<strong>Bằng chứng:</strong> "There are already a handful of flying vehicle <strong>prototypes</strong>: Terrafugia has TF-X..." → Đang ở giai đoạn <strong>nguyên mẫu (prototype)</strong>.'},
+
+  {id:'b4',
+   opts:[{k:'a',t:'a large number of'},{k:'b',t:'a small number of'},{k:'c',t:'a great deal of'},{k:'d',t:'an amount of'}],
+   ans:'b',
+   exp:'<strong>✅ Đáp án đúng: b – a small number of (một số lượng nhỏ)</strong><br>'
+   +'<em>Dịch:</em> "Cụm \'a handful of\' có nghĩa là gì?"<br><br>'
+   +'a. a large number of = <span style="color:#8854C0">một số lượng lớn</span> ❌<br>'
+   +'<strong style="color:#00D26A">b. a small number of = một số lượng nhỏ ✅</strong><br>'
+   +'c. a great deal of = <span style="color:#8854C0">rất nhiều</span> ❌<br>'
+   +'d. an amount of = <span style="color:#8854C0">một lượng</span> ❌ thường dùng với danh từ không đếm được<br><br>'
+   +'<strong>Từ vựng:</strong> <em>a handful of</em> = nghĩa gốc "một nắm tay" → nghĩa bóng: <strong>chỉ một số ít</strong>. Ví dụ: "a handful of students" = chỉ vài học sinh.'},
+
+  {id:'b5',
+   opts:[{k:'a',t:'Terrafugia'},{k:'b',t:'I-TEC'},{k:'c',t:'AeroMobil'},{k:'d',t:'Pal-V'}],
+   ans:'a',
+   exp:'<strong>✅ Đáp án đúng: a – Terrafugia</strong><br>'
+   +'<em>Dịch:</em> "Xe bay TF-X được phát triển bởi công ty nào?"<br><br>'
+   +'<strong style="color:#00D26A">a. Terrafugia ✅ → có TF-X</strong><br>'
+   +'b. I-TEC ❌ → có Maverick LSA "Flying Car"<br>'
+   +'c. AeroMobil ❌ → có AeroMobil 3.0<br>'
+   +'d. Pal-V ❌ → có Pal-V1<br><br>'
+   +'<strong>Bài liệt kê chính xác:</strong> "<strong>Terrafugia</strong> has <strong>TF-X</strong>; Pal-V has the Pal-V1; I-TEC has the Maverick LSA; AeroMobil has the AeroMobil 3.0."<br>'
+   +'💡 <em>Mẹo nhớ:</em> TF-X → T ứng với <strong>T</strong>errafugia'},
+
+  {id:'b6',
+   opts:[{k:'a',t:'Virtual reality technology is now used in video gaming.'},{k:'b',t:'Solar power and wind are clean energy.'},{k:'c',t:"Amazon's flying cars are being used for delivery."},{k:'d',t:'Technology can bring us a bright future.'}],
+   ans:'c',
+   exp:'<strong>✅ Đáp án đúng: c – Amazon\'s flying cars are being used for delivery. (KHÔNG ĐÚNG)</strong><br>'
+   +'<em>Dịch:</em> "Câu nào sau đây KHÔNG đúng với nội dung bài đọc?"<br><br>'
+   +'a. Virtual reality is now used in video gaming = <span style="color:#8854C0">VR đang được dùng trong game</span> ✅ Đúng (Pokemon Go là ví dụ VR)<br>'
+   +'b. Solar power and wind are clean energy = <span style="color:#8854C0">Năng lượng mặt trời và gió là năng lượng sạch</span> ✅ Đúng<br>'
+   +'<strong style="color:#FF4757">c. Amazon\'s <em>flying cars</em> are being used for delivery ❌ SAI! → Đây là đáp án cần chọn</strong><br>'
+   +'d. Technology can bring us a bright future = <span style="color:#8854C0">Công nghệ mang lại tương lai tươi sáng</span> ✅ Đúng<br><br>'
+   +'<strong>Tại sao C sai?</strong> Bài viết: "Amazon has already started delivering goods with the help of its <strong>drones</strong>" → Amazon dùng <strong>drone</strong> (máy bay không người lái), KHÔNG phải <strong>flying cars</strong> (xe bay) để giao hàng. Đây là bẫy đánh lẫn hai khái niệm!'}
+];
+
+const DONE={};
+function buildMCQ(){
+  QS.forEach(q=>{
+    const c=document.getElementById('ob'+q.id.slice(1));
+    shuffle([...q.opts]).forEach(o=>{
+      const b=document.createElement('button');b.className='obtn';b.dataset.k=o.k;
+      b.innerHTML='<span style="font-weight:900;color:#8854C0">'+o.k.toUpperCase()+'.</span> '+o.t;
+      b.onclick=function(e){pickMCQ(q,o.k,e);};
+      c.appendChild(b);
+    });
+  });
+}
+
+function pickMCQ(q,chosen,e){
+  if(DONE[q.id])return;DONE[q.id]=chosen;
+  const c=document.getElementById('ob'+q.id.slice(1));
+  c.querySelectorAll('.obtn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.k===q.ans)b.classList.add('ok');
+    else if(b.dataset.k===chosen&&chosen!==q.ans)b.classList.add('no');
+  });
+  const expEl=document.getElementById('e'+q.id);
+  expEl.classList.add('show');expEl.innerHTML=q.exp;
+  if(chosen===q.ans){ding();const r=e.target.getBoundingClientRect();confetti(r.left+r.width/2,r.top);}
+  else buzz();
+}
+
+// ===== SUBMIT =====
+function submitAll(){
+  let right=0,done=0;
+  Object.values(gDone).forEach(g=>{done++;if(g.right)right++;});
+  QS.forEach(q=>{if(DONE[q.id]!==undefined){done++;if(DONE[q.id]===q.ans)right++;}});
+  const ms1=document.getElementById('ms1');
+  if(ms1&&ms1.disabled){
+    MW.forEach(w=>{done++;const s=document.getElementById('ms'+w.n);if(s&&s.classList.contains('ok'))right++;});
+  }
+  const pct=Math.round(right/Math.max(done,1)*100);
+  let em,msg;
+  if(pct>=90){em='🏆';msg='Xuất sắc! Em học thật giỏi! Cô rất tự hào về em!';}
+  else if(pct>=75){em='🌟';msg='Giỏi lắm! Cố gắng thêm một chút nữa là hoàn hảo!';}
+  else if(pct>=55){em='💪';msg='Khá tốt! Xem lại giải thích các câu sai để tiến bộ nhé!';}
+  else{em='📚';msg='Cần cố gắng hơn! Đọc kỹ bài và giải thích từng câu nhé em!';}
+  document.getElementById('remoji').textContent=em;
+  document.getElementById('rscore').textContent=right+' / '+done+' câu đúng ('+pct+'%)';
+  document.getElementById('rmsg').textContent=msg;
+  document.getElementById('roverlay').classList.add('show');
+  if(pct>=75){
+    ding();
+    [0,300,600].forEach((delay,i)=>setTimeout(()=>confetti(window.innerWidth*[.3,.7,.5][i],200),delay));
+  }
+}
+
+buildMatch();
+buildMCQ();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

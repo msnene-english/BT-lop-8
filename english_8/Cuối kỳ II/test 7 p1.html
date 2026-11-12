@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ĐỀ 07 - ĐỀ THI CUỐI HỌC KỲ 2 LỚP 8 | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #FF6B9D; --purple: #8854C0; --yellow: #FDCB6E; --teal: #00C9A7;
+  --blue: #4ECDC4; --orange: #FF9F43; --correct: #00D26A; --wrong: #FF4757;
+  --card-bg: rgba(255,255,255,0.95); --shadow: 0 8px 32px rgba(136,84,192,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; min-height: 100vh; overflow-x: hidden; background: #f0e6ff; }
+
+/* ===== ANIMATED GRADIENT BACKGROUND ===== */
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffecd2, #a1c4fd, #c2e9fb, #d4fc79, #96e6a1, #a18cd1, #fbc2eb);
+  background-size: 400% 400%; animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* ===== SVG PATTERN OVERLAY (FLOWERS & CATS) ===== */
+.bg-pattern { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.float-icon { position: absolute; font-size: 2.5rem; animation: floatUp linear infinite; opacity: 0.25; user-select: none; }
+@keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 0.15; } 50% { opacity: 0.35; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0.1; } }
+
+/* ===== MAIN WRAPPER ===== */
+.wrapper { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; padding: 16px 12px 60px; }
+
+/* ===== HEADER ===== */
+.quiz-header {
+  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(15px);
+  border: 2px solid rgba(255,255,255,0.6); border-radius: 20px;
+  padding: 16px 24px 14px; text-align: center; margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(136,84,192,0.2); color: #4a2382;
+}
+.quiz-header h1 { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+.quiz-header p { font-size: 0.9rem; font-weight: 800; margin-top: 5px; color: #6A0572; }
+
+/* ===== SCORE BAR ===== */
+.score-bar {
+  background: rgba(255,255,255,0.88); border-radius: 50px; padding: 8px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px; box-shadow: var(--shadow); font-size: 1rem; font-weight: 800;
+}
+.score-bar .score-val { color: var(--purple); font-size: 1.1rem; }
+.progress-wrap { flex: 1; margin: 0 14px; height: 10px; background: #e0d4f7; border-radius: 99px; overflow: hidden; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--purple)); border-radius: 99px; transition: width 0.5s ease; }
+
+/* ===== QUESTION CARD (GLASSMORPHISM) ===== */
+.q-card {
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.8); border-radius: 20px;
+  padding: 24px 22px; margin-bottom: 20px; box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+.q-num {
+  display: inline-block; background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white; font-weight: 900; font-size: 0.9rem; border-radius: 50px;
+  padding: 5px 14px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(136,84,192,0.3);
+}
+.q-text { font-size: 1.15rem; font-weight: 800; color: #2d1b6e; line-height: 1.6; margin-bottom: 16px; }
+
+/* ===== OPTIONS GRID ===== */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+@media(max-width:550px) { .options { grid-template-columns: 1fr; } }
+
+.opt-btn {
+  background: rgba(255, 255, 255, 0.9); border: none; border-radius: 18px;
+  padding: 14px 18px; font-size: 1.08rem; font-weight: 800; color: #3d1a78;
+  cursor: pointer; text-align: center; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 6px 0 #d4b8ff, 0 8px 16px rgba(136,84,192,0.15);
+  display: flex; align-items: center; justify-content: center; line-height: 1.4;
+}
+.opt-btn:hover:not(:disabled) {
+  transform: scale(1.03) translateY(-4px); box-shadow: 0 10px 0 #c4a0f0, 0 12px 20px rgba(136,84,192,0.25);
+  background: linear-gradient(135deg, #f8f0ff, #ffe0f0);
+}
+.opt-btn:active:not(:disabled) { transform: scale(0.98) translateY(2px); box-shadow: 0 2px 0 #c4a0f0; }
+
+.opt-btn.correct {
+  background: linear-gradient(135deg, #d4fff0, #b8ffe0) !important;
+  color: #00873e !important; box-shadow: 0 6px 0 #00a854, 0 8px 16px rgba(0,210,106,0.2) !important;
+  transform: scale(1.03) !important; border: 2px solid var(--correct);
+}
+.opt-btn.wrong {
+  background: linear-gradient(135deg, #ffe0e3, #ffd0d4) !important;
+  color: #c0002a !important; box-shadow: 0 6px 0 #ff2244, 0 8px 16px rgba(255,71,87,0.2) !important;
+  border: 2px solid var(--wrong); animation: shakeOption 0.4s ease;
+}
+@keyframes shakeOption { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+.opt-btn:disabled { cursor: default; }
+
+/* ===== EXPLANATION BOX (STRICT FORMATTING) ===== */
+.explanation {
+  display: none; margin-top: 18px; background: rgba(255,255,255,0.95);
+  border-radius: 16px; padding: 18px; font-size: 1rem; line-height: 1.7;
+  box-shadow: inset 0 0 0 2px var(--yellow), 0 8px 24px rgba(0,0,0,0.08);
+  animation: fadeInDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.explanation.show { display: block; }
+@keyframes fadeInDown { from{opacity:0;transform:translateY(-15px)} to{opacity:1;transform:none} }
+
+.trans-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 10px 14px; font-weight: 800; color: #d35400; border-radius: 8px; margin-bottom: 12px; }
+.expl-title { font-weight: 900; color: var(--purple); font-size: 1.15rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+.expl-row { margin: 6px 0; color: #2c3e50; }
+.p-word { color: #0984e3; font-weight: 800; background: #eaf2f8; padding: 2px 6px; border-radius: 4px; }
+.p-phonetic { color: #8e44ad; font-family: 'Courier New', monospace; font-weight: bold; background: #f4ecf7; padding: 2px 6px; border-radius: 4px; }
+.p-mean { color: #d35400; font-weight: 700; }
+.p-grammar { text-decoration: underline; text-decoration-color: #e74c3c; text-decoration-thickness: 2px; font-weight: 800; color: #c0392b; }
+.hl-green { color: #00b894; font-weight: 900; }
+.hl-red { color: #d63031; font-weight: 700; text-decoration: line-through; }
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-wrap { text-align: center; margin-top: 35px; }
+.submit-btn {
+  background: linear-gradient(135deg, #f9ca24, #f0932b); color: white; border: none;
+  border-radius: 50px; padding: 16px 48px; font-size: 1.3rem; font-weight: 900;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 8px 0 #c87000, 0 15px 30px rgba(249,202,36,0.4);
+  transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase;
+}
+.submit-btn:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 12px 0 #c87000, 0 20px 40px rgba(249,202,36,0.5); }
+.submit-btn:active { transform: scale(0.98) translateY(2px); box-shadow: 0 2px 0 #c87000; }
+
+/* ===== MODALS (PASSWORD, NAME, RESULT) ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(5,2,15,0.85); backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.pw-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(240,240,255,0.98) 100%);
+  border: 3px solid #d4b8ff; border-radius: 28px; padding: 40px 30px;
+  max-width: 440px; width: 90%; text-align: center; position: relative;
+  box-shadow: 0 20px 60px rgba(136,84,192,0.4); animation: popIn 0.4s cubic-bezier(.18,1.5,.5,1);
+}
+@keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+.pw-crest { font-size: 4rem; margin-bottom: 8px; display: block; animation: floatUp 3s ease-in-out infinite alternate; }
+.pw-title { font-size: 1.6rem; font-weight: 900; color: var(--purple); margin-bottom: 6px; text-transform: uppercase; }
+.pw-sub { font-size: 1rem; color: #5a3a8a; font-weight: 700; margin-bottom: 24px; }
+.pw-input {
+  width: 100%; padding: 15px 20px; border-radius: 16px;
+  border: 2px solid #d4b8ff; background: #fff; color: #3d1a78;
+  font-size: 1.1rem; font-family: 'Nunito', sans-serif; font-weight: 800;
+  outline: none; text-align: center; transition: all .3s; box-shadow: inset 0 3px 6px rgba(0,0,0,0.05);
+}
+.pw-input:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(136,84,192,0.2); }
+.pw-input.error { border-color: var(--wrong); box-shadow: 0 0 0 4px rgba(255,71,87,0.2); animation: shakeOption .4s ease; }
+.pw-btn {
+  width: 100%; padding: 15px; margin-top: 18px; border-radius: 16px; border: none;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+  color: #fff; font-size: 1.15rem; font-weight: 900; font-family: 'Nunito', sans-serif;
+  cursor: pointer; transition: transform .2s, box-shadow .2s; box-shadow: 0 6px 0 #6A0572;
+}
+.pw-btn:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #6A0572, 0 10px 20px rgba(136,84,192,0.4); }
+.pw-btn:active { transform: translateY(3px); box-shadow: 0 0px 0 #6A0572; }
+.pw-err { color: var(--wrong); font-size: 0.95rem; margin-top: 12px; display: none; font-weight: 800; }
+
+/* Result Specific */
+.result-gif { width: 100%; max-width: 250px; border-radius: 16px; margin: 15px auto; display: block; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+.result-score { font-size: 3rem; font-weight: 900; color: var(--teal); margin-bottom: 5px; text-shadow: 2px 2px 0px rgba(0,201,167,0.2); }
+
+/* Confetti */
+.confetti-piece { position: fixed; width: 12px; height: 12px; border-radius: 4px; pointer-events: none; z-index: 9999; animation: confettiFall linear forwards; }
+@keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; } }
+
+/* Custom elements for signs */
+.sign-board { border-radius: 12px; padding: 15px; margin: 10px auto; text-align: center; max-width: 250px; }
+.sign-wifi { background: #2ecc71; color: white; border: 4px solid #27ae60; font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; }
+.sign-notice { background: white; color: black; border: 3px solid #333; font-family: 'Times New Roman', serif; font-size: 1.1rem; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="modal-overlay show" id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="nameModal">
+  <div class="pw-card">
+    <span class="pw-crest">📝</span>
+    <div class="pw-title">NHẬP TÊN CỦA BẠN</div>
+    <div class="pw-sub">Hãy cho cô biết ai đang làm bài nhé!</div>
+    <input type="text" class="pw-input" id="nameInput" placeholder="VD: Nguyễn Văn A..." autocomplete="off" />
+    <button class="pw-btn" onclick="submitName()">HOÀN THÀNH</button>
+    <div class="pw-err" id="nameErr">Vui lòng nhập tên của bạn!</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resultModal">
+  <div class="pw-card">
+    <div class="pw-title" id="resTitle" style="font-size: 1.4rem;">🌟 THIÊN TÀI!</div>
+    <img id="resGif" class="result-gif" src="" alt="Result Meme">
+    <div class="result-score" id="resScore">0/0</div>
+    <div class="pw-sub" id="resMsg" style="font-size: 1.1rem; color: #2d1b6e;"></div>
+    <button class="pw-btn" onclick="location.reload()">LÀM LẠI BÀI</button>
+  </div>
+</div>
+
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern" id="bgPattern"></div>
+
+<div class="wrapper" id="mainContent" style="display:none;">
+  <div class="quiz-header">
+    <h1>ĐỀ 07 - ĐỀ THI CUỐI HỌC KỲ 2 LỚP 8</h1>
+    <p>Môn: Tiếng Anh &nbsp;|&nbsp; Giáo viên tạo: <strong>MS Chí Nên ULIS</strong></p>
+  </div>
+
+  <div class="score-bar">
+    <span>🌟 Điểm:</span>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <span class="score-val" id="scoreDisplay">0 / 0</span>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="showNameModal()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+// ===== SECURITY =====
+const _k = [49, 54, 49, 49]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').classList.remove('show');
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+
+// ===== BACKGROUND ICONS =====
+const icons = ['🌸','🐱','🌺','🐈','🌼','🌻','😻','🌷','✨','💫','🌿'];
+const bp = document.getElementById('bgPattern');
+for(let i=0;i<25;i++){
+  const el = document.createElement('div');
+  el.className = 'float-icon';
+  el.textContent = icons[Math.floor(Math.random()*icons.length)];
+  el.style.left = Math.random()*100+'%';
+  el.style.animationDuration = (15+Math.random()*25)+'s';
+  el.style.animationDelay = (Math.random()*20)+'s';
+  el.style.fontSize = (2+Math.random()*2)+'rem';
+  bp.appendChild(el);
+}
+
+// ===== AUDIO (WEB AUDIO API) =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getACtx(){ if(!actx) actx = new AudioCtx(); return actx; }
+
+function playDing(){
+  const ctx = getACtx(); const o = ctx.createOscillator(), g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type = 'sine'; o.frequency.setValueAtTime(880, ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime+0.1);
+  g.gain.setValueAtTime(0.5, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.5);
+  o.start(); o.stop(ctx.currentTime+0.5);
+}
+function playBuzz(){
+  const ctx = getACtx();
+  [300,200].forEach((freq,i)=>{
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sawtooth'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.2, ctx.currentTime+i*0.15); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+i*0.15+0.15);
+    o.start(ctx.currentTime+i*0.15); o.stop(ctx.currentTime+i*0.15+0.15);
+  });
+}
+
+// ===== CONFETTI =====
+function spawnConfetti(x,y){
+  const colors=['#FF6B9D','#FDCB6E','#00C9A7','#8854C0','#4ECDC4','#FF9F43','#00D26A'];
+  for(let i=0;i<40;i++){
+    const el=document.createElement('div'); el.className='confetti-piece';
+    el.style.left=(x-50+Math.random()*100)+'px'; el.style.top=(y-50+Math.random()*50)+'px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.width=(8+Math.random()*8)+'px'; el.style.height=(8+Math.random()*8)+'px';
+    el.style.borderRadius=Math.random()>0.5?'50%':'3px';
+    el.style.animationDuration=(1+Math.random()*1.5)+'s';
+    document.body.appendChild(el); setTimeout(()=>el.remove(), 2500);
+  }
+}
+
+// ===== DATA =====
+const quizData = [
+  {
+    num: 1,
+    question: 'Choose the word whose underlined part differs from the other three in pronunciation:<br><br>A. m<u>u</u>ch<br>B. teach<u>er</u><br>C. b<u>ea</u>ch<br>D. broch<u>ure</u><br><i>(Note: Assume the underlined sound is the consonant sound /tʃ/ vs /ʃ/)</i>',
+    options: [
+      { text: 'much', correct: false },
+      { text: 'teacher', correct: false },
+      { text: 'beach', correct: false },
+      { text: 'brochure', correct: true }
+    ],
+    explanation: `
+      <div class="trans-box">Chọn từ có phần phụ âm gạch chân (ch) phát âm khác với các từ còn lại.</div>
+      <div class="expl-row">💡 <strong>Phân tích phát âm:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. much</span> <span class="p-phonetic">/mʌtʃ/</span>: <span class="p-mean">nhiều</span>. (Âm /tʃ/ - chờ)</div>
+      <div class="expl-row"><span class="hl-red">B. teacher</span> <span class="p-phonetic">/ˈtiːtʃər/</span>: <span class="p-mean">giáo viên</span>. (Âm /tʃ/)</div>
+      <div class="expl-row"><span class="hl-red">C. beach</span> <span class="p-phonetic">/biːtʃ/</span>: <span class="p-mean">bãi biển</span>. (Âm /tʃ/)</div>
+      <div class="expl-row"><span class="hl-green">D. brochure</span> <span class="p-phonetic">/ˈbrəʊʃər/</span>: <span class="p-mean">tờ rơi quảng cáo</span>. (Âm /ʃ/ - sờ nặng)</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn D?</strong> Từ <em>brochure</em> có nguồn gốc tiếng Pháp nên "ch" được phát âm là /ʃ/, trong khi các từ còn lại phát âm là /tʃ/.</div>
+    `
+  },
+  {
+    num: 2,
+    question: 'Choose the word whose underlined part differs from the other three in pronunciation:<br><br>A. c<u>o</u>nference<br>B. c<u>o</u>mputer<br>C. c<u>o</u>nnection<br>D. c<u>o</u>mmunicate',
+    options: [
+      { text: 'conference', correct: true },
+      { text: 'computer', correct: false },
+      { text: 'connection', correct: false },
+      { text: 'communicate', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Chọn từ có chữ "o" phát âm khác với các từ còn lại.</div>
+      <div class="expl-row">💡 <strong>Phân tích phát âm:</strong></div>
+      <div class="expl-row"><span class="hl-green">A. conference</span> <span class="p-phonetic">/ˈkɒnfərəns/</span>: <span class="p-mean">hội nghị</span>. (Âm /ɒ/ - o ngắn)</div>
+      <div class="expl-row"><span class="hl-red">B. computer</span> <span class="p-phonetic">/kəmˈpjuːtər/</span>: <span class="p-mean">máy tính</span>. (Âm /ə/ - ơ ngắn)</div>
+      <div class="expl-row"><span class="hl-red">C. connection</span> <span class="p-phonetic">/kəˈnekʃn/</span>: <span class="p-mean">sự kết nối</span>. (Âm /ə/)</div>
+      <div class="expl-row"><span class="hl-red">D. communicate</span> <span class="p-phonetic">/kəˈmjuːnɪkeɪt/</span>: <span class="p-mean">giao tiếp</span>. (Âm /ə/)</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Trong đáp án A, trọng âm rơi vào âm tiết đầu tiên nên chữ "o" phát âm rõ là /ɒ/. Các từ còn lại trọng âm rơi vào âm tiết thứ 2, nên chữ "o" ở đầu bị yếu đi và đọc thành âm schwa /ə/.</div>
+    `
+  },
+  {
+    num: 4,
+    question: 'Choose the word that differs from the other three in the position of primary stress:<br><br>A. Portuguese<br>B. Chinese<br>C. Vietnamese<br>D. Japanese',
+    options: [
+      { text: 'Portuguese', correct: false },
+      { text: 'Chinese', correct: true },
+      { text: 'Vietnamese', correct: false },
+      { text: 'Japanese', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Chọn từ có trọng âm chính rơi vào âm tiết khác với các từ còn lại.</div>
+      <div class="expl-row">💡 <strong>Phân tích trọng âm (Quy tắc đuôi -ese luôn nhận trọng âm):</strong></div>
+      <div class="expl-row"><span class="hl-red">A. Portu'guese</span> (Nhấn âm 3 /ˌpɔːrtʃʊˈɡiːz/): <span class="p-mean">tiếng/người Bồ Đào Nha</span>.</div>
+      <div class="expl-row"><span class="hl-green">B. Chi'nese</span> (Nhấn âm 2 /tʃaɪˈniːz/): <span class="p-mean">tiếng/người Trung Quốc</span>.</div>
+      <div class="expl-row"><span class="hl-red">C. Vietna'mese</span> (Nhấn âm 3 /ˌvjetnəˈmiːz/): <span class="p-mean">tiếng/người Việt Nam</span>.</div>
+      <div class="expl-row"><span class="hl-red">D. Japa'nese</span> (Nhấn âm 3 /ˌdʒæpəˈniːz/): <span class="p-mean">tiếng/người Nhật Bản</span>.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn B?</strong> Tất cả các từ đều có trọng âm rơi vào đuôi "-ese". Tuy nhiên, "Chinese" chỉ có 2 âm tiết nên trọng âm rơi vào âm tiết thứ 2. Các từ còn lại có 3 âm tiết nên trọng âm rơi vào âm tiết thứ 3.</div>
+    `
+  },
+  {
+    num: 5,
+    question: 'He texted me that he would come to the office _____________ twenty minutes.',
+    options: [
+      { text: 'for', correct: false },
+      { text: 'by', correct: false },
+      { text: 'in', correct: true },
+      { text: 'at', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Anh ấy đã nhắn tin cho tôi rằng anh ấy sẽ đến văn phòng trong 20 phút nữa.</div>
+      <div class="expl-row">💡 <strong>Phân tích giới từ:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. for</span>: <span class="p-mean">trong khoảng (bao lâu)</span> - thường dùng với thì hoàn thành hoặc chỉ độ dài thời gian đã xảy ra.</div>
+      <div class="expl-row"><span class="hl-red">B. by</span>: <span class="p-mean">trước lúc</span> - thường đi với mốc thời gian cụ thể (by 5 PM).</div>
+      <div class="expl-row"><span class="hl-green">C. in</span>: <span class="p-mean">trong (bao lâu nữa)</span> - dùng để chỉ thời gian trong TƯƠNG LAI.</div>
+      <div class="expl-row"><span class="hl-red">D. at</span>: <span class="p-mean">vào lúc</span> - đi với giờ chính xác (at 7 o'clock).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn C?</strong> <span class="p-grammar">in + khoảng thời gian</span> mang nghĩa là "sau khoảng thời gian đó nữa / trong vòng chừng đó thời gian nữa tính từ bây giờ". Anh ấy "sẽ đến" (would come - tương lai trong quá khứ) -> dùng "in twenty minutes".</div>
+    `
+  },
+  {
+    num: 6,
+    question: 'Whose dictionary is this? - It’s _________.',
+    options: [
+      { text: 'her', correct: false },
+      { text: 'she', correct: false },
+      { text: 'hers', correct: true },
+      { text: 'herself', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Cuốn từ điển này là của ai? - Nó là của cô ấy.</div>
+      <div class="expl-row">💡 <strong>Phân tích đại từ:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. her</span>: <span class="p-mean">của cô ấy</span> (Tính từ sở hữu, bắt buộc phải có danh từ theo sau, ví dụ: her dictionary).</div>
+      <div class="expl-row"><span class="hl-red">B. she</span>: <span class="p-mean">cô ấy</span> (Đại từ nhân xưng đóng vai trò chủ ngữ).</div>
+      <div class="expl-row"><span class="hl-green">C. hers</span>: <span class="p-mean">của cô ấy</span> (Đại từ sở hữu = her + danh từ). Nó đứng độc lập không cần danh từ phía sau.</div>
+      <div class="expl-row"><span class="hl-red">D. herself</span>: <span class="p-mean">chính cô ấy</span> (Đại từ phản thân).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn C?</strong> Trong câu trả lời không có danh từ "dictionary" đi kèm, nên ta phải dùng <span class="p-grammar">Đại từ sở hữu (Possessive Pronouns)</span> "hers" để thay thế cho "her dictionary".</div>
+    `
+  },
+  {
+    num: 7,
+    question: 'The use of ________ can be seen everywhere as a way for people to check in and check out automatically.',
+    options: [
+      { text: 'biometrics', correct: true },
+      { text: 'websites', correct: false },
+      { text: 'platforms', correct: false },
+      { text: 'networks', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Việc sử dụng ________ có thể được nhìn thấy ở khắp mọi nơi như một cách để mọi người điểm danh tự động.</div>
+      <div class="expl-row">💡 <strong>Phân tích từ vựng:</strong></div>
+      <div class="expl-row"><span class="hl-green">A. biometrics</span> (n): <span class="p-mean">công nghệ sinh trắc học (nhận diện khuôn mặt, vân tay...)</span>.</div>
+      <div class="expl-row"><span class="hl-red">B. websites</span> (n): <span class="p-mean">trang web</span>.</div>
+      <div class="expl-row"><span class="hl-red">C. platforms</span> (n): <span class="p-mean">nền tảng</span>.</div>
+      <div class="expl-row"><span class="hl-red">D. networks</span> (n): <span class="p-mean">mạng lưới</span>.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Việc "check in" và "check out" tự động (như quét khuôn mặt, vân tay tại cổng) chính là ứng dụng phổ biến nhất của <span class="hl-green">biometrics</span>.</div>
+    `
+  },
+  {
+    num: 8,
+    question: 'Jane and Hoa are talking about the last test.<br>Jane: Are you sure I have passed the French exam?<br>Hoa: __________ I’ve just heard it from our teacher.',
+    options: [
+      { text: 'I’m sorry to hear that.', correct: false },
+      { text: 'I’m absolutely sure.', correct: true },
+      { text: 'I’m not certain.', correct: false },
+      { text: 'Wow, that’s great!', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Jane: Cậu có chắc là tớ đã qua bài kiểm tra tiếng Pháp không?<br>Hoa: ________ Tớ vừa mới nghe từ giáo viên của chúng ta xong.</div>
+      <div class="expl-row">💡 <strong>Phân tích chức năng giao tiếp:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. I’m sorry to hear that.</span>: <span class="p-mean">Rất tiếc khi nghe điều đó.</span> (Dùng để chia buồn, không khớp).</div>
+      <div class="expl-row"><span class="hl-green">B. I’m absolutely sure.</span>: <span class="p-mean">Tớ hoàn toàn chắc chắn.</span> (Khớp với câu hỏi "Are you sure?").</div>
+      <div class="expl-row"><span class="hl-red">C. I’m not certain.</span>: <span class="p-mean">Tớ không chắc lắm.</span> (Mâu thuẫn với vế sau "Tớ vừa mới nghe từ giáo viên").</div>
+      <div class="expl-row"><span class="hl-red">D. Wow, that’s great!</span>: <span class="p-mean">Ồ, thật tuyệt!</span> (Không phải câu trả lời cho câu hỏi Yes/No "Are you sure?").</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn B?</strong> Vì Hoa vừa nghe trực tiếp từ giáo viên nên thông tin này hoàn toàn chính xác -> Hoa trả lời khẳng định sự chắc chắn.</div>
+    `
+  },
+  {
+    num: 9,
+    question: 'Ngoc wanted to know what time _________.',
+    options: [
+      { text: 'does the film begin', correct: false },
+      { text: 'the film began', correct: true },
+      { text: 'did the film begin', correct: false },
+      { text: 'the film begins', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Ngọc muốn biết bộ phim đã bắt đầu lúc mấy giờ.</div>
+      <div class="expl-row">💡 <strong>Phân tích câu gián tiếp (Reported Speech):</strong></div>
+      <div class="expl-row"><span class="hl-red">A & C. Đảo ngữ (does/did)</span>: <span class="p-mean">Sai cấu trúc</span>. Trong câu hỏi gián tiếp, tuyệt đối KHÔNG mượn trợ động từ và không đảo ngữ. Trật tự phải là: Từ để hỏi + Chủ ngữ + Động từ.</div>
+      <div class="expl-row"><span class="hl-red">D. the film begins</span>: <span class="p-mean">Giữ nguyên thì hiện tại đơn</span>. Sai vì động từ tường thuật "wanted" đang ở quá khứ, ta BẮT BUỘC phải lùi thì.</div>
+      <div class="expl-row"><span class="hl-green">B. the film began</span>: <span class="p-mean">Chủ ngữ (the film) + Động từ lùi thì (began)</span>. Đúng hoàn toàn ngữ pháp!</div>
+      <div class="expl-row">✅ <strong>Ghi nhớ:</strong> <span class="p-grammar">Câu hỏi gián tiếp = S + V (Lùi thì, không đảo ngữ)</span>.</div>
+    `
+  },
+  {
+    num: 10,
+    question: 'The atmosphere of Venus is quite __________ from ours.',
+    options: [
+      { text: 'differ', correct: false },
+      { text: 'different', correct: true },
+      { text: 'difference', correct: false },
+      { text: 'differently', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Bầu khí quyển của sao Kim khá là khác biệt so với bầu khí quyển của chúng ta.</div>
+      <div class="expl-row">💡 <strong>Phân tích từ loại:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. differ</span> (verb): <span class="p-mean">khác biệt</span>.</div>
+      <div class="expl-row"><span class="hl-green">B. different</span> (adj): <span class="p-mean">khác nhau, khác biệt</span>.</div>
+      <div class="expl-row"><span class="hl-red">C. difference</span> (noun): <span class="p-mean">sự khác biệt</span>.</div>
+      <div class="expl-row"><span class="hl-red">D. differently</span> (adv): <span class="p-mean">một cách khác biệt</span>.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn B?</strong> Phía trước chỗ trống có động từ tobe "is" và trạng từ chỉ mức độ "quite" (khá). Sau tobe ta cần một <span class="p-grammar">Tính từ (Adjective)</span>. Hơn nữa ta có cụm cố định: <span class="hl-green">different from</span> (khác với).</div>
+    `
+  },
+  {
+    num: 11,
+    question: 'Nam told me that he _________ to me the Saturday before.',
+    options: [
+      { text: 'wrote', correct: false },
+      { text: 'has written', correct: false },
+      { text: 'was writing', correct: false },
+      { text: 'had written', correct: true }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Nam nói với tôi rằng cậu ấy đã viết thư cho tôi vào thứ Bảy tuần trước đó.</div>
+      <div class="expl-row">💡 <strong>Phân tích các đáp án:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. wrote</span>: <span class="p-mean">đã viết</span> (Quá khứ đơn).</div>
+      <div class="expl-row"><span class="hl-red">B. has written</span>: <span class="p-mean">đã viết</span> (Hiện tại hoàn thành).</div>
+      <div class="expl-row"><span class="hl-red">C. was writing</span>: <span class="p-mean">đang viết</span> (Quá khứ tiếp diễn).</div>
+      <div class="expl-row"><span class="hl-green">D. had written</span>: <span class="p-mean">đã viết</span> (Quá khứ hoàn thành).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn D?</strong> Dấu hiệu "the Saturday before" được chuyển từ "last Saturday" (quá khứ đơn) trong câu trực tiếp. Khi chuyển sang <span class="p-grammar">câu gián tiếp (Reported Speech)</span>, thì Quá khứ đơn phải lùi 1 thì thành <strong>Quá khứ hoàn thành (Past Perfect - had + V3/ed)</strong>.</div>
+    `
+  },
+  {
+    num: 12,
+    question: 'Put the sentences (a-c) in the correct order, then fill in the blank to make a logical text.<br><br>In the future, advancements in artificial intelligence will transform many aspects of our lives. Experts predict that AI will be used in education, healthcare, and even our daily routines. ________.<br><br>a. AI-powered systems could help diagnose diseases more accurately and faster than humans.<br>b. In education, virtual tutors might guide students based on their individual learning styles.<br>c. Additionally, smart home devices will manage energy usage and security automatically.',
+    options: [
+      { text: 'b – a – c', correct: true },
+      { text: 'a – c – b', correct: false },
+      { text: 'b – c – a', correct: false },
+      { text: 'c – b – a', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Sắp xếp các câu (a-c) theo thứ tự đúng để tạo thành văn bản logic.<br>Văn bản gốc liệt kê: AI sẽ được sử dụng trong GIÁO DỤC (education), Y TẾ (healthcare), và THÓI QUEN HÀNG NGÀY (daily routines).</div>
+      <div class="expl-row">💡 <strong>Phân tích logic đoạn văn:</strong></div>
+      <div class="expl-row">Câu dẫn đường đã chỉ ra thứ tự các chủ đề sẽ được nhắc đến: <strong>1. Education -> 2. Healthcare -> 3. Daily routines</strong>.</div>
+      <div class="expl-row">- Câu b nói về <em>education</em> (giáo dục) -> Đứng đầu tiên.</div>
+      <div class="expl-row">- Câu a nói về <em>diagnose diseases</em> (chẩn đoán bệnh / y tế) -> Đứng thứ 2.</div>
+      <div class="expl-row">- Câu c nói về <em>smart home devices</em> (nhà thông minh / thói quen hàng ngày) -> Đứng thứ 3.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Thứ tự b - a - c khớp hoàn hảo với cấu trúc liệt kê của câu mở đoạn.</div>
+    `
+  },
+  {
+    num: 13,
+    question: 'Choose the sentence that can end the text (in the previous question) most appropriately.',
+    options: [
+      { text: 'AI technology might even help us explore other planets.', correct: true },
+      { text: 'Some people prefer traditional methods of doing things.', correct: false },
+      { text: 'Many schools still lack access to modern technology.', correct: false },
+      { text: 'AI will replace all human jobs in the future.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Chọn câu kết thúc phù hợp nhất cho đoạn văn trên (đoạn văn khen ngợi sự phát triển của AI trong các lĩnh vực đời sống).</div>
+      <div class="expl-row">💡 <strong>Phân tích logic:</strong></div>
+      <div class="expl-row"><span class="hl-green">A. Công nghệ AI thậm chí có thể giúp chúng ta khám phá các hành tinh khác.</span> (Mở rộng ý nghĩa tích cực, hướng tới tương lai xa hơn - rất phù hợp làm câu kết đoạn).</div>
+      <div class="expl-row"><span class="hl-red">B. Một số người thích phương pháp truyền thống.</span> (Đi lạc đề, đoạn văn đang bàn về sức mạnh tương lai của AI).</div>
+      <div class="expl-row"><span class="hl-red">C. Nhiều trường học vẫn thiếu công nghệ.</span> (Ý tiêu cực, không ăn nhập mạch văn đang dự đoán tương lai tươi sáng).</div>
+      <div class="expl-row"><span class="hl-red">D. AI sẽ thay thế tất cả công việc của con người.</span> (Ý khẳng định quá mạnh và tiêu cực, phá vỡ giọng văn trung lập/tích cực của bài).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Câu A tiếp nối tự nhiên mạch dự đoán tương lai về tiềm năng vô hạn của AI.</div>
+    `
+  },
+  {
+    num: 14,
+    question: 'Choose the sentence that is closest in meaning to the original sentence:<br><br>"I can\'t come to the party because I have to finish my project," Sarah said.',
+    options: [
+      { text: 'Sarah said that she couldn\'t come to the party because she had to finish her project.', correct: true },
+      { text: 'Sarah said that she can\'t come to the party because she has to finish her project.', correct: false },
+      { text: 'Sarah said that she couldn\'t come to the party because she has to finish her project.', correct: false },
+      { text: 'Sarah said that she can’t come to the party because she had to finish her project.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: "Tôi không thể đến bữa tiệc vì tôi phải hoàn thành dự án," Sarah nói.</div>
+      <div class="expl-row">💡 <strong>Phân tích quy tắc chuyển sang Câu Gián Tiếp (Reported Speech):</strong></div>
+      <div class="expl-row">1. <strong>Đổi đại từ:</strong> I -> she, my -> her.</div>
+      <div class="expl-row">2. <strong>Lùi thì toàn bộ động từ:</strong> <br>- can't come -> couldn't come<br>- have to -> had to</div>
+      <div class="expl-row"><span class="hl-red">B, C, D sai vì:</span> Không lùi thì đầy đủ (vẫn giữ can't hoặc has to).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Đây là câu duy nhất áp dụng đúng và đủ tất cả các quy tắc lùi thì và đổi đại từ: <span class="hl-green">couldn't come</span> và <span class="hl-green">had to finish her project</span>.</div>
+    `
+  },
+  {
+    num: 15,
+    question: 'Choose the sentence that is closest in meaning to the original sentence:<br><br>"Where did you buy this laptop?" Mark asked me.',
+    options: [
+      { text: 'Mark asked me where do I buy that laptop.', correct: false },
+      { text: 'Mark asked me where I had bought that laptop.', correct: true },
+      { text: 'Mark asked me where did I buy that laptop.', correct: false },
+      { text: 'Mark asked me where I have bought that laptop.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: "Bạn đã mua chiếc laptop này ở đâu?" Mark hỏi tôi.</div>
+      <div class="expl-row">💡 <strong>Phân tích câu hỏi gián tiếp:</strong></div>
+      <div class="expl-row">1. <strong>Từ để hỏi:</strong> Giữ nguyên "where".</div>
+      <div class="expl-row">2. <strong>Trật tự từ:</strong> Chủ ngữ + Động từ (KHÔNG mượn trợ động từ did/do). -> Loại A và C.</div>
+      <div class="expl-row">3. <strong>Lùi thì:</strong> "did buy" (Quá khứ đơn) -> lùi thành "had bought" (Quá khứ hoàn thành). -> Loại D (vì have bought là hiện tại hoàn thành).</div>
+      <div class="expl-row">4. <strong>Đổi từ chỉ định:</strong> this -> that.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn B?</strong> Câu B đáp ứng hoàn hảo: S + V (I had bought) + lùi đúng thì + đổi this thành that.</div>
+    `
+  },
+  {
+    num: 16,
+    question: 'Make a correct sentence from the given cues:<br><br>People / communicate / each other / holograms / 2050.',
+    options: [
+      { text: 'People will communicate with each other by holograms in 2050.', correct: true },
+      { text: 'People will communicate each other with holograms at 2050.', correct: false },
+      { text: 'People will communicate with each other by holograms on 2050.', correct: false },
+      { text: 'People will communicate each other in holograms at 2050.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Con người sẽ giao tiếp với nhau bằng hình ảnh không gian 3 chiều (hologram) vào năm 2050.</div>
+      <div class="expl-row">💡 <strong>Phân tích cấu trúc và giới từ:</strong></div>
+      <div class="expl-row">1. <span class="p-grammar">communicate WITH somebody</span>: giao tiếp với ai (Bắt buộc có "with"). -> Loại B, D.</div>
+      <div class="expl-row">2. <span class="p-grammar">IN + năm</span>: Vào năm nào đó (in 2050). Khống dùng "on" hay "at" cho năm. -> Loại C.</div>
+      <div class="expl-row">3. <span class="p-grammar">BY + phương tiện/cách thức</span>: bằng cách nào (by holograms).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn A?</strong> Câu A dùng đúng giới từ "with" sau communicate, "by" chỉ phương thức, và "in" chỉ năm.</div>
+    `
+  },
+  {
+    num: 17,
+    question: 'Make a correct sentence from the given cues:<br><br>He / ask / how / robots / help / humans / future.',
+    options: [
+      { text: 'He asked how robots will help humans in the future.', correct: false },
+      { text: 'He asked how will robots help humans in the future.', correct: false },
+      { text: 'He asked how robots would help humans in the future.', correct: true },
+      { text: 'He asked how would robots help humans in the future.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch: Anh ấy hỏi làm thế nào robot sẽ giúp đỡ con người trong tương lai.</div>
+      <div class="expl-row">💡 <strong>Phân tích câu hỏi gián tiếp:</strong></div>
+      <div class="expl-row">1. Động từ tường thuật "asked" (Quá khứ) -> Bắt buộc lùi thì mệnh đề sau. "will help" -> "would help". Loại A, B.</div>
+      <div class="expl-row">2. <span class="p-grammar">Cấu trúc: Từ để hỏi + S + V</span> (Không đảo ngữ trợ động từ lên trước chủ ngữ). -> Loại D (đảo would lên trước robots).</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn C?</strong> Câu C giữ đúng trật tự "how + robots + would help" và đã lùi thì đúng quy tắc câu gián tiếp.</div>
+    `
+  },
+  {
+    num: 18,
+    question: 'What does the sign say?<br><br><div class="sign-board sign-wifi">FREE<br>WIFI</div>',
+    options: [
+      { text: 'Wi-Fi is available but not free.', correct: false },
+      { text: 'You must pay to use the Wi-Fi here.', correct: false },
+      { text: 'You can access Wi-Fi here without any charge.', correct: true },
+      { text: 'Only members can use the Wi-Fi here.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch biển báo: WIFI MIỄN PHÍ. Hỏi biển báo này có nghĩa là gì?</div>
+      <div class="expl-row">💡 <strong>Phân tích các đáp án:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. Wi-Fi có sẵn nhưng không miễn phí.</span> -> Sai.</div>
+      <div class="expl-row"><span class="hl-red">B. Bạn phải trả tiền để dùng Wi-Fi.</span> -> Sai.</div>
+      <div class="expl-row"><span class="hl-green">C. Bạn có thể truy cập Wi-Fi ở đây mà không tốn phí (without any charge).</span> -> Đúng! "Without any charge" = "Free".</div>
+      <div class="expl-row"><span class="hl-red">D. Chỉ hội viên mới được dùng.</span> -> Biển báo không nhắc đến điều kiện này.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn C?</strong> <span class="p-word">Free</span> đồng nghĩa với cụm <span class="p-grammar">without any charge</span> (không mất phí).</div>
+    `
+  },
+  {
+    num: 19,
+    question: 'What does the notice say?<br><br><div class="sign-board sign-notice">Please turn off all electronic devices during takeoff and landing.</div>',
+    options: [
+      { text: 'You can use electronic devices at any time.', correct: false },
+      { text: 'Electronic devices must be off during certain times.', correct: true },
+      { text: 'Only phones need to be turned off.', correct: false },
+      { text: 'You should ask before using electronic devices.', correct: false }
+    ],
+    explanation: `
+      <div class="trans-box">Dịch biển báo: Vui lòng tắt tất cả các thiết bị điện tử trong quá trình cất cánh (takeoff) và hạ cánh (landing).</div>
+      <div class="expl-row">💡 <strong>Phân tích các đáp án:</strong></div>
+      <div class="expl-row"><span class="hl-red">A. Bạn có thể dùng bất cứ lúc nào.</span> -> Sai hoàn toàn.</div>
+      <div class="expl-row"><span class="hl-green">B. Thiết bị điện tử phải được tắt trong những khoảng thời gian nhất định.</span> -> Đúng. "Certain times" ở đây chính là lúc cất cánh và hạ cánh.</div>
+      <div class="expl-row"><span class="hl-red">C. Chỉ cần tắt điện thoại.</span> -> Sai vì biển báo ghi "all electronic devices" (tất cả thiết bị điện tử).</div>
+      <div class="expl-row"><span class="hl-red">D. Bạn nên hỏi trước khi dùng.</span> -> Biển báo là lệnh tắt, không phải khuyên đi hỏi.</div>
+      <div class="expl-row">✅ <strong>Tại sao chọn B?</strong> Nó là câu diễn giải chính xác và bao quát nhất nội dung của biển báo trên máy bay này.</div>
+    `
+  }
+];
+
+// ===== SHUFFLE =====
+function shuffleArray(arr) {
+  let a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ===== RENDER QUIZ =====
+let totalQ = quizData.length;
+let answered = 0;
+let correctCount = 0;
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = correctCount + ' / ' + answered;
+  const pct = answered > 0 ? (answered / totalQ * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  quizData.forEach((data, idx) => {
+    // Shuffle options while keeping track of correctness
+    const shuffledOpts = shuffleArray(data.options);
+    
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    
+    let optHTML = shuffledOpts.map((o, i) => `
+      <button class="opt-btn" data-correct="${o.correct}" onclick="checkMCQ(this, event, ${idx})">
+        ${o.text}
+      </button>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-num">Câu ${data.num}</div>
+      <div class="q-text">${data.question}</div>
+      <div class="options">${optHTML}</div>
+      <div class="explanation" id="expl_${idx}">
+        <div class="expl-title">💡 Giải thích chi tiết</div>
+        ${data.explanation}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ===== INTERACTION LOGIC =====
+function checkMCQ(btn, evt, idx) {
+  const card = btn.closest('.q-card');
+  const allBtns = card.querySelectorAll('.opt-btn');
+  if(allBtns[0].disabled) return; // Prevent double clicking
+  
+  allBtns.forEach(b => b.disabled = true);
+  
+  const isCorrect = btn.dataset.correct === 'true';
+  if (isCorrect) {
+    btn.classList.add('correct');
+    playDing();
+    correctCount++;
+    spawnConfetti(evt.clientX, evt.clientY);
+  } else {
+    btn.classList.add('wrong');
+    playBuzz();
+    // Highlight correct answer
+    allBtns.forEach(b => {
+      if (b.dataset.correct === 'true') {
+        b.classList.add('correct');
+        b.style.opacity = '0.7'; // slightly dim to show user didn't pick it
+      }
+    });
+  }
+  
+  answered++;
+  updateScore();
+  
+  // Show explanation automatically
+  const expl = document.getElementById('expl_' + idx);
+  expl.classList.add('show');
+}
+
+// ===== MODAL & RESULTS =====
+function showNameModal() {
+  if (answered < totalQ) {
+    if(!confirm('Bạn chưa làm xong tất cả các câu. Bạn có chắc chắn muốn nộp bài?')) return;
+  }
+  document.getElementById('nameModal').classList.add('show');
+}
+
+function submitName() {
+  const name = document.getElementById('nameInput').value.trim();
+  if(!name) {
+    const err = document.getElementById('nameErr');
+    const inp = document.getElementById('nameInput');
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+    return;
+  }
+  
+  document.getElementById('nameModal').classList.remove('show');
+  
+  // Setup Result Modal
+  const pct = totalQ > 0 ? (correctCount / totalQ) : 0;
+  let title, msg, gifUrl;
+  
+  if (pct === 1) {
+    title = `🌟 THIÊN TÀI! ${name} xuất sắc!`;
+    msg = "Điểm tuyệt đối! Bạn đích thực là cao thủ Tiếng Anh! 👑";
+    gifUrl = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Minions cheering
+  } else if (pct >= 0.8) {
+    title = `🎉 GIỎI QUÁ ${name} ơi!`;
+    msg = "Thành tích rất ấn tượng! Cố thêm chút nữa là hoàn hảo! ✨";
+    gifUrl = "https://media.giphy.com/media/nXXU1DVGVAD60/giphy.gif"; // Leonardo DiCaprio clapping
+  } else if (pct >= 0.5) {
+    title = `💪 KHÁ LẮM ${name}!`;
+    msg = "Bạn đã qua môn! Hãy xem kỹ phần giải thích để rút kinh nghiệm nhé! 💡";
+    gifUrl = "https://media.giphy.com/media/1xVbZRmHjFMWy9x8Xq/giphy.gif"; // Minion thumbs up
+  } else {
+    title = `📚 CẦN CỐ GẮNG HƠN ${name} nhé!`;
+    msg = "Đừng nản chí! Học kỹ lỗi sai từ phần giải thích là sẽ tiến bộ ngay! 🌈";
+    gifUrl = "https://media.giphy.com/media/qQdL532nCG9ko/giphy.gif"; // Crying face / funny sad
+  }
+  
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resScore').textContent = `${correctCount} / ${totalQ}`;
+  document.getElementById('resMsg').textContent = msg;
+  document.getElementById('resGif').src = gifUrl;
+  
+  document.getElementById('resultModal').classList.add('show');
+  
+  // Grand Finale Confetti
+  if(pct >= 0.5) {
+    let shots = 0;
+    let burst = setInterval(() => {
+      spawnConfetti(Math.random() * window.innerWidth, window.innerHeight / 3);
+      shots++;
+      if(shots > 6) clearInterval(burst);
+    }, 400);
+  }
+}
+
+// Name input enter key support
+document.getElementById('nameInput').addEventListener('keydown', e => { if(e.key==='Enter') submitName(); });
+
+// Initialize
+buildQuiz();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

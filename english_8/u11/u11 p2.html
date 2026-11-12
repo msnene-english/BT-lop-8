@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reported Speech Quiz – MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #8854C0;
+  --pink: #c84b9e;
+  --yellow: #FDCB6E;
+  --teal: #00C9A7;
+  --green: #00D26A;
+  --red: #FF4757;
+  --card: rgba(255,255,255,0.94);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(270deg, #fce4f3, #e4ecfc, #e4fcf4, #fcf4e4, #fce4e4, #e4e4fc);
+  background-size: 600% 600%;
+  animation: gradShift 16s ease infinite;
+  padding-bottom: 70px;
+  overflow-x: hidden;
+}
+@keyframes gradShift {
+  0%{background-position:0% 50%} 25%{background-position:50% 0%}
+  50%{background-position:100% 50%} 75%{background-position:50% 100%} 100%{background-position:0% 50%}
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Ctext x='8' y='38' font-size='26' opacity='0.12'%3E%E2%AD%90%3C/text%3E%3Ctext x='85' y='28' font-size='22' opacity='0.11'%3E%F0%9F%8C%B8%3C/text%3E%3Ctext x='148' y='52' font-size='24' opacity='0.12'%3E%F0%9F%8D%8A%3C/text%3E%3Ctext x='25' y='105' font-size='22' opacity='0.10'%3E%F0%9F%90%B1%3C/text%3E%3Ctext x='115' y='92' font-size='20' opacity='0.12'%3E%E2%98%81%EF%B8%8F%3C/text%3E%3Ctext x='168' y='118' font-size='22' opacity='0.11'%3E%F0%9F%8C%9F%3C/text%3E%3Ctext x='45' y='158' font-size='24' opacity='0.12'%3E%F0%9F%8D%93%3C/text%3E%3Ctext x='132' y='172' font-size='20' opacity='0.10'%3E%F0%9F%8C%BA%3C/text%3E%3Ctext x='8' y='195' font-size='22' opacity='0.11'%3E%F0%9F%A6%8B%3C/text%3E%3Ctext x='175' y='190' font-size='20' opacity='0.12'%3E%F0%9F%8E%80%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  animation: floatBg 22s linear infinite;
+}
+@keyframes floatBg { from{background-position:0 0} to{background-position:220px 220px} }
+
+.container { max-width: 860px; margin: 0 auto; padding: 16px; position: relative; z-index: 1; }
+
+.header {
+  text-align: center; padding: 20px 24px 14px;
+  background: linear-gradient(135deg, #8854C0 0%, #c84b9e 55%, #FDCB6E 100%);
+  border-radius: 26px; margin-bottom: 28px;
+  box-shadow: 0 8px 32px rgba(136,84,192,0.38);
+  color: #fff; position: relative; overflow: hidden;
+}
+.header::after { content:'📚✨🤖'; position:absolute; right:16px; top:12px; font-size:20px; opacity:0.45; letter-spacing:4px; }
+.header h1 { font-size:1.4rem; font-weight:900; text-shadow:0 2px 8px rgba(0,0,0,0.2); }
+.header p { font-size:0.82rem; opacity:0.9; margin-top:5px; font-weight:700; }
+.badge { display:inline-block; background:rgba(255,255,255,0.22); border:1.5px solid rgba(255,255,255,0.45); border-radius:20px; padding:2px 16px; font-size:0.76rem; margin-top:7px; font-weight:800; }
+
+.sec-title {
+  display:flex; align-items:center; gap:10px;
+  font-size:1.05rem; font-weight:900; color:#5a2d82;
+  margin: 28px 0 14px;
+  padding: 10px 18px;
+  background: linear-gradient(90deg, rgba(136,84,192,0.12), transparent);
+  border-left: 5px solid var(--purple); border-radius: 0 16px 16px 0;
+}
+
+.card {
+  background: var(--card); border-radius: 22px;
+  padding: 22px 24px 18px; margin-bottom: 18px;
+  box-shadow: 0 6px 28px rgba(136,84,192,0.14);
+  border: 2px solid rgba(136,84,192,0.09);
+  transition: transform .2s;
+}
+.card:hover { transform: translateY(-2px); }
+
+.qnum {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px; flex-shrink:0;
+  background: linear-gradient(135deg, var(--purple), #c84b9e);
+  color:#fff; border-radius:50%; font-size:0.85rem; font-weight:900;
+  margin-right:10px;
+  box-shadow: 0 3px 10px rgba(136,84,192,0.35);
+}
+.qhead { display:flex; align-items:flex-start; margin-bottom:12px; }
+.qtext { font-size:0.97rem; font-weight:700; color:#2d2d54; line-height:1.6; flex:1; }
+.qctx {
+  font-size:0.87rem; color:#6b5ea8; font-style:italic;
+  background:rgba(136,84,192,0.07); border-left:3px solid var(--teal);
+  padding:7px 11px; border-radius:0 8px 8px 0; margin-bottom:4px; line-height:1.5;
+}
+
+.opts { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+@media(max-width:540px){ .opts { grid-template-columns:1fr; } }
+
+.opt {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 16px; border-radius:16px;
+  border:2.5px solid rgba(136,84,192,0.16);
+  background:linear-gradient(135deg, #f8f0ff, #fff0fb);
+  cursor:pointer; font-family:'Nunito',sans-serif;
+  font-size:0.9rem; font-weight:700; color:#3a2060;
+  transition:transform .15s, box-shadow .15s;
+  box-shadow:0 4px 12px rgba(136,84,192,0.12), 0 2px 0 rgba(136,84,192,0.18);
+  text-align:left; width:100%;
+}
+.opt:hover:not(:disabled) { transform:scale(1.04); box-shadow:0 8px 22px rgba(136,84,192,0.22); }
+.olabel {
+  width:26px; height:26px; flex-shrink:0; border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),#c84b9e);
+  color:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:0.78rem; font-weight:900;
+}
+.opt.correct { background:linear-gradient(135deg,#d4ffec,#afffdc)!important; border-color:var(--green)!important; color:#006b35!important; }
+.opt.correct .olabel { background:var(--green); }
+.opt.wrong   { background:linear-gradient(135deg,#ffe0e3,#ffc2c9)!important; border-color:var(--red)!important;   color:#8b0019!important; }
+.opt.wrong   .olabel { background:var(--red); }
+.opt:disabled { cursor:default; }
+
+.exp {
+  display:none; margin-top:14px; padding:14px 16px;
+  background:linear-gradient(135deg,#fffbf0,#f0f8ff);
+  border:2px solid #FDCB6E; border-radius:16px;
+  font-size:0.87rem; color:#3a2060; line-height:1.7;
+  animation:fadeUp .35s ease;
+}
+.exp.show { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+.exp-title { font-weight:900; color:var(--purple); font-size:0.93rem; margin-bottom:9px; display:flex; align-items:center; gap:6px; }
+.exp p { margin-bottom:5px; }
+.exp strong { color:#5a2d82; }
+.ctag { display:inline-block; background:var(--green); color:#fff; border-radius:8px; padding:1px 9px; font-size:0.76rem; font-weight:900; margin-left:4px; }
+.wtag { display:inline-block; background:var(--red);   color:#fff; border-radius:8px; padding:1px 9px; font-size:0.76rem; font-weight:900; margin-left:4px; }
+
+.wordbank {
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;
+  padding:12px 14px;
+  background:linear-gradient(135deg,#fff8f0,#f0f4ff);
+  border:2px dashed #e08a00; border-radius:14px;
+}
+.chip {
+  padding:5px 14px; border-radius:20px;
+  background:linear-gradient(135deg,#FDCB6E,#ffaa50);
+  color:#5a3000; font-weight:800; font-size:0.85rem;
+  box-shadow:0 3px 8px rgba(253,203,110,0.3);
+  user-select:none; transition:opacity .3s;
+}
+.chip.used { opacity:0.3; text-decoration:line-through; }
+
+.gfrow { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.gfnum {
+  width:28px; height:28px; flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal),#00a085);
+  color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; font-weight:900; margin-top:3px;
+}
+.gftext { flex:1; font-size:0.93rem; font-weight:700; color:#2d2d54; line-height:1.65; }
+.blank {
+  display:inline-block; min-width:155px; padding:4px 12px;
+  background:linear-gradient(135deg,#e8f4ff,#f5e8ff);
+  border:2.5px dashed var(--purple); border-radius:10px;
+  cursor:pointer; font-family:'Nunito',sans-serif;
+  font-size:0.92rem; font-weight:800; color:var(--purple);
+  text-align:center; vertical-align:middle;
+  transition:background .2s, transform .15s;
+}
+.blank:hover { transform:scale(1.04); }
+.blank.ok  { background:linear-gradient(135deg,#d4ffec,#afffdc); border-color:var(--green); border-style:solid; color:#006b35; cursor:default; }
+.blank.bad { background:linear-gradient(135deg,#ffe0e3,#ffc2c9); border-color:var(--red);   border-style:solid; color:#8b0019; cursor:default; }
+
+.overlay {
+  display:none; position:fixed; inset:0; z-index:900;
+  background:rgba(50,10,90,0.48); align-items:center; justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.overlay.on { display:flex; }
+.popbox {
+  background:#fff; border-radius:24px; padding:24px 28px;
+  max-width:370px; width:90%;
+  box-shadow:0 16px 48px rgba(0,0,0,0.28);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{opacity:0;transform:scale(0.65)} to{opacity:1;transform:scale(1)} }
+.pop-title { font-weight:900; font-size:1rem; color:var(--purple); margin-bottom:16px; text-align:center; }
+.pop-opts { display:flex; flex-direction:column; gap:10px; }
+.popopt {
+  padding:10px 18px; border-radius:14px;
+  background:linear-gradient(135deg,#f8f0ff,#fff0fb);
+  border:2px solid rgba(136,84,192,0.18);
+  font-family:'Nunito',sans-serif; font-size:0.92rem; font-weight:700; color:#3a2060;
+  cursor:pointer; transition:transform .15s, background .15s;
+}
+.popopt:hover { transform:scale(1.03); background:linear-gradient(135deg,#e8d8ff,#ffd8f8); }
+
+.binrow { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+.binnum {
+  width:28px; height:28px; flex-shrink:0;
+  background:linear-gradient(135deg,#FDCB6E,#e08a00);
+  color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; font-weight:900; margin-top:3px;
+}
+.bintext { flex:1; font-size:0.93rem; font-weight:700; color:#2d2d54; line-height:1.65; }
+.binchoice {
+  display:inline-block; padding:2px 12px; border-radius:20px;
+  border:2.5px solid rgba(136,84,192,0.22);
+  background:linear-gradient(135deg,#f8f0ff,#fff0fb);
+  cursor:pointer; font-family:'Nunito',sans-serif;
+  font-size:0.9rem; font-weight:800; color:#5a2d82;
+  margin:0 3px; vertical-align:middle;
+  transition:transform .15s, background .15s;
+}
+.binchoice:hover { transform:scale(1.07); }
+.binchoice.correct { background:linear-gradient(135deg,#d4ffec,#afffdc); border-color:var(--green); color:#006b35; cursor:default; }
+.binchoice.wrong   { background:linear-gradient(135deg,#ffe0e3,#ffc2c9); border-color:var(--red);   color:#8b0019; cursor:default; text-decoration:line-through; }
+
+.shake { animation:shake .4s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+
+.submitwrap { text-align:center; margin-top:38px; }
+.submitbtn {
+  padding:16px 52px; font-size:1.15rem; font-weight:900;
+  background:linear-gradient(135deg,#8854C0,#c84b9e,#FDCB6E);
+  color:#fff; border:none; border-radius:50px; cursor:pointer;
+  box-shadow:0 6px 28px rgba(136,84,192,0.4), 0 3px 0 #5a2d82;
+  font-family:'Nunito',sans-serif; letter-spacing:0.5px;
+  transition:transform .15s, box-shadow .15s;
+}
+.submitbtn:hover { transform:scale(1.05) translateY(-2px); }
+
+.scorelay {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:rgba(35,5,75,0.58); align-items:center; justify-content:center;
+  backdrop-filter:blur(6px);
+}
+.scorelay.on { display:flex; }
+.scorebox {
+  background:#fff; border-radius:30px; padding:36px 40px;
+  max-width:430px; width:90%; text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative; overflow:hidden;
+}
+.scorebox::before { content:''; position:absolute; top:0; left:0; right:0; height:8px; background:linear-gradient(90deg,#8854C0,#c84b9e,#FDCB6E,#00C9A7); }
+.sclose {
+  padding:12px 32px; border-radius:40px;
+  background:linear-gradient(135deg,#8854C0,#c84b9e);
+  color:#fff; border:none; font-family:'Nunito',sans-serif;
+  font-size:1rem; font-weight:800; cursor:pointer;
+  box-shadow:0 4px 16px rgba(136,84,192,0.35);
+  transition:transform .15s;
+}
+.sclose:hover { transform:scale(1.05); }
+
+.cf { position:fixed; top:-20px; pointer-events:none; z-index:9999; border-radius:2px; animation:cfFall linear forwards; }
+@keyframes cfFall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(115vh) rotate(720deg);opacity:0} }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🤖 Reported Speech Interactive Quiz</h1>
+  <p>Exercises 1 · 3 · 4 · 5 — Câu Tường Thuật</p>
+  <div class="badge">👩‍🏫 MS Chí Nên · ULIS</div>
+</div>
+
+<!-- ═══ EXERCISE 1 ═══ -->
+<div class="sec-title"><span>📝</span> Exercise 1 – Multiple Choice: Reported Speech (Q1 – Q15)</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">1</span>
+    <div class="qtext">
+      <div class="qctx">"I took it home with me." (She said)</div>
+      She said that she __________ it home with her.
+    </div>
+  </div>
+  <div class="opts" id="o1"></div>
+  <div class="exp" id="e1">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Cô ấy nói rằng cô ấy đã mang nó về nhà với cô ấy.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>take</strong>: Hiện tại đơn — Sai. Không lùi thì, không hợp ngữ pháp tường thuật.</p>
+    <p>B. <strong>took</strong>: Quá khứ đơn — Sai. Câu trực tiếp đã là "took" (Quá khứ đơn), khi tường thuật phải lùi thêm một thì nữa.</p>
+    <p>C. <strong>have taken</strong>: Hiện tại hoàn thành — Sai. Không đúng quy tắc lùi thì tường thuật.</p>
+    <p>D. <strong>had taken</strong>: Quá khứ hoàn thành — <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Quy tắc lùi thì:</strong> Simple Past "took" → Past Perfect <strong>"had taken"</strong>. Đây là quy tắc bắt buộc khi động từ tường thuật ở quá khứ (said).</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">2</span>
+    <div class="qtext">
+      <div class="qctx">Mai said, "My brother works in a technology company."</div>
+      Mai said her brother __________ in a technology company.
+    </div>
+  </div>
+  <div class="opts" id="o2"></div>
+  <div class="exp" id="e2">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Mai nói rằng anh trai cô ấy làm việc ở một công ty công nghệ.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>works</strong>: Hiện tại đơn — Sai. Phải lùi thì khi tường thuật.</p>
+    <p>B. <strong>worked</strong>: Quá khứ đơn — <span class="ctag">✓ ĐÚNG</span></p>
+    <p>C. <strong>is working</strong>: Hiện tại tiếp diễn — Sai. "works" (thì đơn) không lùi thành thì tiếp diễn.</p>
+    <p>D. <strong>have worked</strong>: Hiện tại hoàn thành số nhiều — Sai ngữ pháp với chủ ngữ "her brother" (số ít).</p>
+    <p><strong>Quy tắc:</strong> Simple Present "works" → Simple Past <strong>"worked"</strong>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">3</span>
+    <div class="qtext">
+      <div class="qctx">Mr. Long said, "Science is an important subject in schools now."</div>
+      Mr. Long said that Science was an important subject in schools __________.
+    </div>
+  </div>
+  <div class="opts" id="o3"></div>
+  <div class="exp" id="e3">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Mr. Long nói rằng Khoa học là môn học quan trọng ở các trường học lúc đó.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>now</strong>: "bây giờ" — Sai. Trạng từ của lời trực tiếp, không dùng trong tường thuật.</p>
+    <p>B. <strong>then</strong>: "khi đó/lúc đó" — <span class="ctag">✓ ĐÚNG</span></p>
+    <p>C. <strong>this</strong>: "này" — Sai. Không phải trạng từ thời gian thay thế "now".</p>
+    <p>D. <strong>that</strong>: "đó" — Sai. "that" không phải phép thế của "now".</p>
+    <p><strong>Bảng đổi trạng từ:</strong> "now" → <strong>"then"</strong> | "today" → "that day" | "tomorrow" → "the next day / the day after".</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">4</span>
+    <div class="qtext">
+      The teacher ________ me that I had better devote more time to doing scientific research.
+    </div>
+  </div>
+  <div class="opts" id="o4"></div>
+  <div class="exp" id="e4">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Giáo viên đã <em>nói với</em> tôi rằng tôi nên dành nhiều thời gian hơn cho nghiên cứu khoa học.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>said</strong>: nói — Sai. Không nói "said me"; phải dùng "said to me" (mà câu không có "to").</p>
+    <p>B. <strong>told</strong>: nói với — <span class="ctag">✓ ĐÚNG</span>. Cấu trúc: <em>tell + sb + that</em> → "told me that" hoàn toàn đúng.</p>
+    <p>C. <strong>talked</strong>: nói chuyện — Sai. "talked" đi với "to/about", không đi trực tiếp với tân ngữ người.</p>
+    <p>D. <strong>spoke</strong>: phát biểu — Sai. "spoke" cũng không dùng cấu trúc "spoke + O trực tiếp".</p>
+    <p><strong>Phân biệt key:</strong> <em>say (to sb) + that</em> | <em>tell + sb (bắt buộc) + that</em>. Có "me" ngay sau → chỉ dùng được <strong>told</strong>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">5</span>
+    <div class="qtext">
+      <div class="qctx">The teacher said, "Our class is having a meeting with parents this week."</div>
+      The teacher said that __________ class was having a meeting with parents that week.
+    </div>
+  </div>
+  <div class="opts" id="o5"></div>
+  <div class="exp" id="e5">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Giáo viên nói rằng lớp <em>của họ</em> đang có buổi họp phụ huynh vào tuần đó.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>my</strong>: của tôi — Sai. Không hợp ngữ cảnh khi người kể là bên thứ ba.</p>
+    <p>B. <strong>our</strong>: của chúng ta — Sai. Đây là ngôn ngữ lời trực tiếp, phải đổi.</p>
+    <p>C. <strong>their</strong>: của họ — <span class="ctag">✓ ĐÚNG</span>. "Our" (ngôi 1 số nhiều) → "their" (ngôi 3 số nhiều) trong tường thuật.</p>
+    <p>D. <strong>his</strong>: của anh ấy — Sai. "his" là số ít, không phù hợp với tập thể lớp.</p>
+    <p><strong>Quy tắc đổi đại từ:</strong> "our" → <strong>"their"</strong> khi người tường thuật là người thứ ba.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">6</span>
+    <div class="qtext">
+      <div class="qctx">They said, "We will develop more robot teachers to support human teachers at schools."</div>
+      They said that __________ would develop more robot teachers to support human teachers at schools.
+    </div>
+  </div>
+  <div class="opts" id="o6"></div>
+  <div class="exp" id="e6">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Họ nói rằng <em>họ</em> sẽ phát triển thêm nhiều giáo viên robot để hỗ trợ giáo viên con người.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>I</strong>: tôi — Sai. Chủ ngữ gốc là "we" (số nhiều).</p>
+    <p>B. <strong>we</strong>: chúng ta — Sai. Phải đổi trong tường thuật.</p>
+    <p>C. <strong>you</strong>: bạn — Sai. Không hợp ngữ cảnh.</p>
+    <p>D. <strong>they</strong>: họ — <span class="ctag">✓ ĐÚNG</span>. "We" (ngôi 1 số nhiều) → "they" (ngôi 3 số nhiều). Thì: "will" → "would" (đã cho sẵn).</p>
+    <p><strong>Quy tắc:</strong> "we" → <strong>"they"</strong> khi người tường thuật là người ngoài nhóm.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">7</span>
+    <div class="qtext">
+      <div class="qctx">He said, "Siri is a voice recognition technology."</div>
+      He said that Siri __________ a voice recognition technology.
+    </div>
+  </div>
+  <div class="opts" id="o7"></div>
+  <div class="exp" id="e7">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Anh ấy nói rằng Siri <em>là</em> một công nghệ nhận diện giọng nói.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>was</strong>: là (Quá khứ đơn) — <span class="ctag">✓ ĐÚNG</span>. "is" → "was".</p>
+    <p>B. <strong>was being</strong>: đang là (Quá khứ tiếp diễn) — Sai. "is" (thì đơn) không lùi thành tiếp diễn.</p>
+    <p>C. <strong>have been</strong>: đã là (Hiện tại hoàn thành) — Sai. Không hợp ngữ pháp tường thuật.</p>
+    <p>D. <strong>will be</strong>: sẽ là — Sai. Không lùi thì.</p>
+    <p><strong>Quy tắc:</strong> Simple Present "is" → <strong>"was"</strong> (Simple Past). Quy tắc lùi thì cơ bản nhất.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">8</span>
+    <div class="qtext">
+      <div class="qctx">The director said, "The company will use a machine to check staff attendance."</div>
+      The director said that the company __________ a machine to check staff attendance.
+    </div>
+  </div>
+  <div class="opts" id="o8"></div>
+  <div class="exp" id="e8">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Giám đốc nói rằng công ty <em>sẽ</em> dùng một máy để kiểm tra sự chuyên cần của nhân viên.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>use</strong>: dùng (Hiện tại) — Sai. Thiếu trợ động từ, không lùi thì.</p>
+    <p>B. <strong>will use</strong>: sẽ dùng — Sai. "will" phải lùi thành "would" trong tường thuật.</p>
+    <p>C. <strong>would use</strong>: sẽ dùng (Quá khứ) — <span class="ctag">✓ ĐÚNG</span>. "will" → "would".</p>
+    <p>D. <strong>would have used</strong>: đã sẽ dùng — Sai. Cấu trúc điều kiện loại 3, không phù hợp.</p>
+    <p><strong>Bảng đổi trợ động từ:</strong> "will" → <strong>"would"</strong> | "can" → "could" | "may" → "might" | "must" → "had to".</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">9</span>
+    <div class="qtext">
+      <div class="qctx">Bill said, "I went out with Phong last night."</div>
+      Bill said that he had gone out with Phong __________.
+    </div>
+  </div>
+  <div class="opts" id="o9"></div>
+  <div class="exp" id="e9">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Bill nói rằng anh ấy đã đi chơi với Phong <em>vào đêm hôm trước</em>.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>the night before</strong>: đêm hôm trước — <span class="ctag">✓ ĐÚNG</span>. "last night" → "the night before".</p>
+    <p>B. <strong>yesterday evening</strong>: tối hôm qua — Sai. Trạng từ lời trực tiếp.</p>
+    <p>C. <strong>the next night</strong>: đêm hôm sau — Sai. Có nghĩa ngược (tương đương "tomorrow night").</p>
+    <p>D. <strong>that night</strong>: đêm đó — Sai. "that night" là phép thế của "tonight" (tối nay), không phải "last night".</p>
+    <p><strong>Bảng đổi:</strong> "last night" → <strong>"the night before"</strong> | "last week" → "the week before" | "yesterday" → "the day before".</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">10</span>
+    <div class="qtext">
+      <div class="qctx">Minh said, "I have never eaten mushrooms."</div>
+      Minh said that he __________ mushrooms.
+    </div>
+  </div>
+  <div class="opts" id="o10"></div>
+  <div class="exp" id="e10">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Minh nói rằng anh ấy chưa bao giờ ăn nấm.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>had never eaten</strong>: chưa bao giờ ăn (Quá khứ hoàn thành) — <span class="ctag">✓ ĐÚNG</span></p>
+    <p>B. <strong>will never eat</strong>: sẽ không bao giờ ăn — Sai. Tương lai không hợp quy tắc tường thuật.</p>
+    <p>C. <strong>have never eaten</strong>: chưa bao giờ ăn (Hiện tại hoàn thành) — Sai. Chưa lùi thì sau "said".</p>
+    <p>D. <strong>would never eat</strong>: sẽ không bao giờ ăn — Sai. "would" là lùi thì của "will", không phải lùi thì của "have eaten".</p>
+    <p><strong>Quy tắc:</strong> Present Perfect "have never eaten" → <strong>"had never eaten"</strong> (Past Perfect).</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">11</span>
+    <div class="qtext">
+      <div class="qctx">She said, "You must connect to the Internet to work online."</div>
+      She said that I __________ connect to the Internet to work online.
+    </div>
+  </div>
+  <div class="opts" id="o11"></div>
+  <div class="exp" id="e11">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Cô ấy nói rằng tôi <em>phải</em> kết nối Internet để làm việc trực tuyến.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>will</strong>: sẽ — Sai. Không phải biến đổi của "must".</p>
+    <p>B. <strong>had to</strong>: phải (Quá khứ) — <span class="ctag">✓ ĐÚNG</span>. "must" (nghĩa bắt buộc) → "had to".</p>
+    <p>C. <strong>might</strong>: có thể — Sai. "might" là lùi thì của "may", không phải "must".</p>
+    <p>D. <strong>could</strong>: có thể — Sai. "could" là lùi thì của "can", không phải "must".</p>
+    <p><strong>Bảng đổi trợ động từ:</strong> "must" (obligation) → <strong>"had to"</strong> | "can" → "could" | "will" → "would" | "may" → "might".</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">12</span>
+    <div class="qtext">Ann said that she __________ there in the evening.</div>
+  </div>
+  <div class="opts" id="o12"></div>
+  <div class="exp" id="e12">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Ann nói rằng cô ấy <em>sắp có mặt</em> ở đó vào buổi tối.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>is going to be</strong>: sắp là (Hiện tại) — Sai. Chưa lùi thì sau "said".</p>
+    <p>B. <strong>can be</strong>: có thể là — Sai. "can" lùi thành "could" chứ không dùng nguyên dạng sau "said".</p>
+    <p>C. <strong>will be</strong>: sẽ là — Sai. "will" phải lùi thành "would".</p>
+    <p>D. <strong>was going to be</strong>: sắp là (Quá khứ) — <span class="ctag">✓ ĐÚNG</span>. "is going to" → <strong>"was going to"</strong>.</p>
+    <p><strong>Quy tắc:</strong> Câu gốc của Ann: "I <em>am going to be</em> there in the evening." → tường thuật: "was going to be". Lùi "is" → "was".</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">13</span>
+    <div class="qtext">Nam said to me that he __________ to me the Saturday before.</div>
+  </div>
+  <div class="opts" id="o13"></div>
+  <div class="exp" id="e13">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Nam nói với tôi rằng anh ấy đã viết thư cho tôi vào thứ Bảy trước đó.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>wrote</strong>: Quá khứ đơn — Sai. "the Saturday before" mô tả hành động đã hoàn thành trước một mốc trong quá khứ → cần Quá khứ hoàn thành.</p>
+    <p>B. <strong>has written</strong>: Hiện tại hoàn thành — Sai. Không dùng thì hiện tại sau "said".</p>
+    <p>C. <strong>was writing</strong>: Quá khứ tiếp diễn — Sai. Hành động "viết thư" đã hoàn thành, không đang tiến hành.</p>
+    <p>D. <strong>had written</strong>: Quá khứ hoàn thành — <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Quy tắc:</strong> Câu gốc: "I <em>wrote/have written</em> to you last Saturday." Tường thuật với "said" → <strong>"had written"</strong>. Trạng từ "the Saturday before" xác nhận hành động hoàn thành trước mốc quá khứ.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">14</span>
+    <div class="qtext">Ngoc wanted to know what time __________.</div>
+  </div>
+  <div class="opts" id="o14"></div>
+  <div class="exp" id="e14">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Ngọc muốn biết bộ phim bắt đầu lúc mấy giờ.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>does the film begin</strong>: đảo ngữ Hiện tại đơn — Sai. Câu hỏi gián tiếp không dùng đảo ngữ.</p>
+    <p>B. <strong>the film began</strong>: trật tự khẳng định + lùi thì — <span class="ctag">✓ ĐÚNG</span></p>
+    <p>C. <strong>did the film begin</strong>: đảo ngữ Quá khứ — Sai. Dù thì đúng nhưng vẫn đảo ngữ → sai cấu trúc câu hỏi gián tiếp.</p>
+    <p>D. <strong>the film begins</strong>: trật tự đúng nhưng không lùi thì — Sai.</p>
+    <p><strong>Quy tắc câu hỏi gián tiếp:</strong> Dùng trật tự S + V (không đảo ngữ). "wanted to know" (quá khứ) → lùi thì: "begins" → <strong>"began"</strong>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="qhead"><span class="qnum">15</span>
+    <div class="qtext">He asked the children why they __________ too much noise.</div>
+  </div>
+  <div class="opts" id="o15"></div>
+  <div class="exp" id="e15">
+    <div class="exp-title">💡 Giải thích chi tiết</div>
+    <p><strong>Dịch câu:</strong> Anh ấy hỏi các em nhỏ tại sao chúng <em>đang tạo ra</em> quá nhiều tiếng ồn.</p>
+    <p><strong>Phân tích 4 đáp án:</strong></p>
+    <p>A. <strong>not to make</strong>: để không làm — Sai cấu trúc. Đây là cấu trúc mệnh lệnh gián tiếp (ask sb not to do), không phải câu hỏi gián tiếp.</p>
+    <p>B. <strong>are making</strong>: đang làm (Hiện tại tiếp diễn) — Sai. Phải lùi thì sau "asked".</p>
+    <p>C. <strong>were making</strong>: đang làm (Quá khứ tiếp diễn) — <span class="ctag">✓ ĐÚNG</span>. "are making" → "were making".</p>
+    <p>D. <strong>making</strong>: thiếu trợ động từ — Sai cấu trúc hoàn toàn.</p>
+    <p><strong>Quy tắc:</strong> Present Continuous "are making" → <strong>"were making"</strong> (Past Continuous). Trật tự câu hỏi gián tiếp: "why they were making..." (không đảo ngữ).</p>
+  </div>
+</div>
+
+<!-- ═══ EXERCISE 3 ═══ -->
+<div class="sec-title"><span>📦</span> Exercise 3 – Complete the Sentences (Word Box)</div>
+
+<div class="card">
+  <div class="wordbank" id="wbank">
+    <span class="chip" data-word="screen">screen</span>
+    <span class="chip" data-word="Isaac Newton">Isaac Newton</span>
+    <span class="chip" data-word="face-to-face">face-to-face</span>
+    <span class="chip" data-word="attendance">attendance</span>
+    <span class="chip" data-word="contact lenses">contact lenses</span>
+    <span class="chip" data-word="Nano learning">Nano learning</span>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">1</span>
+    <div class="gftext"><button class="blank" id="b1" onclick="openPop(1)">Click to fill</button> makes our learning effortless.</div>
+  </div>
+  <div class="exp" id="ge1">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: Nano learning</strong> (Học tập vi mô)</p>
+    <p><strong>Dịch:</strong> "Nano learning giúp việc học của chúng ta trở nên dễ dàng không tốn sức."</p>
+    <p>Nano learning = phương pháp học qua các nội dung nhỏ, ngắn gọn, dễ tiêu hóa → giúp học effortless (không tốn sức). Đây là từ duy nhất có nghĩa "phương pháp học" đứng đầu câu.</p>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">2</span>
+    <div class="gftext">Our eyes won't be tired if we wear 3D <button class="blank" id="b2" onclick="openPop(2)">Click to fill</button>.</div>
+  </div>
+  <div class="exp" id="ge2">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: contact lenses</strong> (kính áp tròng)</p>
+    <p><strong>Dịch:</strong> "Mắt chúng ta sẽ không bị mỏi nếu chúng ta đeo kính áp tròng 3D."</p>
+    <p>"wear" (đeo) + 3D → cần vật đeo trên mắt. "contact lenses" (kính áp tròng) là vật đeo trên mắt, phù hợp hoàn toàn. Kính áp tròng 3D là công nghệ mới giảm mỏi mắt.</p>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">3</span>
+    <div class="gftext"><button class="blank" id="b3" onclick="openPop(3)">Click to fill</button> discovered gravity when an apple fell on him.</div>
+  </div>
+  <div class="exp" id="ge3">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: Isaac Newton</strong></p>
+    <p><strong>Dịch:</strong> "Isaac Newton đã khám phá ra lực hấp dẫn khi một quả táo rơi vào ông."</p>
+    <p>Câu có 2 chi tiết định danh: "discovered gravity" (khám phá lực hấp dẫn) và "apple fell on him" (táo rơi trúng) → chỉ có thể là Isaac Newton (1643–1727).</p>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">4</span>
+    <div class="gftext">I like <button class="blank" id="b4" onclick="openPop(4)">Click to fill</button> classes because I can interact with my classmates.</div>
+  </div>
+  <div class="exp" id="ge4">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: face-to-face</strong> (trực tiếp, mặt đối mặt)</p>
+    <p><strong>Dịch:</strong> "Tôi thích các lớp học trực tiếp vì tôi có thể tương tác với bạn cùng lớp."</p>
+    <p>Từ khóa "interact with classmates" (tương tác với bạn lớp) → chỉ có thể trong lớp <strong>trực tiếp</strong>. "face-to-face classes" là đối lập với học online.</p>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">5</span>
+    <div class="gftext">She has sore eyes because of looking at the computer <button class="blank" id="b5" onclick="openPop(5)">Click to fill</button> all day long.</div>
+  </div>
+  <div class="exp" id="ge5">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: screen</strong> (màn hình)</p>
+    <p><strong>Dịch:</strong> "Cô ấy bị đau mắt vì nhìn màn hình máy tính cả ngày dài."</p>
+    <p>"looking at the computer ___" → phải là thứ người ta nhìn vào của máy tính → "screen" (màn hình). "Sore eyes" (đau mắt) do nhìn màn hình lâu là vấn đề phổ biến.</p>
+  </div>
+
+  <div class="gfrow"><span class="gfnum">6</span>
+    <div class="gftext">Biometrics is an important technology used to check students' <button class="blank" id="b6" onclick="openPop(6)">Click to fill</button>.</div>
+  </div>
+  <div class="exp" id="ge6">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: attendance</strong> (sự chuyên cần, điểm danh)</p>
+    <p><strong>Dịch:</strong> "Sinh trắc học là công nghệ quan trọng được dùng để kiểm tra sự chuyên cần của học sinh."</p>
+    <p>Biometrics (vân tay, nhận diện khuôn mặt…) → dùng phổ biến nhất để <strong>điểm danh</strong>. "check students' attendance" là collocation chuẩn trong tiếng Anh học thuật.</p>
+  </div>
+</div>
+
+<!-- ═══ EXERCISE 4 ═══ -->
+<div class="sec-title"><span>⭕</span> Exercise 4 – Circle the Correct Verb</div>
+
+<div class="card">
+
+  <div class="binrow">
+    <span class="binnum">1</span>
+    <div class="bintext">Blaise Pascal (<button class="binchoice" data-correct="true" data-gid="e4q1" onclick="doBin(this)">invented</button> / <button class="binchoice" data-correct="false" data-gid="e4q1" onclick="doBin(this)">recognized</button>) the calculator in 1642.</div>
+  </div>
+  <div class="exp" id="exp-e4q1">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: invented</strong> (phát minh ra) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Blaise Pascal đã <em>phát minh ra</em> máy tính vào năm 1642."</p>
+    <p><strong>invented</strong>: sáng chế, tạo ra thứ chưa tồn tại → Pascal TẠORA chiếc máy tính cơ học đầu tiên.</p>
+    <p><strong>recognized</strong> <span class="wtag">✗ SAI</span>: nhận ra, công nhận → Pascal không chỉ "công nhận" máy tính — ông thực sự xây dựng nó.</p>
+    <p><strong>Phân biệt:</strong> <em>invent</em> = phát minh (tạo mới) | <em>discover</em> = khám phá (tìm thứ đã có sẵn) | <em>recognize</em> = nhận ra/công nhận.</p>
+  </div>
+
+  <div class="binrow">
+    <span class="binnum">2</span>
+    <div class="bintext">Marie Curie and Pierre Curie (<button class="binchoice" data-correct="false" data-gid="e4q2" onclick="doBin(this)">created</button> / <button class="binchoice" data-correct="true" data-gid="e4q2" onclick="doBin(this)">discovered</button>) radium and polonium.</div>
+  </div>
+  <div class="exp" id="exp-e4q2">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: discovered</strong> (khám phá ra) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Marie Curie và Pierre Curie đã <em>khám phá ra</em> radium và polonium."</p>
+    <p><strong>discovered</strong>: tìm thấy thứ đã tồn tại trong tự nhiên → radium và polonium là nguyên tố hóa học TỰ NHIÊN, không ai tạo ra chúng.</p>
+    <p><strong>created</strong> <span class="wtag">✗ SAI</span>: tạo ra, sáng tạo → Con người không thể "tạo ra" nguyên tố hóa học tự nhiên.</p>
+    <p><strong>Phân biệt key:</strong> <em>invent</em> = phát minh thiết bị | <em>discover</em> = tìm thấy thứ tự nhiên (nguyên tố, châu lục, loài vật...) | <em>create</em> = tạo ra nghệ thuật/ý tưởng.</p>
+  </div>
+
+  <div class="binrow">
+    <span class="binnum">3</span>
+    <div class="bintext">Students can still (<button class="binchoice" data-correct="true" data-gid="e4q3" onclick="doBin(this)">interact</button> / <button class="binchoice" data-correct="false" data-gid="e4q3" onclick="doBin(this)">track</button>) when they are in breakout rooms.</div>
+  </div>
+  <div class="exp" id="exp-e4q3">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: interact</strong> (tương tác) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Học sinh vẫn có thể <em>tương tác</em> khi họ ở trong các phòng nhóm nhỏ (breakout rooms)."</p>
+    <p><strong>interact</strong>: trao đổi, tương tác → phù hợp hoàn toàn. Breakout rooms được tạo ra chính để học sinh tương tác theo nhóm nhỏ.</p>
+    <p><strong>track</strong> <span class="wtag">✗ SAI</span>: theo dõi, bám sát → Breakout rooms không phải công cụ "theo dõi" học sinh.</p>
+  </div>
+
+  <div class="binrow">
+    <span class="binnum">4</span>
+    <div class="bintext">Robot teachers will be able to (<button class="binchoice" data-correct="true" data-gid="e4q4" onclick="doBin(this)">mark</button> / <button class="binchoice" data-correct="false" data-gid="e4q4" onclick="doBin(this)">develop</button>) our work and give us feedback.</div>
+  </div>
+  <div class="exp" id="exp-e4q4">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: mark</strong> (chấm điểm) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Giáo viên robot sẽ có thể <em>chấm điểm</em> bài làm của chúng ta và cho phản hồi."</p>
+    <p><strong>mark</strong>: chấm điểm, đánh giá bài làm → "give us feedback" (cho phản hồi) đi kèm sau → hành động đúng là chấm bài.</p>
+    <p><strong>develop</strong> <span class="wtag">✗ SAI</span>: phát triển → "develop our work" không có nghĩa hợp lý trong ngữ cảnh này.</p>
+  </div>
+
+  <div class="binrow">
+    <span class="binnum">5</span>
+    <div class="bintext">Our manager uses Google Meet to (<button class="binchoice" data-correct="false" data-gid="e4q5" onclick="doBin(this)">scan</button> / <button class="binchoice" data-correct="true" data-gid="e4q5" onclick="doBin(this)">make</button>) video conferences.</div>
+  </div>
+  <div class="exp" id="exp-e4q5">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: make</strong> (thực hiện) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Quản lý của chúng tôi dùng Google Meet để <em>thực hiện</em> các cuộc hội nghị video."</p>
+    <p><strong>make video conferences</strong>: collocation chuẩn. Tương tự: "make a call", "make a presentation", "make an appointment".</p>
+    <p><strong>scan</strong> <span class="wtag">✗ SAI</span>: quét, scan → dùng với tài liệu, mã QR — sai hoàn toàn khi đi với "video conferences".</p>
+  </div>
+
+  <div class="binrow">
+    <span class="binnum">6</span>
+    <div class="bintext">This face recognition screen will (<button class="binchoice" data-correct="true" data-gid="e4q6" onclick="doBin(this)">check</button> / <button class="binchoice" data-correct="false" data-gid="e4q6" onclick="doBin(this)">cheat</button>) if you are a company staff.</div>
+  </div>
+  <div class="exp" id="exp-e4q6">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: check</strong> (kiểm tra) <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>Dịch:</strong> "Màn hình nhận diện khuôn mặt này sẽ <em>kiểm tra</em> xem bạn có phải là nhân viên công ty hay không."</p>
+    <p><strong>check</strong>: kiểm tra, xác minh → hệ thống nhận diện khuôn mặt dùng để XÁC MINH danh tính.</p>
+    <p><strong>cheat</strong> <span class="wtag">✗ SAI</span>: gian lận → màn hình bảo mật không "gian lận". Đây là bẫy vì "cheat" và "check" có vần tương tự.</p>
+  </div>
+
+</div>
+
+<!-- ═══ EXERCISE 5 ═══ -->
+<div class="sec-title"><span>🔄</span> Exercise 5 – Circle the Correct Adverbial Phrase</div>
+
+<div class="card">
+
+  <!-- 1: said that → reported → the day after ✓ -->
+  <div class="binrow">
+    <span class="binnum">1</span>
+    <div class="bintext">Alex said that she had to get up early <button class="binchoice" data-correct="false" data-gid="e5q1" onclick="doBin(this)">tomorrow</button> / <button class="binchoice" data-correct="true" data-gid="e5q1" onclick="doBin(this)">the day after</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q1">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: the day after</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>"said that"</strong> → câu <em>tường thuật</em>, phải đổi trạng từ thời gian.</p>
+    <p><strong>tomorrow</strong> <span class="wtag">✗ SAI</span>: trạng từ lời trực tiếp, không dùng trong tường thuật.</p>
+    <p><strong>the day after</strong> = ngày hôm sau (nhìn từ quá khứ) → đúng trong tường thuật. Câu gốc của Alex: "I have to get up early <em>tomorrow</em>."</p>
+    <p><strong>Bảng đổi:</strong> "tomorrow" → <strong>"the next day / the day after"</strong></p>
+  </div>
+
+  <!-- 2: dấu ngoặc kép → direct speech → yesterday ✓ -->
+  <div class="binrow">
+    <span class="binnum">2</span>
+    <div class="bintext">John said: "I was not happy with the Internet connection <button class="binchoice" data-correct="false" data-gid="e5q2" onclick="doBin(this)">the day before</button> / <button class="binchoice" data-correct="true" data-gid="e5q2" onclick="doBin(this)">yesterday</button>."</div>
+  </div>
+  <div class="exp" id="exp-e5q2">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: yesterday</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>dấu ngoặc kép (" ")</strong> → đây là <em>lời nói trực tiếp</em>. Trong lời trực tiếp, dùng trạng từ tự nhiên.</p>
+    <p><strong>yesterday</strong>: phù hợp với lời trực tiếp → <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>the day before</strong> <span class="wtag">✗ SAI</span>: chỉ dùng trong câu tường thuật (không có ngoặc kép).</p>
+    <p><strong>Nguyên tắc:</strong> Có ngoặc kép → trạng từ trực tiếp (yesterday, today, tomorrow...). Không có ngoặc kép + said/told → trạng từ tường thuật.</p>
+  </div>
+
+  <!-- 3: said that → every day không đổi; the every day sai ngữ pháp ✓ -->
+  <div class="binrow">
+    <span class="binnum">3</span>
+    <div class="bintext">Hans said that he could read books from the school clouds <button class="binchoice" data-correct="true" data-gid="e5q3" onclick="doBin(this)">every day</button> / <button class="binchoice" data-correct="false" data-gid="e5q3" onclick="doBin(this)">the every day</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q3">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: every day</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p><strong>every day</strong>: trạng từ tần suất, <strong>không thay đổi</strong> khi chuyển sang câu tường thuật. Tương tự: always, usually, often, sometimes, never — những từ chỉ thói quen không bị đổi.</p>
+    <p><strong>the every day</strong> <span class="wtag">✗ SAI</span>: cụm từ này <strong>không tồn tại</strong> trong tiếng Anh. "every" không đi với mạo từ "the" — sai ngữ pháp hoàn toàn.</p>
+    <p><strong>Lưu ý:</strong> Chỉ trạng từ chỉ thời điểm CỤ THỂ mới bị đổi (now, today, yesterday, tomorrow...). "Every day" = thói quen → không đổi.</p>
+  </div>
+
+  <!-- 4: dấu ngoặc kép → direct speech → tonight ✓ -->
+  <div class="binrow">
+    <span class="binnum">4</span>
+    <div class="bintext">My sister said: "Can you lend me your iPad <button class="binchoice" data-correct="true" data-gid="e5q4" onclick="doBin(this)">tonight</button> / <button class="binchoice" data-correct="false" data-gid="e5q4" onclick="doBin(this)">that night</button>?"</div>
+  </div>
+  <div class="exp" id="exp-e5q4">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: tonight</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>dấu ngoặc kép</strong> → lời nói trực tiếp. Em gái đang trực tiếp hỏi → dùng "tonight" (tối nay).</p>
+    <p><strong>that night</strong> <span class="wtag">✗ SAI</span>: chỉ dùng trong câu tường thuật (không có ngoặc kép). "that night" = tương đương của "tonight" trong tường thuật.</p>
+    <p><strong>Bảng đổi:</strong> "tonight" → "that night" | "this week" → "that week".</p>
+  </div>
+
+  <!-- 5: said that → today → that day ✓ -->
+  <div class="binrow">
+    <span class="binnum">5</span>
+    <div class="bintext">Our teacher said that we were reading about Thomas Edison <button class="binchoice" data-correct="true" data-gid="e5q5" onclick="doBin(this)">that day</button> / <button class="binchoice" data-correct="false" data-gid="e5q5" onclick="doBin(this)">today</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q5">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: that day</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>"said that"</strong> → câu tường thuật. Phải đổi trạng từ.</p>
+    <p><strong>today</strong> <span class="wtag">✗ SAI</span>: trạng từ lời trực tiếp. Câu gốc của giáo viên: "We are reading about Thomas Edison <em>today</em>."</p>
+    <p><strong>that day</strong> = ngày hôm đó (nhìn từ quá khứ) → đúng. <strong>Bảng đổi:</strong> "today" → <strong>"that day"</strong>.</p>
+  </div>
+
+  <!-- 6: said that → here → there ✓ -->
+  <div class="binrow">
+    <span class="binnum">6</span>
+    <div class="bintext">The guard said that I could park my car <button class="binchoice" data-correct="true" data-gid="e5q6" onclick="doBin(this)">there</button> / <button class="binchoice" data-correct="false" data-gid="e5q6" onclick="doBin(this)">here</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q6">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: there</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>"said that"</strong> → câu tường thuật. "here" (ở đây, góc nhìn người nói) → "there" (ở đó, góc nhìn người kể lại).</p>
+    <p><strong>here</strong> <span class="wtag">✗ SAI</span>: Câu gốc của bảo vệ: "You can park your car <em>here</em>." → tường thuật: <strong>"there"</strong>.</p>
+    <p><strong>Bảng đổi nơi chốn:</strong> "here" → <strong>"there"</strong> | "this" (chỉ nơi) → "that".</p>
+  </div>
+
+  <!-- 7: reported narration → ago → before ✓ -->
+  <div class="binrow">
+    <span class="binnum">7</span>
+    <div class="bintext">The robot marked and gave us feedback <button class="binchoice" data-correct="false" data-gid="e5q7" onclick="doBin(this)">two days ago</button> / <button class="binchoice" data-correct="true" data-gid="e5q7" onclick="doBin(this)">two days before</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q7">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: two days before</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu này nằm trong bài tập về ngôn ngữ tường thuật. Ngữ cảnh kể lại trong quá khứ (không có ngoặc kép) → dùng ngôn ngữ tường thuật.</p>
+    <p><strong>two days ago</strong> <span class="wtag">✗ SAI</span>: "ago" dùng quan hệ với thời điểm <em>hiện tại</em> ("two days ago" = hai ngày trước tính từ bây giờ). Trong tường thuật, "ago" → "before".</p>
+    <p><strong>Bảng đổi:</strong> "... ago" → <strong>"... before"</strong></p>
+  </div>
+
+  <!-- 8: said that → next year → the next year ✓ -->
+  <div class="binrow">
+    <span class="binnum">8</span>
+    <div class="bintext">The principal said that we wouldn't have robot teachers <button class="binchoice" data-correct="false" data-gid="e5q8" onclick="doBin(this)">next year</button> / <button class="binchoice" data-correct="true" data-gid="e5q8" onclick="doBin(this)">the next year</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q8">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: the next year</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>"said that"</strong> → câu tường thuật. "next year" → "the next year" / "the following year".</p>
+    <p><strong>next year</strong> (không có "the") <span class="wtag">✗ SAI</span>: Câu gốc của hiệu trưởng: "We won't have robot teachers <em>next year</em>."</p>
+    <p><strong>the next year</strong> (có mạo từ "the") = năm tiếp theo (nhìn từ quá khứ) → đúng trong tường thuật. <strong>Bảng đổi:</strong> "next week/month/year" → <strong>"the next week/month/year"</strong>.</p>
+  </div>
+
+  <!-- 9: dấu ngoặc kép → direct speech → next Sunday (no "the") ✓ -->
+  <div class="binrow">
+    <span class="binnum">9</span>
+    <div class="bintext">Bella said: "I will work with Sofia <button class="binchoice" data-correct="true" data-gid="e5q9" onclick="doBin(this)">next Sunday</button> / <button class="binchoice" data-correct="false" data-gid="e5q9" onclick="doBin(this)">the next Sunday</button>."</div>
+  </div>
+  <div class="exp" id="exp-e5q9">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: next Sunday</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>dấu ngoặc kép</strong> → lời nói trực tiếp. Bella đang nói thẳng → dùng "next Sunday" (không có "the").</p>
+    <p><strong>the next Sunday</strong> <span class="wtag">✗ SAI</span>: dạng này chỉ dùng trong câu tường thuật (không có ngoặc kép).</p>
+    <p><strong>Tóm tắt:</strong> Trong ngoặc kép → <strong>"next Sunday"</strong> | Trong tường thuật → <strong>"the next Sunday / the following Sunday"</strong>.</p>
+  </div>
+
+  <!-- 10: told me that → reported → the previous day ✓ -->
+  <div class="binrow">
+    <span class="binnum">10</span>
+    <div class="bintext">Bill told me that his father had bought him a new smartphone <button class="binchoice" data-correct="true" data-gid="e5q10" onclick="doBin(this)">the previous day</button> / <button class="binchoice" data-correct="false" data-gid="e5q10" onclick="doBin(this)">yesterday</button>.</div>
+  </div>
+  <div class="exp" id="exp-e5q10">
+    <div class="exp-title">💡 Giải thích</div>
+    <p><strong>Đáp án: the previous day</strong> <span class="ctag">✓ ĐÚNG</span></p>
+    <p>Câu có <strong>"told me that"</strong> → câu tường thuật rõ ràng. Phải đổi trạng từ.</p>
+    <p><strong>yesterday</strong> <span class="wtag">✗ SAI</span>: Câu gốc của Bill: "My father bought me a new smartphone <em>yesterday</em>."</p>
+    <p><strong>the previous day</strong> = ngày hôm trước (nhìn từ quá khứ) → đúng. <strong>Bảng đổi:</strong> "yesterday" → <strong>"the previous day / the day before"</strong>.</p>
+  </div>
+
+</div>
+
+<!-- SUBMIT -->
+<div class="submitwrap">
+  <button class="submitbtn" onclick="doSubmit()">🎯 Nộp Bài & Xem Điểm</button>
+</div>
+</div>
+
+<!-- GAP FILL POPUP -->
+<div class="overlay" id="gflay">
+  <div class="popbox">
+    <div class="pop-title">📝 Chọn từ phù hợp:</div>
+    <div class="pop-opts" id="popts"></div>
+  </div>
+</div>
+
+<!-- SCORE POPUP -->
+<div class="scorelay" id="scorelay">
+  <div class="scorebox">
+    <div id="sEmoji" style="font-size:3.6rem;margin-bottom:12px;">🏆</div>
+    <div style="font-size:1.45rem;font-weight:900;color:#5a2d82;margin-bottom:8px;">Kết quả của bạn!</div>
+    <div id="sNum" style="font-size:3rem;font-weight:900;color:#8854C0;"></div>
+    <div id="sTot" style="font-size:1rem;color:#888;font-weight:700;margin-bottom:14px;"></div>
+    <div id="sMsg" style="font-size:0.98rem;font-weight:700;color:#3a2060;padding:12px;background:linear-gradient(135deg,#f0e8ff,#fff0f8);border-radius:14px;margin-bottom:20px;"></div>
+    <button class="sclose" onclick="document.getElementById('scorelay').classList.remove('on')">Đóng lại 🎉</button>
+  </div>
+</div>
+
+<script>
+// ── AUDIO ──
+let _ac=null;
+const ac=()=>{if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;};
+function ding(){const c=ac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(880,c.currentTime);o.frequency.exponentialRampToValueAtTime(1320,c.currentTime+.18);g.gain.setValueAtTime(.45,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.5);o.start();o.stop(c.currentTime+.5);}
+function buzz(){const c=ac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(260,c.currentTime);o.frequency.exponentialRampToValueAtTime(80,c.currentTime+.38);g.gain.setValueAtTime(.3,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.4);o.start();o.stop(c.currentTime+.4);}
+
+// ── CONFETTI ──
+function confetti(){const cols=['#8854C0','#FDCB6E','#00C9A7','#FF4757','#4A90E2','#FF7F50','#c84b9e','#00D26A'];for(let i=0;i<55;i++){const p=document.createElement('div');p.className='cf';p.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%cols.length]};width:${8+Math.random()*8}px;height:${8+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.6+Math.random()*2.4}s;animation-delay:${Math.random()*.7}s;`;document.body.appendChild(p);setTimeout(()=>p.remove(),4000);}}
+
+// ── MC DATA ──
+const MC=[
+  {id:1, correct:'D', opts:[{k:'A',t:'take'},{k:'B',t:'took'},{k:'C',t:'have taken'},{k:'D',t:'had taken'}]},
+  {id:2, correct:'B', opts:[{k:'A',t:'works'},{k:'B',t:'worked'},{k:'C',t:'is working'},{k:'D',t:'have worked'}]},
+  {id:3, correct:'B', opts:[{k:'A',t:'now'},{k:'B',t:'then'},{k:'C',t:'this'},{k:'D',t:'that'}]},
+  {id:4, correct:'B', opts:[{k:'A',t:'said'},{k:'B',t:'told'},{k:'C',t:'talked'},{k:'D',t:'spoke'}]},
+  {id:5, correct:'C', opts:[{k:'A',t:'my'},{k:'B',t:'our'},{k:'C',t:'their'},{k:'D',t:'his'}]},
+  {id:6, correct:'D', opts:[{k:'A',t:'I'},{k:'B',t:'we'},{k:'C',t:'you'},{k:'D',t:'they'}]},
+  {id:7, correct:'A', opts:[{k:'A',t:'was'},{k:'B',t:'was being'},{k:'C',t:'have been'},{k:'D',t:'will be'}]},
+  {id:8, correct:'C', opts:[{k:'A',t:'use'},{k:'B',t:'will use'},{k:'C',t:'would use'},{k:'D',t:'would have used'}]},
+  {id:9, correct:'A', opts:[{k:'A',t:'the night before'},{k:'B',t:'yesterday evening'},{k:'C',t:'the next night'},{k:'D',t:'that night'}]},
+  {id:10,correct:'A', opts:[{k:'A',t:'had never eaten'},{k:'B',t:'will never eat'},{k:'C',t:'have never eaten'},{k:'D',t:'would never eat'}]},
+  {id:11,correct:'B', opts:[{k:'A',t:'will'},{k:'B',t:'had to'},{k:'C',t:'might'},{k:'D',t:'could'}]},
+  {id:12,correct:'D', opts:[{k:'A',t:'is going to be'},{k:'B',t:'can be'},{k:'C',t:'will be'},{k:'D',t:'was going to be'}]},
+  {id:13,correct:'D', opts:[{k:'A',t:'wrote'},{k:'B',t:'has written'},{k:'C',t:'was writing'},{k:'D',t:'had written'}]},
+  {id:14,correct:'B', opts:[{k:'A',t:'does the film begin'},{k:'B',t:'the film began'},{k:'C',t:'did the film begin'},{k:'D',t:'the film begins'}]},
+  {id:15,correct:'C', opts:[{k:'A',t:'not to make'},{k:'B',t:'are making'},{k:'C',t:'were making'},{k:'D',t:'making'}]},
+];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const scores={};
+
+// Render MC
+MC.forEach(q=>{
+  const grid=document.getElementById('o'+q.id);
+  shuffle([...q.opts]).forEach(opt=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML=`<span class="olabel">${opt.k}</span>${opt.t}`;
+    b.onclick=()=>pickMC(q.id,opt.k,q.correct,b,grid);
+    grid.appendChild(b);
+  });
+});
+
+function pickMC(qid,chosen,correct,btn,grid){
+  if(grid.dataset.done) return;
+  grid.dataset.done='1';
+  grid.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btn.classList.add('correct');
+    ding();confetti();scores['mc'+qid]=1;
+  } else {
+    btn.classList.add('wrong');btn.classList.add('shake');
+    grid.querySelectorAll('.opt').forEach(b=>{
+      if(b.querySelector('.olabel').textContent.trim()===correct) b.classList.add('correct');
+    });
+    buzz();scores['mc'+qid]=0;
+  }
+  document.getElementById('e'+qid).classList.add('show');
+}
+
+// ── GAP FILL ──
+const GF_ANS={1:'Nano learning',2:'contact lenses',3:'Isaac Newton',4:'face-to-face',5:'screen',6:'attendance'};
+const GF_WORDS=['screen','Isaac Newton','face-to-face','attendance','contact lenses','Nano learning'];
+let curGF=null;
+
+function openPop(n){
+  if(document.getElementById('b'+n).dataset.done) return;
+  curGF=n;
+  const div=document.getElementById('popts');
+  div.innerHTML='';
+  GF_WORDS.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='popopt';b.textContent=w;b.onclick=()=>pickGF(w);
+    div.appendChild(b);
+  });
+  document.getElementById('gflay').classList.add('on');
+}
+document.getElementById('gflay').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on');});
+
+function pickGF(word){
+  document.getElementById('gflay').classList.remove('on');
+  const n=curGF, btn=document.getElementById('b'+n);
+  btn.dataset.done='1'; btn.onclick=null;
+  const correct=GF_ANS[n];
+  btn.textContent=word;
+  document.querySelectorAll('.chip').forEach(c=>{if(c.dataset.word===word)c.classList.add('used');});
+  if(word===correct){
+    btn.classList.add('ok');ding();confetti();scores['gf'+n]=1;
+  } else {
+    btn.classList.add('bad');buzz();scores['gf'+n]=0;
+    setTimeout(()=>{btn.textContent=correct+' ✓';btn.classList.remove('bad');btn.classList.add('ok');},1100);
+  }
+  document.getElementById('ge'+n).classList.add('show');
+}
+
+// ── BINARY CHOICE — uses data-correct="true/false" directly ──
+const binDone={};
+function doBin(btn){
+  const gid=btn.dataset.gid;
+  if(binDone[gid]) return;
+  binDone[gid]=true;
+  const allBtns=document.querySelectorAll(`.binchoice[data-gid="${gid}"]`);
+  allBtns.forEach(b=>{b.onclick=null;});
+  const isCorrect=(btn.dataset.correct==='true');
+  if(isCorrect){
+    btn.classList.add('correct');ding();confetti();scores['bin_'+gid]=1;
+  } else {
+    btn.classList.add('wrong');btn.classList.add('shake');
+    allBtns.forEach(b=>{if(b.dataset.correct==='true')b.classList.add('correct');});
+    buzz();scores['bin_'+gid]=0;
+  }
+  const el=document.getElementById('exp-'+gid);
+  if(el) el.classList.add('show');
+}
+
+// ── SUBMIT ──
+function doSubmit(){
+  const TOTAL=37; let correct=0;
+  for(let i=1;i<=15;i++) if(scores['mc'+i]===1) correct++;
+  for(let i=1;i<=6;i++)  if(scores['gf'+i]===1) correct++;
+  ['e4q1','e4q2','e4q3','e4q4','e4q5','e4q6'].forEach(id=>{if(scores['bin_'+id]===1)correct++;});
+  ['e5q1','e5q2','e5q3','e5q4','e5q5','e5q6','e5q7','e5q8','e5q9','e5q10'].forEach(id=>{if(scores['bin_'+id]===1)correct++;});
+  const pct=Math.round(correct/TOTAL*100);
+  const tiers=[[95,'🏆','Hoàn hảo! Bạn là Reported Speech Master! 🌟'],[80,'🌟','Xuất sắc! Bạn nắm vững kiến thức tường thuật!'],[65,'🎉','Rất tốt! Ôn thêm một chút là hoàn hảo rồi!'],[50,'😊','Khá ổn! Xem lại giải thích nhé, bạn làm được!'],[0,'💪','Cố lên! Học lại từng quy tắc rồi thử lại nhé!']];
+  let emoji='💪',msg=tiers[tiers.length-1][2];
+  for(const[t,e,m]of tiers){if(pct>=t){emoji=e;msg=m;break;}}
+  document.getElementById('sEmoji').textContent=emoji;
+  document.getElementById('sNum').textContent=correct;
+  document.getElementById('sTot').textContent='/ '+TOTAL+' câu đúng  ('+pct+'%)';
+  document.getElementById('sMsg').textContent=msg;
+  document.getElementById('scorelay').classList.add('on');
+  confetti();
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

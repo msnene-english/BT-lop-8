@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra Trắc Nghiệm Tương Tác - MS Chí Nên ULIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8854C0;
+            --secondary: #00C9A7;
+            --accent: #FDCB6E;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--primary);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background 1s ease-in-out;
+        }
+
+        /* Tự động đổi màu Gradient theo Theme mượt mà */
+        .bg-animate {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -2;
+            background: linear-gradient(135deg, #8854C0, #FDCB6E, #00C9A7, #FF9A9E, #A0C4FF);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Lớp pattern SVG lơ lửng */
+        .pattern-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-repeat: repeat;
+            animation: floatUp 40s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes floatUp {
+            from { background-position: 0 1000px; }
+            to { background-position: 0 0; }
+        }
+
+        /* Security Modal */
+        #auth-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(15px);
+        }
+
+        .auth-box {
+            background: var(--glass-bg);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border: 4px solid var(--accent);
+        }
+
+        .auth-box h2 { color: var(--primary); margin-bottom: 25px; font-size: 2rem; font-weight: 800;}
+        .auth-box input {
+            padding: 18px;
+            border-radius: 15px;
+            border: 3px solid #ccc;
+            font-size: 1.5rem;
+            text-align: center;
+            outline: none;
+            width: 100%;
+            transition: all 0.3s;
+            font-weight: 700;
+        }
+        .auth-box input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(136, 84, 192, 0.3); }
+        .auth-box button {
+            margin-top: 25px;
+            padding: 18px 40px;
+            border-radius: 20px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #5f368c;
+            transition: all 0.1s;
+        }
+        .auth-box button:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #5f368c;
+        }
+
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: var(--wrong) !important;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* Top Bar */
+        #top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            z-index: 10;
+        }
+        .creator-info h1 { font-size: 1.4rem; color: var(--primary); font-weight: 800; text-transform: uppercase; }
+        
+        .timer-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .timer-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--wrong);
+            background: white;
+            padding: 8px 25px;
+            border-radius: 15px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.15);
+            border: 2px solid #ffeaea;
+        }
+        .btn-start {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #00987d;
+        }
+        .btn-start:active { transform: translateY(6px); box-shadow: none; }
+
+        /* Main Layout - Split Screen */
+        #main-content {
+            display: none;
+            flex: 1;
+            flex-direction: row;
+            overflow: hidden;
+            padding: 25px;
+            gap: 25px;
+        }
+
+        .pane {
+            flex: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 35px;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.25); border-radius: 12px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.45); }
+
+        /* Reading Content Styling - BIGGER FONTS */
+        .passage { margin-bottom: 50px; }
+        .passage-title { color: var(--primary); margin-bottom: 20px; font-size: 1.8rem; font-weight: 800; border-bottom: 3px dashed var(--accent); padding-bottom: 10px; }
+        .paragraph-container { margin-bottom: 25px; line-height: 2; font-size: 1.35rem; font-weight: 600; color: #2c3e50; }
+        
+        .translate-btn {
+            background: #E0F7FA;
+            color: #00838F;
+            border: 2px solid #00ACC1;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #00ACC1;
+        }
+        .translate-btn:active { transform: translateY(4px); box-shadow: none; }
+        
+        .translation-text {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: #FFF9C4;
+            border-left: 6px solid #FBC02D;
+            border-radius: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #424242;
+            line-height: 1.8;
+        }
+
+        /* Glossary Table */
+        .glossary-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 2px solid var(--accent);
+        }
+        .glossary-box h4 { color: var(--primary); margin-bottom: 15px; font-size: 1.4rem; font-weight: 800;}
+        .glossary-table { width: 100%; border-collapse: collapse; font-size: 1.2rem; }
+        .glossary-table th, .glossary-table td { border: 2px solid #f0f0f0; padding: 12px; text-align: left; font-weight: 600;}
+        .glossary-table th { background: var(--accent); color: #333; font-weight: 800; text-transform: uppercase; }
+        .glossary-table tr:nth-child(even) { background: #fafafa; }
+
+        /* Fake Sale Sign */
+        .sale-sign {
+            background: #fff;
+            border: 5px solid #2d3436;
+            padding: 30px;
+            box-shadow: 8px 8px 0 #2d3436;
+            margin: 25px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1.35rem;
+            border-radius: 10px;
+        }
+        .sale-sign h3 { text-align: center; text-transform: uppercase; border-bottom: 4px solid #2d3436; padding-bottom: 15px; margin-bottom: 20px; font-size: 2rem;}
+        .sale-sign ul { margin-left: 30px; margin-top: 15px; line-height: 2;}
+
+        /* Gap Fill styling */
+        .gap {
+            display: inline-block;
+            min-width: 90px;
+            text-align: center;
+            border-bottom: 3px dashed #636e72;
+            color: var(--primary);
+            font-weight: 800;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: all 0.2s;
+            position: relative;
+            background: rgba(136, 84, 192, 0.05);
+            border-radius: 5px 5px 0 0;
+        }
+        .gap:hover { background: rgba(136, 84, 192, 0.2); transform: scale(1.05); }
+        .gap.answered-correct { color: var(--correct); border-bottom-color: var(--correct); background: rgba(0, 210, 106, 0.1); }
+        .gap.answered-wrong { color: var(--wrong); border-bottom-color: var(--wrong); background: rgba(255, 71, 87, 0.1); }
+
+        /* Popup for Gap Fill */
+        .gap-popup {
+            position: absolute;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            padding: 20px;
+            display: none;
+            z-index: 100;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 250px;
+            max-width: 400px;
+            border: 3px solid var(--primary);
+        }
+        .gap-popup .btn-option {
+            background: #f8f9fa; margin: 0; width: 100%; text-align: left; padding: 15px 20px; box-shadow: 0 4px 0 #dcdde1;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .question-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .question-text { font-size: 1.4rem; font-weight: 800; color: #2d3436; margin-bottom: 20px; line-height: 1.6; }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        .btn-option {
+            background: white;
+            border: 3px solid #dfe6e9;
+            padding: 16px 25px;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            box-shadow: 0 5px 0 #dfe6e9;
+            position: relative;
+            overflow: hidden;
+            color: #2d3436;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        .btn-option:hover:not(:disabled) {
+            transform: scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 5px 0 var(--primary);
+            background: #fcf9ff;
+        }
+        .btn-option:active:not(:disabled) {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+        
+        .btn-option.correct {
+            background: var(--correct); color: white; border-color: #00b85c; box-shadow: 0 5px 0 #00984c;
+        }
+        .btn-option.wrong {
+            background: var(--wrong); color: white; border-color: #e84150; box-shadow: 0 5px 0 #c23642;
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* Explanation Box - SẶC SỠ HƠN */
+        .explanation-box {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: #FAFAFA;
+            border-radius: 20px;
+            border: 3px dashed var(--accent);
+            font-size: 1.25rem;
+            line-height: 1.9;
+            font-weight: 600;
+            color: #333;
+            animation: fadeIn 0.5s ease;
+            box-shadow: inset 0 0 20px rgba(253, 203, 110, 0.1);
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* HIỆU ỨNG HIGHLIGHT MỚI - SIÊU NỔI BẬT DÀNH CHO TIỂU HỌC */
+        .p-word { 
+            color: #007BFF; font-weight: 900; background: #E6F3FF; 
+            padding: 4px 10px; border-radius: 10px; border: 2px solid #80C4FF; 
+            display: inline-block; line-height: 1.2; box-shadow: 0 2px 4px rgba(0,123,255,0.2);
+        }
+        .p-phonetic { 
+            color: #9C27B0; font-weight: 900; background: #F3E5F5; 
+            padding: 4px 10px; border-radius: 10px; border: 2px solid #CE93D8; 
+            font-family: 'Courier New', monospace; font-size: 1.2rem; display: inline-block; line-height: 1.2;
+        }
+        .p-mean { 
+            color: #FF6D00; font-style: normal; font-weight: 900; background: #FFF3E0; 
+            padding: 4px 10px; border-radius: 10px; border: 2px solid #FFCC80; 
+            display: inline-block; line-height: 1.2; box-shadow: 0 2px 4px rgba(255,109,0,0.2);
+        }
+        .p-grammar { 
+            color: #E91E63; font-weight: 900; background: #FCE4EC; 
+            padding: 4px 10px; border-radius: 10px; border-bottom: 4px wavy #E91E63; 
+            display: inline-block; line-height: 1.2;
+        }
+        .hl-green { 
+            color: #00C853; font-weight: 900; background: #E8F5E9; 
+            padding: 4px 10px; border-radius: 10px; border: 2px dashed #00C853; 
+            display: inline-block; line-height: 1.2; box-shadow: 0 3px 6px rgba(0,200,83,0.3);
+        }
+        .hl-red { 
+            color: #D50000; font-weight: 900; background: #FFEBEE; 
+            padding: 4px 10px; border-radius: 10px; border: 2px dashed #D50000; 
+            display: inline-block; line-height: 1.2; box-shadow: 0 3px 6px rgba(213,0,0,0.3);
+        }
+
+        .submit-container { text-align: center; margin-top: 40px; margin-bottom: 30px; }
+        .btn-submit {
+            background: linear-gradient(135deg, #FF4757, #FF7B54);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.6rem;
+            font-weight: 900;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 4px solid #fff;
+        }
+        .btn-submit:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(255, 71, 87, 0.7); }
+        .btn-submit:active { transform: translateY(0); box-shadow: 0 5px 15px rgba(255, 71, 87, 0.5); }
+
+        /* Confetti */
+        .confetti { position: fixed; width: 12px; height: 12px; z-index: 1000; pointer-events: none; border-radius: 50%; }
+
+        /* Result Modal */
+        #result-modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
+            display: none; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .result-content {
+            background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 550px;
+            text-align: center; position: relative; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 5px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .result-content h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; font-weight: 900; }
+        .score-display { font-size: 4rem; font-weight: 900; color: var(--correct); margin: 20px 0; text-shadow: 3px 3px 0 #b2f2bb; }
+        .result-gif { width: 100%; border-radius: 20px; margin: 20px 0; height: auto; max-height: 280px; object-fit: cover; border: 3px solid #eee;}
+        .name-input-container { margin-bottom: 25px; }
+        .name-input-container input { padding: 15px; width: 85%; border: 3px solid #ccc; border-radius: 15px; font-size: 1.3rem; text-align: center; font-weight: bold;}
+        .name-input-container input:focus { border-color: var(--primary); outline: none;}
+        .name-input-container input.error { border-color: red; animation: shake 0.3s; }
+        .btn-check-score { background: var(--secondary); color: white; border: none; padding: 18px 35px; border-radius: 20px; font-weight: 900; font-size: 1.4rem; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 0 #00987d; transition: all 0.1s;}
+        .btn-check-score:active { transform: translateY(8px); box-shadow: none; }
+        #final-report { display: none; }
+
+        u { text-decoration-color: var(--wrong); text-decoration-thickness: 4px; font-weight: 900; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animate"></div>
+    <div class="pattern-overlay" id="pattern-layer"></div>
+
+    <div id="auth-modal">
+        <div class="auth-box">
+            <h2>🔒 Nhập Mật Khẩu Lớp Học</h2>
+            <p style="margin-bottom:20px; color:#555; font-size: 1.2rem; font-weight: 600;">Nhập mật khẩu do giáo viên cung cấp để bắt đầu làm bài nhé!</p>
+            <input type="password" id="pw-input" placeholder="Gõ mật khẩu vào đây..." autocomplete="off">
+            <br>
+            <button onclick="checkAuth()">Mở Khóa Bài Thi 🚀</button>
+            <p id="auth-error" style="color:red; margin-top:15px; display:none; font-weight:900; font-size: 1.2rem;">⚠️ Mật khẩu sai rồi! Thử lại nha.</p>
+        </div>
+    </div>
+
+    <div id="top-bar">
+        <div class="creator-info">
+            <h1>Giáo viên tạo: MS Chí Nên ULIS</h1>
+        </div>
+        <div class="timer-box">
+            <button class="btn-start" id="btn-timer" onclick="startTimer()">BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+            <div class="timer-display" id="timer">10:00</div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="pane" id="left-pane" onscroll="checkScrollTheme()">
+            
+            <div class="passage" data-theme="shopping">
+                <h2 class="passage-title">🛍️ Part 1: Announcement</h2>
+                <div class="sale-sign">
+                    <h3>SUMMER DISCOUNT</h3>
+                    <p>Get ready for (13) <span class="gap" data-q="13" onclick="openGap(13, this)">_____</span> our summer sale! Follow these tips to save more on your shopping:</p>
+                    <ul>
+                        <li>Look (14) <span class="gap" data-q="14" onclick="openGap(14, this)">_____</span> the signs for the best discounts around the store.</li>
+                        <li>Make sure to (15) <span class="gap" data-q="15" onclick="openGap(15, this)">_____</span> your discount card at checkout to get more savings.</li>
+                        <li>Our sale is only valid during this weekend, so don't wait!</li>
+                        <li>Be quick with your (16) <span class="gap" data-q="16" onclick="openGap(16, this)">_____</span> to avoid missing out on the best deals.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="passage" data-theme="tech">
+                <h2 class="passage-title">💻 Part 2: Gap Fill - Science & Tech in Edu</h2>
+                
+                <div class="paragraph-container">
+                    Developments in science and technology have brought a number of advantages in education. First, it increases efficiency and motivation for students. Students learn more (19) <span class="gap" data-q="19" onclick="openGap(19, this)">_____</span> through visual presentations or videos. They can also feel more motivated to learn in this way.
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Những sự phát triển trong khoa học và công nghệ đã mang lại nhiều lợi thế trong giáo dục. Đầu tiên, nó làm tăng sự hiệu quả và động lực cho học sinh. Học sinh học tập một cách hiệu quả hơn thông qua các bài thuyết trình trực quan hoặc video. Các em cũng có thể cảm thấy có động lực học tập hơn theo cách này.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    Secondly, digital search and internet (20) <span class="gap" data-q="20" onclick="openGap(20, this)">_____</span> have a positive impact on the research habits of learners. Technology has opened doors for learners to access information sources to find (21) <span class="gap" data-q="21" onclick="openGap(21, this)">_____</span> to problems by themselves. Thus, students (22) <span class="gap" data-q="22" onclick="openGap(22, this)">_____</span> research on their own.
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Thứ hai, tìm kiếm kỹ thuật số và các công cụ internet có tác động tích cực đến thói quen nghiên cứu của người học. Công nghệ đã mở ra cánh cửa cho người học tiếp cận các nguồn thông tin để tự mình tìm ra giải pháp cho các vấn đề. Do đó, học sinh cảm thấy sẵn sàng tự mình thực hiện nghiên cứu.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    Third, students can access more information when they study. For example, learners who desire to write quality essays can find samples to guide them in their writing process. They can learn the best ways to present and structure their essays. (23) <span class="gap" data-q="23" onclick="openGap(23, this)">_____</span>, development in science and technology can increase flexibility for learning. With online classes, students don't need to (24) <span class="gap" data-q="24" onclick="openGap(24, this)">_____</span> lessons at specific times, especially when there is a pandemic or in stormy weather. They can read materials online and complete their assignments when they have time.
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Thứ ba, học sinh có thể tiếp cận nhiều thông tin hơn khi học. Ví dụ, những người học mong muốn viết các bài luận chất lượng có thể tìm các bài mẫu để hướng dẫn họ trong quá trình viết. Họ có thể học những cách tốt nhất để trình bày và cấu trúc bài luận của mình. Hơn nữa, sự phát triển trong khoa học và công nghệ có thể tăng tính linh hoạt cho việc học. Với các lớp học trực tuyến, học sinh không cần phải tham gia các tiết học vào những thời điểm cụ thể, đặc biệt là khi có đại dịch hoặc trong thời tiết bão bùng. Họ có thể đọc tài liệu trực tuyến và hoàn thành bài tập khi có thời gian.</div>
+                </div>
+            </div>
+
+            <div class="passage" data-theme="weather">
+                <h2 class="passage-title">⛈️ Part 3: Reading Comprehension - Extreme Weather</h2>
+                
+                <div class="paragraph-container">
+                    Vietnam is likely to continue facing extreme weather conditions such as higher temperatures, lower summer rainfalls, stronger storms, and rising sea levels from now to 2050, experts said at a conference on high resolution weather forecast in Ha Noi, August 22. Accordingly, temperatures in northern Vietnam will rise by between 0.83 degrees Celsius by 2050 and continue its uptrend during the late 21st century. 
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Việt Nam có khả năng sẽ tiếp tục đối mặt với các điều kiện thời tiết khắc nghiệt như nhiệt độ cao hơn, lượng mưa mùa hè thấp hơn, các cơn bão mạnh hơn và mực nước biển dâng cao từ nay đến năm 2050, các chuyên gia nhận định tại một hội nghị về dự báo thời tiết độ phân giải cao tại Hà Nội, ngày 22 tháng 8. Theo đó, nhiệt độ ở miền Bắc Việt Nam sẽ tăng khoảng 0,83 độ C vào năm 2050 và tiếp tục xu hướng tăng trong suốt cuối thế kỷ 21.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    Summer rainfall will decline in most areas. Meanwhile, storms may become rarer but fiercer, causing possible flash floods and landslides in flood-prone areas of northern mountainous, central and central highland provinces. The high resolution forecasts suggest sea level rises of 100mm – 400mm along the entire Vietnamese coast by the end of the 21st century, affecting marine biology and coastal communities. 
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Lượng mưa mùa hè sẽ giảm ở hầu hết các khu vực. Trong khi đó, các cơn bão có thể trở nên hiếm hơn nhưng dữ dội hơn, gây ra khả năng lũ quét và sạt lở đất ở những vùng dễ bị lũ lụt thuộc các tỉnh miền núi phía Bắc, miền Trung và Tây Nguyên. Các dự báo độ phân giải cao cho thấy mực nước biển dâng từ 100mm – 400mm dọc theo toàn bộ bờ biển Việt Nam vào cuối thế kỷ 21, ảnh hưởng đến sinh học biển và các cộng đồng ven biển.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    Deputy Minister of Natural Resources and Environment Tran Hong Ha reiterated the unpredictability of climate change and its potential impacts to create a variety of hazardous extreme weather events in the future.
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Thứ trưởng Bộ Tài nguyên và Môi trường Trần Hồng Hà đã nhắc lại tính không thể đoán trước của biến đổi khí hậu và những tác động tiềm ẩn của nó trong việc tạo ra một loạt các sự kiện thời tiết khắc nghiệt nguy hiểm trong tương lai.</div>
+                </div>
+            </div>
+
+            <div class="passage" data-theme="tech">
+                <h2 class="passage-title">📚 Part 4: Sentence Insertion - Edu Tech</h2>
+                
+                <div class="paragraph-container">
+                    Education is another area of social life in which information technology is (37) <span class="gap" data-q="37" onclick="openGap(37, this)">_____</span>. Today’s college students may not simply sit in a lecture or a library to learn about their field. 
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Giáo dục là một lĩnh vực khác của đời sống xã hội mà trong đó công nghệ thông tin đang thay đổi cách chúng ta giao tiếp. Sinh viên đại học ngày nay có thể không chỉ đơn giản là ngồi trong giảng đường hay thư viện để học về lĩnh vực của họ.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    For children over the age of 10, daily attendance at schools is not compulsory. Yet, some of the older children attend school only once or twice weekly to get tutorial support or instruction from a teacher. (38) <span class="gap" data-q="38" onclick="openGap(38, this)">_____</span>. Students must complete a minimum number of study hours per year; however, they may make up these hours by studying at home at time that suit their family schedule. They can log on early or late in the day and even join live classes in other countries. 
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Đối với trẻ em trên 10 tuổi, việc đi học hàng ngày ở trường không phải là bắt buộc. Tuy nhiên, một số trẻ lớn tuổi hơn chỉ đến trường một hoặc hai lần mỗi tuần để nhận hỗ trợ gia sư hoặc sự hướng dẫn từ giáo viên. Phần lớn, học sinh được khuyến khích làm việc trực tuyến từ nhà. Học sinh phải hoàn thành một số giờ học tối thiểu mỗi năm; tuy nhiên, các em có thể bù đắp những giờ này bằng cách học ở nhà vào thời gian phù hợp với lịch trình gia đình. Các em có thể đăng nhập sớm hoặc muộn trong ngày và thậm chí tham gia các lớp học trực tiếp ở các quốc gia khác.</div>
+                </div>
+
+                <div class="paragraph-container">
+                    In order to ensure that each student is learning adequately, computer software will automatically monitor the number of hours a week each student studies online as well as that students’ learning materials and assessment activities. Reports will be (39) <span class="gap" data-q="39" onclick="openGap(39, this)">_____</span>. The software can then identify the best learning activities and condition for each individual student and generate similar activities. (40) <span class="gap" data-q="40" onclick="openGap(40, this)">_____</span>
+                    <br><button class="translate-btn" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                    <div class="translation-text">Để đảm bảo rằng mỗi học sinh đang học tập một cách đầy đủ, phần mềm máy tính sẽ tự động theo dõi số giờ học trực tuyến mỗi tuần của mỗi học sinh cũng như các tài liệu học tập và hoạt động đánh giá của học sinh đó. Các báo cáo sẽ có sẵn cho phụ huynh và giáo viên. Sau đó, phần mềm có thể xác định các hoạt động học tập và điều kiện tốt nhất cho từng cá nhân học sinh và tạo ra các hoạt động tương tự. Nó cũng có thể xác định các lĩnh vực đạt thành tích yếu và tạo ra các chương trình đặc biệt được điều chỉnh theo nhu cầu của học sinh.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pane" id="right-pane">
+            <div id="questions-container">
+                </div>
+            
+            <div class="submit-container">
+                <button class="btn-submit" onclick="showNameInput()">🎯 Nộp Bài & Xem Điểm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="gap-popup" id="gap-dropdown">
+        </div>
+
+    <div id="result-modal">
+        <div class="result-content" id="name-prompt">
+            <h2>🎯 Nhập Tên Để Xem Điểm Nào!</h2>
+            <div class="name-input-container">
+                <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A..." onkeypress="handleEnter(event)">
+                <p id="name-error" style="color:red; display:none; margin-top:10px; font-weight: 800; font-size: 1.1rem;">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</p>
+            </div>
+            <button class="btn-check-score" onclick="submitQuiz()">Xem Kết Quả Ngay 🚀</button>
+        </div>
+
+        <div class="result-content" id="final-report">
+            <h2 id="result-title">Kết Quả</h2>
+            <div class="score-display" id="score-text">0/0</div>
+            <p id="result-message" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; line-height: 1.5;"></p>
+            <img id="result-meme" class="result-gif" src="" alt="Meme">
+            <button class="btn-check-score" onclick="location.reload()">Làm Lại Bài</button>
+        </div>
+    </div>
+
+    <script>
+        // --- SECURITY (ANTI-F12) ---
+        const pwArray = [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115]; // "comaianulis"
+        const correctPw = pwArray.map(c => String.fromCharCode(c)).join('');
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false;
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) return false;
+            if(e.ctrlKey && e.keyCode == 85) return false;
+        };
+
+        function checkAuth() {
+            const input = document.getElementById('pw-input');
+            const err = document.getElementById('auth-error');
+            if (input.value === correctPw) {
+                document.getElementById('auth-modal').style.display = 'none';
+                document.getElementById('main-content').style.display = 'flex';
+                initQuiz();
+            } else {
+                input.classList.remove('shake');
+                void input.offsetWidth; // trigger reflow
+                input.classList.add('shake');
+                err.style.display = 'block';
+            }
+        }
+
+        // --- AUDIO GENERATOR ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.15);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+                createConfetti();
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.4);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            }
+        }
+
+        // --- CONFETTI ---
+        function createConfetti() {
+            const colors = ['#00D26A', '#FF4757', '#FDCB6E', '#8854C0', '#00C9A7', '#FF9A9E'];
+            for(let i=0; i<60; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+                conf.style.top = '-15px';
+                document.body.appendChild(conf);
+
+                const animation = conf.animate([
+                    { transform: `translate3d(0,0,0) rotate(0deg) scale(${Math.random() + 0.5})`, opacity: 1 },
+                    { transform: `translate3d(${Math.random()*300 - 150}px, 100vh, 0) rotate(${Math.random()*1080}deg) scale(${Math.random() + 0.5})`, opacity: 0 }
+                ], { duration: Math.random()*2000 + 1500, easing: 'cubic-bezier(.37,0,.63,1)' });
+                animation.onfinish = () => conf.remove();
+            }
+        }
+
+        // --- TIMER ---
+        let timerInterval;
+        let timeRemaining = 600; // 10 minutes
+        let isTimerRunning = false;
+        
+        function startTimer() {
+            const btn = document.getElementById('btn-timer');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                btn.innerText = "TIẾP TỤC LÀM BÀI";
+                btn.style.background = "#FDCB6E";
+                isTimerRunning = false;
+            } else {
+                btn.innerText = "TẠM DỪNG";
+                btn.style.background = "#FF4757";
+                isTimerRunning = true;
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    let m = Math.floor(timeRemaining / 60);
+                    let s = timeRemaining % 60;
+                    document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+                    if(timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        alert("Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.");
+                    }
+                }, 1000);
+            }
+        }
+
+        // --- DYNAMIC BACKGROUND & THEME ---
+        function checkScrollTheme() {
+            const pane = document.getElementById('left-pane');
+            const passages = document.querySelectorAll('.passage');
+            let currentTheme = 'shopping';
+            
+            passages.forEach(p => {
+                const rect = p.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                    currentTheme = p.dataset.theme;
+                }
+            });
+            updateTheme(currentTheme);
+        }
+
+        function updateTheme(theme) {
+            const patternLayer = document.getElementById('pattern-layer');
+            let emojis = '';
+            // Bổ sung Hoa và Mèo con theo sở thích của user!
+            if (theme === 'shopping') emojis = `<text y="40" font-size="30">🛍️</text><text x="40" y="80" font-size="30">🌸</text><text x="80" y="40" font-size="30">🐱</text>`;
+            if (theme === 'tech') emojis = `<text y="40" font-size="30">💻</text><text x="40" y="80" font-size="30">🌸</text><text x="80" y="40" font-size="30">🚀</text>`;
+            if (theme === 'weather') emojis = `<text y="40" font-size="30">⛈️</text><text x="40" y="80" font-size="30">🐱</text><text x="80" y="40" font-size="30">☀️</text>`;
+
+            const svg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="130" height="130">${emojis}</svg>`;
+            patternLayer.style.backgroundImage = `url('${svg}')`;
+        }
+
+        function toggleTranslation(btn) {
+            const text = btn.nextElementSibling;
+            if (text.style.display === 'block') {
+                text.style.display = 'none';
+                btn.innerHTML = 'Mở dịch đoạn này 🌟';
+            } else {
+                text.style.display = 'block';
+                btn.innerHTML = 'Thu gọn 🙈';
+            }
+        }
+
+        // --- QUIZ DATA & LOGIC - KHÔNG CẮT XÉN CHỮ NÀO ---
+        const options37_40 = [
+            "available for parents and teachers",
+            "changing the way we communicate",
+            "It can also identify areas of weak achievement and produce special programs adjusted to the students’ needs.",
+            "For the most parts, pupils are encouraged to work online from home"
+        ];
+
+        const quizData = [
+            {
+                id: 13, type: 'gap', text: "Question 13: Get ready for (13) _____ our summer sale!",
+                options: ["the", "a", "an", "x (no article)"], answer: "x (no article)",
+                expl: `1. Dịch câu hỏi: Chuẩn bị sẵn sàng cho đợt giảm giá mùa hè của chúng tôi!
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>the</span>: Mạo từ xác định.
+<br>B. <span class='p-word'>a</span>: Mạo từ không xác định.
+<br>C. <span class='p-word'>an</span>: Mạo từ không xác định.
+<br>D. <span class='p-word'>x (no article)</span>: Không dùng mạo từ.
+<br>3. Tại sao chọn D?
+<br>Trước cụm danh từ đã có tính từ sở hữu <span class='p-grammar'>"our"</span> (của chúng tôi), do đó <span class='hl-red'>KHÔNG ĐƯỢC</span> dùng thêm mạo từ a/an/the nữa. Chọn <span class='hl-green'>x (no article)</span>.`
+            },
+            {
+                id: 14, type: 'gap', text: "Question 14: Look (14) _____ the signs for the best discounts around the store.",
+                options: ["into", "for", "about", "with"], answer: "for",
+                expl: `1. Dịch câu hỏi: Hãy tìm kiếm các biển báo để có được mức giảm giá tốt nhất quanh cửa hàng.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>into</span>: Look into = <span class='p-mean'>điều tra</span>.
+<br>B. <span class='p-word'>for</span>: Look for = <span class='p-mean'>tìm kiếm</span>.
+<br>C. <span class='p-word'>about</span>: Không đi với look.
+<br>D. <span class='p-word'>with</span>: Không đi với look.
+<br>3. Tại sao chọn B?
+<br>Cụm động từ (Phrasal verb) <span class='p-grammar'>look for</span> mang nghĩa là tìm kiếm. Câu này khuyên khách hàng <span class='hl-green'>tìm kiếm</span> các biển báo giảm giá. Dẫn chứng: "Look for the signs for the best discounts".`
+            },
+            {
+                id: 15, type: 'gap', text: "Question 15: Make sure to (15) _____ your discount card at checkout to get more savings.",
+                options: ["give", "bring", "take", "show"], answer: "show",
+                expl: `1. Dịch câu hỏi: Hãy chắc chắn xuất trình thẻ giảm giá của bạn tại quầy thanh toán để được tiết kiệm hơn.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>give</span> <span class='p-mean'>cho, tặng</span>
+<br>B. <span class='p-word'>bring</span> <span class='p-mean'>mang theo</span>
+<br>C. <span class='p-word'>take</span> <span class='p-mean'>lấy đi</span>
+<br>D. <span class='p-word'>show</span> <span class='p-mean'>cho xem, xuất trình</span>
+<br>3. Tại sao chọn D?
+<br>Collocation ở quầy thanh toán (checkout), khi dùng thẻ giảm giá ta phải đưa cho nhân viên xem, tức là <span class='hl-green'>show your discount card</span> (xuất trình thẻ). Không dùng 'give' vì ta không tặng luôn thẻ cho họ.`
+            },
+            {
+                id: 16, type: 'gap', text: "Question 16: Be quick with your (16) _____ to avoid missing out on the best deals.",
+                options: ["selections", "select", "selectively", "selective"], answer: "selections",
+                expl: `1. Dịch câu hỏi: Hãy nhanh chóng với những sự lựa chọn của bạn để tránh bỏ lỡ các ưu đãi tốt nhất.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>selections</span> <span class='p-mean'>sự lựa chọn, món đồ được chọn</span> (Danh từ số nhiều).
+<br>B. <span class='p-word'>select</span> <span class='p-mean'>chọn lọc</span> (Động từ).
+<br>C. <span class='p-word'>selectively</span> <span class='p-mean'>một cách có chọn lọc</span> (Trạng từ).
+<br>D. <span class='p-word'>selective</span> <span class='p-mean'>có tính chọn lọc</span> (Tính từ).
+<br>3. Tại sao chọn A?
+<br>Chỗ trống đứng sau tính từ sở hữu <span class='p-grammar'>"your"</span>, do đó cần một <span class='p-grammar'>Danh Từ</span>. Chỉ có A là danh từ phù hợp. Chọn <span class='hl-green'>selections</span>.`
+            },
+            {
+                id: 19, type: 'gap', text: "Question 19: Students learn more (19) _____ through visual presentations or videos.",
+                options: ["effectively", "effect", "efficiency", "affected"], answer: "effectively",
+                expl: `1. Dịch câu hỏi: Học sinh học tập một cách hiệu quả hơn thông qua các bài thuyết trình trực quan hoặc video.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>effectively</span> <span class='p-phonetic'>/ɪˈfektɪvli/</span> <span class='p-mean'>một cách hiệu quả</span> (Trạng từ).
+<br>B. <span class='p-word'>effect</span> <span class='p-phonetic'>/ɪˈfekt/</span> <span class='p-mean'>hiệu ứng, kết quả</span> (Danh từ).
+<br>C. <span class='p-word'>efficiency</span> <span class='p-phonetic'>/ɪˈfɪʃnsi/</span> <span class='p-mean'>sự hiệu quả</span> (Danh từ).
+<br>D. <span class='p-word'>affected</span> <span class='p-phonetic'>/əˈfektɪd/</span> <span class='p-mean'>bị ảnh hưởng</span> (Tính từ/V-ed).
+<br>3. Tại sao chọn A?
+<br>Chỗ trống đứng sau động từ thường "learn" (học), cần một <span class='p-grammar'>trạng từ</span> để bổ nghĩa cho động từ đó. Do đó chọn trạng từ <span class='hl-green'>effectively</span>. Loại B, C (danh từ) và D (tính từ).`
+            },
+            {
+                id: 20, type: 'gap', text: "Question 20: Secondly, digital search and internet (20) _____ have a positive impact on the research habits of learners.",
+                options: ["utensils", "tools", "equipment", "gadgets"], answer: "tools",
+                expl: `1. Dịch câu hỏi: Thứ hai, tìm kiếm kỹ thuật số và các công cụ internet có tác động tích cực đến thói quen nghiên cứu của người học.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>utensils</span> <span class='p-mean'>đồ dùng, dụng cụ (thường dùng trong nhà bếp)</span>.
+<br>B. <span class='p-word'>tools</span> <span class='p-mean'>công cụ (có thể dùng nghĩa bóng cho phần mềm, internet)</span>.
+<br>C. <span class='p-word'>equipment</span> <span class='p-mean'>trang thiết bị (danh từ không đếm được)</span>.
+<br>D. <span class='p-word'>gadgets</span> <span class='p-mean'>thiết bị công nghệ nhỏ gọn</span>.
+<br>3. Tại sao chọn B?
+<br>Ta có cụm từ cố định (collocation) <span class='p-grammar'>internet tools / search tools</span> mang nghĩa là "các công cụ tìm kiếm/công cụ internet". Các phần mềm không được gọi là utensils hay gadgets. Chọn <span class='hl-green'>tools</span>.`
+            },
+            {
+                id: 21, type: 'gap', text: "Question 21: Technology has opened doors for learners to access information sources to find (21) _____ to problems by themselves.",
+                options: ["answers", "questions", "progress", "development"], answer: "answers",
+                expl: `1. Dịch câu hỏi: Công nghệ mở ra cánh cửa cho người học tiếp cận các nguồn thông tin để tự mình tìm ra câu trả lời cho các vấn đề.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>answers</span> <span class='p-mean'>câu trả lời, giải pháp</span>.
+<br>B. <span class='p-word'>questions</span> <span class='p-mean'>câu hỏi</span>.
+<br>C. <span class='p-word'>progress</span> <span class='p-mean'>tiến độ</span>.
+<br>D. <span class='p-word'>development</span> <span class='p-mean'>sự phát triển</span>.
+<br>3. Tại sao chọn A?
+<br>Dựa vào ngữ cảnh "to problems" (cho các vấn đề), ta cần tìm <span class='hl-green'>answers</span> (giải pháp/câu trả lời). Ta có cụm <span class='p-grammar'>answers to problems</span>.`
+            },
+            {
+                id: 22, type: 'gap', text: "Question 22: Thus, students (22) ___________ research on their own.",
+                options: ["feel willing to do", "feels will to do", "feel will doing", "feels willing to do"], answer: "feel willing to do",
+                expl: `1. Dịch câu hỏi: Do đó, học sinh cảm thấy sẵn sàng tự mình thực hiện nghiên cứu.
+<br>2. Tại sao chọn A?
+<br>- Chủ ngữ <span class='p-grammar'>students</span> là số nhiều -> Động từ "feel" KHÔNG thêm "s". (Loại B, D).
+<br>- Cấu trúc: <span class='p-grammar'>be/feel willing to + V(nguyên thể)</span> có nghĩa là "sẵn lòng làm gì". (Loại C vì dùng doing).
+<br>Do đó, đáp án đúng nhất là <span class='hl-green'>feel willing to do</span>.`
+            },
+            {
+                id: 23, type: 'gap', text: "Question 23: (23) _________, development in science and technology can increase flexibility for learning.",
+                options: ["Nevertheless", "However", "Otherwise", "Moreover"], answer: "Moreover",
+                expl: `1. Dịch câu hỏi: Hơn nữa, sự phát triển trong khoa học và công nghệ có thể tăng tính linh hoạt cho việc học.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>Nevertheless</span> <span class='p-mean'>Tuy nhiên</span> (Chỉ sự đối lập).
+<br>B. <span class='p-word'>However</span> <span class='p-mean'>Tuy nhiên</span>.
+<br>C. <span class='p-word'>Otherwise</span> <span class='p-mean'>Nếu không thì</span>.
+<br>D. <span class='p-word'>Moreover</span> <span class='p-mean'>Hơn nữa, ngoài ra</span> (Dùng để bổ sung thêm ý).
+<br>3. Tại sao chọn D?
+<br>Đoạn văn đang liệt kê các lợi ích của công nghệ (First..., Secondly..., Third...). Câu này cung cấp THÊM một lợi ích nữa ("increase flexibility for learning"). Do đó từ nối bổ sung thông tin <span class='hl-green'>Moreover</span> là chính xác nhất.`
+            },
+            {
+                id: 24, type: 'gap', text: "Question 24: With online classes, students don't need to (24) _____ lessons at specific times, especially when there is a pandemic or in stormy weather.",
+                options: ["come", "attend", "learn", "study"], answer: "attend",
+                expl: `1. Dịch câu hỏi: Với các lớp học trực tuyến, học sinh không cần phải tham gia các tiết học vào những thời điểm cụ thể...
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>come</span> <span class='p-mean'>đến</span>.
+<br>B. <span class='p-word'>attend</span> <span class='p-mean'>tham dự, tham gia</span>.
+<br>C. <span class='p-word'>learn</span> <span class='p-mean'>học</span>.
+<br>D. <span class='p-word'>study</span> <span class='p-mean'>nghiên cứu, học tập</span>.
+<br>3. Tại sao chọn B?
+<br>Đi kèm với danh từ "lessons" (tiết học) hoặc "classes" (lớp học), động từ chuẩn xác nhất (collocation) là <span class='p-grammar'>attend lessons</span> (tham dự tiết học). Không dùng "learn lessons" trong ngữ cảnh này. Chọn <span class='hl-green'>attend</span>.`
+            },
+            {
+                id: 31, type: 'mc', text: "Question 31: By 2050, Viet Nam continues facing all of these extreme weather conditions EXCEPT ________",
+                options: ["higher temperatures", "storms reaching record levels", "lower summer rainfalls", "rising sea levels"], answer: "storms reaching record levels",
+                expl: `1. Dịch câu hỏi: Đến năm 2050, Việt Nam tiếp tục đối mặt với tất cả các điều kiện thời tiết khắc nghiệt này NGOẠI TRỪ...
+<br>2. Phân tích 4 đáp án:
+<br>A. higher temperatures (Nhiệt độ cao hơn).
+<br>B. storms reaching record levels (Bão đạt mức kỷ lục).
+<br>C. lower summer rainfalls (Lượng mưa mùa hè thấp hơn).
+<br>D. rising sea levels (Mực nước biển dâng).
+<br>3. Tại sao chọn B?
+<br>🔍 Dẫn chứng trong bài: "Vietnam is likely to continue facing extreme weather conditions such as <span class='p-grammar'>higher temperatures, lower summer rainfalls, stronger storms, and rising sea levels</span>..."
+<br>Bài chỉ đề cập bão mạnh hơn (stronger storms / fiercer), <span class='hl-red'>KHÔNG hề nhắc đến</span> việc "đạt mức kỷ lục" (record levels). Vậy thông tin sai (EXCEPT) là <span class='hl-green'>storms reaching record levels</span>.`
+            },
+            {
+                id: 32, type: 'mc', text: "Question 32: Sea level rises along the entire Vietnamese coast by the end of the 21st century will ________.",
+                options: ["make temperatures in northern Vietnam rise until 2050", "make storms become rarer but fiercer in the near future", "have impacts on marine biodiversity and coastal communities", "cause certain flash floods and landslides in flood-prone areas"], answer: "have impacts on marine biodiversity and coastal communities",
+                expl: `1. Dịch câu hỏi: Mực nước biển dâng dọc theo toàn bộ bờ biển Việt Nam vào cuối thế kỷ 21 sẽ...
+<br>2. Tại sao chọn C?
+<br>🔍 Dẫn chứng trong bài: "...sea level rises of 100mm – 400mm along the entire Vietnamese coast by the end of the 21st century, <span class='hl-green'>affecting marine biology and coastal communities.</span>"
+<br>👉 Dịch: "...ảnh hưởng đến sinh học biển và các cộng đồng ven biển."
+<br>Cụm từ "affecting" đồng nghĩa với <span class='p-grammar'>"have impacts on"</span>. Do đó đáp án C là hoàn toàn chính xác.`
+            },
+            {
+                id: 33, type: 'mc', text: "Question 33: To experts, they ________ to predict exactly the model of the climate change and its potential impacts.",
+                options: ["are unable", "are likely", "are certain", "are surprised"], answer: "are unable",
+                expl: `1. Dịch câu hỏi: Đối với các chuyên gia, họ ________ dự đoán chính xác mô hình biến đổi khí hậu và tác động của nó.
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>are unable</span> <span class='p-mean'>không thể</span>.
+<br>B. <span class='p-word'>are likely</span> <span class='p-mean'>có khả năng</span>.
+<br>C. <span class='p-word'>are certain</span> <span class='p-mean'>chắc chắn</span>.
+<br>D. <span class='p-word'>are surprised</span> <span class='p-mean'>ngạc nhiên</span>.
+<br>3. Tại sao chọn A?
+<br>🔍 Dẫn chứng trong bài: đoạn cuối có từ khóa quan trọng: <span class='p-grammar'>"the unpredictability of climate change"</span> (tính không thể dự đoán được của biến đổi khí hậu).
+<br>Điều này đồng nghĩa với việc họ <span class='hl-green'>are unable</span> (không thể) dự đoán chính xác.`
+            },
+            {
+                id: 34, type: 'mc', text: "Question 34: What could be the best title of the passage?",
+                options: ["Extreme Weather Conditions in Viet Nam", "Natural Disasters in Viet Nam", "Weather Patterns in Viet Nam", "Potential Impacts of Climate Change"], answer: "Extreme Weather Conditions in Viet Nam",
+                expl: `1. Dịch câu hỏi: Tiêu đề tốt nhất cho đoạn văn có thể là gì?
+<br>2. Tại sao chọn A?
+<br>Xuyên suốt đoạn văn, tác giả liên tục lặp lại cụm từ <span class='hl-green'>extreme weather conditions / extreme weather events</span> (điều kiện thời tiết khắc nghiệt) như một chủ đề trung tâm, được thể hiện qua nhiệt độ tăng, mưa giảm, bão mạnh, nước biển dâng ở Việt Nam. Do đó "Extreme Weather Conditions in Viet Nam" là tiêu đề bao quát và chính xác nhất.`
+            },
+            {
+                id: 35, type: 'mc', text: "Question 35: The word “uptrend” is OPPOSITE in meaning with _________.",
+                options: ["Increase", "decline", "raise", "growth"], answer: "decline",
+                expl: `1. Dịch câu hỏi: Từ "uptrend" có nghĩa TRÁI NGƯỢC với...
+<br>2. Phân tích từ vựng:
+<br>- <span class='p-word'>uptrend</span>: up (lên) + trend (xu hướng) = xu hướng tăng.
+<br>A. <span class='p-word'>Increase</span> <span class='p-mean'>tăng</span> (Đồng nghĩa).
+<br>B. <span class='p-word'>decline</span> <span class='p-mean'>giảm sút</span> (Trái nghĩa).
+<br>C. <span class='p-word'>raise</span> <span class='p-mean'>nâng lên</span> (Đồng nghĩa).
+<br>D. <span class='p-word'>growth</span> <span class='p-mean'>sự phát triển/tăng trưởng</span> (Đồng nghĩa).
+<br>3. Tại sao chọn B?
+<br>Đề bài yêu cầu tìm từ <span class='hl-red'>OPPOSITE</span> (trái nghĩa), do đó từ mang nghĩa giảm là <span class='hl-green'>decline</span> là đáp án đúng.`
+            },
+            {
+                id: 36, type: 'mc', text: "Question 36: The word “hazardous” in the last paragraph can be understood as",
+                options: ["favourable", "dangerous", "suitable", "beneficial"], answer: "dangerous",
+                expl: `1. Dịch câu hỏi: Từ “hazardous” ở đoạn cuối có thể được hiểu là...
+<br>2. Phân tích 4 đáp án:
+<br>A. <span class='p-word'>favourable</span> <span class='p-mean'>thuận lợi</span>.
+<br>B. <span class='p-word'>dangerous</span> <span class='p-mean'>nguy hiểm</span>.
+<br>C. <span class='p-word'>suitable</span> <span class='p-mean'>phù hợp</span>.
+<br>D. <span class='p-word'>beneficial</span> <span class='p-mean'>có ích lợi</span>.
+<br>3. Tại sao chọn B?
+<br>Từ <span class='p-word'>hazardous</span> mang nghĩa là nguy hiểm, độc hại. Trong câu ngữ cảnh "...hazardous extreme weather events" (những sự kiện thời tiết khắc nghiệt nguy hiểm), nó đồng nghĩa hoàn toàn với <span class='hl-green'>dangerous</span>.`
+            },
+            {
+                id: 37, type: 'gap', text: "Question 37: Education is another area of social life in which information technology is (37) ___________.",
+                options: options37_40, answer: "changing the way we communicate",
+                expl: `1. Dịch câu trống: Giáo dục là một khu vực khác của đời sống xã hội mà trong đó công nghệ thông tin đang (37).....
+<br>2. Tại sao chọn đáp án này?
+<br>Ngay sau đó bài viết nói về việc "Sinh viên đại học ngày nay có thể không chỉ đơn giản là ngồi trong giảng đường hay thư viện", tức là phương thức giao tiếp và học tập đã thay đổi. Phù hợp nhất là ghép câu <span class='hl-green'>"changing the way we communicate"</span> (thay đổi cách chúng ta giao tiếp).`
+            },
+            {
+                id: 38, type: 'gap', text: "Question 38: ...to get tutorial support or instruction from a teacher. (38) ______________.",
+                options: options37_40, answer: "For the most parts, pupils are encouraged to work online from home",
+                expl: `1. Tại sao chọn đáp án này?
+<br>Câu trước đề cập "trẻ em lớn tuổi chỉ đến trường 1-2 lần/tuần". Vậy thời gian còn lại chúng làm gì? Câu tiếp theo kết nối logic một cách hoàn hảo: <span class='hl-green'>"For the most parts, pupils are encouraged to work online from home"</span> (Phần lớn, học sinh được khuyến khích làm việc trực tuyến từ nhà).`
+            },
+            {
+                id: 39, type: 'gap', text: "Question 39: Reports will be (39) __________.",
+                options: options37_40, answer: "available for parents and teachers",
+                expl: `1. Tại sao chọn đáp án này?
+<br>Câu trước nói về việc phần mềm tự động "theo dõi" (monitor) hoạt động học tập để lập ra các "Reports" (báo cáo). Các báo cáo này để làm gì? Để dành cho phụ huynh và giáo viên xem. Vậy nên điền <span class='hl-green'>"available for parents and teachers"</span>.`
+            },
+            {
+                id: 40, type: 'gap', text: "Question 40: The software can then identify the best learning activities and condition for each individual student and generate similar activities. (40) ___________",
+                options: options37_40, answer: "It can also identify areas of weak achievement and produce special programs adjusted to the students’ needs.",
+                expl: `1. Tại sao chọn đáp án này?
+<br>Câu trước nói "phần mềm có thể XÁC ĐỊNH (identify) hoạt động học tập tốt nhất". Câu tiếp theo nối tiếp bổ sung ý: "Nó CŨNG có thể XÁC ĐỊNH (It can also identify) các mảng còn yếu kém...". Sự lặp lại cấu trúc ngữ pháp <span class='p-grammar'>identify... also identify</span> chứng minh ghép câu <span class='hl-green'>"It can also identify areas of weak achievement and produce special programs adjusted to the students’ needs."</span> là đáp án hoàn toàn chính xác.`
+            }
+        ];
+
+        let userAnswers = {};
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+            
+            quizData.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${q.id}`;
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.innerHTML = q.text;
+                card.appendChild(questionText);
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+                
+                let shuffledOptions = shuffleArray([...q.options]);
+                
+                shuffledOptions.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = `btn-option q-opt-${q.id}`;
+                    btn.innerHTML = opt; 
+                    btn.onclick = () => handleAnswer(q.id, opt, btn);
+                    optionsGrid.appendChild(btn);
+                });
+                
+                card.appendChild(optionsGrid);
+
+                const explBox = document.createElement('div');
+                explBox.className = 'explanation-box';
+                explBox.id = `expl-${q.id}`;
+                explBox.innerHTML = `<strong style="font-size: 1.4rem; color: #8854C0;">📖 Giải thích chi tiết:</strong><br>${q.expl}`;
+                card.appendChild(explBox);
+
+                container.appendChild(card);
+            });
+            updateTheme('shopping');
+        }
+
+        function handleAnswer(qId, selectedOption, btnElement) {
+            const qData = quizData.find(q => q.id === qId);
+            const isCorrect = selectedOption === qData.answer;
+            
+            userAnswers[qId] = isCorrect;
+
+            // Disable all buttons for this question
+            const buttons = document.querySelectorAll(`.q-opt-${qId}`);
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.style.cursor = 'not-allowed';
+                if (b.innerHTML === qData.answer) {
+                    b.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                btnElement.classList.add('wrong');
+                playSound('wrong');
+            } else {
+                playSound('correct');
+            }
+
+            // Sync with Gap on the left pane
+            const gapElement = document.querySelector(`.gap[data-q="${qId}"]`);
+            if (gapElement) {
+                gapElement.innerHTML = "Đã điền ✔️"; // Rút gọn hiển thị bên trái cho đỡ rối, vì đáp án ở Part 4 rất dài
+                if(qId < 37) gapElement.innerHTML = qData.answer; // Part 1, 2 thì vẫn hiện chữ
+                gapElement.className = `gap ${isCorrect ? 'answered-correct' : 'answered-wrong'}`;
+            }
+
+            // Show explanation
+            document.getElementById(`expl-${qId}`).style.display = 'block';
+        }
+
+        // --- GAP POPUP LOGIC ---
+        let currentGapId = null;
+        function openGap(qId, element) {
+            const qData = quizData.find(q => q.id === qId);
+            if (!qData || userAnswers[qId] !== undefined) return; 
+            
+            currentGapId = qId;
+            const popup = document.getElementById('gap-dropdown');
+            popup.innerHTML = '';
+            
+            let shuffledOptions = shuffleArray([...qData.options]);
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.innerHTML = opt;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const rightButtons = document.querySelectorAll(`.q-opt-${qId}`);
+                    rightButtons.forEach(rb => {
+                        if (rb.innerHTML === opt) rb.click();
+                    });
+                    popup.style.display = 'none';
+                    
+                    document.getElementById(`q-card-${qId}`).scrollIntoView({behavior: 'smooth', block: 'center'});
+                };
+                popup.appendChild(btn);
+            });
+            
+            const rect = element.getBoundingClientRect();
+            popup.style.left = rect.left + 'px';
+            popup.style.top = (rect.bottom + window.scrollY + 10) + 'px';
+            
+            // Xử lý popup không bị tràn lề màn hình đối với câu 37-40 (đáp án dài)
+            if (qId >= 37) {
+                popup.style.maxWidth = "500px";
+                if(rect.left > window.innerWidth / 2) {
+                    popup.style.left = "auto";
+                    popup.style.right = (window.innerWidth - rect.right) + 'px';
+                }
+            } else {
+                popup.style.maxWidth = "400px";
+            }
+
+            popup.style.display = 'flex';
+        }
+
+        document.addEventListener('click', (e) => {
+            if(!e.target.classList.contains('gap') && !e.target.closest('.gap-popup')) {
+                document.getElementById('gap-dropdown').style.display = 'none';
+            }
+        });
+
+        // --- RESULTS LOGIC ---
+        function showNameInput() {
+            document.getElementById('result-modal').style.display = 'flex';
+            document.getElementById('name-prompt').style.display = 'block';
+            document.getElementById('final-report').style.display = 'none';
+        }
+
+        function handleEnter(e) {
+            if(e.key === 'Enter') submitQuiz();
+        }
+
+        function submitQuiz() {
+            const nameInput = document.getElementById('student-name');
+            const nameErr = document.getElementById('name-error');
+            const name = nameInput.value.trim();
+
+            if (!name) {
+                nameInput.classList.remove('error');
+                void nameInput.offsetWidth;
+                nameInput.classList.add('error');
+                nameErr.style.display = 'block';
+                return;
+            }
+
+            clearInterval(timerInterval); 
+            
+            let correctCount = 0;
+            quizData.forEach(q => {
+                if(userAnswers[q.id] === true) correctCount++;
+            });
+
+            const total = quizData.length;
+            const percent = correctCount / total;
+            
+            document.getElementById('name-prompt').style.display = 'none';
+            document.getElementById('final-report').style.display = 'block';
+            
+            document.getElementById('score-text').innerText = `${correctCount}/${total}`;
+            
+            const msgEl = document.getElementById('result-message');
+            const gifEl = document.getElementById('result-meme');
+            
+            if (percent === 1) {
+                msgEl.innerHTML = `🌟 <strong>THIÊN TÀI XUẤT CHÚNG!</strong><br>${name} đạt điểm tuyệt đối luôn!`;
+                gifEl.src = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; 
+                createConfetti();
+                createConfetti();
+                createConfetti();
+            } else if (percent >= 0.6) {
+                msgEl.innerHTML = `👍 <strong>Làm tốt lắm!</strong><br>${name} cố gắng thêm chút xíu nữa là hoàn hảo nha!`;
+                gifEl.src = "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; 
+                createConfetti();
+            } else {
+                msgEl.innerHTML = `💪 <strong>Cố lên nhé!</strong><br>${name} nhớ đọc kỹ phần giải thích chi tiết sặc sỡ của MS Chí Nên để giỏi hơn nha!`;
+                gifEl.src = "https://media.giphy.com/media/OPU6wzx8ktijs/giphy.gif"; 
+            }
+        }
+
+        function initQuiz() {
+            renderQuestions();
+        }
+    </script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

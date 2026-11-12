@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Quiz – AI & Smartphones | MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES – TECH/AI THEME ===== */
+:root {
+  --primary: #6C3FC5;
+  --secondary: #00C6FF;
+  --accent: #F7B731;
+  --bg-start: #0f0c29;
+  --bg-mid: #302b63;
+  --bg-end: #24243e;
+  --card-bg: rgba(255,255,255,0.07);
+  --card-border: rgba(255,255,255,0.15);
+  --text-main: #f0f0f8;
+  --text-muted: #b0b0cc;
+  --correct: #00D26A;
+  --wrong: #FF4757;
+  --font-main: 'Nunito', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+  --radius: 18px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ===== ANIMATED GRADIENT BACKGROUND ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a3e, #0d1b4b, #1e3a5f);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating SVG pattern layer */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Ctext x='20' y='60' font-size='48'%3E🤖%3C/text%3E%3Ctext x='160' y='130' font-size='40'%3E📱%3C/text%3E%3Ctext x='60' y='200' font-size='36'%3E💡%3C/text%3E%3Ctext x='230' y='280' font-size='44'%3E🚀%3C/text%3E%3Ctext x='10' y='300' font-size='32'%3E🌐%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 320px 320px;
+  animation: floatPattern 25s linear infinite;
+}
+
+@keyframes floatPattern {
+  from { background-position: 0 0; }
+  to   { background-position: 320px 320px; }
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,12,41,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.header-brand h1 {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #00C6FF, #F7B731, #b06afc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+.header-brand p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Timer area */
+.timer-zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #F7B731, #FF6B6B);
+  border: none;
+  border-radius: 50px;
+  padding: 9px 20px;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(247,183,49,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.btn-start:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(247,183,49,0.6); }
+
+.timer-display {
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent);
+  background: rgba(247,183,49,0.12);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 4px 16px;
+  display: none;
+  min-width: 90px;
+  text-align: center;
+}
+.timer-display.visible { display: block; }
+.timer-display.urgent { color: var(--wrong); border-color: var(--wrong); animation: pulse 0.5s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+.btn-pause {
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  padding: 6px 14px;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  transition: background 0.2s;
+}
+.btn-pause.visible { display: block; }
+.btn-pause:hover { background: rgba(255,255,255,0.2); }
+
+/* Score badge */
+.score-badge {
+  background: linear-gradient(135deg, #6C3FC5, #00C6FF);
+  border-radius: 50px;
+  padding: 7px 16px;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 14px rgba(108,63,197,0.4);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.main-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.section-title {
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 28px 0 16px;
+  background: linear-gradient(90deg, #00C6FF, #b06afc, #F7B731);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== SECTION IX – FILL IN THE BLANK ===== */
+.passage-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.passage-card h3 {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--secondary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.passage-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* Blank slots */
+.blank {
+  display: inline-block;
+  border-bottom: 2px dashed var(--accent);
+  min-width: 80px;
+  color: var(--accent);
+  font-weight: 800;
+  padding: 0 4px;
+  text-align: center;
+  cursor: default;
+}
+
+/* ===== MCQ QUESTIONS ===== */
+.questions-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.q-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+.q-card:hover { transform: translateY(-2px); }
+
+.q-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 50%;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 0.85rem;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.q-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-main);
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 14px;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.opt-btn {
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  line-height: 1.4;
+}
+.opt-btn:hover:not(.disabled) {
+  transform: scale(1.04);
+  background: rgba(255,255,255,0.13);
+  border-color: var(--secondary);
+  box-shadow: 0 5px 18px rgba(0,198,255,0.25);
+}
+.opt-btn .opt-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.8rem;
+  margin-right: 8px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.opt-btn.correct {
+  background: rgba(0,210,106,0.22) !important;
+  border-color: var(--correct) !important;
+  color: #00ff88 !important;
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(0,210,106,0.4);
+}
+.opt-btn.wrong {
+  background: rgba(255,71,87,0.22) !important;
+  border-color: var(--wrong) !important;
+  color: #ff8080 !important;
+  animation: shake 0.4s ease;
+}
+.opt-btn.disabled { cursor: not-allowed; pointer-events: none; }
+.opt-btn.show-correct {
+  background: rgba(0,210,106,0.15) !important;
+  border-color: var(--correct) !important;
+}
+
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-6px)}
+  80%{transform:translateX(6px)}
+}
+
+/* ===== EXPLANATION BOX ===== */
+.explanation-box {
+  margin-top: 14px;
+  background: rgba(108,63,197,0.18);
+  border-left: 4px solid var(--primary);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  display: none;
+  color: #d8d4f8;
+}
+.explanation-box.show { display: block; animation: fadeIn 0.3s ease; }
+.explanation-box h4 {
+  font-family: var(--font-main);
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+}
+.explanation-box .why-correct { color: #7affb0; font-weight: 700; }
+.explanation-box .why-wrong { color: #ffaaaa; }
+.explanation-box .translation { color: #ffe08a; font-style: italic; }
+
+/* ===== SPLIT SCREEN (Section X) ===== */
+.split-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .split-screen { grid-template-columns: 1fr; }
+  .options-grid { grid-template-columns: 1fr; }
+}
+
+.split-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  height: 75vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 75px;
+}
+.split-panel::-webkit-scrollbar { width: 6px; }
+.split-panel::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
+.split-panel::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+.panel-title {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+}
+
+.passage-paragraph {
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--text-main);
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+/* Translation button & box */
+.btn-translate {
+  background: linear-gradient(135deg, rgba(0,198,255,0.2), rgba(108,63,197,0.2));
+  border: 1.5px solid rgba(0,198,255,0.4);
+  border-radius: 50px;
+  padding: 7px 16px;
+  color: var(--secondary);
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+  display: block;
+}
+.btn-translate:hover {
+  background: rgba(0,198,255,0.25);
+  transform: scale(1.03);
+  box-shadow: 0 3px 12px rgba(0,198,255,0.25);
+}
+
+.translation-box {
+  background: rgba(0,198,255,0.07);
+  border-left: 3px solid var(--secondary);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: #b8eaff;
+  display: none;
+  animation: fadeIn 0.3s ease;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+.translation-box.show { display: block; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== GLOSSARY ===== */
+.glossary-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px dashed rgba(255,255,255,0.15);
+}
+.glossary-section h3 {
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.glossary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.glossary-table th {
+  background: rgba(108,63,197,0.35);
+  color: var(--accent);
+  padding: 8px 10px;
+  text-align: left;
+  font-family: var(--font-main);
+  font-weight: 800;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+.glossary-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  color: var(--text-main);
+  vertical-align: top;
+}
+.glossary-table tr:hover td { background: rgba(255,255,255,0.05); }
+.word-cell { font-weight: 700; color: #7affec; font-family: var(--font-main); }
+.pos-cell { color: #ffb3ff; font-style: italic; font-weight: 600; }
+
+/* ===== TRUE/FALSE ===== */
+.tf-q-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+.tf-q-card:hover { transform: translateY(-2px); }
+
+.tf-statement {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.tf-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tf-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 9px 18px;
+  border-radius: 50px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.tf-btn:hover:not(.disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 5px 16px rgba(0,198,255,0.25);
+}
+.tf-btn.t-btn { border-color: rgba(0,210,106,0.4); }
+.tf-btn.f-btn { border-color: rgba(255,71,87,0.4); }
+.tf-btn.correct { background: rgba(0,210,106,0.28); border-color: var(--correct); color: #00ff88; box-shadow: 0 0 18px rgba(0,210,106,0.35); }
+.tf-btn.wrong { background: rgba(255,71,87,0.28); border-color: var(--wrong); color: #ff8080; animation: shake 0.4s ease; }
+.tf-btn.disabled { cursor: not-allowed; pointer-events: none; }
+.tf-btn.reveal { background: rgba(0,210,106,0.15); border-color: var(--correct); }
+
+.tf-explanation {
+  margin-top: 12px;
+  background: rgba(108,63,197,0.15);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  display: none;
+  color: #d8d4f8;
+}
+.tf-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+
+/* ===== SHORT ANSWER SECTION ===== */
+.sa-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.sa-question {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.answer-dots {
+  display: inline-block;
+  background: rgba(247,183,49,0.12);
+  border: 2px dashed var(--accent);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 2px;
+  user-select: none;
+}
+.answer-dots:hover { background: rgba(247,183,49,0.2); transform: scale(1.03); }
+.answer-dots.revealed {
+  background: rgba(0,210,106,0.15);
+  border-color: var(--correct);
+  color: #7affb0;
+  letter-spacing: 0;
+  cursor: default;
+}
+
+/* ===== SUBMIT & RESULTS ===== */
+.submit-zone {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #F7B731, #FF6B6B, #b06afc);
+  border: none;
+  border-radius: 50px;
+  padding: 16px 48px;
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 28px rgba(247,183,49,0.45);
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-submit:hover { transform: scale(1.06); box-shadow: 0 10px 36px rgba(247,183,49,0.6); }
+.btn-submit::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(transparent, rgba(255,255,255,0.15), transparent);
+  animation: spin 3s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== RESULT MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+
+.result-card {
+  background: linear-gradient(135deg, #1a1a40, #2d1b5e);
+  border: 2px solid rgba(108,63,197,0.5);
+  border-radius: 28px;
+  padding: 32px 40px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 88vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 80px rgba(108,63,197,0.3);
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+@keyframes popIn { from{transform:scale(0.6);opacity:0} to{transform:scale(1);opacity:1} }
+
+.result-emoji {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  display: block;
+  animation: bounce 1s ease infinite alternate;
+}
+@keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-12px)} }
+
+.result-title {
+  font-family: var(--font-main);
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #F7B731, #FF6B6B, #b06afc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.result-score {
+  font-family: var(--font-main);
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 10px 0;
+  text-shadow: 0 0 30px rgba(0,198,255,0.6);
+}
+
+.result-comment {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.result-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+.breakdown-item {
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.breakdown-item span { display: block; font-size: 1.1rem; font-weight: 900; color: var(--secondary); margin-top: 2px; }
+
+.btn-retry {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  border-radius: 50px;
+  padding: 12px 36px;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 20px rgba(108,63,197,0.4);
+}
+.btn-retry:hover { transform: scale(1.05); }
+
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall 1.5s ease-out forwards;
+}
+@keyframes confettiFall {
+  0%  { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100%{ transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  margin: 32px 0;
+  border-radius: 2px;
+}
+
+/* ===== TIMEOUT NOTICE ===== */
+.timeout-notice {
+  display: none;
+  background: rgba(255,71,87,0.15);
+  border: 2px solid var(--wrong);
+  border-radius: 14px;
+  padding: 14px 20px;
+  text-align: center;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #ff9999;
+  margin-bottom: 20px;
+  animation: fadeIn 0.4s ease;
+}
+.timeout-notice.show { display: block; }
+
+/* ===== INSTRUCTION BADGE ===== */
+.instruction-badge {
+  background: rgba(247,183,49,0.12);
+  border: 1.5px solid rgba(247,183,49,0.4);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffe08a;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.instruction-badge strong { color: var(--accent); }
+
+/* ===== SCROLLABLE RIGHT PANEL ===== */
+.exercises-panel {
+  height: 75vh;
+  overflow-y: auto;
+}
+.exercises-panel::-webkit-scrollbar { width: 6px; }
+.exercises-panel::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+.exercises-panel::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* Section labels */
+.sub-section-label {
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin: 20px 0 12px;
+  padding: 8px 14px;
+  background: rgba(247,183,49,0.1);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar-wrapper {
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  height: 8px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C6FF, #b06afc);
+  border-radius: 50px;
+  transition: width 0.4s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-brand">
+    <h1>🤖 English Quiz – AI &amp; Smartphones</h1>
+    <p>Giáo viên tạo: MS Chí Nên ULIS | Bài Tập Tiếng Anh 8</p>
+  </div>
+  <div class="timer-zone">
+    <button class="btn-start" onclick="startTimer()">⏱ BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+    <div class="timer-display" id="timerDisplay">10:00</div>
+    <button class="btn-pause" id="pauseBtn" onclick="togglePause()">⏸ Tạm dừng</button>
+  </div>
+  <div class="score-badge">🏆 Điểm: <span id="liveScore">0</span> / <span id="totalQ">15</span></div>
+</header>
+
+<div class="main-wrapper">
+
+  <!-- Timeout notice -->
+  <div class="timeout-notice" id="timeoutNotice">
+    ⏰ Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong <strong>10 phút</strong> thôi nha!
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION IX                                                    -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">📝 Section IX – Choose the Best Word or Phrase</h2>
+
+  <div class="passage-card">
+    <h3>📖 Reading Passage – AI in Education</h3>
+    <div id="passageIX">
+
+      <!-- Đoạn 1 -->
+      <div class="passage-text" style="margin-bottom:10px;">
+        Mike Harris knew it <span class="blank" id="b1">(1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> take a full day to design a new class he was teaching at a Kansas high school. But before he started last winter, he turned to artificial intelligence, curious <span class="blank" id="b2">(2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> how it might help. He asked ChatGPT to outline a 16-week drama class at a large urban school, <span class="blank" id="b3">(3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> his state's standards.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('tIX1', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="tIX1">
+        Mike Harris biết rằng ông <strong>(1)</strong> <em>có thể</em> mất cả ngày để thiết kế một lớp học mới tại một trường trung học ở Kansas. Nhưng trước khi bắt đầu vào mùa đông năm ngoái, ông đã tìm đến trí tuệ nhân tạo, <strong>(2)</strong> <em>tò mò về</em> cách nó có thể giúp ích. Ông nhờ ChatGPT phác thảo chương trình kịch nghệ 16 tuần tại một trường đô thị lớn, <strong>(3)</strong> <em>sử dụng</em> các tiêu chuẩn của bang ông.
+      </div>
+
+      <!-- Đoạn 2 -->
+      <div class="passage-text" style="margin-top:14px;margin-bottom:10px;">
+        It took two or three minutes.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('tIX2', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="tIX2">
+        Việc đó chỉ mất hai hoặc ba phút.
+      </div>
+
+      <!-- Đoạn 3 -->
+      <div class="passage-text" style="margin-top:14px;margin-bottom:10px;">
+        Then he pressed again: Could it now craft daily lesson plans, tied to state and school district standards, for <span class="blank" id="b4">(4)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> classes every other day? In minutes, they appeared.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('tIX3', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="tIX3">
+        Sau đó ông thử tiếp: Liệu AI có thể soạn kế hoạch bài học hàng ngày, gắn với tiêu chuẩn của bang và học khu, cho các lớp học <strong>(4)</strong> <em>dài 90 phút</em> diễn ra hai ngày một lần không? Trong vài phút, chúng đã xuất hiện.
+      </div>
+
+      <!-- Đoạn 4 -->
+      <div class="passage-text" style="margin-top:14px;margin-bottom:10px;">
+        "To me, that's the wonder of the <span class="blank" id="b5">(5)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>," said Harris, who's in his 10th year as a teacher in Wichita. "This is one of those once-in-a-millennia <span class="blank" id="b6">(6)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> changes."
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('tIX4', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="tIX4">
+        "Với tôi, đó là điều kỳ diệu của <strong>(5)</strong> <em>công cụ</em> này," Harris nói — người đang ở năm thứ 10 trong nghề giáo tại Wichita. "Đây là một trong những thay đổi <strong>(6)</strong> <em>công nghệ</em> chỉ xảy ra một lần trong thiên niên kỷ."
+      </div>
+
+      <!-- Đoạn 5 -->
+      <div class="passage-text" style="margin-top:14px;margin-bottom:10px;">
+        <span class="blank" id="b7">(7)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> AI jolts education, public school teachers and university professors are discovering that it is not just for students. Educators are using it to help <span class="blank" id="b8">(8)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> tests, generate case studies, write emails and rethink teaching strategies.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('tIX5', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="tIX5">
+        <strong>(7)</strong> <em>Khi</em> AI làm rung chuyển nền giáo dục, các giáo viên trường công lập và giáo sư đại học đang nhận ra rằng AI không chỉ dành riêng cho học sinh. Các nhà giáo dục đang dùng nó để giúp <strong>(8)</strong> <em>phát triển</em> các bài kiểm tra, tạo nghiên cứu điển hình, viết email và suy nghĩ lại chiến lược giảng dạy.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MCQ Questions IX -->
+  <div class="questions-grid" id="qGridIX">
+    <!-- Generated by JS -->
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION X                                                     -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">📱 Section X – Smartphone Revolution</h2>
+
+  <div class="split-screen">
+    <!-- LEFT: Reading Passage -->
+    <div class="split-panel">
+      <div class="panel-title">📖 Reading Passage</div>
+
+      <h4 style="font-family:var(--font-main);font-size:1rem;font-weight:900;text-align:center;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">SMARTPHONE REVOLUTION</h4>
+
+      <!-- Paragraph 1 -->
+      <div class="passage-paragraph">
+        It was just over a decade ago when cell phones were primarily used for calling and sending texts. Today, the uses of cell phones run the gamut. Phones do everything from taking high-resolution pictures to watching pixel-perfect videos, browsing the Internet to playing graphic-intensive games to monitoring your movements in addition to fulfilling basic communication needs.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('trans1', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="trans1">
+        Chỉ hơn một thập kỷ trước, điện thoại di động chủ yếu được dùng để gọi điện và nhắn tin. Ngày nay, công dụng của điện thoại di động trải dài trên mọi lĩnh vực. Điện thoại làm được mọi thứ, từ chụp ảnh độ phân giải cao đến xem video chất lượng hoàn hảo, lướt Internet đến chơi các trò chơi đồ họa nặng, theo dõi chuyển động của bạn, ngoài việc đáp ứng các nhu cầu liên lạc cơ bản.
+      </div>
+
+      <!-- Paragraph 2 -->
+      <div class="passage-paragraph">
+        The advent of smartphones has greatly simplified our lives. People now connect with their loved ones more frequently and easily through video calls and instant messaging services. Tasks, like creating slides, reading emails, and creating documents don't require a PC anymore. Briefly, smartphones and apps have changed the way we work, communicate and play.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('trans2', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="trans2">
+        Sự ra đời của điện thoại thông minh đã giúp đơn giản hóa cuộc sống của chúng ta rất nhiều. Con người giờ đây kết nối với những người thân yêu thường xuyên hơn và dễ dàng hơn thông qua video call và các dịch vụ nhắn tin tức thì. Các tác vụ như tạo slide thuyết trình, đọc email và soạn tài liệu không còn cần máy tính để bàn nữa. Tóm lại, điện thoại thông minh và các ứng dụng đã thay đổi cách chúng ta làm việc, giao tiếp và giải trí.
+      </div>
+
+      <!-- Paragraph 3 -->
+      <div class="passage-paragraph">
+        While the smartphone revolution has made our lives easy, it has also made us lazy. Today, the whole world is at our fingertips, and thus we don't have to work or move around like we did previously to get things done. Our inactive lifestyle and lack of physical activities can be partly attributed to the over-dependence on smartphones. This is especially true for the younger generation, who are constantly glued to their cell phones. Cell phone addiction is having a negative impact on our lives. Care needs to be taken to deal with this issue in an effective way.
+      </div>
+      <button class="btn-translate" onclick="toggleTrans('trans3', this)">🌟 Mở dịch đoạn này</button>
+      <div class="translation-box" id="trans3">
+        Trong khi cuộc cách mạng điện thoại thông minh đã giúp cuộc sống của chúng ta trở nên dễ dàng, nó cũng khiến chúng ta lười biếng hơn. Ngày nay, cả thế giới nằm trong tầm tay chúng ta, và vì thế chúng ta không cần phải làm việc hay di chuyển nhiều như trước để hoàn thành công việc. Lối sống ít vận động và thiếu hoạt động thể chất của chúng ta một phần có thể do sự phụ thuộc quá mức vào điện thoại thông minh. Điều này đặc biệt đúng với thế hệ trẻ, những người liên tục dán mắt vào điện thoại. Nghiện điện thoại đang có tác động tiêu cực đến cuộc sống của chúng ta. Cần có sự quan tâm để giải quyết vấn đề này một cách hiệu quả.
+      </div>
+
+      <!-- Glossary -->
+      <div class="glossary-section">
+        <h3>📚 Glossary – Từ vựng học thuật</h3>
+        <table class="glossary-table">
+          <thead>
+            <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="word-cell">primarily</td><td class="pos-cell">adv</td><td>chủ yếu, chủ yếu là</td></tr>
+            <tr><td class="word-cell">run the gamut</td><td class="pos-cell">idiom</td><td>trải dài trên toàn bộ phạm vi, đủ mọi loại</td></tr>
+            <tr><td class="word-cell">pixel-perfect</td><td class="pos-cell">adj</td><td>hoàn hảo đến từng điểm ảnh, chất lượng cực cao</td></tr>
+            <tr><td class="word-cell">graphic-intensive</td><td class="pos-cell">adj</td><td>đòi hỏi đồ họa nặng, tiêu tốn nhiều tài nguyên đồ họa</td></tr>
+            <tr><td class="word-cell">advent</td><td class="pos-cell">n</td><td>sự xuất hiện, sự ra đời (quan trọng)</td></tr>
+            <tr><td class="word-cell">simplify</td><td class="pos-cell">v</td><td>đơn giản hóa, làm cho đơn giản hơn</td></tr>
+            <tr><td class="word-cell">instant messaging</td><td class="pos-cell">n phr</td><td>nhắn tin tức thì (Zalo, Messenger...)</td></tr>
+            <tr><td class="word-cell">fingertips</td><td class="pos-cell">n</td><td>đầu ngón tay; "at one's fingertips" = trong tầm tay</td></tr>
+            <tr><td class="word-cell">inactive</td><td class="pos-cell">adj</td><td>không hoạt động, ít vận động, thụ động</td></tr>
+            <tr><td class="word-cell">attributed to</td><td class="pos-cell">v phr</td><td>quy cho, do nguyên nhân là</td></tr>
+            <tr><td class="word-cell">over-dependence</td><td class="pos-cell">n</td><td>sự phụ thuộc quá mức</td></tr>
+            <tr><td class="word-cell">glued to</td><td class="pos-cell">adj phr</td><td>dán chặt vào, không rời khỏi</td></tr>
+            <tr><td class="word-cell">addiction</td><td class="pos-cell">n</td><td>sự nghiện, chứng nghiện</td></tr>
+            <tr><td class="word-cell">impact</td><td class="pos-cell">n</td><td>tác động, ảnh hưởng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RIGHT: Exercises -->
+    <div class="exercises-panel">
+      <div class="sub-section-label">A. True (T) or False (F)?</div>
+      <div class="instruction-badge">
+        💡 <strong>Hướng dẫn:</strong> Đọc đoạn văn bên trái, sau đó bấm <strong>TRUE</strong> hoặc <strong>FALSE</strong>. Khi chọn sai, đáp án đúng sẽ hiện ngay lập tức!
+      </div>
+      <div id="tfContainer"></div>
+
+      <div class="sub-section-label" style="margin-top:24px;">B. Short Answer Questions</div>
+      <div class="instruction-badge">
+        💡 <strong>Hướng dẫn:</strong> Bấm vào dấu <strong>…………</strong> để xem đáp án đúng.
+      </div>
+      <div id="saContainer"></div>
+    </div>
+  </div>
+
+  <!-- Glossary for Section IX -->
+  <div class="passage-card" style="margin-top:24px;">
+    <div class="glossary-section" style="margin-top:0;padding-top:0;border-top:none;">
+      <h3>📚 Glossary – Từ vựng bài IX (AI in Education)</h3>
+      <table class="glossary-table">
+        <thead>
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="word-cell">artificial intelligence (AI)</td><td class="pos-cell">n phr</td><td>trí tuệ nhân tạo</td></tr>
+          <tr><td class="word-cell">outline</td><td class="pos-cell">v</td><td>phác thảo, trình bày đại cương</td></tr>
+          <tr><td class="word-cell">craft</td><td class="pos-cell">v</td><td>soạn thảo, tạo ra (một cách khéo léo)</td></tr>
+          <tr><td class="word-cell">district standards</td><td class="pos-cell">n phr</td><td>tiêu chuẩn của học khu/địa phương</td></tr>
+          <tr><td class="word-cell">millennia</td><td class="pos-cell">n</td><td>thiên niên kỷ (số nhiều của millennium)</td></tr>
+          <tr><td class="word-cell">jolt</td><td class="pos-cell">v</td><td>làm rung chuyển, gây xáo trộn mạnh</td></tr>
+          <tr><td class="word-cell">rethink</td><td class="pos-cell">v</td><td>suy nghĩ lại, xem xét lại</td></tr>
+          <tr><td class="word-cell">generate</td><td class="pos-cell">v</td><td>tạo ra, sản sinh (thường dùng với AI)</td></tr>
+          <tr><td class="word-cell">case study</td><td class="pos-cell">n phr</td><td>nghiên cứu điển hình, bài tình huống</td></tr>
+          <tr><td class="word-cell">strategy</td><td class="pos-cell">n</td><td>chiến lược, phương pháp tiếp cận</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-zone">
+    <button class="btn-submit" onclick="submitQuiz()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+  </div>
+
+</div><!-- end main-wrapper -->
+
+<!-- ===== RESULT MODAL ===== -->
+<div class="modal-overlay" id="resultModal">
+  <div class="result-card">
+    <span class="result-emoji" id="resultEmoji">🏆</span>
+    <div class="result-title" id="resultTitle">Thiên Tài!</div>
+    <div class="result-score" id="resultScore">15/15</div>
+    <div class="result-comment" id="resultComment">Xuất sắc! Bạn đã trả lời đúng tất cả các câu hỏi!</div>
+    <div class="result-breakdown" id="resultBreakdown"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+      <button class="btn-retry" onclick="retryQuiz()">🔄 Làm lại từ đầu</button>
+      <button class="btn-retry" style="background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.25);" onclick="document.getElementById('resultModal').classList.remove('show')">✏️ Xem lại bài</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== AUDIO ENGINE =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let ctx;
+function getCtx(){ if(!ctx) ctx = new AudioCtx(); return ctx; }
+
+function playCorrect(){
+  const ac = getCtx();
+  [523,659,784].forEach((f,i)=>{
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value=f; o.type='sine';
+    g.gain.setValueAtTime(0,ac.currentTime+i*0.12);
+    g.gain.linearRampToValueAtTime(0.3,ac.currentTime+i*0.12+0.04);
+    g.gain.linearRampToValueAtTime(0,ac.currentTime+i*0.12+0.25);
+    o.start(ac.currentTime+i*0.12);
+    o.stop(ac.currentTime+i*0.12+0.3);
+  });
+}
+
+function playWrong(){
+  const ac = getCtx();
+  [300,250,200].forEach((f,i)=>{
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value=f; o.type='sawtooth';
+    g.gain.setValueAtTime(0,ac.currentTime+i*0.18);
+    g.gain.linearRampToValueAtTime(0.2,ac.currentTime+i*0.18+0.05);
+    g.gain.linearRampToValueAtTime(0,ac.currentTime+i*0.18+0.25);
+    o.start(ac.currentTime+i*0.18);
+    o.stop(ac.currentTime+i*0.18+0.3);
+  });
+}
+
+// ===== CONFETTI =====
+function spawnConfetti(){
+  const colors=['#F7B731','#00C6FF','#ff6b6b','#7affb0','#b06afc','#fff'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*20}vh;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-duration:${1+Math.random()}s;animation-delay:${Math.random()*0.5}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+
+// ===== TIMER =====
+let timerInterval=null, timeLeft=600, paused=false, timerStarted=false;
+function startTimer(){
+  if(timerStarted) return;
+  timerStarted=true;
+  document.querySelector('.btn-start').disabled=true;
+  document.querySelector('.btn-start').style.opacity='0.5';
+  document.getElementById('timerDisplay').classList.add('visible');
+  document.getElementById('pauseBtn').classList.add('visible');
+  timerInterval=setInterval(()=>{
+    if(paused) return;
+    timeLeft--;
+    const m=Math.floor(timeLeft/60).toString().padStart(2,'0');
+    const s=(timeLeft%60).toString().padStart(2,'0');
+    const disp=document.getElementById('timerDisplay');
+    disp.textContent=`${m}:${s}`;
+    if(timeLeft<=60) disp.classList.add('urgent');
+    if(timeLeft<=0){
+      clearInterval(timerInterval);
+      disp.textContent='00:00';
+      document.getElementById('timeoutNotice').classList.add('show');
+      document.getElementById('timeoutNotice').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  },1000);
+}
+function togglePause(){
+  paused=!paused;
+  document.getElementById('pauseBtn').textContent=paused?'▶ Tiếp tục':'⏸ Tạm dừng';
+}
+
+// ===== HELPERS =====
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function toggleTrans(id, btn){
+  const box=document.getElementById(id);
+  const showing=box.classList.toggle('show');
+  btn.textContent=showing?'🌙 Ẩn bản dịch':'🌟 Mở dịch đoạn này';
+}
+
+// ===== SCORING =====
+let totalAnswered=0;
+let correctCount=0;
+const TOTAL_Q=15; // 8 MCQ + 7 TF
+document.getElementById('totalQ').textContent=TOTAL_Q;
+
+function updateProgress(){
+  const pct=Math.round((totalAnswered/TOTAL_Q)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+}
+function updateLiveScore(){
+  document.getElementById('liveScore').textContent=correctCount;
+}
+
+// ===== MCQ DATA =====
+const mcqData=[
+  {
+    num:1,
+    blank:'b1',
+    context:'Mike Harris knew it <strong>(1)_____</strong> take a full day to design a new class...',
+    correctIdx:0,
+    options:[
+      {label:'a',text:'could'},
+      {label:'b',text:'should'},
+      {label:'c',text:'will'},
+      {label:'d',text:'may'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>could</strong> (v khuyết thiếu): có thể (diễn tả khả năng ở quá khứ hoặc giả định).'},
+        {label:'b', text:'<strong>should</strong> (v khuyết thiếu): nên (diễn tả lời khuyên/bổn phận).'},
+        {label:'c', text:'<strong>will</strong> (v khuyết thiếu): sẽ (dự đoán tương lai, không phù hợp với ngữ cảnh quá khứ).'},
+        {label:'d', text:'<strong>may</strong> (v khuyết thiếu): có thể (diễn tả sự cho phép hoặc khả năng).'}
+      ],
+      translation:'"Mike Harris biết rằng ông <u>có thể</u> mất cả ngày để thiết kế một lớp học mới..."',
+      why:'Chọn <strong>a. could</strong> vì câu nói về một nhận thức/kinh nghiệm của Harris trong <em>quá khứ</em> (knew – quá khứ đơn). "could" dùng để nói về "khả năng trong quá khứ" (past ability/possibility). "should" sai vì Harris không cần lời khuyên, "will/may" sai về thì và sắc thái.'
+    }
+  },
+  {
+    num:2,
+    blank:'b2',
+    context:'...he turned to artificial intelligence, curious <strong>(2)_____</strong> how it might help.',
+    correctIdx:1,
+    options:[
+      {label:'a',text:'for'},
+      {label:'b',text:'about'},
+      {label:'c',text:'with'},
+      {label:'d',text:'on'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>for</strong>: dành cho, vì – không collocate với curious.'},
+        {label:'b', text:'<strong>about</strong>: về – collocate chuẩn với tính từ curious.'},
+        {label:'c', text:'<strong>with</strong>: với – sai về collocation.'},
+        {label:'d', text:'<strong>on</strong>: trên/về – không dùng với curious.'}
+      ],
+      translation:'"...ông đã tìm đến trí tuệ nhân tạo, tò mò <u>về</u> cách nó có thể giúp ích."',
+      why:'Chọn <strong>b. about</strong> vì cấu trúc cố định là <em>curious <u>about</u> something</em> (tò mò về điều gì đó). Đây là collocation (kết hợp từ) bắt buộc trong tiếng Anh.'
+    }
+  },
+  {
+    num:3,
+    blank:'b3',
+    context:'He asked ChatGPT to outline a 16-week drama class at a large urban school, <strong>(3)_____</strong> his state&#39;s standards.',
+    correctIdx:2,
+    options:[
+      {label:'a',text:'use'},
+      {label:'b',text:'used'},
+      {label:'c',text:'using'},
+      {label:'d',text:'to use'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>use</strong>: động từ nguyên thể – sai vì không có "to" và không hợp lý về cú pháp.'},
+        {label:'b', text:'<strong>used</strong>: quá khứ đơn hoặc tính từ "quen" – sai, không khớp nghĩa.'},
+        {label:'c', text:'<strong>using</strong>: hiện tại phân từ – đúng, làm mệnh đề rút gọn chỉ cách thức.'},
+        {label:'d', text:'<strong>to use</strong>: động từ nguyên thể có "to" – sai ngữ pháp trong ngữ cảnh này.'}
+      ],
+      translation:'"Ông nhờ ChatGPT phác thảo chương trình kịch 16 tuần tại một trường đô thị lớn, <u>sử dụng</u> tiêu chuẩn của bang ông."',
+      why:'Chọn <strong>c. using</strong>. Đây là cấu trúc <em>participle clause</em> (mệnh đề phân từ) rút gọn từ "which uses his state&#39;s standards". Sau dấu phẩy, dùng V-ing để bổ sung thông tin về cách thức thực hiện.'
+    }
+  },
+  {
+    num:4,
+    blank:'b4',
+    context:'...craft daily lesson plans for <strong>(4)_____</strong> classes every other day?',
+    correctIdx:1,
+    options:[
+      {label:'a',text:'90 minutes'},
+      {label:'b',text:'90-minute'},
+      {label:'c',text:'90-minutes'},
+      {label:'d',text:'a 90 minute'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>90 minutes</strong>: cụm danh từ – chỉ đúng khi đứng một mình làm vị ngữ (e.g. "It lasts 90 minutes").'},
+        {label:'b', text:'<strong>90-minute</strong>: tính từ ghép – đúng cú pháp khi đứng trước danh từ, có dấu gạch nối, số đếm không thêm "s".'},
+        {label:'c', text:'<strong>90-minutes</strong>: SAI – khi dùng làm tính từ ghép, không bao giờ thêm "-s" sau số.'},
+        {label:'d', text:'<strong>a 90 minute</strong>: thiếu dấu gạch nối và thiếu mạo từ phù hợp.'}
+      ],
+      translation:'"...soạn kế hoạch bài học hàng ngày cho các lớp học <u>dài 90 phút</u> diễn ra hai ngày một lần?"',
+      why:'Chọn <strong>b. 90-minute</strong>. Trong tiếng Anh, khi số + đơn vị đo lường đứng trước danh từ làm tính từ, chúng ghép lại với dấu gạch nối và KHÔNG thêm "s" vào đơn vị. Ví dụ: a 3-year-old boy, a 10-kilometer race, a 90-minute class.'
+    }
+  },
+  {
+    num:5,
+    blank:'b5',
+    context:'"To me, that&#39;s the wonder of the <strong>(5)_____</strong>," said Harris.',
+    correctIdx:3,
+    options:[
+      {label:'a',text:'platform'},
+      {label:'b',text:'element'},
+      {label:'c',text:'product'},
+      {label:'d',text:'tool'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>platform</strong> (n): nền tảng (mạng xã hội, phần mềm). Không sai nhưng ít phù hợp hơn.'},
+        {label:'b', text:'<strong>element</strong> (n): thành phần, yếu tố. Không phù hợp ngữ cảnh.'},
+        {label:'c', text:'<strong>product</strong> (n): sản phẩm. Quá thương mại, không capture được tinh thần AI hỗ trợ dạy học.'},
+        {label:'d', text:'<strong>tool</strong> (n): công cụ. Đây là từ phổ biến và chính xác nhất khi nói về AI/ChatGPT trong giáo dục.'}
+      ],
+      translation:'"Với tôi, đó là điều kỳ diệu của <u>công cụ</u> này," Harris nói...',
+      why:'Chọn <strong>d. tool</strong>. ChatGPT và AI thường được gọi là "tool" (công cụ) trong văn phong học thuật và báo chí giáo dục. Harris đang nhấn mạnh tính hữu dụng như một phương tiện hỗ trợ, không phải một sản phẩm hay nền tảng. Cụm "the wonder of the tool" = sự kỳ diệu của công cụ này nghe tự nhiên nhất.'
+    }
+  },
+  {
+    num:6,
+    blank:'b6',
+    context:'"This is one of those once-in-a-millennia <strong>(6)_____</strong> changes."',
+    correctIdx:0,
+    options:[
+      {label:'a',text:'technology'},
+      {label:'b',text:'scientific'},
+      {label:'c',text:'technique'},
+      {label:'d',text:'advance'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>technology</strong> (n): công nghệ – khi đứng trước danh từ làm tính từ, dùng danh từ ghép: "technology changes" = những thay đổi về công nghệ.'},
+        {label:'b', text:'<strong>scientific</strong> (adj): khoa học – "scientific changes" nghĩa quá rộng, không cụ thể về AI/EdTech.'},
+        {label:'c', text:'<strong>technique</strong> (n): kỹ thuật – "technique changes" không tự nhiên.'},
+        {label:'d', text:'<strong>advance</strong> (n/adj): sự tiến bộ – "advance changes" không phải cụm từ tiếng Anh tự nhiên.'}
+      ],
+      translation:'"Đây là một trong những thay đổi <u>công nghệ</u> chỉ xảy ra một lần trong thiên niên kỷ."',
+      why:'Chọn <strong>a. technology</strong>. Cấu trúc "noun + noun" (danh từ ghép) trong tiếng Anh rất phổ biến: "technology changes" (những thay đổi công nghệ). "Scientific" (tính từ) về mặt ngữ pháp cũng có thể dùng, nhưng ngữ nghĩa "scientific changes" không đặc trưng bằng "technology changes" trong bối cảnh AI/ChatGPT.'
+    }
+  },
+  {
+    num:7,
+    blank:'b7',
+    context:'<strong>(7)_____</strong> AI jolts education, public school teachers and university professors are discovering...',
+    correctIdx:3,
+    options:[
+      {label:'a',text:'Because'},
+      {label:'b',text:'While'},
+      {label:'c',text:'Although'},
+      {label:'d',text:'As'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>Because</strong>: vì, bởi vì – nối nguyên nhân và kết quả. Sai vì vế chính không phải kết quả của vế phụ.'},
+        {label:'b', text:'<strong>While</strong>: trong khi – thường dùng để đối lập, hoặc nói về 2 hành động xảy ra đồng thời nhưng có sắc thái tương phản.'},
+        {label:'c', text:'<strong>Although</strong>: mặc dù – nối ý tương phản. Sai vì không có sự đối lập ở đây.'},
+        {label:'d', text:'<strong>As</strong>: khi, trong khi, cùng lúc – dùng để chỉ hai sự việc xảy ra song song, đặc biệt khi một sự việc đang diễn ra kéo theo sự việc khác.'}
+      ],
+      translation:'"<u>Khi</u> AI làm rung chuyển nền giáo dục, các giáo viên và giáo sư đang khám phá ra rằng..."',
+      why:'Chọn <strong>d. As</strong>. Cấu trúc "<em>As + S + V, S + V</em>" diễn tả hai sự kiện xảy ra đồng thời, thường có nghĩa "khi/trong khi/cùng lúc". Ví dụ: "As technology advances, society changes." Câu gốc muốn nói: chính trong lúc AI đang thay đổi giáo dục, người ta mới khám phá ra điều đó. "While" cũng có thể nhưng "As" phù hợp hơn vì nhấn mạnh tính song hành của quá trình.'
+    }
+  },
+  {
+    num:8,
+    blank:'b8',
+    context:'Educators are using it to help <strong>(8)_____</strong> tests, generate case studies...',
+    correctIdx:2,
+    options:[
+      {label:'a',text:'create'},
+      {label:'b',text:'invent'},
+      {label:'c',text:'develop'},
+      {label:'d',text:'discover'}
+    ],
+    explanation:{
+      analysis:[
+        {label:'a', text:'<strong>create</strong>: tạo ra (từ đầu, sáng tạo). Về nghĩa có thể dùng nhưng "develop" chính xác hơn.'},
+        {label:'b', text:'<strong>invent</strong>: phát minh (tạo ra thứ hoàn toàn mới lần đầu tiên). Dùng cho máy móc, thiết bị, không dùng cho bài test.'},
+        {label:'c', text:'<strong>develop</strong>: phát triển, xây dựng (tinh chỉnh, hoàn thiện dần). Đây là từ học thuật phổ biến nhất đi với "tests/materials".'},
+        {label:'d', text:'<strong>discover</strong>: khám phá ra (điều đã tồn tại). Sai hoàn toàn vì không ai "khám phá ra bài test".'}
+      ],
+      translation:'"Các nhà giáo dục đang dùng nó để giúp <u>phát triển</u> các bài kiểm tra, tạo ra các nghiên cứu điển hình..."',
+      why:'Chọn <strong>c. develop</strong>. Trong tiếng Anh học thuật, "develop tests/materials/curriculum" (phát triển bài kiểm tra/tài liệu/chương trình) là collocation chuẩn. "Create" có thể dùng nhưng "develop" mang sắc thái chuyên nghiệp hơn, ngụ ý quá trình thiết kế, thử nghiệm và hoàn thiện có chủ đích.'
+    }
+  }
+];
+
+// ===== TRUE/FALSE DATA =====
+const tfData=[
+  {
+    num:1,
+    statement:'In the past, mobile phones were used only for communication among people.',
+    correct:'T',
+    explanation:'<strong>✅ TRUE.</strong> Đoạn 1 nêu rõ: <em>"It was just over a decade ago when cell phones were primarily used for calling and sending texts"</em> → Điện thoại chủ yếu dùng để gọi điện và nhắn tin, tức là chỉ để liên lạc. Câu test dùng "only for communication" khớp với "primarily used for calling and sending texts".'
+  },
+  {
+    num:2,
+    statement:'Modern cell phones are capable of much more than just making phone calls.',
+    correct:'T',
+    explanation:'<strong>✅ TRUE.</strong> Đoạn 1 liệt kê nhiều chức năng: <em>"taking high-resolution pictures, watching pixel-perfect videos, browsing the Internet, playing graphic-intensive games, monitoring your movements"</em> – rõ ràng điện thoại ngày nay làm được nhiều hơn rất nhiều so với chỉ gọi điện.'
+  },
+  {
+    num:3,
+    statement:'Smartphones make communications with people quite easier.',
+    correct:'T',
+    explanation:'<strong>✅ TRUE.</strong> Đoạn 2 ghi rõ: <em>"People now connect with their loved ones more frequently and easily through video calls and instant messaging services"</em> → điện thoại thông minh giúp liên lạc dễ dàng hơn. "Quite easier" trong câu test ≈ "more frequently and easily" trong bài.'
+  },
+  {
+    num:4,
+    statement:'Smartphone users, however, can\'t send and receive emails on their phones.',
+    correct:'F',
+    explanation:'<strong>❌ FALSE.</strong> Đoạn 2 viết: <em>"Tasks, like creating slides, reading emails, and creating documents don\'t require a PC anymore"</em> → Người dùng CÓ THỂ đọc/gửi email trên điện thoại. Câu test mâu thuẫn trực tiếp với nội dung bài. Đáp án gốc từ sách: "Yes, they do" (Yes, smartphone users can send/receive emails).'
+  },
+  {
+    num:5,
+    statement:'Despite all the positive benefits of smartphones, there are also negative side effects.',
+    correct:'T',
+    explanation:'<strong>✅ TRUE.</strong> Đoạn 3 mở đầu: <em>"While the smartphone revolution has made our lives easy, it has also made us lazy"</em> và tiếp tục liệt kê các tác hại: lối sống ít vận động, nghiện điện thoại, ảnh hưởng tiêu cực. → Bên cạnh lợi ích, có cả tác hại tiêu cực.'
+  },
+  {
+    num:6,
+    statement:'Today we don\'t have to go to work because we have the whole world at our fingertips.',
+    correct:'F',
+    explanation:'<strong>❌ FALSE.</strong> Bài đọc chỉ nói: <em>"we don\'t have to work or move around like we did previously to get things done"</em> – tức là không cần di chuyển NHIỀU như trước, chứ không có nghĩa là không cần đi làm nữa. Câu test diễn giải quá mức (over-generalization). Đáp án gốc: "Smartphone overuse is bad for us" – bài đọc nhấn mạnh tác hại của việc lạm dụng.'
+  },
+  {
+    num:7,
+    statement:'Only young people are now addicted to their mobile phones.',
+    correct:'F',
+    explanation:'<strong>❌ FALSE.</strong> Bài đọc viết: <em>"This is especially true for the younger generation"</em> → chỉ nói giới trẻ BỊ ẢNH HƯỞNG NHIỀU HƠN, không phải CHỈ CÓ giới trẻ mới nghiện. "Only" trong câu test là sai. Đáp án gốc: "Teenagers are constantly glued to their cell phones" – đây chỉ là một nhóm điển hình, không phải duy nhất.'
+  }
+];
+
+// ===== SHORT ANSWER DATA =====
+const saData=[
+  {
+    num:1,
+    question:'What were cell phones mainly used for a decade ago?',
+    answer:'Cell phones were mainly used for calling and sending texts.'
+  },
+  {
+    num:2,
+    question:'Are modern cell phones capable of much more than just making phone calls?',
+    answer:'Yes, they are.'
+  },
+  {
+    num:3,
+    question:'What has the smartphone revolution done to make our lives easier?',
+    answer:'The smartphone revolution has made our lives easy.'
+  },
+  {
+    num:4,
+    question:'Do people use smartphones to connect with loved ones more easily now?',
+    answer:'Yes, they do.'
+  },
+  {
+    num:5,
+    question:'Who is especially glued to their cell phones according to the passage?',
+    answer:'Teenagers are constantly glued to their cell phones.'
+  },
+  {
+    num:6,
+    question:'Is smartphone addiction good or bad for people?',
+    answer:'Smartphone overuse is bad for us.'
+  }
+];
+
+// ===== RENDER MCQ =====
+function renderMCQ(){
+  const container=document.getElementById('qGridIX');
+  mcqData.forEach(q=>{
+    const shuffled=shuffleArray([...q.options]);
+    const correctLabel=q.options[q.correctIdx].label;
+    const div=document.createElement('div');
+    div.className='q-card';
+    div.id='qcard-'+q.num;
+    const optHtml=shuffled.map(opt=>`
+      <button class="opt-btn" data-qnum="${q.num}" data-label="${opt.label}" data-correct="${correctLabel}" onclick="handleMCQ(this)">
+        <span class="opt-label">${opt.label.toUpperCase()}</span>${opt.text}
+      </button>
+    `).join('');
+    div.innerHTML=`
+      <div class="q-text"><span class="q-number">${q.num}</span><span>${q.context}</span></div>
+      <div class="options-grid">${optHtml}</div>
+      <div class="explanation-box" id="exp-${q.num}"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function handleMCQ(btn){
+  const qnum=parseInt(btn.dataset.qnum);
+  const isCorrect=btn.dataset.label===btn.dataset.correct;
+  const card=document.getElementById('qcard-'+qnum);
+  const allBtns=card.querySelectorAll('.opt-btn');
+  // disable all
+  allBtns.forEach(b=>{
+    b.classList.add('disabled');
+    if(b.dataset.label===btn.dataset.correct && b!==btn) b.classList.add('show-correct');
+  });
+  if(isCorrect){
+    btn.classList.add('correct');
+    playCorrect();
+    spawnConfetti();
+    correctCount++;
+    updateLiveScore();
+  } else {
+    btn.classList.add('wrong');
+    playWrong();
+    // show correct
+    allBtns.forEach(b=>{ if(b.dataset.label===btn.dataset.correct) b.classList.add('correct'); });
+  }
+  totalAnswered++;
+  updateProgress();
+  // fill blank in passage
+  const q=mcqData.find(x=>x.num===qnum);
+  const blankEl=document.getElementById(q.blank);
+  if(blankEl){
+    const correctText=q.options[q.correctIdx].text;
+    blankEl.textContent=correctText;
+    blankEl.style.color=isCorrect?'#7affb0':'#ff8080';
+    blankEl.style.borderBottomColor=isCorrect?'var(--correct)':'var(--wrong)';
+  }
+  // show explanation
+  showMCQExplanation(q, isCorrect);
+}
+
+function showMCQExplanation(q, isCorrect){
+  const box=document.getElementById('exp-'+q.num);
+  const exp=q.explanation;
+  const analysisHtml=exp.analysis.map(a=>`<li><span style="color:var(--accent);font-weight:800;">${a.label.toUpperCase()}.</span> ${a.text}</li>`).join('');
+  box.innerHTML=`
+    <h4>📖 Giải thích chi tiết – Câu ${q.num}</h4>
+    <p style="font-weight:700;color:#c8c0ff;margin-bottom:6px;">1. Phân tích 4 đáp án:</p>
+    <ul style="padding-left:18px;margin-bottom:8px;">${analysisHtml}</ul>
+    <p style="margin-bottom:6px;"><span class="translation">📝 Dịch nghĩa toàn câu: ${exp.translation}</span></p>
+    <p><span class="why-correct">✅ Tại sao chọn đáp án đúng? </span>${exp.why}</p>
+  `;
+  box.classList.add('show');
+}
+
+// ===== RENDER TF =====
+function renderTF(){
+  const container=document.getElementById('tfContainer');
+  tfData.forEach(q=>{
+    const div=document.createElement('div');
+    div.className='tf-q-card';
+    div.id='tfcard-'+q.num;
+    div.innerHTML=`
+      <div class="tf-statement"><span class="q-number">${q.num}</span><span>${q.statement}</span></div>
+      <div class="tf-buttons">
+        <button class="tf-btn t-btn" data-qnum="${q.num}" data-val="T" data-correct="${q.correct}" onclick="handleTF(this)">✅ TRUE</button>
+        <button class="tf-btn f-btn" data-qnum="${q.num}" data-val="F" data-correct="${q.correct}" onclick="handleTF(this)">❌ FALSE</button>
+      </div>
+      <div class="tf-explanation" id="tfexp-${q.num}"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function handleTF(btn){
+  const qnum=btn.dataset.qnum;
+  const isCorrect=btn.dataset.val===btn.dataset.correct;
+  const card=document.getElementById('tfcard-'+qnum);
+  const allBtns=card.querySelectorAll('.tf-btn');
+  allBtns.forEach(b=>b.classList.add('disabled'));
+  if(isCorrect){
+    btn.classList.add('correct');
+    playCorrect();
+    spawnConfetti();
+    correctCount++;
+    updateLiveScore();
+  } else {
+    btn.classList.add('wrong');
+    playWrong();
+    allBtns.forEach(b=>{ if(b.dataset.val===btn.dataset.correct) b.classList.add('correct'); });
+  }
+  totalAnswered++;
+  updateProgress();
+  // show explanation
+  const q=tfData.find(x=>x.num===parseInt(qnum));
+  const expBox=document.getElementById('tfexp-'+qnum);
+  expBox.innerHTML=`<p>${q.explanation}</p>`;
+  expBox.classList.add('show');
+}
+
+// ===== RENDER SHORT ANSWER =====
+function renderSA(){
+  const container=document.getElementById('saContainer');
+  saData.forEach(q=>{
+    const div=document.createElement('div');
+    div.className='sa-card';
+    div.innerHTML=`
+      <div class="sa-question"><span class="q-number">${q.num}</span><span>${q.question}</span></div>
+      <div class="answer-dots" id="sa-${q.num}" onclick="revealSA(${q.num})">…………………………………</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function revealSA(num){
+  const el=document.getElementById('sa-'+num);
+  const q=saData.find(x=>x.num===num);
+  el.textContent='✅ '+q.answer;
+  el.classList.add('revealed');
+}
+
+// ===== SUBMIT =====
+function submitQuiz(){
+  // Auto-answer any unanswered TF
+  const modal=document.getElementById('resultModal');
+  const correct=correctCount;
+  const total=TOTAL_Q;
+  const pct=Math.round((correct/total)*100);
+  let emoji,title,comment;
+  if(pct===100){emoji='🏆';title='THIÊN TÀI!';comment='Xuất sắc tuyệt đối! Bạn đã trả lời đúng tất cả '+total+'/'+total+' câu. Bạn thực sự là một thiên tài tiếng Anh! 🌟';}
+  else if(pct>=80){emoji='🥇';title='LÀM TỐT LẮM!';comment='Giỏi lắm! Bạn đạt '+correct+'/'+total+' câu đúng ('+pct+'%). Chỉ cần chú ý một chút vào các từ khuyết thiếu và collocation là hoàn hảo!';}
+  else if(pct>=60){emoji='👍';title='KHÁ ĐẤY!';comment='Không tệ! Bạn đạt '+correct+'/'+total+' câu ('+pct+'%). Hãy ôn lại phần từ vựng và cấu trúc ngữ pháp nhé!';}
+  else if(pct>=40){emoji='📚';title='CỐ LÊN NHÉ!';comment='Bạn đạt '+correct+'/'+total+' câu ('+pct+'%). Đừng nản lòng! Hãy đọc lại bài, xem kỹ phần giải thích và thử lại nhé! 💪';}
+  else{emoji='🌱';title='HÃY ÔN BÀI THÊM!';comment='Bạn đạt '+correct+'/'+total+' câu ('+pct+'%). Hãy đọc kỹ lại bài, xem phần Glossary và giải thích chi tiết. Lần sau chắc chắn sẽ tốt hơn! 🌸';}
+
+  document.getElementById('resultEmoji').textContent=emoji;
+  document.getElementById('resultTitle').textContent=title;
+  document.getElementById('resultScore').textContent=correct+'/'+total;
+  document.getElementById('resultComment').textContent=comment;
+
+  const breakdown=document.getElementById('resultBreakdown');
+  breakdown.innerHTML=`
+    <div class="breakdown-item">Section IX (Fill-in)<span>${Math.min(correctCount, 8)}/8</span></div>
+    <div class="breakdown-item">Section X – T/F<span>${Math.max(0, correctCount-Math.min(correctCount,8))}/7</span></div>
+    <div class="breakdown-item">Tỷ lệ đúng<span>${pct}%</span></div>
+    <div class="breakdown-item">Trạng thái<span style="color:${pct>=60?'#7affb0':'#ff8080'}">${pct>=60?'ĐẠT ✅':'CHƯA ĐẠT ❌'}</span></div>
+  `;
+  modal.classList.add('show');
+  if(pct>=60) spawnConfetti();
+}
+
+function retryQuiz(){
+  window.location.reload();
+}
+
+// ===== INIT =====
+renderMCQ();
+renderTF();
+renderSA();
+updateProgress();
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

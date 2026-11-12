@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test for Unit 11 - MS Chí Nên ULIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Nunito',sans-serif;min-height:100vh;
+  background:linear-gradient(-45deg,#8854C0,#FDCB6E,#00C9A7,#e84393,#3498db);
+  background-size:400% 400%;
+  animation:gradientBG 14s ease infinite;
+  padding-bottom:50px;
+}
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}
+}
+#pat{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Ccircle cx='18' cy='18' r='7' fill='rgba(255,255,255,0.18)'/%3E%3Cpolygon points='80,6 84,30 108,30 88,46 96,70 80,56 64,70 72,46 52,30 76,30' fill='rgba(255,255,255,0.15)'/%3E%3Ccircle cx='140' cy='80' r='5' fill='rgba(255,255,255,0.18)'/%3E%3Crect x='8' y='110' width='14' height='14' rx='4' fill='rgba(255,255,255,0.15)' transform='rotate(25,15,117)'/%3E%3Ccircle cx='65' cy='140' r='6' fill='rgba(255,255,255,0.16)'/%3E%3Cpolygon points='135,12 138,22 148,22 140,28 143,38 135,32 127,38 130,28 122,22 132,22' fill='rgba(255,255,255,0.14)'/%3E%3Cellipse cx='30' cy='75' rx='8' ry='5' fill='rgba(255,255,255,0.12)'/%3E%3Ccircle cx='110' cy='145' r='4' fill='rgba(255,255,255,0.18)'/%3E%3C/svg%3E");
+  animation:movePat 22s linear infinite;opacity:.75;
+}
+@keyframes movePat{from{background-position:0 0;}to{background-position:160px 160px;}}
+.container{max-width:900px;margin:0 auto;padding:14px;position:relative;z-index:1;}
+.header{background:rgba(255,255,255,0.93);border-radius:22px;padding:13px 20px;text-align:center;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,0.15);}
+.header h1{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#8854C0,#00C9A7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header p{font-size:0.95rem;color:#666;margin-top:3px;font-weight:600;}
+.prog-wrap{background:rgba(255,255,255,0.9);border-radius:18px;padding:9px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+.prog-lbl{font-size:.95rem;font-weight:800;color:#8854C0;white-space:nowrap;}
+.prog-bar{flex:1;height:13px;background:#eee;border-radius:6px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#8854C0,#00C9A7);border-radius:6px;transition:width .5s ease;width:0%;}
+.prog-sc{font-size:.95rem;font-weight:900;color:#00C9A7;white-space:nowrap;}
+.sec-card{background:rgba(255,255,255,0.93);border-radius:20px;padding:20px 24px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+.sec-title{font-size:1.08rem;font-weight:900;color:#5C3A9E;margin-bottom:16px;padding-bottom:8px;border-bottom:3px solid #8854C0;}
+.qblock{margin-bottom:20px;padding:15px;background:rgba(136,84,192,0.05);border-radius:14px;border:2px solid transparent;transition:border-color .3s;}
+.qtext{font-size:1.05rem;font-weight:700;color:#333;margin-bottom:11px;line-height:1.75;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+@media(max-width:580px){.opts{grid-template-columns:1fr;}}
+.obtn{
+  padding:11px 15px;border:2.5px solid #ddd;border-radius:15px;background:white;
+  cursor:pointer;font-family:'Nunito',sans-serif;font-size:.98rem;font-weight:700;
+  text-align:left;transition:all .2s;box-shadow:0 4px 0 #ccc;position:relative;top:0;
+}
+.obtn:hover:not([disabled]){transform:scale(1.025) translateY(-2px);box-shadow:0 6px 0 #aaa;border-color:#8854C0;background:#f3edff;}
+.obtn:active:not([disabled]){top:3px;box-shadow:0 1px 0 #ccc;}
+.obtn.correct{background:#00D26A!important;border-color:#00A855!important;color:white!important;box-shadow:0 4px 0 #007a40!important;}
+.obtn.wrong{background:#FF4757!important;border-color:#DD2F3F!important;color:white!important;box-shadow:0 4px 0 #a01f28!important;}
+.obtn.rev{background:#00D26A!important;border-color:#00A855!important;color:white!important;opacity:.65;box-shadow:0 4px 0 #007a40!important;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.shake{animation:shake .4s ease;}
+.exp{margin-top:12px;padding:14px 17px;background:linear-gradient(135deg,#f8f4ff,#e8f9f4);border-radius:12px;border-left:5px solid #8854C0;font-size:.97rem;line-height:1.85;color:#333;display:none;}
+.exp.show{display:block;}
+.exp-ttl{font-weight:900;color:#8854C0;font-size:1rem;margin-bottom:7px;}
+.ca{color:#007a40;font-weight:800;}
+.wa{color:#c0392b;font-weight:700;}
+/* Section III word bank */
+.wbank{display:flex;flex-wrap:wrap;gap:9px;padding:14px;background:linear-gradient(135deg,rgba(136,84,192,.12),rgba(0,201,167,.1));border-radius:12px;margin-bottom:16px;border:2px dashed #8854C0;}
+.wbank-ttl{width:100%;font-size:.95rem;font-weight:800;color:#8854C0;margin-bottom:4px;}
+.wchip{padding:7px 15px;background:linear-gradient(135deg,#8854C0,#6B42A0);color:white;border-radius:20px;font-size:.97rem;font-weight:700;transition:all .2s;box-shadow:0 3px 0 #4a2a80;}
+.wchip.used{opacity:.3;text-decoration:line-through;}
+.blank{
+  display:inline-block;min-width:105px;border-bottom:3px solid #8854C0;
+  padding:3px 10px;cursor:pointer;font-weight:800;color:#8854C0;font-size:1.05rem;
+  background:rgba(136,84,192,.1);border-radius:6px;text-align:center;
+  transition:all .2s;box-shadow:0 2px 6px rgba(136,84,192,.2);
+}
+.blank:hover{background:rgba(136,84,192,.22);transform:scale(1.05);}
+.blank.fc{color:#007a40;border-color:#00D26A;background:rgba(0,210,106,.15);box-shadow:0 2px 8px rgba(0,210,106,.3);}
+.blank.fw{color:#FF4757;border-color:#FF4757;background:rgba(255,71,87,.12);box-shadow:0 2px 8px rgba(255,71,87,.25);}
+/* Word pick overlay modal */
+#wpop-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+}
+#wpop-overlay.show{display:flex;}
+#wpop{
+  background:white;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.35);
+  padding:22px 24px;min-width:260px;max-width:340px;width:90%;
+  border:3px solid #8854C0;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+#wpop h4{font-size:1rem;color:#8854C0;margin-bottom:12px;text-align:center;font-weight:900;}
+#wpop .pw{
+  display:block;padding:10px 16px;margin:6px 0;
+  background:#f3edff;border-radius:12px;cursor:pointer;font-weight:700;
+  font-size:1rem;transition:all .18s;border:2px solid transparent;
+  font-family:'Nunito',sans-serif;text-align:center;
+}
+#wpop .pw:hover{background:#8854C0;color:white;transform:scale(1.03);}
+#wpop .cp{
+  display:block;text-align:center;margin-top:10px;font-size:.9rem;
+  color:#999;cursor:pointer;padding:5px;font-family:'Nunito',sans-serif;
+}
+/* Section V error correction */
+.errline{font-size:1rem;line-height:2.4;font-weight:600;color:#333;}
+.eopt{display:inline-block;border-bottom:2.5px solid #444;padding:2px 5px;cursor:pointer;font-weight:700;transition:all .2s;border-radius:4px;}
+.eopt:hover{background:#f3edff;border-bottom-color:#8854C0;}
+.elbl{font-size:.72rem;color:#8854C0;font-weight:900;vertical-align:super;margin-left:1px;}
+.eopt.correct{background:rgba(0,210,106,.2);border-bottom-color:#00D26A;color:#007a40;}
+.eopt.wrong{background:rgba(255,71,87,.15);border-bottom-color:#FF4757;color:#FF4757;text-decoration:line-through;}
+.eopt.rev{background:rgba(0,210,106,.2);border-bottom-color:#00D26A;color:#007a40;}
+/* Submit */
+.sub-wrap{text-align:center;margin:28px 0;}
+.sub-btn{background:linear-gradient(135deg,#8854C0,#00C9A7);color:white;border:none;padding:16px 52px;border-radius:50px;font-size:1.1rem;font-weight:900;cursor:pointer;box-shadow:0 7px 0 #005f4f;transition:all .2s;font-family:'Nunito',sans-serif;letter-spacing:.5px;}
+.sub-btn:hover{transform:translateY(-3px);box-shadow:0 10px 0 #005f4f;}
+.sub-btn:active{transform:translateY(4px);box-shadow:0 3px 0 #005f4f;}
+/* Score modal */
+#smod{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:3000;backdrop-filter:blur(5px);}
+#smod.show{display:flex;}
+.scard{background:white;border-radius:28px;padding:34px 44px;text-align:center;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.semi{font-size:3.2rem;margin-bottom:10px;}
+.sttl{font-size:1.3rem;font-weight:900;color:#8854C0;margin-bottom:6px;}
+.snum{font-size:2.5rem;font-weight:900;color:#00C9A7;}
+.scmt{font-size:1rem;color:#555;margin:10px 0 18px;font-weight:600;line-height:1.5;}
+.cls-btn{background:linear-gradient(135deg,#8854C0,#00C9A7);color:white;border:none;padding:12px 34px;border-radius:50px;font-size:.97rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+#ccanvas{position:fixed;inset:0;pointer-events:none;z-index:1500;}
+.sec-num{font-size:1.2rem;margin-right:6px;}
+</style>
+</head>
+<body>
+<div id="pat"></div>
+<canvas id="ccanvas"></canvas>
+<div id="wpop-overlay">
+  <div id="wpop">
+    <h4>✏️ Chọn từ phù hợp để điền vào chỗ trống:</h4>
+    <div id="wpop-list"></div>
+    <button class="cp" onclick="closePopup()">✕ Đóng</button>
+  </div>
+</div>
+<div id="smod">
+  <div class="scard">
+    <div class="semi" id="s-emoji">🎉</div>
+    <div class="sttl">KẾT QUẢ BÀI THI</div>
+    <div class="snum" id="s-num">0/0</div>
+    <div class="scmt" id="s-cmt"></div>
+    <button class="cls-btn" onclick="document.getElementById('smod').classList.remove('show')">🏠 Xem lại bài</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📚 TEST FOR UNIT 11</h1>
+  <p>👩‍🏫 Giáo viên: MS Chí Nên ULIS &nbsp;|&nbsp; Chọn đáp án → xem giải thích ngay!</p>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap">
+  <span class="prog-lbl">🎯 Tiến độ:</span>
+  <div class="prog-bar"><div class="prog-fill" id="pfill"></div></div>
+  <span class="prog-sc" id="psc">0 / 40</span>
+</div>
+
+<!-- ========== SECTION I ========== -->
+<div class="sec-card">
+<div class="sec-title"><span class="sec-num">🔊</span>I. Choose the word whose underlined part is pronounced differently from the others.</div>
+
+<!-- I.1 -->
+<div class="qblock" id="q-i1">
+<div class="qtext">1.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('i1','a','c',this)">a. in<u>v</u>ent</button>
+  <button class="obtn" onclick="ans('i1','b','c',this)">b. <u>ch</u>emist</button>
+  <button class="obtn" onclick="ans('i1','c','c',this)">c. de<u>v</u>elop</button>
+  <button class="obtn" onclick="ans('i1','d','c',this)">d. techno<u>l</u>ogy</button>
+</div>
+<div class="exp" id="exp-i1">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — develop</span></p>
+<p>Phần được gạch chân và cách phát âm:</p>
+<p>• a. in<u>v</u>ent /ɪnˈvent/ → 'v' = /v/</p>
+<p>• b. <u>ch</u>emist /ˈkemɪst/ → 'ch' = /k/</p>
+<p>• <span class="ca">c. de<u>v</u>elop /dɪˈveləp/ → âm được gạch chân phát âm KHÁC</span></p>
+<p>• d. techno<u>l</u>ogy /tekˈnɒlədʒi/ → 'l' = /l/</p>
+<p>💡 <b>c</b> là từ có phần gạch chân phát âm khác so với nhóm còn lại.</p>
+</div>
+</div>
+
+<!-- I.2 -->
+<div class="qblock" id="q-i2">
+<div class="qtext">2.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('i2','a','a',this)">a. <u>sc</u>ience</button>
+  <button class="obtn" onclick="ans('i2','b','a',this)">b. <u>sc</u>ared</button>
+  <button class="obtn" onclick="ans('i2','c','a',this)">c. <u>Sc</u>ottish</button>
+  <button class="obtn" onclick="ans('i2','d','a',this)">d. <u>sc</u>reen</button>
+</div>
+<div class="exp" id="exp-i2">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — science</span></p>
+<p>Phần gạch chân '<u>sc</u>' và cách phát âm:</p>
+<p>• <span class="ca">a. <u>sc</u>ience /ˈsaɪəns/ → 'sc' = /s/ ← KHÁC biệt</span></p>
+<p>• b. <u>sc</u>ared /skeərd/ → 'sc' = /sk/</p>
+<p>• c. <u>Sc</u>ottish /ˈskɒtɪʃ/ → 'Sc' = /sk/</p>
+<p>• d. <u>sc</u>reen /skriːn/ → 'sc' = /sk/</p>
+<p>💡 Trong <b>science</b>, 'sc' đọc là /s/ (không đọc /sk/), còn b, c, d đều đọc là /sk/.</p>
+</div>
+</div>
+
+<!-- I.3 -->
+<div class="qblock" id="q-i3">
+<div class="qtext">3.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('i3','a','d',this)">a. e<u>x</u>plore</button>
+  <button class="obtn" onclick="ans('i3','b','d',this)">b. e<u>x</u>change</button>
+  <button class="obtn" onclick="ans('i3','c','d',this)">c. e<u>x</u>periment</button>
+  <button class="obtn" onclick="ans('i3','d','d',this)">d. e<u>x</u>istence</button>
+</div>
+<div class="exp" id="exp-i3">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — existence</span></p>
+<p>Phần gạch chân '<u>x</u>' và cách phát âm:</p>
+<p>• a. e<u>x</u>plore /ɪksˈplɔːr/ → 'x' = /ks/</p>
+<p>• b. e<u>x</u>change /ɪksˈtʃeɪndʒ/ → 'x' = /ks/</p>
+<p>• c. e<u>x</u>periment /ɪkˈsperɪmənt/ → 'x' = /ks/</p>
+<p>• <span class="ca">d. e<u>x</u>istence /ɪɡˈzɪstəns/ → 'x' = /ɡz/ ← KHÁC biệt</span></p>
+<p>💡 Trước nguyên âm có giọng (<i>existence</i>), 'x' đọc thành /ɡz/. Trong a, b, c thì 'x' đọc là /ks/.</p>
+</div>
+</div>
+
+<!-- I.4 -->
+<div class="qblock" id="q-i4">
+<div class="qtext">4.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('i4','a','b',this)">a. inventor<u>s</u></button>
+  <button class="obtn" onclick="ans('i4','b','b',this)">b. benefit<u>s</u></button>
+  <button class="obtn" onclick="ans('i4','c','b',this)">c. panel<u>s</u></button>
+  <button class="obtn" onclick="ans('i4','d','b',this)">d. home<u>s</u></button>
+</div>
+<div class="exp" id="exp-i4">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — benefits</span></p>
+<p>Phần gạch chân '<u>s</u>' cuối từ và cách phát âm:</p>
+<p>• a. inventor<u>s</u> /ɪnˈventərz/ → 's' = /z/ (sau âm /r/ hữu thanh)</p>
+<p>• <span class="ca">b. benefit<u>s</u> /ˈbenɪfɪts/ → 's' = /s/ ← KHÁC biệt (sau âm /t/ vô thanh)</span></p>
+<p>• c. panel<u>s</u> /ˈpænəlz/ → 's' = /z/ (sau âm /l/ hữu thanh)</p>
+<p>• d. home<u>s</u> /hoʊmz/ → 's' = /z/ (sau âm /m/ hữu thanh)</p>
+<p>💡 Quy tắc: Sau phụ âm vô thanh (p, t, k, f, s...) thì 's' đọc /s/. Sau âm hữu thanh thì đọc /z/.</p>
+</div>
+</div>
+
+<!-- I.5 -->
+<div class="qblock" id="q-i5">
+<div class="qtext">5.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('i5','a','c',this)">a. n<u>u</u>clear</button>
+  <button class="obtn" onclick="ans('i5','b','c',this)">b. f<u>u</u>ture</button>
+  <button class="obtn" onclick="ans('i5','c','c',this)">c. b<u>u</u>lb</button>
+  <button class="obtn" onclick="ans('i5','d','c',this)">d. m<u>u</u>te</button>
+</div>
+<div class="exp" id="exp-i5">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — bulb</span></p>
+<p>Phần gạch chân '<u>u</u>' và cách phát âm:</p>
+<p>• a. n<u>u</u>clear /ˈnjuːklɪər/ → 'u' = /juː/</p>
+<p>• b. f<u>u</u>ture /ˈfjuːtʃər/ → 'u' = /juː/</p>
+<p>• <span class="ca">c. b<u>u</u>lb /bʌlb/ → 'u' = /ʌ/ ← KHÁC biệt</span></p>
+<p>• d. m<u>u</u>te /mjuːt/ → 'u' = /juː/</p>
+<p>💡 Trong <b>bulb</b>, 'u' đọc là nguyên âm ngắn /ʌ/ (như "butter"). Các từ còn lại, 'u' đọc /juː/ (âm dài như "you").</p>
+</div>
+</div>
+</div><!-- end sec I -->
+
+<!-- ========== SECTION II ========== -->
+<div class="sec-card">
+<div class="sec-title"><span class="sec-num">🎵</span>II. Choose the word that has a different stress pattern.</div>
+
+<!-- II.1 -->
+<div class="qblock" id="q-ii1">
+<div class="qtext">1.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('ii1','a','a',this)">a. biometric</button>
+  <button class="obtn" onclick="ans('ii1','b','a',this)">b. development</button>
+  <button class="obtn" onclick="ans('ii1','c','a',this)">c. experiment</button>
+  <button class="obtn" onclick="ans('ii1','d','a',this)">d. technology</button>
+</div>
+<div class="exp" id="exp-ii1">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — biometric</span></p>
+<p>Phân tích trọng âm:</p>
+<p>• <span class="ca">a. bi-o-<b>MET</b>-ric /ˌbaɪ.əˈmet.rɪk/ → trọng âm rơi vào âm tiết thứ <b>3</b></span></p>
+<p>• b. de-<b>VEL</b>-op-ment /dɪˈveləpmənt/ → trọng âm âm tiết thứ 2</p>
+<p>• c. ex-<b>PER</b>-i-ment /ɪkˈsperɪmənt/ → trọng âm âm tiết thứ 2</p>
+<p>• d. tech-<b>NOL</b>-o-gy /tekˈnɒlədʒi/ → trọng âm âm tiết thứ 2</p>
+<p>💡 B, C, D đều có trọng âm ở âm tiết <b>thứ 2</b>. Riêng <b>biometric</b> có trọng âm ở âm tiết <b>thứ 3</b>.</p>
+</div>
+</div>
+
+<!-- II.2 -->
+<div class="qblock" id="q-ii2">
+<div class="qtext">2.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('ii2','a','c',this)">a. impolite</button>
+  <button class="obtn" onclick="ans('ii2','b','c',this)">b. scientific</button>
+  <button class="obtn" onclick="ans('ii2','c','c',this)">c. technology</button>
+  <button class="obtn" onclick="ans('ii2','d','c',this)">d. economic</button>
+</div>
+<div class="exp" id="exp-ii2">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — technology</span></p>
+<p>Phân tích trọng âm:</p>
+<p>• a. im-po-<b>LITE</b> /ˌɪmpəˈlaɪt/ → trọng âm âm tiết thứ 3</p>
+<p>• b. sci-en-<b>TIF</b>-ic /ˌsaɪənˈtɪfɪk/ → trọng âm âm tiết thứ 3</p>
+<p>• <span class="ca">c. tech-<b>NOL</b>-o-gy /tekˈnɒlədʒi/ → trọng âm âm tiết thứ <b>2</b> ← KHÁC</span></p>
+<p>• d. ec-o-<b>NOM</b>-ic /ˌiːkəˈnɒmɪk/ → trọng âm âm tiết thứ 3</p>
+<p>💡 A, B, D đều có trọng âm ở âm tiết <b>thứ 3</b>. Riêng <b>technology</b> có trọng âm ở âm tiết <b>thứ 2</b>.</p>
+</div>
+</div>
+
+<!-- II.3 -->
+<div class="qblock" id="q-ii3">
+<div class="qtext">3.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('ii3','a','d',this)">a. spaceship</button>
+  <button class="obtn" onclick="ans('ii3','b','d',this)">b. benefit</button>
+  <button class="obtn" onclick="ans('ii3','c','d',this)">c. technical</button>
+  <button class="obtn" onclick="ans('ii3','d','d',this)">d. reality</button>
+</div>
+<div class="exp" id="exp-ii3">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — reality</span></p>
+<p>Phân tích trọng âm:</p>
+<p>• a. <b>SPACE</b>-ship /ˈspeɪʃɪp/ → trọng âm âm tiết thứ 1</p>
+<p>• b. <b>BEN</b>-e-fit /ˈbenɪfɪt/ → trọng âm âm tiết thứ 1</p>
+<p>• c. <b>TECH</b>-ni-cal /ˈteknɪkəl/ → trọng âm âm tiết thứ 1</p>
+<p>• <span class="ca">d. re-<b>AL</b>-i-ty /riˈæləti/ → trọng âm âm tiết thứ <b>2</b> ← KHÁC</span></p>
+<p>💡 A, B, C đều có trọng âm ở âm tiết <b>thứ 1</b>. Riêng <b>reality</b> có trọng âm ở âm tiết <b>thứ 2</b>.</p>
+</div>
+</div>
+
+<!-- II.4 -->
+<div class="qblock" id="q-ii4">
+<div class="qtext">4.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('ii4','a','c',this)">a. technique</button>
+  <button class="obtn" onclick="ans('ii4','b','c',this)">b. available</button>
+  <button class="obtn" onclick="ans('ii4','c','c',this)">c. programmer</button>
+  <button class="obtn" onclick="ans('ii4','d','c',this)">d. explorer</button>
+</div>
+<div class="exp" id="exp-ii4">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — programmer</span></p>
+<p>Phân tích trọng âm:</p>
+<p>• a. tech-<b>NIQUE</b> /tekˈniːk/ → trọng âm âm tiết thứ 2</p>
+<p>• b. a-<b>VAIL</b>-a-ble /əˈveɪləbl/ → trọng âm âm tiết thứ 2</p>
+<p>• <span class="ca">c. <b>PRO</b>-gram-mer /ˈprəʊɡræmər/ → trọng âm âm tiết thứ <b>1</b> ← KHÁC</span></p>
+<p>• d. ex-<b>PLOR</b>-er /ɪkˈsplɔːrər/ → trọng âm âm tiết thứ 2</p>
+<p>💡 A, B, D đều có trọng âm ở âm tiết <b>thứ 2</b>. Riêng <b>programmer</b> có trọng âm ở âm tiết <b>thứ 1</b>.</p>
+</div>
+</div>
+
+<!-- II.5 -->
+<div class="qblock" id="q-ii5">
+<div class="qtext">5.</div>
+<div class="opts">
+  <button class="obtn" onclick="ans('ii5','a','b',this)">a. unemployment</button>
+  <button class="obtn" onclick="ans('ii5','b','b',this)">b. laboratory</button>
+  <button class="obtn" onclick="ans('ii5','c','b',this)">c. engineer</button>
+  <button class="obtn" onclick="ans('ii5','d','b',this)">d. conservationist</button>
+</div>
+<div class="exp" id="exp-ii5">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — laboratory</span></p>
+<p>Phân tích trọng âm:</p>
+<p>• a. un-em-<b>PLOY</b>-ment /ˌʌnɪmˈplɔɪmənt/ → trọng âm âm tiết thứ 3</p>
+<p>• <span class="ca">b. la-<b>BOR</b>-a-to-ry /ləˈbɒrətri/ → trọng âm âm tiết thứ <b>2</b> ← KHÁC</span></p>
+<p>• c. en-gi-<b>NEER</b> /ˌendʒɪˈnɪər/ → trọng âm âm tiết thứ 3</p>
+<p>• d. con-ser-<b>VA</b>-tion-ist /ˌkɒnsəˈveɪʃənɪst/ → trọng âm âm tiết thứ 3</p>
+<p>💡 A, C, D đều có trọng âm ở âm tiết <b>thứ 3</b>. Riêng <b>laboratory</b> có trọng âm ở âm tiết <b>thứ 2</b>.</p>
+</div>
+</div>
+</div><!-- end sec II -->
+
+<!-- ========== SECTION III ========== -->
+<div class="sec-card">
+<div class="sec-title"><span class="sec-num">✏️</span>III. Fill in each blank with a suitable word.</div>
+<div class="wbank">
+  <div class="wbank-ttl">📦 Ngân hàng từ — nhấp vào ô trống 👇 rồi chọn từ trong hộp xuất hiện:</div>
+  <span class="wchip" id="wc-would">would</span>
+  <span class="wchip" id="wc-inventor">inventor</span>
+  <span class="wchip" id="wc-to">to</span>
+  <span class="wchip" id="wc-scanners">scanners</span>
+  <span class="wchip" id="wc-Breakout">Breakout</span>
+  <span class="wchip" id="wc-recognition">recognition</span>
+  <span class="wchip" id="wc-teachers">teachers</span>
+  <span class="wchip" id="wc-technology">technology</span>
+  <span class="wchip" id="wc-tracking">tracking</span>
+  <span class="wchip" id="wc-screen">screen</span>
+</div>
+<p style="font-size:.93rem;color:#8854C0;font-weight:800;margin-bottom:12px;text-align:center;">👆 Nhấp vào ô <span style="background:#8854C0;color:white;padding:2px 10px;border-radius:8px;">_______</span> màu tím để chọn từ điền vào!</p>
+
+<!-- III.1 -->
+<div class="qblock" id="q-iii1">
+<div class="qtext">1. My dad told me that only robots <span class="blank" id="b-iii1" onclick="openPopup('iii1','would')">_______</span> work in factories in the future.</div>
+<div class="exp" id="exp-iii1">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>would</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Bố tôi đã nói với tôi rằng chỉ có robot <b>sẽ/mới</b> làm việc trong các nhà máy trong tương lai."</p>
+<p>💡 <b>Ngữ pháp — Câu tường thuật (Reported Speech):</b><br>
+Khi dùng động từ tường thuật <b>"told"</b> (thì quá khứ), tất cả thì trong mệnh đề phụ phải lùi một bậc:<br>
+→ <b>will</b> (tương lai đơn) lùi thành <b>would</b><br>
+Câu trực tiếp gốc: <i>"Only robots <u>will</u> work in factories in the future."</i><br>
+Câu gián tiếp: <i>"He told me that only robots <u>would</u> work in factories in the future."</i></p>
+</div>
+</div>
+
+<!-- III.2 -->
+<div class="qblock" id="q-iii2">
+<div class="qtext">2. Chester Greenwood was an American <span class="blank" id="b-iii2" onclick="openPopup('iii2','inventor')">_______</span> who invented the earmuffs.</div>
+<div class="exp" id="exp-iii2">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>inventor</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Chester Greenwood là một <b>nhà phát minh</b> người Mỹ, người đã phát minh ra bịt tai (earmuffs)."</p>
+<p>💡 <b>Từ vựng — Word formation (Cấu tạo từ):</b><br>
+<b>invent</b> (v): phát minh → <b>inventor</b> (n): người phát minh (hậu tố <b>-or</b> chỉ người thực hiện hành động)<br>
+Vế sau <i>"who invented the earmuffs"</i> là <b>mệnh đề quan hệ xác định</b>, mô tả Chester Greenwood là ai.<br>
+Lưu ý: earmuffs (n) = bịt tai giữ ấm — do Chester Greenwood phát minh năm 1873 khi mới 15 tuổi!</p>
+</div>
+</div>
+
+<!-- III.3 -->
+<div class="qblock" id="q-iii3">
+<div class="qtext">3. Modern technology has brought many benefits <span class="blank" id="b-iii3" onclick="openPopup('iii3','to')">_______</span> society.</div>
+<div class="exp" id="exp-iii3">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>to</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Công nghệ hiện đại đã mang lại nhiều lợi ích <b>cho</b> xã hội."</p>
+<p>💡 <b>Cụm từ cố định (Collocation):</b><br>
+<b>bring benefits to + danh từ/đại từ</b> = mang lại lợi ích cho ai/cái gì<br>
+Giới từ <b>to</b> chỉ đối tượng được hưởng lợi.<br>
+Có thể viết theo 2 cách: <i>"bring society many benefits"</i> hoặc <i>"bring many benefits to society"</i><br>
+Thì hiện tại hoàn thành (<b>has brought</b>) nhấn mạnh kết quả còn ảnh hưởng đến hiện tại.</p>
+</div>
+</div>
+
+<!-- III.4 -->
+<div class="qblock" id="q-iii4">
+<div class="qtext">4. Nitgen is a famous biometric company which produces fingerprint <span class="blank" id="b-iii4" onclick="openPopup('iii4','scanners')">_______</span>.</div>
+<div class="exp" id="exp-iii4">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>scanners</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Nitgen là một công ty sinh trắc học nổi tiếng, chuyên sản xuất <b>máy quét</b> dấu vân tay."</p>
+<p>💡 <b>Từ vựng công nghệ:</b><br>
+<b>fingerprint scanner</b> (n): máy/thiết bị quét dấu vân tay<br>
+→ <b>fingerprint</b> (n): dấu vân tay &nbsp;|&nbsp; <b>scanner</b> (n): thiết bị quét<br>
+<b>biometric</b> (adj): thuộc về sinh trắc học — công nghệ nhận dạng qua các đặc điểm sinh học (vân tay, khuôn mặt, mống mắt...)<br>
+→ <b>bio</b> (sự sống) + <b>metric</b> (đo lường) = đo lường các đặc điểm sinh học</p>
+</div>
+</div>
+
+<!-- III.5 -->
+<div class="qblock" id="q-iii5">
+<div class="qtext">5. <span class="blank" id="b-iii5" onclick="openPopup('iii5','Breakout')">_______</span> rooms are sessions that are split off from the main Zoom meeting.</div>
+<div class="exp" id="exp-iii5">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>Breakout</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Phòng họp nhóm nhỏ (<b>Breakout rooms</b>) là các phiên làm việc được tách ra từ cuộc họp Zoom chính."</p>
+<p>💡 <b>Từ vựng công nghệ học trực tuyến:</b><br>
+<b>Breakout rooms</b> (n): tính năng trên Zoom/Microsoft Teams/Google Meet cho phép chia cuộc họp chính thành các nhóm nhỏ làm việc riêng biệt.<br>
+→ <b>break out</b> (v): tách ra, chia nhỏ<br>
+→ <b>session</b> (n): phiên, buổi làm việc<br>
+→ <b>split off from</b>: tách ra từ</p>
+</div>
+</div>
+
+<!-- III.6 -->
+<div class="qblock" id="q-iii6">
+<div class="qtext">6. Face <span class="blank" id="b-iii6" onclick="openPopup('iii6','recognition')">_______</span> involves identifying individuals in facial images.</div>
+<div class="exp" id="exp-iii6">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>recognition</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Nhận diện khuôn mặt (<b>Face recognition</b>) là quá trình xác định danh tính của mỗi cá nhân qua hình ảnh khuôn mặt."</p>
+<p>💡 <b>Từ vựng — Word formation (Cấu tạo từ):</b><br>
+<b>recognize</b> (v): nhận ra, nhận dạng → <b>recognition</b> (n): sự nhận dạng (hậu tố <b>-tion/-ition</b> biến động từ thành danh từ)<br>
+<b>Face recognition technology</b>: công nghệ nhận diện khuôn mặt — một ứng dụng của AI và Machine Learning.<br>
+→ <b>identify</b> (v): xác định, nhận dạng &nbsp;|&nbsp; <b>individual</b> (n): cá nhân, từng người</p>
+</div>
+</div>
+
+<!-- III.7 -->
+<div class="qblock" id="q-iii7">
+<div class="qtext">7. Some elementary schools are using robot <span class="blank" id="b-iii7" onclick="openPopup('iii7','teachers')">_______</span> as classroom assistants.</div>
+<div class="exp" id="exp-iii7">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>teachers</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Một số trường tiểu học đang sử dụng <b>giáo viên robot</b> như những trợ lý trong lớp học."</p>
+<p>💡 <b>Danh từ ghép (Compound nouns) + Xu hướng AI trong giáo dục:</b><br>
+<b>robot teachers</b> = giáo viên robot (danh từ ghép: danh từ 1 + danh từ 2, trong đó danh từ 1 mô tả loại của danh từ 2)<br>
+→ Tương tự: robot <i>doctor</i>, robot <i>scientist</i>, robot <i>soldier</i>...<br>
+<b>classroom assistant</b> (n): trợ lý lớp học — người/robot hỗ trợ giáo viên trong giảng dạy<br>
+<b>elementary school</b> (n): trường tiểu học (từ lớp 1–5)</p>
+</div>
+</div>
+
+<!-- III.8 -->
+<div class="qblock" id="q-iii8">
+<div class="qtext">8. Science and <span class="blank" id="b-iii8" onclick="openPopup('iii8','technology')">_______</span> are the keys to economic and social development.</div>
+<div class="exp" id="exp-iii8">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>technology</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Khoa học và <b>công nghệ</b> là những chìa khóa dẫn đến sự phát triển kinh tế và xã hội."</p>
+<p>💡 <b>Từ vựng chủ điểm Unit 11:</b><br>
+<b>Science and Technology</b> (Khoa học và Công nghệ) — cụm từ đi đôi rất quen thuộc trong văn phong học thuật và chính sách.<br>
+→ <b>technology</b> (n): công nghệ — <i>techno</i> (kỹ thuật) + <i>-logy</i> (ngành học/khoa học)<br>
+→ <b>key</b> (n): chìa khóa (nghĩa bóng: yếu tố quan trọng nhất)<br>
+→ <b>economic and social development</b>: sự phát triển kinh tế và xã hội</p>
+</div>
+</div>
+
+<!-- III.9 -->
+<div class="qblock" id="q-iii9">
+<div class="qtext">9. Teachers can use eye-<span class="blank" id="b-iii9" onclick="openPopup('iii9','tracking')">_______</span> to analyze attention and understand more students' behavior.</div>
+<div class="exp" id="exp-iii9">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>tracking</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Giáo viên có thể sử dụng công nghệ <b>theo dõi chuyển động mắt</b> (eye-tracking) để phân tích sự chú ý và hiểu thêm về hành vi của học sinh."</p>
+<p>💡 <b>Từ vựng công nghệ giáo dục:</b><br>
+<b>eye-tracking</b> (n): công nghệ theo dõi chuyển động mắt — theo dõi học sinh đang nhìn vào đâu, chú ý đến gì.<br>
+→ <b>track</b> (v): theo dõi, giám sát → <b>tracking</b> (n/adj): sự theo dõi<br>
+→ <b>analyze</b> (v): phân tích &nbsp;|&nbsp; <b>attention</b> (n): sự chú ý &nbsp;|&nbsp; <b>behavior</b> (n): hành vi<br>
+Ứng dụng: nghiên cứu hành vi học sinh, thiết kế UX, quảng cáo, y tế.</p>
+</div>
+</div>
+
+<!-- III.10 -->
+<div class="qblock" id="q-iii10">
+<div class="qtext">10. Your eyes can get tired from looking at a computer <span class="blank" id="b-iii10" onclick="openPopup('iii10','screen')">_______</span> for extended periods.</div>
+<div class="exp" id="exp-iii10">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: <b>screen</b></span></p>
+<p>📝 <b>Dịch câu đầy đủ:</b> "Mắt bạn có thể bị mỏi vì nhìn chằm chằm vào <b>màn hình</b> máy tính trong thời gian dài."</p>
+<p>💡 <b>Từ vựng công nghệ & sức khoẻ:</b><br>
+<b>computer screen</b> (n): màn hình máy tính — <b>screen</b> cũng dùng cho: TV screen (màn hình TV), phone screen (màn hình điện thoại)...<br>
+→ <b>get tired from</b>: bị mỏi mệt vì...<br>
+→ <b>for extended periods</b> = for long periods: trong khoảng thời gian dài<br>
+Hội chứng mỏi mắt kỹ thuật số (Digital Eye Strain / Computer Vision Syndrome) là vấn đề sức khoẻ phổ biến ngày nay.</p>
+</div>
+</div>
+</div><!-- end sec III -->
+
+<!-- ========== SECTION IV ========== -->
+<div class="sec-card">
+<div class="sec-title"><span class="sec-num">🧠</span>IV. Choose the best answer a, b, c or d to complete the sentence.</div>
+
+<!-- IV.1 -->
+<div class="qblock" id="q-iv1">
+<div class="qtext">1. She was really tired _______ sitting in front of a computer all day, so she gave up her job.</div>
+<div class="opts" id="opts-iv1">
+  <button class="obtn" onclick="ans('iv1','a','b',this)">a. for</button>
+  <button class="obtn" onclick="ans('iv1','b','b',this)">b. of</button>
+  <button class="obtn" onclick="ans('iv1','c','b',this)">c. in</button>
+  <button class="obtn" onclick="ans('iv1','d','b',this)">d. with</button>
+</div>
+<div class="exp" id="exp-iv1">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — of</span></p>
+<p>📝 Dịch câu: "Cô ấy thực sự mệt mỏi <b>vì</b> ngồi trước máy tính cả ngày, nên cô ấy đã bỏ việc."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. for: "tired for" không phải cụm đúng ngữ pháp tiếng Anh.</span></p>
+<p>• <span class="ca">b. of ✅: Cấu trúc đúng: <b>be tired of + V-ing</b> = chán/mệt mỏi vì làm gì. Đây là collocation cố định.</span></p>
+<p>• <span class="wa">c. in: "tired in" không phải cụm đúng ngữ pháp.</span></p>
+<p>• <span class="wa">d. with: "tired with" không phải cụm chuẩn. (Lưu ý: "bored with" mới đúng, không phải "tired with".)</span></p>
+<p>💡 Cấu trúc: <b>be tired of + doing sth</b> = cảm thấy chán/mệt mỏi với việc gì đó.</p>
+</div>
+</div>
+
+<!-- IV.2 -->
+<div class="qblock" id="q-iv2">
+<div class="qtext">2. It is predicted that 21 million self-driving cars will be on the road _______ 2035.</div>
+<div class="opts" id="opts-iv2">
+  <button class="obtn" onclick="ans('iv2','a','d',this)">a. until</button>
+  <button class="obtn" onclick="ans('iv2','b','d',this)">b. from</button>
+  <button class="obtn" onclick="ans('iv2','c','d',this)">c. on</button>
+  <button class="obtn" onclick="ans('iv2','d','d',this)">d. by</button>
+</div>
+<div class="exp" id="exp-iv2">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — by</span></p>
+<p>📝 Dịch câu: "Người ta dự đoán rằng 21 triệu xe tự lái sẽ lưu thông trên đường <b>vào/trước năm</b> 2035."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. until (cho đến): "until 2035" mang nghĩa liên tục đến năm 2035, không phù hợp.</span></p>
+<p>• <span class="wa">b. from (từ): "from 2035" = bắt đầu từ năm 2035, ngụ ý chưa có trước đó. Không phù hợp.</span></p>
+<p>• <span class="wa">c. on: "on 2035" sai ngữ pháp — "on" dùng với ngày/thứ cụ thể, không dùng với năm.</span></p>
+<p>• <span class="ca">d. by ✅: <b>by + thời gian</b> = vào/trước thời điểm đó. Nghĩa: "không muộn hơn năm 2035".</span></p>
+<p>💡 <b>by 2035</b> = trước hoặc vào năm 2035. Thường dùng với thì tương lai hoặc tương lai hoàn thành.</p>
+</div>
+</div>
+
+<!-- IV.3 -->
+<div class="qblock" id="q-iv3">
+<div class="qtext">3. There is a robot scientist that can _______ scientific experiments by itself.</div>
+<div class="opts" id="opts-iv3">
+  <button class="obtn" onclick="ans('iv3','a','a',this)">a. carry out</button>
+  <button class="obtn" onclick="ans('iv3','b','a',this)">b. interact with</button>
+  <button class="obtn" onclick="ans('iv3','c','a',this)">c. keep up</button>
+  <button class="obtn" onclick="ans('iv3','d','a',this)">d. take on</button>
+</div>
+<div class="exp" id="exp-iv3">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — carry out</span></p>
+<p>📝 Dịch câu: "Có một nhà khoa học robot có thể <b>thực hiện/tiến hành</b> các thí nghiệm khoa học một mình."</p>
+<p>Phân tích 4 đáp án (Phrasal Verbs):</p>
+<p>• <span class="ca">a. carry out ✅: thực hiện, tiến hành (thí nghiệm, kế hoạch). <b>carry out experiments</b> = tiến hành thí nghiệm — collocation cực kỳ phổ biến.</span></p>
+<p>• <span class="wa">b. interact with: tương tác với (ai/cái gì). "interact with experiments" vô nghĩa.</span></p>
+<p>• <span class="wa">c. keep up: theo kịp, duy trì. "keep up experiments" không phải cụm đúng ngữ cảnh.</span></p>
+<p>• <span class="wa">d. take on: đảm nhận (trách nhiệm, việc làm). "take on experiments" không chuẩn xác như "carry out".</span></p>
+<p>💡 Collocation: <b>carry out + experiments/research/tests/surveys</b> = tiến hành thí nghiệm/nghiên cứu/kiểm tra/khảo sát.</p>
+</div>
+</div>
+
+<!-- IV.4 -->
+<div class="qblock" id="q-iv4">
+<div class="qtext">4. Wilhelm Röntgen, a German physicist, _______ X-rays in 1895.</div>
+<div class="opts" id="opts-iv4">
+  <button class="obtn" onclick="ans('iv4','a','c',this)">a. created</button>
+  <button class="obtn" onclick="ans('iv4','b','c',this)">b. invented</button>
+  <button class="obtn" onclick="ans('iv4','c','c',this)">c. discovered</button>
+  <button class="obtn" onclick="ans('iv4','d','c',this)">d. developed</button>
+</div>
+<div class="exp" id="exp-iv4">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — discovered</span></p>
+<p>📝 Dịch câu: "Wilhelm Röntgen, một nhà vật lý người Đức, đã <b>phát hiện</b> ra tia X vào năm 1895."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. created (tạo ra): dùng cho sản phẩm nghệ thuật, sáng tạo. Không dùng cho hiện tượng tự nhiên.</span></p>
+<p>• <span class="wa">b. invented (phát minh): dùng cho thiết bị/công cụ mới do con người tạo ra (invent a machine). X-rays là hiện tượng tự nhiên, không phải do con người tạo ra.</span></p>
+<p>• <span class="ca">c. discovered ✅: <b>phát hiện</b> ra điều đã tồn tại trong tự nhiên nhưng chưa được biết đến. X-rays là hiện tượng tự nhiên → dùng "discover".</span></p>
+<p>• <span class="wa">d. developed (phát triển): dùng để nói về quá trình cải tiến, phát triển một thứ đã có.</span></p>
+<p>💡 Phân biệt: <b>invent</b> (tạo ra thứ chưa từng có) vs <b>discover</b> (tìm thấy thứ đã tồn tại trong tự nhiên).</p>
+</div>
+</div>
+
+<!-- IV.5 -->
+<div class="qblock" id="q-iv5">
+<div class="qtext">5. Vivian said that she _______ at the supermarket then, so she couldn't join us.</div>
+<div class="opts" id="opts-iv5">
+  <button class="obtn" onclick="ans('iv5','a','b',this)">a. is shopping</button>
+  <button class="obtn" onclick="ans('iv5','b','b',this)">b. was shopping</button>
+  <button class="obtn" onclick="ans('iv5','c','b',this)">c. shop</button>
+  <button class="obtn" onclick="ans('iv5','d','b',this)">d. shopped</button>
+</div>
+<div class="exp" id="exp-iv5">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — was shopping</span></p>
+<p>📝 Dịch câu: "Vivian nói rằng lúc đó cô ấy <b>đang mua sắm</b> ở siêu thị, vì vậy cô ấy không thể tham gia cùng chúng tôi."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. is shopping: hiện tại tiếp diễn — sai vì cần lùi thời trong reported speech.</span></p>
+<p>• <span class="ca">b. was shopping ✅: Câu gián tiếp (reported speech): "said" (quá khứ) → mệnh đề phụ lùi thời: present continuous → past continuous. "then" = lúc đó (thời gian quá khứ). <b>was shopping</b> = quá khứ tiếp diễn, diễn tả hành động đang xảy ra tại thời điểm trong quá khứ.</span></p>
+<p>• <span class="wa">c. shop: nguyên thể không phù hợp cấu trúc câu.</span></p>
+<p>• <span class="wa">d. shopped: quá khứ đơn diễn tả hành động hoàn thành, không phù hợp với từ "then" (lúc đó đang diễn ra).</span></p>
+</div>
+</div>
+
+<!-- IV.6 -->
+<div class="qblock" id="q-iv6">
+<div class="qtext">6. Software developers create the _______ or systems that run on a computer.</div>
+<div class="opts" id="opts-iv6">
+  <button class="obtn" onclick="ans('iv6','a','b',this)">a. information</button>
+  <button class="obtn" onclick="ans('iv6','b','b',this)">b. applications</button>
+  <button class="obtn" onclick="ans('iv6','c','b',this)">c. inventions</button>
+  <button class="obtn" onclick="ans('iv6','d','b',this)">d. equipment</button>
+</div>
+<div class="exp" id="exp-iv6">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — applications</span></p>
+<p>📝 Dịch câu: "Các nhà phát triển phần mềm tạo ra các <b>ứng dụng</b> hoặc hệ thống chạy trên máy tính."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. information (thông tin): không thể "tạo ra thông tin" theo nghĩa phần mềm.</span></p>
+<p>• <span class="ca">b. applications ✅: <b>application</b> (n) = ứng dụng phần mềm (app). Software developers tạo ra applications (apps) — đây là nghĩa kỹ thuật đúng.</span></p>
+<p>• <span class="wa">c. inventions (phát minh): quá rộng, không đặc trưng cho lĩnh vực phần mềm.</span></p>
+<p>• <span class="wa">d. equipment (thiết bị): chỉ phần cứng (hardware), không phải phần mềm (software).</span></p>
+<p>💡 <b>application / app</b> = chương trình phần mềm chạy trên máy tính hoặc điện thoại.</p>
+</div>
+</div>
+
+<!-- IV.7 -->
+<div class="qblock" id="q-iv7">
+<div class="qtext">7. When I called them yesterday, they told me that they were going to the movies _______.</div>
+<div class="opts" id="opts-iv7">
+  <button class="obtn" onclick="ans('iv7','a','d',this)">a. now</button>
+  <button class="obtn" onclick="ans('iv7','b','d',this)">b. tonight</button>
+  <button class="obtn" onclick="ans('iv7','c','d',this)">c. tomorrow</button>
+  <button class="obtn" onclick="ans('iv7','d','d',this)">d. the next day</button>
+</div>
+<div class="exp" id="exp-iv7">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — the next day</span></p>
+<p>📝 Dịch câu: "Khi tôi gọi cho họ hôm qua, họ nói với tôi rằng họ sắp đi xem phim <b>vào ngày hôm sau</b>."</p>
+<p>Bảng chuyển đổi trạng từ trong Reported Speech:</p>
+<p>• <span class="wa">a. now → then (lúc đó) — không dùng "now" trong lời gián tiếp.</span></p>
+<p>• <span class="wa">b. tonight → that night (tối hôm đó) — "tonight" không phù hợp.</span></p>
+<p>• <span class="wa">c. tomorrow → the next day / the following day — "tomorrow" không dùng trong lời gián tiếp quá khứ.</span></p>
+<p>• <span class="ca">d. the next day ✅: "tomorrow" trong direct speech chuyển thành <b>the next day / the following day</b> trong reported speech.</span></p>
+<p>💡 Bảng đổi thời gian: tomorrow → <b>the next day</b>; yesterday → <b>the previous day</b>; today → <b>that day</b>.</p>
+</div>
+</div>
+
+<!-- IV.8 -->
+<div class="qblock" id="q-iv8">
+<div class="qtext">8. _______ advancements have turned AI and robotics from science fiction to reality.</div>
+<div class="opts" id="opts-iv8">
+  <button class="obtn" onclick="ans('iv8','a','a',this)">a. Technological</button>
+  <button class="obtn" onclick="ans('iv8','b','a',this)">b. Inventive</button>
+  <button class="obtn" onclick="ans('iv8','c','a',this)">c. Biometric</button>
+  <button class="obtn" onclick="ans('iv8','d','a',this)">d. Scientific</button>
+</div>
+<div class="exp" id="exp-iv8">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — Technological</span></p>
+<p>📝 Dịch câu: "Những tiến bộ <b>công nghệ</b> đã biến AI và robot học từ khoa học viễn tưởng trở thành thực tế."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="ca">a. Technological (adj) ✅: thuộc về/liên quan đến công nghệ. <b>technological advancements</b> = những tiến bộ công nghệ — collocation cực kỳ tự nhiên và phù hợp ngữ cảnh.</span></p>
+<p>• <span class="wa">b. Inventive (adj): có tính sáng tạo/đổi mới. "Inventive advancements" nghe không tự nhiên.</span></p>
+<p>• <span class="wa">c. Biometric (adj): liên quan đến sinh trắc học (dấu vân tay, nhận diện khuôn mặt). Quá hẹp, không bao quát AI và robotics.</span></p>
+<p>• <span class="wa">d. Scientific (adj): liên quan đến khoa học. Tuy nhiên, ngữ cảnh đặc trưng về AI và robotics → cần "technological" mang nghĩa công nghệ ứng dụng, cụ thể hơn.</span></p>
+</div>
+</div>
+
+<!-- IV.9 -->
+<div class="qblock" id="q-iv9">
+<div class="qtext">9. We'll have flying cars in the future, _______ we can travel much faster and further.</div>
+<div class="opts" id="opts-iv9">
+  <button class="obtn" onclick="ans('iv9','a','d',this)">a. although</button>
+  <button class="obtn" onclick="ans('iv9','b','d',this)">b. since</button>
+  <button class="obtn" onclick="ans('iv9','c','d',this)">c. in order that</button>
+  <button class="obtn" onclick="ans('iv9','d','d',this)">d. so that</button>
+</div>
+<div class="exp" id="exp-iv9">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — so that</span></p>
+<p>📝 Dịch câu: "Chúng ta sẽ có xe bay trong tương lai, <b>nhờ vậy/để</b> chúng ta có thể di chuyển nhanh hơn và xa hơn nhiều."</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. although (mặc dù): liên từ chỉ sự tương phản/nhượng bộ — không phù hợp.</span></p>
+<p>• <span class="wa">b. since (vì/kể từ khi): chỉ nguyên nhân hoặc thời gian — không phù hợp.</span></p>
+<p>• <span class="wa">c. in order that (để mà): dùng để diễn tả mục đích, thường dùng với can/could/may/might. Cấu trúc: in order that + S + modal verb. Trong câu này, "in order that" nghe không tự nhiên sau một mệnh đề kết quả.</span></p>
+<p>• <span class="ca">d. so that ✅: Ở đây <b>so that</b> mang nghĩa "nhờ vậy mà" — chỉ kết quả. Cả "in order that" và "so that" đều chỉ mục đích/kết quả, nhưng "so that" tự nhiên hơn trong ngữ cảnh này vì đứng sau mệnh đề chính nói về tương lai.</span></p>
+</div>
+</div>
+
+<!-- IV.10 -->
+<div class="qblock" id="q-iv10">
+<div class="qtext">10. "Modern technology saves us lots of time." — "___________"</div>
+<div class="opts" id="opts-iv10">
+  <button class="obtn" onclick="ans('iv10','a','c',this)">a. I think it's all right!</button>
+  <button class="obtn" onclick="ans('iv10','b','c',this)">b. OK. That's all.</button>
+  <button class="obtn" onclick="ans('iv10','c','c',this)">c. I can't agree with you more!</button>
+  <button class="obtn" onclick="ans('iv10','d','c',this)">d. Not completely all.</button>
+</div>
+<div class="exp" id="exp-iv10">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — I can't agree with you more!</span></p>
+<p>📝 Dịch câu hỏi: "Công nghệ hiện đại giúp chúng ta tiết kiệm rất nhiều thời gian." — "_______"</p>
+<p>Phân tích 4 đáp án:</p>
+<p>• <span class="wa">a. "I think it's all right!" = "Tôi nghĩ ổn thôi!" → phản ứng trung lập, không thể hiện sự đồng ý mạnh.</span></p>
+<p>• <span class="wa">b. "OK. That's all." = "Ổn. Vậy thôi." → chấm dứt cuộc trò chuyện, không phù hợp.</span></p>
+<p>• <span class="ca">c. "I can't agree with you more!" ✅ = "Tôi hoàn toàn đồng ý với bạn!" → Đây là cách diễn đạt sự đồng ý MẠNH MẼ nhất trong tiếng Anh. Câu phủ định kép tạo nghĩa khẳng định tối đa.</span></p>
+<p>• <span class="wa">d. "Not completely all." = sai ngữ pháp, không tự nhiên.</span></p>
+<p>💡 <b>"I can't agree with you more"</b> = Tôi không thể đồng ý hơn nữa = Tôi hoàn toàn đồng ý. Đây là idiom tiếng Anh phổ biến.</p>
+</div>
+</div>
+</div><!-- end sec IV -->
+
+<!-- ========== SECTION V ========== -->
+<div class="sec-card">
+<div class="sec-title"><span class="sec-num">🔍</span>V. Choose the underlined word or phrase (A, B, C or D) that needs correcting.</div>
+<p style="font-size:.82rem;color:#8854C0;font-weight:700;margin-bottom:14px;">👆 Nhấp vào phần gạch chân bạn cho là SAI để chọn đáp án.</p>
+
+<!-- V.1 -->
+<div class="qblock" id="q-v1">
+<div class="qtext">1. <span class="errline">Bell is best <span class="eopt" id="v1a" onclick="ansV('v1','a','b',this)">known<span class="elbl">A</span></span> for his <span class="eopt" id="v1b" onclick="ansV('v1','b','b',this)">inventor<span class="elbl">B</span></span> of the telephone, <span class="eopt" id="v1c" onclick="ansV('v1','c','b',this)">for which<span class="elbl">C</span></span> he received his first patent <span class="eopt" id="v1d" onclick="ansV('v1','d','b',this)">in 1876<span class="elbl">D</span></span>.</span></div>
+<div class="exp" id="exp-v1">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — inventor → <b>invention</b></span></p>
+<p>📝 Dịch câu: "Bell nổi tiếng nhất với <b>phát minh</b> điện thoại của mình, thứ đã mang lại cho ông bằng sáng chế đầu tiên vào năm 1876."</p>
+<p>💡 Sau giới từ <b>"for"</b>, cần dùng danh từ (noun). <b>inventor</b> (n) = người phát minh (chỉ người), nhưng ở đây cần danh từ chỉ sự vật: <b>invention</b> (n) = phát minh. Cụm: "known for his invention of the telephone" = nổi tiếng vì phát minh điện thoại.</p>
+<p>• A. "known" → đúng: "best known for" = nổi tiếng nhất vì...</p>
+<p>• C. "for which" → đúng: mệnh đề quan hệ (relative clause).</p>
+<p>• D. "in 1876" → đúng: giới từ "in" dùng với năm.</p>
+</div>
+</div>
+
+<!-- V.2 -->
+<div class="qblock" id="q-v2">
+<div class="qtext">2. <span class="errline">Voyager 2 <span class="eopt" id="v2a" onclick="ansV('v2','a','c',this)">is<span class="elbl">A</span></span> a spacecraft <span class="eopt" id="v2b" onclick="ansV('v2','b','c',this)">which<span class="elbl">B</span></span> has expanded <span class="eopt" id="v2c" onclick="ansV('v2','c','c',this)">us<span class="elbl">C</span></span> knowledge <span class="eopt" id="v2d" onclick="ansV('v2','d','c',this)">of<span class="elbl">D</span></span> the solar system.</span></div>
+<div class="exp" id="exp-v2">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — us → <b>our</b></span></p>
+<p>📝 Dịch câu: "Voyager 2 là một tàu vũ trụ đã mở rộng hiểu biết <b>của chúng ta</b> về hệ mặt trời."</p>
+<p>💡 Trước danh từ "knowledge" (danh từ, sở hữu) cần dùng <b>tính từ sở hữu (possessive adjective)</b>, không dùng đại từ tân ngữ (object pronoun). <b>us</b> là đại từ tân ngữ → SAI. Phải dùng <b>our</b> (tính từ sở hữu) = "our knowledge" = "kiến thức/hiểu biết của chúng ta".</p>
+<p>Phân biệt: us (tân ngữ: tell us) vs our (sở hữu: our house) vs ours (sở hữu cách: it's ours).</p>
+</div>
+</div>
+
+<!-- V.3 -->
+<div class="qblock" id="q-v3">
+<div class="qtext">3. <span class="errline">Our teacher <span class="eopt" id="v3a" onclick="ansV('v3','a','b',this)">says<span class="elbl">A</span></span> that Thomas Edison <span class="eopt" id="v3b" onclick="ansV('v3','b','b',this)">invents<span class="elbl">B</span></span> <span class="eopt" id="v3c" onclick="ansV('v3','c','b',this)">the light-bulb<span class="elbl">C</span></span> <span class="eopt" id="v3d" onclick="ansV('v3','d','b',this)">in<span class="elbl">D</span></span> the 19th century.</span></div>
+<div class="exp" id="exp-v3">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — invents → <b>invented</b></span></p>
+<p>📝 Dịch câu: "Giáo viên chúng tôi nói rằng Thomas Edison đã <b>phát minh</b> ra bóng đèn vào thế kỷ 19."</p>
+<p>💡 Đây là sự kiện lịch sử đã xảy ra trong quá khứ ("in the 19th century"). Khi nói về sự thật lịch sử, dù động từ tường thuật là "says" (hiện tại), động từ trong mệnh đề phụ vẫn phải dùng <b>quá khứ đơn</b> (<b>invented</b>) vì đây là sự kiện cụ thể đã hoàn thành trong quá khứ. Không dùng hiện tại đơn "invents" cho sự kiện lịch sử.</p>
+</div>
+</div>
+
+<!-- V.4 -->
+<div class="qblock" id="q-v4">
+<div class="qtext">4. <span class="errline">She <span class="eopt" id="v4a" onclick="ansV('v4','a','c',this)">promised<span class="elbl">A</span></span> me two days <span class="eopt" id="v4b" onclick="ansV('v4','b','c',this)">ago<span class="elbl">B</span></span> that she <span class="eopt" id="v4c" onclick="ansV('v4','c','c',this)">won't<span class="elbl">C</span></span> tell him <span class="eopt" id="v4d" onclick="ansV('v4','d','c',this)">about<span class="elbl">D</span></span> that.</span></div>
+<div class="exp" id="exp-v4">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — won't → <b>wouldn't</b></span></p>
+<p>📝 Dịch câu: "Cô ấy đã hứa với tôi hai ngày trước rằng cô ấy <b>sẽ không</b> nói với anh ấy về điều đó."</p>
+<p>💡 Câu gián tiếp (Reported Speech): động từ tường thuật <b>"promised"</b> (quá khứ) → mệnh đề phụ phải lùi thời. <b>will not (won't)</b> → phải đổi thành <b>would not (wouldn't)</b>. Dùng "won't" là lỗi không lùi thời trong reported speech.</p>
+<p>Công thức: will → would (trong câu gián tiếp quá khứ).</p>
+</div>
+</div>
+
+<!-- V.5 -->
+<div class="qblock" id="q-v5">
+<div class="qtext">5. <span class="errline">I <span class="eopt" id="v5a" onclick="ansV('v5','a','a',this)">disagree to<span class="elbl">A</span></span> the idea that robots <span class="eopt" id="v5b" onclick="ansV('v5','b','a',this)">will only bring<span class="elbl">B</span></span> <span class="eopt" id="v5c" onclick="ansV('v5','c','a',this)">benefits<span class="elbl">C</span></span> to people <span class="eopt" id="v5d" onclick="ansV('v5','d','a',this)">in the future<span class="elbl">D</span></span>.</span></div>
+<div class="exp" id="exp-v5">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — disagree to → <b>disagree with</b></span></p>
+<p>📝 Dịch câu: "Tôi <b>không đồng ý với</b> quan điểm rằng robot chỉ mang lại lợi ích cho con người trong tương lai."</p>
+<p>💡 <b>disagree</b> đi với giới từ <b>"with"</b> (không phải "to"). Cụm đúng: <b>disagree with + sb/sth</b> = không đồng ý với ai/điều gì. So sánh: agree with sb, disagree with sb — cả hai đều dùng "with".</p>
+<p>Lưu ý: "object to" mới dùng giới từ "to", không phải "disagree to".</p>
+</div>
+</div>
+
+<!-- V.6 -->
+<div class="qblock" id="q-v6">
+<div class="qtext">6. <span class="errline">Mandy <span class="eopt" id="v6a" onclick="ansV('v6','a','b',this)">said<span class="elbl">A</span></span>, 'Don't come round <span class="eopt" id="v6b" onclick="ansV('v6','b','b',this)">that day<span class="elbl">B</span></span> because <span class="eopt" id="v6c" onclick="ansV('v6','c','b',this)">I'm seeing<span class="elbl">C</span></span> my dentist <span class="eopt" id="v6d" onclick="ansV('v6','d','b',this)">at 3 o'clock<span class="elbl">D</span></span>.'</span></div>
+<div class="exp" id="exp-v6">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: B — that day → <b>today</b></span></p>
+<p>📝 Câu này là lời nói trực tiếp (direct speech — có dấu nháy đơn '...'). Mandy đang NÓI trực tiếp, không phải tường thuật. Trong lời nói trực tiếp, người nói dùng từ chỉ thời gian theo quan điểm của mình tại thời điểm nói.</p>
+<p>💡 Khi Mandy nói câu này, cô ấy đang nói về <b>ngày hôm đó (hôm nay)</b>, vì vậy phải dùng <b>"today"</b> (hôm nay), không phải "that day" (ngày hôm đó — dùng trong lời tường thuật gián tiếp). "That day" chỉ được dùng khi CÁC NHÂN VẬT KHÁC thuật lại lời của Mandy.</p>
+</div>
+</div>
+
+<!-- V.7 -->
+<div class="qblock" id="q-v7">
+<div class="qtext">7. <span class="errline">I <span class="eopt" id="v7a" onclick="ansV('v7','a','c',this)">signed up<span class="elbl">A</span></span> for this online English class because it seemed <span class="eopt" id="v7b" onclick="ansV('v7','b','c',this)">online<span class="elbl">B</span></span> <span class="eopt" id="v7c" onclick="ansV('v7','c','c',this)">interested<span class="elbl">C</span></span> <span class="eopt" id="v7d" onclick="ansV('v7','d','c',this)">to<span class="elbl">D</span></span> me.</span></div>
+<div class="exp" id="exp-v7">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — interested → <b>interesting</b></span></p>
+<p>📝 Dịch câu: "Tôi đã đăng ký lớp học tiếng Anh trực tuyến này vì nó có vẻ <b>thú vị</b> với tôi."</p>
+<p>💡 Phân biệt hai tính từ dễ nhầm:</p>
+<p>• <b>interesting</b> (adj): thú vị, gây ra sự hứng thú (mô tả sự vật/sự việc). Ví dụ: "The book is interesting."</p>
+<p>• <b>interested</b> (adj): cảm thấy hứng thú, bị thu hút (mô tả cảm xúc của người). Ví dụ: "I'm interested in the book."</p>
+<p>Trong câu này, chủ ngữ là "it" (lớp học) → mô tả đặc tính của lớp học → dùng <b>interesting</b>. Nếu chủ ngữ là người → "I seemed interested".</p>
+</div>
+</div>
+
+<!-- V.8 -->
+<div class="qblock" id="q-v8">
+<div class="qtext">8. <span class="errline">Scientists <span class="eopt" id="v8a" onclick="ansV('v8','a','c',this)">said<span class="elbl">A</span></span> they <span class="eopt" id="v8b" onclick="ansV('v8','b','c',this)">would explore<span class="elbl">B</span></span> <span class="eopt" id="v8c" onclick="ansV('v8','c','c',this)">a<span class="elbl">C</span></span> possibility of <span class="eopt" id="v8d" onclick="ansV('v8','d','c',this)">living on<span class="elbl">D</span></span> Mars.</span></div>
+<div class="exp" id="exp-v8">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: C — a → <b>the</b></span></p>
+<p>📝 Dịch câu: "Các nhà khoa học nói rằng họ sẽ khám phá <b>khả năng</b> sống trên Sao Hỏa."</p>
+<p>💡 Dùng mạo từ <b>"the"</b> vì "the possibility of living on Mars" là <b>khả năng duy nhất, cụ thể</b> được đề cập — đã xác định trong ngữ cảnh. Khi nói về "the possibility" của một điều cụ thể đã được đề cập hoặc ai cũng biết đến, ta dùng "the". So sánh: "a possibility" = một khả năng nào đó (chưa xác định) vs "the possibility" = khả năng cụ thể đang được bàn đến.</p>
+</div>
+</div>
+
+<!-- V.9 -->
+<div class="qblock" id="q-v9">
+<div class="qtext">9. <span class="errline"><span class="eopt" id="v9a" onclick="ansV('v9','a','d',this)">Technology<span class="elbl">A</span></span> is considered as <span class="eopt" id="v9b" onclick="ansV('v9','b','d',this)">a key factor<span class="elbl">B</span></span> <span class="eopt" id="v9c" onclick="ansV('v9','c','d',this)">for<span class="elbl">C</span></span> <span class="eopt" id="v9d" onclick="ansV('v9','d','d',this)">development economic<span class="elbl">D</span></span>.</span></div>
+<div class="exp" id="exp-v9">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: D — development economic → <b>economic development</b></span></p>
+<p>📝 Dịch câu: "Công nghệ được xem là yếu tố chính cho <b>sự phát triển kinh tế</b>."</p>
+<p>💡 Trong tiếng Anh, <b>tính từ đứng TRƯỚC danh từ</b> (không đứng sau như trong tiếng Việt). <b>economic</b> là tính từ (thuộc về kinh tế), <b>development</b> là danh từ (sự phát triển). Thứ tự đúng phải là: <b>economic development</b> (tính từ + danh từ), không phải "development economic".</p>
+<p>Ví dụ tương tự: social development, scientific development, technological development.</p>
+</div>
+</div>
+
+<!-- V.10 -->
+<div class="qblock" id="q-v10">
+<div class="qtext">10. <span class="errline">She <span class="eopt" id="v10a" onclick="ansV('v10','a','a',this)">told to<span class="elbl">A</span></span> me <span class="eopt" id="v10b" onclick="ansV('v10','b','a',this)">that<span class="elbl">B</span></span> her parents <span class="eopt" id="v10c" onclick="ansV('v10','c','a',this)">were arriving<span class="elbl">C</span></span> <span class="eopt" id="v10d" onclick="ansV('v10','d','a',this)">the following day<span class="elbl">D</span></span>.</span></div>
+<div class="exp" id="exp-v10">
+<div class="exp-ttl">📖 Giải thích chi tiết:</div>
+<p><span class="ca">✅ Đáp án đúng: A — told to → <b>told</b></span></p>
+<p>📝 Dịch câu: "Cô ấy <b>nói</b> với tôi rằng bố mẹ cô ấy sẽ đến vào ngày hôm sau."</p>
+<p>💡 Phân biệt <b>tell</b> và <b>say</b> trong reported speech:</p>
+<p>• <b>tell</b>: <u>luôn cần tân ngữ người ngay sau động từ</u>, KHÔNG dùng "to" trước tân ngữ. Đúng: "told me", "told him" — SAI: "told to me".</p>
+<p>• <b>say</b>: không cần tân ngữ người (hoặc dùng "to" trước tân ngữ). Đúng: "said" hoặc "said to me".</p>
+<p>Công thức: <b>tell + sb (không có "to")</b> vs <b>say (to sb)</b>.</p>
+</div>
+</div>
+
+</div><!-- end sec V -->
+
+<!-- SUBMIT -->
+<div class="sub-wrap">
+  <button class="sub-btn" onclick="submitTest()">🎯 Nộp Bài &amp; Xem Điểm</button>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// ============ STATE ============
+const state = {};
+const totalQ = 40;
+let answered = 0;
+let correct = 0;
+
+// word bank tracking
+const wordAnswers = {
+  iii1:'would', iii2:'inventor', iii3:'to', iii4:'scanners',
+  iii5:'Breakout', iii6:'recognition', iii7:'teachers',
+  iii8:'technology', iii9:'tracking', iii10:'screen'
+};
+const wordUsed = {};
+let currentBlank = null;
+let currentCorrectWord = null;
+
+// ============ AUDIO ============
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getCtx() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  return audioCtx;
+}
+
+function playCorrect() {
+  try {
+    const ctx = getCtx();
+    const notes = [523.25, 659.25, 783.99]; // C5 E5 G5
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      const t = ctx.currentTime + i * 0.12;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.start(t); osc.stop(t + 0.35);
+    });
+  } catch(e) {}
+}
+
+function playWrong() {
+  try {
+    const ctx = getCtx();
+    [220, 180].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sawtooth';
+      const t = ctx.currentTime + i * 0.18;
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+      osc.start(t); osc.stop(t + 0.25);
+    });
+  } catch(e) {}
+}
+
+// ============ CONFETTI ============
+const canvas = document.getElementById('ccanvas');
+const ctx2 = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+let confettiParticles = [];
+function launchConfetti() {
+  const colors = ['#8854C0','#FDCB6E','#00C9A7','#FF6B9D','#3498DB','#FF4757','#00D26A'];
+  for (let i = 0; i < 80; i++) {
+    confettiParticles.push({
+      x: Math.random() * canvas.width,
+      y: -10,
+      vx: (Math.random() - 0.5) * 5,
+      vy: Math.random() * 3 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: Math.random() * 8 + 4,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 8,
+      opacity: 1
+    });
+  }
+  animateConfetti();
+}
+
+let animating = false;
+function animateConfetti() {
+  if (animating) return;
+  animating = true;
+  function frame() {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    confettiParticles = confettiParticles.filter(p => p.opacity > 0.01);
+    confettiParticles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      p.rotation += p.rotationSpeed;
+      if (p.y > canvas.height * 0.7) p.opacity -= 0.025;
+      ctx2.save();
+      ctx2.globalAlpha = p.opacity;
+      ctx2.translate(p.x, p.y);
+      ctx2.rotate(p.rotation * Math.PI / 180);
+      ctx2.fillStyle = p.color;
+      ctx2.fillRect(-p.size/2, -p.size/2, p.size, p.size/2);
+      ctx2.restore();
+    });
+    if (confettiParticles.length > 0) requestAnimationFrame(frame);
+    else { ctx2.clearRect(0, 0, canvas.width, canvas.height); animating = false; }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ============ PROGRESS ============
+function updateProgress() {
+  const pct = Math.round((answered / totalQ) * 100);
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('psc').textContent = answered + ' / ' + totalQ;
+}
+
+// ============ ANSWER HANDLER (Sections I, II, IV) ============
+function ans(qid, choice, correct_ans, btn) {
+  if (state[qid]) return; // already answered
+  state[qid] = { answered: true, correct: choice === correct_ans };
+  
+  const block = document.getElementById('q-' + qid);
+  const btns = block.querySelectorAll('.obtn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const bChoice = b.getAttribute('onclick').match(/'([a-d])'/)?.[1];
+    if (bChoice === correct_ans && choice !== correct_ans) {
+      b.classList.add('rev');
+    }
+  });
+  
+  if (choice === correct_ans) {
+    btn.classList.add('correct');
+    playCorrect();
+    launchConfetti();
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    btn.classList.add('shake');
+    playWrong();
+    setTimeout(() => btn.classList.remove('shake'), 500);
+  }
+  
+  document.getElementById('exp-' + qid).classList.add('show');
+  answered++;
+  updateProgress();
+}
+
+// ============ ANSWER HANDLER (Section V — Error Correction) ============
+function ansV(qid, choice, correct_ans, el) {
+  if (state[qid]) return;
+  state[qid] = { answered: true, correct: choice === correct_ans };
+  
+  const block = document.getElementById('q-' + qid);
+  const opts = block.querySelectorAll('.eopt');
+  opts.forEach(o => {
+    o.style.pointerEvents = 'none';
+    const oc = o.getAttribute('onclick');
+    const m = oc.match(/'([a-d])'/);
+    if (m && m[1] === correct_ans && choice !== correct_ans) {
+      o.classList.add('rev');
+    }
+  });
+  
+  if (choice === correct_ans) {
+    el.classList.add('correct');
+    playCorrect();
+    launchConfetti();
+    correct++;
+  } else {
+    el.classList.add('wrong');
+    el.classList.add('shake');
+    playWrong();
+    setTimeout(() => el.classList.remove('shake'), 500);
+  }
+  
+  document.getElementById('exp-' + qid).classList.add('show');
+  answered++;
+  updateProgress();
+}
+
+// ============ WORD BANK / FILL BLANK (Section III) ============
+function openPopup(blankId, correctWord) {
+  // If already correctly answered, do nothing
+  if (state[blankId] && state[blankId].correct) return;
+
+  currentBlank = blankId;
+  currentCorrectWord = correctWord;
+
+  const list = document.getElementById('wpop-list');
+  list.innerHTML = '';
+
+  const currentVal = document.getElementById('b-' + blankId).getAttribute('data-val');
+  const allWords = ['would','inventor','to','scanners','Breakout','recognition','teachers','technology','tracking','screen'];
+  // Show words that are unused, OR the currently placed word in this blank (so user can re-select same word)
+  const available = allWords.filter(w => !wordUsed[w] || w === currentVal);
+
+  if (available.length === 0) {
+    list.innerHTML = '<p style="color:#999;font-size:.9rem;text-align:center;padding:8px;">Không còn từ nào trong ngân hàng!</p>';
+  } else {
+    available.forEach(w => {
+      const btn = document.createElement('button');
+      btn.className = 'pw';
+      btn.textContent = w;
+      btn.onclick = () => selectWord(blankId, w, correctWord);
+      list.appendChild(btn);
+    });
+  }
+
+  document.getElementById('wpop-overlay').classList.add('show');
+}
+
+function closePopup() {
+  document.getElementById('wpop-overlay').classList.remove('show');
+  currentBlank = null;
+  currentCorrectWord = null;
+}
+
+function selectWord(blankId, word, correctWord) {
+  const blank = document.getElementById('b-' + blankId);
+  const oldVal = blank.getAttribute('data-val');
+
+  // Free the previously placed word from this blank
+  if (oldVal && oldVal !== word) {
+    wordUsed[oldVal] = false;
+    const oldChip = document.getElementById('wc-' + oldVal);
+    if (oldChip) oldChip.classList.remove('used');
+  }
+
+  // Mark new word as used
+  blank.textContent = word;
+  blank.setAttribute('data-val', word);
+  wordUsed[word] = true;
+  const chip = document.getElementById('wc-' + word);
+  if (chip) chip.classList.add('used');
+
+  closePopup();
+
+  const isCorrect = (word === correctWord);
+
+  // Score tracking
+  if (!state[blankId]) {
+    // First answer for this blank
+    state[blankId] = { answered: true, correct: isCorrect };
+    answered++;
+    if (isCorrect) correct++;
+    updateProgress();
+  } else if (isCorrect && !state[blankId].correct) {
+    // Was wrong before, now correct
+    state[blankId].correct = true;
+    correct++;
+    updateProgress();
+  }
+
+  if (isCorrect) {
+    blank.classList.remove('fw');
+    blank.classList.add('fc');
+    blank.style.pointerEvents = 'none';
+    blank.onclick = null;
+    playCorrect();
+    launchConfetti();
+  } else {
+    blank.classList.remove('fc');
+    blank.classList.add('fw');
+    blank.classList.add('shake');
+    playWrong();
+    setTimeout(() => blank.classList.remove('shake'), 500);
+  }
+
+  document.getElementById('exp-' + blankId).classList.add('show');
+}
+
+// Close overlay when clicking on the dark background (not the card)
+document.getElementById('wpop-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+// ============ SUBMIT ============
+function submitTest() {
+  const comments = [
+    { min: 90, emoji: '🏆', msg: 'Xuất sắc! Bạn là ngôi sao của lớp! Tiếp tục phát huy nhé! ⭐' },
+    { min: 75, emoji: '🎉', msg: 'Rất giỏi! Bạn đã nắm vững kiến thức Unit 11! 💪' },
+    { min: 60, emoji: '😊', msg: 'Tốt lắm! Ôn lại một chút nữa là hoàn hảo rồi! 📚' },
+    { min: 40, emoji: '🌱', msg: 'Cố gắng thêm nhé! Đọc lại phần giải thích để tiến bộ hơn! 🌟' },
+    { min: 0,  emoji: '💙', msg: 'Không sao cả! Mỗi ngày một tiến bộ, bạn nhất định làm được! 🚀' }
+  ];
+  
+  const pct = Math.round((correct / totalQ) * 100);
+  const com = comments.find(c => pct >= c.min);
+  
+  document.getElementById('s-emoji').textContent = com.emoji;
+  document.getElementById('s-num').textContent = correct + ' / ' + totalQ + ' câu đúng (' + pct + '%)';
+  document.getElementById('s-cmt').textContent = com.msg;
+  document.getElementById('smod').classList.add('show');
+  
+  if (pct >= 60) launchConfetti();
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>

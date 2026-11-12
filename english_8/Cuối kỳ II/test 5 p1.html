@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề 05 – ĐỀ THI CUỐI KỲ HK2 – GLOBAL SUCCESS 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #e879f9;
+  --purple: #8854C0;
+  --yellow: #FDCB6E;
+  --teal: #00C9A7;
+  --green: #00D26A;
+  --red: #FF4757;
+  --orange: #FF6B35;
+  --blue: #4ECDC4;
+  --card-bg: rgba(255,255,255,0.92);
+  --shadow: 0 8px 32px rgba(136,84,192,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  background:#0f0c29;
+  position:relative;
+}
+
+/* ===== ANIMATED GRADIENT BG ===== */
+.bg-gradient{
+  position:fixed;inset:0;z-index:0;
+  background: linear-gradient(270deg, #8854C0, #e879f9, #FDCB6E, #00C9A7, #4ECDC4, #8854C0);
+  background-size: 600% 600%;
+  animation: gradientShift 12s ease infinite;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+/* ===== FLOATING SVG PATTERN ===== */
+.bg-pattern{
+  position:fixed;inset:0;z-index:1;
+  overflow:hidden;pointer-events:none;
+}
+.bg-pattern svg{
+  position:absolute;
+  animation: floatUp linear infinite;
+  opacity:0.55;
+}
+@keyframes floatUp{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0;}
+  10%{opacity:0.55;}
+  90%{opacity:0.55;}
+  100%{transform:translateY(-20vh) rotate(360deg);opacity:0;}
+}
+
+/* ===== PASSWORD MODAL ===== */
+#pw-overlay{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background: rgba(15,12,41,0.82);
+  backdrop-filter:blur(8px);
+}
+.pw-box{
+  background:white;border-radius:28px;
+  padding:40px 36px;max-width:420px;width:93%;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(136,84,192,0.4);
+  animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0.6);opacity:0;}to{transform:scale(1);opacity:1;}}
+.pw-box .lock-icon{font-size:3.2rem;margin-bottom:10px;}
+.pw-box h2{color:#8854C0;font-size:1.4rem;font-weight:900;margin-bottom:6px;}
+.pw-box p{color:#666;font-size:0.95rem;margin-bottom:18px;}
+.pw-box input{
+  width:100%;padding:13px 18px;border-radius:14px;
+  border:2.5px solid #ddd;font-family:'Nunito',sans-serif;
+  font-size:1.1rem;outline:none;transition:border 0.2s;
+  text-align:center;letter-spacing:2px;
+}
+.pw-box input:focus{border-color:#8854C0;}
+.pw-box input.error-border{border-color:#FF4757;}
+.pw-box .pw-btn{
+  margin-top:14px;width:100%;padding:13px;border:none;
+  border-radius:14px;background:linear-gradient(135deg,#8854C0,#e879f9);
+  color:white;font-family:'Nunito',sans-serif;font-size:1.1rem;
+  font-weight:800;cursor:pointer;
+  box-shadow:0 4px 15px rgba(136,84,192,0.4);
+  transition:transform 0.15s;
+}
+.pw-box .pw-btn:hover{transform:translateY(-2px);}
+.pw-error{color:#FF4757;font-size:0.9rem;font-weight:700;margin-top:8px;min-height:20px;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-10px);}40%{transform:translateX(10px);}60%{transform:translateX(-8px);}80%{transform:translateX(8px);}}
+.shake{animation:shake 0.5s ease;}
+
+/* ===== MAIN QUIZ WRAPPER ===== */
+#quiz-wrapper{display:none;position:relative;z-index:2;padding:10px 12px 60px;}
+
+/* ===== HEADER ===== */
+.quiz-header{
+  text-align:center;padding:14px 16px 10px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(10px);
+  border-radius:20px;
+  border:1.5px solid rgba(255,255,255,0.35);
+  margin-bottom:16px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+.quiz-header .test-name{
+  font-size:0.82rem;font-weight:700;
+  color:rgba(255,255,255,0.85);letter-spacing:1px;text-transform:uppercase;
+}
+.quiz-header h1{
+  font-size:1.1rem;font-weight:900;color:white;
+  text-shadow:0 2px 8px rgba(0,0,0,0.25);line-height:1.35;
+}
+.quiz-header .teacher{font-size:0.8rem;color:rgba(255,255,255,0.75);font-style:italic;margin-top:2px;}
+
+/* ===== SCORE BAR ===== */
+.score-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);
+  border-radius:16px;padding:10px 20px;margin-bottom:16px;
+  border:1.5px solid rgba(255,255,255,0.3);
+  color:white;font-weight:800;font-size:1.05rem;
+}
+.score-bar .score-num{
+  background:rgba(255,255,255,0.22);border-radius:10px;
+  padding:4px 14px;font-size:1.1rem;
+}
+.progress-wrap{flex:1;margin:0 14px;background:rgba(255,255,255,0.2);border-radius:10px;height:12px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00D26A,#FDCB6E);border-radius:10px;transition:width 0.5s ease;}
+
+/* ===== SECTION TITLE ===== */
+.section-title{
+  background:linear-gradient(135deg,#FDCB6E,#FF6B35);
+  border-radius:14px;padding:10px 18px;margin-bottom:12px;
+  font-size:0.88rem;font-weight:800;color:white;
+  box-shadow:0 4px 12px rgba(253,203,110,0.35);
+  letter-spacing:0.3px;
+}
+
+/* ===== QUESTION CARD ===== */
+.q-card{
+  background:var(--card-bg);border-radius:22px;
+  padding:20px 20px 16px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+  border:2px solid rgba(136,84,192,0.12);
+  transition:box-shadow 0.3s;
+}
+.q-card:hover{box-shadow:0 12px 40px rgba(136,84,192,0.22);}
+.q-num{
+  display:inline-block;background:linear-gradient(135deg,#8854C0,#e879f9);
+  color:white;border-radius:10px;padding:3px 12px;
+  font-size:0.82rem;font-weight:800;margin-bottom:8px;
+  letter-spacing:0.5px;
+}
+.q-text{
+  font-size:1.08rem;font-weight:700;color:#2d2d2d;
+  line-height:1.55;margin-bottom:14px;
+}
+.q-text u{text-decoration-color:#FF4757;text-decoration-thickness:2px;}
+
+/* ===== VISUAL BLOCKS (Q29, Q30) ===== */
+.sign-box{
+  border:3px solid #333;border-radius:12px;padding:18px;
+  background:#fff;display:flex;align-items:center;gap:16px;
+  margin-bottom:14px;
+}
+.no-selfie-circle{
+  width:90px;height:90px;border-radius:50%;
+  border:6px solid #e00;position:relative;flex-shrink:0;
+  background:#fff;overflow:hidden;
+}
+.no-selfie-circle::after{
+  content:'';position:absolute;
+  top:50%;left:-6px;right:-6px;height:6px;background:#e00;
+  transform:rotate(-45deg);transform-origin:center;
+}
+.selfie-figure{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.kayak-notice{
+  border:3px solid #e00;border-radius:10px;padding:14px 16px;
+  background:#fff5f5;text-align:center;margin-bottom:14px;
+  font-weight:800;color:#e00;font-size:0.95rem;line-height:1.6;
+}
+
+/* ===== ANSWER BUTTONS ===== */
+.options-grid{display:grid;gap:10px;}
+.opt-btn{
+  width:100%;padding:12px 16px;border:2.5px solid #e0d5f5;
+  border-radius:16px;background:white;font-family:'Nunito',sans-serif;
+  font-size:1.0rem;font-weight:700;color:#333;cursor:pointer;text-align:left;
+  transition:transform 0.15s,box-shadow 0.15s,background 0.2s,border-color 0.2s;
+  box-shadow:0 4px 10px rgba(136,84,192,0.1);line-height:1.45;
+}
+.opt-btn:hover:not(:disabled){
+  transform:scale(1.025) translateY(-2px);
+  box-shadow:0 8px 20px rgba(136,84,192,0.2);
+  border-color:#8854C0;background:#f9f4ff;
+}
+.opt-btn.correct{
+  background:linear-gradient(135deg,#00D26A22,#00D26A11);
+  border-color:#00D26A;color:#006633;
+}
+.opt-btn.wrong{
+  background:linear-gradient(135deg,#FF475722,#FF475711);
+  border-color:#FF4757;color:#cc0000;
+}
+.opt-btn:disabled{cursor:default;}
+@keyframes btnShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-6px);}80%{transform:translateX(6px);}}
+.btn-shake{animation:btnShake 0.45s ease;}
+
+/* ===== EXPLANATION BOX ===== */
+.explanation{
+  display:none;margin-top:14px;padding:14px 16px;
+  background:linear-gradient(135deg,#f0e8ff,#e8f8ff);
+  border-radius:16px;border-left:5px solid #8854C0;
+  font-size:0.97rem;line-height:1.7;color:#333;
+  animation:slideDown 0.35s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.explanation.show{display:block;}
+.exp-title{font-weight:900;color:#8854C0;font-size:1rem;margin-bottom:8px;}
+.p-word{color:#2563eb;font-weight:700;}
+.p-phonetic{background:#e9d5ff;color:#6d28d9;border-radius:6px;padding:1px 6px;font-weight:700;}
+.p-mean{color:#b45309;font-weight:700;}
+.p-grammar{color:#dc2626;font-weight:700;text-decoration:underline;text-decoration-style:wavy;}
+.hl-green{color:#059669;font-weight:800;}
+.hl-red{color:#dc2626;font-weight:700;}
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-wrap{text-align:center;margin:28px 0 16px;}
+.submit-btn{
+  padding:16px 48px;border:none;border-radius:20px;
+  background:linear-gradient(135deg,#8854C0,#e879f9,#FDCB6E);
+  color:white;font-family:'Nunito',sans-serif;
+  font-size:1.25rem;font-weight:900;cursor:pointer;
+  box-shadow:0 6px 25px rgba(136,84,192,0.45);
+  transition:transform 0.2s,box-shadow 0.2s;letter-spacing:0.5px;
+}
+.submit-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 35px rgba(136,84,192,0.5);}
+
+/* ===== NAME MODAL ===== */
+#name-modal{
+  position:fixed;inset:0;z-index:9000;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(15,12,41,0.8);backdrop-filter:blur(6px);
+}
+#name-modal.show{display:flex;}
+.name-box{
+  background:white;border-radius:24px;padding:36px;
+  max-width:420px;width:92%;text-align:center;
+  box-shadow:0 20px 60px rgba(136,84,192,0.4);
+  animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+.name-box h2{color:#8854C0;font-size:1.35rem;font-weight:900;margin-bottom:6px;}
+.name-box p{color:#666;font-size:0.95rem;margin-bottom:18px;}
+.name-box input{
+  width:100%;padding:12px 16px;border-radius:14px;
+  border:2.5px solid #ddd;font-family:'Nunito',sans-serif;
+  font-size:1rem;outline:none;transition:border 0.2s;
+}
+.name-box input:focus{border-color:#8854C0;}
+.name-box input.error-border{border-color:#FF4757;}
+.name-box .name-btn{
+  margin-top:12px;width:100%;padding:13px;border:none;
+  border-radius:14px;background:linear-gradient(135deg,#8854C0,#e879f9);
+  color:white;font-family:'Nunito',sans-serif;font-size:1.1rem;
+  font-weight:800;cursor:pointer;
+  box-shadow:0 4px 15px rgba(136,84,192,0.4);transition:transform 0.15s;
+}
+.name-box .name-btn:hover{transform:translateY(-2px);}
+.name-error{color:#FF4757;font-size:0.88rem;font-weight:700;margin-top:7px;min-height:20px;}
+
+/* ===== RESULT MODAL ===== */
+#result-modal{
+  position:fixed;inset:0;z-index:9000;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(15,12,41,0.85);backdrop-filter:blur(8px);
+  overflow-y:auto;
+}
+#result-modal.show{display:flex;}
+.result-box{
+  background:white;border-radius:28px;padding:36px 28px;
+  max-width:500px;width:93%;text-align:center;
+  box-shadow:0 20px 60px rgba(136,84,192,0.5);
+  animation:popIn 0.5s cubic-bezier(.34,1.56,.64,1);
+  margin:20px auto;
+}
+.result-box .result-title{
+  font-size:1.5rem;font-weight:900;margin-bottom:6px;
+  background:linear-gradient(135deg,#8854C0,#e879f9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.result-box .score-display{
+  font-size:3rem;font-weight:900;
+  background:linear-gradient(135deg,#FDCB6E,#FF6B35);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin:8px 0;
+}
+.result-box .comment{color:#555;font-size:1rem;font-weight:700;margin-bottom:14px;}
+.result-box img.meme{
+  width:100%;max-width:300px;border-radius:16px;
+  margin:10px auto 16px;display:block;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+.result-box .close-btn{
+  padding:12px 36px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,#8854C0,#e879f9);
+  color:white;font-family:'Nunito',sans-serif;font-size:1rem;
+  font-weight:800;cursor:pointer;margin-top:8px;
+  box-shadow:0 4px 15px rgba(136,84,192,0.35);
+  transition:transform 0.15s;
+}
+.result-box .close-btn:hover{transform:translateY(-2px);}
+
+/* ===== CONFETTI CANVAS ===== */
+#confetti-canvas{
+  position:fixed;inset:0;z-index:8000;
+  pointer-events:none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:520px){
+  .q-text{font-size:1.0rem;}
+  .opt-btn{font-size:0.95rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- BG Layers -->
+<div class="bg-gradient"></div>
+<div class="bg-pattern" id="bgPattern"></div>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ===== PASSWORD MODAL ===== -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="lock-icon">🔒</div>
+    <h2>Nhập mật khẩu để vào bài thi</h2>
+    <p>Vui lòng nhập mật khẩu do giáo viên cung cấp</p>
+    <input type="password" id="pw-input" placeholder="••••••••••••" autocomplete="off">
+    <div class="pw-error" id="pw-error"></div>
+    <button class="pw-btn" onclick="checkPw()">🚀 Vào bài thi!</button>
+  </div>
+</div>
+
+<!-- ===== NAME MODAL ===== -->
+<div id="name-modal">
+  <div class="name-box">
+    <div style="font-size:2.2rem;margin-bottom:8px;">📝</div>
+    <h2>Nhập tên của bạn</h2>
+    <p>Để cá nhân hóa kết quả bài thi nhé!</p>
+    <input type="text" id="name-input" placeholder="Ví dụ: Nguyễn Văn A..." maxlength="60">
+    <div class="name-error" id="name-error"></div>
+    <button class="name-btn" onclick="confirmName()">✅ Xem kết quả!</button>
+  </div>
+</div>
+
+<!-- ===== RESULT MODAL ===== -->
+<div id="result-modal">
+  <div class="result-box">
+    <div class="result-title" id="result-title">🌟 KẾT QUẢ BÀI THI</div>
+    <div class="score-display" id="score-display">0/16</div>
+    <div class="comment" id="result-comment"></div>
+    <img class="meme" id="result-meme" src="" alt="meme" onerror="this.style.display='none'">
+    <button class="close-btn" onclick="closeResult()">🔄 Làm lại</button>
+  </div>
+</div>
+
+<!-- ===== QUIZ WRAPPER ===== -->
+<div id="quiz-wrapper">
+  <div class="quiz-header">
+    <div class="test-name">📚 Đề 05 &nbsp;|&nbsp; Tiếng Anh lớp 8</div>
+    <h1>ĐỀ THI CUỐI KỲ HỌC KỲ 2 – GLOBAL SUCCESS 8</h1>
+    <div class="teacher">✏️ Giáo viên tạo: <strong>MS Chí Nên ULIS</strong></div>
+  </div>
+
+  <div class="score-bar">
+    <span>⭐ Điểm:</span>
+    <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="score-num"><span id="live-score">0</span>/<span id="total-q">16</span></span>
+  </div>
+
+  <div id="quiz-body"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="openNameModal()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+/* =========================================
+   PASSWORD CHECK  (comaianulis = ASCII)
+========================================= */
+const PW_CODES = [99,111,109,97,105,97,110,117,108,105,115];
+function checkPw(){
+  const v = document.getElementById('pw-input').value;
+  const correct = PW_CODES.map(c=>String.fromCharCode(c)).join('');
+  const inp = document.getElementById('pw-input');
+  const err = document.getElementById('pw-error');
+  if(v === correct){
+    document.getElementById('pw-overlay').style.display='none';
+    document.getElementById('quiz-wrapper').style.display='block';
+    buildQuiz();
+    spawnFloaters();
+  } else {
+    err.textContent = '❌ Mật khẩu sai! Vui lòng thử lại.';
+    inp.classList.add('error-border','shake');
+    setTimeout(()=>{inp.classList.remove('shake');},600);
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+
+/* =========================================
+   FLOATING SVG EMOJIS
+========================================= */
+function spawnFloaters(){
+  const emojis=['🌟','🚀','🪐','⭐','🌙','🌈','🎉','✨','🌺','🦋','🐬','🎵','💫','🔭','🌊'];
+  const p = document.getElementById('bgPattern');
+  for(let i=0;i<20;i++){
+    const el=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    el.setAttribute('width','32');el.setAttribute('height','32');
+    el.setAttribute('viewBox','0 0 32 32');
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('y','26');t.setAttribute('font-size','26');
+    t.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    el.appendChild(t);
+    const dur=7+Math.random()*12;
+    const delay=Math.random()*15;
+    el.style.cssText=`left:${Math.random()*95}%;bottom:-60px;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    p.appendChild(el);
+  }
+}
+
+/* =========================================
+   WEB AUDIO
+========================================= */
+const actx = new(window.AudioContext||window.webkitAudioContext)();
+function playDing(){
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.connect(g);g.connect(actx.destination);
+  o.type='sine';o.frequency.setValueAtTime(880,actx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1320,actx.currentTime+0.1);
+  g.gain.setValueAtTime(0.4,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.6);
+  o.start();o.stop(actx.currentTime+0.6);
+}
+function playWrong(){
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.connect(g);g.connect(actx.destination);
+  o.type='sawtooth';
+  o.frequency.setValueAtTime(250,actx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(90,actx.currentTime+0.3);
+  g.gain.setValueAtTime(0.3,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.4);
+  o.start();o.stop(actx.currentTime+0.4);
+}
+
+/* =========================================
+   CONFETTI
+========================================= */
+const canvas=document.getElementById('confetti-canvas');
+const ctx2=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+let confettiPieces=[];
+function launchConfetti(){
+  for(let i=0;i<80;i++){
+    confettiPieces.push({
+      x:Math.random()*canvas.width,y:-10,
+      w:8+Math.random()*8,h:4+Math.random()*4,
+      color:`hsl(${Math.random()*360},90%,60%)`,
+      vx:(Math.random()-0.5)*5,vy:2+Math.random()*4,
+      rot:Math.random()*360,vr:(Math.random()-0.5)*8,
+      life:1
+    });
+  }
+  animateConfetti();
+}
+function animateConfetti(){
+  ctx2.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces=confettiPieces.filter(p=>p.life>0);
+  confettiPieces.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=0.012;
+    ctx2.save();ctx2.translate(p.x,p.y);ctx2.rotate(p.rot*Math.PI/180);
+    ctx2.globalAlpha=p.life;ctx2.fillStyle=p.color;
+    ctx2.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx2.restore();
+  });
+  if(confettiPieces.length>0)requestAnimationFrame(animateConfetti);
+  else ctx2.clearRect(0,0,canvas.width,canvas.height);
+}
+
+/* =========================================
+   SHUFFLE
+========================================= */
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+/* =========================================
+   QUIZ DATA
+========================================= */
+const QUESTIONS = [
+  // ---- Q1 PRONUNCIATION ----
+  {
+    id:1,
+    section:"🔊 PHÁT ÂM: Chọn từ có phần gạch chân phát âm KHÁC với các từ còn lại.",
+    text:`<b>Question 1.</b> Chọn từ có phần gạch chân phát âm KHÁC với 3 từ còn lại:`,
+    options:[
+      {text:`tele<u>s</u>cope`,correct:false},
+      {text:`atmo<u>s</u>phere`,correct:false},
+      {text:`promi<u>s</u>ing`,correct:false},
+      {text:`oppo<u>s</u>e`,correct:true}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 1</div>
+<b>Phân tích cách đọc chữ "s" trong từng đáp án:</b><br><br>
+▪ <span class='p-word'>telescope</span> <span class='p-phonetic'>/ˈtelɪskəʊp/</span>: chữ "s" đọc là <span class='hl-green'>/s/</span><br>
+▪ <span class='p-word'>atmosphere</span> <span class='p-phonetic'>/ˈætməsfɪər/</span>: chữ "s" đọc là <span class='hl-green'>/s/</span><br>
+▪ <span class='p-word'>promising</span> <span class='p-phonetic'>/ˈprɒmɪsɪŋ/</span>: chữ "s" đọc là <span class='hl-green'>/s/</span><br>
+▪ <span class='p-word'>oppose</span> <span class='p-phonetic'>/əˈpəʊz/</span>: chữ "s" đọc là <span class='hl-red'>/z/</span> ← KHÁC BIỆT!<br><br>
+<b>→ Đáp án đúng:</b> <span class='hl-green'>oppose</span>. Khi "s" đứng ở cuối từ giữa hai nguyên âm hoặc theo quy tắc voiced, nó thường đọc là <span class='p-grammar'>/z/</span> thay vì <span class='p-grammar'>/s/</span>. Ba từ còn lại đều đọc "s" là <span class='hl-green'>/s/</span>.`
+  },
+  // ---- Q2 PRONUNCIATION ----
+  {
+    id:2,
+    section:null,
+    text:`<b>Question 2.</b> Chọn từ có phần gạch chân phát âm KHÁC với 3 từ còn lại:`,
+    options:[
+      {text:`mult<u>i</u>media`,correct:false},
+      {text:`landl<u>i</u>ne`,correct:true},
+      {text:`v<u>i</u>deo`,correct:false},
+      {text:`commun<u>i</u>cate`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 2</div>
+<b>Phân tích cách đọc chữ "i" trong từng đáp án:</b><br><br>
+▪ <span class='p-word'>multimedia</span> <span class='p-phonetic'>/ˌmʌltiˈmiːdiə/</span>: "i" trong "multi" đọc là <span class='hl-green'>/ɪ/</span> (âm ngắn)<br>
+▪ <span class='p-word'>landline</span> <span class='p-phonetic'>/ˈlændlaɪn/</span>: "i" đọc là <span class='hl-red'>/aɪ/</span> ← KHÁC BIỆT!<br>
+▪ <span class='p-word'>video</span> <span class='p-phonetic'>/ˈvɪdiəʊ/</span>: "i" đọc là <span class='hl-green'>/ɪ/</span> (âm ngắn)<br>
+▪ <span class='p-word'>communicate</span> <span class='p-phonetic'>/kəˈmjuːnɪkeɪt/</span>: "i" đọc là <span class='hl-green'>/ɪ/</span> (âm ngắn)<br><br>
+<b>→ Đáp án đúng:</b> <span class='hl-green'>landline</span>. Quy tắc: khi "i" theo sau là phụ âm + "e" câm (magic e rule), chữ "i" đọc thành <span class='p-grammar'>/aɪ/</span> — như <span class='p-word'>line</span> <span class='p-phonetic'>/laɪn/</span>. Ba từ còn lại đều đọc "i" là <span class='hl-green'>/ɪ/</span>.`
+  },
+  // ---- Q3 STRESS ----
+  {
+    id:3,
+    section:"🎵 TRỌNG ÂM: Chọn từ có trọng âm chính RƠI VÀO âm tiết KHÁC với 3 từ còn lại.",
+    text:`<b>Question 3.</b> Chọn từ có vị trí trọng âm KHÁC với 3 từ còn lại:`,
+    options:[
+      {text:`creature`,correct:false},
+      {text:`rocket`,correct:false},
+      {text:`spaceship`,correct:false},
+      {text:`account`,correct:true}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 3</div>
+<b>Phân tích trọng âm từng từ:</b><br><br>
+▪ <span class='p-word'>creature</span> <span class='p-phonetic'>/ˈkriːtʃər/</span>: trọng âm âm tiết <span class='hl-green'>thứ 1</span><br>
+▪ <span class='p-word'>rocket</span> <span class='p-phonetic'>/ˈrɒkɪt/</span>: trọng âm âm tiết <span class='hl-green'>thứ 1</span><br>
+▪ <span class='p-word'>spaceship</span> <span class='p-phonetic'>/ˈspeɪʃɪp/</span>: trọng âm âm tiết <span class='hl-green'>thứ 1</span><br>
+▪ <span class='p-word'>account</span> <span class='p-phonetic'>/əˈkaʊnt/</span>: trọng âm âm tiết <span class='hl-red'>thứ 2</span> ← KHÁC BIỆT!<br><br>
+<b>→ Đáp án đúng:</b> <span class='hl-green'>account</span>. Đây là <span class='p-grammar'>danh từ/động từ 2 âm tiết</span> có trọng âm rơi vào âm tiết thứ 2. Ba từ còn lại đều là danh từ ghép hoặc danh từ thông thường, trọng âm rơi vào âm tiết đầu.`
+  },
+  // ---- Q4 STRESS ----
+  {
+    id:4,
+    section:null,
+    text:`<b>Question 4.</b> Chọn từ có vị trí trọng âm KHÁC với 3 từ còn lại:`,
+    options:[
+      {text:`pollutant`,correct:false},
+      {text:`volcanic`,correct:false},
+      {text:`kangaroo`,correct:true},
+      {text:`aquatic`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 4</div>
+<b>Phân tích trọng âm từng từ:</b><br><br>
+▪ <span class='p-word'>pollutant</span> <span class='p-phonetic'>/pəˈluːtənt/</span>: trọng âm âm tiết <span class='hl-green'>thứ 2</span><br>
+▪ <span class='p-word'>volcanic</span> <span class='p-phonetic'>/vɒlˈkænɪk/</span>: trọng âm âm tiết <span class='hl-green'>thứ 2</span><br>
+▪ <span class='p-word'>kangaroo</span> <span class='p-phonetic'>/ˌkæŋɡəˈruː/</span>: trọng âm âm tiết <span class='hl-red'>thứ 3</span> ← KHÁC BIỆT!<br>
+▪ <span class='p-word'>aquatic</span> <span class='p-phonetic'>/əˈkwætɪk/</span>: trọng âm âm tiết <span class='hl-green'>thứ 2</span><br><br>
+<b>→ Đáp án đúng:</b> <span class='hl-green'>kangaroo</span>. Đây là từ 3 âm tiết với trọng âm ở âm tiết cuối — trường hợp khá đặc biệt! Ba từ còn lại đều là tính từ 3 âm tiết, trọng âm rơi vào âm tiết thứ 2.`
+  },
+  // ---- Q5 ----
+  {
+    id:5,
+    section:"📝 NGỮ PHÁP & TỪ VỰNG: Chọn đáp án đúng nhất.",
+    text:`<b>Question 5.</b> The moon has weaker ________ than the Earth, so you can jump higher on the moon than on the Earth.`,
+    options:[
+      {text:`push`,correct:false},
+      {text:`gravity`,correct:true},
+      {text:`oxygen`,correct:false},
+      {text:`atmosphere`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 5</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Mặt trăng có ________ yếu hơn Trái đất, vì vậy bạn có thể nhảy cao hơn trên mặt trăng so với trên Trái đất."</span><br><br>
+<b>Phân tích 4 đáp án:</b><br>
+▪ <span class='p-word'>push</span> <span class='p-mean'>(n/v): đẩy</span> → <span class='hl-red'>Sai</span>. "Weaker push" không có nghĩa trong ngữ cảnh giải thích lý do nhảy cao hơn.<br>
+▪ <span class='p-word'>gravity</span> <span class='p-mean'>(n): trọng lực, lực hấp dẫn</span> → <span class='hl-green'>Đúng!</span><br>
+▪ <span class='p-word'>oxygen</span> <span class='p-mean'>(n): oxy</span> → <span class='hl-red'>Sai</span>. Oxy không liên quan đến việc nhảy cao hay thấp.<br>
+▪ <span class='p-word'>atmosphere</span> <span class='p-mean'>(n): bầu khí quyển</span> → <span class='hl-red'>Sai</span>. Bầu khí quyển không giải thích được lý do nhảy cao hơn.<br><br>
+<b>→ Tại sao B đúng?</b> <span class='p-grammar'>Weaker gravity</span> = trọng lực yếu hơn → vật thể nhảy cao hơn. Đây là kiến thức khoa học cơ bản về mặt trăng! 🌙`
+  },
+  // ---- Q6 ----
+  {
+    id:6,
+    section:null,
+    text:`<b>Question 6.</b> Scientists are __________ experiments to test the effectiveness of the new medicine.`,
+    options:[
+      {text:`doing`,correct:true},
+      {text:`making`,correct:false},
+      {text:`bringing`,correct:false},
+      {text:`taking`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 6</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Các nhà khoa học đang __________ các thí nghiệm để kiểm tra hiệu quả của loại thuốc mới."</span><br><br>
+<b>Phân tích 4 đáp án:</b><br>
+▪ <span class='p-word'>do</span> <span class='p-mean'>(v): làm, thực hiện</span> → <span class='hl-green'>Đúng!</span> <span class='p-grammar'>do experiments</span> = thực hiện/tiến hành thí nghiệm ✅<br>
+▪ <span class='p-word'>make</span> <span class='p-mean'>(v): làm ra, tạo ra</span> → <span class='hl-red'>Sai</span>. Ta dùng <span class='p-grammar'>make a mistake/make a decision</span>, không dùng "make experiments".<br>
+▪ <span class='p-word'>bring</span> <span class='p-mean'>(v): mang, đem đến</span> → <span class='hl-red'>Sai</span>. Không phù hợp ngữ cảnh.<br>
+▪ <span class='p-word'>take</span> <span class='p-mean'>(v): lấy, thực hiện</span> → <span class='hl-red'>Sai</span>. Ta có "take notes/take a test", nhưng không có "take experiments".<br><br>
+<b>→ Ghi nhớ Collocation quan trọng:</b> <span class='p-grammar'>do + experiments / research / homework / exercises</span> 🔬`
+  },
+  // ---- Q7 ----
+  {
+    id:7,
+    section:null,
+    text:`<b>Question 7.</b> He asked the children why they _________ too much noise.`,
+    options:[
+      {text:`not to make`,correct:false},
+      {text:`are making`,correct:false},
+      {text:`were making`,correct:true},
+      {text:`making`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 7</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Anh ấy hỏi những đứa trẻ tại sao chúng _________ quá nhiều tiếng ồn."</span><br><br>
+<b>Cấu trúc ngữ pháp:</b> <span class='p-grammar'>Câu hỏi gián tiếp (Reported Question) với "why"</span><br>
+Khi chuyển câu hỏi sang gián tiếp trong quá khứ:<br>
+▪ Động từ tường thuật <span class='p-word'>asked</span> ở thì QUÁ KHỨ<br>
+▪ → Thì trong mệnh đề lùi về quá khứ<br>
+▪ <span class='p-grammar'>are making</span> (hiện tại tiếp diễn) → lùi thành <span class='p-grammar'>were making</span> (quá khứ tiếp diễn)<br><br>
+<b>Phân tích đáp án:</b><br>
+▪ <span class='p-word'>not to make</span> → <span class='hl-red'>Sai</span>. Đây là cấu trúc của reported command, không phải reported question.<br>
+▪ <span class='p-word'>are making</span> → <span class='hl-red'>Sai</span>. Không lùi thì sau "asked" (quá khứ).<br>
+▪ <span class='p-word'>were making</span> → <span class='hl-green'>Đúng!</span> Lùi thì đúng quy tắc.<br>
+▪ <span class='p-word'>making</span> → <span class='hl-red'>Sai</span>. Thiếu trợ động từ.`
+  },
+  // ---- Q8 ----
+  {
+    id:8,
+    section:null,
+    text:`<b>Question 8.</b> These grammar books are different. _________ has 278 pages, but _________ has only 275 pages.`,
+    options:[
+      {text:`Yours, mine`,correct:true},
+      {text:`Your, my`,correct:false},
+      {text:`Yours, my`,correct:false},
+      {text:`Your, mine`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 8</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Những cuốn sách ngữ pháp này khác nhau. _________ có 278 trang, nhưng _________ chỉ có 275 trang."</span><br><br>
+<b>Phân tích ngữ pháp:</b> Câu cần <span class='p-grammar'>Đại từ sở hữu (Possessive Pronoun)</span> — dùng THAY cho cụm danh từ, đứng một mình.<br><br>
+▪ <span class='p-word'>Yours</span> = <span class='p-mean'>cuốn sách của bạn</span> (possessive pronoun) → <span class='hl-green'>Đúng!</span><br>
+▪ <span class='p-word'>Your</span> = <span class='p-mean'>của bạn</span> (tính từ sở hữu) → phải đi kèm danh từ, ví dụ: <span class='p-grammar'>Your book</span> → <span class='hl-red'>Sai khi đứng một mình</span><br>
+▪ <span class='p-word'>mine</span> = <span class='p-mean'>cuốn sách của tôi</span> (possessive pronoun) → <span class='hl-green'>Đúng!</span><br>
+▪ <span class='p-word'>my</span> = <span class='p-mean'>của tôi</span> (tính từ sở hữu) → phải đi kèm danh từ → <span class='hl-red'>Sai khi đứng một mình</span><br><br>
+<b>→ Bảng nhớ nhanh:</b> <span class='p-grammar'>your → yours | my → mine | his → his | her → hers | our → ours | their → theirs</span>`
+  },
+  // ---- Q9 ----
+  {
+    id:9,
+    section:null,
+    text:`<b>Question 9.</b> The teacher ________ me that I had better devote more time to doing scientific research.`,
+    options:[
+      {text:`said`,correct:false},
+      {text:`told`,correct:true},
+      {text:`talked`,correct:false},
+      {text:`spoke`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 9</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Giáo viên ________ tôi rằng tôi nên dành nhiều thời gian hơn cho việc nghiên cứu khoa học."</span><br><br>
+<b>Phân tích ngữ pháp – Câu tường thuật (Reported Speech):</b><br>
+▪ <span class='p-word'>told</span> <span class='p-grammar'>+ O (tân ngữ) + that...</span> → <span class='hl-green'>Đúng!</span> "told <b>me</b> that..." ✅<br>
+▪ <span class='p-word'>said</span> <span class='p-grammar'>+ (to O) + that...</span> → Nếu dùng "said", KHÔNG đặt tân ngữ trực tiếp sau. Phải viết: <span class='hl-red'>"said to me that..."</span>. Không viết "said me that".<br>
+▪ <span class='p-word'>talked</span> → <span class='hl-red'>Sai</span>. Không dùng cấu trúc "talked me that".<br>
+▪ <span class='p-word'>spoke</span> → <span class='hl-red'>Sai</span>. Không dùng "spoke me that".<br><br>
+<b>→ Quy tắc vàng:</b> <span class='p-grammar'>tell + sb + (that)...</span> vs <span class='p-grammar'>say + (to sb) + (that)...</span>`
+  },
+  // ---- Q10 ----
+  {
+    id:10,
+    section:null,
+    text:`<b>Question 10.</b> The pilot suddenly saw a volcanic eruption while he ___________ across Stromboli, Italy.`,
+    options:[
+      {text:`was flying`,correct:true},
+      {text:`is flying`,correct:false},
+      {text:`flew`,correct:false},
+      {text:`flies`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 10</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Phi công bỗng nhiên nhìn thấy một vụ phun trào núi lửa trong khi anh ấy ___________ qua Stromboli, Italy."</span><br><br>
+<b>Cấu trúc ngữ pháp:</b> <span class='p-grammar'>Quá khứ đơn + while + Quá khứ tiếp diễn</span><br>
+▪ <span class='p-word'>suddenly saw</span> (saw = quá khứ đơn): hành động xảy ra ĐỘT NGỘT, ngắn<br>
+▪ Mệnh đề "while he ___" diễn tả hành động đang XẢY RA trong quá khứ → cần <span class='p-grammar'>quá khứ tiếp diễn</span><br><br>
+▪ <span class='p-word'>was flying</span> → <span class='hl-green'>Đúng!</span> Quá khứ tiếp diễn, diễn tả hành động đang xảy ra ở quá khứ ✅<br>
+▪ <span class='p-word'>is flying</span> → <span class='hl-red'>Sai</span>. Hiện tại tiếp diễn, không hợp với ngữ cảnh quá khứ.<br>
+▪ <span class='p-word'>flew</span> → <span class='hl-red'>Sai</span>. Quá khứ đơn → không dùng với "while" để diễn tả hành động nền.<br>
+▪ <span class='p-word'>flies</span> → <span class='hl-red'>Sai</span>. Hiện tại đơn, không hợp ngữ cảnh.`
+  },
+  // ---- Q11 ----
+  {
+    id:11,
+    section:null,
+    text:`<b>Question 11.</b> Few ________________ have had a greater influence on mankind than the computer.`,
+    options:[
+      {text:`invent`,correct:false},
+      {text:`inventors`,correct:false},
+      {text:`inventions`,correct:true},
+      {text:`inventing`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 11</div>
+<b>Dịch câu:</b> <span class='p-mean'>"Rất ít ________________ có ảnh hưởng lớn hơn đến nhân loại so với máy tính."</span><br><br>
+<b>Phân tích:</b> Sau <span class='p-grammar'>few</span> (ít) cần một <span class='p-grammar'>danh từ đếm được số nhiều</span>.<br><br>
+▪ <span class='p-word'>invent</span> <span class='p-mean'>(v): phát minh</span> → <span class='hl-red'>Sai</span>. Là động từ, không thể đứng sau "few".<br>
+▪ <span class='p-word'>inventors</span> <span class='p-mean'>(n): những nhà phát minh</span> → <span class='hl-red'>Sai về nghĩa</span>. "Rất ít nhà phát minh có ảnh hưởng hơn máy tính" → không logic.<br>
+▪ <span class='p-word'>inventions</span> <span class='p-mean'>(n): những phát minh</span> → <span class='hl-green'>Đúng!</span> "Rất ít phát minh có ảnh hưởng đến nhân loại hơn máy tính" ✅<br>
+▪ <span class='p-word'>inventing</span> <span class='p-mean'>(v-ing): việc phát minh</span> → <span class='hl-red'>Sai</span>. V-ing không dùng với "few".<br><br>
+<b>→ Từ gia đình:</b> <span class='p-grammar'>invent (v) → invention (n) → inventor (n) → inventive (adj)</span>`
+  },
+  // ---- Q12 ----
+  {
+    id:12,
+    section:null,
+    text:`<b>Question 12.</b> Nam: <i>"I think we should take a shower instead of a bath to save energy."</i><br>Ngoc: <i>"____________"</i>`,
+    options:[
+      {text:`Yes, I'd love to.`,correct:false},
+      {text:`I'm sorry, I can't.`,correct:false},
+      {text:`Yes, thank you.`,correct:false},
+      {text:`Great! Let's do that.`,correct:true}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 12</div>
+<b>Dịch câu:</b> <span class='p-mean'>Nam: "Tôi nghĩ chúng ta nên tắm vòi sen thay vì bồn tắm để tiết kiệm năng lượng." Ngoc: "____________"</span><br><br>
+<b>Phân tích:</b> Nam đưa ra một <span class='p-grammar'>đề xuất/gợi ý</span> (suggestion) → Ngoc cần <span class='p-grammar'>đồng ý/chấp nhận</span>.<br><br>
+▪ <span class='p-word'>Yes, I'd love to.</span> → <span class='hl-red'>Sai ngữ cảnh</span>. Đây là phản hồi cho lời mời (invitation), không phải đề xuất chung.<br>
+▪ <span class='p-word'>I'm sorry, I can't.</span> → <span class='hl-red'>Sai</span>. Từ chối không hợp với thái độ tích cực cần thể hiện.<br>
+▪ <span class='p-word'>Yes, thank you.</span> → <span class='hl-red'>Sai</span>. Không phù hợp với phản hồi đề xuất; nghe như đang nhận quà.<br>
+▪ <span class='p-word'>Great! Let's do that.</span> → <span class='hl-green'>Đúng!</span> Thể hiện sự đồng tình nhiệt tình với đề xuất. <span class='p-grammar'>Let's + V</span> = cùng nhau làm điều gì đó. ✅`
+  },
+  // ---- Q17 ----
+  {
+    id:17,
+    section:"📖 ĐỌC HIỂU: Sắp xếp đoạn văn và chọn câu kết thúc phù hợp.",
+    text:`<b>Question 17.</b> Sắp xếp các câu (a-c) theo thứ tự hợp lý, rồi chọn đáp án để điền vào chỗ trống:<br><br>
+<i>Our trip to the mountains was something we planned for months. Everything went smoothly at first, but then we faced some unexpected problems. ______</i><br><br>
+<b>a.</b> After finding our way back, we returned, only to find that one of our tents collapsed.<br>
+<b>b.</b> While hiking, we accidentally took the wrong trail and ended up far from our campsite.<br>
+<b>c.</b> We fixed the tent together, laughing through it all, turning the challenges into cherished memories.`,
+    options:[
+      {text:`c → b → a`,correct:false},
+      {text:`a → b → c`,correct:false},
+      {text:`b → a → c`,correct:true},
+      {text:`a → c → b`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 17</div>
+<b>Phân tích logic đoạn văn:</b><br>
+Câu mở đầu: <span class='p-mean'>"Chuyến đi suôn sẻ lúc đầu, nhưng sau đó gặp vài vấn đề bất ngờ."</span><br><br>
+▪ <span class='p-word'>b</span>: <span class='p-mean'>"Trong khi đi bộ, chúng tôi lạc đường và đi quá xa khỏi trại."</span> → <span class='hl-green'>Vấn đề thứ NHẤT</span> (lạc đường)<br>
+▪ <span class='p-word'>a</span>: <span class='p-mean'>"Sau khi tìm được đường về, chúng tôi phát hiện một chiếc lều bị sập."</span> → <span class='hl-green'>Vấn đề thứ HAI</span> (sau khi giải quyết việc lạc đường)<br>
+▪ <span class='p-word'>c</span>: <span class='p-mean'>"Chúng tôi sửa lều cùng nhau, biến những thách thức thành kỷ niệm đẹp."</span> → <span class='hl-green'>Kết cục tích cực</span><br><br>
+<b>→ Trình tự logic: b → a → c</b> (vấn đề 1 → vấn đề 2 → giải quyết/kết thúc tích cực)`
+  },
+  // ---- Q18 ----
+  {
+    id:18,
+    section:null,
+    text:`<b>Question 18.</b> Chọn câu KẾT THÚC phù hợp nhất cho đoạn văn (câu 17):`,
+    options:[
+      {text:`In the end, the trip was still an unforgettable experience for all of us.`,correct:true},
+      {text:`Unfortunately, the whole trip was a disaster, and we had to return early.`,correct:false},
+      {text:`To begin with, we decided not to return to that place for our next trip.`,correct:false},
+      {text:`Finally, we gave up trying to enjoy the rest of the trip because we were too disappointed.`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 18</div>
+<b>Tóm tắt câu chuyện:</b> Nhóm gặp khó khăn (lạc đường, lều sập) nhưng đã cùng nhau vượt qua, cười đùa và biến thách thức thành kỷ niệm đẹp → <span class='p-grammar'>Tông giọng tích cực, lạc quan</span>.<br><br>
+▪ <span class='p-word'>A</span>: <span class='p-mean'>"Cuối cùng, chuyến đi vẫn là một trải nghiệm không thể quên."</span> → <span class='hl-green'>Đúng!</span> Phù hợp với tông giọng tích cực của đoạn văn. ✅<br>
+▪ <span class='p-word'>B</span>: <span class='p-mean'>"Thật không may, toàn bộ chuyến đi là thảm họa, chúng tôi phải về sớm."</span> → <span class='hl-red'>Sai</span>. Mâu thuẫn với câu c (biến thách thức thành kỷ niệm đẹp).<br>
+▪ <span class='p-word'>C</span>: <span class='p-mean'>"Ban đầu, chúng tôi quyết định không quay lại nơi đó."</span> → <span class='hl-red'>Sai</span>. "To begin with" là từ mở đầu, không phải kết thúc; nội dung cũng không phù hợp.<br>
+▪ <span class='p-word'>D</span>: <span class='p-mean'>"Chúng tôi từ bỏ vì quá thất vọng."</span> → <span class='hl-red'>Sai</span>. Mâu thuẫn hoàn toàn với tinh thần đoạn văn.`
+  },
+  // ---- Q29 ----
+  {
+    id:29,
+    section:"🖼️ ĐỌC HIỂU TIN HIỆU & THÔNG BÁO",
+    text:`<b>Question 29.</b> What does the sign say?<br>
+<div class="sign-box">
+  <div style="flex-shrink:0;">
+    <svg width="95" height="95" viewBox="0 0 95 95" style="display:block;">
+      <circle cx="47.5" cy="47.5" r="44" fill="white" stroke="#cc0000" stroke-width="7"/>
+      <line x1="15" y1="15" x2="80" y2="80" stroke="#cc0000" stroke-width="7" stroke-linecap="round"/>
+      <!-- person taking selfie silhouette -->
+      <!-- head -->
+      <circle cx="38" cy="28" r="8" fill="#222"/>
+      <!-- body -->
+      <rect x="30" y="36" width="16" height="20" rx="4" fill="#222"/>
+      <!-- arm up with phone -->
+      <line x1="46" y1="40" x2="62" y2="22" stroke="#222" stroke-width="5" stroke-linecap="round"/>
+      <!-- phone rectangle -->
+      <rect x="58" y="14" width="10" height="14" rx="2" fill="#222"/>
+    </svg>
+  </div>
+  <div style="flex:1;font-size:0.92rem;color:#555;line-height:1.6;">
+    Đây là biển cấm chụp ảnh tự sướng (selfie) — hình người đang giơ điện thoại tự chụp bị gạch chéo đỏ.
+  </div>
+</div>`,
+    options:[
+      {text:`No selfie here.`,correct:true},
+      {text:`Cameras in use here.`,correct:false},
+      {text:`No cell phone.`,correct:false},
+      {text:`Pictures allowed.`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 29</div>
+<b>Phân tích hình ảnh biển báo:</b><br>
+Biển báo cho thấy: <span class='p-mean'>hình người đang giơ điện thoại lên tự chụp (selfie) bị gạch chéo đỏ (vòng tròn đỏ + đường gạch chéo)</span> — đây là ký hiệu quốc tế cho <span class='p-grammar'>CẤM làm gì đó</span>.<br><br>
+▪ <span class='p-word'>No selfie here.</span> → <span class='hl-green'>Đúng!</span> <span class='p-mean'>Cấm chụp ảnh tự sướng tại đây</span> ✅<br>
+▪ <span class='p-word'>Cameras in use here.</span> → <span class='hl-red'>Sai</span>. <span class='p-mean'>"Máy quay đang hoạt động tại đây"</span> — biển này có nghĩa khác.<br>
+▪ <span class='p-word'>No cell phone.</span> → <span class='hl-red'>Sai</span>. Cấm điện thoại hoàn toàn sẽ có biển khác; đây chỉ cấm SELFIE.<br>
+▪ <span class='p-word'>Pictures allowed.</span> → <span class='hl-red'>Sai hoàn toàn</span>. Vòng tròn đỏ = cấm, không phải cho phép.`
+  },
+  // ---- Q30 ----
+  {
+    id:30,
+    section:null,
+    text:`<b>Question 30.</b> What does the notice tell us about?<br>
+<div class="kayak-notice">
+  🛶 Kayak boats available for hire!<br>
+  Adults: $10 &nbsp;&nbsp;&nbsp; Kids: $5<br>
+  <span style="color:#333;font-weight:600;">Full safety equipment provided</span>
+</div>`,
+    options:[
+      {text:`Kayak boats are available for hire! Adults: $10, Kids: $5, and safety equipment is optional.`,correct:false},
+      {text:`Kayak boats are available for hire with a price of $10 for adults and $5 for kids, but no safety equipment is provided.`,correct:false},
+      {text:`Kayak boats are available for hire! Adults: $10, Kids: $5, with full safety equipment provided.`,correct:true},
+      {text:`Kayak boats are available for hire! Adults: $10, Kids: $5, with limited safety equipment offered.`,correct:false}
+    ],
+    explanation:`
+<div class="exp-title">📖 Giải thích chi tiết – Câu 30</div>
+<b>Đọc kỹ thông báo:</b><br>
+▪ <span class='p-grammar'>Kayak boats available for hire</span>: <span class='p-mean'>Thuyền Kayak cho thuê</span><br>
+▪ <span class='p-grammar'>Adults: $10 / Kids: $5</span>: <span class='p-mean'>Người lớn: 10 đô / Trẻ em: 5 đô</span><br>
+▪ <span class='p-grammar'>Full safety equipment provided</span>: <span class='p-mean'>Cung cấp ĐẦY ĐỦ thiết bị an toàn</span><br><br>
+<b>Phân tích sai biệt giữa các đáp án:</b><br>
+▪ <span class='p-word'>A</span>: Viết "safety equipment is <span class='hl-red'>optional</span>" → <span class='hl-red'>Sai</span>. Thông báo ghi "FULL ... <b>provided</b>" (được cung cấp đầy đủ, không phải tùy chọn).<br>
+▪ <span class='p-word'>B</span>: Viết "<span class='hl-red'>no safety equipment is provided</span>" → <span class='hl-red'>Sai hoàn toàn</span>. Thông báo rõ ràng CÓ cung cấp.<br>
+▪ <span class='p-word'>C</span>: "<span class='hl-green'>with full safety equipment provided</span>" → <span class='hl-green'>Đúng!</span> Phản ánh chính xác 100% thông tin. ✅<br>
+▪ <span class='p-word'>D</span>: Viết "<span class='hl-red'>limited</span> safety equipment" → <span class='hl-red'>Sai</span>. Thông báo ghi "FULL" (đầy đủ), không phải "limited" (hạn chế).`
+  }
+];
+
+/* =========================================
+   STATE
+========================================= */
+let answered = {};
+let correctCount = 0;
+const TOTAL = QUESTIONS.length;
+
+/* =========================================
+   BUILD QUIZ
+========================================= */
+function buildQuiz(){
+  document.getElementById('total-q').textContent = TOTAL;
+  const body = document.getElementById('quiz-body');
+  body.innerHTML='';
+  let lastSection = null;
+
+  QUESTIONS.forEach((q,qi)=>{
+    if(q.section && q.section !== lastSection){
+      const st=document.createElement('div');
+      st.className='section-title';
+      st.textContent=q.section;
+      body.appendChild(st);
+      lastSection=q.section;
+    }
+
+    const card=document.createElement('div');
+    card.className='q-card';
+    card.id=`qcard-${q.id}`;
+
+    const numSpan=document.createElement('div');
+    numSpan.className='q-num';
+    numSpan.textContent=`Câu ${q.id}`;
+    card.appendChild(numSpan);
+
+    const qText=document.createElement('div');
+    qText.className='q-text';
+    qText.innerHTML=q.text;
+    card.appendChild(qText);
+
+    // Shuffle options
+    const shuffled = shuffle(q.options.map((o,i)=>({...o,origIdx:i})));
+
+    const grid=document.createElement('div');
+    grid.className='options-grid';
+    grid.id=`grid-${q.id}`;
+
+    shuffled.forEach((opt,oi)=>{
+      const btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.id=`opt-${q.id}-${oi}`;
+      btn.innerHTML=opt.text;
+      btn.onclick=()=>selectAnswer(q.id, opt.correct, btn, grid);
+      grid.appendChild(btn);
+    });
+    card.appendChild(grid);
+
+    const expDiv=document.createElement('div');
+    expDiv.className='explanation';
+    expDiv.id=`exp-${q.id}`;
+    expDiv.innerHTML=q.explanation;
+    card.appendChild(expDiv);
+
+    body.appendChild(card);
+  });
+}
+
+/* =========================================
+   SELECT ANSWER
+========================================= */
+function selectAnswer(qId, isCorrect, btn, grid){
+  if(answered[qId]) return;
+  answered[qId] = isCorrect;
+
+  // Disable all
+  const btns = grid.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+
+  if(isCorrect){
+    btn.classList.add('correct');
+    btn.innerHTML='✅ '+btn.innerHTML;
+    playDing();
+    launchConfetti();
+    correctCount++;
+  } else {
+    btn.classList.add('wrong');
+    btn.innerHTML='❌ '+btn.innerHTML;
+    btn.classList.add('btn-shake');
+    setTimeout(()=>btn.classList.remove('btn-shake'),500);
+    // Show correct answer
+    btns.forEach(b=>{
+      if(!b.disabled) return;
+      // find correct btn
+    });
+    // Mark correct button green
+    btns.forEach(b=>{
+      if(b!==btn && !b.classList.contains('wrong')){
+        // check if this is the correct one
+        const text=b.innerHTML;
+        // we need to re-find correct: iterate original options
+        const orig=QUESTIONS.find(q=>q.id===qId);
+        if(orig){
+          orig.options.forEach(o=>{
+            if(o.correct && b.innerHTML.replace(/^✅\s/,'')===o.text){
+              b.classList.add('correct');
+              b.innerHTML='✅ '+b.innerHTML;
+            }
+          });
+        }
+      }
+    });
+    playWrong();
+  }
+
+  // Show explanation
+  document.getElementById(`exp-${qId}`).classList.add('show');
+
+  // Update score
+  updateScore();
+}
+
+/* =========================================
+   UPDATE SCORE BAR
+========================================= */
+function updateScore(){
+  const done=Object.keys(answered).length;
+  document.getElementById('live-score').textContent=correctCount;
+  const pct=done>0?(correctCount/done*100):0;
+  document.getElementById('prog-fill').style.width=(done/TOTAL*100)+'%';
+}
+
+/* =========================================
+   NAME MODAL
+========================================= */
+function openNameModal(){
+  document.getElementById('name-modal').classList.add('show');
+  setTimeout(()=>document.getElementById('name-input').focus(),300);
+}
+function confirmName(){
+  const nm=document.getElementById('name-input').value.trim();
+  const err=document.getElementById('name-error');
+  const inp=document.getElementById('name-input');
+  if(!nm){
+    err.textContent='⚠️ Vui lòng nhập tên trước khi xem điểm nhé!';
+    inp.classList.add('error-border');
+    inp.classList.add('shake');
+    setTimeout(()=>inp.classList.remove('shake'),600);
+    return;
+  }
+  err.textContent='';
+  inp.classList.remove('error-border');
+  document.getElementById('name-modal').classList.remove('show');
+  showResult(nm);
+}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')confirmName();});
+
+/* =========================================
+   RESULT MODAL
+========================================= */
+const MEMES_GENIUS=['https://media.giphy.com/media/l0MYEqEzwMWFCg8rm/giphy.gif','https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif','https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif'];
+const MEMES_GOOD=['https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif','https://media.giphy.com/media/3ohs4qw8hkPShGAMJO/giphy.gif','https://media.giphy.com/media/SDogLD4FOZMM8/giphy.gif'];
+const MEMES_LOW=['https://media.giphy.com/media/ISOckXUybVfQ4/giphy.gif','https://media.giphy.com/media/14aUO0Mf7dWDXW/giphy.gif','https://media.giphy.com/media/3oEjI6hkZ8trmYOJXy/giphy.gif'];
+const COMMENTS_GENIUS=['🌟 THIÊN TÀI! {name} xuất sắc tuyệt đối! Bái phục! 🏆','⚡ {name} siêu đỉnh! Điểm tuyệt đối! Thầy/cô tự hào lắm! 🎊'];
+const COMMENTS_GOOD=['👍 {name} làm rất tốt! Cố gắng thêm chút nữa là hoàn hảo! 💪','😊 {name} khá giỏi! Ôn lại phần sai một tí rồi sẽ đạt điểm cao hơn! ✨'];
+const COMMENTS_LOW=['😅 {name} cần cố gắng hơn nhé! Đọc kỹ giải thích và thử lại! 📚','🌱 {name} ơi, thất bại là mẹ thành công! Ôn lại và chiến tiếp nhé! 💖'];
+
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function showResult(name){
+  const pct=correctCount/TOTAL;
+  let meme,comment;
+  if(pct===1){meme=rand(MEMES_GENIUS);comment=rand(COMMENTS_GENIUS);}
+  else if(pct>=0.6){meme=rand(MEMES_GOOD);comment=rand(COMMENTS_GOOD);}
+  else{meme=rand(MEMES_LOW);comment=rand(COMMENTS_LOW);}
+
+  document.getElementById('result-title').textContent=pct===1?`🌟 THIÊN TÀI!`:pct>=0.6?`🎉 KẾT QUẢ TỐT!`:`📚 CẦN CỐ GẮNG HƠN!`;
+  document.getElementById('score-display').textContent=`${correctCount} / ${TOTAL}`;
+  document.getElementById('result-comment').innerHTML=comment.replace('{name}',`<b>${name}</b>`);
+  document.getElementById('result-meme').src=meme;
+  document.getElementById('result-modal').classList.add('show');
+  if(pct>=0.6) launchConfetti();
+}
+function closeResult(){
+  document.getElementById('result-modal').classList.remove('show');
+  // Reset
+  answered={};correctCount=0;
+  buildQuiz();
+  updateScore();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+</html>
