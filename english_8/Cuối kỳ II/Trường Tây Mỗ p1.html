@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài Kiểm Tra Tiếng Anh – Khối 8 HK2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #8bdeda; --c2: #43add0; --c3: #998ee0; --c4: #e17dc2; --c5: #ef9393;
+  --glass: rgba(255,255,255,0.22);
+  --glass-border: rgba(255,255,255,0.45);
+  --correct: #00D26A; --wrong: #FF4757;
+  --text-dark: #2d2550;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(-45deg,#8bdeda,#43add0,#998ee0,#e17dc2,#ef9393,#8bdeda);
+  background-size:500% 500%;
+  animation:gradFlow 18s ease infinite;
+  overflow-x:hidden;
+  color:var(--text-dark);
+}
+@keyframes gradFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ====== FLOATING SHAPES ====== */
+.bg-shapes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.shape{position:absolute;opacity:.55;animation:floatUp linear infinite;}
+@keyframes floatUp{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0;}
+  10%{opacity:.55;}
+  90%{opacity:.55;}
+  100%{transform:translateY(-15vh) rotate(720deg);opacity:0;}
+}
+
+/* ====== GIAO DIỆN MÀN HÌNH KHÓA (TÔNG XUYỆT TÔNG) ====== */
+#passwordModal {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255, 255, 255, 0.2); 
+  backdrop-filter: blur(15px);
+}
+.pw-card {
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 24px; padding: 48px 40px 40px; 
+  max-width: 440px; width: 93%; text-align: center; position: relative;
+  box-shadow: 0 10px 40px rgba(80,50,150,0.15);
+}
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+.pw-title { font-family:'Nunito', sans-serif; font-size:1.6rem; font-weight:900; color:#2d2550; margin-bottom:6px; }
+.pw-sub   { font-size:.95rem; color:#555; margin-bottom:24px; font-weight:700; }
+.pw-input {
+  width:100%; padding:13px 20px; border-radius:12px;
+  border:2.5px solid #c9b8f0; background:rgba(255,255,255,0.8);
+  color:#2d2550; font-size:1.1rem; font-family:'Nunito', sans-serif; font-weight:800;
+  outline:none; text-align:center; transition:all .3s;
+}
+.pw-input:focus { border-color:var(--c3); box-shadow:0 0 0 3px rgba(153,142,224,0.2); }
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.2); animation:shake .4s ease; }
+.pw-input::placeholder { color:#aaa; font-weight:600; }
+.pw-btn {
+  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+  background:linear-gradient(135deg, var(--c3), var(--c4));
+  color:#fff; font-size:1.1rem; font-weight:900; font-family:'Nunito', sans-serif;
+  cursor:pointer; transition:transform .2s, box-shadow .2s;
+}
+.pw-btn:hover { transform:scale(1.03); box-shadow:0 8px 25px rgba(153,142,224,0.5); }
+.pw-err { color:#FF4757; font-size:.9rem; margin-top:10px; display:none; font-weight:800; }
+
+/* ====== HEADER ====== */
+header{
+  position:relative;z-index:10;
+  text-align:center;
+  padding:14px 20px 10px;
+  background:rgba(255,255,255,0.28);
+  backdrop-filter:blur(12px);
+  border-bottom:1.5px solid var(--glass-border);
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+header h1{font-size:1.35rem;font-weight:900;color:#2d2550;letter-spacing:0.3px;}
+header p{font-size:.78rem;font-weight:600;color:#555;margin-top:2px;}
+
+/* ====== MAIN CONTAINER ====== */
+.container{position:relative;z-index:5;max-width:860px;margin:0 auto;padding:22px 16px 100px;}
+
+/* ====== SECTION TITLE ====== */
+.section-banner{
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,0.6);
+  border-radius:16px;
+  padding:12px 20px;
+  margin:26px 0 14px;
+  font-size:1rem;font-weight:800;color:#2d2550;
+  box-shadow:0 4px 18px rgba(0,0,0,0.07);
+}
+
+/* ====== QUESTION CARD ====== */
+.q-card{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1.5px solid var(--glass-border);
+  border-radius:20px;
+  padding:22px 22px 16px;
+  margin-bottom:18px;
+  box-shadow:0 6px 28px rgba(80,50,150,0.12);
+  transition:transform .2s;
+}
+.q-card:hover{transform:translateY(-2px);}
+.q-num{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--c3),var(--c4));
+  color:#fff;font-weight:900;font-size:.82rem;
+  padding:3px 11px;border-radius:20px;margin-bottom:10px;
+}
+.q-text{font-size:1.15rem;font-weight:700;color:#2d2550;line-height:1.6;margin-bottom:14px;}
+.q-text u{text-decoration:underline;text-decoration-color:#e17dc2;text-decoration-thickness:2px;}
+
+/* ====== OPTIONS GRID ====== */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:540px){.options{grid-template-columns:1fr;}}
+.opt-btn{
+  background:rgba(255,255,255,0.55);
+  border:2px solid rgba(255,255,255,0.75);
+  border-radius:16px;
+  padding:11px 16px;
+  font-family:'Nunito',sans-serif;
+  font-size:1.08rem;font-weight:700;
+  color:#2d2550;cursor:pointer;
+  box-shadow:0 5px 15px rgba(100,60,200,0.13),0 2px 0 rgba(255,255,255,0.8) inset;
+  transition:transform .15s,box-shadow .15s,background .2s;
+  text-align:left;
+  user-select:none;
+}
+.opt-btn:hover:not(:disabled){
+  transform:scale(1.04);
+  box-shadow:0 8px 22px rgba(100,60,200,0.2);
+  background:rgba(255,255,255,0.78);
+}
+.opt-btn.correct{
+  background:linear-gradient(135deg,#00D26A,#00b35a)!important;
+  color:#fff!important;border-color:#00D26A!important;
+  box-shadow:0 6px 18px rgba(0,210,106,0.4)!important;
+}
+.opt-btn.wrong{
+  background:linear-gradient(135deg,#FF4757,#d93848)!important;
+  color:#fff!important;border-color:#FF4757!important;
+  animation:shake .4s ease;
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+.opt-btn:disabled{cursor:not-allowed;}
+
+/* ====== EXPLANATION BOX ====== */
+.expl-box{
+  display:none;
+  margin-top:14px;
+  background:rgba(255,255,255,0.68);
+  backdrop-filter:blur(8px);
+  border-left:5px solid var(--c3);
+  border-radius:0 14px 14px 0;
+  padding:14px 16px;
+  font-size:1rem;line-height:1.75;
+  animation:slideDown .35s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.expl-box.show{display:block;}
+
+/* Explanation highlight classes */
+.p-word{color:#1565C0;font-weight:700;}
+.p-phonetic{background:#ede7f6;color:#6a1b9a;font-weight:700;padding:1px 5px;border-radius:5px;font-size:.95em;}
+.p-mean{color:#bf360c;font-weight:600;}
+.p-grammar{border-bottom:2px solid #e53935;color:#c62828;font-weight:700;}
+.hl-green{color:#2e7d32;font-weight:800;}
+.hl-red{color:#c62828;text-decoration:line-through;font-weight:700;}
+.viet-trans{
+  background:rgba(255,220,150,0.45);
+  border-left:4px solid #f39c12;
+  padding:7px 12px;
+  border-radius:0 10px 10px 0;
+  margin:8px 0;
+  font-weight:700;color:#6d4c00;
+  font-size:.97rem;
+}
+
+/* ====== SUBMIT BUTTON ====== */
+.submit-wrap{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:20;
+}
+.submit-btn{
+  background:linear-gradient(135deg,var(--c3),var(--c4));
+  color:#fff;border:none;
+  padding:14px 44px;border-radius:50px;
+  font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 28px rgba(153,142,224,0.55);
+  transition:transform .2s,box-shadow .2s;
+}
+.submit-btn:hover{transform:scale(1.06);box-shadow:0 10px 35px rgba(153,142,224,0.7);}
+
+/* ====== MODAL ====== */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(30,20,60,0.55);backdrop-filter:blur(6px);
+  z-index:100;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);
+  border-radius:24px;padding:34px 30px;
+  max-width:480px;width:92%;
+  box-shadow:0 20px 60px rgba(80,50,150,0.25);
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.modal h2{font-size:1.4rem;font-weight:900;color:#2d2550;margin-bottom:12px;}
+.modal input{
+  width:100%;padding:12px 16px;
+  border:2.5px solid #c9b8f0;border-radius:14px;
+  font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;
+  outline:none;margin:10px 0;color:#2d2550;
+  transition:border-color .2s;
+}
+.modal input:focus{border-color:var(--c3);}
+.modal input.err{border-color:#FF4757;animation:shake .3s;}
+.modal-btn{
+  background:linear-gradient(135deg,var(--c3),var(--c4));
+  color:#fff;border:none;padding:12px 36px;
+  border-radius:50px;font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:900;cursor:pointer;margin-top:10px;
+  box-shadow:0 4px 18px rgba(153,142,224,0.4);
+  transition:transform .15s;
+}
+.modal-btn:hover{transform:scale(1.05);}
+.result-score{font-size:2.8rem;font-weight:900;color:var(--c3);margin:10px 0;}
+.result-msg{font-size:1.1rem;font-weight:700;color:#2d2550;margin-bottom:14px;}
+.meme-img{width:200px;height:180px;object-fit:cover;border-radius:16px;margin:10px auto;display:block;}
+.redo-btn{
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#fff;border:none;padding:10px 28px;
+  border-radius:50px;font-family:'Nunito',sans-serif;
+  font-size:.95rem;font-weight:800;cursor:pointer;margin-top:12px;
+}
+
+/* ====== CONFETTI ====== */
+.confetti-piece{
+  position:fixed;width:10px;height:10px;
+  border-radius:2px;z-index:9999;
+  animation:confettiFall linear forwards;
+  pointer-events:none;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-shapes" id="bgShapes"></div>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div id="mainContent" style="display: none;">
+  <header>
+    <h1>🎯 Đề Cương Ôn Tập HK2 – Tiếng Anh Lớp 8</h1>
+    <p>Giáo viên tạo: <strong>MS Chí Nên – ULIS</strong> &nbsp;|&nbsp; Trường THCS Tây Mỗ</p>
+  </header>
+
+  <div class="container" id="quizContainer"></div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="openSubmit()">🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="nameModal">
+  <div class="modal">
+    <h2>📝 Nhập Tên Của Bạn</h2>
+    <p style="color:#555;font-size:.95rem;">Để xem kết quả cá nhân hóa, hãy nhập tên đầy đủ nhé!</p>
+    <input type="text" id="studentName" placeholder="Ví dụ: Nguyễn Văn A..." maxlength="50">
+    <div id="nameErr" style="color:#FF4757;font-size:.88rem;display:none;">⚠️ Bạn chưa nhập tên!</div>
+    <button class="modal-btn" onclick="submitQuiz()">✅ XEM KẾT QUẢ</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resultModal">
+  <div class="modal">
+    <div id="resultContent"></div>
+    <button class="redo-btn" onclick="location.reload()">🔄 Làm Lại Bài</button>
+  </div>
+</div>
+
+<script>
+// ============================
+//  PASSWORD LOGIC & AUDIO
+// ============================
+const _k  = [49, 54, 49, 49]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+// Khởi tạo file âm thanh
+const introAudio = new Audio('https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/export_2rUjepgpwpTxnU6YGv6kmq.mp3');
+const wrongAudio = new Audio('https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Am_thanh_meme_Oi_doi_oi_huan_hoa_hong-www_tiengdong_com.mp3');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    
+    // Phát âm thanh dặn dò khi mở khóa thành công
+    introAudio.play().catch(e => console.log("Lỗi phát âm thanh mở màn: ", e));
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+
+// ============================
+//  QUESTION DATA
+// ============================
+const sections = [
+  { id:"ex1", title:"🔤 Exercise 1: Choose the word whose UNDERLINED part is pronounced DIFFERENTLY from that of the others." },
+  { id:"ex2", title:"🔊 Exercise 2: Choose the word whose MAIN STRESSED SYLLABLE is placed DIFFERENTLY from that of the others." },
+  { id:"ex3", title:"📝 Exercise 3: Choose the BEST ANSWER to complete each sentence." }
+];
+
+const questions = [
+// ===== EX1 =====
+{s:"ex1",n:1,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"spee<u>ch</u>"},
+   {l:"B",t:"<u>ch</u>atting"},
+   {l:"C",t:"<u>ch</u>eer"},
+   {l:"D",t:"<u>ch</u>emistry"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Nhận biết cách đọc phụ âm "<u>ch</u>" trong tiếng Anh.</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"ch"</span>:</b><br>
+• A. <span class='p-word'>speech</span> <span class='p-phonetic'>/spiːtʃ/</span> → <span class='p-grammar'>"ch" = /tʃ/</span><br>
+• B. <span class='p-word'>chatting</span> <span class='p-phonetic'>/ˈtʃætɪŋ/</span> → <span class='p-grammar'>"ch" = /tʃ/</span><br>
+• C. <span class='p-word'>cheer</span> <span class='p-phonetic'>/tʃɪər/</span> → <span class='p-grammar'>"ch" = /tʃ/</span><br>
+• D. <span class='p-word'>chemistry</span> <span class='p-phonetic'>/ˈkemɪstri/</span> → <span class='p-grammar'>"ch" = /k/</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>chemistry</b></span> — "<u>ch</u>" có nguồn gốc Latin/Hy Lạp, đọc là <span class='p-phonetic'>/k/</span>.<br>
+<span class='hl-red'>A, B, C</span>: "ch" trong speech, chatting, cheer đều đọc <span class='p-phonetic'>/tʃ/</span>.`
+},
+{s:"ex1",n:2,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"distan<u>c</u>e"},
+   {l:"B",t:"conferen<u>c</u>e"},
+   {l:"C",t:"<u>c</u>omment"},
+   {l:"D",t:"fa<u>c</u>e"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Nhận biết cách đọc chữ "<u>c</u>" trong các vị trí khác nhau.</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"c"</span>:</b><br>
+• A. <span class='p-word'>distance</span> <span class='p-phonetic'>/ˈdɪstəns/</span> → <span class='p-grammar'>c = /s/</span><br>
+• B. <span class='p-word'>conference</span> <span class='p-phonetic'>/ˈkɒnfərəns/</span> → <span class='p-grammar'>c = /s/</span><br>
+• C. <span class='p-word'>comment</span> <span class='p-phonetic'>/ˈkɒment/</span> → <span class='p-grammar'>c = /k/</span><br>
+• D. <span class='p-word'>face</span> <span class='p-phonetic'>/feɪs/</span> → <span class='p-grammar'>c = /s/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>comment</b></span> — "c" đứng trước "o" đọc là <span class='p-phonetic'>/k/</span>.<br>
+<span class='hl-red'>A, B, D</span>: "c" trong distance, conference, face đọc là <span class='p-phonetic'>/s/</span> (trước e, a).`
+},
+{s:"ex1",n:3,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"c<u>o</u>me"},
+   {l:"B",t:"w<u>o</u>nder"},
+   {l:"C",t:"g<u>o</u>lden"},
+   {l:"D",t:"disc<u>o</u>ver"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Nhận biết cách đọc nguyên âm "<u>o</u>" trong các từ khác nhau.</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"o"</span>:</b><br>
+• A. <span class='p-word'>come</span> <span class='p-phonetic'>/kʌm/</span> → <span class='p-grammar'>o = /ʌ/</span><br>
+• B. <span class='p-word'>wonder</span> <span class='p-phonetic'>/ˈwʌndər/</span> → <span class='p-grammar'>o = /ʌ/</span><br>
+• C. <span class='p-word'>golden</span> <span class='p-phonetic'>/ˈɡəʊldən/</span> → <span class='p-grammar'>o = /əʊ/</span><br>
+• D. <span class='p-word'>discover</span> <span class='p-phonetic'>/dɪˈskʌvər/</span> → <span class='p-grammar'>o = /ʌ/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>golden</b></span> — "o" đọc là <span class='p-phonetic'>/əʊ/</span> (âm đôi dài).<br>
+<span class='hl-red'>A, B, D</span>: "o" trong come, wonder, discover đọc là <span class='p-phonetic'>/ʌ/</span> (âm ngắn).`
+},
+{s:"ex1",n:4,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"n<u>a</u>tive"},
+   {l:"B",t:"n<u>a</u>tural"},
+   {l:"C",t:"n<u>a</u>tion"},
+   {l:"D",t:"n<u>a</u>me"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Nhận biết cách đọc nguyên âm "<u>a</u>" trong các từ bắt đầu bằng "na-".</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"a"</span>:</b><br>
+• A. <span class='p-word'>native</span> <span class='p-phonetic'>/ˈneɪtɪv/</span> → <span class='p-grammar'>a = /eɪ/</span><br>
+• B. <span class='p-word'>natural</span> <span class='p-phonetic'>/ˈnætʃərəl/</span> → <span class='p-grammar'>a = /æ/</span><br>
+• C. <span class='p-word'>nation</span> <span class='p-phonetic'>/ˈneɪʃən/</span> → <span class='p-grammar'>a = /eɪ/</span><br>
+• D. <span class='p-word'>name</span> <span class='p-phonetic'>/neɪm/</span> → <span class='p-grammar'>a = /eɪ/</span><br>
+<span class='hl-green'>✓ Đáp án B: <b>natural</b></span> — "a" đọc là <span class='p-phonetic'>/æ/</span> (âm mũi ngắn).<br>
+<span class='hl-red'>A, C, D</span>: "a" trong native, nation, name đọc là <span class='p-phonetic'>/eɪ/</span> (âm đôi dài).`
+},
+{s:"ex1",n:5,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"b<u>o</u>th"},
+   {l:"B",t:"h<u>o</u>t"},
+   {l:"C",t:"c<u>o</u>tton"},
+   {l:"D",t:"b<u>o</u>ttle"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Phân biệt âm /əʊ/ và /ɒ/ của nguyên âm "<u>o</u>".</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"o"</span>:</b><br>
+• A. <span class='p-word'>both</span> <span class='p-phonetic'>/bəʊθ/</span> → <span class='p-grammar'>o = /əʊ/</span><br>
+• B. <span class='p-word'>hot</span> <span class='p-phonetic'>/hɒt/</span> → <span class='p-grammar'>o = /ɒ/</span><br>
+• C. <span class='p-word'>cotton</span> <span class='p-phonetic'>/ˈkɒtən/</span> → <span class='p-grammar'>o = /ɒ/</span><br>
+• D. <span class='p-word'>bottle</span> <span class='p-phonetic'>/ˈbɒtl/</span> → <span class='p-grammar'>o = /ɒ/</span><br>
+<span class='hl-green'>✓ Đáp án A: <b>both</b></span> — "o" đọc là <span class='p-phonetic'>/əʊ/</span> (âm đôi dài).<br>
+<span class='hl-red'>B, C, D</span>: "o" trong hot, cotton, bottle đọc là <span class='p-phonetic'>/ɒ/</span> (âm tròn miệng ngắn).`
+},
+{s:"ex1",n:6,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"buse<u>s</u>"},
+   {l:"B",t:"boxe<u>s</u>"},
+   {l:"C",t:"eat<u>s</u>"},
+   {l:"D",t:"watche<u>s</u>"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Quy tắc đọc đuôi "-s/-es" cuối động từ/danh từ số nhiều.</div>
+<b>Phân tích đuôi gạch chân <span class='p-word'>"s/es"</span>:</b><br>
+<span class='p-grammar'>Quy tắc:</span> Đuôi -s/-es đọc <span class='p-phonetic'>/ɪz/</span> sau âm /s, z, ʃ, tʃ, dʒ/; đọc <span class='p-phonetic'>/s/</span> sau âm vô thanh; đọc <span class='p-phonetic'>/z/</span> sau âm hữu thanh.<br>
+• A. <span class='p-word'>buses</span> — "bus" kết thúc âm <span class='p-phonetic'>/s/</span> → đuôi = <span class='p-phonetic'>/ɪz/</span><br>
+• B. <span class='p-word'>boxes</span> — "box" kết thúc âm <span class='p-phonetic'>/ks/</span> → đuôi = <span class='p-phonetic'>/ɪz/</span><br>
+• C. <span class='p-word'>eats</span> — "eat" kết thúc âm <span class='p-phonetic'>/t/</span> (vô thanh) → đuôi = <span class='p-phonetic'>/s/</span><br>
+• D. <span class='p-word'>watches</span> — "watch" kết thúc âm <span class='p-phonetic'>/tʃ/</span> → đuôi = <span class='p-phonetic'>/ɪz/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>eats</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi đọc <span class='p-phonetic'>/ɪz/</span>.`
+},
+{s:"ex1",n:7,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"cap<u>s</u>"},
+   {l:"B",t:"bag<u>s</u>"},
+   {l:"C",t:"stop<u>s</u>"},
+   {l:"D",t:"want<u>s</u>"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+<b>Phân tích đuôi gạch chân <span class='p-word'>"s"</span>:</b><br>
+<span class='p-grammar'>Quy tắc:</span> Sau âm <b>vô thanh</b> (p, t, k, f) → <span class='p-phonetic'>/s/</span>; sau âm <b>hữu thanh</b> (b, d, g, v, n, m, l...) → <span class='p-phonetic'>/z/</span>.<br>
+• A. <span class='p-word'>caps</span> — "cap" kết thúc <span class='p-phonetic'>/p/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• B. <span class='p-word'>bags</span> — "bag" kết thúc <span class='p-phonetic'>/ɡ/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>stops</span> — "stop" kết thúc <span class='p-phonetic'>/p/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• D. <span class='p-word'>wants</span> — "want" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+<span class='hl-green'>✓ Đáp án B: <b>bags</b></span> — đuôi đọc <span class='p-phonetic'>/z/</span>.<br>
+<span class='hl-red'>A, C, D</span>: đuôi đọc <span class='p-phonetic'>/s/</span>.`
+},
+{s:"ex1",n:8,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"laugh<u>s</u>"},
+   {l:"B",t:"drop<u>s</u>"},
+   {l:"C",t:"maintain<u>s</u>"},
+   {l:"D",t:"import<u>s</u>"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>laughs</span> — "laugh" kết thúc <span class='p-phonetic'>/f/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• B. <span class='p-word'>drops</span> — "drop" kết thúc <span class='p-phonetic'>/p/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• C. <span class='p-word'>maintains</span> — "maintain" kết thúc <span class='p-phonetic'>/n/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• D. <span class='p-word'>imports</span> — "import" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>maintains</b></span> — đuôi đọc <span class='p-phonetic'>/z/</span>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi đọc <span class='p-phonetic'>/s/</span>.`
+},
+{s:"ex1",n:9,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"listen<u>s</u>"},
+   {l:"B",t:"review<u>s</u>"},
+   {l:"C",t:"protect<u>s</u>"},
+   {l:"D",t:"enjoy<u>s</u>"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>listens</span> — "listen" kết thúc <span class='p-phonetic'>/n/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• B. <span class='p-word'>reviews</span> — "review" kết thúc <span class='p-phonetic'>/uː/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>protects</span> — "protect" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• D. <span class='p-word'>enjoys</span> — "enjoy" kết thúc <span class='p-phonetic'>/ɔɪ/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>protects</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi đọc <span class='p-phonetic'>/z/</span>.`
+},
+{s:"ex1",n:10,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"delay<u>s</u>"},
+   {l:"B",t:"begin<u>s</u>"},
+   {l:"C",t:"attract<u>s</u>"},
+   {l:"D",t:"believe<u>s</u>"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>delays</span> — "delay" kết thúc <span class='p-phonetic'>/eɪ/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• B. <span class='p-word'>begins</span> — "begin" kết thúc <span class='p-phonetic'>/n/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>attracts</span> — "attract" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• D. <span class='p-word'>believes</span> — "believe" kết thúc <span class='p-phonetic'>/v/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>attracts</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi đọc <span class='p-phonetic'>/z/</span>.`
+},
+{s:"ex1",n:11,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"improve<u>s</u>"},
+   {l:"B",t:"destroy<u>s</u>"},
+   {l:"C",t:"suggest<u>s</u>"},
+   {l:"D",t:"remind<u>s</u>"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>improves</span> — "improve" kết thúc <span class='p-phonetic'>/v/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• B. <span class='p-word'>destroys</span> — "destroy" kết thúc <span class='p-phonetic'>/ɔɪ/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>suggests</span> — "suggest" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• D. <span class='p-word'>reminds</span> — "remind" kết thúc <span class='p-phonetic'>/d/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>suggests</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi đọc <span class='p-phonetic'>/z/</span>.`
+},
+{s:"ex1",n:12,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"h<u>ow</u>"},
+   {l:"B",t:"p<u>ow</u>der"},
+   {l:"C",t:"cr<u>ow</u>d"},
+   {l:"D",t:"kn<u>ow</u>"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Phân biệt "ow" đọc /aʊ/ hay /əʊ/.</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"ow"</span>:</b><br>
+• A. <span class='p-word'>how</span> <span class='p-phonetic'>/haʊ/</span> → <span class='p-grammar'>ow = /aʊ/</span><br>
+• B. <span class='p-word'>powder</span> <span class='p-phonetic'>/ˈpaʊdər/</span> → <span class='p-grammar'>ow = /aʊ/</span><br>
+• C. <span class='p-word'>crowd</span> <span class='p-phonetic'>/kraʊd/</span> → <span class='p-grammar'>ow = /aʊ/</span><br>
+• D. <span class='p-word'>know</span> <span class='p-phonetic'>/nəʊ/</span> → <span class='p-grammar'>ow = /əʊ/</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>know</b></span> — "ow" đọc <span class='p-phonetic'>/əʊ/</span> (như: blow, show, grow, know).<br>
+<span class='hl-red'>A, B, C</span>: "ow" đọc <span class='p-phonetic'>/aʊ/</span> (như: cow, now, town, crowd).`
+},
+{s:"ex1",n:13,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"attack<u>s</u>"},
+   {l:"B",t:"medal<u>s</u>"},
+   {l:"C",t:"concern<u>s</u>"},
+   {l:"D",t:"finger<u>s</u>"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>attacks</span> — "attack" kết thúc <span class='p-phonetic'>/k/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+• B. <span class='p-word'>medals</span> — "medal" kết thúc <span class='p-phonetic'>/l/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>concerns</span> — "concern" kết thúc <span class='p-phonetic'>/n/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• D. <span class='p-word'>fingers</span> — "finger" kết thúc <span class='p-phonetic'>/ŋ/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+<span class='hl-green'>✓ Đáp án A: <b>attacks</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>B, C, D</span>: đuôi đọc <span class='p-phonetic'>/z/</span>.`
+},
+{s:"ex1",n:14,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"wonder<u>s</u>"},
+   {l:"B",t:"problem<u>s</u>"},
+   {l:"C",t:"mountain<u>s</u>"},
+   {l:"D",t:"moment<u>s</u>"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Phân biệt đuôi "-s" đọc /s/ hay /z/.</div>
+• A. <span class='p-word'>wonders</span> — "wonder" kết thúc <span class='p-phonetic'>/ə/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• B. <span class='p-word'>problems</span> — "problem" kết thúc <span class='p-phonetic'>/m/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• C. <span class='p-word'>mountains</span> — "mountain" kết thúc <span class='p-phonetic'>/n/</span> (hữu thanh) → <span class='p-phonetic'>/z/</span><br>
+• D. <span class='p-word'>moments</span> — "moment" kết thúc <span class='p-phonetic'>/t/</span> (vô thanh) → <span class='p-phonetic'>/s/</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>moments</b></span> — đuôi đọc <span class='p-phonetic'>/s/</span>.<br>
+<span class='hl-red'>A, B, C</span>: đuôi đọc <span class='p-phonetic'>/z/</span>.`
+},
+{s:"ex1",n:15,
+ q:"Chọn từ có phần <u>gạch chân</u> phát âm KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"h<u>ou</u>se"},
+   {l:"B",t:"m<u>ou</u>se"},
+   {l:"C",t:"sh<u>ou</u>lder"},
+   {l:"D",t:"s<u>ou</u>th"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt "ou" đọc /aʊ/ hay /əʊ/.</div>
+<b>Phân tích phần gạch chân <span class='p-word'>"ou"</span>:</b><br>
+• A. <span class='p-word'>house</span> <span class='p-phonetic'>/haʊs/</span> → <span class='p-grammar'>ou = /aʊ/</span><br>
+• B. <span class='p-word'>mouse</span> <span class='p-phonetic'>/maʊs/</span> → <span class='p-grammar'>ou = /aʊ/</span><br>
+• C. <span class='p-word'>shoulder</span> <span class='p-phonetic'>/ˈʃəʊldər/</span> → <span class='p-grammar'>ou = /əʊ/</span><br>
+• D. <span class='p-word'>south</span> <span class='p-phonetic'>/saʊθ/</span> → <span class='p-grammar'>ou = /aʊ/</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>shoulder</b></span> — "ou" đọc <span class='p-phonetic'>/əʊ/</span> (âm đôi).<br>
+<span class='hl-red'>A, B, D</span>: "ou" đọc <span class='p-phonetic'>/aʊ/</span>.`
+},
+
+// ===== EX2 =====
+{s:"ex2",n:1,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"guarantee"},
+   {l:"B",t:"recommend"},
+   {l:"C",t:"represent"},
+   {l:"D",t:"illustrate"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Phân biệt vị trí trọng âm của các từ 3 âm tiết.</div>
+• A. <span class='p-word'>guarantee</span> <span class='p-phonetic'>/ˌɡærənˈtiː/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• B. <span class='p-word'>recommend</span> <span class='p-phonetic'>/ˌrekəˈmend/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• C. <span class='p-word'>represent</span> <span class='p-phonetic'>/ˌreprɪˈzent/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• D. <span class='p-word'>illustrate</span> <span class='p-phonetic'>/ˈɪləstreɪt/</span> → trọng âm âm tiết <span class='p-grammar'>1 (đầu)</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>illustrate</b></span> — trọng âm rơi vào âm tiết <b>đầu</b>.<br>
+<span class='hl-red'>A, B, C</span>: trọng âm rơi vào âm tiết <b>cuối</b>.`
+},
+{s:"ex2",n:2,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"guarantee"},
+   {l:"B",t:"awardee"},
+   {l:"C",t:"chocolate"},
+   {l:"D",t:"absentee"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Quy tắc trọng âm: đuôi "-ee" thường được nhấn trọng âm.</div>
+• A. <span class='p-word'>guarantee</span> <span class='p-phonetic'>/ˌɡærənˈtiː/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối: -ee)</span><br>
+• B. <span class='p-word'>awardee</span> <span class='p-phonetic'>/əˌwɔːˈdiː/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối: -ee)</span><br>
+• C. <span class='p-word'>chocolate</span> <span class='p-phonetic'>/ˈtʃɒklɪt/</span> → trọng âm âm tiết <span class='p-grammar'>1 (đầu)</span><br>
+• D. <span class='p-word'>absentee</span> <span class='p-phonetic'>/ˌæbsənˈtiː/</span> → trọng âm âm tiết <span class='p-grammar'>3 (cuối: -ee)</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>chocolate</b></span> — trọng âm rơi vào âm tiết đầu.<br>
+<span class='hl-red'>A, B, D</span>: đều có đuôi <span class='p-grammar'>-ee</span> nên trọng âm rơi vào âm tiết cuối.`
+},
+{s:"ex2",n:3,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"gravity"},
+   {l:"B",t:"celebrate"},
+   {l:"C",t:"disaster"},
+   {l:"D",t:"habitat"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Phân biệt trọng âm âm tiết 1 và âm tiết 2.</div>
+• A. <span class='p-word'>gravity</span> <span class='p-phonetic'>/ˈɡrævɪti/</span> → trọng âm âm tiết <span class='p-grammar'>1</span><br>
+• B. <span class='p-word'>celebrate</span> <span class='p-phonetic'>/ˈselɪbreɪt/</span> → trọng âm âm tiết <span class='p-grammar'>1</span><br>
+• C. <span class='p-word'>disaster</span> <span class='p-phonetic'>/dɪˈzɑːstər/</span> → trọng âm âm tiết <span class='p-grammar'>2</span><br>
+• D. <span class='p-word'>habitat</span> <span class='p-phonetic'>/ˈhæbɪtæt/</span> → trọng âm âm tiết <span class='p-grammar'>1</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>disaster</b></span> — trọng âm rơi vào âm tiết <b>2</b>.<br>
+<span class='hl-red'>A, B, D</span>: trọng âm rơi vào âm tiết <b>1</b>.`
+},
+{s:"ex2",n:4,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"guarantee"},
+   {l:"B",t:"Japanese"},
+   {l:"C",t:"refugee"},
+   {l:"D",t:"tradition"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Quy tắc: đuôi "-ee" và "-ese" thường được nhấn trọng âm ở âm tiết cuối.</div>
+• A. <span class='p-word'>guarantee</span> <span class='p-phonetic'>/ˌɡærənˈtiː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• B. <span class='p-word'>Japanese</span> <span class='p-phonetic'>/ˌdʒæpəˈniːz/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• C. <span class='p-word'>refugee</span> <span class='p-phonetic'>/ˌrefjʊˈdʒiː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• D. <span class='p-word'>tradition</span> <span class='p-phonetic'>/trəˈdɪʃən/</span> → âm tiết <span class='p-grammar'>2</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>tradition</b></span> — trọng âm rơi vào âm tiết <b>2</b>.<br>
+<span class='hl-red'>A, B, C</span>: đều có đuôi -ee/-ese, trọng âm âm tiết <b>cuối</b>.`
+},
+{s:"ex2",n:5,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"disagree"},
+   {l:"B",t:"referee"},
+   {l:"C",t:"Vietnamese"},
+   {l:"D",t:"dramatic"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Quy tắc đuôi "-ee" và "-ese" hút trọng âm về cuối từ.</div>
+• A. <span class='p-word'>disagree</span> <span class='p-phonetic'>/ˌdɪsəˈɡriː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• B. <span class='p-word'>referee</span> <span class='p-phonetic'>/ˌrefəˈriː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• C. <span class='p-word'>Vietnamese</span> <span class='p-phonetic'>/ˌvjetnəˈmiːz/</span> → âm tiết <span class='p-grammar'>4 (cuối)</span><br>
+• D. <span class='p-word'>dramatic</span> <span class='p-phonetic'>/drəˈmætɪk/</span> → âm tiết <span class='p-grammar'>2</span><br>
+<span class='hl-green'>✓ Đáp án D: <b>dramatic</b></span> — trọng âm âm tiết <b>2</b>.<br>
+<span class='hl-red'>A, B, C</span>: trọng âm âm tiết <b>cuối</b> (đuôi -ee/-ese).`
+},
+{s:"ex2",n:6,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"awardee"},
+   {l:"B",t:"absentee"},
+   {l:"C",t:"hospital"},
+   {l:"D",t:"nominee"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Đuôi "-ee" luôn hút trọng âm. hospital thì không có đuôi -ee.</div>
+• A. <span class='p-word'>awardee</span> <span class='p-phonetic'>/əˌwɔːˈdiː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• B. <span class='p-word'>absentee</span> <span class='p-phonetic'>/ˌæbsənˈtiː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+• C. <span class='p-word'>hospital</span> <span class='p-phonetic'>/ˈhɒspɪtl/</span> → âm tiết <span class='p-grammar'>1</span><br>
+• D. <span class='p-word'>nominee</span> <span class='p-phonetic'>/ˌnɒmɪˈniː/</span> → âm tiết <span class='p-grammar'>3 (cuối)</span><br>
+<span class='hl-green'>✓ Đáp án C: <b>hospital</b></span> — trọng âm âm tiết <b>1</b>.<br>
+<span class='hl-red'>A, B, D</span>: đuôi <span class='p-grammar'>-ee</span>, trọng âm âm tiết <b>cuối</b>.`
+},
+{s:"ex2",n:7,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"communicate"},
+   {l:"B",t:"telegramese"},
+   {l:"C",t:"appreciate"},
+   {l:"D",t:"community"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Phân biệt trọng âm từ 5 âm tiết: -ese là đuôi hút trọng âm về cuối.</div>
+• A. <span class='p-word'>communicate</span> <span class='p-phonetic'>/kəˈmjuːnɪkeɪt/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• B. <span class='p-word'>telegramese</span> <span class='p-phonetic'>/ˌtelɪɡrəˈmiːz/</span> → đuôi <span class='p-grammar'>-ese</span>, trọng âm âm tiết <b>4 (cuối)</b><br>
+• C. <span class='p-word'>appreciate</span> <span class='p-phonetic'>/əˈpriːʃieɪt/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• D. <span class='p-word'>community</span> <span class='p-phonetic'>/kəˈmjuːnɪti/</span> → âm tiết <span class='p-grammar'>2</span><br>
+<span class='hl-green'>✓ Đáp án B: <b>telegramese</b></span> — đuôi <span class='p-grammar'>-ese</span> hút trọng âm về âm tiết cuối.<br>
+<span class='hl-red'>A, C, D</span>: trọng âm đều rơi vào âm tiết <b>2</b>.`
+},
+{s:"ex2",n:8,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"ability"},
+   {l:"B",t:"economic"},
+   {l:"C",t:"creation"},
+   {l:"D",t:"historic"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Phân biệt vị trí trọng âm trong các từ 3-4 âm tiết.</div>
+• A. <span class='p-word'>ability</span> <span class='p-phonetic'>/əˈbɪlɪti/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• B. <span class='p-word'>economic</span> <span class='p-phonetic'>/ˌiːkəˈnɒmɪk/</span> → âm tiết <span class='p-grammar'>3</span><br>
+• C. <span class='p-word'>creation</span> <span class='p-phonetic'>/kriˈeɪʃən/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• D. <span class='p-word'>historic</span> <span class='p-phonetic'>/hɪˈstɒrɪk/</span> → âm tiết <span class='p-grammar'>2</span><br>
+<span class='hl-green'>✓ Đáp án B: <b>economic</b></span> — trọng âm âm tiết <b>3</b>.<br>
+<span class='hl-red'>A, C, D</span>: trọng âm âm tiết <b>2</b>.`
+},
+{s:"ex2",n:9,
+ q:"Chọn từ có trọng âm chính đặt ở vị trí KHÁC với các từ còn lại:",
+ opts:[
+   {l:"A",t:"necessity"},
+   {l:"B",t:"employee"},
+   {l:"C",t:"pollution"},
+   {l:"D",t:"tremendous"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Đuôi "-ee" trong "employee" hút trọng âm về cuối từ.</div>
+• A. <span class='p-word'>necessity</span> <span class='p-phonetic'>/nɪˈsesɪti/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• B. <span class='p-word'>employee</span> <span class='p-phonetic'>/ɪmˌplɔɪˈiː/</span> → âm tiết <span class='p-grammar'>3 (cuối, đuôi -ee)</span><br>
+• C. <span class='p-word'>pollution</span> <span class='p-phonetic'>/pəˈluːʃən/</span> → âm tiết <span class='p-grammar'>2</span><br>
+• D. <span class='p-word'>tremendous</span> <span class='p-phonetic'>/trɪˈmendəs/</span> → âm tiết <span class='p-grammar'>2</span><br>
+<span class='hl-green'>✓ Đáp án B: <b>employee</b></span> — đuôi <span class='p-grammar'>-ee</span>, trọng âm âm tiết cuối.<br>
+<span class='hl-red'>A, C, D</span>: trọng âm âm tiết <b>2</b>.`
+},
+
+// ===== EX3 =====
+{s:"ex3",n:1,
+ q:"_____ my family applied the Save Our Energy rules, our monthly use of electricity went down.",
+ opts:[
+   {l:"A",t:"Until"},
+   {l:"B",t:"After"},
+   {l:"C",t:"While"},
+   {l:"D",t:"Till"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Sau khi gia đình tôi áp dụng các quy tắc Tiết kiệm Năng lượng, lượng điện tiêu thụ hàng tháng của chúng tôi đã giảm."</div>
+<b>Phân tích 4 đáp án:</b><br>
+• A. <span class='p-word'>Until</span> = <span class='p-mean'>cho đến khi</span> (hành động kết thúc khi điều kiện xảy ra)<br>
+• B. <span class='p-word'>After</span> = <span class='p-mean'>sau khi</span> — sự kiện A xảy ra trước, B xảy ra sau<br>
+• C. <span class='p-word'>While</span> = <span class='p-mean'>trong khi</span> (2 hành động đồng thời)<br>
+• D. <span class='p-word'>Till</span> = <span class='p-mean'>cho đến khi</span> (tương tự Until)<br>
+<span class='hl-green'>✓ B. After</span> — logic chuỗi: áp dụng quy tắc TRƯỚC → điện giảm SAU.<br>
+<span class='hl-red'>A, D sai</span>: "until/till" nghĩa là "cho đến khi," không phù hợp.<br>
+<span class='hl-red'>C sai</span>: "while" cần 2 hành động diễn ra cùng lúc.`
+},
+{s:"ex3",n:2,
+ q:"What do you like about shopping at a _____ store?",
+ opts:[
+   {l:"A",t:"inconvenient"},
+   {l:"B",t:"convenience"},
+   {l:"C",t:"convenient"},
+   {l:"D",t:"conveniently"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Bạn thích điều gì khi mua sắm ở một cửa hàng tiện lợi?"</div>
+<b>Phân tích cụm từ cố định (Collocation):</b><br>
+• Trong tiếng Anh, chúng ta sử dụng danh từ ghép <span class='p-grammar'>"convenience store"</span> (cửa hàng tiện lợi). Đây là một cụm cố định, KHÔNG dùng tính từ "convenient" đứng trước "store".<br>
+• A. <span class='p-word'>inconvenient</span> = bất tiện (tính từ)<br>
+• B. <span class='p-word'>convenience</span> = sự tiện lợi (danh từ) → tạo thành cụm <b>convenience store</b> ✓<br>
+• C. <span class='p-word'>convenient</span> = tiện lợi (tính từ - thường là bẫy gây nhầm lẫn)<br>
+• D. <span class='p-word'>conveniently</span> = một cách tiện lợi (trạng từ)<br>
+<span class='hl-green'>✓ Đáp án B: convenience</span>.`
+},
+{s:"ex3",n:3,
+ q:"You should shop online for electrical goods because they _____.",
+ opts:[
+   {l:"A",t:"often are cheaper"},
+   {l:"B",t:"are cheaper often"},
+   {l:"C",t:"often cheaper"},
+   {l:"D",t:"are often cheaper"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Bạn nên mua sắm trực tuyến các mặt hàng điện vì chúng thường rẻ hơn."</div>
+<b>Quy tắc vị trí trạng từ tần suất (adverb of frequency):</b><br>
+<span class='p-grammar'>Trạng từ tần suất (often, always, usually...)</span> đứng <b>trước tính từ/trạng từ</b> nhưng <b>sau động từ to be</b>.<br>
+• A. <span class='hl-red'>often are cheaper</span> — "often" đặt trước "are" là SAI.<br>
+• B. <span class='hl-red'>are cheaper often</span> — "often" đặt sau cùng không tự nhiên.<br>
+• C. <span class='hl-red'>often cheaper</span> — thiếu động từ "are".<br>
+• D. <span class='hl-green'>are often cheaper</span> — <span class='p-grammar'>be + often + adj</span> ✓<br>
+<span class='hl-green'>✓ D</span>: <b>be + often + comparative adjective</b> — đúng cấu trúc.`
+},
+{s:"ex3",n:4,
+ q:"As soon as it _____ raining, we will leave.",
+ opts:[
+   {l:"A",t:"stops"},
+   {l:"B",t:"stop"},
+   {l:"C",t:"had stop"},
+   {l:"D",t:"stopped"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: "Ngay khi trời ngừng mưa, chúng tôi sẽ rời đi."</div>
+<b>Quy tắc mệnh đề thời gian chỉ tương lai:</b><br>
+<span class='p-grammar'>As soon as / when / before / after + mệnh đề thời gian → dùng thì HIỆN TẠI ĐƠN (không dùng will/would)</span><br>
+• Mệnh đề chính: "we will leave" → tương lai<br>
+• Mệnh đề thời gian "as soon as it _____" → <b>hiện tại đơn</b><br>
+• Chủ ngữ "it" → động từ phải thêm <b>-s</b> → <b>stops</b><br>
+<span class='hl-green'>✓ A. stops</span> — hiện tại đơn, ngôi thứ 3 số ít.<br>
+<span class='hl-red'>C, D sai</span>: không dùng quá khứ trong mệnh đề thời gian chỉ tương lai.`
+},
+{s:"ex3",n:5,
+ q:"A(n) _____ is one where all the participants are physically in the same place.",
+ opts:[
+   {l:"A",t:"video conference"},
+   {l:"B",t:"online discussion"},
+   {l:"C",t:"social media"},
+   {l:"D",t:"face-to-face meeting"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Một _____ là nơi tất cả người tham gia có mặt vật lý ở cùng một chỗ."</div>
+<b>Phân tích từ vựng chủ đề giao tiếp:</b><br>
+• A. <span class='p-word'>video conference</span> = <span class='p-mean'>hội nghị video</span> — qua màn hình, KHÔNG cùng chỗ<br>
+• B. <span class='p-word'>online discussion</span> = <span class='p-mean'>thảo luận trực tuyến</span> — qua mạng<br>
+• C. <span class='p-word'>social media</span> = <span class='p-mean'>mạng xã hội</span> — nền tảng trực tuyến<br>
+• D. <span class='p-word'>face-to-face meeting</span> = <span class='p-mean'>cuộc họp/gặp mặt trực tiếp</span> — <b>physically in the same place</b> ✓<br>
+<span class='hl-green'>✓ D</span>: "face-to-face" = gặp mặt trực tiếp, cùng địa điểm vật lý.<br>
+<span class='hl-red'>A, B sai</span>: đây là hình thức giao tiếp trực tuyến, không cùng địa điểm.`
+},
+{s:"ex3",n:6,
+ q:"If you _____ online, you _____ great bargains at any time of the year.",
+ opts:[
+   {l:"A",t:"shop – can often get"},
+   {l:"B",t:"shop – can get often"},
+   {l:"C",t:"will shop – can often get"},
+   {l:"D",t:"will shop – often can get"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: "Nếu bạn mua sắm trực tuyến, bạn thường có thể tìm được hàng giá rẻ vào bất kỳ thời điểm nào trong năm."</div>
+<b>Câu điều kiện loại 0 (Zero Conditional):</b><br>
+<span class='p-grammar'>If + present simple, present simple / can + V</span><br>
+Diễn tả sự thật, thói quen chung.<br>
+• A. <span class='hl-green'>shop – can often get</span> → If + Hiện tại đơn, can + often + V ✓<br>
+• B. <span class='hl-red'>shop – can get often</span> → vị trí "often" sai (should be before verb)<br>
+• C. <span class='hl-red'>will shop</span> → mệnh đề "if" KHÔNG dùng "will"<br>
+• D. <span class='hl-red'>will shop – often can get</span> → cả hai đều sai<br>
+<span class='hl-green'>✓ A</span>: cấu trúc điều kiện + vị trí trạng từ "often" chuẩn.`
+},
+{s:"ex3",n:7,
+ q:"When I make a _____ to my mother with my smartphone, I can see her on the phone screen.",
+ opts:[
+   {l:"A",t:"text message"},
+   {l:"B",t:"phone call"},
+   {l:"C",t:"video call"},
+   {l:"D",t:"voice call"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-rans">📌 Dịch: "Khi tôi thực hiện một cuộc _____ cho mẹ bằng điện thoại thông minh, tôi có thể nhìn thấy bà trên màn hình điện thoại."</div>
+<b>Từ khóa: "I can SEE her on the phone screen"</b> → phải nhìn thấy hình ảnh!<br>
+• A. <span class='p-word'>text message</span> = <span class='p-mean'>tin nhắn văn bản</span> — chỉ text, không nhìn thấy<br>
+• B. <span class='p-word'>phone call</span> = <span class='p-mean'>cuộc gọi điện thoại</span> — chỉ nghe giọng nói<br>
+• C. <span class='p-word'>video call</span> = <span class='p-mean'>cuộc gọi video</span> — có hình ảnh + âm thanh ✓<br>
+• D. <span class='p-word'>voice call</span> = <span class='p-mean'>cuộc gọi giọng nói</span> — chỉ nghe tiếng<br>
+<span class='hl-green'>✓ C. video call</span> — vì có thể nhìn thấy nhau trên màn hình.`
+},
+{s:"ex3",n:8,
+ q:"At the current time, humans do not have the _____ capacity to communicate by thought.",
+ opts:[
+   {l:"A",t:"telepathy"},
+   {l:"B",t:"holography"},
+   {l:"C",t:"telephone"},
+   {l:"D",t:"face-to-face"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: "Hiện tại, con người không có khả năng _____ để giao tiếp bằng suy nghĩ."</div>
+<b>Từ khóa: "communicate by THOUGHT" (giao tiếp bằng suy nghĩ)</b><br>
+• A. <span class='p-word'>telepathy</span> <span class='p-mean'>thần giao cách cảm</span> — khả năng truyền suy nghĩ từ xa ✓<br>
+• B. <span class='p-word'>holography</span> <span class='p-mean'>ảnh ba chiều/hologram</span> — công nghệ hình ảnh 3D<br>
+• C. <span class='p-word'>telephone</span> <span class='p-mean'>điện thoại</span> — thiết bị liên lạc<br>
+• D. <span class='p-word'>face-to-face</span> <span class='p-mean'>mặt đối mặt</span> — gặp gỡ trực tiếp<br>
+<span class='hl-green'>✓ A. telepathy</span> — giao tiếp bằng suy nghĩ/tâm trí, không cần lời nói.`
+},
+{s:"ex3",n:9,
+ q:"We _____ lunch in a restaurant in Japan when the whole building _____ to shake.",
+ opts:[
+   {l:"A",t:"had – started"},
+   {l:"B",t:"were having – started"},
+   {l:"C",t:"were having – was starting"},
+   {l:"D",t:"had – was starting"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Chúng tôi đang ăn trưa ở một nhà hàng tại Nhật khi cả tòa nhà bắt đầu rung chuyển."</div>
+<b>Quy tắc: Quá khứ tiếp diễn + Quá khứ đơn</b><br>
+<span class='p-grammar'>Past Continuous (was/were + V-ing) + when + Past Simple</span><br>
+→ Hành động đang diễn ra thì bị gián đoạn bởi hành động khác.<br>
+• "We _____ lunch" — hành động đang xảy ra → <span class='p-grammar'>were having</span> (quá khứ tiếp diễn)<br>
+• "the building _____ to shake" — hành động gián đoạn bất ngờ → <span class='p-grammar'>started</span> (quá khứ đơn)<br>
+<span class='hl-green'>✓ B. were having – started</span><br>
+<span class='hl-red'>C sai</span>: "was starting" sai — start = hành động tức thì, không dùng tiếp diễn.<br>
+<span class='hl-red'>A sai</span>: "had lunch" = đã ăn xong, không phải đang ăn.`
+},
+{s:"ex3",n:10,
+ q:"Mr. Ferdinand _____ a tornado coming towards him while he _____ on a highway.",
+ opts:[
+   {l:"A",t:"saw – drove"},
+   {l:"B",t:"was seeing – drove"},
+   {l:"C",t:"was seeing – was driving"},
+   {l:"D",t:"saw – was driving"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Ông Ferdinand nhìn thấy một cơn lốc xoáy đang tiến về phía ông trong khi ông đang lái xe trên đường cao tốc."</div>
+<b>Quy tắc quan trọng:</b><br>
+• <span class='p-grammar'>see</span> là <b>stative verb (động từ trạng thái)</b> — KHÔNG dùng dạng tiếp diễn!<br>
+→ "was seeing" là <span class='hl-red'>SAI</span>, phải dùng <span class='p-grammar'>saw</span> (quá khứ đơn)<br>
+• "while he _____ on a highway" — hành động đang diễn ra liên tục → <span class='p-grammar'>was driving</span> (quá khứ tiếp diễn)<br>
+<span class='hl-green'>✓ D. saw – was driving</span><br>
+<span class='hl-red'>B, C sai</span>: "was seeing" — động từ tri giác <b>see</b> không dùng dạng tiếp diễn.`
+},
+{s:"ex3",n:11,
+ q:"It's not her calculator. _____ is over there!",
+ opts:[
+   {l:"A",t:"She"},
+   {l:"B",t:"Her"},
+   {l:"C",t:"Hers"},
+   {l:"D",t:"Herself"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: "Đó không phải máy tính của cô ấy. Cái của cô ấy ở kia kìa!"</div>
+<b>Phân tích đại từ sở hữu (Possessive Pronouns):</b><br>
+• A. <span class='p-word'>She</span> = <span class='p-mean'>cô ấy</span> (đại từ chủ ngữ — subject pronoun)<br>
+• B. <span class='p-word'>Her</span> = <span class='p-mean'>của cô ấy</span> (tính từ sở hữu, đứng TRƯỚC danh từ: her calculator)<br>
+• C. <span class='p-word'>Hers</span> = <span class='p-mean'>cái của cô ấy</span> (đại từ sở hữu, THAY THẾ cho "her + noun") ✓<br>
+• D. <span class='p-word'>Herself</span> = <span class='p-mean'>chính cô ấy</span> (đại từ phản thân)<br>
+<span class='hl-green'>✓ C. Hers</span> — đại từ sở hữu thay cho "her calculator."<br>
+<span class='hl-red'>B sai</span>: "Her" cần đứng trước danh từ: "Her calculator is over there" — nhưng câu này chủ ngữ đứng một mình không có danh từ theo sau.`
+},
+{s:"ex3",n:12,
+ q:"When the earthquake _____, they were doing their homework.",
+ opts:[
+   {l:"A",t:"would happen"},
+   {l:"B",t:"happens"},
+   {l:"C",t:"happened"},
+   {l:"D",t:"had happened"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: "Khi trận động đất xảy ra, họ đang làm bài tập về nhà."</div>
+<b>Quy tắc: Quá khứ đơn + Quá khứ tiếp diễn</b><br>
+• "they <span class='p-grammar'>were doing</span> their homework" → hành động đang diễn ra (quá khứ tiếp diễn)<br>
+• "When the earthquake _____" → hành động gián đoạn bất ngờ → <span class='p-grammar'>Past Simple</span><br>
+<span class='hl-green'>✓ C. happened</span> — quá khứ đơn, động từ dừng đột ngột.<br>
+<span class='hl-red'>A sai</span>: "would happen" dùng trong câu điều kiện/tương lai trong quá khứ.<br>
+<span class='hl-red'>B sai</span>: "happens" là hiện tại đơn — không phù hợp ngữ cảnh quá khứ.<br>
+<span class='hl-red'>D sai</span>: "had happened" (quá khứ hoàn thành) dùng khi sự việc xảy ra TRƯỚC một mốc quá khứ khác.`
+},
+{s:"ex3",n:13,
+ q:"Tom isn't here _____ the moment. He'll be back _____ five minutes.",
+ opts:[
+   {l:"A",t:"in / on"},
+   {l:"B",t:"at / on"},
+   {l:"C",t:"in / in"},
+   {l:"D",t:"at / in"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Tom không ở đây vào lúc này. Anh ấy sẽ quay lại sau năm phút nữa."</div>
+<b>Giới từ thời gian:</b><br>
+• <span class='p-grammar'>at the moment</span> = <span class='p-mean'>vào lúc này / ngay bây giờ</span> ✓ (cụm cố định)<br>
+• <span class='p-grammar'>in + khoảng thời gian</span> = <span class='p-mean'>sau... (nữa)</span> ✓ → "in five minutes" = sau 5 phút nữa<br>
+<span class='hl-green'>✓ D. at / in</span><br>
+<span class='hl-red'>A sai</span>: "in the moment" không phải cụm chuẩn trong tiếng Anh British/American.<br>
+<span class='hl-red'>B sai</span>: "at five minutes" không có nghĩa — phải là "in five minutes."<br>
+<span class='hl-red'>C sai</span>: "in the moment" và "in five minutes" — cái đầu vẫn sai.`
+},
+{s:"ex3",n:14,
+ q:"Nam said to me that he _____ to me the Saturday before.",
+ opts:[
+   {l:"A",t:"wrote"},
+   {l:"B",t:"has written"},
+   {l:"C",t:"was writing"},
+   {l:"D",t:"had written"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Nam nói với tôi rằng anh ấy đã viết thư cho tôi vào thứ Bảy trước đó."</div>
+<b>Quy tắc Lùi thì trong Câu tường thuật (Reported Speech):</b><br>
+<span class='p-grammar'>Past Simple → Past Perfect (had + V3)</span><br>
+• Câu gốc: "I <b>wrote</b> to you the Saturday before." (quá khứ đơn)<br>
+• → Câu tường thuật: he <span class='p-grammar'>had written</span> to me... (quá khứ hoàn thành)<br>
+<span class='hl-green'>✓ D. had written</span><br>
+<span class='hl-red'>A sai</span>: "wrote" không lùi thì trong câu tường thuật.<br>
+<span class='hl-red'>B sai</span>: "has written" là hiện tại hoàn thành — không hợp lệ ở đây.<br>
+<span class='hl-red'>C sai</span>: "was writing" là quá khứ tiếp diễn — ngụ ý đang viết dở, không phải đã viết.`
+},
+{s:"ex3",n:15,
+ q:"Technology _____ at school help students increase creativity and communication.",
+ opts:[
+   {l:"A",t:"applicants"},
+   {l:"B",t:"apply"},
+   {l:"C",t:"applications"},
+   {l:"D",t:"appliances"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: "Các ứng dụng công nghệ ở trường học giúp học sinh tăng cường sự sáng tạo và khả năng giao tiếp."</div>
+<b>Phân tích từ vựng:</b><br>
+• A. <span class='p-word'>applicants</span> = <span class='p-mean'>người nộp đơn/ứng viên</span> — người, không phải vật<br>
+• B. <span class='p-word'>apply</span> = <span class='p-mean'>áp dụng/nộp đơn</span> (động từ — không làm chủ ngữ trực tiếp ở đây)<br>
+• C. <span class='p-word'>applications</span> = <span class='p-mean'>ứng dụng (app)/sự áp dụng</span> ✓<br>
+• D. <span class='p-word'>appliances</span> = <span class='p-mean'>thiết bị gia dụng</span> (máy giặt, tủ lạnh...)<br>
+<span class='hl-green'>✓ C. applications</span> — "technology applications" = ứng dụng công nghệ.<br>
+<span class='hl-red'>D sai</span>: "appliances" là đồ dùng gia đình, không phải ứng dụng công nghệ trong giáo dục.`
+},
+{s:"ex3",n:16,
+ q:"Few _____ have had a greater influence on mankind than the computer.",
+ opts:[
+   {l:"A",t:"invent"},
+   {l:"B",t:"inventors"},
+   {l:"C",t:"inventions"},
+   {l:"D",t:"inventing"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: "Ít phát minh nào có ảnh hưởng lớn hơn đến nhân loại so với máy tính."</div>
+<b>Phân tích từ loại:</b><br>
+<span class='p-grammar'>Cấu trúc: Few + DANH TỪ SỐ NHIỀU + have had...</span><br>
+• A. <span class='p-word'>invent</span> = <span class='p-mean'>phát minh ra</span> (động từ — sai từ loại)<br>
+• B. <span class='p-word'>inventors</span> = <span class='p-mean'>nhà phát minh</span> (danh từ chỉ người — nghĩa không hợp lý)<br>
+• C. <span class='p-word'>inventions</span> = <span class='p-mean'>những phát minh</span> (danh từ số nhiều ✓)<br>
+• D. <span class='p-word'>inventing</span> = <span class='p-mean'>việc phát minh</span> (danh động từ/gerund — không phù hợp sau "few")<br>
+<span class='hl-green'>✓ C. inventions</span> — danh từ số nhiều theo sau "few."<br>
+<span class='hl-red'>B sai</span>: "Few inventors have had..." có thể đúng ngữ pháp nhưng sai nghĩa — câu nói về phát minh, không phải nhà phát minh.`
+},
+{s:"ex3",n:17,
+ q:"They bought that house last month. It is _____.",
+ opts:[
+   {l:"A",t:"hers"},
+   {l:"B",t:"theirs"},
+   {l:"C",t:"ours"},
+   {l:"D",t:"yours"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Họ đã mua ngôi nhà đó tháng trước. Đó là của họ."</div>
+<b>Đại từ sở hữu (Possessive Pronouns):</b><br>
+• A. <span class='p-word'>hers</span> = <span class='p-mean'>của cô ấy</span> (chủ thể là she)<br>
+• B. <span class='p-word'>theirs</span> = <span class='p-mean'>của họ</span> (chủ thể là they) ✓<br>
+• C. <span class='p-word'>ours</span> = <span class='p-mean'>của chúng tôi</span> (chủ thể là we)<br>
+• D. <span class='p-word'>yours</span> = <span class='p-mean'>của bạn</span> (chủ thể là you)<br>
+<span class='hl-green'>✓ B. theirs</span> — câu đầu đề cập "They," nên sở hữu phải là <b>theirs</b>.<br>
+<span class='hl-red'>A, C, D sai</span>: sai đại từ sở hữu — không khớp chủ thể "they."`
+},
+{s:"ex3",n:18,
+ q:"You can call my friends and me. _____ are willing to help you.",
+ opts:[
+   {l:"A",t:"Us"},
+   {l:"B",t:"Our"},
+   {l:"C",t:"They"},
+   {l:"D",t:"We"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Bạn có thể gọi cho bạn bè tôi và tôi. Chúng tôi sẵn lòng giúp bạn."</div>
+<b>Đại từ chủ ngữ (Subject Pronouns):</b><br>
+<span class='p-grammar'>Cấu trúc: _____ are willing</span> → cần <b>đại từ CHỦ NGỮ</b><br>
+• A. <span class='p-word'>Us</span> = chúng tôi (tân ngữ — object pronoun, sai vị trí chủ ngữ)<br>
+• B. <span class='p-word'>Our</span> = của chúng tôi (tính từ sở hữu — sai từ loại)<br>
+• C. <span class='p-word'>They</span> = họ (ngôi thứ 3 số nhiều — không bao gồm "me")<br>
+• D. <span class='p-word'>We</span> = chúng tôi (đại từ chủ ngữ ngôi thứ 1 số nhiều ✓)<br>
+<span class='hl-green'>✓ D. We</span> — "my friends and me" = "we" khi là chủ ngữ.<br>
+<span class='hl-red'>A sai</span>: "Us are willing" — sai ngữ pháp hoàn toàn.`
+},
+{s:"ex3",n:19,
+ q:'"I went to see him yesterday", she said. → She said she _____ to him the day before.',
+ opts:[
+   {l:"A",t:"goes"},
+   {l:"B",t:"has gone"},
+   {l:"C",t:"went"},
+   {l:"D",t:"had gone"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Tôi đã đi gặp anh ấy hôm qua" → Cô ấy nói rằng cô ấy đã đi gặp anh ấy vào ngày hôm trước đó.</div>
+<b>Lùi thì trong Câu tường thuật:</b><br>
+<span class='p-grammar'>Past Simple (went) → Past Perfect (had gone)</span><br>
+• "yesterday" → "the day before" (cũng thay đổi theo quy tắc tường thuật)<br>
+• "I <b>went</b>" (quá khứ đơn) → she <span class='p-grammar'>had gone</span> (quá khứ hoàn thành)<br>
+<span class='hl-green'>✓ D. had gone</span><br>
+<span class='hl-red'>C sai</span>: "went" không lùi thì — sai quy tắc tường thuật.<br>
+<span class='hl-red'>A sai</span>: "goes" là hiện tại đơn — hoàn toàn sai.<br>
+<span class='hl-red'>B sai</span>: "has gone" là hiện tại hoàn thành — không lùi đủ thì.`
+},
+{s:"ex3",n:20,
+ q:"Thu said all students _____ a meeting the following week.",
+ opts:[
+   {l:"A",t:"would have"},
+   {l:"B",t:"will have had"},
+   {l:"C",t:"will have"},
+   {l:"D",t:"would have had"}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: "Thu nói rằng tất cả học sinh sẽ có một cuộc họp vào tuần sau."</div>
+<b>Lùi thì: will → would trong câu tường thuật:</b><br>
+<span class='p-grammar'>Câu gốc: "All students WILL HAVE a meeting next week."</span><br>
+→ Tường thuật: <span class='p-grammar'>will → would</span><br>
+• "next week" → "the following week" ✓<br>
+<span class='hl-green'>✓ A. would have</span> — will have → would have.<br>
+<span class='hl-red'>B, C sai</span>: không được dùng "will" trong câu tường thuật (đã có động từ tường thuật ở quá khứ "said").<br>
+<span class='hl-red'>D sai</span>: "would have had" nghĩa là "đáng lẽ đã có" (câu điều kiện loại 3) — không phù hợp.`
+},
+{s:"ex3",n:21,
+ q:'Mr. Hawk told me that he would give me his answer the _____ day.',
+ opts:[
+   {l:"A",t:"previous day"},
+   {l:"B",t:"following"},
+   {l:"C",t:"before"},
+   {l:"D",t:"last"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Ông Hawk nói với tôi rằng ông sẽ cho tôi câu trả lời vào ngày hôm sau."</div>
+<b>Thay đổi trạng từ thời gian trong câu tường thuật:</b><br>
+<span class='p-grammar'>next day / the next day → the following day</span><br>
+• "would give" → sự kiện sẽ xảy ra TRONG TƯƠNG LAI (tương lai trong quá khứ)<br>
+→ "the following day" = ngày tiếp theo sau (ngày hôm sau)<br>
+<span class='hl-green'>✓ B. following</span> — "the following day" = ngày hôm sau đó.<br>
+<span class='hl-red'>A sai</span>: "the previous day" = ngày hôm trước (không phù hợp — sự kiện chưa xảy ra).<br>
+<span class='hl-red'>C sai</span>: "the before day" — không phải cấu trúc chuẩn.<br>
+<span class='hl-red'>D sai</span>: "the last day" = ngày cuối cùng, không liên quan.`
+},
+{s:"ex3",n:22,
+ q:"A social robot can send a text message to _____ owner to remind them of dinner time in the future.",
+ opts:[
+   {l:"A",t:"I"},
+   {l:"B",t:"they"},
+   {l:"C",t:"its"},
+   {l:"D",t:"it"}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: "Một robot xã hội có thể gửi tin nhắn cho chủ nhân của nó để nhắc về giờ ăn tối trong tương lai."</div>
+<b>Tính từ sở hữu cho vật/người thứ 3 số ít (it):</b><br>
+<span class='p-grammar'>Cấu trúc: send... to _____ owner</span> → cần tính từ sở hữu trước "owner"<br>
+• "a social robot" = it → <span class='p-grammar'>its</span> (tính từ sở hữu của it)<br>
+• A. <span class='hl-red'>I</span> — đại từ chủ ngữ ngôi 1, không làm tính từ sở hữu<br>
+• B. <span class='hl-red'>they</span> — đại từ chủ ngữ ngôi 3 số nhiều, sai<br>
+• C. <span class='hl-green'>its</span> — tính từ sở hữu của "it" ✓<br>
+• D. <span class='hl-red'>it</span> — đại từ tân ngữ, không làm tính từ sở hữu<br>
+<span class='hl-green'>✓ C. its</span>.`
+},
+{s:"ex3",n:23,
+ q:'She said, "You must connect to the Internet to work online." → She said that I _____ connect to the Internet to work online.',
+ opts:[
+   {l:"A",t:"will"},
+   {l:"B",t:"had to"},
+   {l:"C",t:"might"},
+   {l:"D",t:"could"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Cô ấy nói rằng tôi phải kết nối Internet để làm việc trực tuyến."</div>
+<b>Lùi thì modal trong câu tường thuật:</b><br>
+<span class='p-grammar'>must (obligation) → had to</span><br>
+• "You <b>must</b> connect..." → "I <span class='p-grammar'>had to</span> connect..."<br>
+Lưu ý: "must" khi chỉ <b>nghĩa vụ/bắt buộc</b> → <span class='p-grammar'>had to</span> trong tường thuật.<br>
+<span class='hl-green'>✓ B. had to</span><br>
+<span class='hl-red'>A sai</span>: "will" không phải dạng lùi thì của "must."<br>
+<span class='hl-red'>C sai</span>: "might" = có thể (không chắc) — nghĩa khác hoàn toàn.<br>
+<span class='hl-red'>D sai</span>: "could" là lùi thì của "can" (khả năng), không phải "must" (bắt buộc).`
+},
+{s:"ex3",n:24,
+ q:"Ann said that she _____ there in the evening.",
+ opts:[
+   {l:"A",t:"is going to be"},
+   {l:"B",t:"can be"},
+   {l:"C",t:"will be"},
+   {l:"D",t:"was going to be"}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: "Ann nói rằng cô ấy sẽ ở đó vào buổi tối."</div>
+<b>Lùi thì trong câu tường thuật:</b><br>
+<span class='p-grammar'>am/is/are going to → was/were going to</span><br>
+• Câu gốc: "I <b>am going to be</b> there in the evening."<br>
+→ Tường thuật (said = quá khứ): she <span class='p-grammar'>was going to be</span> there...<br>
+<span class='hl-green'>✓ D. was going to be</span><br>
+<span class='hl-red'>A sai</span>: "is going to be" — không lùi thì, vi phạm quy tắc tường thuật.<br>
+<span class='hl-red'>C sai</span>: "will be" — không lùi thì.<br>
+<span class='hl-red'>B sai</span>: "can be" — sai nghĩa và sai thì.`
+},
+{s:"ex3",n:25,
+ q:"Ngoc wanted to know what time _____.",
+ opts:[
+   {l:"A",t:"does the film begin"},
+   {l:"B",t:"the film began"},
+   {l:"C",t:"did the film begin"},
+   {l:"D",t:"the film begins"}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: "Ngọc muốn biết bộ phim bắt đầu lúc mấy giờ."</div>
+<b>Câu hỏi gián tiếp (Indirect Questions):</b><br>
+<span class='p-grammar'>Quy tắc: question word + S + V (trật tự câu khẳng định, không đảo ngữ)</span><br>
+• "wanted to know" (quá khứ) → lùi thì: begins → <span class='p-grammar'>began</span><br>
+• Trật tự: <b>what time + the film + began</b> (không đảo ngữ)<br>
+<span class='hl-green'>✓ B. the film began</span> — câu hỏi gián tiếp, lùi thì, không đảo ngữ.<br>
+<span class='hl-red'>A, C sai</span>: "does/did the film begin" — đảo ngữ (chỉ dùng trong câu hỏi trực tiếp).<br>
+<span class='hl-red'>D sai</span>: "begins" — không lùi thì sau "wanted" (quá khứ).`
+},
+{s:"ex3",n:26,
+ q:'A: "The earthquake yesterday destroyed their house." – B: _____',
+ opts:[
+   {l:"A",t:"Yes, I know it."},
+   {l:"B",t:"Yes, I don't like it."},
+   {l:"C",t:"That's awful."},
+   {l:"D",t:"They should stay inside."}
+ ],
+ ans:"C",
+ expl:`<div class="viet-trans">📌 Dịch: A: "Trận động đất hôm qua đã phá hủy nhà của họ." – B: "Thật khủng khiếp."</div>
+<b>Chức năng giao tiếp: Bày tỏ sự đồng cảm/thương cảm (Expressing Sympathy)</b><br>
+• A. <span class='hl-red'>"Yes, I know it."</span> — phản ứng lạnh lùng, thiếu đồng cảm<br>
+• B. <span class='hl-red'>"Yes, I don't like it."</span> — phản ứng không phù hợp với tin buồn nghiêm trọng<br>
+• C. <span class='hl-green'>"That's awful."</span> = <span class='p-mean'>Thật kinh khủng/khủng khiếp</span> — bày tỏ sự đồng cảm phù hợp ✓<br>
+• D. <span class='hl-red'>"They should stay inside."</span> — lời khuyên không phù hợp<br>
+<span class='hl-green'>✓ C</span>: "That's awful" là phản ứng tự nhiên, đồng cảm trước một tin buồn.`
+},
+{s:"ex3",n:27,
+ q:'A: "The teacher said that I failed the exam again." – B: _____',
+ opts:[
+   {l:"A",t:"I passed it."},
+   {l:"B",t:"I'm sorry to hear that."},
+   {l:"C",t:"Why are you so sad?"},
+   {l:"D",t:"I don't agree with you."}
+ ],
+ ans:"B",
+ expl:`<div class="viet-trans">📌 Dịch: A: "Thầy nói rằng tôi lại trượt kỳ thi." – B: "Tôi rất tiếc khi nghe điều đó."</div>
+<b>Chức năng giao tiếp: Bày tỏ sự tiếc nuối/đồng cảm</b><br>
+• A. <span class='hl-red'>"I passed it."</span> — nói về mình, không liên quan<br>
+• B. <span class='hl-green'>"I'm sorry to hear that."</span> = <span class='p-mean'>Tôi rất tiếc khi nghe điều đó</span> ✓ — phản ứng đồng cảm chuẩn<br>
+• C. <span class='hl-red'>"Why are you so sad?"</span> — hỏi ngớ ngẩn, người nói đã giải thích lý do<br>
+• D. <span class='hl-red'>"I don't agree with you."</span> — không phù hợp<br>
+<span class='hl-green'>✓ B</span>: "I'm sorry to hear that" là cụm thành ngữ bày tỏ tiếc nuối phổ biến.`
+},
+{s:"ex3",n:28,
+ q:'A: "They lost all of their property in the storm last month." – B: _____',
+ opts:[
+   {l:"A",t:"What awful news! I'm sorry."},
+   {l:"B",t:"No, I'm sorry."},
+   {l:"C",t:"Can you speak louder?"},
+   {l:"D",t:"I think they can."}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: A: "Họ đã mất tất cả tài sản trong cơn bão tháng trước." – B: "Thật là tin tức kinh khủng! Tôi rất tiếc."</div>
+<b>Chức năng giao tiếp: Phản ứng với tin buồn nghiêm trọng</b><br>
+• A. <span class='hl-green'>"What awful news! I'm sorry."</span> — bày tỏ shock + tiếc thương ✓<br>
+• B. <span class='hl-red'>"No, I'm sorry."</span> — phủ định không hợp lý<br>
+• C. <span class='hl-red'>"Can you speak louder?"</span> — hỏi âm lượng — hoàn toàn lạc đề<br>
+• D. <span class='hl-red'>"I think they can."</span> — không rõ nghĩa, không phù hợp<br>
+<span class='hl-green'>✓ A</span>: "What awful news!" = thán từ bày tỏ sự kinh hoàng + "I'm sorry" = tiếc thương.`
+},
+{s:"ex3",n:29,
+ q:'A: "I left my new mobile phone on the bus yesterday." – B: _____',
+ opts:[
+   {l:"A",t:"I didn't know that."},
+   {l:"B",t:"Can you say that again?"},
+   {l:"C",t:"I know what you mean."},
+   {l:"D",t:"Oh, I'm sorry to hear that."}
+ ],
+ ans:"D",
+ expl:`<div class="viet-trans">📌 Dịch: A: "Tôi đã bỏ quên điện thoại mới của mình trên xe buýt hôm qua." – B: "Ồ, tôi rất tiếc khi nghe điều đó."</div>
+<b>Chức năng giao tiếp: Bày tỏ sự tiếc nuối/đồng cảm</b><br>
+• A. <span class='hl-red'>"I didn't know that."</span> — phản ứng vô cảm<br>
+• B. <span class='hl-red'>"Can you say that again?"</span> — hỏi lại — không phù hợp khi nghe rõ<br>
+• C. <span class='hl-red'>"I know what you mean."</span> — không thích hợp với tin buồn cụ thể<br>
+• D. <span class='hl-green'>"Oh, I'm sorry to hear that."</span> = <span class='p-mean'>Ồ, tôi rất tiếc khi nghe điều đó</span> ✓<br>
+<span class='hl-green'>✓ D</span>: bày tỏ sự đồng cảm tự nhiên nhất khi ai đó gặp chuyện không may.`
+},
+{s:"ex3",n:30,
+ q:'A: "All groups must submit their school fair plan to me by Thursday so I can..." – B: "_____"',
+ opts:[
+   {l:"A",t:"Sorry for interrupting, but I think the deadline is Friday."},
+   {l:"B",t:"The school fair is a good idea."},
+   {l:"C",t:"You're kidding. Who can do that?"},
+   {l:"D",t:"I agree with you."}
+ ],
+ ans:"A",
+ expl:`<div class="viet-trans">📌 Dịch: A: "Tất cả các nhóm phải nộp kế hoạch hội chợ trường cho tôi trước thứ Năm để tôi có thể..." – B: "Xin lỗi vì đã ngắt lời, nhưng tôi nghĩ hạn chót là thứ Sáu."</div>
+<b>Chức năng giao tiếp: Ngắt lời lịch sự để sửa thông tin (Polite Interruption)</b><br>
+• A. <span class='hl-green'>"Sorry for interrupting, but I think the deadline is Friday."</span> — ngắt lời lịch sự + sửa thông tin ✓<br>
+• B. <span class='hl-red'>"The school fair is a good idea."</span> — không liên quan đến hạn nộp<br>
+• C. <span class='hl-red'>"You're kidding. Who can do that?"</span> — thái độ không lịch sự<br>
+• D. <span class='hl-red'>"I agree with you."</span> — đồng ý trong khi có thể thông tin sai<br>
+<span class='hl-green'>✓ A</span>: "Sorry for interrupting" = cụm ngắt lời lịch sự, sau đó cung cấp thông tin đính chính.`
+}
+];
+
+// ============================
+//  SHUFFLE
+// ============================
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ============================
+//  BUILD BACKGROUND SHAPES
+// ============================
+(function buildShapes(){
+  const colors=['#8bdeda','#43add0','#998ee0','#e17dc2','#ef9393'];
+  const shapes=['★','✦','♦','●','▲','♥','✿','◈'];
+  const container=document.getElementById('bgShapes');
+  for(let i=0;i<38;i++){
+    const el=document.createElement('span');
+    el.className='shape';
+    const c=colors[i%colors.length];
+    const s=shapes[i%shapes.length];
+    const size=16+Math.random()*28;
+    const left=Math.random()*100;
+    const dur=12+Math.random()*18;
+    const delay=Math.random()*18;
+    el.textContent=s;
+    el.style.cssText=`left:${left}%;font-size:${size}px;color:${c};animation-duration:${dur}s;animation-delay:${delay}s;filter:drop-shadow(0 0 6px ${c}88);`;
+    container.appendChild(el);
+  }
+})();
+
+// ============================
+//  RENDER QUIZ
+// ============================
+let userAnswers={};
+let shuffledOpts={};
+
+function renderQuiz(){
+  const container=document.getElementById('quizContainer');
+  let html='';
+  let curSection='';
+
+  questions.forEach((q,idx)=>{
+    // Section banner
+    if(q.s!==curSection){
+      curSection=q.s;
+      const sec=sections.find(s=>s.id===curSection);
+      html+=`<div class="section-banner">📚 ${sec.title}</div>`;
+    }
+
+    // Shuffle options
+    const opts=shuffle([...q.opts]);
+    shuffledOpts[idx]=opts;
+
+    // Build option buttons
+    let optHtml='';
+    opts.forEach(o=>{
+      optHtml+=`<button class="opt-btn" onclick="selectAnswer(${idx},'${o.l}')" id="opt-${idx}-${o.l}" data-val="${o.l}">${o.t}</button>`;
+    });
+
+    html+=`
+    <div class="q-card" id="card-${idx}">
+      <span class="q-num">Câu ${q.n}</span>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${idx}">${optHtml}</div>
+      <div class="expl-box" id="expl-${idx}">${q.expl}</div>
+    </div>`;
+  });
+
+  container.innerHTML=html;
+}
+
+// ============================
+//  SELECT ANSWER
+// ============================
+function selectAnswer(qIdx,chosen){
+  if(userAnswers[qIdx]!==undefined) return; // already answered
+  userAnswers[qIdx]=chosen;
+  const q=questions[qIdx];
+  const correct=q.ans;
+
+  // Disable all buttons
+  const opts=document.querySelectorAll(`#opts-${qIdx} .opt-btn`);
+  opts.forEach(btn=>{
+    btn.disabled=true;
+    const val=btn.getAttribute('data-val');
+    if(val===correct){btn.classList.add('correct');}
+    else if(val===chosen){btn.classList.add('wrong');}
+  });
+
+  // Show explanation
+  document.getElementById(`expl-${qIdx}`).classList.add('show');
+
+  if(chosen===correct){
+    playDing();
+    spawnConfetti(document.getElementById(`card-${qIdx}`));
+  } else {
+    playBuzz();
+  }
+}
+
+// ============================
+//  WEB AUDIO / MEME AUDIO
+// ============================
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx;
+function getCtx(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx;}
+
+function playDing(){
+  try{
+    const ctx=getCtx();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type='sine';
+    osc.frequency.setValueAtTime(880,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320,ctx.currentTime+0.12);
+    gain.gain.setValueAtTime(0.4,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.5);
+    osc.start();osc.stop(ctx.currentTime+0.5);
+  }catch(e){}
+}
+
+function playBuzz(){
+  // Chơi hiệu ứng âm thanh ối dồi ôi khi sai
+  wrongAudio.currentTime = 0;
+  wrongAudio.play().catch(e => console.log("Lỗi âm thanh: ", e));
+}
+
+// ============================
+//  CONFETTI
+// ============================
+function spawnConfetti(cardEl){
+  const colors=['#8bdeda','#43add0','#998ee0','#e17dc2','#ef9393','#ffdd57','#ff6b81'];
+  const rect=cardEl.getBoundingClientRect();
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top+rect.height/2;
+  for(let i=0;i<22;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    const x=cx+(-60+Math.random()*120);
+    const dur=0.8+Math.random()*0.7;
+    piece.style.cssText=`left:${x}px;top:${cy}px;background:${c};transform:rotate(${Math.random()*360}deg);animation-duration:${dur}s;`;
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),dur*1000+100);
+  }
+}
+
+// ============================
+//  SUBMIT LOGIC
+// ============================
+function openSubmit(){
+  document.getElementById('nameModal').classList.add('show');
+  document.getElementById('studentName').focus();
+}
+
+document.getElementById('studentName').addEventListener('keydown',e=>{
+  if(e.key==='Enter') submitQuiz();
+});
+
+function submitQuiz(){
+  const nameInput=document.getElementById('studentName');
+  const name=nameInput.value.trim();
+  if(!name){
+    nameInput.classList.add('err');
+    document.getElementById('nameErr').style.display='block';
+    setTimeout(()=>{nameInput.classList.remove('err');},400);
+    return;
+  }
+  document.getElementById('nameModal').classList.remove('show');
+  showResult(name);
+}
+
+function showResult(name){
+  const total=questions.length;
+  let correct=0;
+  questions.forEach((q,i)=>{
+    if(userAnswers[i]===q.ans) correct++;
+  });
+  const pct=Math.round(correct/total*100);
+
+  let msg,meme;
+  if(pct===100){
+    msg=`🌟 THIÊN TÀI TUYỆT ĐỐI! <b>${name}</b> đã chinh phục 100%!`;
+    meme='https://media.giphy.com/media/g9582DNuQppxC/giphy.gif';
+  } else if(pct>=60){
+    msg=`🎉 Xuất sắc lắm, <b>${name}</b>! Tiếp tục cố gắng nhé!`;
+    meme='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
+  } else {
+    msg=`💪 Cố lên, <b>${name}</b>! Ôn thêm là sẽ thành công thôi!`;
+    meme='https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif';
+  }
+
+  document.getElementById('resultContent').innerHTML=`
+    <div style="font-size:1.5rem;font-weight:900;color:#2d2550;margin-bottom:6px;">🏆 KẾT QUẢ</div>
+    <div class="result-score">${correct} / ${total}</div>
+    <div style="font-size:1.1rem;color:#555;margin-bottom:6px;">${pct}% chính xác</div>
+    <div class="result-msg">${msg}</div>
+    <img class="meme-img" src="${meme}" alt="result meme" onerror="this.style.display='none'">
+    <div style="font-size:.9rem;color:#888;margin-top:8px;">Giáo viên: MS Chí Nên – ULIS</div>
+  `;
+  document.getElementById('resultModal').classList.add('show');
+
+  // Fireworks if high score
+  if(pct>=80){
+    for(let i=0;i<5;i++){
+      setTimeout(()=>{
+        const fake=document.createElement('div');
+        fake.style.cssText=`position:fixed;left:${10+Math.random()*80}%;top:${10+Math.random()*60}%;`;
+        document.body.appendChild(fake);
+        spawnConfetti(fake);
+        setTimeout(()=>fake.remove(),200);
+      },i*300);
+    }
+  }
+}
+
+// Init
+renderQuiz();
+</script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

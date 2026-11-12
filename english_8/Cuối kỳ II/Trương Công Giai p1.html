@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn Tập HK II – Tiếng Anh THCS Trương Công Giai</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pk:#ff75c3; --or:#ffa647; --ye:#ffe83f; --gr:#9fff5b; --cy:#70e2ff; --pu:#cd93ff; 
+  --ok:#00D26A; --err:#FF4757;
+  --glass:rgba(15, 23, 42, 0.85); 
+  --gborder:rgba(255, 255, 255, 0.25);
+  --shadow:0 12px 40px rgba(0, 0, 0, 0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;color:#fff}
+.bg{position:fixed;inset:0;z-index:-2;background:linear-gradient(135deg,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff,#ff75c3);background-size:400% 400%;animation:bgflow 14s ease infinite}
+@keyframes bgflow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* Hiệu ứng vật bay bay nâng cấp */
+.float-layer{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.floater{position:absolute;opacity:0;animation:floatUp linear infinite;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3))}
+@keyframes floatUp{
+  0%{transform:translateY(110vh) translateX(0) rotate(0deg) scale(0.6);opacity:0}
+  15%{opacity:0.8}
+  85%{opacity:0.6}
+  100%{transform:translateY(-15vh) translateX(var(--drift)) rotate(540deg) scale(1.2);opacity:0}
+}
+
+/* GIAO DIỆN MÀN HÌNH KHÓA */
+#passwordModal {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
+}
+.pw-card {
+  background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+  border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
+  max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+  box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+}
+.pw-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572);
+}
+.pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+.pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
+.pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
+.pw-input {
+  width:100%; padding:13px 20px; border-radius:12px;
+  border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
+  color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif;
+  outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
+}
+.pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
+.pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
+.pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
+.pw-btn {
+  width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+  background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+  color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif;
+  cursor:pointer; letter-spacing:.5px; transition:transform .2s;
+}
+.pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+.pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
+
+/* BẢNG CẢNH BÁO */
+.warning-banner {
+  background: rgba(255, 0, 0, 0.15);
+  border: 2px solid #FF4757;
+  border-left: 8px solid #FF4757;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 auto 20px;
+  max-width: 780px;
+  text-align: justify;
+  box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);
+  animation: pulse-warn 2s infinite;
+}
+@keyframes pulse-warn {
+  0% { box-shadow: 0 0 10px rgba(255, 71, 87, 0.2); border-color: #FF4757; }
+  50% { box-shadow: 0 0 25px rgba(255, 232, 63, 0.5); border-color: #ffe83f; }
+  100% { box-shadow: 0 0 10px rgba(255, 71, 87, 0.2); border-color: #FF4757; }
+}
+.warning-banner h3 { color: #ffe83f; font-size: 1.1rem; margin-bottom: 8px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.warning-banner p { color: #fff; font-size: 0.95rem; line-height: 1.6; font-weight: 600; }
+.warning-banner span.highlight { color: #9fff5b; font-weight: 900; text-decoration: underline; text-decoration-color: #ff75c3; }
+
+header{text-align:center;padding:12px 16px 6px;position:relative;z-index:10}
+header h1{font-size:1.18rem;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,0.5);color:#fff;letter-spacing:.3px}
+header p{font-size:.78rem;opacity:1;font-weight:800;margin-top:2px;color:#ffe83f;text-shadow:0 1px 3px rgba(0,0,0,0.6)}
+
+.prog-wrap{max-width:780px;margin:0 auto 8px;padding:0 16px}
+.prog-bar{height:8px;background:rgba(0,0,0,.4);border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+.prog-fill{height:100%;background:linear-gradient(90deg,#00D26A,#ffe83f);border-radius:99px;transition:width .4s ease;width:0%}
+.prog-txt{font-size:.75rem;font-weight:800;text-align:right;margin-top:4px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+
+.qwrap{max-width:780px;margin:0 auto;padding:0 14px 120px}
+.sec-title{background:rgba(0, 0, 0, 0.65);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px 16px;margin:18px 0 10px;font-size:.9rem;font-weight:900;font-style:italic;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+
+.qcard{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--gborder);border-radius:20px;box-shadow:var(--shadow);padding:22px 18px;margin-bottom:16px}
+.qnum{font-size:.75rem;font-weight:900;color:#70e2ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.qtext{font-size:1.15rem;font-weight:800;line-height:1.55;margin-bottom:16px;color:#fff;}
+.qtext u{text-decoration:underline;text-decoration-color:#ff75c3;text-decoration-thickness: 3px;font-weight:900}
+
+.optgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.optgrid{grid-template-columns:1fr}}
+
+.opt{background:rgba(255, 255, 255, 0.1);border:2px solid rgba(255,255,255,.3);border-radius:16px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;cursor:pointer;text-align:left;transition:all .2s;box-shadow:0 4px 10px rgba(0,0,0,.2),0 6px 0 rgba(0,0,0,.2);word-break:break-word;position:relative}
+.opt u{text-decoration:underline;text-decoration-color:#ff75c3;text-decoration-thickness: 2px;}
+.opt:hover:not(:disabled){transform:translateY(-3px) scale(1.02);box-shadow:0 8px 20px rgba(0,0,0,.3),0 9px 0 rgba(0,0,0,.2);background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.6)}
+.opt.correct{background:var(--ok)!important;border-color:#00935a!important;box-shadow:0 4px 20px rgba(0,210,106,.5),0 6px 0 #00874a!important;animation:cpop .4s ease;color:#fff}
+.opt.wrong{background:var(--err)!important;border-color:#c7303a!important;box-shadow:0 4px 20px rgba(255,71,87,.5),0 6px 0 #a31e28!important;animation:shake .5s ease;color:#fff}
+.opt:disabled{cursor:default}
+
+/* FORMAT CHUẨN MỚI CHO GIẢI THÍCH */
+.exbox{display:none;margin-top:16px;background:rgba(0, 0, 0, 0.75);backdrop-filter:blur(10px);border:1px solid rgba(112, 226, 255, 0.4);border-radius:14px;padding:16px;font-size:.97rem;line-height:1.75;color:#f8fafc;animation:slidedn .4s ease;box-shadow:inset 0 0 20px rgba(0,0,0,0.5)}
+.exbox.show{display:block}
+.exbox h4{font-size:.85rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:#ffe83f}
+.exbox ol{padding-left:18px;margin-bottom:0}
+.exbox li{margin-bottom:8px}
+
+.p-word { color: #70e2ff; font-weight: 900; } /* [Màu Xanh dương] Từ vựng tiếng Anh */
+.p-phonetic { color: #cd93ff; background: rgba(205,147,255,.15); padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: .95em; } /* [Màu Tím nền nhạt] Phiên âm IPA */
+.p-mean { color: #ffa647; font-weight: 800; } /* [Màu Đất nung] Nghĩa tiếng Việt */
+.p-grammar { text-decoration: underline; text-decoration-color: #FF4757; color: #ffb5bd; font-weight: 800; } /* [Gạch chân Đỏ] Ngữ pháp/Cấu trúc */
+.hl-green { color: #9fff5b; font-weight: 900; } /* [Màu Xanh lá, in đậm] Điểm mấu chốt tại sao đúng */
+.hl-red { color: #ff7b8a; text-decoration: line-through; font-weight: 800; } /* [Màu Đỏ sậm gạch ngang] Lỗi sai/bẫy */
+
+.vnt{background:rgba(255,165,71,.2);border-left:4px solid #ffa647;padding:8px 12px;border-radius:0 8px 8px 0;margin:6px 0 10px;font-weight:800;color:#fff9e6;font-style:italic;font-size:.95rem}
+.wt{background:rgba(255,255,255,.15);border-radius:6px;padding:2px 6px;font-size:.75rem;font-weight:800;margin-left:3px;vertical-align:middle;color:#fff}
+
+.sub-wrap{text-align:center;padding:16px 0 28px}
+.btn-sub{background:linear-gradient(135deg,#ff75c3,#cd93ff);border:none;border-radius:20px;padding:15px 34px;font-family:'Nunito',sans-serif;font-size:1.12rem;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 6px 20px rgba(255,117,195,.4),0 10px 0 rgba(130,40,100,.5);transition:all .2s;letter-spacing:.3px}
+.btn-sub:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(255,117,195,.5),0 14px 0 rgba(130,40,100,.6)}
+
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.ov.show{display:flex}
+.mbox{background:linear-gradient(135deg,rgba(25, 25, 45, 0.95),rgba(40, 20, 50, 0.95));border:2px solid rgba(255,255,255,.3);border-radius:24px;padding:28px 24px;max-width:440px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:mpin .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes mpin{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.mbox h2{font-size:1.45rem;font-weight:900;margin-bottom:8px;color:#fff}
+.mbox p{font-size:.97rem;margin-bottom:14px;color:#cbd5e1}
+.ninput{width:100%;padding:12px 14px;border-radius:12px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.4);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:#fff;outline:none;margin-bottom:5px;transition:border-color .2s}
+.ninput::placeholder{color:rgba(255,255,255,.4)}
+.ninput:focus{border-color:#ffe83f;background:rgba(0,0,0,.6)}
+.ninput.err{border-color:#FF4757!important;animation:shake .5s}
+.errmsg{color:#FF4757;font-size:.85rem;font-weight:800;min-height:16px;margin-bottom:10px}
+.btn-ok{background:linear-gradient(135deg,#9fff5b,#70e2ff);border:none;border-radius:13px;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:#1e293b;cursor:pointer;box-shadow:0 5px 14px rgba(159,255,91,.3), 0 6px 0 rgba(70, 180, 50, 1);transition:transform .15s}
+.btn-ok:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(159,255,91,.4), 0 9px 0 rgba(70, 180, 50, 1);}
+
+.rgrade{font-size:3.5rem;margin:8px 0 4px;animation:boucein .6s}
+@keyframes boucein{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.rname{font-size:1.35rem;font-weight:900;color:#ffe83f;margin-bottom:6px;text-shadow:0 2px 4px rgba(0,0,0,0.5)}
+.rscore{font-size:2rem;font-weight:900;color:#fff;margin:10px 0}
+.rmeme{width:180px;height:140px;object-fit:cover;border-radius:14px;margin:12px auto;display:block;border:3px solid rgba(255,255,255,.3)}
+.smeter{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,0.2);border-radius:99px;height:12px;margin:8px 0 16px;overflow:hidden}
+.sfill{height:100%;border-radius:99px;background:linear-gradient(90deg,#ff75c3,#9fff5b);transition:width 1s ease}
+.btn-retry{background:linear-gradient(135deg,#ffa647,#ffe83f);border:none;border-radius:13px;padding:11px 26px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;color:#1e293b;cursor:pointer;margin-top:8px;box-shadow:0 5px 14px rgba(255,165,71,.3), 0 6px 0 rgba(200, 100, 20, 1);transition:transform .15s}
+.btn-retry:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,165,71,.4), 0 9px 0 rgba(200, 100, 20, 1)}
+
+.conf{position:fixed;pointer-events:none;z-index:9999;animation:cfall linear forwards}
+@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<audio id="errAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/File%20nghe%20Ket%20A2/huh_sound_effect-www_tiengdong_com.mp3"></audio>
+<audio id="bgmAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/harry_potter_2.mp3"></audio>
+
+<div class="bg"></div>
+<div class="float-layer" id="floatLayer"></div>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div id="mainContent" style="display:none;">
+  <header>
+    <h1>📚 ÔN TẬP HỌC KỲ II – TIẾNG ANH THCS</h1>
+    <p>✏️ Giáo viên tạo: MS Chí Nên – ULIS &nbsp;|&nbsp; Trường THCS Trương Công Giai</p>
+  </header>
+
+  <div class="warning-banner">
+    <h3>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG TỪ MS Chí Nên:</h3>
+    <p>Việc các em chỉ click chọn đáp án cho xong bài sẽ <b>KHÔNG GIÚP CÁC EM TIẾN BỘ!</b> Bí kíp thực sự để giỏi tiếng Anh là bắt buộc phải <span class="highlight">ĐỌC KỸ GIẢI THÍCH CHI TIẾT</span> ở từng câu, hiểu rõ tại sao đúng tại sao sai, sau đó <span class="highlight">GHI CHÉP TỪ VỰNG & CẤU TRÚC</span> mới vào vở. Làm bài hời hợt, không đọc giải thích chỉ tốn thời gian vô ích. Hãy học thật sự!</p>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-txt" id="progTxt">0 / 53 câu đã trả lời</div>
+  </div>
+
+  <div class="qwrap" id="qwrap"></div>
+</div>
+
+<div class="ov" id="nameOv">
+  <div class="mbox">
+    <h2>🎯 Nộp Bài & Xem Kết Quả</h2>
+    <p>Nhập tên của bạn để nhận kết quả nhé!</p>
+    <input class="ninput" id="nameIn" type="text" placeholder="Ví dụ: Nguyễn Văn A...">
+    <div class="errmsg" id="errMsg"></div>
+    <button class="btn-ok" onclick="submitName()">✅ Xem Kết Quả!</button>
+  </div>
+</div>
+
+<div class="ov" id="resultOv">
+  <div class="mbox">
+    <div class="rgrade" id="rGrade">🌟</div>
+    <div class="rname" id="rName"></div>
+    <div id="rMsg" style="font-size:1rem;margin-bottom:6px;opacity:.9;color:#fff"></div>
+    <div class="rscore" id="rScore"></div>
+    <div class="smeter"><div class="sfill" id="sFill" style="width:0%"></div></div>
+    <img class="rmeme" id="rMeme" src="" alt="meme">
+    <br>
+    <button class="btn-retry" onclick="retry()">🔄 Làm Lại Bài</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// BẢO MẬT MẬT KHẨU
+// ============================================================
+const _k  = [54, 54, 56, 56]; 
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    
+    // Play Background Music
+    const bgm = document.getElementById('bgmAudio');
+    bgm.volume = 0.4; // Giảm âm lượng nhạc nền
+    bgm.play().catch(e => console.log("Trình duyệt chặn autoplay audio"));
+
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+
+// ============================================================
+// FLOATING ELEMENTS
+// ============================================================
+const FLOATERS=['🚀','🛸','🛰️','🪐','👽','☄️','🌠','🌟','✨','💻','📱','🔋','🪄','⚡'];
+const fl=document.getElementById('floatLayer');
+for(let i=0;i<32;i++){
+  const d=document.createElement('div');
+  d.className='floater';
+  d.textContent=FLOATERS[i%FLOATERS.length];
+  const dir = Math.random() > 0.5 ? 1 : -1;
+  const drift = 30 + Math.random() * 60;
+  d.style.cssText=`left:${Math.random()*100}%;font-size:${18+Math.random()*30}px;animation-duration:${10+Math.random()*16}s;animation-delay:${Math.random()*15}s;--drift:${dir * drift}px`;
+  fl.appendChild(d);
+}
+
+// ============================================================
+// AUDIO CHO ĐÚNG/SAI
+// ============================================================
+const AC=new (window.AudioContext||window.webkitAudioContext)();
+function playOk(){
+  if(AC.state==='suspended') AC.resume();
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.connect(g);g.connect(AC.destination);
+  o.frequency.setValueAtTime(520,AC.currentTime);
+  o.frequency.exponentialRampToValueAtTime(880,AC.currentTime+.12);
+  g.gain.setValueAtTime(.35,AC.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+.45);
+  o.start();o.stop(AC.currentTime+.45);
+}
+function playErr(){
+  // Chơi file MP3 bạn đã cung cấp khi trả lời sai
+  const errAudio = document.getElementById('errAudio');
+  errAudio.currentTime = 0;
+  errAudio.play();
+}
+
+function confetti(){
+  const colors=['#ff75c3','#ffa647','#ffe83f','#9fff5b','#70e2ff','#cd93ff'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');
+    c.className='conf';
+    c.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.5}s`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),(3+Math.random()*2)*1000);
+  }
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+// QUESTION DATA (1-53) - FORMAT CHUẨN 4 BƯỚC CỦA MS Chí Nên
+// ============================================================
+const QS=[
+  // ── SECTION 1: PRONUNCIATION (1-10) ──────────────────────────────
+  {s:'📢 PHẦN 1 – PHÁT ÂM: Chọn từ có phần gạch chân được phát âm KHÁC với ba từ còn lại.',
+   q:'1. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['cr<u>a</u>ter','pl<u>a</u>net','sp<u>a</u>ceship','<u>a</u>lien'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần gạch chân <u>a</u> được phát âm khác với các từ còn lại.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>crater</span> <span class='p-phonetic'>/ˈkreɪtər/</span>: <span class='p-mean'>miệng núi lửa</span><br>
+  - <span class='p-word'>planet</span> <span class='p-phonetic'>/ˈplænɪt/</span>: <span class='p-mean'>hành tinh</span><br>
+  - <span class='p-word'>spaceship</span> <span class='p-phonetic'>/ˈspeɪsʃɪp/</span>: <span class='p-mean'>tàu vũ trụ</span><br>
+  - <span class='p-word'>alien</span> <span class='p-phonetic'>/ˈeɪliən/</span>: <span class='p-mean'>người ngoài hành tinh</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>planet</span> là đáp án đúng vì chữ 'a' được phát âm là <span class='p-phonetic'>/æ/</span> (âm a bẹt, há miệng rộng).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>crater, spaceship, alien</span> đều sai vì phần gạch chân của chúng đều được phát âm là <span class='p-phonetic'>/eɪ/</span> (âm đôi).</li>
+</ol>`},
+
+  {q:'2. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['invent<u>ed</u>','develop<u>ed</u>','stress<u>ed</u>','danc<u>ed</u>'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần đuôi <u>-ed</u> được phát âm khác với các từ còn lại.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>invented</span> <span class='p-phonetic'>/ɪnˈvɛntɪd/</span>: <span class='p-mean'>đã phát minh</span><br>
+  - <span class='p-word'>developed</span> <span class='p-phonetic'>/dɪˈvɛləpt/</span>: <span class='p-mean'>đã phát triển</span><br>
+  - <span class='p-word'>stressed</span> <span class='p-phonetic'>/strɛst/</span>: <span class='p-mean'>đã căng thẳng</span><br>
+  - <span class='p-word'>danced</span> <span class='p-phonetic'>/dɑːnst/</span>: <span class='p-mean'>đã nhảy múa</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>invented</span> là đúng vì gốc từ kết thúc bằng âm /t/, áp dụng <span class='p-grammar'>Quy tắc phát âm -ed</span> đọc là <span class='p-phonetic'>/ɪd/</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>developed, stressed, danced</span> đều sai vì các từ gốc kết thúc bằng âm vô thanh (/p/, /s/), nên đuôi -ed phải đọc là <span class='p-phonetic'>/t/</span>.</li>
+</ol>`},
+
+  {q:'3. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['class<u>es</u>','lens<u>es</u>','teach<u>es</u>','classmat<u>es</u>'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần đuôi <u>-es</u> được phát âm khác với các từ còn lại.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>classes</span> <span class='p-phonetic'>/ˈklɑːsɪz/</span>: <span class='p-mean'>các lớp học</span><br>
+  - <span class='p-word'>lenses</span> <span class='p-phonetic'>/ˈlɛnzɪz/</span>: <span class='p-mean'>các thấu kính</span><br>
+  - <span class='p-word'>teaches</span> <span class='p-phonetic'>/ˈtiːtʃɪz/</span>: <span class='p-mean'>dạy học</span><br>
+  - <span class='p-word'>classmates</span> <span class='p-phonetic'>/ˈklɑːsmeɪts/</span>: <span class='p-mean'>bạn cùng lớp</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>classmates</span> đúng vì từ gốc kết thúc bằng âm /t/ (vô thanh), theo <span class='p-grammar'>Quy tắc phát âm s/es</span>, nó được đọc là <span class='p-phonetic'>/s/</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>classes, lenses, teaches</span> sai vì kết thúc bằng âm rít (/s/, /z/, /tʃ/) nên đuôi -es được phát âm là <span class='p-phonetic'>/ɪz/</span>.</li>
+</ol>`},
+
+  {q:'4. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['r<u>o</u>cket','s<u>o</u>ldier','s<u>o</u>lar','<u>o</u>ppose'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần gạch chân <u>o</u> được phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>rocket</span> <span class='p-phonetic'>/ˈrɒkɪt/</span>: <span class='p-mean'>tên lửa</span><br>
+  - <span class='p-word'>soldier</span> <span class='p-phonetic'>/ˈsəʊldʒər/</span>: <span class='p-mean'>người lính</span><br>
+  - <span class='p-word'>solar</span> <span class='p-phonetic'>/ˈsəʊlər/</span>: <span class='p-mean'>thuộc mặt trời</span><br>
+  - <span class='p-word'>oppose</span> <span class='p-phonetic'>/əˈpəʊz/</span>: <span class='p-mean'>phản đối</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>rocket</span> đúng vì chữ 'o' được phát âm là <span class='p-phonetic'>/ɒ/</span> (âm o ngắn).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>soldier, solar, oppose</span> sai vì chữ 'o' trong các từ này đều phát âm là <span class='p-phonetic'>/əʊ/</span> (âm đôi).</li>
+</ol>`},
+
+  {q:'5. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['c<u>o</u>ntact','c<u>o</u>mputer','d<u>o</u>cument','c<u>o</u>nference'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có chữ <u>o</u> phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>contact</span> <span class='p-phonetic'>/ˈkɒntækt/</span>: <span class='p-mean'>liên lạc</span><br>
+  - <span class='p-word'>computer</span> <span class='p-phonetic'>/kəmˈpjuːtər/</span>: <span class='p-mean'>máy tính</span><br>
+  - <span class='p-word'>document</span> <span class='p-phonetic'>/ˈdɒkjumənt/</span>: <span class='p-mean'>tài liệu</span><br>
+  - <span class='p-word'>conference</span> <span class='p-phonetic'>/ˈkɒnfərəns/</span>: <span class='p-mean'>hội nghị</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>computer</span> đúng vì âm tiết chứa chữ 'o' không nhận trọng âm, nên bị biến thành âm schwa <span class='p-phonetic'>/ə/</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>contact, document, conference</span> sai vì chữ 'o' đều nhận trọng âm và đọc là <span class='p-phonetic'>/ɒ/</span>.</li>
+</ol>`},
+
+  {q:'6. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['f<u>a</u>ce','c<u>a</u>ncer','pl<u>a</u>net','l<u>a</u>ptop'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có chữ <u>a</u> phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>face</span> <span class='p-phonetic'>/feɪs/</span>: <span class='p-mean'>khuôn mặt</span><br>
+  - <span class='p-word'>cancer</span> <span class='p-phonetic'>/ˈkænsər/</span>: <span class='p-mean'>bệnh ung thư</span><br>
+  - <span class='p-word'>planet</span> <span class='p-phonetic'>/ˈplænɪt/</span>: <span class='p-mean'>hành tinh</span><br>
+  - <span class='p-word'>laptop</span> <span class='p-phonetic'>/ˈlæptɒp/</span>: <span class='p-mean'>máy tính xách tay</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>face</span> đúng vì chữ 'a' áp dụng quy tắc <span class='p-grammar'>A + phụ âm + E câm</span> nên đọc là <span class='p-phonetic'>/eɪ/</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>cancer, planet, laptop</span> sai vì đều là âm ngắn <span class='p-phonetic'>/æ/</span>.</li>
+</ol>`},
+
+  {q:'7. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['sp<u>a</u>cemen','d<u>ay</u>time','fav<u>ou</u>rite','s<u>u</u>rface'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần gạch chân phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>spacemen</span> <span class='p-phonetic'>/ˈspeɪsmɛn/</span>: <span class='p-mean'>phi hành gia</span><br>
+  - <span class='p-word'>daytime</span> <span class='p-phonetic'>/ˈdeɪtaɪm/</span>: <span class='p-mean'>ban ngày</span><br>
+  - <span class='p-word'>favourite</span> <span class='p-phonetic'>/ˈfeɪvərɪt/</span>: <span class='p-mean'>yêu thích nhất</span><br>
+  - <span class='p-word'>surface</span> <span class='p-phonetic'>/ˈsɜːfɪs/</span>: <span class='p-mean'>bề mặt</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>favourite</span> đúng vì cụm 'ou' được đọc là âm schwa <span class='p-phonetic'>/ə/</span> (thường đây là câu bẫy từ ngoại lệ trong đề thi).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>spacemen, daytime</span> đều có âm <span class='p-phonetic'>/eɪ/</span>, <span class='hl-red'>surface</span> đọc là <span class='p-phonetic'>/ɜː/</span> (câu này hơi lỗi cấu trúc đề gốc vì có 2 âm giống và 2 âm khác, nhưng favourite là odd-one-out điển hình nhất).</li>
+</ol>`},
+
+  {q:'8. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['s<u>u</u>re','fut<u>u</u>re','creat<u>u</u>re','nat<u>u</u>re'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có chữ <u>u</u> (trong cụm -ure) phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>sure</span> <span class='p-phonetic'>/ʃʊər/</span>: <span class='p-mean'>chắc chắn</span><br>
+  - <span class='p-word'>future</span> <span class='p-phonetic'>/ˈfjuːtʃər/</span>: <span class='p-mean'>tương lai</span><br>
+  - <span class='p-word'>creature</span> <span class='p-phonetic'>/ˈkriːtʃər/</span>: <span class='p-mean'>sinh vật</span><br>
+  - <span class='p-word'>nature</span> <span class='p-phonetic'>/ˈneɪtʃər/</span>: <span class='p-mean'>thiên nhiên</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>sure</span> đúng vì phát âm là <span class='p-phonetic'>/ʊər/</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>future, creature, nature</span> sai vì cụm <span class='p-grammar'>-ture</span> luôn được đọc cố định là <span class='p-phonetic'>/tʃər/</span>.</li>
+</ol>`},
+
+  {q:'9. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['en<u>ough</u>','<u>h</u>our','<u>ou</u>ter','f<u>ou</u>nd'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có phần gạch chân phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>enough</span> <span class='p-phonetic'>/ɪˈnʌf/</span>: <span class='p-mean'>đủ</span><br>
+  - <span class='p-word'>hour</span> <span class='p-phonetic'>/ˈaʊər/</span>: <span class='p-mean'>giờ</span><br>
+  - <span class='p-word'>outer</span> <span class='p-phonetic'>/ˈaʊtər/</span>: <span class='p-mean'>bên ngoài</span><br>
+  - <span class='p-word'>found</span> <span class='p-phonetic'>/faʊnd/</span>: <span class='p-mean'>tìm thấy</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>enough</span> đúng vì phần đuôi "ough" phát âm là <span class='p-phonetic'>/ʌf/</span>. Đây là từ vựng bắt buộc phải học thuộc lòng!</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>hour, outer, found</span> sai vì phần gạch chân đều được phát âm là âm đôi <span class='p-phonetic'>/aʊ/</span>.</li>
+</ol>`},
+
+  {q:'10. Chọn từ có phần gạch chân phát âm khác:',
+   opts:['sp<u>ea</u>k','cr<u>ea</u>ture','p<u>ear</u>','l<u>ea</u>st'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Chọn từ có cụm <u>ea</u> phát âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>speak</span> <span class='p-phonetic'>/spiːk/</span>: <span class='p-mean'>nói</span><br>
+  - <span class='p-word'>creature</span> <span class='p-phonetic'>/ˈkriːtʃər/</span>: <span class='p-mean'>sinh vật</span><br>
+  - <span class='p-word'>pear</span> <span class='p-phonetic'>/peər/</span>: <span class='p-mean'>quả lê</span><br>
+  - <span class='p-word'>least</span> <span class='p-phonetic'>/liːst/</span>: <span class='p-mean'>ít nhất</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>pear</span> đúng vì "ear" ở đây đọc là âm đôi <span class='p-phonetic'>/eər/</span> (trường hợp đặc biệt).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>speak, creature, least</span> sai vì "ea" đọc là âm <span class='p-phonetic'>/iː/</span> kéo dài.</li>
+</ol>`},
+
+  // ── SECTION 2: STRESS (11-20) ──────────────────────────────────────
+  {s:'🎵 PHẦN 2 – TRỌNG ÂM: Chọn từ có vị trí nhấn âm KHÁC với ba từ còn lại.',
+   q:'11. Chọn từ có trọng âm khác:',
+   opts:['multimedia','possibility','telepathy','interactive'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>multimedia</span> <span class='p-phonetic'>/ˌmʌltɪˈmiːdiə/</span>: <span class='p-mean'>đa phương tiện</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>possibility</span> <span class='p-phonetic'>/ˌpɒsɪˈbɪlɪti/</span>: <span class='p-mean'>khả năng</span> (Nhấn âm 4)<br>
+  - <span class='p-word'>telepathy</span> <span class='p-phonetic'>/tɪˈlɛpəθi/</span>: <span class='p-mean'>thần giao cách cảm</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>interactive</span> <span class='p-phonetic'>/ˌɪntərˈæktɪv/</span>: <span class='p-mean'>tương tác</span> (Nhấn âm 3)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>telepathy</span> đúng vì trọng âm rơi vào âm tiết thứ 2.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>multimedia, interactive</span> nhấn âm 3, <span class='hl-red'>possibility</span> nhấn âm 4.</li>
+</ol>`},
+
+  {q:'12. Chọn từ có trọng âm khác:',
+   opts:['battery','conference','oversleep','barrier'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>battery</span> <span class='p-phonetic'>/ˈbætəri/</span>: <span class='p-mean'>pin</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>conference</span> <span class='p-phonetic'>/ˈkɒnfərəns/</span>: <span class='p-mean'>hội nghị</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>oversleep</span> <span class='p-phonetic'>/ˌəʊvəˈsliːp/</span>: <span class='p-mean'>ngủ quên</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>barrier</span> <span class='p-phonetic'>/ˈbæriər/</span>: <span class='p-mean'>rào cản</span> (Nhấn âm 1)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>oversleep</span> đúng vì nhấn âm tiết 3. Theo <span class='p-grammar'>quy tắc tiền tố</span>, các động từ có tiền tố "over-" thường không nhận trọng âm ở tiền tố, mà nhấn vào gốc từ (SLEEP).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>battery, conference, barrier</span> sai vì đều là danh từ nhấn âm 1.</li>
+</ol>`},
+
+  {q:'13. Chọn từ có trọng âm khác:',
+   opts:['landline','touchscreen','cyber','replace'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>landline</span> <span class='p-phonetic'>/ˈlændlaɪn/</span>: <span class='p-mean'>điện thoại bàn</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>touchscreen</span> <span class='p-phonetic'>/ˈtʌtʃskriːn/</span>: <span class='p-mean'>màn hình cảm ứng</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>cyber</span> <span class='p-phonetic'>/ˈsaɪbər/</span>: <span class='p-mean'>không gian mạng</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>replace</span> <span class='p-phonetic'>/rɪˈpleɪs/</span>: <span class='p-mean'>thay thế</span> (Nhấn âm 2)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>replace</span> đúng vì nhấn âm tiết 2. Động từ có tiền tố <span class='p-grammar'>"re-"</span> thường nhấn ở âm tiết số 2.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>landline, touchscreen, cyber</span> sai vì đều là danh từ ghép/danh từ nhấn âm 1.</li>
+</ol>`},
+
+  {q:'14. Chọn từ có trọng âm khác:',
+   opts:['visible','discussion','digital','separate'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>visible</span> <span class='p-phonetic'>/ˈvɪzɪbl/</span>: <span class='p-mean'>có thể nhìn thấy</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>discussion</span> <span class='p-phonetic'>/dɪˈskʌʃən/</span>: <span class='p-mean'>cuộc thảo luận</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>digital</span> <span class='p-phonetic'>/ˈdɪdʒɪtl/</span>: <span class='p-mean'>kỹ thuật số</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>separate</span> <span class='p-phonetic'>/ˈsɛpərət/</span>: <span class='p-mean'>riêng biệt</span> (Nhấn âm 1)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>discussion</span> đúng vì nhấn âm tiết 2. Theo <span class='p-grammar'>quy tắc đuôi -ion</span>, trọng âm luôn rơi vào âm tiết liền trước nó.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>visible, digital, separate</span> sai vì đều nhấn âm 1.</li>
+</ol>`},
+
+  {q:'15. Chọn từ có trọng âm khác:',
+   opts:['Japanese','popular','overcome','Vietnamese'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>Japanese</span> <span class='p-phonetic'>/ˌdʒæpəˈniːz/</span>: <span class='p-mean'>người/tiếng Nhật</span> (Nhấn âm 3 - cuối)<br>
+  - <span class='p-word'>popular</span> <span class='p-phonetic'>/ˈpɒpjʊlər/</span>: <span class='p-mean'>phổ biến</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>overcome</span> <span class='p-phonetic'>/ˌəʊvəˈkʌm/</span>: <span class='p-mean'>vượt qua</span> (Nhấn âm 3 - cuối)<br>
+  - <span class='p-word'>Vietnamese</span> <span class='p-phonetic'>/ˌvjɛtnəˈmiːz/</span>: <span class='p-mean'>người/tiếng Việt</span> (Nhấn âm 4 - cuối)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>popular</span> đúng vì nhấn âm tiết 1.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>Japanese, overcome, Vietnamese</span> sai vì đều nhấn âm tiết CUỐI. Đặc biệt ghi nhớ <span class='p-grammar'>đuôi quốc tịch -ese</span> luôn nhận trọng âm vào chính nó.</li>
+</ol>`},
+
+  {q:'16. Chọn từ có trọng âm khác:',
+   opts:['translation','interrupt','Portuguese','disappear'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>translation</span> <span class='p-phonetic'>/trænsˈleɪʃən/</span>: <span class='p-mean'>bản dịch</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>interrupt</span> <span class='p-phonetic'>/ˌɪntəˈrʌpt/</span>: <span class='p-mean'>ngắt lời</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>Portuguese</span> <span class='p-phonetic'>/ˌpɔːtʃʊˈɡiːz/</span>: <span class='p-mean'>tiếng Bồ Đào Nha</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>disappear</span> <span class='p-phonetic'>/ˌdɪsəˈpɪər/</span>: <span class='p-mean'>biến mất</span> (Nhấn âm 3)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>translation</span> đúng vì nhấn âm tiết 2 (do quy tắc đuôi -tion).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>interrupt, Portuguese, disappear</span> sai vì đều nhấn âm tiết 3.</li>
+</ol>`},
+
+  {q:'17. Chọn từ có trọng âm khác:',
+   opts:['technology','holography','communicate','disadvantage'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>technology</span> <span class='p-phonetic'>/tɛkˈnɒlədʒi/</span>: <span class='p-mean'>công nghệ</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>holography</span> <span class='p-phonetic'>/hɒˈlɒɡrəfi/</span>: <span class='p-mean'>kỹ thuật toàn ảnh 3D</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>communicate</span> <span class='p-phonetic'>/kəˈmjuːnɪkeɪt/</span>: <span class='p-mean'>giao tiếp</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>disadvantage</span> <span class='p-phonetic'>/ˌdɪsədˈvɑːntɪdʒ/</span>: <span class='p-mean'>sự bất lợi</span> (Nhấn âm 3)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>disadvantage</span> đúng vì nhấn âm tiết 3 (tiền tố dis- không ảnh hưởng trọng âm, advantage nhấn âm 2, tổng là âm 3).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>technology, holography, communicate</span> sai vì đều nhấn âm 2.</li>
+</ol>`},
+
+  {q:'18. Chọn từ có trọng âm khác:',
+   opts:['connection','attention','fingerprint','invention'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>connection</span> <span class='p-phonetic'>/kəˈnɛkʃən/</span>: <span class='p-mean'>sự kết nối</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>attention</span> <span class='p-phonetic'>/əˈtɛnʃən/</span>: <span class='p-mean'>sự chú ý</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>fingerprint</span> <span class='p-phonetic'>/ˈfɪŋɡərprɪnt/</span>: <span class='p-mean'>dấu vân tay</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>invention</span> <span class='p-phonetic'>/ɪnˈvɛnʃən/</span>: <span class='p-mean'>phát minh</span> (Nhấn âm 2)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>fingerprint</span> đúng vì đây là danh từ ghép (finger + print), trọng âm luôn rơi vào từ cấu tạo đầu tiên (âm tiết 1).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>connection, attention, invention</span> sai vì đều có đuôi -tion, đẩy trọng âm lên âm 2.</li>
+</ol>`},
+
+  {q:'19. Chọn từ có trọng âm khác:',
+   opts:['communication','biometric','application','entertainment'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>communication</span> <span class='p-phonetic'>/kəˌmjuːnɪˈkeɪʃən/</span>: <span class='p-mean'>sự giao tiếp</span> (Nhấn âm 4)<br>
+  - <span class='p-word'>biometric</span> <span class='p-phonetic'>/ˌbaɪəʊˈmɛtrɪk/</span>: <span class='p-mean'>sinh trắc học</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>application</span> <span class='p-phonetic'>/ˌæplɪˈkeɪʃən/</span>: <span class='p-mean'>ứng dụng</span> (Nhấn âm 3)<br>
+  - <span class='p-word'>entertainment</span> <span class='p-phonetic'>/ˌɛntəˈteɪnmənt/</span>: <span class='p-mean'>sự giải trí</span> (Nhấn âm 3)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>communication</span> đúng vì từ này dài tận 5 âm tiết và nhấn âm 4 (ngay trước đuôi -tion).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>biometric, application, entertainment</span> sai vì đều nhấn âm 3.</li>
+</ol>`},
+
+  {q:'20. Chọn từ có trọng âm khác:',
+   opts:['rocket','repair','solar','spaceship'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch câu hỏi:</b> Tìm từ có vị trí trọng âm khác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>rocket</span> <span class='p-phonetic'>/ˈrɒkɪt/</span>: <span class='p-mean'>tên lửa</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>repair</span> <span class='p-phonetic'>/rɪˈpeər/</span>: <span class='p-mean'>sửa chữa</span> (Nhấn âm 2)<br>
+  - <span class='p-word'>solar</span> <span class='p-phonetic'>/ˈsəʊlər/</span>: <span class='p-mean'>thuộc mặt trời</span> (Nhấn âm 1)<br>
+  - <span class='p-word'>spaceship</span> <span class='p-phonetic'>/ˈspeɪsʃɪp/</span>: <span class='p-mean'>tàu vũ trụ</span> (Nhấn âm 1)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>repair</span> đúng vì nó là động từ có 2 âm tiết, nhấn âm 2.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>rocket, solar, spaceship</span> sai vì đều là danh từ/tính từ nhấn âm 1.</li>
+</ol>`},
+
+  // ── SECTION 3: VOCABULARY & GRAMMAR (21–35) ─────────────────────────
+  {s:'📝 PHẦN 3 – TỪ VỰNG & NGỮ PHÁP: Chọn đáp án đúng nhất.',
+   q:'21. Could you ________ in on her face? I want to see her reaction.',
+   opts:['put','view','zoom','show'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Bạn có thể phóng to vào khuôn mặt cô ấy không? Tôi muốn xem phản ứng của cô ấy.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>put</span>: <span class='p-mean'>đặt, để</span><br>
+  - <span class='p-word'>view</span>: <span class='p-mean'>xem, quan sát</span><br>
+  - <span class='p-word'>zoom</span>: <span class='p-mean'>phóng to/thu nhỏ</span><br>
+  - <span class='p-word'>show</span>: <span class='p-mean'>cho thấy</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>zoom</span> đúng vì ta có collocation <span class='p-grammar'>zoom in (on something)</span> mang nghĩa là "phóng to (vào cái gì đó)".</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>put, view, show</span> sai vì không thể đi với giới từ "in on" để tạo thành nghĩa phù hợp.</li>
+</ol>`},
+
+  {q:'22. In ancient Egypt, people used ________ to send messages home from ships at sea.',
+   opts:['smartphones','carrier pigeons','webcams','social network'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Ở Ai Cập cổ đại, người ta dùng ________ để gửi tin nhắn về nhà từ các tàu thuyền trên biển.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>smartphones</span>: <span class='p-mean'>điện thoại thông minh</span><br>
+  - <span class='p-word'>carrier pigeons</span>: <span class='p-mean'>chim bồ câu đưa thư</span><br>
+  - <span class='p-word'>webcams</span>: <span class='p-mean'>camera web</span><br>
+  - <span class='p-word'>social network</span>: <span class='p-mean'>mạng xã hội</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>carrier pigeons</span> đúng. Dựa vào từ khóa <span class='hl-green'>"ancient Egypt"</span> (Ai Cập cổ đại), chỉ có bồ câu đưa thư là phương tiện liên lạc tồn tại thời đó.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>smartphones, webcams, social network</span> sai vì đây đều là công nghệ hiện đại.</li>
+</ol>`},
+
+  {q:'23. ________ occurs when two people look at each other\'s eyes at the same time.',
+   opts:['Eye contact','Conversation','Chatting','Talking'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> ________ xảy ra khi hai người nhìn vào mắt nhau cùng một lúc.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>Eye contact</span>: <span class='p-mean'>giao tiếp bằng mắt</span><br>
+  - <span class='p-word'>Conversation</span>: <span class='p-mean'>cuộc trò chuyện</span><br>
+  - <span class='p-word'>Chatting</span>: <span class='p-mean'>nhắn tin, tán gẫu</span><br>
+  - <span class='p-word'>Talking</span>: <span class='p-mean'>nói chuyện</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>Eye contact</span> đúng vì cụm "look at each other's eyes" chính là định nghĩa chuẩn xác nhất của giao tiếp bằng mắt.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>Conversation, Chatting, Talking</span> sai vì đều là giao tiếp bằng lời nói/chữ viết, không liên quan đến việc nhìn vào mắt.</li>
+</ol>`},
+
+  {q:'24. With ________, people can do their tasks while discussing with others at the same time.',
+   opts:['holography','text messages','emails','voice chats'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Với ________, mọi người có thể làm việc của mình trong khi thảo luận với người khác cùng lúc.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>holography</span>: <span class='p-mean'>công nghệ ảnh 3D hologram</span><br>
+  - <span class='p-word'>text messages</span>: <span class='p-mean'>tin nhắn văn bản</span><br>
+  - <span class='p-word'>emails</span>: <span class='p-mean'>thư điện tử</span><br>
+  - <span class='p-word'>voice chats</span>: <span class='p-mean'>trò chuyện bằng giọng nói</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>voice chats</span> đúng vì khi trò chuyện bằng giọng nói (không cần dùng tay bấm hay mắt nhìn màn hình), ta mới có thể "do tasks" (làm việc khác) đồng thời.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>text messages, emails</span> sai vì cần dùng tay gõ. <span class='hl-red'>holography</span> không phải công cụ đàm thoại rảnh tay trực tiếp phổ biến.</li>
+</ol>`},
+
+  {q:'25. In the future, people will communicate brain-to-brain, using ________.',
+   opts:['telepathy','blog','holography','messenger'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Trong tương lai, con người sẽ giao tiếp não-với-não, sử dụng ________.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>telepathy</span>: <span class='p-mean'>thần giao cách cảm</span><br>
+  - <span class='p-word'>blog</span>: <span class='p-mean'>trang web nhật ký cá nhân</span><br>
+  - <span class='p-word'>holography</span>: <span class='p-mean'>công nghệ ảnh 3D</span><br>
+  - <span class='p-word'>messenger</span>: <span class='p-mean'>ứng dụng tin nhắn</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>telepathy</span> đúng vì từ khóa cực mạnh <span class='p-grammar'>"brain-to-brain"</span> (não kết nối não) chính là định nghĩa của thần giao cách cảm.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>blog, holography, messenger</span> sai vì không có khả năng kết nối trực tiếp sóng não.</li>
+</ol>`},
+
+  {q:'26. ______ allows you to hold meetings with colleagues who are located in different places.',
+   opts:['Face-to-face meeting','Voice message','Telepathy','Video conferencing'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> ______ cho phép bạn tổ chức cuộc họp với đồng nghiệp ở những nơi khác nhau.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>Face-to-face meeting</span>: <span class='p-mean'>họp mặt trực tiếp</span><br>
+  - <span class='p-word'>Voice message</span>: <span class='p-mean'>tin nhắn thoại</span><br>
+  - <span class='p-word'>Telepathy</span>: <span class='p-mean'>thần giao cách cảm</span><br>
+  - <span class='p-word'>Video conferencing</span>: <span class='p-mean'>hội nghị truyền hình</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>Video conferencing</span> đúng vì dựa vào "hold meetings" (họp) + "different places" (nơi khác nhau) = họp trực tuyến/truyền hình.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>Face-to-face meeting</span> sai vì đòi hỏi mọi người ở chung một nơi. <span class='hl-red'>Voice message</span> không phải để họp.</li>
+</ol>`},
+
+  {q:'27. Fingerprint _____________ sometimes need more time than usual to read your fingerprints.',
+   opts:['screens','computers','scanners','printers'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Máy ________ vân tay đôi khi cần nhiều thời gian hơn bình thường để đọc dấu vân tay của bạn.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>screens</span>: <span class='p-mean'>màn hình</span><br>
+  - <span class='p-word'>computers</span>: <span class='p-mean'>máy tính</span><br>
+  - <span class='p-word'>scanners</span>: <span class='p-mean'>máy quét</span><br>
+  - <span class='p-word'>printers</span>: <span class='p-mean'>máy in</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>scanners</span> đúng vì ta có collocation công nghệ <span class='p-grammar'>Fingerprint scanner</span> nghĩa là "máy quét vân tay". Từ "read" (đọc) cũng củng cố cho hành động quét.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>screens, computers, printers</span> sai vì không tạo thành cụm từ mang nghĩa thiết bị đọc vân tay.</li>
+</ol>`},
+
+  {q:'28. With face _____________, you can now unlock your phone by just looking at it!',
+   opts:['recognition','connection','communication','conference'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Với ________ khuôn mặt, giờ bạn có thể mở khóa điện thoại chỉ bằng cách nhìn vào nó!</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>recognition</span>: <span class='p-mean'>sự nhận diện</span><br>
+  - <span class='p-word'>connection</span>: <span class='p-mean'>sự kết nối</span><br>
+  - <span class='p-word'>communication</span>: <span class='p-mean'>sự giao tiếp</span><br>
+  - <span class='p-word'>conference</span>: <span class='p-mean'>hội nghị</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>recognition</span> đúng vì <span class='p-grammar'>Face recognition</span> là cụm từ cố định chỉ "công nghệ nhận diện khuôn mặt".</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>connection, communication, conference</span> sai vì ghép với chữ "face" hoàn toàn không có nghĩa.</li>
+</ol>`},
+
+  {q:'29. Nowadays, the most common _____________ include fingerprint scanning, facial recognition, voice recognition, and iris scanning.',
+   opts:['devices','medicines','chemical elements','biometrics'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Ngày nay, ________ phổ biến nhất bao gồm quét vân tay, nhận diện khuôn mặt, giọng nói và mống mắt.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>devices</span>: <span class='p-mean'>thiết bị</span><br>
+  - <span class='p-word'>medicines</span>: <span class='p-mean'>thuốc men</span><br>
+  - <span class='p-word'>chemical elements</span>: <span class='p-mean'>nguyên tố hóa học</span><br>
+  - <span class='p-word'>biometrics</span>: <span class='p-mean'>công nghệ sinh trắc học</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>biometrics</span> đúng vì toàn bộ những thứ được liệt kê phía sau (vân tay, khuôn mặt, giọng nói) đều là các phương pháp nhận diện sinh học (biometrics).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>devices</span> quá chung chung. <span class='hl-red'>medicines, chemical elements</span> sai hoàn toàn về mặt ngữ nghĩa (thuốc và hóa học không liên quan đến vân tay).</li>
+</ol>`},
+
+  {q:'30. _____________ typically refers to content that can be consumed in seconds or minutes, such as a short video or interactive animation.',
+   opts:['Experience','Experiment','Remote learning','Nanolearning'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> ________ thường đề cập đến nội dung có thể tiêu thụ trong vài giây hoặc vài phút, như video ngắn hoặc hoạt hình tương tác.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>Experience</span>: <span class='p-mean'>trải nghiệm</span><br>
+  - <span class='p-word'>Experiment</span>: <span class='p-mean'>thí nghiệm</span><br>
+  - <span class='p-word'>Remote learning</span>: <span class='p-mean'>học từ xa</span><br>
+  - <span class='p-word'>Nanolearning</span>: <span class='p-mean'>học siêu vi (học với lượng kiến thức cực nhỏ/ngắn)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>Nanolearning</span> đúng. Tiền tố "nano" nghĩa là siêu nhỏ. Dựa vào từ khóa <span class='p-grammar'>"in seconds or minutes"</span> (trong vài giây/phút), đây là định nghĩa chuẩn của phương pháp Nanolearning.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>Remote learning</span> là học online, có thể kéo dài hàng giờ, không liên quan đến yếu tố "vài giây". Các từ còn lại sai nghĩa.</li>
+</ol>`},
+
+  {q:'31. In 1957 the Soviet Union launched the first satellite to _______ the Earth.',
+   opts:['move','orbit','travel','fly'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Năm 1957, Liên Xô phóng vệ tinh nhân tạo đầu tiên để _______ quanh Trái Đất.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>move</span>: <span class='p-mean'>di chuyển</span><br>
+  - <span class='p-word'>orbit</span>: <span class='p-mean'>bay theo quỹ đạo (quay quanh)</span><br>
+  - <span class='p-word'>travel</span>: <span class='p-mean'>du hành, đi lại</span><br>
+  - <span class='p-word'>fly</span>: <span class='p-mean'>bay</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>orbit</span> đúng vì ta có collocation chuyên ngành vũ trụ <span class='p-grammar'>orbit the Earth</span> (quay quanh quỹ đạo Trái Đất).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>move, travel, fly</span> sai vì đây là các từ chuyển động chung chung, không miêu tả được chuyển động quay vòng quanh 1 hành tinh của vệ tinh.</li>
+</ol>`},
+
+  {q:'32. I think the availability of liquid water is the most important factor that makes a planet _______.',
+   opts:['habitable','unsuitable','dead','impossible'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Tôi nghĩ sự hiện diện của nước lỏng là yếu tố quan trọng nhất khiến một hành tinh _______.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>habitable</span>: <span class='p-mean'>có thể sinh sống được, ở được</span><br>
+  - <span class='p-word'>unsuitable</span>: <span class='p-mean'>không phù hợp</span><br>
+  - <span class='p-word'>dead</span>: <span class='p-mean'>chết chóc, không có sự sống</span><br>
+  - <span class='p-word'>impossible</span>: <span class='p-mean'>không thể</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>habitable</span> đúng vì nước (liquid water) là yếu tố mang tính tích cực, nuôi dưỡng sự sống -> làm hành tinh "có thể ở được".</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>unsuitable, dead, impossible</span> sai vì đều mang nghĩa tiêu cực, đi ngược lại logic của câu.</li>
+</ol>`},
+
+  {q:'33. A _______ is an object in space that orbits or circles around a bigger object.',
+   opts:['comet','meteor','planet','satellite'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Một _______ là vật thể trong không gian bay quỹ đạo hoặc xoay xung quanh một vật thể lớn hơn.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>comet</span>: <span class='p-mean'>sao chổi</span><br>
+  - <span class='p-word'>meteor</span>: <span class='p-mean'>thiên thạch, sao băng</span><br>
+  - <span class='p-word'>planet</span>: <span class='p-mean'>hành tinh</span><br>
+  - <span class='p-word'>satellite</span>: <span class='p-mean'>vệ tinh</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>satellite</span> đúng. Đây chính là định nghĩa khoa học của vệ tinh (bao gồm cả Mặt Trăng và vệ tinh nhân tạo) - vật nhỏ quay quanh vật lớn hơn.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>meteor, comet</span> không có quỹ đạo tròn cố định quanh vật thể khác như mô tả. Hành tinh (<span class='hl-red'>planet</span>) quay quanh ngôi sao, nhưng định nghĩa tổng quát "circles around a bigger object" dùng để chỉ satellite là chính xác nhất.</li>
+</ol>`},
+
+  {q:'34. Astronauts can\'t breathe in _______ outer space, so they have to wear a spacesuit with an oxygen tank.',
+   opts:['weightless','thoughtless','powerless','airless'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Các phi hành gia không thể thở trong không gian bên ngoài _______, vì vậy họ phải mặc bộ đồ không gian có bình oxy.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>weightless</span>: <span class='p-mean'>không trọng lượng</span><br>
+  - <span class='p-word'>thoughtless</span>: <span class='p-mean'>thiếu suy nghĩ, vô tâm</span><br>
+  - <span class='p-word'>powerless</span>: <span class='p-mean'>bất lực, không có sức mạnh</span><br>
+  - <span class='p-word'>airless</span>: <span class='p-mean'>không có không khí (chân không)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>airless</span> đúng vì vế sau giải thích rất rõ: <span class='p-grammar'>can't breathe</span> (không thể thở) và <span class='p-grammar'>oxygen tank</span> (cần bình oxy). Không có không khí (air + less) thì mới không thở được.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> Mặc dù không gian cũng <span class='hl-red'>weightless</span> (không trọng lượng), nhưng lý do phải mang BÌNH OXY không liên quan đến trọng lượng mà liên quan đến không khí.</li>
+</ol>`},
+
+  {q:'35. All of the planets in our Solar System, except for _______, were named after Greek and Roman gods.',
+   opts:['Neptune','Jupiter','Earth','Venus'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Tất cả các hành tinh trong Hệ Mặt Trời của chúng ta, ngoại trừ _______, đều được đặt tên theo các vị thần Hy Lạp và La Mã.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>Neptune</span>: <span class='p-mean'>Hải Vương Tinh (tên Thần Biển)</span><br>
+  - <span class='p-word'>Jupiter</span>: <span class='p-mean'>Mộc Tinh (tên Vua các vị thần)</span><br>
+  - <span class='p-word'>Earth</span>: <span class='p-mean'>Trái Đất</span><br>
+  - <span class='p-word'>Venus</span>: <span class='p-mean'>Kim Tinh (tên Thần Tình yêu)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>Earth</span> đúng. Đây là kiến thức thực tế (fact). Trái Đất là hành tinh duy nhất có tên bắt nguồn từ tiếng Anh/Đức cổ (mang nghĩa là "mặt đất"), không phải tên thần.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>Neptune, Jupiter, Venus</span> sai vì chúng thực sự là tên của các vị thần La Mã.</li>
+</ol>`},
+
+  // ── SECTION 4: PREPOSITIONS (36–40) ──────────────────────
+  {s:'🔗 PHẦN 4 – GIỚI TỪ: Chọn giới từ đúng.',
+   q:'36. I left a message _________ your answering machine.',
+   opts:['in','on','above','at'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Tôi đã để lại một tin nhắn _______ máy trả lời tự động của bạn.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>in</span>: <span class='p-mean'>bên trong</span><br>
+  - <span class='p-word'>on</span>: <span class='p-mean'>trên</span><br>
+  - <span class='p-word'>above</span>: <span class='p-mean'>phía trên (không chạm bề mặt)</span><br>
+  - <span class='p-word'>at</span>: <span class='p-mean'>tại (một điểm)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>on</span> đúng. Áp dụng <span class='p-grammar'>Quy tắc giới từ với thiết bị/truyền thông</span>: ta luôn dùng "on" (on the phone, on the internet, on TV, on the answering machine).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>in, above, at</span> sai hoàn toàn về quy tắc kết hợp từ tiếng Anh.</li>
+</ol>`},
+
+  {q:'37. The post office is _________ the bus stop.',
+   opts:['under','in','opposite','Between'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Bưu điện nằm ở _______ trạm xe buýt.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>under</span>: <span class='p-mean'>bên dưới</span><br>
+  - <span class='p-word'>in</span>: <span class='p-mean'>bên trong</span><br>
+  - <span class='p-word'>opposite</span>: <span class='p-mean'>đối diện</span><br>
+  - <span class='p-word'>Between</span>: <span class='p-mean'>ở giữa</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>opposite</span> đúng vì nó đứng trực tiếp trước danh từ (trạm xe buýt) tạo thành nghĩa "nằm đối diện trạm xe buýt".</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>under, in</span> sai logic thực tế (bưu điện không thể nằm dưới hay trong trạm xe buýt). <span class='hl-red'>Between</span> bẫy sai ngữ pháp vì bắt buộc phải đi kèm "and" (between A and B).</li>
+</ol>`},
+
+  {q:'38. On her arrival _________ the airport, she called me.',
+   opts:['on','opposite','next to','at'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Ngay khi cô ấy đến _______ sân bay, cô ấy đã gọi cho tôi.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>on</span>: <span class='p-mean'>trên</span><br>
+  - <span class='p-word'>opposite</span>: <span class='p-mean'>đối diện</span><br>
+  - <span class='p-word'>next to</span>: <span class='p-mean'>bên cạnh</span><br>
+  - <span class='p-word'>at</span>: <span class='p-mean'>tại</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>at</span> đúng vì ta có quy tắc <span class='p-grammar'>arrive at + địa điểm nhỏ cụ thể</span> (như sân bay, nhà ga, bến xe, rạp chiếu phim).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>on</span> không dùng cho sân bay (trừ khi nói 'on the plane'). <span class='hl-red'>opposite, next to</span> là giới từ chỉ vị trí tĩnh, hiếm khi đi ngay sau động từ chỉ sự di chuyển đến "arrive".</li>
+</ol>`},
+
+  {q:'39. One of the differences _________ smartphones and tablets is their size.',
+   opts:['in','between','on','behind'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Một trong những sự khác biệt _______ điện thoại thông minh và máy tính bảng là kích thước của chúng.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>in</span>: <span class='p-mean'>trong</span><br>
+  - <span class='p-word'>between</span>: <span class='p-mean'>giữa</span><br>
+  - <span class='p-word'>on</span>: <span class='p-mean'>trên</span><br>
+  - <span class='p-word'>behind</span>: <span class='p-mean'>đằng sau</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>between</span> đúng vì ta có cấu trúc <span class='p-grammar'>the difference between A and B</span> (sự khác biệt giữa A và B). Ở đây A là smartphones, B là tablets.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>in</span> có thể đi với difference (difference in size - khác biệt về kích thước) nhưng không dùng trước 2 vật thể có "and" ở giữa.</li>
+</ol>`},
+
+  {q:'40. She arrived _________ London _________ March 2023.',
+   opts:['at – on','in – in','at – at','on – in'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Cô ấy đã đến _______ London _______ tháng 3 năm 2023.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>at / on / in</span> là các giới từ chỉ thời gian và nơi chốn.
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>in - in</span> đúng. Chỗ trống 1 áp dụng quy tắc <span class='p-grammar'>arrive in + thành phố/quốc gia lớn</span> (London). Chỗ trống 2 áp dụng quy tắc <span class='p-grammar'>in + tháng / năm</span> (March 2023).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>at</span> chỉ dùng cho địa điểm nhỏ (arrive at the airport) hoặc giờ giấc (at 8am). <span class='hl-red'>on</span> chỉ dùng cho ngày tháng cụ thể (on Monday, on March 5th).</li>
+</ol>`},
+
+  // ── SECTION 5: REPORTED SPEECH (41–50) ───────────────────
+  {s:'💬 PHẦN 5 – CÂU TƯỜNG THUẬT: Chọn đáp án đúng.',
+   q:'41. My brother said via the phone that he ___________ Sydney for a tour of the world.',
+   opts:['is leaving','would leave','leaves','may leave'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Anh trai tôi nói qua điện thoại rằng anh ấy ___________ Sydney cho một chuyến du lịch vòng quanh thế giới.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>is leaving</span>: <span class='p-mean'>sắp đi (hiện tại tiếp diễn)</span><br>
+  - <span class='p-word'>would leave</span>: <span class='p-mean'>sẽ đi (quá khứ của will)</span><br>
+  - <span class='p-word'>leaves</span>: <span class='p-mean'>đi (hiện tại đơn)</span><br>
+  - <span class='p-word'>may leave</span>: <span class='p-mean'>có thể đi</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>would leave</span> đúng. Động từ tường thuật "said" chia ở quá khứ, nên bắt buộc mệnh đề phía sau phải <span class='p-grammar'>Lùi thì</span>. Trong 4 đáp án, chỉ có "would leave" là đã được lùi từ "will leave".</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>is leaving, leaves, may leave</span> sai vì vẫn giữ nguyên thì hiện tại, vi phạm quy tắc lùi thì trong câu gián tiếp.</li>
+</ol>`},
+
+  {q:'42. William said that he had visited a famous laboratory ___________.',
+   opts:['last three days','three days ago','three days before','three days previous'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> William nói rằng anh ấy đã đến thăm một phòng thí nghiệm nổi tiếng ___________.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>last three days</span>: <span class='p-mean'>3 ngày trước (sai cấu trúc)</span><br>
+  - <span class='p-word'>three days ago</span>: <span class='p-mean'>3 ngày trước (trực tiếp)</span><br>
+  - <span class='p-word'>three days before</span>: <span class='p-mean'>3 ngày trước đó (gián tiếp)</span><br>
+  - <span class='p-word'>three days previous</span>: <span class='p-mean'>sai cấu trúc ngữ pháp</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>three days before</span> đúng. Theo quy tắc chuyển đổi trạng từ chỉ thời gian từ câu trực tiếp sang gián tiếp, <span class='p-grammar'>ago phải đổi thành before</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>three days ago</span> là bẫy phổ biến vì học sinh quên đổi trạng từ. <span class='hl-red'>last three days, three days previous</span> là các cụm từ sai ngữ pháp tiếng Anh cơ bản.</li>
+</ol>`},
+
+  {q:'43. Samuel said to his friends that ___________ to become a conservationist.',
+   opts:['they wanted','he wants','they had wanted','he wanted'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Samuel nói với các bạn của mình rằng ___________ muốn trở thành một nhà bảo tồn.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>they wanted</span>: <span class='p-mean'>họ đã muốn</span><br>
+  - <span class='p-word'>he wants</span>: <span class='p-mean'>anh ấy muốn (hiện tại)</span><br>
+  - <span class='p-word'>they had wanted</span>: <span class='p-mean'>họ đã muốn (quá khứ hoàn thành)</span><br>
+  - <span class='p-word'>he wanted</span>: <span class='p-mean'>anh ấy đã muốn (quá khứ đơn)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>he wanted</span> đúng. Chủ ngữ của hành động "muốn" là Samuel (con trai, số ít) nên phải dùng "he". Động từ tường thuật "said" chia quá khứ nên phải <span class='p-grammar'>lùi thì</span> (want -> wanted).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>they</span> sai vì đại từ nhân xưng không chỉ "Samuel". <span class='hl-red'>he wants</span> sai vì chưa lùi thì.</li>
+</ol>`},
+
+  {q:'44. Dad said to me that the sun ___________ only a small star in the universe.',
+   opts:['was','is','will be','would be'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Bố nói với tôi rằng Mặt Trời ___________ chỉ là một ngôi sao nhỏ trong vũ trụ.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>was</span>: <span class='p-mean'>là (quá khứ)</span><br>
+  - <span class='p-word'>is</span>: <span class='p-mean'>là (hiện tại)</span><br>
+  - <span class='p-word'>will be</span>: <span class='p-mean'>sẽ là</span><br>
+  - <span class='p-word'>would be</span>: <span class='p-mean'>sẽ là (lùi thì)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>is</span> đúng. Đây là một CÂU BẪY kinh điển! Quy tắc: <span class='p-grammar'>KHÔNG LÙI THÌ khi diễn đạt một sự thật hiển nhiên/chân lý khoa học</span>. Việc Mặt trời là một ngôi sao là sự thật vĩnh hằng, nên động từ giữ nguyên ở thì hiện tại đơn.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>was</span> sai vì áp dụng máy móc quy tắc lùi thì mà quên mất ngoại lệ "sự thật khoa học". Các từ khác sai logic.</li>
+</ol>`},
+
+  {q:'45. Jonathan said to his friend that ___________.',
+   opts:['he is reading a science book now','he is reading a science book then','he was reading a science book now','he was reading a science book then'],
+   ans:3,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Jonathan nói với bạn rằng ___________ (anh ấy đang đọc sách khoa học lúc đó).</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - A. is reading ... now (sai thì, sai trạng từ)<br>
+  - B. is reading ... then (sai thì)<br>
+  - C. was reading ... now (sai trạng từ)<br>
+  - D. <span class='p-word'>was reading ... then</span>: <span class='p-mean'>đã đang đọc ... lúc đó</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>he was reading a science book then</span> đúng. Câu này đòi hỏi thực hiện 2 quy tắc đồng thời: <span class='p-grammar'>Lùi thì (is reading -> was reading) VÀ Lùi trạng từ thời gian (now -> then)</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> Đều thiếu một trong hai bước chuyển đổi bắt buộc của câu tường thuật.</li>
+</ol>`},
+
+  {q:'46. He _______ me, "What do you think aliens look like?"',
+   opts:['told','asked','said','wondered'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Anh ấy _______ tôi: "Bạn nghĩ người ngoài hành tinh trông như thế nào?"</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>told</span>: <span class='p-mean'>kể, bảo (dùng cho câu kể)</span><br>
+  - <span class='p-word'>asked</span>: <span class='p-mean'>hỏi (dùng cho câu hỏi)</span><br>
+  - <span class='p-word'>said</span>: <span class='p-mean'>nói</span><br>
+  - <span class='p-word'>wondered</span>: <span class='p-mean'>tự hỏi</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>asked</span> đúng. Dấu ngoặc kép là một Câu Hỏi (có dấu ?), vì vậy động từ tường thuật phải là từ chỉ sự hỏi han. Cấu trúc chuẩn: <span class='p-grammar'>asked + tân ngữ (me)</span>.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>told</span> không dùng với câu hỏi. <span class='hl-red'>said</span> đi với giới từ "to" (said to me) chứ không đứng trực tiếp trước tân ngữ. <span class='hl-red'>wondered</span> mang nghĩa "tự hỏi bản thân", không đi kèm tân ngữ "me".</li>
+</ol>`},
+
+  {q:'47. Charlotte asked Caroline what her favourite films about aliens _______.',
+   opts:['are','have been','were','will be'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Charlotte hỏi Caroline những bộ phim yêu thích về người ngoài hành tinh của cô ấy là gì.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>are</span>: <span class='p-mean'>hiện tại</span><br>
+  - <span class='p-word'>have been</span>: <span class='p-mean'>hiện tại hoàn thành</span><br>
+  - <span class='p-word'>were</span>: <span class='p-mean'>quá khứ đơn (số nhiều)</span><br>
+  - <span class='p-word'>will be</span>: <span class='p-mean'>tương lai</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>were</span> đúng vì câu trực tiếp gốc là "What are your favourite films?". Khi chuyển sang gián tiếp phải <span class='p-grammar'>Lùi thì</span> từ Hiện tại đơn (are) sang Quá khứ đơn (were).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>are, have been, will be</span> sai vì chưa thực hiện bước lùi thì theo sau động từ tường thuật quá khứ "asked".</li>
+</ol>`},
+
+  {q:'48. Stephanie asked her friends where and when __________from.',
+   opts:['do meteors usually come','meteors usually came','did meteors usually came','did meteors usually come'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Stephanie hỏi các bạn thiên thạch thường đến từ đâu và khi nào.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - A. do meteors usually come (sai trật tự, chưa lùi thì)<br>
+  - B. <span class='p-word'>meteors usually came</span>: <span class='p-mean'>thiên thạch thường đến (đúng trật tự, đã lùi thì)</span><br>
+  - C, D. did meteors usually came/come (sai trật tự vì vẫn dùng trợ động từ đảo ngữ)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>meteors usually came</span> đúng. Đây là quy tắc tối quan trọng trong câu hỏi gián tiếp: <span class='p-grammar'>Trật tự từ phải quay về dạng Chủ ngữ + Động từ (KHÔNG đảo trợ động từ do/does/did lên trước)</span> và động từ phải lùi thì (come -> came).</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>do/did</span> là dấu hiệu của việc giữ nguyên cấu trúc đảo ngữ câu hỏi, vi phạm luật chuyển đổi câu hỏi gián tiếp.</li>
+</ol>`},
+
+  {q:'49. Hannah asked Alison _______ earth-like planets the Milky Way might have.',
+   opts:['whether','if','how many','what'],
+   ans:2,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Hannah hỏi Alison _______ hành tinh giống Trái Đất mà Dải Ngân Hà có thể có.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>whether / if</span>: <span class='p-mean'>liệu rằng (dùng cho câu hỏi Yes/No)</span><br>
+  - <span class='p-word'>how many</span>: <span class='p-mean'>có bao nhiêu (dùng cho danh từ đếm được số nhiều)</span><br>
+  - <span class='p-word'>what</span>: <span class='p-mean'>cái gì</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>how many</span> đúng vì phía sau là danh từ số nhiều đếm được "planets" (các hành tinh). Câu hỏi muốn hỏi về số lượng hành tinh.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>whether/if</span> sai vì phía sau không có vế lựa chọn hay trả lời Yes/No mà là một danh từ đếm được.</li>
+</ol>`},
+
+  {q:'50. She wanted to know where _______ on Mars.',
+   opts:['did Perseverance land','Perseverance landed','Perseverance lands','Perseverance land'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Cô ấy muốn biết tàu Perseverance đã hạ cánh ở đâu trên sao Hỏa.</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - A. did Perseverance land (đảo ngữ, sai)<br>
+  - B. <span class='p-word'>Perseverance landed</span>: <span class='p-mean'>tàu P. đã hạ cánh (đúng trật tự, đã lùi thì)</span><br>
+  - C. Perseverance lands (chưa lùi thì)<br>
+  - D. Perseverance land (sai ngữ pháp hoàn toàn)
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>Perseverance landed</span> đúng. Áp dụng quy tắc câu hỏi gián tiếp: <span class='p-grammar'>Từ để hỏi (where) + S (Perseverance) + V lùi thì (landed)</span>. Tuyệt đối không dùng đảo ngữ.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> <span class='hl-red'>did</span> sai vì đảo ngữ. <span class='hl-red'>lands</span> sai vì không lùi thì theo động từ "wanted".</li>
+</ol>`},
+
+  // ── SECTION 6: DIALOGUES (51–53) ─────────────────────────
+  {s:'🗣️ PHẦN 6 – HỘI THOẠI: Chọn câu trả lời phù hợp nhất.',
+   q:'51. Nam and Lan are chatting after school.\n— Nam: "A flood damaged my grandfather\'s house yesterday."\n— Lan: "________"',
+   opts:['It did.','That\'s awful.','Phones are convenient.','Awesome!'],
+   ans:1,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Nam và Lan đang nói chuyện sau giờ học. Nam: "Một trận lũ lụt đã phá hủy nhà của ông tớ hôm qua." - Lan: "________"</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>It did.</span>: <span class='p-mean'>Vậy hả. (quá lạnh lùng, thiếu lịch sự)</span><br>
+  - <span class='p-word'>That's awful.</span>: <span class='p-mean'>Thật kinh khủng. / Tội nghiệp quá.</span><br>
+  - <span class='p-word'>Phones are convenient.</span>: <span class='p-mean'>Điện thoại tiện lợi. (sai chủ đề)</span><br>
+  - <span class='p-word'>Awesome!</span>: <span class='p-mean'>Tuyệt vời! (cực kỳ vô duyên khi người ta báo tin buồn)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>That's awful.</span> đúng vì đây là câu <span class='p-grammar'>thể hiện sự đồng cảm (sympathy)</span> phổ biến trong tiếng Anh khi nghe một tin tức xấu, buồn.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> Các đáp án đều sai về mặt giao tiếp xã hội và sắc thái cảm xúc.</li>
+</ol>`},
+
+  {q:'52. A customer is calling to complain.\n— Customer: "I\'m calling to make a complaint about the earphones I got from you this morning."\n— Shop assistant: "________"',
+   opts:['What\'s wrong with it, miss?','Is it perfect?','Do you like its colour?','Are you?'],
+   ans:0,
+   ex:`<h4>📖 Giải thích chi tiết</h4>
+<ol>
+<li><b>Dịch đề:</b> Khách hàng gọi điện phàn nàn: "Tôi gọi để khiếu nại về chiếc tai nghe mua ở chỗ bạn sáng nay." - Nhân viên: "________"</li>
+<li><b>Phân tích 4 đáp án:</b><br>
+  - <span class='p-word'>What's wrong with it, miss?</span>: <span class='p-mean'>Thưa cô, sản phẩm bị lỗi gì vậy ạ?</span><br>
+  - <span class='p-word'>Is it perfect?</span>: <span class='p-mean'>Nó hoàn hảo chứ? (vô lý khi người ta đang phàn nàn)</span><br>
+  - <span class='p-word'>Do you like its colour?</span>: <span class='p-mean'>Cô có thích màu của nó không? (đánh trống lảng)</span><br>
+  - <span class='p-word'>Are you?</span>: <span class='p-mean'>Thế à? (quá thiếu chuyên nghiệp)</span>
+</li>
+<li><b>Tại sao chọn đúng?</b> <span class='hl-green'>What's wrong with it, miss?</span> đúng vì đây là cách phản hồi tiêu chuẩn và lịch sự nhất của nhân viên chăm sóc khách hàng khi muốn hỏi rõ vấn đề của sản phẩm.</li>
+<li><b>Tại sao các đáp án còn lại sai?</b> Sai về văn hóa giao tiếp và thái độ chuyên nghiệp.</li>
+</ol>`},
+
+  ];
+
+// ============================================================
+// QUIZ STATE & LOGIC
+// ============================================================
+let answered=new Array(QS.length).fill(false);
+let shuffledOpts=[];
+let shuffledAns=[];
+let score=0;
+
+function initQuiz(){
+  answered=new Array(QS.length).fill(false);
+  shuffledOpts=[];
+  shuffledAns=[];
+  score=0;
+  QS.forEach((q,i)=>{
+    const idxs=[0,1,2,3];
+    const sh=shuffle(idxs);
+    shuffledOpts.push(sh.map(x=>q.opts[x]));
+    shuffledAns.push(sh.indexOf(q.ans));
+  });
+  renderQuiz();
+  updateProg();
+}
+
+function renderQuiz(){
+  const wrap=document.getElementById('qwrap');
+  let html='';
+  let lastSec='';
+  QS.forEach((q,i)=>{
+    if(q.s&&q.s!==lastSec){
+      html+=`<div class='sec-title'>${q.s}</div>`;
+      lastSec=q.s;
+    }
+    html+=`<div class='qcard' id='qcard${i}'>
+      <div class='qnum'>Câu ${i+1} / ${QS.length}</div>
+      <div class='qtext'>${q.q.replace(/\n/g,'<br>')}</div>
+      <div class='optgrid'>
+        ${shuffledOpts[i].map((o,j)=>`<button class='opt' id='opt${i}_${j}' onclick='pick(${i},${j})'>${o}</button>`).join('')}
+      </div>
+      <div class='exbox' id='ex${i}'>${q.ex}</div>
+    </div>`;
+  });
+  html+=`<div class='sub-wrap'><button class='btn-sub' onclick='openName()'>🎯 NỘP BÀI &amp; XEM KẾT QUẢ</button></div>`;
+  wrap.innerHTML=html;
+}
+
+function pick(qi,oi){
+  if(answered[qi]) return;
+  answered[qi]=true;
+  const correct=shuffledAns[qi];
+  for(let j=0;j<4;j++){
+    const btn=document.getElementById(`opt${qi}_${j}`);
+    btn.disabled=true;
+    if(j===correct) btn.classList.add('correct');
+    else if(j===oi&&oi!==correct) btn.classList.add('wrong');
+  }
+  if(oi===correct){
+    score++;
+    playOk();
+    confetti();
+  } else {
+    playErr();
+  }
+  document.getElementById(`ex${qi}`).classList.add('show');
+  updateProg();
+}
+
+function updateProg(){
+  const cnt=answered.filter(Boolean).length;
+  const pct=Math.round(cnt/QS.length*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progTxt').textContent=`${cnt} / ${QS.length} câu đã trả lời`;
+}
+
+function openName(){
+  document.getElementById('nameOv').classList.add('show');
+  document.getElementById('nameIn').focus();
+}
+
+function submitName(){
+  const inp=document.getElementById('nameIn');
+  const err=document.getElementById('errMsg');
+  const name=inp.value.trim();
+  if(!name){
+    inp.classList.add('err');
+    err.textContent='⚠️ Vui lòng nhập tên của bạn!';
+    setTimeout(()=>inp.classList.remove('err'),600);
+    return;
+  }
+  err.textContent='';
+  document.getElementById('nameOv').classList.remove('show');
+  showResult(name);
+}
+
+function showResult(name){
+  const total=QS.length;
+  const pct=score/total;
+  let grade,msg,gif;
+  if(pct>=1){
+    grade='🏆';
+    msg=`THIÊN TÀI XUẤT HIỆN! <b>${name}</b> hoàn hảo tuyệt đối! Đã ghi nhớ kỹ bài giải thích của cô chưa? 🎉🎉🎉`;
+    gif='https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif';
+  } else if(pct>=0.8){
+    grade='🌟';
+    msg=`Tuyệt vời! <b>${name}</b> siêu giỏi luôn! Nhớ chép các lỗi sai vào vở nhé! 👏`;
+    gif='https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif';
+  } else if(pct>=0.6){
+    grade='😊';
+    msg=`Khá lắm! <b>${name}</b> cần đọc kỹ giải thích để không lặp lại lỗi nha! 💪`;
+    gif='https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif';
+  } else {
+    grade='😢';
+    msg=`Chưa đạt rồi <b>${name}</b>! Hãy cuộn lên đọc THẬT KỸ giải thích của MS Chí Nên rồi mới làm lại nhé! 📚`;
+    gif='https://media.giphy.com/media/ISOckXUybVfQ4/giphy.gif';
+  }
+  document.getElementById('rGrade').textContent=grade;
+  document.getElementById('rName').innerHTML=`${name}`;
+  document.getElementById('rMsg').innerHTML=msg;
+  document.getElementById('rScore').textContent=`${score} / ${total} câu đúng`;
+  document.getElementById('sFill').style.width=Math.round(pct*100)+'%';
+  document.getElementById('rMeme').src=gif;
+  document.getElementById('resultOv').classList.add('show');
+  if(pct>=0.8) confetti();
+}
+
+function retry(){
+  document.getElementById('resultOv').classList.remove('show');
+  initQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')submitName();});
+initQuiz();
+</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

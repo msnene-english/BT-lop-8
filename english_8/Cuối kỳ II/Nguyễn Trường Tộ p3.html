@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Gamified Practice | Sunrise Theme</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+        :root {
+            /* NEW THEME: Sunrise Oasis (Mint, Peach, Pastel Yellow, Soft Green) */
+            --bg-gradient-1: #a8e6cf; /* Mint */
+            --bg-gradient-2: #dcedc1; /* Soft Green */
+            --bg-gradient-3: #ffd3b6; /* Peach */
+            --bg-gradient-4: #ffaaa5; /* Pastel Coral */
+            
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            
+            /* Text Colors for Master Explanation */
+            --c-word: #007bff; /* Xanh dương */
+            --c-mean: #d2691e; /* Đất nung */
+            --c-grammar: #dc3545; /* Đỏ */
+            --c-green: #28a745; /* Xanh lá */
+            --c-red: #c82333; /* Đỏ sậm */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #2d3436;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Background Emojis */
+        .bg-shapes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .shape {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.35;
+            animation: float 12s infinite ease-in-out alternate;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.9));
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-60px) rotate(25deg); }
+        }
+
+        header {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            color: #2e8b57;
+            text-shadow: 1px 1px 2px #fff;
+            font-weight: 800;
+        }
+        
+        header .teacher {
+            font-weight: 800;
+            color: #ff6b6b;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            font-size: 0.9rem;
+        }
+
+        .split-screen {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            z-index: 10;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        .panel {
+            flex: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            padding: 25px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #ffaaa5 transparent;
+        }
+
+        .panel::-webkit-scrollbar { width: 8px; }
+        .panel::-webkit-scrollbar-thumb { background: #ffaaa5; border-radius: 10px; }
+
+        /* Reading Passage Styles */
+        .passage-box {
+            background: rgba(255,255,255,0.7);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid white;
+        }
+        .passage-title {
+            font-size: 1.5rem;
+            color: #2f3542;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #10ac84, #1dd1a1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .paragraph {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            color: #2d3436;
+            text-align: justify;
+        }
+        .btn-translate {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: none;
+            padding: 6px 15px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        .btn-translate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 12px rgba(253, 160, 133, 0.4);
+        }
+        .translation-text {
+            display: none;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px;
+            border-left: 5px solid #10ac84;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* Glossary Styles */
+        .glossary-box {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px dashed #1dd1a1;
+            box-shadow: inset 0 0 10px rgba(29, 209, 161, 0.1);
+        }
+        .glossary-box h4 {
+            color: #10ac84;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.2rem;
+        }
+        .glossary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .glossary-table th, .glossary-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 1rem;
+        }
+        .glossary-table th { background: rgba(29, 209, 161, 0.15); color: #2d3436; font-weight: 800; }
+        .glossary-table td:nth-child(1) { font-weight: bold; color: var(--c-word); }
+        .glossary-table td:nth-child(2) { font-style: italic; color: #7f8fa6; }
+        .glossary-table td:nth-child(3) { color: var(--c-mean); font-weight: 700;}
+
+        /* Question Styles */
+        .question-block {
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .question-block:hover {
+            border-color: rgba(255, 170, 165, 0.5);
+            transform: translateY(-2px);
+        }
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #2f3640;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .btn-option {
+            background: white;
+            border: 2px solid #dcdde1;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #353b48;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            text-align: center;
+        }
+        .btn-option:hover {
+            transform: translateY(-4px);
+            border-color: #ffaaa5;
+            box-shadow: 0 8px 15px rgba(255, 170, 165, 0.3);
+            background: #fffcfc;
+        }
+        .btn-option.correct {
+            background: #1dd1a1;
+            color: white;
+            border-color: #1dd1a1;
+            box-shadow: 0 0 20px rgba(29, 209, 161, 0.5);
+            transform: scale(1.05);
+        }
+        .btn-option.wrong {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        .btn-option:disabled { cursor: not-allowed; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+
+        /* Explanation Box */
+        .explanation {
+            display: none;
+            margin-top: 20px;
+            background: #fdfaf6;
+            border-radius: 15px;
+            padding: 18px;
+            border-left: 6px solid #ff9f43;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            animation: fadeIn 0.5s ease-in-out;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.02);
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .explanation h5 { color: #2d3436; margin-bottom: 10px; font-size: 1.15rem; font-weight: 800;}
+        
+        /* Master Teacher Colored Spans */
+        .p-word { color: var(--c-word); font-weight: 800; }
+        .p-mean { color: var(--c-mean); font-weight: 700; }
+        .p-grammar { color: var(--c-grammar); font-weight: 800; text-decoration: underline; text-decoration-style: wavy; }
+        .hl-green { color: var(--c-green); font-weight: 800; }
+        .hl-red { color: var(--c-red); font-weight: 800; text-decoration: line-through; }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #1dd1a1 0%, #10ac84 100%);
+            border: none;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(29, 209, 161, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            margin-top: 25px;
+            letter-spacing: 1px;
+        }
+        .btn-submit:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 25px rgba(29, 209, 161, 0.6); }
+
+        /* Modal Scorecard */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 100;
+        }
+        .modal-content {
+            background: white; border-radius: 25px; padding: 35px; width: 90%; max-width: 480px;
+            text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden;
+            border: 4px solid #a8e6cf;
+            animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-content input {
+            width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #dcedc1; border-radius: 15px; font-size: 1.2rem;
+            outline: none; text-align: center; font-weight: 700; background: #fafafa;
+        }
+        .modal-content input:focus { border-color: #10ac84; background: #fff; }
+        .modal-content img { width: 100%; max-height: 220px; object-fit: contain; border-radius: 15px; margin: 15px 0; }
+        .score-text { font-size: 3.5rem; font-weight: 900; color: #ff6b6b; margin: 10px 0; text-shadow: 2px 2px 0 #ffeaa7;}
+        .feedback-msg { font-size: 1.3rem; font-weight: 800; color: #10ac84; margin-bottom: 20px;}
+
+        /* Confetti */
+        .confetti { position: fixed; width: 12px; height: 12px; z-index: 9999; pointer-events: none; animation: fall linear forwards; border-radius: 3px; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+
+        @media (max-width: 800px) {
+            .split-screen { flex-direction: column; overflow-y: auto; }
+            .panel { overflow-y: visible; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shapes">
+        <div class="shape" style="top: 5%; left: 5%;">🚲</div>
+        <div class="shape" style="top: 65%; left: 85%;">💻</div>
+        <div class="shape" style="top: 25%; left: 75%;">🌊</div>
+        <div class="shape" style="top: 85%; left: 15%;">🌧️</div>
+        <div class="shape" style="top: 45%; left: 45%;">📱</div>
+        <div class="shape" style="top: 55%; left: 10%;">🌪️</div>
+    </div>
+
+    <header>
+        <h1>English Gamified Challenge 🌅</h1>
+        <div class="teacher">Giáo viên tạo: MS Chí Nên</div>
+    </header>
+
+    <div class="split-screen">
+        <div class="panel" id="left-panel">
+            </div>
+        
+        <div class="panel" id="right-panel">
+            <h2 style="text-align:center; color:#2f3542; margin-bottom:20px; font-weight: 900; text-shadow: 1px 1px 0 #fff;">🎮 BÀI TẬP TRẮC NGHIỆM 🎮</h2>
+            <div id="questions-container"></div>
+            <button class="btn-submit" onclick="showSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="scoreModal">
+        <div class="modal-content" id="modalInner">
+            <h2 style="color: #2d3436; font-weight: 800;">Nhập tên của bạn để nộp bài!</h2>
+            <input type="text" id="studentName" placeholder="Ví dụ: Lisa Blackpink 🌸">
+            <button class="btn-translate" style="font-size:1.3rem; padding: 12px 25px; width: 100%; border-radius: 15px;" onclick="calculateScore()">Xác nhận nộp bài 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        // AUDIO CONTEXT (Tự sinh âm thanh)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); // C6
+                gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            } else {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc2.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.2);
+                    gain2.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc2.start(); osc2.stop(audioCtx.currentTime + 0.3);
+                }, 150);
+            }
+        }
+
+        function fireConfetti() {
+            const colors = ['#1dd1a1', '#ff6b6b', '#feca57', '#54a0ff', '#ff9ff3'];
+            for(let i=0; i<60; i++){
+                let conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                conf.style.top = '-15px';
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 3500);
+            }
+        }
+
+        // DATABASE ĐỀ BÀI (Full 100% Data từ Ảnh)
+        const data = [
+            {
+                title: "Ex 8: BICYCLES",
+                content: [
+                    {
+                        en: "The bicycle is one of the simplest yet most useful inventions in the world. What is most surprising is that it was not (1) ______ earlier, although the great inventor Leonardo da Vinci had drawn pictures for bicycles and also for flying machines and some other things. Those things were not produced (2) ______ long after he died.",
+                        vi: "Xe đạp là một trong những phát minh đơn giản nhất nhưng hữu ích nhất trên thế giới. Điều đáng ngạc nhiên nhất là nó đã không được phát minh sớm hơn, mặc dù nhà phát minh vĩ đại Leonardo da Vinci đã vẽ những bức tranh về xe đạp và cả máy bay cùng một số thứ khác. Những thứ đó đã không được sản xuất cho đến tận rất lâu sau khi ông qua đời."
+                    },
+                    {
+                        en: "A person riding a bicycle use (3) ______ energy to make the bicycle move, and there is no pollution at all when you are riding. Even so in developed (4) ______, most people don't travel to work by bicycle. It is not because bicycles are expensive or people feel (5) ______ if they ride to work. It's because (6) ______ cars on the roads becomes larger. It certainly becomes (7) ______ to ride a bicycle. As a result, more people put their bicycles away and go to work (8) ______ their cars, and in this way, the situation is made more serious.",
+                        vi: "Một người đi xe đạp sử dụng rất ít năng lượng để làm cho chiếc xe di chuyển, và hoàn toàn không có sự ô nhiễm nào khi bạn đạp xe. Mặc dù vậy ở các quốc gia phát triển, hầu hết mọi người không đi làm bằng xe đạp. Đó không phải vì xe đạp đắt tiền hay do mọi người cảm thấy mệt mỏi nếu đạp xe đi làm. Đó là bởi vì số lượng ô tô trên đường phố ngày càng lớn hơn. Nó chắc chắn trở nên nguy hiểm hơn khi đi xe đạp. Kết quả là, nhiều người cất xe đạp đi và đi làm bằng ô tô của họ, và theo cách này, tình hình càng trở nên nghiêm trọng hơn."
+                    },
+                    {
+                        en: "(9) ______ the best way to make riding safer and more popular is to create paths only for bicycle and to make (10) ______ so difficult and expensive for drivers to take their cars into the city that they will go back to use their bicycles.",
+                        vi: "Có lẽ cách tốt nhất để làm cho việc đạp xe an toàn và phổ biến hơn là tạo ra những con đường chỉ dành riêng cho xe đạp và làm cho việc những người lái xe mang ô tô của họ vào thành phố trở nên quá khó khăn và đắt đỏ đến mức họ sẽ quay lại sử dụng xe đạp của mình."
+                    }
+                ],
+                glossary: [
+                    ["Invention", "Noun", "Sự phát minh, sáng chế"],
+                    ["Surprising", "Adjective", "Đáng ngạc nhiên"],
+                    ["Produce", "Verb", "Sản xuất"],
+                    ["Energy", "Noun", "Năng lượng"],
+                    ["Pollution", "Noun", "Sự ô nhiễm"],
+                    ["Developed", "Adjective", "Phát triển (nước)"],
+                    ["Serious", "Adjective", "Nghiêm trọng"],
+                    ["Popular", "Adjective", "Phổ biến"],
+                    ["Path", "Noun", "Con đường, lối đi"],
+                    ["Expensive", "Adjective", "Đắt đỏ"]
+                ],
+                questions: [
+                    {
+                        id: 'e8_q1', text: "Question 1: What is most surprising is that it was not (1) ______ earlier...",
+                        correct: "invented", options: ["had", "used", "invented", "ridden"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Điều đáng ngạc nhiên nhất là nó đã không được (1) ______ sớm hơn...<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. had (<span class='p-mean'>có</span>) <span class='hl-red'>❌ Sai nghĩa và sai cấu trúc bị động.</span><br>
+                        B. used (<span class='p-mean'>sử dụng</span>) <span class='hl-red'>❌ Sai vì vế sau nhắc đến Leonardo da Vinci đã "vẽ tranh thiết kế", tức là nói về nguồn gốc ra đời của xe đạp chứ không phải việc sử dụng.</span><br>
+                        C. invented (<span class='p-mean'>phát minh</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc bị động quá khứ đơn (was + V-ed/P2). Xe đạp (it) không được 'phát minh' sớm hơn.</span></span><br>
+                        D. ridden (<span class='p-mean'>cưỡi/đạp xe</span>) <span class='hl-red'>❌ Sai logic đoạn văn.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...although the great <span class='p-word'>inventor</span> Leonardo da Vinci had drawn pictures..." 👉 Dịch: "...mặc dù <b><span style='color:red'>nhà phát minh</span></b> vĩ đại Leonardo da Vinci đã vẽ những bức tranh..."`
+                    },
+                    {
+                        id: 'e8_q2', text: "Question 2: Those things were not produced (2) ______ long after he died.",
+                        correct: "until", options: ["before", "when", "since", "until"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Những thứ đó đã không được sản xuất (2) ______ rất lâu sau khi ông qua đời.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. before (<span class='p-mean'>trước khi</span>) <span class='hl-red'>❌ Sai logic thời gian.</span><br>
+                        B. when (<span class='p-mean'>khi</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        C. since (<span class='p-mean'>từ khi</span>) <span class='hl-red'>❌ Thường đi với thì Hiện tại hoàn thành, không dùng trong Quá khứ đơn 'were not produced'.</span><br>
+                        D. until (<span class='p-mean'>cho đến tận khi</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc: Not ... until ... (Không ... cho đến tận khi ...).</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "...were <span class='p-word'>not</span> produced <span class='hl-green'>until</span> long after he died." 👉 Dịch: "...đã <b><span style='color:red'>không</span></b> được sản xuất <b><span style='color:green'>cho đến tận</span></b> rất lâu sau khi ông qua đời."`
+                    },
+                    {
+                        id: 'e8_q3', text: "Question 3: A person riding a bicycle use (3) ______ energy to make the bicycle move...",
+                        correct: "very little", options: ["much", "quite a lot of", "very little", "many"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Một người đi xe đạp sử dụng (3) ______ năng lượng để làm cho chiếc xe đạp di chuyển...<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. much (<span class='p-mean'>nhiều</span>) <span class='hl-red'>❌ Sai kiến thức thực tế và mạch văn (đang ca ngợi sự tiện ích của xe đạp).</span><br>
+                        B. quite a lot of (<span class='p-mean'>khá nhiều</span>) <span class='hl-red'>❌ Tương tự A.</span><br>
+                        C. very little (<span class='p-mean'>rất ít</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>'Energy' là danh từ không đếm được. Dùng 'very little' (rất ít, hầu như không) để chỉ ưu điểm tốn ít sức của xe đạp.</span></span><br>
+                        D. many (<span class='p-mean'>nhiều</span>) <span class='hl-red'>❌ Sai ngữ pháp vì 'many' đi với danh từ đếm được số nhiều.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...and there is <span class='p-word'>no pollution</span> at all..." 👉 Dịch: "...và hoàn toàn <b><span style='color:red'>không có sự ô nhiễm</span></b> nào..." (Ý tích cực đi song song).`
+                    },
+                    {
+                        id: 'e8_q4', text: "Question 4: Even so in developed (4) ______, most people don't travel to work by bicycle.",
+                        correct: "countries", options: ["world", "countries", "land", "earth"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Mặc dù vậy ở các (4) ______ phát triển, hầu hết mọi người không đi làm bằng xe đạp.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. world (<span class='p-mean'>thế giới</span>) <span class='hl-red'>❌ Không hợp lý vì thế giới chỉ có một, người ta dùng 'the developed world' (thế giới phát triển) chứ không dùng số nhiều. Ở đây thiếu mạo từ 'the'.</span><br>
+                        B. countries (<span class='p-mean'>các quốc gia</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cụm từ cố định: Developed countries (Các nước phát triển).</span></span><br>
+                        C. land (<span class='p-mean'>đất đai</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        D. earth (<span class='p-mean'>trái đất</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...in <span class='hl-green'>developed countries</span>..." 👉 Dịch: "...ở <b><span style='color:green'>các quốc gia phát triển</span></b>..."`
+                    },
+                    {
+                        id: 'e8_q5', text: "Question 5: It is not because bicycles are expensive or people feel (5) ______ if they ride to work.",
+                        correct: "tired", options: ["lucky", "glad", "sorry", "tired"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Đó không phải vì xe đạp đắt đỏ hay mọi người cảm thấy (5) ______ nếu họ đạp xe đi làm.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. lucky (<span class='p-mean'>may mắn</span>) <span class='hl-red'>❌ Sai logic.</span><br>
+                        B. glad (<span class='p-mean'>vui vẻ</span>) <span class='hl-red'>❌ Sai logic.</span><br>
+                        C. sorry (<span class='p-mean'>lấy làm tiếc</span>) <span class='hl-red'>❌ Sai logic.</span><br>
+                        D. tired (<span class='p-mean'>mệt mỏi</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Tác giả đang bác bỏ các lý do khiến người ta không đi xe đạp: không phải vì nó đắt, cũng không phải vì nó làm người ta 'mệt' (tired).</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "...people feel <span class='hl-green'>tired</span> if they ride..." 👉 Dịch: "...mọi người cảm thấy <b><span style='color:green'>mệt mỏi</span></b> nếu họ đạp xe..."`
+                    },
+                    {
+                        id: 'e8_q6', text: "Question 6: It's because (6) ______ cars on the roads becomes larger.",
+                        correct: "the number of", options: ["the number of", "a number of", "this kind of", "all kinds of"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Đó là bởi vì (6) ______ xe ô tô trên đường trở nên lớn hơn.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. the number of (<span class='p-mean'>số lượng (những)</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Quy tắc sự hòa hợp chủ vị: 'The number of + N(số nhiều) + V(số ít)'. Ở đây động từ là 'becomes' (chia số ít) nên chủ ngữ phải là 'The number of'.</span></span><br>
+                        B. a number of (<span class='p-mean'>một số/nhiều</span>) <span class='hl-red'>❌ Sai vì 'A number of + N(số nhiều) + V(số nhiều)'. Nếu dùng cụm này, động từ phải là 'become' (không s).</span><br>
+                        C. this kind of (<span class='p-mean'>loại này</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        D. all kinds of (<span class='p-mean'>mọi loại</span>) <span class='hl-red'>❌ Sai vì động từ sẽ chia số nhiều.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...<span class='hl-green'>the number of</span> cars... <span class='p-word'>becomes</span> larger." 👉 Dịch: "...<b><span style='color:green'>số lượng</span></b> ô tô... <b><span style='color:red'>trở nên</span></b> lớn hơn."`
+                    },
+                    {
+                        id: 'e8_q7', text: "Question 7: It certainly becomes (7) ______ to ride a bicycle.",
+                        correct: "more dangerous", options: ["safe", "more dangerous", "much", "popular"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Nó chắc chắn trở nên (7) ______ để đi xe đạp.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. safe (<span class='p-mean'>an toàn</span>) <span class='hl-red'>❌ Sai logic vì xe ô tô nhiều lên thì đi xe đạp không thể an toàn.</span><br>
+                        B. more dangerous (<span class='p-mean'>nguy hiểm hơn</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Vì số lượng ô tô tăng (trở nên lớn hơn), hậu quả tất yếu là đạp xe sẽ nguy hiểm hơn.</span></span><br>
+                        C. much (<span class='p-mean'>nhiều</span>) <span class='hl-red'>❌ Sai cấu trúc.</span><br>
+                        D. popular (<span class='p-mean'>phổ biến</span>) <span class='hl-red'>❌ Sai vì câu sau nói người ta đang 'cất xe đạp đi' (put away).</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...more people <span class='p-word'>put their bicycles away</span>..." 👉 Dịch: "...nhiều người <b><span style='color:red'>cất xe đạp của họ đi</span></b>..."`
+                    },
+                    {
+                        id: 'e8_q8', text: "Question 8: ...more people put their bicycles away and go to work (8) ______ their cars...",
+                        correct: "in", options: ["by", "in", "use", "drive"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> ...nhiều người cất xe đạp đi và đi làm (8) ______ xe ô tô của họ...<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. by (<span class='p-mean'>bằng</span>) <span class='hl-red'>❌ Rất dễ dính bẫy! Ta dùng 'by car' (không có mạo từ/tính từ sở hữu). Nhưng ở đây là 'their cars' nên không dùng 'by'.</span><br>
+                        B. in (<span class='p-mean'>trong / bằng</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Giới từ đi phương tiện: Dùng 'in' cho xe ô tô/taxi khi có mạo từ hoặc tính từ sở hữu đứng trước (in a car, in my car, in their cars).</span></span><br>
+                        C. use (<span class='p-mean'>sử dụng</span>) <span class='hl-red'>❌ Sai ngữ pháp, thiếu 'to' (to use).</span><br>
+                        D. drive (<span class='p-mean'>lái</span>) <span class='hl-red'>❌ Sai ngữ pháp.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...go to work <span class='hl-green'>in</span> <span class='p-word'>their</span> cars..." 👉 Dịch: "...đi làm <b><span style='color:green'>bằng</span></b> ô tô <b><span style='color:red'>của họ</span></b>..."`
+                    },
+                    {
+                        id: 'e8_q9', text: "Question 9: (9) ______ the best way to make riding safer and more popular is...",
+                        correct: "Perhaps", options: ["Hardly", "Maybe", "Perhaps", "Nearly"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> (9) ______ cách tốt nhất để làm cho việc đạp xe an toàn hơn và phổ biến hơn là...<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Hardly (<span class='p-mean'>Hầu như không</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        B. Maybe (<span class='p-mean'>Có lẽ</span>) <span class='hl-red'>❌ 'Maybe' thường đứng đầu câu và hay dùng trong văn nói, không trang trọng bằng 'Perhaps' trong văn viết/học thuật. Hơn nữa, sau Maybe cần có dấu phẩy nếu đứng độc lập như một trạng từ nối (tùy style), nhưng 'Perhaps' là lựa chọn chuẩn xác nhất ở đầu câu văn phong này.</span><br>
+                        C. Perhaps (<span class='p-mean'>Có lẽ</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Đứng đầu câu đóng vai trò trạng từ chỉ sự phỏng đoán, đưa ra giải pháp một cách lịch sự, trang trọng.</span></span><br>
+                        D. Nearly (<span class='p-mean'>Gần như</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "<span class='hl-green'>Perhaps</span> the best way is..." 👉 Dịch: "<b><span style='color:green'>Có lẽ</span></b> cách tốt nhất là..."`
+                    },
+                    {
+                        id: 'e8_q10', text: "Question 10: ...and to make (10) ______ so difficult and expensive for drivers to take their cars...",
+                        correct: "it", options: ["it", "them", "us", "that"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> ...và làm cho (10) ______ trở nên quá khó khăn và đắt đỏ đối với những người lái xe khi mang ô tô của họ...<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. it (<span class='p-mean'>nó - đại từ giả</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc: Make + it + adj + for sb + to V (Làm cho việc gì đó trở nên như thế nào đối với ai). 'It' ở đây là đại từ giả thay thế cho cụm 'to take their cars...' phía sau.</span></span><br>
+                        B. them (<span class='p-mean'>chúng</span>) <span class='hl-red'>❌ Không dùng đại từ nhân xưng thay thế ở đây.</span><br>
+                        C. us (<span class='p-mean'>chúng ta</span>) <span class='hl-red'>❌ Không hợp nghĩa.</span><br>
+                        D. that (<span class='p-mean'>rằng / kia</span>) <span class='hl-red'>❌ Sai cấu trúc 'Make it adj'.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...make <span class='hl-green'>it</span> <span class='p-word'>difficult</span> for drivers <span class='p-grammar'>to take</span>..." 👉 Dịch: "...làm cho <b><span style='color:green'>việc</span></b> mang ô tô... <b><span style='color:red'>trở nên khó khăn</span></b> cho người lái..."`
+                    }
+                ]
+            },
+            {
+                title: "Ex 9 Task 1: THE INTERNET: A FRIEND OR AN ENEMY?",
+                content: [
+                    {
+                        en: "The Internet helps pupils a lot in their studying. You don't need to go to the library to get a book for your literature lesson. There are many sites where you can find a necessary e-book. If you are going to make a school project, you can surf the net and get information on any topic. Doing shopping, booking tickets, watching popular clips, sharing interesting ideas, communicating, downloading music are the things you can do online. Can you live without the Internet? It seems you can do everything in the net. But is it good to spend too much time in the Internet?",
+                        vi: "Internet giúp đỡ học sinh rất nhiều trong việc học tập. Bạn không cần phải đến thư viện để mượn sách cho bài học văn của mình. Có rất nhiều trang web nơi bạn có thể tìm thấy một cuốn sách điện tử cần thiết. Nếu bạn định làm một dự án ở trường, bạn có thể lướt mạng và lấy thông tin về bất kỳ chủ đề nào. Mua sắm, đặt vé, xem các clip thịnh hành, chia sẻ những ý tưởng thú vị, giao tiếp, tải nhạc là những điều bạn có thể làm trực tuyến. Bạn có thể sống thiếu Internet không? Dường như bạn có thể làm mọi thứ trên mạng. Nhưng có tốt không khi dành quá nhiều thời gian trên Internet?"
+                    },
+                    {
+                        en: "For today's teenagers, there is practically no line between online and real world communication. They chat online, make friends online, fall in love online, in fact, they live online! The children become Internet-addicted. Internet addiction is a disease, and there are some symptoms of Internet addiction: 1. spending too much time in the Internet; 2. having problems with doing homework because you are online; 3. isolation from family and friends; 4. feeling happy while you are online and being upset when you are offline. So, if you are going camping with your friends instead of killing computer monsters online, you are surely making the right choice!",
+                        vi: "Đối với thanh thiếu niên ngày nay, thực tế không có ranh giới giữa giao tiếp trực tuyến và thế giới thực. Họ trò chuyện trực tuyến, kết bạn trực tuyến, yêu đương trực tuyến, thực tế, họ sống trực tuyến! Trẻ em trở nên nghiện Internet. Nghiện Internet là một căn bệnh, và có một số triệu chứng của chứng nghiện Internet: 1. Dành quá nhiều thời gian trên Internet; 2. Gặp vấn đề trong việc làm bài tập về nhà do bạn đang trực tuyến; 3. Cô lập bản thân khỏi gia đình và bạn bè; 4. Cảm thấy hạnh phúc khi đang trực tuyến và bực bội khi ngoại tuyến. Vì vậy, nếu bạn đi cắm trại với bạn bè thay vì tiêu diệt quái vật máy tính trên mạng, bạn chắc chắn đang đưa ra lựa chọn đúng đắn!"
+                    }
+                ],
+                glossary: [
+                    ["Literature", "Noun", "Văn học"],
+                    ["Necessary", "Adjective", "Cần thiết"],
+                    ["Project", "Noun", "Dự án"],
+                    ["Communicate", "Verb", "Giao tiếp, liên lạc"],
+                    ["Teenager", "Noun", "Thanh thiếu niên"],
+                    ["Practically", "Adverb", "Thực tế là, hầu như"],
+                    ["Addicted", "Adjective", "Bị nghiện"],
+                    ["Disease", "Noun", "Căn bệnh"],
+                    ["Symptom", "Noun", "Triệu chứng"],
+                    ["Isolation", "Noun", "Sự cô lập, cách ly"]
+                ],
+                questions: [
+                    {
+                        id: 'e9t1_q1', text: "Question 1: What is the main idea of the passage?",
+                        correct: "The Internet has both a good and a bad side.", options: ["The Internet is a good thing.", "The Internet is a bad thing.", "The Internet has both a good and a bad side.", "We cannot live without the Internet."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Ý chính của đoạn văn là gì?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. The Internet is a good thing. (<span class='p-mean'>Internet là một điều tốt.</span>) <span class='hl-red'>❌ Chưa đủ. Chỉ bao quát đoạn 1.</span><br>
+                        B. The Internet is a bad thing. (<span class='p-mean'>Internet là một điều xấu.</span>) <span class='hl-red'>❌ Chưa đủ. Chỉ bao quát đoạn 2.</span><br>
+                        C. The Internet has both a good and a bad side. (<span class='p-mean'>Internet có cả mặt tốt và mặt xấu.</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Đoạn 1 nêu những lợi ích (giúp học tập, giải trí). Đoạn 2 nêu tác hại (gây nghiện, triệu chứng tiêu cực).</span></span><br>
+                        D. We cannot live without the Internet. (<span class='p-mean'>Chúng ta không thể sống thiếu Internet.</span>) <span class='hl-red'>❌ Sai, bài đọc khuyến khích các hoạt động ngoại tuyến (đi cắm trại).</span><br>
+                        🔍 <b>Dẫn chứng:</b> Đoạn 1: "The Internet <span class='p-word'>helps pupils</span> a lot..." (Mặt tốt). Đoạn 2: "The children become <span class='hl-red'>Internet-addicted</span>." (Mặt xấu).`
+                    },
+                    {
+                        id: 'e9t1_q2', text: "Question 2: How does the Internet contribute to students' studying?",
+                        correct: "It makes going to the library unnecessary.", options: ["It makes going to the library unnecessary.", "It replaces the need for studying.", "It limits access to e-books.", "It discourages school projects."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Internet đóng góp thế nào cho việc học của học sinh?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. It makes going to the library unnecessary. (<span class='p-mean'>Nó khiến việc đến thư viện trở nên không cần thiết.</span>) <span class='hl-green'>✅ Đúng.</span><br>
+                        B. It replaces the need for studying. (<span class='p-mean'>Nó thay thế nhu cầu học tập.</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        C. It limits access to e-books. (<span class='p-mean'>Nó hạn chế quyền truy cập vào sách điện tử.</span>) <span class='hl-red'>❌ Sai, mạng cung cấp nhiều sách chứ không hạn chế.</span><br>
+                        D. It discourages school projects. (<span class='p-mean'>Nó làm nản lòng việc làm dự án trường học.</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "You <span class='hl-green'>don't need</span> to go to the <span class='p-word'>library</span> to get a book..." 👉 Dịch: "Bạn <b><span style='color:green'>không cần</span></b> phải đến <b><span style='color:red'>thư viện</span></b> để mượn sách..."`
+                    },
+                    {
+                        id: 'e9t1_q3', text: "Question 3: Which activity cannot be done online?",
+                        correct: "Cooking.", options: ["Booking tickets.", "Getting an e-book.", "Buying things online.", "Cooking."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Hoạt động nào KHÔNG THỂ thực hiện trực tuyến theo đoạn văn?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Booking tickets. (<span class='p-mean'>Đặt vé</span>) <span class='hl-red'>❌ Có trong bài.</span><br>
+                        B. Getting an e-book. (<span class='p-mean'>Lấy sách điện tử</span>) <span class='hl-red'>❌ Có trong bài.</span><br>
+                        C. Buying things online. (<span class='p-mean'>Mua đồ trên mạng - Doing shopping</span>) <span class='hl-red'>❌ Có trong bài.</span><br>
+                        D. Cooking. (<span class='p-mean'>Nấu ăn</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Nấu ăn là hoạt động vật lý trong đời thực, không được liệt kê trong danh sách các việc làm online trong bài.</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> Đoạn 1 liệt kê: "<span class='p-word'>Doing shopping, booking tickets</span>... downloading music are the things you can do online." 👉 Hoàn toàn không nhắc đến việc nấu ăn (Cooking).`
+                    },
+                    {
+                        id: 'e9t1_q4', text: "Question 4: A child who is addicted to the Internet may ________.",
+                        correct: "isolate himself/ herself from family and friends", options: ["read offline books", "feel upset when online", "isolate himself/ herself from family and friends", "spend time with friends"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Một đứa trẻ nghiện Internet có thể ________.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. read offline books (<span class='p-mean'>đọc sách ngoại tuyến</span>) <span class='hl-red'>❌ Sai, trẻ nghiện mạng thường bỏ bê thực tế.</span><br>
+                        B. feel upset when online (<span class='p-mean'>cảm thấy buồn bực khi lên mạng</span>) <span class='hl-red'>❌ Sai, triệu chứng là buồn bực khi 'offline' (ngoại tuyến).</span><br>
+                        C. isolate himself/ herself from family and friends (<span class='p-mean'>cô lập bản thân khỏi gia đình và bạn bè</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Đây là triệu chứng số 3 được liệt kê.</span></span><br>
+                        D. spend time with friends (<span class='p-mean'>dành thời gian cho bạn bè</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...symptoms of Internet addiction: ... 3. <span class='hl-green'>isolation</span> from family and friends;" 👉 Dịch: "...triệu chứng của nghiện mạng: ... 3. <b><span style='color:green'>sự cô lập</span></b> khỏi gia đình và bạn bè."`
+                    },
+                    {
+                        id: 'e9t1_q5', text: "Question 5: The word “necessary” is opposite in meaning to:",
+                        correct: "insignificant", options: ["essential", "insignificant", "important", "good"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Từ "necessary" (cần thiết) có NGHĨA TRÁI NGƯỢC với từ nào:<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. essential (<span class='p-mean'>thiết yếu</span>) <span class='hl-red'>❌ Đây là từ đồng nghĩa (synonym) chứ không phải trái nghĩa.</span><br>
+                        B. insignificant (<span class='p-mean'>không quan trọng, vô nghĩa</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Trái nghĩa với 'cần thiết/quan trọng' là 'không quan trọng/không đáng kể'.</span></span><br>
+                        C. important (<span class='p-mean'>quan trọng</span>) <span class='hl-red'>❌ Đây là từ đồng nghĩa.</span><br>
+                        D. good (<span class='p-mean'>tốt</span>) <span class='hl-red'>❌ Không liên quan trực tiếp về trường nghĩa.</span><br>
+                        🔍 <b>Dẫn chứng:</b> Cần tìm Antonym (Từ trái nghĩa) của <span class='p-word'>necessary</span> (cần thiết, quan trọng) 👉 Đáp án chính xác là <span class='hl-green'>insignificant</span>.`
+                    }
+                ]
+            },
+            {
+                title: "Task 2: DISASTER IN HA TINH",
+                content: [
+                    {
+                        en: "Ha Tinh is a disaster-prone province in the central of Viet Nam. Since the beginning of 2015, this province has experienced three massive floods, causing devastating property damage. The floods razed thousands of homes, damaged numerous irrigation works, roads, schools and healthcare centres.",
+                        vi: "Hà Tĩnh là một tỉnh dễ bị thiên tai ở miền trung Việt Nam. Kể từ đầu năm 2015, tỉnh này đã trải qua ba trận lũ lớn, gây ra thiệt hại tài sản tàn khốc. Các trận lũ lụt đã san phẳng hàng nghìn ngôi nhà, phá hỏng vô số công trình thủy lợi, đường sá, trường học và trung tâm y tế."
+                    },
+                    {
+                        en: "Ms. Nga Tran, a local resident, recalled the last flood, \"The flood in June was normal, but the one in September was awful. Water from Ngan River began to submerge the floor, while outside it was still raining heavily. After a while the water was about one meter. I had no choice but to climb up to the attic and stay there for two days.\" Like many other residents, all of Ms. Nga's furniture was covered in mud, some was completely damaged for having been soaked in the water for too long.",
+                        vi: "Bà Nga Trần, một cư dân địa phương, nhớ lại trận lũ trước, \"Trận lũ hồi tháng Sáu thì bình thường, nhưng trận lũ vào tháng Chín thật tồi tệ. Nước từ sông Ngàn bắt đầu nhấn chìm sàn nhà, trong khi bên ngoài trời vẫn đang mưa lớn. Một lúc sau mực nước đã dâng lên khoảng một mét. Tôi không có sự lựa chọn nào khác ngoài việc leo lên gác xép và ở đó suốt hai ngày.\" Giống như nhiều cư dân khác, toàn bộ đồ đạc của bà Nga bị bao phủ trong bùn, một số bị hư hỏng hoàn toàn do ngâm trong nước quá lâu."
+                    },
+                    {
+                        en: "But what worried her most was the loss of her rice crop. Three months after the flood, lots of farmers still struggled with finding enough food to eat. If there is no aid from the government, the situation in this province will get worse.",
+                        vi: "Nhưng điều làm bà lo lắng nhất là việc mất trắng vụ lúa của bà. Ba tháng sau trận lũ, rất nhiều nông dân vẫn phải vật lộn với việc tìm đủ thức ăn. Nếu không có viện trợ từ chính phủ, tình hình ở tỉnh này sẽ trở nên tồi tệ hơn."
+                    }
+                ],
+                glossary: [
+                    ["Disaster-prone", "Adjective", "Dễ bị thiên tai"],
+                    ["Province", "Noun", "Tỉnh"],
+                    ["Massive", "Adjective", "To lớn, quy mô lớn"],
+                    ["Devastating", "Adjective", "Tàn khốc, phá hủy"],
+                    ["Property", "Noun", "Tài sản"],
+                    ["Submerge", "Verb", "Nhấn chìm"],
+                    ["Attic", "Noun", "Gác xép"],
+                    ["Furniture", "Noun", "Đồ đạc, nội thất"],
+                    ["Struggle", "Verb", "Vật lộn, phấn đấu"],
+                    ["Aid", "Noun", "Sự viện trợ, giúp đỡ"]
+                ],
+                questions: [
+                    {
+                        id: 't2_q1', text: "Question 1: What does \"disaster-prone\" mean?",
+                        correct: "likely to have disasters", options: ["likely to have disasters", "having no disasters", "have very few disasters"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Cụm từ "disaster-prone" có nghĩa là gì?<br>
+                        <h5>Phân tích 3 đáp án:</h5>
+                        A. likely to have disasters (<span class='p-mean'>có khả năng bị thiên tai</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Hậu tố "-prone" nghĩa là có khuynh hướng, dễ bị ảnh hưởng bởi một thứ gì đó tiêu cực (ví dụ: accident-prone = dễ bị tai nạn).</span></span><br>
+                        B. having no disasters (<span class='p-mean'>không có thiên tai</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        C. have very few disasters (<span class='p-mean'>có rất ít thiên tai</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        🔍 <b>Dẫn chứng:</b> Đoạn 1 mô tả: "...has experienced <span class='p-word'>three massive floods</span>..." 👉 Dịch: "...đã trải qua <b><span style='color:red'>ba trận lũ lớn</span></b>..." (Điều này chứng tỏ vùng này rất hay có thiên tai).`
+                    },
+                    {
+                        id: 't2_q2', text: "Question 2: What is NOT mentioned as a consequence of the floods?",
+                        correct: "loss of life", options: ["loss of property", "loss of life", "loss of crop"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Điều gì KHÔNG được nhắc đến như là một hậu quả của lũ lụt?<br>
+                        <h5>Phân tích 3 đáp án:</h5>
+                        A. loss of property (<span class='p-mean'>mất mát tài sản</span>) <span class='hl-red'>❌ Có nhắc đến ("property damage", "homes", "furniture").</span><br>
+                        B. loss of life (<span class='p-mean'>thiệt hại về người / chết người</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Đoạn văn liệt kê hư hỏng nhà cửa, đồ đạc, mùa màng nhưng tuyệt nhiên không có dòng nào nói về việc có người chết hay thương vong.</span></span><br>
+                        C. loss of crop (<span class='p-mean'>mất mùa màng</span>) <span class='hl-red'>❌ Có nhắc đến ("loss of her rice crop").</span><br>
+                        🔍 <b>Dẫn chứng:</b> Bài đọc đề cập thiệt hại <span class='p-word'>tài sản</span> và <span class='p-word'>mùa màng</span>, hoàn toàn không nhắc đến "loss of life".`
+                    },
+                    {
+                        id: 't2_q3', text: "Question 3: When was the flood as recalled by Ms. Nga Tran?",
+                        correct: "September", options: ["December", "September", "August"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Trận lũ mà bà Nga Trần nhớ lại (kể chi tiết) diễn ra khi nào?<br>
+                        <h5>Phân tích 3 đáp án:</h5>
+                        A. December (<span class='p-mean'>Tháng 12</span>) <span class='hl-red'>❌ Không có trong bài.</span><br>
+                        B. September (<span class='p-mean'>Tháng 9</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Bà nhắc đến 2 trận: trận tháng 6 (bình thường) và trận tháng 9 (tồi tệ). Trận tồi tệ tháng 9 mới là trận bà đang kể chi tiết (nước ngập 1 mét, leo lên gác xép).</span></span><br>
+                        C. August (<span class='p-mean'>Tháng 8</span>) <span class='hl-red'>❌ Không có trong bài.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "The flood in June was normal, but the one in <span class='hl-green'>September</span> was awful. Water... began to submerge..." 👉 Dịch: "...nhưng trận lũ vào <b><span style='color:green'>tháng Chín</span></b> thì khủng khiếp. Nước... bắt đầu nhấn chìm..."`
+                    },
+                    {
+                        id: 't2_q4', text: "Question 4: How long did Ms. Nga Tran stay in her attic?",
+                        correct: "two days", options: ["two days", "for the whole week", "three months"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Bà Nga Trần đã ở trên gác xép bao lâu?<br>
+                        <h5>Phân tích 3 đáp án:</h5>
+                        A. two days (<span class='p-mean'>hai ngày</span>) <span class='hl-green'>✅ Đúng.</span><br>
+                        B. for the whole week (<span class='p-mean'>cả tuần</span>) <span class='hl-red'>❌ Sai.</span><br>
+                        C. three months (<span class='p-mean'>ba tháng</span>) <span class='hl-red'>❌ Sai, 3 tháng là mốc thời gian sau lũ người dân thiếu ăn, không phải thời gian ở trên gác xép.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "I had no choice but to climb up to the attic and stay there for <span class='hl-green'>two days</span>." 👉 Dịch: "Tôi đành phải leo lên gác xép và ở đó suốt <b><span style='color:green'>hai ngày</span></b>."`
+                    },
+                    {
+                        id: 't2_q5', text: "Question 5: What is the biggest worry of Ms. Nga Tran and other residents?",
+                        correct: "lack of food", options: ["lack of aid", "lack of accommodation", "lack of food"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Nỗi lo lắng lớn nhất của bà Nga Trần và các cư dân khác là gì?<br>
+                        <h5>Phân tích 3 đáp án:</h5>
+                        A. lack of aid (<span class='p-mean'>thiếu viện trợ</span>) <span class='hl-red'>❌ Viện trợ là giải pháp ở câu cuối, không phải là nỗi lo lắng trực tiếp lớn nhất được gọi tên "worried her most".</span><br>
+                        B. lack of accommodation (<span class='p-mean'>thiếu chỗ ở</span>) <span class='hl-red'>❌ Sai, đồ đạc bị hỏng chứ chưa đến mức không có chỗ ở.</span><br>
+                        C. lack of food (<span class='p-mean'>thiếu thức ăn</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Từ đồng nghĩa: 'loss of rice crop' (mất lúa/mất mùa) dẫn đến việc 'finding enough food to eat' (tìm đủ đồ ăn) trở thành khó khăn vật lộn (struggled).</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "But what <span class='p-word'>worried her most</span> was the loss of her <span class='hl-green'>rice crop</span>... farmers still struggled with finding <span class='hl-green'>enough food</span> to eat." 👉 Dịch: "Nhưng điều làm bà <b><span style='color:red'>lo lắng nhất</span></b> là mất <b><span style='color:green'>vụ lúa</span></b>... nông dân vật lộn với việc tìm <b><span style='color:green'>đủ thức ăn</span></b>."`
+                    }
+                ]
+            }
+        ];
+
+        let userAnswers = {};
+        const totalQuestions = 20; // 10 + 5 + 5
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function toggleTranslation(btn) {
+            const transText = btn.nextElementSibling;
+            if (transText.style.display === "block") {
+                transText.style.display = "none";
+                btn.innerHTML = "Mở dịch đoạn này 🌟";
+                btn.style.background = "linear-gradient(135deg, #f6d365 0%, #fda085 100%)";
+            } else {
+                transText.style.display = "block";
+                btn.innerHTML = "Ẩn dịch đoạn này 🙈";
+                btn.style.background = "linear-gradient(135deg, #a8e6cf 0%, #1dd1a1 100%)";
+            }
+        }
+
+        function renderApp() {
+            const leftPanel = document.getElementById('left-panel');
+            const questionsContainer = document.getElementById('questions-container');
+
+            data.forEach((section, index) => {
+                // Render Passage
+                let htmlPassage = `<div class="passage-box"><h3 class="passage-title">${section.title}</h3>`;
+                
+                section.content.forEach(para => {
+                    htmlPassage += `<div class="paragraph">${para.en}</div>
+                                    <button class="btn-translate" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                                    <div class="translation-text">${para.vi}</div>`;
+                });
+
+                // Render Glossary
+                htmlPassage += `<div class="glossary-box">
+                                    <h4>📚 Bảng Từ Vựng Học Thuật (Glossary)</h4>
+                                    <table class="glossary-table">
+                                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa Tiếng Việt</th></tr>`;
+                section.glossary.forEach(word => {
+                    htmlPassage += `<tr><td>${word[0]}</td><td>${word[1]}</td><td>${word[2]}</td></tr>`;
+                });
+                htmlPassage += `</table></div></div>`;
+                leftPanel.innerHTML += htmlPassage;
+
+                // Render Questions
+                section.questions.forEach(q => {
+                    let shuffledOptions = shuffle([...q.options]);
+                    let htmlQ = `<div class="question-block" id="block-${q.id}">
+                                    <div class="question-text">${q.text}</div>
+                                    <div class="options-grid">`;
+                    shuffledOptions.forEach(opt => {
+                        let safeOpt = opt.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        let safeCorrect = q.correct.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        htmlQ += `<button class="btn-option" onclick="handleAnswer('${q.id}', '${safeOpt}', '${safeCorrect}', this)">${opt}</button>`;
+                    });
+                    htmlQ += `</div>
+                              <div class="explanation" id="expl-${q.id}">${q.explanation}</div>
+                              </div>`;
+                    questionsContainer.innerHTML += htmlQ;
+                });
+            });
+        }
+
+        function handleAnswer(qId, selected, correct, btn) {
+            const block = document.getElementById(`block-${qId}`);
+            const buttons = block.querySelectorAll('.btn-option');
+            // Prevent multiple clicks
+            buttons.forEach(b => b.disabled = true);
+
+            userAnswers[qId] = (selected === correct);
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+                playSound('correct');
+                fireConfetti();
+            } else {
+                btn.classList.add('wrong');
+                btn.classList.add('shake');
+                playSound('wrong');
+                // Auto highlight correct
+                buttons.forEach(b => {
+                    if (b.innerText === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+
+            // Show explanation
+            document.getElementById(`expl-${qId}`).style.display = 'block';
+        }
+
+        function showSubmitModal() {
+            document.getElementById('scoreModal').style.display = 'flex';
+        }
+
+        function calculateScore() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                alert("Bạn phải nhập tên trước khi nộp bài nhé! 📝");
+                return;
+            }
+
+            let score = 0;
+            for(let key in userAnswers) {
+                if(userAnswers[key]) score++;
+            }
+
+            const modalInner = document.getElementById('modalInner');
+            const percent = (score / totalQuestions) * 100;
+            
+            let gifUrl, msg, comment;
+            if (percent === 100) {
+                gifUrl = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"; // Smart/Einstein
+                msg = "THIÊN TÀI XUẤT HIỆN! 🌟🌟🌟";
+                comment = "Tuyệt vời quá! MS Chí Nên rất tự hào về em!";
+            } else if (percent >= 60) {
+                gifUrl = "https://media.giphy.com/media/11ISwbgCxEzMyY/giphy.gif"; // High five
+                msg = "RẤT TỐT! CỐ GẮNG LÊN NỮA NHÉ! 🔥";
+                comment = "Em làm tốt lắm, hãy xem lại phần giải thích để hiểu rõ hơn những câu sai nhé!";
+            } else {
+                gifUrl = "https://media.giphy.com/media/2UIcmK4pn7rYNLRboG/giphy.gif"; // Crying/sad but cute
+                msg = "ĐỪNG BUỒN NHÉ, CỐ LÊN! 💪";
+                comment = "Không sao đâu! Sai ở đâu mình học ở đó. Nhớ đọc kỹ phần giải thích chi tiết của cô nhé!";
+            }
+
+            modalInner.innerHTML = `
+                <h2 style="color: #2f3542; font-weight:900;">BẢNG ĐIỂM (SCORECARD)</h2>
+                <h3 style="color: #10ac84; margin-top:10px; font-size:1.4rem;">Học sinh: ${name}</h3>
+                <div class="score-text">${score} / ${totalQuestions}</div>
+                <div class="feedback-msg">${msg}</div>
+                <img src="${gifUrl}" alt="Result GIF">
+                <div style="background: #fdfaf6; padding: 15px; border-radius: 15px; margin-top:15px; font-style: italic; border-left: 5px solid #ffaaa5;">
+                    " ${comment} " - <b style="color:#ff6b6b">MS Chí Nên</b>
+                </div>
+                <button class="btn-translate" style="margin-top:25px; width:100%; padding: 16px; border-radius: 15px; font-size:1.2rem;" onclick="document.getElementById('scoreModal').style.display='none'">Xem lại bài chữa chi tiết 📖</button>
+            `;
+        }
+
+        // Initialize App
+        window.onload = renderApp;
+
+    </script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

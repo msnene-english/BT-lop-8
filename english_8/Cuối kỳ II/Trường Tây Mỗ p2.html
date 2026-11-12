@@ -1,0 +1,1194 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Challenge - MS Chí Nên</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            --text-main: #1e272e;
+            --btn-hover: rgba(255, 255, 255, 0.3);
+            --correct-color: #00b894;
+            --incorrect-color: #ff4757;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #00f260, #0575e6, #8e2de2, #4a00e0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SVG Emoji Background Pattern */
+        .bg-pattern {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            opacity: 0.15; pointer-events: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><text x='20' y='40' font-size='30'>🌪️</text><text x='100' y='80' font-size='30'>🏪</text><text x='30' y='120' font-size='30'>💻</text><text x='110' y='140' font-size='30'>🌧️</text></svg>");
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 50px;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border); z-index: 100;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+        }
+        .header-title { font-weight: 800; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .header-author { font-size: 0.9rem; font-weight: 600; color: #fff; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 20px; }
+
+        /* SPLIT SCREEN LAYOUT */
+        .container {
+            display: flex; width: 100%; height: calc(100vh - 50px); margin-top: 50px;
+        }
+
+        .pane {
+            flex: 1; padding: 20px; overflow-y: auto; scroll-behavior: smooth;
+        }
+
+        .pane::-webkit-scrollbar { width: 8px; }
+        .pane::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        .pane::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 4px; }
+
+        .left-pane { border-right: 1px solid var(--glass-border); }
+        .right-pane { padding-bottom: 100px; }
+
+        /* GLASSMORPHISM CARDS */
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
+            border-radius: 20px; padding: 25px; margin-bottom: 30px;
+            color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        /* READING STYLES */
+        .passage-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: #fff; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        .passage-text { font-size: 1.2rem; line-height: 1.8; margin-bottom: 15px; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 12px; }
+        .blank { display: inline-block; min-width: 40px; border-bottom: 2px dashed #fff; text-align: center; font-weight: bold; color: #ffeaa7; margin: 0 5px; }
+        
+        .btn-translate {
+            background: linear-gradient(135deg, #ff9ff3, #feca57); border: none; padding: 8px 15px;
+            border-radius: 15px; cursor: pointer; font-weight: bold; color: #2d3436;
+            margin-top: 10px; display: inline-block; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-translate:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .translation-box {
+            display: none; background: rgba(255, 255, 255, 0.9); color: #2d3436;
+            padding: 15px; border-radius: 12px; margin-top: 10px; font-size: 1.1rem;
+            border-left: 5px solid #00b894; text-shadow: none;
+        }
+
+        /* GLOSSARY */
+        .glossary-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .glossary-table th, .glossary-table td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .glossary-table th { background: rgba(0,0,0,0.2); font-weight: 800; color: #feca57; }
+        .glossary-table tr:last-child td { border-bottom: none; }
+        .g-word { font-weight: bold; color: #81ecec; }
+
+        /* QUESTION STYLES */
+        .question-block { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed rgba(255,255,255,0.3); }
+        .q-number { font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; color: #ffeaa7; background: rgba(0,0,0,0.2); display: inline-block; padding: 6px 15px; border-radius: 12px;}
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        .option-btn {
+            background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.4);
+            color: #fff; padding: 15px; border-radius: 15px; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; transition: all 0.3s; backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
+        }
+        .option-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.4); transform: scale(1.02); }
+        .option-btn.correct { background: var(--correct-color); border-color: #fff; box-shadow: 0 0 15px var(--correct-color); }
+        .option-btn.incorrect { background: var(--incorrect-color); border-color: #fff; animation: shake 0.4s ease; }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+        /* MASTER EXPLANATION STYLES (STRICT) */
+        .explanation-box {
+            display: none; background: rgba(255, 255, 255, 0.95); border-radius: 15px;
+            padding: 20px; margin-top: 15px; color: #2d3436; text-shadow: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-left: 6px solid #e17055;
+            font-size: 1.05rem; line-height: 1.6;
+        }
+        .explanation-box ul { list-style: none; padding-left: 10px; margin: 10px 0; }
+        .explanation-box li { margin-bottom: 8px; }
+        
+        /* REQUIRED SPANS */
+        .p-word { color: #0984e3; font-weight: 800; }
+        .p-mean { color: #d35400; font-style: italic; font-weight: 600;}
+        .p-grammar { text-decoration: underline red 2px; font-weight: 800; color: #2c3e50;}
+        .hl-green { color: #00b894; font-weight: 900; background: rgba(0, 184, 148, 0.15); padding: 2px 6px; border-radius: 4px; text-transform: uppercase;}
+        .hl-red { color: #d63031; text-decoration: line-through; font-weight: 600;}
+        
+        /* BẢN DỊCH HIGHLIGHT MỚI SIÊU NỔI BẬT */
+        .highlight-box { 
+            background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%); 
+            padding: 12px 18px; 
+            border-radius: 12px; 
+            border-left: 6px solid #ff9f00; 
+            margin-top: 15px; 
+            font-size: 1.15rem; 
+            color: #1e272e; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* SUBMIT BUTTON */
+        .submit-btn {
+            display: block; width: 100%; max-width: 400px; margin: 30px auto; padding: 18px;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            color: #d63031; border: none; border-radius: 30px; font-size: 1.5rem; font-weight: 900;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .submit-btn:hover { transform: scale(1.05); filter: brightness(1.05); }
+
+        /* MODALS */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .score-card {
+            background: #fff; padding: 40px; border-radius: 30px; text-align: center;
+            max-width: 500px; width: 90%; color: #2d3436; position: relative;
+        }
+        .score-card h2 { font-size: 2.5rem; color: #0984e3; margin-bottom: 10px; }
+        .score-card .points { font-size: 4rem; font-weight: 900; color: #00b894; margin: 20px 0; }
+        .score-card img { max-width: 100%; border-radius: 15px; margin: 15px 0; height: 250px; object-fit: cover;}
+        #studentNameInput { width: 80%; padding: 15px; font-size: 1.2rem; border: 2px solid #0984e3; border-radius: 15px; margin-bottom: 20px; outline: none; text-align: center;}
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .left-pane { border-right: none; border-bottom: 2px dashed var(--glass-border); min-height: 50vh; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+
+        /* GIAO DIỆN MÀN HÌNH KHÓA TỪ YÊU CẦU */
+        #passwordModal {
+            position:fixed; inset:0; z-index:9999;
+            display:flex; align-items:center; justify-content:center;
+            background:rgba(5,2,15,0.92); backdrop-filter:blur(20px);
+        }
+        .pw-card {
+            background:linear-gradient(160deg, rgba(40,10,70,0.95) 0%, rgba(15,5,30,0.98) 100%);
+            border:1.5px solid rgba(240,192,64,0.4); border-radius:24px; padding:48px 40px 40px; 
+            max-width:440px; width:93%; text-align:center; position:relative; overflow:hidden;
+            box-shadow:0 0 60px rgba(106,5,114,0.6), 0 0 120px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15);
+        }
+        .pw-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:3px;
+            background:linear-gradient(90deg, #6A0572, #F0C040, #6A0572);
+        }
+        .pw-crest { font-size:4rem; margin-bottom:8px; display:block; }
+        .pw-title { font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700; color:#F0C040; margin-bottom:6px; letter-spacing:1px; }
+        .pw-sub   { font-size:.87rem; color:rgba(200,200,212,0.6); margin-bottom:24px; }
+        .pw-input {
+            width:100%; padding:13px 20px; border-radius:12px;
+            border:1.5px solid rgba(240,192,64,0.3); background:rgba(255,255,255,0.05);
+            color:#FFE082; font-size:1rem; font-family:'Nunito', sans-serif;
+            outline:none; letter-spacing:3px; text-align:center; transition:all .3s;
+        }
+        .pw-input:focus { border-color:#F0C040; box-shadow:0 0 0 3px rgba(240,192,64,0.15); }
+        .pw-input.error { border-color:#FF4757; box-shadow:0 0 0 3px rgba(255,71,87,0.25); animation:shake .4s ease; }
+        .pw-input::placeholder { color:rgba(200,200,212,0.3); letter-spacing:1px; }
+        .pw-btn {
+            width:100%; padding:14px; margin-top:14px; border-radius:12px; border:none;
+            background:linear-gradient(135deg, #6A0572 0%, #9B1FA8 40%, #F0C040 100%);
+            color:#fff; font-size:1rem; font-weight:700; font-family:'Cinzel', serif;
+            cursor:pointer; letter-spacing:.5px; transition:transform .2s;
+        }
+        .pw-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(106,5,114,0.7); }
+        .pw-err { color:#ff8a9a; font-size:.84rem; margin-top:10px; display:none; font-weight:700; }
+    </style>
+</head>
+<body>
+
+    <div id="passwordModal">
+        <div class="pw-card">
+            <span class="pw-crest">🔒</span>
+            <div class="pw-title">BẢO MẬT</div>
+            <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+            <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+            <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+            <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại. (Pass: 1611)</div>
+        </div>
+    </div>
+
+    <audio id="greetingAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/export_dcyCDfhAokgnwEKEgvFUkr.mp3"></audio>
+    <audio id="wrongAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/oi-ban-oi.mp3"></audio>
+
+    <div class="bg-pattern"></div>
+
+    <header>
+        <div class="header-title">🌟 READING MASTERY BATTLE 🌟</div>
+        <div class="header-author">Giáo viên tạo: MS Chí Nên</div>
+    </header>
+
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="pane left-pane" id="readingPane"></div>
+        <div class="pane right-pane" id="questionPane"></div>
+    </div>
+
+    <div class="modal-overlay" id="nameModal">
+        <div class="score-card">
+            <h2>🎯 SẮP XONG RỒI!</h2>
+            <p style="margin-bottom: 20px;">Nhập tên của chiến binh để ghi danh bảng vàng nhé:</p>
+            <input type="text" id="studentNameInput" placeholder="Ví dụ: Nguyễn Văn A">
+            <button class="submit-btn" onclick="processSubmit()" style="margin-top: 0; padding: 12px; font-size: 1.2rem;">NỘP BÀI</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="resultModal">
+        <div class="score-card">
+            <h2 id="resultName">Chúc mừng, ...</h2>
+            <div class="points" id="resultScore">0/28</div>
+            <p id="resultFeedback" style="font-size: 1.2rem; font-weight: bold;"></p>
+            <img id="resultGif" src="" alt="Result Meme">
+            <button class="submit-btn" onclick="location.reload()" style="margin-top: 10px; padding: 12px; font-size: 1.2rem;">LÀM LẠI TỪ ĐẦU</button>
+        </div>
+    </div>
+
+<script>
+// --- AUDIO CONTEXT ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playDing() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.5);
+}
+
+function playWrong() {
+    const w = document.getElementById('wrongAudio');
+    w.currentTime = 0;
+    w.play().catch(() => { /* fallback if blocked */ });
+}
+
+// --- DATA NỀN TẢNG (Đã xóa triệt để đề bài nhỏ ở phần questions) ---
+const db = [
+    {
+        id: "p1",
+        title: "Tornadoes",
+        paragraphs: [
+            {
+                text: "A tornado is a kind of storm which looks <span class='blank' id='b-p1-0'>(1)</span> a huge funnel. Tornados are the strongest winds on earth. They can <span class='blank' id='b-p1-1'>(2)</span> 480 km per hour. With such great strength, a tornado causes a lot of damage. It can <span class='blank' id='b-p1-2'>(3)</span> trees, flatten buildings, and throw heavy things such as cars hundreds of meters. It is especially dangerous <span class='blank' id='b-p1-3'>(4)</span> people in cars or mobile homes.",
+                vi: "Lốc xoáy là một loại bão trông giống như một cái phễu khổng lồ. Lốc xoáy là những cơn gió mạnh nhất trên trái đất. Chúng có thể đạt tới 480 km một giờ. Với sức mạnh to lớn như vậy, một cơn lốc xoáy gây ra rất nhiều thiệt hại. Nó có thể nhổ bật gốc cây cối, san phẳng các tòa nhà và ném những vật nặng như ô tô đi xa hàng trăm mét. Nó đặc biệt nguy hiểm đối với những người ở trong ô tô hoặc nhà di động."
+            }
+        ],
+        glossary: [
+            { en: "Tornado", type: "(n)", vi: "Lốc xoáy" },
+            { en: "Funnel", type: "(n)", vi: "Cái phễu, ống khói" },
+            { en: "Strength", type: "(n)", vi: "Sức mạnh" },
+            { en: "Damage", type: "(n)", vi: "Sự thiệt hại, tàn phá" },
+            { en: "Uproot", type: "(v)", vi: "Nhổ bật rễ" },
+            { en: "Flatten", type: "(v)", vi: "San phẳng" },
+            { en: "Mobile home", type: "(n)", vi: "Nhà lưu động" },
+            { en: "Dangerous", type: "(adj)", vi: "Nguy hiểm" },
+            { en: "Especially", type: "(adv)", vi: "Đặc biệt là" },
+            { en: "Reach", type: "(v)", vi: "Đạt tới mức độ nào đó" }
+        ],
+        questions: [
+            {
+                id: "q-p1-0",
+                text: "Câu 1: Select the best answer",
+                options: [
+                    { text: "like", correct: true }, { text: "as", correct: false }, { text: "such", correct: false }, { text: "for", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Lốc xoáy là một loại bão trông ... một cái phễu khổng lồ.</p>
+                    <ul>
+                        <li><span class='hl-green'>like</span>: <span class='p-mean'>giống như (chỉ sự tương đồng về ngoại hình)</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>as</span>: <span class='p-mean'>với tư cách là (chỉ vai trò)</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>such</span>: <span class='p-mean'>như thế</span> ❌ Sai ngữ pháp.</li>
+                        <li><span class='hl-red'>for</span>: <span class='p-mean'>cho</span> ❌ Sai nghĩa.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Lốc xoáy là một loại bão trông <span class='hl-green'>giống như</span> một cái phễu khổng lồ.
+                    </div>
+                    <p><span class='p-grammar'>Cấu trúc: Look like + Noun (trông giống cái gì).</span></p>
+                `
+            },
+            {
+                id: "q-p1-1",
+                text: "Câu 2: Select the best answer",
+                options: [
+                    { text: "reach", correct: true }, { text: "arrive", correct: false }, { text: "go to", correct: false }, { text: "speed", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Chúng có thể ... 480 km một giờ.</p>
+                    <ul>
+                        <li><span class='hl-red'>arrive</span>: <span class='p-mean'>đến (địa điểm)</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>go to</span>: <span class='p-mean'>đi đến</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>reach</span>: <span class='p-mean'>đạt tới (mức độ, tốc độ, giới hạn)</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>speed</span>: <span class='p-mean'>tốc độ (danh từ) hoặc tăng tốc (động từ)</span> ❌ Sai ngữ cảnh.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Chúng có thể <span class='hl-green'>đạt tới</span> 480 km/giờ.
+                    </div>
+                `
+            },
+            {
+                id: "q-p1-2",
+                text: "Câu 3: Select the best answer",
+                options: [
+                    { text: "uproot", correct: true }, { text: "grow", correct: false }, { text: "plant", correct: false }, { text: "water", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó có thể ... cây cối, san phẳng các tòa nhà...</p>
+                    <ul>
+                        <li><span class='hl-red'>grow</span>: <span class='p-mean'>trồng/phát triển</span> ❌ Sai, bão thì đi tàn phá chứ không trồng cây.</li>
+                        <li><span class='hl-green'>uproot</span>: <span class='p-mean'>nhổ bật rễ</span> ✅ Đúng hợp lý với sức tàn phá.</li>
+                        <li><span class='hl-red'>plant</span>: <span class='p-mean'>trồng cây</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>water</span>: <span class='p-mean'>tưới nước</span> ❌ Sai.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó có thể <span class='hl-green'>nhổ bật gốc</span> cây, san phẳng các tòa nhà...
+                    </div>
+                `
+            },
+            {
+                id: "q-p1-3",
+                text: "Câu 4: Select the best answer",
+                options: [
+                    { text: "to", correct: true }, { text: "with", correct: false }, { text: "in", correct: false }, { text: "at", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó đặc biệt nguy hiểm ... những người trong ô tô.</p>
+                    <ul>
+                        <li><span class='hl-red'>with</span>: <span class='p-mean'>với</span> ❌ Sai giới từ hoàn toàn.</li>
+                        <li><span class='hl-green'>to</span>: <span class='p-mean'>đối với</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>in</span> / <span class='hl-red'>at</span>: ❌ Sai giới từ hoàn toàn.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó đặc biệt nguy hiểm <span class='hl-green'>đối với</span> những người trong ô tô...
+                    </div>
+                    <p><span class='p-grammar'>Cấu trúc: Be dangerous TO somebody (Nguy hiểm đối với ai).</span></p>
+                `
+            }
+        ]
+    },
+    {
+        id: "p2",
+        title: "Convenience Shop",
+        paragraphs: [
+            {
+                text: "A corner shop or a convenience shop is a British tradition. It is a small <span class='blank' id='b-p2-0'>(1)</span> shop. We can find a corner shop at the end of a local street in many neighbourhoods in towns and cities across the UK. The corner shop sells all kinds of household goods and simple food and drinks like snacks, groceries, coffee, soft drinks. It <span class='blank' id='b-p2-1'>(2)</span> sells newspapers, magazines, and cigarettes.",
+                vi: "Cửa hàng ở góc phố hay cửa hàng tiện lợi là một truyền thống của người Anh. Nó là một cửa hàng bán lẻ nhỏ. Chúng ta có thể tìm thấy một cửa hàng ở góc phố ở cuối một con phố địa phương ở nhiều khu phố thuộc các thị trấn và thành phố trên khắp Vương quốc Anh. Cửa hàng góc phố bán tất cả các loại đồ dùng gia đình, đồ ăn thức uống đơn giản như đồ ăn vặt, đồ tạp hóa, cà phê, nước ngọt. Nó cũng bán báo, tạp chí và thuốc lá."
+            },
+            {
+                text: "Convenience stores are originally from America. They are like the British corner shops. The only <span class='blank' id='b-p2-2'>(3)</span> is that convenience stores are often open 24 hours. Probably the most well-known convenience store is 7-Eleven. You can find a convenience store at any residential <span class='blank' id='b-p2-3'>(4)</span>, a filling station, a railway station, or alongside a busy road.",
+                vi: "Các cửa hàng tiện lợi có nguồn gốc từ Mỹ. Chúng giống như các cửa hàng góc phố của Anh. Điểm khác biệt duy nhất là các cửa hàng tiện lợi thường mở cửa 24 giờ. Có lẽ cửa hàng tiện lợi nổi tiếng nhất là 7-Eleven. Bạn có thể tìm thấy cửa hàng tiện lợi ở bất kỳ khu dân cư nào, trạm đổ xăng, nhà ga hoặc dọc theo một con đường sầm uất."
+            }
+        ],
+        glossary: [
+            { en: "Tradition", type: "(n)", vi: "Truyền thống" },
+            { en: "Retail", type: "(n/adj)", vi: "Bán lẻ" },
+            { en: "Neighbourhood", type: "(n)", vi: "Khu vực lân cận, khu phố" },
+            { en: "Household goods", type: "(n)", vi: "Đồ dùng gia đình" },
+            { en: "Groceries", type: "(n)", vi: "Hàng tạp hóa" },
+            { en: "Originally", type: "(adv)", vi: "Ban đầu, có nguồn gốc" },
+            { en: "Difference", type: "(n)", vi: "Sự khác biệt" },
+            { en: "Residential area", type: "(n)", vi: "Khu dân cư" },
+            { en: "Filling station", type: "(n)", vi: "Trạm đổ xăng" },
+            { en: "Alongside", type: "(prep)", vi: "Dọc theo, bên cạnh" }
+        ],
+        questions: [
+            {
+                id: "q-p2-0",
+                text: "Câu 1: Select the best answer",
+                options: [
+                    { text: "retail", correct: true }, { text: "mass", correct: false }, { text: "wholesale", correct: false }, { text: "convenient", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó là một cửa hàng ... nhỏ.</p>
+                    <ul>
+                        <li><span class='hl-green'>retail</span>: <span class='p-mean'>bán lẻ</span> ✅ Đúng (Cửa hàng bán lẻ trực tiếp cho khách).</li>
+                        <li><span class='hl-red'>mass</span>: <span class='p-mean'>khối lượng lớn/đại chúng</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>wholesale</span>: <span class='p-mean'>bán buôn/bán sỉ</span> ❌ Sai, cửa hàng tiện lợi không bán sỉ.</li>
+                        <li><span class='hl-red'>convenient</span>: <span class='p-mean'>tiện lợi (tính từ)</span> ❌ Cụm từ là 'convenience shop' chứ không dùng 'convenient shop' ở đây.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó là một cửa hàng <span class='hl-green'>bán lẻ</span> nhỏ.
+                    </div>
+                `
+            },
+            {
+                id: "q-p2-1",
+                text: "Câu 2: Select the best answer",
+                options: [
+                    { text: "also", correct: true }, { text: "generally", correct: false }, { text: "finally", correct: false }, { text: "Too", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó ... bán báo, tạp chí...</p>
+                    <ul>
+                        <li><span class='hl-red'>generally</span>: <span class='p-mean'>nhìn chung</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>finally</span>: <span class='p-mean'>cuối cùng</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>also</span>: <span class='p-mean'>cũng (thêm vào)</span> ✅ Đúng, đứng trước động từ thường 'sells'.</li>
+                        <li><span class='hl-red'>Too</span>: <span class='p-mean'>cũng</span> ❌ Sai vì 'too' thường đứng ở cuối câu.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó <span class='hl-green'>cũng</span> bán báo...
+                    </div>
+                `
+            },
+            {
+                id: "q-p2-2",
+                text: "Câu 3: Select the best answer",
+                options: [
+                    { text: "difference", correct: true }, { text: "good", correct: false }, { text: "benefit", correct: false }, { text: "thing", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> ... duy nhất là cửa hàng tiện lợi mở cửa 24h.</p>
+                    <ul>
+                        <li><span class='hl-red'>good</span>: <span class='p-mean'>điều tốt</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>difference</span>: <span class='p-mean'>sự khác biệt</span> ✅ Đúng, vì đoạn trước vừa nói chúng "giống nhau", nên câu này chỉ ra điểm khác.</li>
+                        <li><span class='hl-red'>benefit</span>: <span class='p-mean'>lợi ích</span> ❌ Sai ngữ cảnh so sánh.</li>
+                        <li><span class='hl-red'>thing</span>: <span class='p-mean'>thứ/điều</span> ❌ Không sát nghĩa bằng 'difference'.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Chúng giống như cửa hàng ở Anh. <span class='hl-green'>Sự khác biệt</span> duy nhất là...
+                    </div>
+                `
+            },
+            {
+                id: "q-p2-3",
+                text: "Câu 4: Select the best answer",
+                options: [
+                    { text: "area", correct: true }, { text: "land", correct: false }, { text: "houses", correct: false }, { text: "community", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Bạn có thể tìm thấy cửa hàng ở bất kỳ ... dân cư nào.</p>
+                    <ul>
+                        <li><span class='hl-red'>land</span>: <span class='p-mean'>mảnh đất</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>houses</span>: <span class='p-mean'>những ngôi nhà</span> ❌ Không ghép với residential thành cụm danh từ thông dụng.</li>
+                        <li><span class='hl-red'>community</span>: <span class='p-mean'>cộng đồng</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>area</span>: <span class='p-mean'>khu vực</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...ở bất kỳ <span class='hl-green'>khu vực</span> dân cư nào...
+                    </div>
+                    <p><span class='p-word'>Residential area</span> = Khu dân cư.</p>
+                `
+            }
+        ]
+    },
+    {
+        id: "p3",
+        title: "Technology in Education",
+        paragraphs: [
+            {
+                text: "Technology in education plays an important role <span class='blank' id='b-p3-0'>(1)</span> building on the educational skills and knowledge for people. This is very essential, especially those who need <span class='blank' id='b-p3-1'>(2)</span> their knowledge. <span class='blank' id='b-p3-2'>(3)</span> for them to achieve a successful life in the future. Technology in education is manifested through the use of computers.",
+                vi: "Công nghệ trong giáo dục đóng một vai trò quan trọng trong việc xây dựng các kỹ năng và kiến thức giáo dục cho con người. Điều này là rất thiết yếu, đặc biệt là những người cần cải thiện kiến thức của họ. Để họ đạt được một cuộc sống thành công trong tương lai. Công nghệ trong giáo dục được thể hiện rõ qua việc sử dụng máy tính."
+            },
+            {
+                text: "This is also a great help for teachers <span class='blank' id='b-p3-3'>(4)</span> they can already enhance their teaching skills and strategies every time they are facing their classes. There is a variety of benefits which technology brings back. Firstly, students can already learn <span class='blank' id='b-p3-4'>(5)</span> their own even without the <span class='blank' id='b-p3-5'>(6)</span> of their parents and teachers. They are just going to the Internet to <span class='blank' id='b-p3-6'>(7)</span> the lesson they need to study.",
+                vi: "Đây cũng là một sự trợ giúp lớn cho giáo viên bởi vì họ có thể nâng cao các kỹ năng và chiến lược giảng dạy mỗi khi đối mặt với lớp học của mình. Có rất nhiều lợi ích mà công nghệ mang lại. Thứ nhất, học sinh đã có thể tự học ngay cả khi không có sự hỗ trợ của cha mẹ và giáo viên. Họ chỉ cần lên mạng để tìm kiếm bài học mà họ cần học."
+            },
+            {
+                text: "Quick accessibility and being well-equipment with the skills and knowledge in operating a computer are very <span class='blank' id='b-p3-7'>(8)</span> for the students. Next, the need for heavy books to be brought back and forth from school and home is so longer needed technology. The book can stay in the classroom because the information that they need is easily accessed on a computer.",
+                vi: "Sự tiếp cận nhanh chóng và được trang bị tốt các kỹ năng và kiến thức trong việc vận hành máy tính là rất hữu ích cho học sinh. Tiếp theo, nhu cầu mang những cuốn sách nặng nề đi về giữa trường và nhà không còn cần thiết nhờ công nghệ. Sách có thể nằm lại ở lớp vì thông tin họ cần dễ dàng được truy cập trên máy tính."
+            },
+            {
+                text: "Last but not least, along with lots of images, videos and other graphics and text <span class='blank' id='b-p3-8'>(9)</span> in computer, more students would feel excited <span class='blank' id='b-p3-9'>(10)</span> studying through the use of the gadget, which is very important to arouse their interest in studying.",
+                vi: "Cuối cùng nhưng không kém phần quan trọng, cùng với nhiều hình ảnh, video và các đồ họa và văn bản khác được tìm thấy trong máy tính, nhiều học sinh sẽ cảm thấy hào hứng với việc học thông qua việc sử dụng các thiết bị này, điều này rất quan trọng để khơi dậy sự hứng thú học tập của các em."
+            }
+        ],
+        glossary: [
+            { en: "Play a role in", type: "(phrase)", vi: "Đóng vai trò trong việc gì" },
+            { en: "Essential", type: "(adj)", vi: "Cần thiết, thiết yếu" },
+            { en: "Manifest", type: "(v)", vi: "Biểu hiện, thể hiện rõ" },
+            { en: "Enhance", type: "(v)", vi: "Nâng cao, củng cố" },
+            { en: "Strategy", type: "(n)", vi: "Chiến lược" },
+            { en: "Assistance", type: "(n)", vi: "Sự giúp đỡ, hỗ trợ" },
+            { en: "Accessibility", type: "(n)", vi: "Khả năng tiếp cận" },
+            { en: "Operate", type: "(v)", vi: "Vận hành, điều khiển" },
+            { en: "Gadget", type: "(n)", vi: "Thiết bị điện tử (tiện ích)" },
+            { en: "Arouse", type: "(v)", vi: "Khơi dậy (sự hứng thú)" }
+        ],
+        questions: [
+            {
+                id: "q-p3-0",
+                text: "Câu 1: Select the best answer",
+                options: [
+                    { text: "in", correct: true }, { text: "on", correct: false }, { text: "at", correct: false }, { text: "for", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> đóng một vai trò quan trọng ... việc xây dựng kỹ năng</p>
+                    <ul>
+                        <li><span class='hl-green'>in</span>: ✅ Đúng.</li>
+                        <li><span class='hl-red'>on/at/for</span>: ❌ Sai giới từ.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> đóng vai trò quan trọng <span class='hl-green'>trong việc</span> xây dựng...
+                    </div>
+                    <p><span class='p-grammar'>Thành ngữ cố định: Play a/an + adj + role + IN + V-ing/Noun (Đóng vai trò ... trong việc gì).</span></p>
+                `
+            },
+            {
+                id: "q-p3-1",
+                text: "Câu 2: Select the best answer",
+                options: [
+                    { text: "to improve", correct: true }, { text: "improving", correct: false }, { text: "to be improved", correct: false }, { text: "being improved", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> đặc biệt là những người cần ... kiến thức của họ.</p>
+                    <ul>
+                        <li><span class='hl-green'>to improve</span>: <span class='p-mean'>cải thiện (chủ động)</span> ✅ Đúng. <i>(Lưu ý: Trong đề gốc in là "improve" nhưng chuẩn ngữ pháp phải có "to", MS Chí Nên đã sửa lại cho chuẩn).</i></li>
+                        <li><span class='hl-red'>improving</span>: ❌ Sai vì "need + V-ing" mang nghĩa bị động, ở đây là NGƯỜI cần tự làm (chủ động).</li>
+                        <li><span class='hl-red'>to be improved</span> / <span class='hl-red'>being improved</span>: ❌ Đều là dạng bị động, không dùng cho người làm chủ ngữ.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...những người cần <span class='hl-green'>cải thiện</span> kiến thức của họ.
+                    </div>
+                    <p><span class='p-grammar'>Ngữ pháp: S (Người) + need + to V (Cần làm gì).</span></p>
+                `
+            },
+            {
+                id: "q-p3-2",
+                text: "Câu 3: Select the best answer",
+                options: [
+                    { text: "in order", correct: true }, { text: "so that", correct: false }, { text: "so in", correct: false }, { text: "in order that", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> ... để họ đạt được cuộc sống thành công...</p>
+                    <ul>
+                        <li><span class='hl-red'>so that</span> / <span class='hl-red'>in order that</span>: ❌ Sai vì sau chúng phải là một mệnh đề (Clause: S + V), ở đây là "for them to V".</li>
+                        <li><span class='hl-red'>so in</span>: ❌ Không có cấu trúc này.</li>
+                        <li><span class='hl-green'>in order</span>: ✅ Đúng. Tạo thành cấu trúc "In order (for sb) to do sth".</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> <span class='hl-green'>Để</span> họ có thể đạt được...
+                    </div>
+                    <p><span class='p-grammar'>Cấu trúc: In order (for + O) + to V = So as to V = Để làm gì.</span></p>
+                `
+            },
+            {
+                id: "q-p3-3",
+                text: "Câu 4: Select the best answer",
+                options: [
+                    { text: "because", correct: true }, { text: "although", correct: false }, { text: "so", correct: false }, { text: "hence", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Đây là sự trợ giúp lớn cho giáo viên ... họ có thể nâng cao kỹ năng dạy học.</p>
+                    <ul>
+                        <li><span class='hl-red'>although</span>: <span class='p-mean'>mặc dù</span> ❌ Sai nghĩa.</li>
+                        <li><span class='hl-red'>so</span>: <span class='p-mean'>vì vậy</span> ❌ Sai logic nhân quả.</li>
+                        <li><span class='hl-green'>because</span>: <span class='p-mean'>bởi vì</span> ✅ Đúng, vế sau giải thích lý do cho vế trước.</li>
+                        <li><span class='hl-red'>hence</span>: <span class='p-mean'>do đó</span> ❌ Sai ngữ pháp (sau hence không nối trực tiếp mệnh đề như liên từ).</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...sự trợ giúp lớn <span class='hl-green'>bởi vì</span> họ có thể nâng cao...
+                    </div>
+                `
+            },
+            {
+                id: "q-p3-4",
+                text: "Câu 5: Select the best answer",
+                options: [
+                    { text: "on", correct: true }, { text: "for", correct: false }, { text: "at", correct: false }, { text: "in", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> học sinh có thể tự học ... chính mình</p>
+                    <ul>
+                        <li><span class='hl-green'>on</span>: ✅ Đúng.</li>
+                        <li><span class='hl-red'>for/at/in</span>: ❌ Sai giới từ.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> học sinh có thể học <span class='hl-green'>tự lực (tự mình)</span>...
+                    </div>
+                    <p><span class='p-grammar'>Thành ngữ: On one's own = By oneself (Tự mình, tự lực).</span></p>
+                `
+            },
+            {
+                id: "q-p3-5",
+                text: "Câu 6: Select the best answer",
+                options: [
+                    { text: "assistance", correct: true }, { text: "assist", correct: false }, { text: "assistant", correct: false }, { text: "assisting", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> ngay cả khi không có sự ... của phụ huynh và giáo viên.</p>
+                    <ul>
+                        <li><span class='hl-red'>assist</span>: <span class='p-mean'>hỗ trợ (động từ)</span> ❌ Sai từ loại (sau 'the' cần danh từ).</li>
+                        <li><span class='hl-red'>assistant</span>: <span class='p-mean'>người trợ lý (danh từ chỉ người)</span> ❌ Sai nghĩa.</li>
+                        <li><span class='hl-red'>assisting</span>: <span class='p-mean'>V-ing</span> ❌ Không phù hợp.</li>
+                        <li><span class='hl-green'>assistance</span>: <span class='p-mean'>sự giúp đỡ, hỗ trợ (danh từ trừu tượng)</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...không cần sự <span class='hl-green'>hỗ trợ</span> của cha mẹ...
+                    </div>
+                `
+            },
+            {
+                id: "q-p3-6",
+                text: "Câu 7: Select the best answer",
+                options: [
+                    { text: "look for", correct: true }, { text: "look after", correct: false }, { text: "look up", correct: false }, { text: "look in", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Họ chỉ cần lên mạng để ... bài học họ cần.</p>
+                    <ul>
+                        <li><span class='hl-red'>look after</span>: <span class='p-mean'>chăm sóc</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>look up</span>: <span class='p-mean'>tra cứu (từ điển)</span> ❌ Sai ngữ cảnh.</li>
+                        <li><span class='hl-red'>look in</span>: <span class='p-mean'>ghé thăm nhanh</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>look for</span>: <span class='p-mean'>tìm kiếm</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...để <span class='hl-green'>tìm kiếm</span> bài học họ cần.
+                    </div>
+                `
+            },
+            {
+                id: "q-p3-7",
+                text: "Câu 8: Select the best answer",
+                options: [
+                    { text: "helpful", correct: true }, { text: "help", correct: false }, { text: "helpless", correct: false }, { text: "helping", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> việc vận hành máy tính rất ... cho học sinh.</p>
+                    <ul>
+                        <li><span class='hl-red'>help</span>: <span class='p-mean'>sự giúp đỡ</span> ❌ Sai từ loại, sau to be 'are' cần tính từ.</li>
+                        <li><span class='hl-green'>helpful</span>: <span class='p-mean'>hữu ích (tính từ)</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>helpless</span>: <span class='p-mean'>bất lực (tính từ)</span> ❌ Sai nghĩa.</li>
+                        <li><span class='hl-red'>helping</span>: <span class='p-mean'>V-ing</span> ❌ Không dùng ở đây.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...rất <span class='hl-green'>hữu ích</span> cho học sinh.
+                    </div>
+                `
+            },
+            {
+                id: "q-p3-8",
+                text: "Câu 9: Select the best answer",
+                options: [
+                    { text: "found", correct: true }, { text: "finding", correct: false }, { text: "find", correct: false }, { text: "to find", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> cùng với hình ảnh, đồ họa và văn bản ... trong máy tính.</p>
+                    <ul>
+                        <li><span class='hl-red'>finding</span>: <span class='p-mean'>chủ động tìm kiếm</span> ❌ Sai vì văn bản không thể tự đi tìm.</li>
+                        <li><span class='hl-green'>found</span>: <span class='p-mean'>được tìm thấy (V3/ed)</span> ✅ Đúng. Đây là rút gọn mệnh đề quan hệ dạng bị động.</li>
+                        <li><span class='hl-red'>find / to find</span>: ❌ Sai cấu trúc ngữ pháp.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...văn bản <span class='hl-green'>được tìm thấy</span> trong máy tính.
+                    </div>
+                    <p><span class='p-grammar'>Ngữ pháp: Rút gọn mệnh đề quan hệ mang nghĩa bị động dùng quá khứ phân từ (V3/ed).</span></p>
+                `
+            },
+            {
+                id: "q-p3-9",
+                text: "Câu 10: Select the best answer",
+                options: [
+                    { text: "about", correct: true }, { text: "in", correct: false }, { text: "on", correct: false }, { text: "with", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> nhiều học sinh sẽ cảm thấy hào hứng ... việc học.</p>
+                    <ul>
+                        <li><span class='hl-red'>in / on / with</span>: ❌ Không đi với excited trong trường hợp này.</li>
+                        <li><span class='hl-green'>about</span>: ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...cảm thấy hào hứng <span class='hl-green'>về</span> việc học...
+                    </div>
+                    <p><span class='p-grammar'>Cấu trúc: To be/feel excited ABOUT something/V-ing (Hào hứng, phấn khích về việc gì).</span></p>
+                `
+            }
+        ]
+    },
+    {
+        id: "p4",
+        title: "El Nino Phenomenon",
+        paragraphs: [
+            {
+                text: "El Nino is a weather phenomenon of the Pacific Ocean which is <span class='blank' id='b-p4-0'>(1)</span> by an abnormal <span class='blank' id='b-p4-1'>(2)</span> of water on the surface of the ocean. It has the <span class='blank' id='b-p4-2'>(3)</span> to influence global weather patterns as it brings drought to some continents and <span class='blank' id='b-p4-3'>(4)</span> rain to others.",
+                vi: "El Nino là một hiện tượng thời tiết của Thái Bình Dương được gây ra bởi sự nóng lên bất thường của nước trên bề mặt đại dương. Nó có sức mạnh ảnh hưởng đến các kiểu thời tiết toàn cầu vì nó mang lại hạn hán cho một số lục địa và mưa lớn cho những lục địa khác."
+            },
+            {
+                text: "It was first <span class='blank' id='b-p4-4'>(5)</span> by fishermen coming from Spanish ports in the Pacific in the 17th century. It got its name (Spanish for “boy child”) because it usually takes <span class='blank' id='b-p4-5'>(6)</span> near Christmas time.",
+                vi: "Nó được nhận ra lần đầu tiên bởi những ngư dân đến từ các cảng Tây Ban Nha ở Thái Bình Dương vào thế kỷ 17. Nó có tên như vậy (tiếng Tây Ban Nha nghĩa là 'cậu bé') vì nó thường diễn ra vào khoảng thời gian gần lễ Giáng sinh."
+            },
+            {
+                text: "It can cause catastrophic <span class='blank' id='b-p4-6'>(7)</span>. The 1982 El Nino <span class='blank' id='b-p4-7'>(8)</span> in 1,500 deaths, but it can be a lot worse than that. Sea animals, <span class='blank' id='b-p4-8'>(9)</span> fish and birds, also die in large numbers. It is <span class='blank' id='b-p4-9'>(10)</span> that sailors in the Pacific can smell the dead sea-life during El Nino.",
+                vi: "Nó có thể gây ra thiệt hại thảm khốc. Hiện tượng El Nino năm 1982 đã dẫn đến 1.500 cái chết, nhưng nó có thể còn tồi tệ hơn thế nhiều. Động vật biển, bao gồm cả cá và chim, cũng chết với số lượng lớn. Người ta nói rằng các thủy thủ ở Thái Bình Dương có thể ngửi thấy mùi sinh vật biển chết trong suốt thời kỳ El Nino."
+            }
+        ],
+        glossary: [
+            { en: "Phenomenon", type: "(n)", vi: "Hiện tượng (Số nhiều: Phenomena)" },
+            { en: "Abnormal", type: "(adj)", vi: "Bất thường" },
+            { en: "Influence", type: "(v)", vi: "Ảnh hưởng, tác động" },
+            { en: "Drought", type: "(n)", vi: "Hạn hán" },
+            { en: "Continent", type: "(n)", vi: "Lục địa, châu lục" },
+            { en: "Catastrophic", type: "(adj)", vi: "Thảm khốc, thảm họa" },
+            { en: "Notice", type: "(v)", vi: "Nhận thấy, chú ý" },
+            { en: "Take place", type: "(phrase)", vi: "Diễn ra, xảy ra" },
+            { en: "Result in", type: "(phrase)", vi: "Dẫn đến kết quả" },
+            { en: "Including", type: "(prep)", vi: "Bao gồm" }
+        ],
+        questions: [
+            {
+                id: "q-p4-0",
+                text: "Câu 1: Select the best answer",
+                options: [
+                    { text: "caused", correct: true }, { text: "happened", correct: false }, { text: "origin", correct: false }, { text: "done", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> hiện tượng ... được ... bởi sự bất thường.</p>
+                    <ul>
+                        <li><span class='hl-red'>happened</span>: ❌ Không dùng bị động.</li>
+                        <li><span class='hl-red'>origin</span>: <span class='p-mean'>nguồn gốc (danh từ)</span> ❌ Sai từ loại.</li>
+                        <li><span class='hl-red'>done</span>: <span class='p-mean'>được làm</span> ❌ Sai nghĩa.</li>
+                        <li><span class='hl-green'>caused</span>: <span class='p-mean'>được gây ra</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> cái mà được <span class='hl-green'>gây ra</span> bởi...
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-1",
+                text: "Câu 2: Select the best answer",
+                options: [
+                    { text: "warming", correct: true }, { text: "increase", correct: false }, { text: "heater", correct: false }, { text: "extra", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> bởi sự ... bất thường của nước trên bề mặt.</p>
+                    <ul>
+                        <li><span class='hl-red'>increase</span>: <span class='p-mean'>sự gia tăng</span> ❌ 'Sự gia tăng của nước' không đúng bản chất El Nino (sự nóng lên).</li>
+                        <li><span class='hl-red'>heater</span>: <span class='p-mean'>máy sưởi</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>extra</span>: <span class='p-mean'>thêm vào</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>warming</span>: <span class='p-mean'>sự ấm lên/nóng lên</span> ✅ Đúng bản chất khoa học của El Nino.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...bởi sự <span class='hl-green'>nóng lên</span> bất thường của nước...
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-2",
+                text: "Câu 3: Select the best answer",
+                options: [
+                    { text: "power", correct: true }, { text: "proficiency", correct: false }, { text: "practice", correct: false }, { text: "performance", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó có ... để ảnh hưởng đến thời tiết toàn cầu.</p>
+                    <ul>
+                        <li><span class='hl-red'>proficiency</span>: <span class='p-mean'>sự thành thạo</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>practice</span>: <span class='p-mean'>sự thực hành</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>power</span>: <span class='p-mean'>sức mạnh / khả năng</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>performance</span>: <span class='p-mean'>màn trình diễn/hiệu suất</span> ❌ Sai.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó có <span class='hl-green'>sức mạnh (khả năng)</span> ảnh hưởng đến...
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-3",
+                text: "Câu 4: Select the best answer",
+                options: [
+                    { text: "heavy", correct: true }, { text: "shower", correct: false }, { text: "plenty", correct: false }, { text: "wet", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> và mang tới mưa ... cho nơi khác.</p>
+                    <ul>
+                        <li><span class='hl-green'>heavy</span>: <span class='p-mean'>nặng / to (dùng cho mưa)</span> ✅ Đúng.</li>
+                        <li><span class='hl-red'>shower</span>: <span class='p-mean'>mưa rào (danh từ)</span> ❌ Không ghép thành "shower rain" như một cụm thông dụng.</li>
+                        <li><span class='hl-red'>plenty</span>: ❌ Phải có 'of' (plenty of rain).</li>
+                        <li><span class='hl-red'>wet</span>: <span class='p-mean'>ướt</span> ❌ Sai nghĩa.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...và mưa <span class='hl-green'>lớn</span> cho những nơi khác.
+                    </div>
+                    <p><span class='p-grammar'>Collocation: Heavy rain (Mưa to, mưa lớn).</span></p>
+                `
+            },
+            {
+                id: "q-p4-4",
+                text: "Câu 5: Select the best answer",
+                options: [
+                    { text: "noticed", correct: true }, { text: "saw", correct: false }, { text: "time", correct: false }, { text: "caught", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó lần đầu tiên được ... bởi ngư dân.</p>
+                    <ul>
+                        <li><span class='hl-red'>saw</span>: ❌ Là thì quá khứ của see, sau "was" dạng bị động phải dùng phân từ 2 "seen".</li>
+                        <li><span class='hl-red'>time</span>: ❌ Sai từ loại.</li>
+                        <li><span class='hl-red'>caught</span>: <span class='p-mean'>bị bắt</span> ❌ Hiện tượng thời tiết không thể bị bắt.</li>
+                        <li><span class='hl-green'>noticed</span>: <span class='p-mean'>được nhận ra, được chú ý tới</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó lần đầu tiên được <span class='hl-green'>nhận ra</span> bởi những ngư dân...
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-5",
+                text: "Câu 6: Select the best answer",
+                options: [
+                    { text: "place", correct: true }, { text: "away", correct: false }, { text: "part", correct: false }, { text: "care", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> bởi vì nó thường ... gần thời điểm Giáng sinh.</p>
+                    <ul>
+                        <li><span class='hl-red'>away</span>: <span class='p-mean'>take away (mang đi)</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>part</span>: <span class='p-mean'>take part in (tham gia)</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>care</span>: <span class='p-mean'>take care of (chăm sóc)</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>place</span>: <span class='p-mean'>take place (diễn ra, xảy ra)</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> ...bởi vì nó thường <span class='hl-green'>diễn ra</span> gần Giáng sinh...
+                    </div>
+                    <p><span class='p-grammar'>Thành ngữ: Take place = Happen = Occur (Xảy ra, diễn ra).</span></p>
+                `
+            },
+            {
+                id: "q-p4-6",
+                text: "Câu 7: Select the best answer",
+                options: [
+                    { text: "damage", correct: true }, { text: "problem", correct: false }, { text: "difficulty", correct: false }, { text: "hurt", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Nó có thể gây ra ... thảm khốc.</p>
+                    <ul>
+                        <li><span class='hl-red'>problem</span>: <span class='p-mean'>vấn đề</span> ❌ Quá nhẹ so với 'catastrophic'.</li>
+                        <li><span class='hl-red'>difficulty</span>: <span class='p-mean'>khó khăn</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>hurt</span>: <span class='p-mean'>đau đớn</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>damage</span>: <span class='p-mean'>sự thiệt hại, sự tàn phá</span> ✅ Đúng (không đếm được, dùng số ít).</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Nó có thể gây ra <span class='hl-green'>thiệt hại</span> thảm khốc.
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-7",
+                text: "Câu 8: Select the best answer",
+                options: [
+                    { text: "resulted", correct: true }, { text: "caused", correct: false }, { text: "led", correct: false }, { text: "gave", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> El Nino năm 1982 ... 1.500 cái chết.</p>
+                    <ul>
+                        <li><span class='hl-red'>caused</span>: ❌ Sau cause đi trực tiếp với tân ngữ, không có "in".</li>
+                        <li><span class='hl-red'>led</span>: ❌ Led phải đi với "to" (led to).</li>
+                        <li><span class='hl-red'>gave</span>: ❌ Không đi với in.</li>
+                        <li><span class='hl-green'>resulted</span>: ✅ Đúng, Result in (Dẫn đến kết quả gì).</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> El Nino năm 1982 đã <span class='hl-green'>dẫn đến</span> 1.500 cái chết...
+                    </div>
+                    <p><span class='p-grammar'>Collocation: Result IN + Noun = Dẫn đến kết quả gì. (Khác với Result FROM: Bắt nguồn từ).</span></p>
+                `
+            },
+            {
+                id: "q-p4-8",
+                text: "Câu 9: Select the best answer",
+                options: [
+                    { text: "including", correct: true }, { text: "holding", correct: false }, { text: "containing", correct: false }, { text: "involving", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Động vật biển, ... cá và chim, cũng chết.</p>
+                    <ul>
+                        <li><span class='hl-red'>holding</span>: <span class='p-mean'>cầm, nắm, giữ</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>containing</span>: <span class='p-mean'>chứa đựng (bên trong vật chứa)</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>involving</span>: <span class='p-mean'>liên quan đến</span> ❌ Sai.</li>
+                        <li><span class='hl-green'>including</span>: <span class='p-mean'>bao gồm (liệt kê ra các thành phần)</span> ✅ Đúng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> Động vật biển, <span class='hl-green'>bao gồm cả</span> cá và chim...
+                    </div>
+                `
+            },
+            {
+                id: "q-p4-9",
+                text: "Câu 10: Select the best answer",
+                options: [
+                    { text: "said", correct: true }, { text: "mistaken", correct: false }, { text: "felt", correct: false }, { text: "told", correct: false }
+                ],
+                expl: `
+                    <p><b>Dịch câu hỏi:</b> Người ta ... rằng các thủy thủ có thể ngửi thấy mùi xác động vật.</p>
+                    <ul>
+                        <li><span class='hl-red'>mistaken</span>: <span class='p-mean'>nhầm lẫn</span> ❌ Sai.</li>
+                        <li><span class='hl-red'>felt</span>: <span class='p-mean'>cảm thấy</span> ❌ Không phổ biến bằng 'said' trong cấu trúc này.</li>
+                        <li><span class='hl-red'>told</span>: ❌ Phải là "It is told TO sb that...".</li>
+                        <li><span class='hl-green'>said</span>: ✅ Đúng, cấu trúc bị động vô nhân xưng.</li>
+                    </ul>
+                    <div class='highlight-box'>
+                        👉 <b>Dịch câu chứa đáp án:</b> <span class='hl-green'>Người ta nói rằng</span> các thủy thủ...
+                    </div>
+                    <p><span class='p-grammar'>Ngữ pháp: It is said that + Clause = Người ta nói/đồn rằng...</span></p>
+                `
+            }
+        ]
+    }
+];
+
+let answersState = {}; 
+let totalQuestions = 0;
+let answeredCount = 0;
+
+// --- UTILS ---
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// --- RENDER APP ---
+function renderApp() {
+    const readingPane = document.getElementById('readingPane');
+    const questionPane = document.getElementById('questionPane');
+    let readingHTML = '';
+    let questionHTML = '';
+
+    db.forEach((passage, pIndex) => {
+        // Rendering Reading Side
+        readingHTML += `<div class="glass-card" id="passage-${pIndex}">`;
+        readingHTML += `<h2 class="passage-title">${passage.title}</h2>`;
+        
+        passage.paragraphs.forEach((para, idx) => {
+            readingHTML += `
+                <div class="passage-text">${para.text}</div>
+                <button class="btn-translate" onclick="toggleTranslate('trans-${pIndex}-${idx}')">Mở dịch đoạn này 🌟</button>
+                <div class="translation-box" id="trans-${pIndex}-${idx}">${para.vi}</div>
+                <hr style="border:0; border-top: 1px dashed rgba(255,255,255,0.3); margin: 15px 0;">
+            `;
+        });
+
+        // Glossary
+        if (passage.glossary && passage.glossary.length > 0) {
+            readingHTML += `
+                <h3 style="color:#feca57; margin-top: 20px; font-weight:800;">📚 Glossary (Bảng từ vựng):</h3>
+                <table class="glossary-table">
+                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa Tiếng Việt</th></tr>
+            `;
+            passage.glossary.forEach(g => {
+                readingHTML += `<tr><td class="g-word">${g.en}</td><td>${g.type}</td><td>${g.vi}</td></tr>`;
+            });
+            readingHTML += `</table>`;
+        }
+        readingHTML += `</div>`;
+
+        // Rendering Question Side
+        questionHTML += `<div class="glass-card">`;
+        questionHTML += `<h2 class="passage-title">EXERCISES: ${passage.title}</h2>`;
+        
+        passage.questions.forEach((q, qIndex) => {
+            totalQuestions++;
+            answersState[q.id] = { answered: false, isCorrect: false };
+            
+            // Shuffle options logic
+            let shuffledOptions = shuffleArray([...q.options]);
+
+            questionHTML += `
+                <div class="question-block" id="block-${q.id}">
+                    <div class="q-number">${q.text}</div>
+                    <div class="options-grid" id="grid-${q.id}">
+            `;
+            
+            shuffledOptions.forEach((opt, oIndex) => {
+                const isCorr = opt.correct ? 'true' : 'false';
+                questionHTML += `
+                    <button class="option-btn" onclick="handleAnswer(this, '${q.id}', ${isCorr}, '${opt.text}')">
+                        ${opt.text}
+                    </button>
+                `;
+            });
+
+            questionHTML += `
+                    </div>
+                    <div class="explanation-box" id="expl-${q.id}">${q.expl}</div>
+                </div>
+            `;
+        });
+        questionHTML += `</div>`;
+    });
+
+    questionHTML += `<button class="submit-btn" onclick="openSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM 🎯</button>`;
+
+    readingPane.innerHTML = readingHTML;
+    questionPane.innerHTML = questionHTML;
+}
+
+// --- INTERACTIONS ---
+function toggleTranslate(id) {
+    const el = document.getElementById(id);
+    if (el.style.display === 'block') {
+        el.style.display = 'none';
+    } else {
+        el.style.display = 'block';
+    }
+}
+
+function handleAnswer(btn, qId, isCorrect, textStr) {
+    if (answersState[qId].answered) return; 
+
+    const grid = document.getElementById(`grid-${qId}`);
+    const buttons = grid.querySelectorAll('.option-btn');
+    
+    // Disable all buttons in this question
+    buttons.forEach(b => b.disabled = true);
+    
+    answersState[qId].answered = true;
+    answersState[qId].isCorrect = isCorrect;
+    answeredCount++;
+
+    // Update Blank in text
+    const blankId = `b-${qId.replace('q-','')}`; // Maps q-p1-0 to b-p1-0
+    const blankEl = document.getElementById(blankId);
+    if(blankEl) {
+        blankEl.innerText = textStr;
+        blankEl.style.color = isCorrect ? '#00b894' : '#ff4757';
+        blankEl.style.borderBottom = isCorrect ? '2px solid #00b894' : '2px solid #ff4757';
+    }
+
+    if (isCorrect) {
+        btn.classList.add('correct');
+        playDing();
+        confetti({ particleCount: 60, spread: 60, origin: { y: 0.8 }, colors: ['#00b894', '#feca57', '#0984e3'] });
+    } else {
+        btn.classList.add('incorrect');
+        playWrong();
+        // Highlight the correct one
+        buttons.forEach(b => {
+            if (b.getAttribute('onclick').includes('true')) {
+                b.classList.add('correct');
+            }
+        });
+    }
+
+    // Show Explanation
+    document.getElementById(`expl-${qId}`).style.display = 'block';
+}
+
+// --- SUBMIT LOGIC ---
+function openSubmitModal() {
+    if(answeredCount < totalQuestions) {
+        alert(`Bạn mới làm ${answeredCount}/${totalQuestions} câu. Vui lòng làm hết để nộp bài!`);
+        return;
+    }
+    document.getElementById('nameModal').style.display = 'flex';
+}
+
+function processSubmit() {
+    const nameInput = document.getElementById('studentNameInput').value.trim();
+    if (!nameInput) {
+        alert("Chiến binh chưa nhập tên kìa!");
+        return;
+    }
+    
+    document.getElementById('nameModal').style.display = 'none';
+    
+    let score = 0;
+    for (const key in answersState) {
+        if (answersState[key].isCorrect) score++;
+    }
+    
+    const percentage = score / totalQuestions;
+    let feedback = "";
+    let gifSrc = "";
+
+    if (percentage === 1) {
+        feedback = "MS Chí Nên: Tuyệt cú mèo! Con là thiên tài ngoại ngữ! 🌟🏆";
+        gifSrc = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif"; // Celebrate
+    } else if (percentage >= 0.6) {
+        feedback = "MS Chí Nên: Rất tốt! Cố gắng chút nữa là đạt điểm tối đa nha! 👏🔥";
+        gifSrc = "https://media.giphy.com/media/fsQbx1hX7hPBBpIM5b/giphy.gif"; // High five
+    } else {
+        feedback = "MS Chí Nên: Chà... Có vẻ bài này hơi khoai. Đừng nản, đọc kỹ lại giải thích nhé! 💪❤️";
+        gifSrc = "https://media.giphy.com/media/L95W4wv8nnb9K/giphy.gif"; // Crying/Cute
+    }
+
+    document.getElementById('resultName').innerText = `Chúc mừng, ${nameInput}!`;
+    document.getElementById('resultScore').innerText = `${score} / ${totalQuestions}`;
+    document.getElementById('resultFeedback').innerText = feedback;
+    document.getElementById('resultGif').src = gifSrc;
+    
+    document.getElementById('resultModal').style.display = 'flex';
+    if(percentage === 1) {
+         confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+    }
+}
+
+// --- PASSWORD MÀN HÌNH KHÓA ---
+const _k  = [49, 54, 49, 49]; // "1611"
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+    const inp = document.getElementById('pwInput');
+    const err = document.getElementById('pwErr');
+    if (inp.value === _pw) {
+        document.getElementById('passwordModal').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'flex';
+        renderApp();
+        
+        // Phát âm thanh chào mừng
+        const greetingAudio = document.getElementById('greetingAudio');
+        if(greetingAudio) {
+            greetingAudio.currentTime = 0;
+            greetingAudio.play().catch(e=>console.log("Autoplay blocked"));
+        }
+    } else {
+        inp.classList.remove('error'); 
+        void inp.offsetWidth; // Trigger reflow
+        inp.classList.add('error');
+        err.style.display = 'block'; 
+        setTimeout(() => inp.classList.remove('error'), 500);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const pwInput = document.getElementById('pwInput');
+    if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+</script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

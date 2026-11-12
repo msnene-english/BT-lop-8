@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Practice | MS Chí Nên</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+        :root {
+            --bg-gradient-1: #ff9a9e;
+            --bg-gradient-2: #fecfef;
+            --bg-gradient-3: #a1c4fd;
+            --bg-gradient-4: #c2e9fb;
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            
+            /* Text Colors */
+            --c-word: #007bff; /* Xanh dương */
+            --c-mean: #d2691e; /* Đất nung */
+            --c-grammar: #dc3545; /* Đỏ */
+            --c-green: #28a745; /* Xanh lá */
+            --c-red: #c82333; /* Đỏ sậm */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Background Emojis */
+        .bg-shapes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .shape {
+            position: absolute;
+            font-size: 4rem;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.8));
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-50px) rotate(20deg); }
+        }
+
+        header {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            color: #444;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        
+        header .teacher {
+            font-weight: 800;
+            color: #ff4757;
+            background: rgba(255,255,255,0.8);
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .split-screen {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            z-index: 10;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        .panel {
+            flex: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            padding: 25px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .panel::-webkit-scrollbar { width: 8px; }
+        .panel::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        /* Reading Passage Styles */
+        .passage-box {
+            background: rgba(255,255,255,0.6);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid white;
+        }
+        .passage-title {
+            font-size: 1.4rem;
+            color: #2f3542;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #ff6b81, #ff4757);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .paragraph {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+        .btn-translate {
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 700;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        .btn-translate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .translation-text {
+            display: none;
+            background: rgba(255, 234, 167, 0.6);
+            padding: 10px 15px;
+            border-left: 4px solid #fdcb6e;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Glossary Styles */
+        .glossary-box {
+            background: rgba(255,255,255,0.8);
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 2px dashed #a1c4fd;
+        }
+        .glossary-box h4 {
+            color: #1e90ff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .glossary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .glossary-table th, .glossary-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .glossary-table th { background: rgba(161, 196, 253, 0.3); color: #333; }
+        .glossary-table td:nth-child(1) { font-weight: bold; color: var(--c-word); }
+        .glossary-table td:nth-child(2) { font-style: italic; color: #666; }
+        .glossary-table td:nth-child(3) { color: var(--c-mean); font-weight: 600;}
+
+        /* Question Styles */
+        .question-block {
+            background: rgba(255,255,255,0.7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .btn-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #444;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .btn-option:hover {
+            transform: translateY(-3px);
+            border-color: #a1c4fd;
+            box-shadow: 0 6px 12px rgba(161, 196, 253, 0.4);
+        }
+        .btn-option.correct {
+            background: #2ed573;
+            color: white;
+            border-color: #2ed573;
+            box-shadow: 0 0 15px rgba(46, 213, 115, 0.6);
+            transform: scale(1.05);
+        }
+        .btn-option.wrong {
+            background: #ff4757;
+            color: white;
+            border-color: #ff4757;
+        }
+        .btn-option:disabled { cursor: not-allowed; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+
+        /* Explanation Box */
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 5px solid #ffba08;
+            font-size: 1rem;
+            line-height: 1.6;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .explanation h5 { color: #333; margin-bottom: 8px; font-size: 1.1rem;}
+        
+        /* Master Teacher Colored Spans */
+        .p-word { color: var(--c-word); font-weight: 800; }
+        .p-mean { color: var(--c-mean); font-weight: 700; }
+        .p-grammar { color: var(--c-grammar); font-weight: 800; text-decoration: underline; text-decoration-style: wavy; }
+        .hl-green { color: var(--c-green); font-weight: 800; }
+        .hl-red { color: var(--c-red); font-weight: 800; text-decoration: line-through; }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            border: none;
+            border-radius: 20px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #d63031;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 154, 158, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+        .btn-submit:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 20px rgba(255, 154, 158, 0.6); }
+
+        /* Modal Scorecard */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 100;
+        }
+        .modal-content {
+            background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 450px;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden;
+            animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-content input {
+            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #a1c4fd; border-radius: 12px; font-size: 1.1rem;
+            outline: none; text-align: center; font-weight: 600;
+        }
+        .modal-content img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 12px; margin: 15px 0; }
+        .score-text { font-size: 3rem; font-weight: 900; color: #ff4757; margin: 10px 0; }
+        .feedback-msg { font-size: 1.2rem; font-weight: 700; color: #2ed573; margin-bottom: 20px;}
+
+        /* Confetti */
+        .confetti { position: fixed; width: 10px; height: 10px; z-index: 9999; pointer-events: none; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+
+        @media (max-width: 800px) {
+            .split-screen { flex-direction: column; overflow-y: auto; }
+            .panel { overflow-y: visible; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shapes">
+        <div class="shape" style="top: 10%; left: 10%;">🌪️</div>
+        <div class="shape" style="top: 70%; left: 80%;">📱</div>
+        <div class="shape" style="top: 20%; left: 70%;">📜</div>
+        <div class="shape" style="top: 80%; left: 20%;">🍎</div>
+        <div class="shape" style="top: 40%; left: 40%;">🚀</div>
+        <div class="shape" style="top: 60%; left: 10%;">🌍</div>
+    </div>
+
+    <header>
+        <h1>English Gamified Challenge</h1>
+        <div class="teacher">Giáo viên tạo: MS Chí Nên</div>
+    </header>
+
+    <div class="split-screen">
+        <div class="panel" id="left-panel">
+            </div>
+        
+        <div class="panel" id="right-panel">
+            <h2 style="text-align:center; color:#2f3542; margin-bottom:20px;">🎮 BÀI TẬP TRẮC NGHIỆM 🎮</h2>
+            <div id="questions-container"></div>
+            <button class="btn-submit" onclick="showSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="scoreModal">
+        <div class="modal-content" id="modalInner">
+            <h2 style="color: #2f3542;">Nhập tên của bạn để nộp bài!</h2>
+            <input type="text" id="studentName" placeholder="Ví dụ: Nguyễn Văn A">
+            <button class="btn-translate" style="font-size:1.2rem; padding: 10px 20px;" onclick="calculateScore()">Xác nhận nộp bài 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        // AUDIO CONTEXT CHO ÂM THANH TƯƠNG TÁC (Tự sinh, không cần file ngoài)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); // C6
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                    osc2.type = 'sawtooth';
+                    osc2.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc2.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+                    gain2.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc2.start(); osc2.stop(audioCtx.currentTime + 0.3);
+                }, 150);
+            }
+        }
+
+        function fireConfetti() {
+            const colors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#ff6b81'];
+            for(let i=0; i<50; i++){
+                let conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                conf.style.top = '-10px';
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 3000);
+            }
+        }
+
+        // DATABASE DỮ LIỆU ĐỀ BÀI VÀ GIẢI THÍCH MASTER-LEVEL
+        const data = [
+            {
+                title: "A. WHAT TO DO DURING DISASTERS",
+                content: [
+                    {
+                        en: "1. Stay (1)______ your house and away from windows.<br>2. Don't drive or walk into flood water.<br>3. Move to high ground far from (2)______ sea.<br>4. Get under a desk or table.<br>5. (3)______ to local news reports and leave if they tell you to leave.<br>6. Call the emergency services if you are in (4)______.",
+                        vi: "1. Ở bên trong nhà của bạn và tránh xa cửa sổ.<br>2. Đừng lái xe hoặc đi bộ vào vùng nước ngập.<br>3. Di chuyển đến vùng đất cao cách xa bờ biển.<br>4. Núp dưới bàn làm việc hoặc bàn ăn.<br>5. Lắng nghe các bản tin địa phương và rời đi nếu họ yêu cầu bạn rời đi.<br>6. Gọi cho các dịch vụ khẩn cấp nếu bạn đang gặp nguy hiểm."
+                    }
+                ],
+                glossary: [
+                    ["Disaster", "Noun", "Thảm họa, thiên tai"],
+                    ["Flood", "Noun", "Lũ lụt, ngập lụt"],
+                    ["Emergency", "Noun", "Tình trạng khẩn cấp"],
+                    ["Service", "Noun", "Dịch vụ, cơ quan"],
+                    ["Ground", "Noun", "Mặt đất, vùng đất"],
+                    ["Report", "Noun", "Bản báo cáo, bản tin"],
+                    ["Local", "Adjective", "Thuộc địa phương"],
+                    ["Away from", "Phrase", "Tránh xa khỏi"],
+                    ["Under", "Preposition", "Ở dưới"],
+                    ["Tell", "Verb", "Bảo, yêu cầu"]
+                ],
+                questions: [
+                    {
+                        id: 'q1', text: "Question 1: Stay (1)______ your house and away from windows.",
+                        correct: "inside", options: ["over", "into", "inside", "away"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Hãy ở (1)______ nhà của bạn và tránh xa cửa sổ.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. over (<span class='p-mean'>phía trên</span>) <span class='hl-red'>❌ Sai vì không thể 'ở phía trên' nhà khi có thảm họa.</span><br>
+                        B. into (<span class='p-mean'>vào trong (chỉ hướng chuyển động)</span>) <span class='hl-red'>❌ Sai vì động từ 'stay' (ở nguyên) không đi với giới từ chỉ hướng di chuyển 'into'.</span><br>
+                        C. inside (<span class='p-mean'>bên trong</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Stay inside (Ở nguyên bên trong)</span> chỉ vị trí cố định an toàn.</span><br>
+                        D. away (<span class='p-mean'>xa</span>) <span class='hl-red'>❌ Sai vì vế sau đã có 'away from windows', không hợp logic tránh bão.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "Stay <span class='p-word'>inside</span> your house..." 👉 Dịch: "Ở <b><span style='color:red'>bên trong</span></b> nhà của bạn..."`
+                    },
+                    {
+                        id: 'q2', text: "Question 2: Move to high ground far from (2)______ sea.",
+                        correct: "the", options: ["x (no article)", "a", "the", "an"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Di chuyển đến vùng đất cao cách xa (2)______ biển.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. x (không mạo từ) <span class='hl-red'>❌ Sai.</span><br>
+                        B. a (<span class='p-mean'>một</span>) <span class='hl-red'>❌ Sai vì 'sea' là danh từ chỉ sự vật duy nhất trong môi trường tự nhiên, không dùng mạo từ không xác định.</span><br>
+                        C. the (<span class='p-mean'>mạo từ xác định</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Quy tắc ngữ pháp: Dùng 'the' trước các danh từ chỉ đại dương, biển, sông (the sea, the ocean).</span></span><br>
+                        D. an (<span class='p-mean'>một</span>) <span class='hl-red'>❌ Sai vì 'sea' bắt đầu bằng phụ âm /s/.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...far from <span class='p-word'>the</span> sea." 👉 Dịch: "...cách xa <b><span style='color:red'>bờ biển</span></b>."`
+                    },
+                    {
+                        id: 'q3', text: "Question 3: (3)______ to local news reports and leave if they tell you to leave.",
+                        correct: "Listen", options: ["Watch", "Listen", "Read", "Wait"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> (3)______ các bản tin địa phương và rời đi nếu họ bảo bạn rời đi.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Watch (<span class='p-mean'>Xem</span>) <span class='hl-red'>❌ Sai vì động từ 'watch' không đi với giới từ 'to'.</span><br>
+                        B. Listen (<span class='p-mean'>Lắng nghe</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cụm từ cố định (Collocation): Listen to (Lắng nghe ai/cái gì).</span></span><br>
+                        C. Read (<span class='p-mean'>Đọc</span>) <span class='hl-red'>❌ Sai vì 'read' là ngoại động từ, không cần giới từ 'to'.</span><br>
+                        D. Wait (<span class='p-mean'>Chờ đợi</span>) <span class='hl-red'>❌ Sai vì 'wait' đi với 'for', không đi với 'to' (trừ phi là wait to V).</span><br>
+                        🔍 <b>Dẫn chứng:</b> "<span class='p-word'>Listen</span> to local news reports..." 👉 Dịch: "<b><span style='color:red'>Lắng nghe</span></b> các bản tin địa phương..."`
+                    },
+                    {
+                        id: 'q4', text: "Question 4: Call the emergency services if you are in (4)______.",
+                        correct: "danger", options: ["dangerous", "endangered", "dangerously", "danger"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Gọi cho các dịch vụ khẩn cấp nếu bạn đang trong (4)______.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. dangerous (<span class='p-mean'>nguy hiểm - Tính từ</span>) <span class='hl-red'>❌ Sai vì sau giới từ 'in' cần một Danh từ.</span><br>
+                        B. endangered (<span class='p-mean'>bị đe dọa - Tính từ/Động từ thêm ed</span>) <span class='hl-red'>❌ Sai từ loại.</span><br>
+                        C. dangerously (<span class='p-mean'>một cách nguy hiểm - Trạng từ</span>) <span class='hl-red'>❌ Sai từ loại.</span><br>
+                        D. danger (<span class='p-mean'>sự nguy hiểm - Danh từ</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc: Be in danger (Đang gặp nguy hiểm).</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "...if you are in <span class='p-word'>danger</span>." 👉 Dịch: "...nếu bạn đang gặp <b><span style='color:red'>nguy hiểm</span></b>."`
+                    }
+                ]
+            },
+            {
+                title: "B. LIFE WITHOUT MODERN TECHNOLOGY",
+                content: [
+                    {
+                        en: "1. People in the past had to (5)______ letters instead of sending emails.<br>2. They often walked long distances to visit (6)______ friends and family.<br>3. Without modern appliances, they spent hours (7)______ basic tasks like washing clothes.<br>4. Entertainment was simple; families would gather around the fireplace to tell stories or (8)______ music together.",
+                        vi: "1. Mọi người trong quá khứ đã phải viết những bức thư tay thay vì gửi email.<br>2. Họ thường đi bộ quãng đường dài để thăm bạn bè và gia đình của họ.<br>3. Không có các thiết bị hiện đại, họ đã dành hàng giờ đồng hồ để làm các công việc cơ bản như giặt quần áo.<br>4. Giải trí thì đơn giản; các gia đình thường quây quần bên lò sưởi để kể chuyện hoặc cùng nhau chơi nhạc."
+                    }
+                ],
+                glossary: [
+                    ["Modern", "Adjective", "Hiện đại"],
+                    ["Technology", "Noun", "Công nghệ"],
+                    ["Instead of", "Phrase", "Thay vì"],
+                    ["Distance", "Noun", "Khoảng cách, quãng đường"],
+                    ["Appliance", "Noun", "Thiết bị, dụng cụ (trong nhà)"],
+                    ["Basic", "Adjective", "Cơ bản"],
+                    ["Task", "Noun", "Nhiệm vụ, công việc"],
+                    ["Entertainment", "Noun", "Sự giải trí"],
+                    ["Gather", "Verb", "Tụ tập, quây quần"],
+                    ["Fireplace", "Noun", "Lò sưởi"]
+                ],
+                questions: [
+                    {
+                        id: 'q5', text: "Question 5: People in the past had to (5)______ letters instead of sending emails.",
+                        correct: "write", options: ["write", "wrote", "writing", "writes"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Mọi người trong quá khứ đã phải (5)______ thư thay vì gửi email.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. write (<span class='p-mean'>viết - Động từ nguyên thể</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc: Have to / Had to + V(nguyên thể) (Phải làm gì đó).</span></span><br>
+                        B. wrote (<span class='p-mean'>viết - Quá khứ đơn</span>) <span class='hl-red'>❌ Sai vì sau 'had to' không dùng động từ chia quá khứ.</span><br>
+                        C. writing (<span class='p-mean'>viết - V-ing</span>) <span class='hl-red'>❌ Sai cấu trúc.</span><br>
+                        D. writes (<span class='p-mean'>viết - Hiện tại đơn ngôi thứ 3 số ít</span>) <span class='hl-red'>❌ Sai cấu trúc.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...had to <span class='p-word'>write</span> letters..." 👉 Dịch: "...đã phải <b><span style='color:red'>viết</span></b> những bức thư..."`
+                    },
+                    {
+                        id: 'q6', text: "Question 6: They often walked long distances to visit (6)______ friends and family.",
+                        correct: "their", options: ["them", "their", "his", "her"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Họ thường đi bộ quãng đường dài để thăm bạn bè và gia đình của (6)______.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. them (<span class='p-mean'>họ - Đại từ tân ngữ</span>) <span class='hl-red'>❌ Sai vì trước danh từ 'friends' cần Tính từ sở hữu.</span><br>
+                        B. their (<span class='p-mean'>của họ - Tính từ sở hữu</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Tham chiếu đến chủ ngữ số nhiều 'They' ở đầu câu.</span></span><br>
+                        C. his (<span class='p-mean'>của anh ấy</span>) <span class='hl-red'>❌ Sai số lượng/giới tính so với 'They'.</span><br>
+                        D. her (<span class='p-mean'>của cô ấy</span>) <span class='hl-red'>❌ Sai số lượng/giới tính so với 'They'.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "<b>They</b> often walked... to visit <span class='p-word'>their</span> friends..." 👉 Dịch: "<b>Họ</b> thường đi bộ... để thăm bạn bè của <b><span style='color:red'>họ</span></b>..."`
+                    },
+                    {
+                        id: 'q7', text: "Question 7: Without modern appliances, they spent hours (7)______ basic tasks like washing clothes.",
+                        correct: "doing", options: ["of", "at", "in", "doing"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Không có thiết bị hiện đại, họ dành hàng giờ (7)______ các công việc cơ bản như giặt giũ.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. of (<span class='p-mean'>của</span>) <span class='hl-red'>❌ Sai cấu trúc.</span><br>
+                        B. at (<span class='p-mean'>tại</span>) <span class='hl-red'>❌ Sai cấu trúc.</span><br>
+                        C. in (<span class='p-mean'>trong</span>) <span class='hl-red'>❌ Sai vì cấu trúc 'spend time in' thường đi với danh từ chỉ hoạt động, nhưng ở đây cần một V-ing để kết nối với 'basic tasks'. (Tuy nhiên spend time V-ing là phổ biến nhất).</span><br>
+                        D. doing (<span class='p-mean'>làm - V-ing</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc: Spend + time + V-ing (Dành thời gian làm việc gì). Ở đây là 'doing basic tasks'.</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "...spent hours <span class='p-word'>doing</span> basic tasks..." 👉 Dịch: "...dành hàng giờ đồng hồ <b><span style='color:red'>để làm</span></b> các công việc cơ bản..."`
+                    },
+                    {
+                        id: 'q8', text: "Question 8: Entertainment was simple; families would gather around the fireplace to tell stories or (8)______ music together.",
+                        correct: "make", options: ["make", "made", "making", "makes"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> ...các gia đình thường quây quần bên lò sưởi để kể chuyện hoặc (8)______ nhạc cùng nhau.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. make (<span class='p-mean'>chơi/tạo ra - V nguyên thể</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cấu trúc song song (Parallelism): to tell stories OR (to) make music. Từ 'make' dùng nguyên thể theo sau 'to'. 'Make music' = chơi nhạc.</span></span><br>
+                        B. made (<span class='p-mean'>V-ed</span>) <span class='hl-red'>❌ Sai vì không song song với 'tell' (nguyên thể).</span><br>
+                        C. making (<span class='p-mean'>V-ing</span>) <span class='hl-red'>❌ Sai cấu trúc song song.</span><br>
+                        D. makes (<span class='p-mean'>V-s</span>) <span class='hl-red'>❌ Sai cấu trúc song song.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...to <span class='p-word'>tell</span> stories or <span class='p-word'>make</span> music..." 👉 Dịch: "...để <b><span style='color:red'>kể</span></b> chuyện hoặc <b><span style='color:red'>chơi</span></b> nhạc..."`
+                    }
+                ]
+            },
+            {
+                title: "C. THE HISTORY OF COMMUNICATION",
+                content: [
+                    {
+                        en: "The first written types of communication were drawings, recorded on animal skins, cave walls, pottery or wood. (1)______ The earliest known cave paintings are from 40,000 years ago. (2)______ The first written communication was in the form of marks and symbols - recorded more than 9,000 years ago. (3)______ They recorded their writing on stone or metal tablets, or papyrus, which is a paper made from plant fibres. The written Chinese language contains over 80,000 different symbols, although most people use about 5,000. (4)______",
+                        vi: "Các loại hình giao tiếp bằng văn bản đầu tiên là các bức vẽ, được ghi lại trên da động vật, vách hang động, đồ gốm hoặc gỗ. (1) [Những bức vẽ này ghi lại các chi tiết về cuộc sống hàng ngày, chẳng hạn như săn bắn, tôn giáo và thức ăn.] Những bức tranh hang động sớm nhất được biết đến là từ 40.000 năm trước. (2) [Tuy nhiên, thậm chí trước đó, con người đã sử dụng đồ trang sức, màu vẽ hoặc hạt cườm để thể hiện ý nghĩa.] Giao tiếp bằng văn bản đầu tiên là dưới dạng các dấu vết và biểu tượng - được ghi lại cách đây hơn 9.000 năm. (3) [Người Ai Cập cổ đại đã sử dụng các biểu tượng gọi là chữ tượng hình cách đây hơn 5.200 năm.] Họ đã ghi lại chữ viết của mình trên các tấm đá hoặc kim loại, hoặc giấy cói, một loại giấy được làm từ sợi thực vật. Ngôn ngữ viết của Trung Quốc chứa hơn 80.000 biểu tượng khác nhau, mặc dù hầu hết mọi người chỉ sử dụng khoảng 5.000. (4) [Ngày nay, có hơn 6.000 ngôn ngữ được sử dụng trên thế giới.]"
+                    }
+                ],
+                glossary: [
+                    ["Communication", "Noun", "Sự giao tiếp, truyền đạt"],
+                    ["Record", "Verb", "Ghi chép, thu lại"],
+                    ["Pottery", "Noun", "Đồ gốm"],
+                    ["Symbol", "Noun", "Biểu tượng"],
+                    ["Tablet", "Noun", "Phiến, tấm (đá, kim loại)"],
+                    ["Papyrus", "Noun", "Giấy cói"],
+                    ["Fibre", "Noun", "Sợi (thực vật)"],
+                    ["Jewellery", "Noun", "Đồ trang sức"],
+                    ["Religion", "Noun", "Tôn giáo"],
+                    ["Hieroglyph", "Noun", "Chữ tượng hình"]
+                ],
+                questions: [
+                    {
+                        id: 'q9', text: "Question 1: (1)______ (Choosed sentence to fill in the blank 1)",
+                        correct: "These drawings recorded details about daily life, such as hunting, religion and food.", options: ["Even before that, though, people used jewellery, paint colours or beads to express meaning.", "Today, there are over 6,000 languages spoken in the world.", "These drawings recorded details about daily life, such as hunting, religion and food.", "Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Câu nào phù hợp nhất để điền vào ô trống (1)?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Even before that... (<span class='p-mean'>Thậm chí trước đó...</span>) <span class='hl-red'>❌ Sai logic thời gian vì câu trước chưa nhắc đến mốc thời gian nào để dùng 'before that'.</span><br>
+                        B. Today, there are over... (<span class='p-mean'>Ngày nay, có hơn...</span>) <span class='hl-red'>❌ Sai vì đoạn văn đang nói về quá khứ cổ đại.</span><br>
+                        C. These drawings recorded details... (<span class='p-mean'>Những bức vẽ này ghi lại chi tiết...</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Từ nối (Reference word) 'These drawings' (Những bức vẽ này) liên kết trực tiếp với danh từ 'drawings' ở câu liền trước.</span></span><br>
+                        D. Ancient Egyptians used... (<span class='p-mean'>Người Ai Cập cổ đại sử dụng...</span>) <span class='hl-red'>❌ Sai vì câu này phù hợp với phần sau của bài hơn.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...were <span class='p-word'>drawings</span>, recorded on animal skins... <span class='hl-green'>These drawings</span> recorded details..." 👉 Dịch: "...là các <b><span style='color:red'>bức vẽ</span></b>... <b><span style='color:green'>Những bức vẽ này</span></b> ghi lại..."`
+                    },
+                    {
+                        id: 'q10', text: "Question 2: (2)______ (Choosed sentence to fill in the blank 2)",
+                        correct: "Even before that, though, people used jewellery, paint colours or beads to express meaning.", options: ["Even before that, though, people used jewellery, paint colours or beads to express meaning.", "Today, there are over 6,000 languages spoken in the world.", "These drawings recorded details about daily life, such as hunting, religion and food.", "Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Câu nào phù hợp nhất để điền vào ô trống (2)?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Even before that, though... (<span class='p-mean'>Tuy nhiên, thậm chí trước đó, con người đã sử dụng đồ trang sức...</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cụm 'before that' ám chỉ mốc thời gian '40,000 years ago' ở câu liền trước. Nghĩa là trước cả 40.000 năm đó, người ta đã dùng đồ trang sức.</span></span><br>
+                        B. Today... <span class='hl-red'>❌ Sai bối cảnh thời gian.</span><br>
+                        C. These drawings... <span class='hl-red'>❌ Đã dùng cho câu 1.</span><br>
+                        D. Ancient Egyptians... <span class='hl-red'>❌ Sai mạch logic vì đoạn này đang lùi về mốc lịch sử xa hơn 40.000 năm.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...are from <span class='p-word'>40,000 years ago</span>. Even <span class='hl-green'>before that</span>..." 👉 Dịch: "...từ <b><span style='color:red'>40.000 năm trước</span></b>. Thậm chí <b><span style='color:green'>trước khoảng thời gian đó</span></b>..."`
+                    },
+                    {
+                        id: 'q11', text: "Question 3: (3)______ (Choosed sentence to fill in the blank 3)",
+                        correct: "Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago.", options: ["Even before that, though, people used jewellery, paint colours or beads to express meaning.", "Today, there are over 6,000 languages spoken in the world.", "These drawings recorded details about daily life, such as hunting, religion and food.", "Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Câu nào phù hợp nhất để điền vào ô trống (3)?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. Even before that... <span class='hl-red'>❌ Đã dùng.</span><br>
+                        B. Today... <span class='hl-red'>❌ Sai bối cảnh thời gian.</span><br>
+                        C. These drawings... <span class='hl-red'>❌ Đã dùng.</span><br>
+                        D. Ancient Egyptians used symbols... (<span class='p-mean'>Người Ai Cập cổ đại đã sử dụng các biểu tượng...</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Câu tiếp theo ngay sau chỗ trống bắt đầu bằng 'They recorded their writing... or papyrus'. Đại từ 'They' (Họ) thay thế hoàn hảo cho 'Ancient Egyptians' (Người Ai Cập), và 'papyrus' (giấy cói) là đặc trưng nổi bật của Ai Cập cổ đại.</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "<span class='hl-green'>Ancient Egyptians</span> used symbols... <span class='p-word'>They</span> recorded their writing... on papyrus" 👉 Dịch: "<b><span style='color:green'>Người Ai Cập cổ đại</span></b> sử dụng biểu tượng... <b><span style='color:red'>Họ</span></b> ghi chép lại... trên giấy cói"`
+                    },
+                    {
+                        id: 'q12', text: "Question 4: (4)______ (Choosed sentence to fill in the blank 4)",
+                        correct: "Today, there are over 6,000 languages spoken in the world.", options: ["Even before that, though, people used jewellery, paint colours or beads to express meaning.", "Today, there are over 6,000 languages spoken in the world.", "These drawings recorded details about daily life, such as hunting, religion and food.", "Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago."],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Câu nào phù hợp nhất để điền vào ô trống (4)?<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A, C, D <span class='hl-red'>❌ Đã dùng ở các vị trí trước.</span><br>
+                        B. Today, there are over 6,000 languages spoken in the world. (<span class='p-mean'>Ngày nay, có hơn 6.000 ngôn ngữ được nói trên thế giới.</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Câu trước đó nhắc đến ngôn ngữ viết của Trung Quốc có số lượng biểu tượng cực lớn. Câu B kết luận đoạn văn bằng cách đưa góc nhìn về thời hiện tại ('Today') và số lượng khổng lồ các ngôn ngữ trên toàn thế giới, tạo thành một câu chốt (concluding sentence) hoàn hảo.</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "The written Chinese <span class='p-word'>language</span> contains... <span class='hl-green'>Today</span>, there are over 6,000 <span class='p-word'>languages</span>..." 👉 Dịch: "<b><span style='color:red'>Ngôn ngữ</span></b> viết Trung Quốc chứa... <b><span style='color:green'>Ngày nay</span></b>, có hơn 6.000 <b><span style='color:red'>ngôn ngữ</span></b>..."`
+                    }
+                ]
+            },
+            {
+                title: "D. SIR ISAAC NEWTON",
+                content: [
+                    {
+                        en: "Sir Isaac Newton was an English mathematician and physicist who lived from 1642 to 1727. He was the (1)______ of gravity. He discovered gravity in 1666 when he saw a (2)______ apple. He thought that there was a (3)______ of nature moving the apple. Newton called this force 'gravity'. He then determined that there are forces between all (4)______. This discovery is very important and has many (5)______ in physics.",
+                        vi: "Ngài Isaac Newton là một nhà toán học và vật lý học người Anh sống từ năm 1642 đến 1727. Ông là người phát hiện ra lực hấp dẫn. Ông phát hiện ra lực hấp dẫn vào năm 1666 khi nhìn thấy một quả táo đang rơi. Ông nghĩ rằng có một lực của tự nhiên đang làm dịch chuyển quả táo. Newton gọi lực này là 'trọng lực' (lực hấp dẫn). Sau đó, ông xác định rằng có những lực tác dụng giữa tất cả các vật thể. Khám phá này rất quan trọng và có nhiều ứng dụng trong vật lý."
+                    }
+                ],
+                glossary: [
+                    ["Mathematician", "Noun", "Nhà toán học"],
+                    ["Physicist", "Noun", "Nhà vật lý học"],
+                    ["Gravity", "Noun", "Lực hấp dẫn, trọng lực"],
+                    ["Discover", "Verb", "Khám phá, phát hiện"],
+                    ["Force", "Noun", "Lực, sức mạnh"],
+                    ["Determine", "Verb", "Xác định, định rõ"],
+                    ["Object", "Noun", "Vật thể, đồ vật"],
+                    ["Application", "Noun", "Sự ứng dụng"]
+                ],
+                questions: [
+                    {
+                        id: 'q13', text: "Question 1: He was the (1)______ of gravity.",
+                        correct: "discoverer", options: ["discoverer", "inventor", "creator", "developer"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Ông là (1)______ lực hấp dẫn.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. discoverer (<span class='p-mean'>người khám phá/phát hiện</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Lực hấp dẫn vốn tồn tại sẵn trong tự nhiên, Newton chỉ là người 'tìm ra' nó, nên phải dùng 'discoverer'.</span></span><br>
+                        B. inventor (<span class='p-mean'>nhà phát minh</span>) <span class='hl-red'>❌ Sai vì nhà phát minh là tạo ra cái chưa từng có (như bóng đèn, điện thoại). Newton không 'chế tạo' ra lực hấp dẫn.</span><br>
+                        C. creator (<span class='p-mean'>người sáng tạo</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        D. developer (<span class='p-mean'>người phát triển</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        🔍 <b>Dẫn chứng:</b> Câu tiếp theo viết: "He <span class='p-word'>discovered</span> gravity in 1666..." 👉 Dịch: "Ông đã <b><span style='color:red'>phát hiện ra</span></b> lực hấp dẫn..."`
+                    },
+                    {
+                        id: 'q14', text: "Question 2: He discovered gravity in 1666 when he saw a (2)______ apple.",
+                        correct: "falling", options: ["ripping", "falling", "hanging", "rolling"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Ông phát hiện ra lực hấp dẫn năm 1666 khi nhìn thấy một quả táo (2)______.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. ripping (<span class='p-mean'>xé rách</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        B. falling (<span class='p-mean'>đang rơi xuống</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Theo giai thoại lịch sử nổi tiếng, Newton tìm ra lực hấp dẫn nhờ nhìn thấy 'quả táo rơi'. V-ing 'falling' đóng vai trò tính từ bổ nghĩa cho 'apple'.</span></span><br>
+                        C. hanging (<span class='p-mean'>đang treo lơ lửng</span>) <span class='hl-red'>❌ Sai vì nếu táo lơ lửng trên cây thì không gợi ý về lực hút của Trái Đất.</span><br>
+                        D. rolling (<span class='p-mean'>đang lăn</span>) <span class='hl-red'>❌ Sai bối cảnh.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...when he saw a <span class='p-word'>falling</span> apple." 👉 Dịch: "...khi ông nhìn thấy một quả táo <b><span style='color:red'>đang rơi</span></b>."`
+                    },
+                    {
+                        id: 'q15', text: "Question 3: He thought that there was a (3)______ of nature moving the apple.",
+                        correct: "force", options: ["pull", "push", "force", "press"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Ông nghĩ rằng có một (3)______ của tự nhiên làm di chuyển quả táo.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. pull (<span class='p-mean'>lực kéo</span>) <span class='hl-red'>❌ Không hợp collocation 'of nature' trong ngữ cảnh học thuật này.</span><br>
+                        B. push (<span class='p-mean'>lực đẩy</span>) <span class='hl-red'>❌ Trái Đất không đẩy quả táo mà hút nó.</span><br>
+                        C. force (<span class='p-mean'>lực lượng/lực</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>A force of nature (một lực lượng/sức mạnh của tự nhiên). Đặc biệt chú ý câu ngay sau đó chứa từ khóa gợi ý.</span></span><br>
+                        D. press (<span class='p-mean'>sự ấn/ép</span>) <span class='hl-red'>❌ Sai nghĩa.</span><br>
+                        🔍 <b>Dẫn chứng:</b> "Newton called <span class='hl-green'>this force</span> 'gravity'." 👉 Dịch: "Newton gọi <b><span style='color:green'>cái lực này</span></b> là 'lực hấp dẫn'." (Vì câu sau nhắc đến 'this force' nên chỗ trống chắc chắn phải là 'force').`
+                    },
+                    {
+                        id: 'q16', text: "Question 4: He then determined that there are forces between all (4)______.",
+                        correct: "objects", options: ["distances", "people", "locations", "objects"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Sau đó, ông xác định rằng có tồn tại lực giữa tất cả các (4)______.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. distances (<span class='p-mean'>khoảng cách</span>) <span class='hl-red'>❌ Lực tồn tại giữa các vật, không phải giữa các 'khoảng cách'.</span><br>
+                        B. people (<span class='p-mean'>con người</span>) <span class='hl-red'>❌ Sai vì lực hấp dẫn tác dụng lên mọi thứ có khối lượng, không chỉ riêng con người.</span><br>
+                        C. locations (<span class='p-mean'>vị trí</span>) <span class='hl-red'>❌ Sai vật lý cơ bản.</span><br>
+                        D. objects (<span class='p-mean'>vật thể</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Định luật vạn vật hấp dẫn phát biểu: Mọi 'vật thể' (objects) trong vũ trụ đều hút nhau.</span></span><br>
+                        🔍 <b>Dẫn chứng:</b> "...forces between all <span class='p-word'>objects</span>." 👉 Dịch: "...lực tác dụng giữa tất cả các <b><span style='color:red'>vật thể</span></b>."`
+                    },
+                    {
+                        id: 'q17', text: "Question 5: This discovery is very important and has many (5)______ in physics.",
+                        correct: "applications", options: ["applications", "uses", "advantages", "problems"],
+                        explanation: `<h5>Dịch câu hỏi:</h5> Khám phá này rất quan trọng và có nhiều (5)______ trong vật lý.<br>
+                        <h5>Phân tích 4 đáp án:</h5>
+                        A. applications (<span class='p-mean'>ứng dụng</span>) <span class='hl-green'>✅ Đúng. <span class='p-grammar'>Cụm từ học thuật: have applications in [field] (có tính ứng dụng trong lĩnh vực nào đó).</span></span><br>
+                        B. uses (<span class='p-mean'>công dụng</span>) <span class='hl-red'>❌ Từ 'uses' thường dùng cho đồ vật cụ thể hằng ngày (ví dụ: uses of a knife), ít dùng cho các định luật khoa học.</span><br>
+                        C. advantages (<span class='p-mean'>lợi thế</span>) <span class='hl-red'>❌ Không hợp logic với từ 'physics'.</span><br>
+                        D. problems (<span class='p-mean'>vấn đề</span>) <span class='hl-red'>❌ Câu mang ý nghĩa tích cực ('very important'), không thể chọn 'problems' (tiêu cực).</span><br>
+                        🔍 <b>Dẫn chứng:</b> "...has many <span class='p-word'>applications</span> in physics." 👉 Dịch: "...có nhiều <b><span style='color:red'>ứng dụng thực tiễn</span></b> trong ngành vật lý."`
+                    }
+                ]
+            }
+        ];
+
+        let userAnswers = {};
+        const totalQuestions = 17;
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function toggleTranslation(btn) {
+            const transText = btn.nextElementSibling;
+            if (transText.style.display === "block") {
+                transText.style.display = "none";
+                btn.innerHTML = "Mở dịch đoạn này 🌟";
+            } else {
+                transText.style.display = "block";
+                btn.innerHTML = "Ẩn dịch đoạn này 🙈";
+            }
+        }
+
+        function renderApp() {
+            const leftPanel = document.getElementById('left-panel');
+            const questionsContainer = document.getElementById('questions-container');
+
+            data.forEach((section, index) => {
+                // Render Passage
+                let htmlPassage = `<div class="passage-box"><h3 class="passage-title">${section.title}</h3>`;
+                
+                section.content.forEach(para => {
+                    htmlPassage += `<div class="paragraph">${para.en}</div>
+                                    <button class="btn-translate" onclick="toggleTranslation(this)">Mở dịch đoạn này 🌟</button>
+                                    <div class="translation-text">${para.vi}</div>`;
+                });
+
+                // Render Glossary
+                htmlPassage += `<div class="glossary-box">
+                                    <h4>📚 Bảng Từ Vựng Học Thuật (Glossary)</h4>
+                                    <table class="glossary-table">
+                                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa Tiếng Việt</th></tr>`;
+                section.glossary.forEach(word => {
+                    htmlPassage += `<tr><td>${word[0]}</td><td>${word[1]}</td><td>${word[2]}</td></tr>`;
+                });
+                htmlPassage += `</table></div></div>`;
+                leftPanel.innerHTML += htmlPassage;
+
+                // Render Questions
+                section.questions.forEach(q => {
+                    let shuffledOptions = shuffle([...q.options]);
+                    let htmlQ = `<div class="question-block" id="block-${q.id}">
+                                    <div class="question-text">${q.text}</div>
+                                    <div class="options-grid">`;
+                    shuffledOptions.forEach(opt => {
+                        // Pass correctly escaped strings into the function
+                        let safeOpt = opt.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        let safeCorrect = q.correct.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                        htmlQ += `<button class="btn-option" onclick="handleAnswer('${q.id}', '${safeOpt}', '${safeCorrect}', this)">${opt}</button>`;
+                    });
+                    htmlQ += `</div>
+                              <div class="explanation" id="expl-${q.id}">${q.explanation}</div>
+                              </div>`;
+                    questionsContainer.innerHTML += htmlQ;
+                });
+            });
+        }
+
+        function handleAnswer(qId, selected, correct, btn) {
+            // Prevent multiple clicks
+            const block = document.getElementById(`block-${qId}`);
+            const buttons = block.querySelectorAll('.btn-option');
+            buttons.forEach(b => b.disabled = true);
+
+            userAnswers[qId] = (selected === correct);
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+                playSound('correct');
+                fireConfetti();
+            } else {
+                btn.classList.add('wrong');
+                btn.classList.add('shake');
+                playSound('wrong');
+                // Auto highlight correct
+                buttons.forEach(b => {
+                    if (b.innerText === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+
+            // Show explanation
+            document.getElementById(`expl-${qId}`).style.display = 'block';
+        }
+
+        function showSubmitModal() {
+            document.getElementById('scoreModal').style.display = 'flex';
+        }
+
+        function calculateScore() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                alert("Bạn phải nhập tên trước khi nộp bài nhé!");
+                return;
+            }
+
+            let score = 0;
+            for(let key in userAnswers) {
+                if(userAnswers[key]) score++;
+            }
+
+            const modalInner = document.getElementById('modalInner');
+            const percent = (score / totalQuestions) * 100;
+            
+            let gifUrl, msg, comment;
+            if (percent === 100) {
+                gifUrl = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"; // Smart/Einstein
+                msg = "THIÊN TÀI XUẤT HIỆN! 🌟🌟🌟";
+                comment = "Tuyệt vời quá! MS Chí Nên rất tự hào về em!";
+            } else if (percent >= 60) {
+                gifUrl = "https://media.giphy.com/media/11ISwbgCxEzMyY/giphy.gif"; // High five
+                msg = "RẤT TỐT! CỐ GẮNG LÊN NỮA NHÉ! 🔥";
+                comment = "Em làm tốt lắm, hãy xem lại phần giải thích để hiểu rõ hơn nhé!";
+            } else {
+                gifUrl = "https://media.giphy.com/media/2UIcmK4pn7rYNLRboG/giphy.gif"; // Crying/sad but cute
+                msg = "ĐỪNG BUỒN NHÉ, CỐ LÊN! 💪";
+                comment = "Không sao đâu! Sai ở đâu mình học ở đó. Nhớ đọc kỹ phần giải thích chi tiết của cô nhé!";
+            }
+
+            modalInner.innerHTML = `
+                <h2 style="color: #2f3542;">BẢNG ĐIỂM (SCORECARD)</h2>
+                <h3 style="color: #1e90ff; margin-top:10px;">Học sinh: ${name}</h3>
+                <div class="score-text">${score} / ${totalQuestions}</div>
+                <div class="feedback-msg">${msg}</div>
+                <img src="${gifUrl}" alt="Result GIF">
+                <div style="background: #f1f2f6; padding: 15px; border-radius: 12px; margin-top:15px; font-style: italic; border-left: 4px solid #ff4757;">
+                    " ${comment} " - <b>MS Chí Nên</b>
+                </div>
+                <button class="btn-translate" style="margin-top:20px; width:100%; padding: 15px;" onclick="document.getElementById('scoreModal').style.display='none'">Xem lại bài chữa chi tiết 📖</button>
+            `;
+        }
+
+        // Initialize App
+        window.onload = renderApp;
+
+    </script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

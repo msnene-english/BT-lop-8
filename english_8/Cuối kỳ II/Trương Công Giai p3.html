@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài Thi Ôn Tập HK II – Trường THCS Trương Công Giai</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-space: #0a0118;
+    --nebula-purple: #2d1b69;
+    --cosmic-blue: #1a237e;
+    --star-gold: #ffd54f;
+    --plasma-pink: #f48fb1;
+    --aurora-cyan: #80deea;
+    --comet-teal: #4dd0e1;
+    --meteor-orange: #ffab40;
+    --glass-bg: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.15);
+    --glass-blur: blur(16px);
+    --correct-green: #00e676;
+    --wrong-red: #ff5252;
+    --p-word-color: #4fc3f7;
+    --p-mean-color: #ff8a65;
+    --p-grammar-color: #f44336;
+    --hl-green-color: #69f0ae;
+    --hl-red-color: #ff5252;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--deep-space);
+    color: #e0e0e0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Tăng font size tổng thể */
+    font-size: 1.05rem; 
+  }
+
+  /* ===== ANIMATED BACKGROUND ===== */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 20% 20%, #1a0533 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, #0d1b4b 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, #0a0118 0%, transparent 70%),
+                linear-gradient(135deg, #0a0118 0%, #1a0533 50%, #0d1b4b 100%);
+  }
+
+  .stars-layer {
+    position: fixed; inset: 0; z-index: 1;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 25% 35%, rgba(255,255,255,0.8) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 40% 60%, #ffd54f 100%, transparent),
+      radial-gradient(1px 1px at 60% 20%, #fff 100%, transparent),
+      radial-gradient(2px 2px at 75% 45%, rgba(255,255,255,0.6) 100%, transparent),
+      radial-gradient(1px 1px at 85% 70%, #80deea 100%, transparent),
+      radial-gradient(1px 1px at 90% 10%, #fff 100%, transparent),
+      radial-gradient(1.5px 1.5px at 15% 80%, rgba(255,255,255,0.7) 100%, transparent),
+      radial-gradient(1px 1px at 55% 85%, #f48fb1 100%, transparent),
+      radial-gradient(2px 2px at 30% 5%, #fff 100%, transparent),
+      radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,0.5) 100%, transparent),
+      radial-gradient(1px 1px at 5% 55%, #ffd54f 100%, transparent);
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  .floating-emojis {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  }
+  .emoji-float {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.12;
+    animation: floatUp linear infinite;
+    filter: blur(0.5px);
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.12; }
+    90%  { opacity: 0.12; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative; z-index: 10;
+    background: rgba(10,1,24,0.85);
+    border-bottom: 1px solid rgba(128,222,234,0.3);
+    backdrop-filter: var(--glass-blur);
+    padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 4px 32px rgba(77,208,225,0.1);
+  }
+  .header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem; /* Tăng cỡ chữ */
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--aurora-cyan), var(--plasma-pink), var(--star-gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 0.9rem;
+    color: rgba(128,222,234,0.8);
+    font-style: italic;
+    letter-spacing: 0.5px;
+  }
+  .header-badge {
+    background: linear-gradient(135deg, rgba(128,222,234,0.2), rgba(244,143,177,0.2));
+    border: 1px solid rgba(128,222,234,0.3);
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    color: var(--aurora-cyan);
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  /* ===== MAIN LAYOUT ===== */
+  .main-wrapper {
+    position: relative; z-index: 5;
+    padding: 24px 16px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ===== LỜI NHẮC CỰC KỲ QUAN TRỌNG ===== */
+  .study-notice {
+    background: linear-gradient(135deg, rgba(255,82,82,0.15), rgba(255,171,64,0.15));
+    border: 2px solid var(--wrong-red);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255,82,82,0.3);
+    animation: pulse-border 2s infinite alternate;
+  }
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 10px rgba(255,82,82,0.2); transform: scale(1); }
+    100% { box-shadow: 0 0 25px rgba(255,82,82,0.6); transform: scale(1.01); }
+  }
+  .study-notice h3 {
+    color: var(--meteor-orange);
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255,171,64,0.5);
+  }
+  .study-notice p {
+    color: #fff;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+  .study-notice span {
+    color: var(--hl-green-color);
+  }
+
+  /* ===== SECTION CARD ===== */
+  .section-card {
+    margin-bottom: 36px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(128,222,234,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(128,222,234,0.05);
+  }
+  .section-header {
+    padding: 16px 24px;
+    background: linear-gradient(90deg, rgba(29,27,109,0.8), rgba(13,27,75,0.8));
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(128,222,234,0.2);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-icon { font-size: 1.6rem; }
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    color: var(--aurora-cyan);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .section-range {
+    margin-left: auto;
+    background: rgba(128,222,234,0.15);
+    border: 1px solid rgba(128,222,234,0.3);
+    border-radius: 12px;
+    padding: 5px 14px;
+    font-size: 0.9rem;
+    color: var(--aurora-cyan);
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  /* ===== SPLIT SCREEN ===== */
+  .split-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+  }
+  @media (max-width: 900px) {
+    .split-screen { grid-template-columns: 1fr; }
+  }
+
+  .passage-panel {
+    background: rgba(10,1,24,0.7);
+    backdrop-filter: blur(20px);
+    padding: 24px;
+    border-right: 1px solid rgba(128,222,234,0.15);
+    max-height: 700px;
+    overflow-y: auto;
+  }
+  .passage-panel::-webkit-scrollbar { width: 6px; }
+  .passage-panel::-webkit-scrollbar-thumb { background: rgba(128,222,234,0.4); border-radius: 4px; }
+
+  .questions-panel {
+    background: rgba(5,0,15,0.7);
+    backdrop-filter: blur(20px);
+    padding: 24px;
+    max-height: 700px;
+    overflow-y: auto;
+  }
+  .questions-panel::-webkit-scrollbar { width: 6px; }
+  .questions-panel::-webkit-scrollbar-thumb { background: rgba(244,143,177,0.4); border-radius: 4px; }
+
+  /* ===== PASSAGE STYLING ===== */
+  .passage-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(128,222,234,0.6);
+    margin-bottom: 12px;
+    font-family: 'Orbitron', sans-serif;
+  }
+  .passage-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--star-gold);
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+  }
+  .paragraph-block { margin-bottom: 22px; }
+  .paragraph-text {
+    font-size: 1.15rem; /* Tăng cỡ chữ rõ rệt */
+    line-height: 1.8;
+    color: #e0e6f0;
+  }
+  .blank-highlight {
+    display: inline-block;
+    background: rgba(128,222,234,0.15);
+    border: 1px dashed rgba(128,222,234,0.5);
+    border-radius: 6px;
+    padding: 0 10px;
+    color: var(--aurora-cyan);
+    font-weight: 800;
+    min-width: 65px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+  }
+  .blank-highlight.answered {
+    border-style: solid;
+    background: rgba(0,230,118,0.15);
+    border-color: var(--correct-green);
+    color: var(--correct-green);
+  }
+
+  .translate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(128,222,234,0.12);
+    border: 1px solid rgba(128,222,234,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+    color: var(--aurora-cyan);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+  .translate-btn:hover {
+    background: rgba(128,222,234,0.25);
+    box-shadow: 0 0 12px rgba(128,222,234,0.4);
+  }
+  .translation-box {
+    display: none;
+    margin-top: 12px;
+    background: rgba(128,222,234,0.08);
+    border-left: 4px solid rgba(128,222,234,0.5);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 1.1rem; /* Tăng cỡ chữ bản dịch */
+    line-height: 1.7;
+    color: rgba(200,230,240,0.95);
+  }
+  .translation-box.show { display: block; animation: fadeIn 0.3s ease; }
+
+  /* ===== GLOSSARY ===== */
+  .glossary-section {
+    margin-top: 24px;
+    background: rgba(255,213,79,0.05);
+    border: 1px solid rgba(255,213,79,0.2);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .glossary-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    color: var(--star-gold);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .glossary-table { width: 100%; border-collapse: collapse; font-size: 1.05rem; }
+  .glossary-table th {
+    background: rgba(255,213,79,0.15);
+    color: var(--star-gold);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,213,79,0.3);
+    font-weight: 800;
+  }
+  .glossary-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #c8d8e8;
+  }
+  .glossary-table tr:hover td { background: rgba(255,255,255,0.05); }
+  .word-en { color: var(--p-word-color); font-weight: 800; }
+  .word-pos {
+    background: rgba(244,143,177,0.15);
+    border: 1px solid rgba(244,143,177,0.4);
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    color: var(--plasma-pink);
+    font-weight: 700;
+  }
+
+  /* ===== QUESTIONS PANEL ===== */
+  .question-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    transition: border-color 0.3s;
+  }
+  .question-card.answered { border-color: rgba(128,222,234,0.4); }
+  .question-number {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--nebula-purple), var(--cosmic-blue));
+    border: 1px solid rgba(128,222,234,0.5);
+    border-radius: 50%;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--aurora-cyan);
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    display: flex;
+    align-items: flex-start;
+    font-size: 1.15rem; /* Tăng cỡ chữ câu hỏi */
+    font-weight: 700;
+    color: #e8eaf6;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .option-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 1.05rem; /* Tăng cỡ chữ đáp án */
+    color: #d8e0f0;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    background: rgba(128,222,234,0.15);
+    border-color: rgba(128,222,234,0.5);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(128,222,234,0.2);
+  }
+  .option-btn.correct {
+    background: rgba(0,230,118,0.15) !important;
+    border-color: var(--correct-green) !important;
+    color: var(--correct-green) !important;
+    font-weight: 800;
+  }
+  .option-btn.wrong {
+    background: rgba(255,82,82,0.15) !important;
+    border-color: var(--wrong-red) !important;
+    color: var(--wrong-red) !important;
+    animation: shake 0.4s ease;
+  }
+  .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+
+  /* ===== EXPLANATION BOX ===== */
+  .explanation-box {
+    display: none;
+    margin-top: 18px;
+    background: rgba(10,1,30,0.7);
+    border: 1px solid rgba(128,222,234,0.3);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 1.05rem; /* Tăng font giải thích */
+    line-height: 1.8;
+    animation: fadeIn 0.4s ease;
+  }
+  .explanation-box.show { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  .exp-header {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    color: var(--aurora-cyan);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .exp-question-vn {
+    color: #90caf9;
+    font-weight: 700;
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+  }
+  .exp-options { margin-bottom: 16px; }
+  .exp-option { margin-bottom: 8px; color: #d0d0d0; }
+  .exp-option strong { color: var(--aurora-cyan); font-size: 1.1rem; }
+  .exp-evidence {
+    background: rgba(128,222,234,0.08);
+    border-left: 4px solid var(--aurora-cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 14px;
+  }
+  .exp-evidence-title {
+    font-size: 0.9rem;
+    color: rgba(128,222,234,0.7);
+    font-style: italic;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .exp-quote {
+    font-style: italic;
+    color: #b2dfdb;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .exp-translation { color: #c8d8e8; }
+  .exp-keyword { color: var(--wrong-red); font-weight: 800; }
+
+  /* Span classes for explanations */
+  .p-word { color: var(--p-word-color); font-weight: 800; }
+  .p-mean { color: var(--p-mean-color); font-weight: 800; }
+  .p-grammar { color: var(--p-grammar-color); text-decoration: underline; font-weight: 800; }
+  .hl-green { color: var(--hl-green-color); font-weight: 800; }
+  .hl-red { color: var(--hl-red-color); text-decoration: line-through; font-weight: 700; }
+
+  /* ===== SUBMIT SECTION ===== */
+  .submit-section {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 32px 16px 48px;
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, #7c4dff, #00b0ff, #69f0ae);
+    border: none;
+    border-radius: 50px;
+    padding: 20px 52px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 32px rgba(124,77,255,0.4);
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .submit-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 16px 48px rgba(124,77,255,0.6);
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: linear-gradient(135deg, rgba(29,27,109,0.95), rgba(10,1,24,0.95));
+    border: 1px solid rgba(128,222,234,0.4);
+    border-radius: 24px;
+    padding: 40px;
+    width: 90%;
+    max-width: 520px;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  }
+  .modal-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    color: var(--aurora-cyan);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+  .modal-input {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(128,222,234,0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .modal-input::placeholder { color: rgba(255,255,255,0.5); }
+  .modal-confirm {
+    background: linear-gradient(135deg, #7c4dff, #00b0ff);
+    border: none; border-radius: 12px;
+    padding: 16px 40px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: #fff; cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+  }
+  .modal-confirm:hover { transform: scale(1.05); box-shadow: 0 8px 24px rgba(124,77,255,0.5); }
+
+  /* ===== SCORECARD ===== */
+  .scorecard {
+    display: none;
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(12px);
+    overflow-y: auto;
+    padding: 40px 20px;
+  }
+  .scorecard.show { display: flex; align-items: flex-start; justify-content: center; }
+  .scorecard-inner {
+    background: linear-gradient(135deg, rgba(29,27,109,0.97), rgba(10,1,24,0.97));
+    border: 1px solid rgba(128,222,234,0.4);
+    border-radius: 28px;
+    padding: 48px 40px;
+    width: 100%; max-width: 600px;
+    text-align: center;
+    box-shadow: 0 32px 100px rgba(0,0,0,0.8);
+  }
+  .score-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    color: var(--star-gold);
+    margin-bottom: 8px;
+  }
+  .score-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin: 20px 0;
+    background: linear-gradient(90deg, var(--aurora-cyan), var(--plasma-pink), var(--star-gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .score-comment {
+    font-size: 1.15rem;
+    color: #e0e0e0;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .score-gif { width: 220px; border-radius: 16px; margin: 24px auto; display: block; }
+  .score-close {
+    background: rgba(128,222,234,0.15);
+    border: 1px solid rgba(128,222,234,0.4);
+    border-radius: 12px;
+    padding: 14px 36px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--aurora-cyan);
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s;
+  }
+  .score-close:hover { background: rgba(128,222,234,0.25); }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 2px;
+    animation: confettiFall 2.5s ease-in forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== PROGRESS ===== */
+  .progress-bar-wrap {
+    position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 200;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--aurora-cyan), var(--plasma-pink), var(--star-gold));
+    width: 0%;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px rgba(128,222,234,0.6);
+  }
+
+  /* ===== ANSWER COUNTER ===== */
+  .answer-counter {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    background: rgba(10,1,24,0.9);
+    border: 1px solid rgba(128,222,234,0.4);
+    border-radius: 50px;
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: var(--aurora-cyan);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .counter-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--aurora-cyan);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* Extra utility */
+  .mt-8 { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  hr.cosmic { border: none; border-top: 1px solid rgba(128,222,234,0.1); margin: 20px 0; }
+  .star-sep { text-align: center; color: rgba(255,213,79,0.3); font-size: 0.9rem; margin: 12px 0; letter-spacing: 8px; }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="stars-layer"></div>
+<div class="floating-emojis" id="floatingEmojis"></div>
+
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="answer-counter">
+  <div class="counter-dot"></div>
+  <span id="ansCount">0</span> / 27 câu
+</div>
+
+<header>
+  <div>
+    <div class="header-title">🌌 ÔN TẬP HỌC KỲ II – TIẾNG ANH</div>
+    <div class="header-sub">Trường THCS Trương Công Giai &nbsp;•&nbsp; Giáo viên tạo: MS Chí Nên</div>
+  </div>
+  <div class="header-badge">🚀 Câu 61 → 91</div>
+</header>
+
+<div class="main-wrapper">
+
+  <div class="study-notice">
+    <h3>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG TỪ MS Chí Nên</h3>
+    <p>Chỉ click chọn đáp án cho xong thôi là chưa đủ! Các em bắt buộc phải <span>ĐỌC KỸ GIẢI THÍCH CHI TIẾT</span> và <span>GHI CHÉP</span> lại các cấu trúc, từ vựng mới vào vở để ôn tập.<br>Làm bài hời hợt, lướt qua giải thích mà không nạp kiến thức vào đầu sẽ chỉ làm lãng phí thời gian quý báu của chính các em. Hãy học thật sâu để thực sự tiến bộ nhé!</p>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🍽️</span>
+      <span class="section-title">Important Announcement – Borcelle Restaurant</span>
+      <span class="section-range">Q61 – 64</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage</div>
+        <div class="passage-title">IMPORTANT ANNOUNCEMENT</div>
+
+        <div class="paragraph-block" id="para-1a">
+          <div class="paragraph-text">Close for renovation improvements in a week.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-1a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-1a">Đóng cửa để cải tạo trong một tuần.</div>
+        </div>
+
+        <div class="paragraph-block" id="para-1b">
+          <div class="paragraph-text">
+            Starting <span class="blank-highlight" id="blank-61">61</span> August 2nd, Borcelle will be
+            <span class="blank-highlight" id="blank-62">62</span> closed for extensive renovation with some cooking appliances and cookware.
+            Our restaurant expects to provide customers with a whole new look in
+            <span class="blank-highlight" id="blank-63">63</span> dishes and decorations.
+            Thank you for your <span class="blank-highlight" id="blank-64">64</span>.
+          </div>
+          <button class="translate-btn" onclick="toggleTrans('t-1b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-1b">
+            Bắt đầu từ ngày 2 tháng 8, nhà hàng Borcelle sẽ <strong>tạm thời</strong> đóng cửa để cải tạo toàn diện với một số thiết bị nấu ăn và đồ nấu bếp.
+            Nhà hàng của chúng tôi mong muốn cung cấp cho khách hàng diện mạo hoàn toàn mới trong <strong>cả hai</strong> món ăn lẫn trang trí.
+            Cảm ơn sự <strong>kiên nhẫn</strong> của quý khách.
+          </div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">renovation</td><td><span class="word-pos">n</span></td><td>sự cải tạo, tu sửa</td></tr>
+            <tr><td class="word-en">extensive</td><td><span class="word-pos">adj</span></td><td>toàn diện, rộng lớn</td></tr>
+            <tr><td class="word-en">appliance</td><td><span class="word-pos">n</span></td><td>thiết bị (gia dụng)</td></tr>
+            <tr><td class="word-en">cookware</td><td><span class="word-pos">n</span></td><td>đồ dùng nấu bếp</td></tr>
+            <tr><td class="word-en">permanently</td><td><span class="word-pos">adv</span></td><td>vĩnh viễn</td></tr>
+            <tr><td class="word-en">temporarily</td><td><span class="word-pos">adv</span></td><td>tạm thời</td></tr>
+            <tr><td class="word-en">patience</td><td><span class="word-pos">n</span></td><td>sự kiên nhẫn</td></tr>
+            <tr><td class="word-en">decoration</td><td><span class="word-pos">n</span></td><td>trang trí</td></tr>
+            <tr><td class="word-en">endlessly</td><td><span class="word-pos">adv</span></td><td>vô tận, không ngừng</td></tr>
+            <tr><td class="word-en">improvement</td><td><span class="word-pos">n</span></td><td>sự cải thiện</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel" id="qpanel-1">
+        <div class="question-card" id="qcard-61">
+          <div class="question-text"><span class="question-number">61</span>Câu 61: Select the best answer</div>
+          <div class="options-grid" id="opts-61"></div>
+          <div class="explanation-box" id="exp-61">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch câu hỏi: "Bắt đầu từ ngày 2 tháng 8..." — Giới từ nào đứng trước một ngày cụ thể?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>in</strong> – <span class="p-mean">trong</span> → <span class="p-grammar">in + tháng/năm/mùa</span> (VD: in August, in 2024) ❌ Sai vì "in" không dùng trước ngày cụ thể.</div>
+              <div class="exp-option">• <strong>on</strong> – <span class="p-mean">vào</span> → <span class="p-grammar">on + ngày cụ thể / thứ trong tuần</span> (VD: on August 2nd, on Monday) ✅ <span class="hl-green">ĐÚNG</span></div>
+              <div class="exp-option">• <strong>at</strong> – <span class="p-mean">lúc</span> → <span class="p-grammar">at + giờ cụ thể</span> (VD: at 8 o'clock) ❌ Sai vì "at" dùng cho giờ cụ thể.</div>
+              <div class="exp-option">• <strong>for</strong> – <span class="p-mean">trong (khoảng thời gian)</span> → <span class="p-grammar">for + khoảng thời gian</span> (VD: for 3 days) ❌ Sai.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Quy tắc giới từ thời gian:</div>
+              <div class="exp-quote"><span class="hl-green">AT</span> 8 o'clock → <span class="hl-green">ON</span> Monday / August 2nd → <span class="hl-green">IN</span> August / 2024</div>
+              <div class="exp-translation">→ Quy tắc: <span class="exp-keyword">ON + ngày cụ thể</span> (on August 2nd ✅)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-62">
+          <div class="question-text"><span class="question-number">62</span>Câu 62: Select the best answer</div>
+          <div class="options-grid" id="opts-62"></div>
+          <div class="explanation-box" id="exp-62">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "...nhà hàng sẽ _____ đóng cửa để cải tạo toàn diện..." — Trạng từ nào phù hợp về nghĩa?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>permanently</strong> – <span class="p-word">permanently</span> <span class="p-mean">(vĩnh viễn)</span> ❌ Sai — nhà hàng chỉ đóng cửa để cải tạo, không phải đóng cửa mãi mãi.</div>
+              <div class="exp-option">• <strong>temporarily</strong> – <span class="p-word">temporarily</span> <span class="p-mean">(tạm thời)</span> ✅ <span class="hl-green">ĐÚNG</span> — đóng cửa một thời gian ngắn để cải tạo rồi mở lại.</div>
+              <div class="exp-option">• <strong>endlessly</strong> – <span class="p-word">endlessly</span> <span class="p-mean">(vô tận)</span> ❌ Sai — không hợp nghĩa; nhà hàng không thể đóng "vô tận".</div>
+              <div class="exp-option">• <strong>hopefully</strong> – <span class="p-word">hopefully</span> <span class="p-mean">(hy vọng là)</span> ❌ Sai — không hợp ngữ cảnh.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng từ thông báo:</div>
+              <div class="exp-quote">"Close for renovation improvements <span class="exp-keyword">in a week</span>."</div>
+              <div class="exp-translation">→ "Đóng cửa để cải tạo <span class="exp-keyword">trong một tuần</span>" → chứng tỏ chỉ đóng <span class="hl-green">tạm thời</span>, không vĩnh viễn.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-63">
+          <div class="question-text"><span class="question-number">63</span>Câu 63: Select the best answer</div>
+          <div class="options-grid" id="opts-63"></div>
+          <div class="explanation-box" id="exp-63">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "...diện mạo mới hoàn toàn trong _____ món ăn và trang trí." — Từ nào liên kết 2 danh từ?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>both</strong> – <span class="p-word">both</span> <span class="p-mean">(cả hai)</span> → <span class="p-grammar">both A and B</span> ✅ <span class="hl-green">ĐÚNG</span> — "a new look in both dishes and decorations" = diện mạo mới trong cả hai: món ăn và trang trí.</div>
+              <div class="exp-option">• <strong>neither</strong> – <span class="p-word">neither</span> <span class="p-mean">(không cái nào)</span> → <span class="p-grammar">neither A nor B</span> ❌ Sai về nghĩa — nhà hàng muốn đổi mới CẢ HAI, không phải "không cái nào".</div>
+              <div class="exp-option">• <strong>every</strong> – <span class="p-word">every</span> <span class="p-mean">(mỗi)</span> ❌ Sai — "every dishes" sai ngữ pháp; "every" dùng với danh từ số ít đếm được.</div>
+              <div class="exp-option">• <strong>other</strong> – <span class="p-word">other</span> <span class="p-mean">(khác)</span> ❌ Sai về nghĩa và cấu trúc.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cấu trúc ngữ pháp:</div>
+              <div class="exp-quote"><span class="hl-green">both</span> dishes <span class="hl-green">and</span> decorations</div>
+              <div class="exp-translation">→ <span class="p-grammar">both A and B</span> = <span class="exp-keyword">cả A lẫn B</span> (nhấn mạnh hai yếu tố)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-64">
+          <div class="question-text"><span class="question-number">64</span>Câu 64: Select the best answer</div>
+          <div class="options-grid" id="opts-64"></div>
+          <div class="explanation-box" id="exp-64">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Cảm ơn sự _____ của quý khách." — Danh từ hay tính từ điền vào sau "your"?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>patient</strong> – <span class="p-word">patient</span> → <span class="p-mean">kiên nhẫn (tính từ)</span> / bệnh nhân (danh từ) ❌ Sai — sau "your" cần danh từ, và "patient" (bệnh nhân) không hợp nghĩa.</div>
+              <div class="exp-option">• <strong>patiently</strong> – <span class="p-word">patiently</span> → <span class="p-mean">một cách kiên nhẫn (trạng từ)</span> ❌ Sai — sau "your" không dùng trạng từ.</div>
+              <div class="exp-option">• <strong>patients</strong> – <span class="p-word">patients</span> → <span class="p-mean">bệnh nhân (số nhiều)</span> ❌ Sai về nghĩa; nhà hàng không có "bệnh nhân".</div>
+              <div class="exp-option">• <strong>patience</strong> – <span class="p-word">patience</span> → <span class="p-mean">sự kiên nhẫn (danh từ)</span> ✅ <span class="hl-green">ĐÚNG</span> — "Thank you for your patience" là cụm cố định thường dùng trong thông báo.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cụm từ cố định (Fixed Expression):</div>
+              <div class="exp-quote">"Thank you for your <span class="exp-keyword">patience</span>."</div>
+              <div class="exp-translation">→ Cụm cố định: <span class="hl-green">Thank you for your patience</span> = Cảm ơn sự kiên nhẫn của quý vị (dùng rất phổ biến trong thông báo chính thức)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">😷</span>
+      <span class="section-title">How to Use a Face Mask Properly</span>
+      <span class="section-range">Q65 – 68</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage</div>
+        <div class="passage-title">HOW TO USE A FACE MASK PROPERLY</div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">1. Wash your hand before <span class="blank-highlight" id="blank-65">65</span> on the mask.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-2a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-2a">1. Rửa tay trước khi <strong>đeo</strong> khẩu trang.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">2. Fit the metal edge of the mask on the <span class="blank-highlight" id="blank-66">66</span> of your nose and place the loops over the ears.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-2b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-2b">2. Đặt phần kim loại của khẩu trang lên <strong>sống mũi</strong> và móc dây vào tai.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">3. Make sure it covers your mouth, nose and chin. Avoid <span class="blank-highlight" id="blank-67">67</span> it while in use.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-2c')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-2c">3. Đảm bảo khẩu trang che miệng, mũi và cằm. Tránh <strong>chạm vào</strong> nó khi đang dùng.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">4. Remove the mask by touching only the ear loops after use.</div>
+          <div class="paragraph-text mt-8">5. Put the <span class="blank-highlight" id="blank-68">68</span> mask into the trash bin and wash your hands again.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-2d')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-2d">4. Tháo khẩu trang bằng cách chỉ chạm vào dây tai sau khi dùng. <br>5. Bỏ khẩu trang <strong>đã dùng</strong> vào thùng rác và rửa tay lại.</div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">metal edge</td><td><span class="word-pos">n</span></td><td>cạnh kim loại</td></tr>
+            <tr><td class="word-en">bridge (of nose)</td><td><span class="word-pos">n</span></td><td>sống mũi</td></tr>
+            <tr><td class="word-en">loop</td><td><span class="word-pos">n</span></td><td>dây quai (khẩu trang)</td></tr>
+            <tr><td class="word-en">chin</td><td><span class="word-pos">n</span></td><td>cằm</td></tr>
+            <tr><td class="word-en">avoid + V-ing</td><td><span class="word-pos">cấu trúc</span></td><td>tránh làm gì</td></tr>
+            <tr><td class="word-en">remove</td><td><span class="word-pos">v</span></td><td>tháo ra, lấy ra</td></tr>
+            <tr><td class="word-en">trash bin</td><td><span class="word-pos">n</span></td><td>thùng rác</td></tr>
+            <tr><td class="word-en">properly</td><td><span class="word-pos">adv</span></td><td>đúng cách</td></tr>
+            <tr><td class="word-en">fit</td><td><span class="word-pos">v</span></td><td>lắp, đặt vừa khít</td></tr>
+            <tr><td class="word-en">used (adj)</td><td><span class="word-pos">adj</span></td><td>đã qua sử dụng</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel">
+        <div class="question-card" id="qcard-65">
+          <div class="question-text"><span class="question-number">65</span>Câu 65: Select the best answer</div>
+          <div class="options-grid" id="opts-65"></div>
+          <div class="explanation-box" id="exp-65">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Rửa tay trước khi _____ khẩu trang." — Sau giới từ "before" dùng dạng động từ nào?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>wearing</strong> – <span class="p-word">wear</span> <span class="p-mean">(mặc, đeo)</span> → thường dùng cho quần áo, nhưng "wear on" không phải cụm đúng ❌</div>
+              <div class="exp-option">• <strong>having</strong> – <span class="p-word">have on</span> <span class="p-mean">(đang mặc/đeo)</span> → mang nghĩa trạng thái, không phải hành động đeo vào ❌</div>
+              <div class="exp-option">• <strong>taking</strong> – <span class="p-word">take on</span> <span class="p-mean">(tiếp nhận/đảm nhận)</span> → không hợp nghĩa ❌</div>
+              <div class="exp-option">• <strong>putting</strong> – <span class="p-word">put on</span> <span class="p-mean">(đeo vào, mặc vào — hành động)</span> ✅ <span class="hl-green">ĐÚNG</span> → <span class="p-grammar">before + V-ing</span> (after + V-ing, before + V-ing)</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cụm động từ & Quy tắc ngữ pháp:</div>
+              <div class="exp-quote"><span class="hl-green">put on</span> = đeo/mặc vào (hành động) | <span class="hl-red">wear</span> = đang đeo (trạng thái)</div>
+              <div class="exp-translation">→ <span class="p-grammar">before/after + V-ing</span> | <span class="exp-keyword">put on the mask</span> = đeo khẩu trang vào</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-66">
+          <div class="question-text"><span class="question-number">66</span>Câu 66: Select the best answer</div>
+          <div class="options-grid" id="opts-66"></div>
+          <div class="explanation-box" id="exp-66">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Đặt cạnh kim loại của khẩu trang lên _____ mũi của bạn." — Phần nào của mũi?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>bridge</strong> – <span class="p-word">bridge (of the nose)</span> <span class="p-mean">(sống mũi)</span> ✅ <span class="hl-green">ĐÚNG</span> — Phần kim loại của khẩu trang được uốn theo sống mũi để vừa khít.</div>
+              <div class="exp-option">• <strong>back</strong> – <span class="p-word">back</span> <span class="p-mean">(phía sau)</span> ❌ Sai — "back of your nose" không có nghĩa thực tế trong ngữ cảnh này.</div>
+              <div class="exp-option">• <strong>wing</strong> – <span class="p-word">wing (of nose)</span> <span class="p-mean">(cánh mũi)</span> ❌ Sai — cánh mũi là phần bên, không phải nơi đặt dây kim loại.</div>
+              <div class="exp-option">• <strong>holes</strong> – <span class="p-word">holes</span> <span class="p-mean">(lỗ)</span> ❌ Sai về từ vựng.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Từ vựng giải phẫu (Body Parts):</div>
+              <div class="exp-quote">The <span class="exp-keyword">bridge</span> of the nose = sống mũi (phần xương nhô ở giữa mũi)</div>
+              <div class="exp-translation">→ Đây là nơi thanh kim loại của khẩu trang được bẻ cong để vừa với mặt.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-67">
+          <div class="question-text"><span class="question-number">67</span>Câu 67: Select the best answer</div>
+          <div class="options-grid" id="opts-67"></div>
+          <div class="explanation-box" id="exp-67">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Tránh _____ nó khi đang dùng." — Sau "Avoid" dùng dạng động từ gì?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>touching</strong> – <span class="p-word">touching</span> <span class="p-mean">(chạm vào — V-ing)</span> ✅ <span class="hl-green">ĐÚNG</span> → <span class="p-grammar">avoid + V-ing</span> là cấu trúc bắt buộc.</div>
+              <div class="exp-option">• <strong>to touch</strong> – <span class="hl-red">to touch</span> ❌ Sai — "avoid" KHÔNG theo sau bởi to-infinitive.</div>
+              <div class="exp-option">• <strong>to touching</strong> – <span class="hl-red">to touching</span> ❌ Sai hoàn toàn — không có cấu trúc "to + V-ing".</div>
+              <div class="exp-option">• <strong>touch</strong> – <span class="hl-red">touch</span> (bare infinitive) ❌ Sai — "avoid" không dùng với bare infinitive.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Động từ chỉ theo sau bởi V-ing:</div>
+              <div class="exp-quote"><span class="exp-keyword">avoid / enjoy / suggest / finish / mind / consider + V-ing</span></div>
+              <div class="exp-translation">→ <span class="p-grammar">avoid + V-ing</span> = tránh làm gì | "Avoid <span class="hl-green">touching</span> it" = Tránh chạm vào nó</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-68">
+          <div class="question-text"><span class="question-number">68</span>Câu 68: Select the best answer</div>
+          <div class="options-grid" id="opts-68"></div>
+          <div class="explanation-box" id="exp-68">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Bỏ chiếc khẩu trang _____ vào thùng rác..." — Chiếc khẩu trang ở đây có trạng thái gì?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>using</strong> – <span class="p-word">using</span> <span class="p-mean">(đang dùng — V-ing, active)</span> ❌ Sai — khẩu trang đã được dùng xong, không phải đang dùng.</div>
+              <div class="exp-option">• <strong>useful</strong> – <span class="p-word">useful</span> <span class="p-mean">(hữu ích — tính từ)</span> ❌ Sai về nghĩa — bỏ vào thùng rác thì không còn "hữu ích" nữa.</div>
+              <div class="exp-option">• <strong>used</strong> – <span class="p-word">used</span> <span class="p-mean">(đã qua sử dụng — past participle làm tính từ)</span> ✅ <span class="hl-green">ĐÚNG</span> → <span class="p-grammar">V3/past participle</span> làm tính từ bổ nghĩa danh từ.</div>
+              <div class="exp-option">• <strong>uses</strong> – <span class="p-word">uses</span> <span class="p-mean">(động từ số ít / danh từ số nhiều)</span> ❌ Sai về cấu trúc.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Phân biệt dạng tính từ:</div>
+              <div class="exp-quote">a <span class="exp-keyword">used</span> mask = khẩu trang đã qua sử dụng | a <span class="hl-red">using</span> mask ❌</div>
+              <div class="exp-translation">→ <span class="p-grammar">Past participle (V3) làm tính từ</span>: used mask, broken window, fallen leaves...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🌍</span>
+      <span class="section-title">English – The International Language of Science</span>
+      <span class="section-range">Q73 – 76</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage – Điền câu/cụm từ còn thiếu</div>
+        <div class="passage-title">ENGLISH AS THE LANGUAGE OF SCIENCE</div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">English is often considered to be the international language of science. The spread of English <span class="blank-highlight" id="blank-73">73</span>. English proves to stand the test of time and becomes an effective tool in communication, in the documentation and sharing of discoveries and inventions.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-3a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-3a">Tiếng Anh thường được coi là ngôn ngữ quốc tế của khoa học. Sự lan rộng của tiếng Anh <strong>[73]</strong>. Tiếng Anh chứng tỏ sức sống bền vững và trở thành công cụ hiệu quả trong giao tiếp, tài liệu hóa và chia sẻ các khám phá và phát minh.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">In communication, the use of English <span class="blank-highlight" id="blank-74">74</span>. English enables scientists, engineers, explorers, and inventors worldwide to think of new ideas and to share their findings.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-3b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-3b">Trong giao tiếp, việc sử dụng tiếng Anh <strong>[74]</strong>. Tiếng Anh cho phép các nhà khoa học, kỹ sư, nhà thám hiểm và nhà phát minh trên toàn thế giới nghĩ ra ý tưởng mới và chia sẻ phát hiện của họ.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">For ease of information storage and sharing, scientists like employing English to document and share the knowledge of inventions and discoveries, creating easy access to the development of various fields. The reaches of human thought <span class="blank-highlight" id="blank-75">75</span>. For example, Isaac Newton's law of gravitation, Thomas Edison's key inventions including the light bulb and recorded sound, Christopher Columbus's and James Cook's explorations of new lands, etc.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-3c')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-3c">Để thuận tiện lưu trữ và chia sẻ thông tin, các nhà khoa học thích dùng tiếng Anh để ghi lại và chia sẻ kiến thức về phát minh và khám phá, tạo sự tiếp cận dễ dàng tới sự phát triển của nhiều lĩnh vực khác nhau. Tầm với của tư duy con người <strong>[75]</strong>. Ví dụ: định luật hấp dẫn của Newton, các phát minh quan trọng của Edison như bóng đèn và thiết bị ghi âm, các chuyến khám phá vùng đất mới của Columbus và James Cook...</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Therefore, translating a wide variety of books written by non-English speaking scientists into English <span class="blank-highlight" id="blank-76">76</span>.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-3d')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-3d">Do đó, việc dịch nhiều loại sách do các nhà khoa học không nói tiếng Anh viết sang tiếng Anh <strong>[76]</strong>.</div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">documentation</td><td><span class="word-pos">n</span></td><td>tài liệu hóa, ghi chép</td></tr>
+            <tr><td class="word-en">invention</td><td><span class="word-pos">n</span></td><td>phát minh</td></tr>
+            <tr><td class="word-en">discovery</td><td><span class="word-pos">n</span></td><td>khám phá</td></tr>
+            <tr><td class="word-en">employ</td><td><span class="word-pos">v</span></td><td>sử dụng, tuyển dụng</td></tr>
+            <tr><td class="word-en">gravitation</td><td><span class="word-pos">n</span></td><td>lực hấp dẫn</td></tr>
+            <tr><td class="word-en">widen</td><td><span class="word-pos">v</span></td><td>mở rộng</td></tr>
+            <tr><td class="word-en">cooperation</td><td><span class="word-pos">n</span></td><td>hợp tác</td></tr>
+            <tr><td class="word-en">advancement</td><td><span class="word-pos">n</span></td><td>sự tiến bộ, phát triển</td></tr>
+            <tr><td class="word-en">exploration</td><td><span class="word-pos">n</span></td><td>sự khám phá, thám hiểm</td></tr>
+            <tr><td class="word-en">masses (the masses)</td><td><span class="word-pos">n</span></td><td>đại chúng, công chúng</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel">
+        <div class="question-card" id="qcard-73">
+          <div class="question-text"><span class="question-number">73</span>Câu 73: Select the best answer</div>
+          <div class="options-grid" id="opts-73"></div>
+          <div class="explanation-box" id="exp-73">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Sự lan rộng của tiếng Anh _____ Tiếng Anh chứng tỏ sức sống bền vững..."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>are widened thanks to scientific publications.</strong> ❌ Sai — chủ ngữ "The spread" (số ít) không hợp với động từ "are".</div>
+              <div class="exp-option">• <strong>helps to promote international cooperation...</strong> ❌ Sai — nghĩa không nối tiếp logic ở đây; vị trí này cần diễn tả quá trình gắn liền với phát minh.</div>
+              <div class="exp-option">• <strong>never stops going hand in hand with many world-changing discoveries and inventions.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "The spread of English never stops going hand in hand with... inventions." → nối ý hoàn toàn logic: sự lan rộng của tiếng Anh luôn đi đôi với các phát minh.</div>
+              <div class="exp-option">• <strong>allows the books to reach the masses.</strong> ❌ Sai — chưa nhắc đến sách ở đây.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cụm từ quan trọng:</div>
+              <div class="exp-quote"><span class="exp-keyword">go hand in hand with</span> = đi đôi với, gắn liền với</div>
+              <div class="exp-translation">→ "The spread of English <span class="hl-green">never stops going hand in hand with</span> world-changing discoveries and inventions."</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-74">
+          <div class="question-text"><span class="question-number">74</span>Câu 74: Select the best answer</div>
+          <div class="options-grid" id="opts-74"></div>
+          <div class="explanation-box" id="exp-74">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Trong giao tiếp, việc sử dụng tiếng Anh _____ Tiếng Anh cho phép các nhà khoa học..."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>are widened thanks to scientific publications.</strong> ❌ Sai — chủ ngữ "the use" (số ít) không khớp với "are". Nghĩa cũng không hợp.</div>
+              <div class="exp-option">• <strong>helps to promote international cooperation and aims to encourage significant scientific advancements.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "the use of English" (số ít) + "helps" (số ít) ✓ Nghĩa: "việc dùng tiếng Anh giúp thúc đẩy hợp tác quốc tế" → phù hợp ngữ cảnh giao tiếp.</div>
+              <div class="exp-option">• <strong>never stops going hand in hand with...</strong> ❌ Sai — đã dùng cho câu 73.</div>
+              <div class="exp-option">• <strong>allows the books to reach the masses.</strong> ❌ Sai — chưa đề cập sách ở đây; phù hợp hơn với câu 76.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Chủ-vị số (Subject-verb agreement):</div>
+              <div class="exp-quote">the use of English <span class="exp-keyword">helps</span> (số ít → động từ số ít ✓)</div>
+              <div class="exp-translation">→ <span class="p-grammar">Danh từ gerund (V-ing) + the use of N</span> → chủ ngữ số ÍT</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-75">
+          <div class="question-text"><span class="question-number">75</span>Câu 75: Select the best answer</div>
+          <div class="options-grid" id="opts-75"></div>
+          <div class="explanation-box" id="exp-75">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Tầm với của tư duy con người _____ [Ví dụ: Newton, Edison, Columbus...]"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>are widened thanks to scientific publications.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "The reaches" (số nhiều) + "are widened" ✓ Nghĩa: "Tầm với của tư duy được mở rộng nhờ các ấn phẩm khoa học." → Ví dụ ngay sau (Newton, Edison...) là bằng chứng cụ thể.</div>
+              <div class="exp-option">• <strong>helps to promote international cooperation...</strong> ❌ Sai — "reaches" (plural) không khớp với "helps" (singular).</div>
+              <div class="exp-option">• <strong>never stops going hand in hand with...</strong> ❌ Sai — đã dùng cho câu 73.</div>
+              <div class="exp-option">• <strong>allows the books to reach the masses.</strong> ❌ Sai — không logic; câu tiếp theo nói về ví dụ cụ thể, không phải sách.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng logic:</div>
+              <div class="exp-quote">"The reaches of human thought <span class="exp-keyword">are widened</span> thanks to scientific publications. <span class="exp-keyword">For example</span>, Isaac Newton's law..."</div>
+              <div class="exp-translation">→ "For example" sau chứng minh tầm với được mở rộng nhờ ấn phẩm = <span class="hl-green">are widened</span> ✓</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-76">
+          <div class="question-text"><span class="question-number">76</span>Câu 76: Select the best answer</div>
+          <div class="options-grid" id="opts-76"></div>
+          <div class="explanation-box" id="exp-76">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Do đó, việc dịch sách... của các nhà khoa học không nói tiếng Anh sang tiếng Anh _____"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>are widened thanks to scientific publications.</strong> ❌ Sai — chủ ngữ "translating..." (gerund, số ít) không khớp "are".</div>
+              <div class="exp-option">• <strong>helps to promote international cooperation...</strong> ❌ Sai — đã dùng cho câu 74.</div>
+              <div class="exp-option">• <strong>never stops going hand in hand with...</strong> ❌ Sai — đã dùng cho câu 73.</div>
+              <div class="exp-option">• <strong>allows the books to reach the masses.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "translating... allows the books to reach the masses." → Việc dịch sách cho phép sách đến được với đại chúng. Chủ ngữ "translating" (số ít) + "allows" (số ít) ✓</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cấu trúc Gerund chủ ngữ:</div>
+              <div class="exp-quote"><span class="exp-keyword">Translating</span> (V-ing làm chủ ngữ) + <span class="hl-green">allows</span> (động từ số ÍT) + the books to reach the masses</div>
+              <div class="exp-translation">→ <span class="p-grammar">V-ing phrase (gerund) làm chủ ngữ → dùng động từ số ÍT</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">📜</span>
+      <span class="section-title">The History of Human Communication</span>
+      <span class="section-range">Q77 – 81</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage</div>
+        <div class="passage-title">THE HISTORY OF HUMAN COMMUNICATION</div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Have you ever wondered how the first humans communicated? Scientists do not know exactly when the first language was developed, <span class="blank-highlight" id="blank-77">77</span> they do know that humans have always had the ability to communicate.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-4a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-4a">Bạn có bao giờ tự hỏi người tiền sử đã giao tiếp như thế nào chưa? Các nhà khoa học không biết chính xác khi nào ngôn ngữ đầu tiên được phát triển, <strong>nhưng</strong> họ biết rằng con người luôn có khả năng giao tiếp.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">The first written types of communication were drawings, recorded on animal skins, cave walls, pottery or wood. These <span class="blank-highlight" id="blank-78">78</span> recorded details about daily life, such as hunting, religion and food. The earliest known cave paintings are from 40,000 years ago. Even before that, though, people used jewellery, paint colours or beads to express meaning.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-4b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-4b">Các loại giao tiếp bằng chữ viết đầu tiên là các bức vẽ, được ghi trên da thú, vách hang động, đồ gốm hoặc gỗ. Những <strong>bức vẽ</strong> này ghi lại các chi tiết về cuộc sống hàng ngày như săn bắn, tôn giáo và thức ăn. Những bức tranh trong hang động sớm nhất được biết đến cách đây 40.000 năm. Thậm chí trước đó, con người đã sử dụng đồ trang sức, màu vẽ hoặc hạt cườm để diễn đạt ý nghĩa.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">The first written communication was in the <span class="blank-highlight" id="blank-79">79</span> of marks and symbols - recorded more than 9,000 years ago. Ancient Egyptians used symbols called hieroglyphs over 5,200 years ago. They <span class="blank-highlight" id="blank-80">80</span> their writing on stone or metal tablets, or papyrus, which is a paper made from plant fibres.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-4c')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-4c">Hình thức giao tiếp chữ viết đầu tiên là dưới <strong>dạng</strong> các ký hiệu và biểu tượng, được <strong>ghi chép</strong> lại hơn 9.000 năm trước. Người Ai Cập cổ đại dùng biểu tượng gọi là chữ tượng hình hơn 5.200 năm trước. Họ <strong>ghi chép</strong> chữ viết lên tấm đá, kim loại hoặc giấy papyrus, một loại giấy làm từ sợi thực vật.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Today, there are over 6,000 languages <span class="blank-highlight" id="blank-81">81</span> in the world. In Papua New Guinea alone, over 800 languages are spoken.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-4d')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-4d">Ngày nay, có hơn 6.000 ngôn ngữ đang được <strong>nói</strong> trên thế giới. Riêng ở Papua New Guinea, hơn 800 ngôn ngữ được sử dụng.</div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">communicate</td><td><span class="word-pos">v</span></td><td>giao tiếp</td></tr>
+            <tr><td class="word-en">pottery</td><td><span class="word-pos">n</span></td><td>đồ gốm sứ</td></tr>
+            <tr><td class="word-en">hieroglyph</td><td><span class="word-pos">n</span></td><td>chữ tượng hình (Ai Cập)</td></tr>
+            <tr><td class="word-en">papyrus</td><td><span class="word-pos">n</span></td><td>giấy cói (papyrus)</td></tr>
+            <tr><td class="word-en">fibre</td><td><span class="word-pos">n</span></td><td>sợi thực vật</td></tr>
+            <tr><td class="word-en">jewellery</td><td><span class="word-pos">n</span></td><td>đồ trang sức</td></tr>
+            <tr><td class="word-en">tablet</td><td><span class="word-pos">n</span></td><td>tấm bảng (đá/kim loại)</td></tr>
+            <tr><td class="word-en">symbol</td><td><span class="word-pos">n</span></td><td>ký hiệu, biểu tượng</td></tr>
+            <tr><td class="word-en">ancient</td><td><span class="word-pos">adj</span></td><td>cổ đại</td></tr>
+            <tr><td class="word-en">bead</td><td><span class="word-pos">n</span></td><td>hạt cườm, hạt đeo</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel">
+        <div class="question-card" id="qcard-77">
+          <div class="question-text"><span class="question-number">77</span>Câu 77: Select the best answer</div>
+          <div class="options-grid" id="opts-77"></div>
+          <div class="explanation-box" id="exp-77">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Các nhà khoa học không biết... _____ họ biết rằng con người luôn có khả năng giao tiếp." — Liên từ nào phù hợp?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>so</strong> – <span class="p-word">so</span> <span class="p-mean">(vì vậy — kết quả)</span> ❌ Sai — không có nghĩa tương phản.</div>
+              <div class="exp-option">• <strong>although</strong> – <span class="p-word">although</span> <span class="p-mean">(mặc dù)</span> ❌ Sai về cấu trúc — "although" đặt trước mệnh đề nhượng bộ, không phải giữa 2 mệnh đề đối lập như thế này.</div>
+              <div class="exp-option">• <strong>and</strong> – <span class="p-word">and</span> <span class="p-mean">(và — bổ sung)</span> ❌ Sai — không thể hiện sự tương phản giữa "không biết" và "biết".</div>
+              <div class="exp-option">• <strong>but</strong> – <span class="p-word">but</span> <span class="p-mean">(nhưng — tương phản)</span> ✅ <span class="hl-green">ĐÚNG</span> — "do not know... <span class="hl-green">but</span> they do know..." là tương phản điển hình.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Phân tích cấu trúc:</div>
+              <div class="exp-quote">"do <span class="exp-keyword">not</span> know... <span class="hl-green">but</span> they <span class="exp-keyword">do</span> know..." → tương phản (negative ↔ positive)</div>
+              <div class="exp-translation">→ <span class="p-grammar">but = tuy nhiên / nhưng</span>: nối 2 ý trái chiều nhau</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-78">
+          <div class="question-text"><span class="question-number">78</span>Câu 78: Select the best answer</div>
+          <div class="options-grid" id="opts-78"></div>
+          <div class="explanation-box" id="exp-78">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Những _____ này ghi lại chi tiết về cuộc sống hàng ngày..." — "These" đề cập đến gì?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>drawings</strong> – <span class="p-word">drawings</span> <span class="p-mean">(các bức vẽ)</span> ✅ <span class="hl-green">ĐÚNG</span> — "These" thay thế cho "drawings" đã đề cập trước đó: "The first written types of communication were <span class="hl-green">drawings</span>".</div>
+              <div class="exp-option">• <strong>types</strong> – <span class="p-word">types</span> <span class="p-mean">(các loại)</span> ❌ Sai về logic — "types recorded details" nghe không tự nhiên.</div>
+              <div class="exp-option">• <strong>skins</strong> – <span class="p-word">skins</span> <span class="p-mean">(da thú)</span> ❌ Sai — da thú là nơi ghi chép, không phải thứ ghi chép chi tiết.</div>
+              <div class="exp-option">• <strong>walls</strong> – <span class="p-word">walls</span> <span class="p-mean">(vách tường)</span> ❌ Sai — vách tường là bề mặt, không phải chủ thể ghi chép.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Đại từ chỉ định (Demonstrative Pronoun):</div>
+              <div class="exp-quote">"The first written types of communication were <span class="exp-keyword">drawings</span>... These <span class="hl-green">[drawings]</span> recorded details..."</div>
+              <div class="exp-translation">→ <span class="p-word">These</span> = thay thế danh từ <span class="hl-green">drawings</span> đã nhắc ở câu trước</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-79">
+          <div class="question-text"><span class="question-number">79</span>Câu 79: Select the best answer</div>
+          <div class="options-grid" id="opts-79"></div>
+          <div class="explanation-box" id="exp-79">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Hình thức giao tiếp chữ viết đầu tiên là dưới _____ của các ký hiệu và biểu tượng."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>form</strong> – <span class="p-word">form</span> <span class="p-mean">(dạng, hình thức)</span> ✅ <span class="hl-green">ĐÚNG</span> → <span class="p-grammar">in the form of</span> = dưới dạng. Cụm cố định.</div>
+              <div class="exp-option">• <strong>means</strong> – <span class="p-word">means</span> <span class="p-mean">(phương tiện)</span> ❌ Sai — "in the means of" không phải cụm cố định.</div>
+              <div class="exp-option">• <strong>record</strong> – <span class="p-word">record</span> <span class="p-mean">(bản ghi)</span> ❌ Sai — "in the record of" không hợp.</div>
+              <div class="exp-option">• <strong>method</strong> – <span class="p-word">method</span> <span class="p-mean">(phương pháp)</span> ❌ Sai — "in the method of" không phải cụm cố định.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Cụm từ cố định (Fixed Phrase):</div>
+              <div class="exp-quote"><span class="hl-green">in the form of</span> = dưới dạng / theo hình thức</div>
+              <div class="exp-translation">→ Ví dụ: "in the form of marks and symbols" = dưới dạng các ký hiệu và biểu tượng</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-80">
+          <div class="question-text"><span class="question-number">80</span>Câu 80: Select the best answer</div>
+          <div class="options-grid" id="opts-80"></div>
+          <div class="explanation-box" id="exp-80">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Họ _____ chữ viết của mình lên đá, kim loại hoặc giấy papyrus." — Động từ nào phù hợp nhất?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>saved</strong> – <span class="p-word">saved</span> <span class="p-mean">(lưu — thường dùng cho file máy tính)</span> ❌ Sai về nghĩa văn cảnh lịch sử.</div>
+              <div class="exp-option">• <strong>memorized</strong> – <span class="p-word">memorized</span> <span class="p-mean">(ghi nhớ — trong đầu)</span> ❌ Sai — không ghi vào vật liệu.</div>
+              <div class="exp-option">• <strong>recorded</strong> – <span class="p-word">recorded</span> <span class="p-mean">(ghi chép, ghi lại)</span> ✅ <span class="hl-green">ĐÚNG</span> — ghi chép lên bề mặt vật lý như đá, kim loại.</div>
+              <div class="exp-option">• <strong>remembered</strong> – <span class="p-word">remembered</span> <span class="p-mean">(nhớ lại — trong trí nhớ)</span> ❌ Sai — không diễn tả hành động khắc/viết lên bề mặt.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Đồng nghĩa trong ngữ cảnh:</div>
+              <div class="exp-quote">"They <span class="hl-green">recorded</span> their writing on stone..." = "These drawings <span class="exp-keyword">recorded</span> details about daily life..."</div>
+              <div class="exp-translation">→ <span class="p-word">record</span> được dùng xuyên suốt bài: ghi chép lại một cách vật lý</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-81">
+          <div class="question-text"><span class="question-number">81</span>Câu 81: Select the best answer</div>
+          <div class="options-grid" id="opts-81"></div>
+          <div class="explanation-box" id="exp-81">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Ngày nay, có hơn 6.000 ngôn ngữ đang được _____ trên thế giới." — Từ nào phù hợp với "language"?</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>told</strong> – <span class="p-word">told</span> <span class="p-mean">(kể lại, nói với ai)</span> ❌ Sai — "told" cần tân ngữ người nghe.</div>
+              <div class="exp-option">• <strong>spoken</strong> – <span class="p-word">spoken</span> <span class="p-mean">(được nói)</span> ✅ <span class="hl-green">ĐÚNG</span> → <span class="p-grammar">language + spoken</span> là collocations cố định: "a language spoken in..." / "languages spoken worldwide".</div>
+              <div class="exp-option">• <strong>said</strong> – <span class="p-word">said</span> <span class="p-mean">(đã nói)</span> ❌ Sai — "said" không collocate với "language".</div>
+              <div class="exp-option">• <strong>talked</strong> – <span class="p-word">talked</span> <span class="p-mean">(nói chuyện)</span> ❌ Sai — "talked" là intransitive, không có dạng bị động thông thường.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Collocation (Sự kết hợp từ):</div>
+              <div class="exp-quote"><span class="hl-green">languages spoken</span> in the world (bị động: được nói)</div>
+              <div class="exp-translation">→ Câu cuối bài cũng xác nhận: "In Papua New Guinea alone, over 800 languages are <span class="exp-keyword">spoken</span>."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🚀</span>
+      <span class="section-title">The Kepler Space Telescope – Life on Other Planets</span>
+      <span class="section-range">Q82 – 86</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage</div>
+        <div class="passage-title">THE KEPLER SPACE TELESCOPE</div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Nobody knows how many planets there are in our galaxy and whether there is life on other planets. And the Kepler has the mission to find the answer to those questions.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-5a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-5a">Không ai biết có bao nhiêu hành tinh trong thiên hà của chúng ta và liệu có sự sống trên các hành tinh khác không. Và tàu Kepler có nhiệm vụ tìm câu trả lời cho những câu hỏi đó.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">In 2009, NASA launched the Kepler space telescope to find planets that support life. It has discovered five new Earth-sized planets beyond our solar system so far. These planets are hotter than the Earth. The Kepler team predicted that it will take them at least three years to find an Earth-like planet. This mission costs about six hundred million dollars.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-5b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-5b">Năm 2009, NASA phóng kính thiên văn vũ trụ Kepler để tìm những hành tinh có thể hỗ trợ sự sống. Đến nay nó đã khám phá ra 5 hành tinh có kích thước Trái Đất ngoài hệ mặt trời. Những hành tinh này nóng hơn Trái Đất. Nhóm Kepler dự đoán cần ít nhất 3 năm để tìm một hành tinh giống Trái Đất. Nhiệm vụ này tốn khoảng 600 triệu đô la.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">The simplest requirement for a planet to have life is water (not frozen or gas), so the distance from the planet's sun and therefore temperature is important. The planet also needs a certain amount of air. If a planet is as small as Mars (half the size of Earth), <strong>it</strong> can't hold on to air molecules because of weak gravity. If a planet is four times bigger than Earth - Neptune size - it has very strong gravity and too much air. So the size of those planets also matter.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-5c')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-5c">Yêu cầu đơn giản nhất để một hành tinh có sự sống là nước (không đóng băng hay dạng khí), vì vậy khoảng cách từ hành tinh đến mặt trời của nó và do đó là nhiệt độ rất quan trọng. Hành tinh cũng cần một lượng không khí nhất định. Nếu hành tinh nhỏ như sao Hỏa (bằng nửa Trái Đất), <strong>nó</strong> không thể giữ các phân tử không khí vì lực hút yếu. Nếu hành tinh lớn gấp 4 lần Trái Đất - cỡ Sao Hải Vương - nó có lực hút rất mạnh và quá nhiều không khí. Vì vậy kích thước của những hành tinh đó cũng quan trọng.</div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">galaxy</td><td><span class="word-pos">n</span></td><td>thiên hà</td></tr>
+            <tr><td class="word-en">telescope</td><td><span class="word-pos">n</span></td><td>kính thiên văn</td></tr>
+            <tr><td class="word-en">launch</td><td><span class="word-pos">v</span></td><td>phóng (tên lửa/tàu vũ trụ)</td></tr>
+            <tr><td class="word-en">solar system</td><td><span class="word-pos">n</span></td><td>hệ mặt trời</td></tr>
+            <tr><td class="word-en">requirement</td><td><span class="word-pos">n</span></td><td>yêu cầu, điều kiện</td></tr>
+            <tr><td class="word-en">molecule</td><td><span class="word-pos">n</span></td><td>phân tử</td></tr>
+            <tr><td class="word-en">gravity</td><td><span class="word-pos">n</span></td><td>lực hấp dẫn, trọng lực</td></tr>
+            <tr><td class="word-en">predict</td><td><span class="word-pos">v</span></td><td>dự đoán</td></tr>
+            <tr><td class="word-en">mission</td><td><span class="word-pos">n</span></td><td>nhiệm vụ, sứ mệnh</td></tr>
+            <tr><td class="word-en">frozen</td><td><span class="word-pos">adj</span></td><td>đóng băng</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel">
+        <div class="question-card" id="qcard-82">
+          <div class="question-text"><span class="question-number">82</span>How many people know the number of planets in our galaxy?</div>
+          <div class="options-grid" id="opts-82"></div>
+          <div class="explanation-box" id="exp-82">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Có bao nhiêu người biết số lượng hành tinh trong thiên hà của chúng ta?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>Not many</strong> – <span class="p-mean">(Không nhiều)</span> ❌ Sai — bài nói không phải "không nhiều" mà là hoàn toàn không ai biết.</div>
+              <div class="exp-option">• <strong>None</strong> – <span class="p-mean">(Không ai)</span> ✅ <span class="hl-green">ĐÚNG</span> — "<span class="hl-green">Nobody</span> knows how many planets there are..."</div>
+              <div class="exp-option">• <strong>Many people</strong> – <span class="p-mean">(Nhiều người)</span> ❌ Sai — trái ngược hoàn toàn với nội dung bài.</div>
+              <div class="exp-option">• <strong>Everybody</strong> – <span class="p-mean">(Tất cả mọi người)</span> ❌ Sai — hoàn toàn sai.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 1):</div>
+              <div class="exp-quote">"<span class="exp-keyword">Nobody</span> knows how many planets there are in our galaxy..."</div>
+              <div class="exp-translation">→ "<span class="hl-green">Nobody</span>" = không ai biết cả → đáp án B: <span class="hl-green">None</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-83">
+          <div class="question-text"><span class="question-number">83</span>What is the mission of the Kepler?</div>
+          <div class="options-grid" id="opts-83"></div>
+          <div class="explanation-box" id="exp-83">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Nhiệm vụ của tàu Kepler là gì?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>To answer the questions about the Earth.</strong> ❌ Sai — nhiệm vụ là về các hành tinh KHÁC, không phải Trái Đất.</div>
+              <div class="exp-option">• <strong>To build an Earth-like planet.</strong> ❌ Sai — không thể "xây" hành tinh.</div>
+              <div class="exp-option">• <strong>To find life on other planets.</strong> ✅ <span class="hl-green">ĐÚNG</span> — Mục tiêu là tìm hành tinh hỗ trợ sự sống và trả lời câu hỏi có sự sống ở nơi khác không.</div>
+              <div class="exp-option">• <strong>To find new Earth-sized planets.</strong> ❌ Sai — đây là KẾT QUẢ đã đạt được (đã tìm ra 5 hành tinh), không phải nhiệm vụ ban đầu.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 1 & 2):</div>
+              <div class="exp-quote">"the Kepler has the mission to find the answer to those questions" [những câu hỏi về <span class="exp-keyword">whether there is life on other planets</span>]</div>
+              <div class="exp-translation">→ Nhiệm vụ = tìm câu trả lời xem có <span class="hl-green">sự sống trên các hành tinh khác</span> không</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-84">
+          <div class="question-text"><span class="question-number">84</span>What is the main difference between the Earth and the five new Earth-sized planets?</div>
+          <div class="options-grid" id="opts-84"></div>
+          <div class="explanation-box" id="exp-84">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Điểm khác biệt chính giữa Trái Đất và 5 hành tinh có kích thước Trái Đất mới là gì?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>Their temperature</strong> – <span class="p-mean">(Nhiệt độ)</span> ✅ <span class="hl-green">ĐÚNG</span> — "These planets are <span class="hl-green">hotter than the Earth</span>."</div>
+              <div class="exp-option">• <strong>Their sizes</strong> – <span class="p-mean">(Kích thước)</span> ❌ Sai — bài gọi chúng là "Earth-sized" tức cùng kích thước Trái Đất.</div>
+              <div class="exp-option">• <strong>Their systems</strong> – <span class="p-mean">(Hệ)</span> ❌ Sai — đây không phải điểm khác biệt được đề cập.</div>
+              <div class="exp-option">• <strong>Their age</strong> – <span class="p-mean">(Tuổi)</span> ❌ Sai — bài không đề cập tuổi của các hành tinh.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 2):</div>
+              <div class="exp-quote">"These planets are <span class="exp-keyword">hotter than the Earth</span>."</div>
+              <div class="exp-translation">→ Câu này trực tiếp nêu sự khác biệt: <span class="hl-green">nhiệt độ (temperature)</span> cao hơn Trái Đất</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-85">
+          <div class="question-text"><span class="question-number">85</span>What does the word "it" in paragraph 3 refer to?</div>
+          <div class="options-grid" id="opts-85"></div>
+          <div class="explanation-box" id="exp-85">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Từ 'it' trong đoạn 3 đề cập đến gì?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>The Earth</strong> ❌ Sai — Trái Đất có kích thước bình thường, không phải nhỏ như sao Hỏa.</div>
+              <div class="exp-option">• <strong>The Mars</strong> ❌ Sai — sao Hỏa được dùng làm ví dụ so sánh, nhưng "it" chỉ đối tượng đang được xét (một hành tinh nhỏ).</div>
+              <div class="exp-option">• <strong>Gravity</strong> ❌ Sai — "it" không phải lực hút; "it" là chủ thể bị lực hút yếu ảnh hưởng.</div>
+              <div class="exp-option">• <strong>A planet</strong> ✅ <span class="hl-green">ĐÚNG</span> — "If a planet is as small as Mars... <span class="hl-green">it</span> can't hold on to air molecules." → "it" = a planet.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 3):</div>
+              <div class="exp-quote">"If <span class="exp-keyword">a planet</span> is as small as Mars..., <span class="hl-green">it</span> can't hold on to air molecules..."</div>
+              <div class="exp-translation">→ "it" thay thế cho chủ ngữ "<span class="hl-green">a planet</span>" trong mệnh đề điều kiện</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-86">
+          <div class="question-text"><span class="question-number">86</span>What is the best title for this passage?</div>
+          <div class="options-grid" id="opts-86"></div>
+          <div class="explanation-box" id="exp-86">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Tiêu đề phù hợp nhất cho đoạn văn này là gì?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>The solar system</strong> ❌ Sai — bài không chỉ nói về hệ mặt trời; bài nói về cả ngoài hệ mặt trời.</div>
+              <div class="exp-option">• <strong>Life on the Earth</strong> ❌ Sai — bài nói về các hành tinh KHÁC, không phải Trái Đất.</div>
+              <div class="exp-option">• <strong>Requirements for life on other planets</strong> ✅ <span class="hl-green">ĐÚNG</span> — Bài nêu cả nhiệm vụ Kepler tìm hành tinh có sự sống VÀ các điều kiện (nước, nhiệt độ, không khí, kích thước).</div>
+              <div class="exp-option">• <strong>The mysteries of the outer space</strong> ❌ Sai — quá chung chung; bài tập trung vào điều kiện cụ thể cho sự sống.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Ý chính bài đọc:</div>
+              <div class="exp-quote">Đoạn 1: Nhiệm vụ Kepler → Đoạn 2: Phát hiện hành tinh → Đoạn 3: <span class="exp-keyword">Điều kiện cho sự sống</span> (nước, nhiệt độ, không khí, kích thước)</div>
+              <div class="exp-translation">→ Chủ đề bao quát: <span class="hl-green">Điều kiện/Yêu cầu để có sự sống trên hành tinh khác</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">💻</span>
+      <span class="section-title">Hardware and Software – How Technology Works</span>
+      <span class="section-range">Q87 – 91</span>
+    </div>
+    <div class="split-screen">
+      <div class="passage-panel">
+        <div class="passage-label">📖 Reading Passage</div>
+        <div class="passage-title">HARDWARE AND SOFTWARE</div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Hardware and software are two terms you've probably heard of at some point or another. The odds are high that you use both on a daily basis, whether it's with your smartphone or personal computer. Let's take a deeper look at what these two things are and why they're important.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-6a')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-6a">Phần cứng và phần mềm là hai thuật ngữ mà bạn có thể đã nghe qua đâu đó. Rất có thể bạn dùng cả hai mỗi ngày, dù là với smartphone hay máy tính cá nhân. Hãy cùng tìm hiểu sâu hơn về hai thứ này và tại sao chúng quan trọng.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Hardware is any element of a computer that is <u>physical</u>. This includes things like monitors, keyboards, and also the insides of devices, like microchips and hard drives. Software is anything that tells hardware what to do and how to do it, including computer programs and apps on your phone. Video games, photo editors, and web browsers are just a few examples.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-6b')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-6b"><strong>Phần cứng</strong> là bất kỳ thành phần vật lý nào của máy tính. Điều này bao gồm màn hình, bàn phím, và cả các bộ phận bên trong thiết bị như vi mạch và ổ cứng. <strong>Phần mềm</strong> là thứ điều khiển phần cứng cần làm gì và làm như thế nào, bao gồm chương trình máy tính và ứng dụng điện thoại. Trò chơi điện tử, phần mềm chỉnh ảnh, trình duyệt web là một vài ví dụ.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">Hardware and software are different from each other, but they also need one another in order to function. The hardware would be the physical phone itself, and the software would be its operating system and apps. If we were to take away the software, we would just have a dead phone in our hands. It wouldn't be able to make calls, text, or go online because it's not receiving any instructions.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-6c')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-6c">Phần cứng và phần mềm khác nhau nhưng chúng cũng cần nhau để có thể hoạt động. Phần cứng có thể là bản thân chiếc điện thoại vật lý, và phần mềm sẽ là hệ điều hành cùng các ứng dụng. Nếu chúng ta bỏ phần mềm đi, ta sẽ chỉ có một chiếc điện thoại "chết" trên tay. Nó không thể gọi điện, nhắn tin hay lên mạng vì nó không nhận được bất kỳ hướng dẫn nào.</div>
+        </div>
+
+        <div class="paragraph-block">
+          <div class="paragraph-text">On the other hand, let's say we have no hardware, meaning there's no actual phone. If all we have are the programs, we just have a bunch of instructions but nothing to give these instructions to. Hardware needs software to tell it what to do, but software also needs hardware in order to act out its directions. When you combine the two, you can do all sorts of things. Technology will continue to evolve. We may not be sure how it will look in 100 years, but hardware and software will be there serving as its foundation.</div>
+          <button class="translate-btn" onclick="toggleTrans('t-6d')">Mở dịch đoạn này 🌟</button>
+          <div class="translation-box" id="t-6d">Mặt khác, giả sử chúng ta không có phần cứng, nghĩa là không có điện thoại thực tế. Nếu tất cả những gì ta có là các chương trình, ta chỉ có một loạt các hướng dẫn nhưng không có gì để truyền các lệnh này vào. Phần cứng cần phần mềm để nói cho nó biết phải làm gì, nhưng phần mềm cũng cần phần cứng để thực hiện các chỉ thị của nó. Khi kết hợp cả hai, bạn có thể làm đủ mọi thứ. Công nghệ sẽ tiếp tục tiến hóa. Chúng ta có thể không chắc nó trông như thế nào trong 100 năm nữa, nhưng phần cứng và phần mềm sẽ luôn ở đó đóng vai trò làm nền tảng.</div>
+        </div>
+
+        <div class="glossary-section">
+          <div class="glossary-title">✨ Bảng từ vựng – Vocabulary</div>
+          <table class="glossary-table">
+            <tr><th>Từ tiếng Anh</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+            <tr><td class="word-en">hardware</td><td><span class="word-pos">n</span></td><td>phần cứng (máy tính)</td></tr>
+            <tr><td class="word-en">software</td><td><span class="word-pos">n</span></td><td>phần mềm</td></tr>
+            <tr><td class="word-en">microchip</td><td><span class="word-pos">n</span></td><td>vi mạch, chip xử lý</td></tr>
+            <tr><td class="word-en">operating system</td><td><span class="word-pos">n</span></td><td>hệ điều hành</td></tr>
+            <tr><td class="word-en">foundation</td><td><span class="word-pos">n</span></td><td>nền tảng</td></tr>
+            <tr><td class="word-en">physical</td><td><span class="word-pos">adj</span></td><td>vật lý, hữu hình, thực thể</td></tr>
+            <tr><td class="word-en">evolve</td><td><span class="word-pos">v</span></td><td>tiến hóa, phát triển</td></tr>
+            <tr><td class="word-en">function</td><td><span class="word-pos">v</span></td><td>hoạt động, vận hành</td></tr>
+            <tr><td class="word-en">instructions</td><td><span class="word-pos">n</span></td><td>hướng dẫn, chỉ lệnh</td></tr>
+            <tr><td class="word-en">material</td><td><span class="word-pos">adj</span></td><td>vật chất, hữu hình</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="questions-panel">
+        <div class="question-card" id="qcard-87">
+          <div class="question-text"><span class="question-number">87</span>The second paragraph is mainly about _____.</div>
+          <div class="options-grid" id="opts-87"></div>
+          <div class="explanation-box" id="exp-87">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Đoạn văn thứ hai chủ yếu nói về _____."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>the difference between hardware and software.</strong> ❌ Sai — đoạn 2 chưa nói về sự khác biệt (đó là đoạn 3).</div>
+              <div class="exp-option">• <strong>some of the hardware and software of a computer.</strong> ❌ Sai — đoạn 2 ĐỊNH NGHĨA, không chỉ nêu một số ví dụ.</div>
+              <div class="exp-option">• <strong>the definition of hardware and software of a computer.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "Hardware is any element... that is physical." + "Software is anything that tells hardware what to do..." = định nghĩa cả hai.</div>
+              <div class="exp-option">• <strong>some facts concerning computer's hardware and software.</strong> ❌ Sai — không phải facts ngẫu nhiên mà là định nghĩa chính thức.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 2):</div>
+              <div class="exp-quote">"<span class="exp-keyword">Hardware is</span> any element of a computer that is physical." + "<span class="exp-keyword">Software is</span> anything that tells hardware what to do..."</div>
+              <div class="exp-translation">→ "is" = <span class="hl-green">định nghĩa (definition)</span>; cả hai câu đều bắt đầu bằng cấu trúc định nghĩa</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-88">
+          <div class="question-text"><span class="question-number">88</span>The word "physical" in the second paragraph mostly refers to _____.</div>
+          <div class="options-grid" id="opts-88"></div>
+          <div class="explanation-box" id="exp-88">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Từ 'physical' trong đoạn 2 chủ yếu có nghĩa là _____."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>material</strong> – <span class="p-word">material</span> <span class="p-mean">(vật chất, hữu hình)</span> ✅ <span class="hl-green">ĐÚNG</span> — "physical" trong ngữ cảnh này = có thể sờ, cầm được; đồng nghĩa với "material".</div>
+              <div class="exp-option">• <strong>natural</strong> – <span class="p-word">natural</span> <span class="p-mean">(tự nhiên)</span> ❌ Sai — màn hình, bàn phím không phải "tự nhiên".</div>
+              <div class="exp-option">• <strong>logical</strong> – <span class="p-word">logical</span> <span class="p-mean">(logic, hợp lý)</span> ❌ Sai — "physical" nghĩa là thứ bạn có thể chạm vào, không phải "logic".</div>
+              <div class="exp-option">• <strong>mental</strong> – <span class="p-word">mental</span> <span class="p-mean">(tinh thần, trong đầu)</span> ❌ Sai — ngược nghĩa; physical ↔ mental.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Ngữ cảnh và từ đồng nghĩa:</div>
+              <div class="exp-quote">"Hardware is any element... that is <span class="exp-keyword">physical</span>. This includes <span class="hl-green">monitors, keyboards, microchips, hard drives</span>..."</div>
+              <div class="exp-translation">→ Các ví dụ là vật thể hữu hình → "physical" = <span class="hl-green">material</span> = có thể cầm/sờ được</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-89">
+          <div class="question-text"><span class="question-number">89</span>What does the author want to imply in paragraphs 3 and 4?</div>
+          <div class="options-grid" id="opts-89"></div>
+          <div class="explanation-box" id="exp-89">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Tác giả muốn ám chỉ điều gì trong các đoạn 3 và 4?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>Hardware and its operation system.</strong> ❌ Sai — đoạn không chỉ nói về phần cứng và hệ điều hành.</div>
+              <div class="exp-option">• <strong>Hardware and software work together.</strong> ✅ <span class="hl-green">ĐÚNG</span> — Ý chính xuyên suốt đoạn 3-4: cả hai phụ thuộc nhau, cần nhau để hoạt động.</div>
+              <div class="exp-option">• <strong>The superior role of software to its hardware.</strong> ❌ Sai — bài không đề cao phần mềm hơn phần cứng; chúng ngang bằng nhau.</div>
+              <div class="exp-option">• <strong>The way hardware and software function.</strong> ❌ Sai — đây chỉ là cách diễn đạt, không phải ý sâu hơn tác giả muốn truyền đạt.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 3 & 4):</div>
+              <div class="exp-quote">"Hardware needs software to tell it what to do, <span class="exp-keyword">but software also needs hardware</span> in order to act out its directions."</div>
+              <div class="exp-translation">→ Cả hai cần nhau: <span class="hl-green">hardware + software = work together</span> (hợp tác, tương hỗ)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-90">
+          <div class="question-text"><span class="question-number">90</span>Which of the following is TRUE according to the passage?</div>
+          <div class="options-grid" id="opts-90"></div>
+          <div class="explanation-box" id="exp-90">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Điều nào sau đây ĐÚNG theo bài đọc?"</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>Some of the hardware inside a computer are microchips, hard drives, monitors, keyboards.</strong> ❌ Sai vì monitors và keyboards là phần cứng BÊN NGOÀI, không phải "insides".</div>
+              <div class="exp-option">• <strong>Video games, photo editors, and web browsers are not software.</strong> ❌ Sai rõ ràng — bài nói đây chính là ví dụ của phần mềm.</div>
+              <div class="exp-option">• <strong>When a smartphone is making a call, it starts receiving instructions from the user.</strong> ❌ Sai — bài nói không có phần mềm thì điện thoại KHÔNG nhận được hướng dẫn; không phải người dùng gửi hướng dẫn trực tiếp cho phần cứng.</div>
+              <div class="exp-option">• <strong>A smartphone, a computer, or a similar device must have functioning software to operate.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "If we were to take away the software, we would just have a dead phone."</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn 3):</div>
+              <div class="exp-quote">"If we were to take away the software, we would just have a <span class="exp-keyword">dead phone</span>."</div>
+              <div class="exp-translation">→ Không có phần mềm → điện thoại "chết" = thiết bị <span class="hl-green">phải có phần mềm hoạt động được</span> mới vận hành</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card" id="qcard-91">
+          <div class="question-text"><span class="question-number">91</span>We can learn from the passage that _____.</div>
+          <div class="options-grid" id="opts-91"></div>
+          <div class="explanation-box" id="exp-91">
+            <div class="exp-header">🔍 Giải thích chi tiết</div>
+            <div class="exp-question-vn">📌 Dịch: "Chúng ta có thể rút ra từ bài đọc rằng _____."</div>
+            <div class="exp-options">
+              <div class="exp-option">• <strong>if there were no software, there would be no hardware.</strong> ❌ Sai — phần cứng tồn tại độc lập; chỉ là không hoạt động được nếu thiếu phần mềm.</div>
+              <div class="exp-option">• <strong>if a hardware had no software, it could create one on its own.</strong> ❌ Sai — phần cứng không thể tự tạo phần mềm.</div>
+              <div class="exp-option">• <strong>in 2100 humans will still be using technological devices which have both hardware and software.</strong> ✅ <span class="hl-green">ĐÚNG</span> — "hardware and software will be there serving as its foundation" → vẫn sẽ là nền tảng dù 100 năm nữa.</div>
+              <div class="exp-option">• <strong>we will only use the technological devices that have both hardware and software in 100 years' time.</strong> ❌ Sai — "only" quá tuyệt đối; bài không khẳng định như vậy.</div>
+            </div>
+            <div class="exp-evidence">
+              <div class="exp-evidence-title">🔑 Dẫn chứng (Đoạn cuối):</div>
+              <div class="exp-quote">"Technology will continue to <span class="exp-keyword">evolve</span>... but hardware and software will be there serving as its <span class="hl-green">foundation</span>."</div>
+              <div class="exp-translation">→ 100 năm nữa (= năm 2100+), phần cứng và phần mềm vẫn là nền tảng → con người vẫn dùng thiết bị có cả hai</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><div class="submit-section">
+  <button class="submit-btn" onclick="openSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button>
+</div>
+
+<div class="modal-overlay" id="submitModal">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Nhập tên của bạn</div>
+    <input type="text" class="modal-input" id="studentName" placeholder="Họ và tên học sinh..." />
+    <br>
+    <button class="modal-confirm" onclick="submitQuiz()">🚀 Nộp bài ngay!</button>
+  </div>
+</div>
+
+<div class="scorecard" id="scorecard">
+  <div class="scorecard-inner">
+    <div style="font-size:2.5rem; margin-bottom:8px;">🌌</div>
+    <div class="score-name" id="scoreName"></div>
+    <div style="font-size:0.85rem; color: rgba(128,222,234,0.6); margin-bottom:8px; font-family:'Orbitron',sans-serif;">KẾT QUẢ BÀI THI</div>
+    <div class="score-number" id="scoreNumber"></div>
+    <div style="font-size:0.75rem; color:rgba(255,255,255,0.4); margin-bottom:16px; font-family:'Orbitron',sans-serif;">Giáo viên: MS Chí Nên</div>
+    <img class="score-gif" id="scoreGif" src="" alt="result gif" />
+    <div class="score-comment" id="scoreComment"></div>
+    <button class="score-close" onclick="document.getElementById('scorecard').classList.remove('show')">Đóng bảng điểm ✕</button>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const questions = {
+  61: { options: ["in","on","at","for"], correct: "on" },
+  62: { options: ["permanently","temporarily","endlessly","hopefully"], correct: "temporarily" },
+  63: { options: ["both","neither","every","other"], correct: "both" },
+  64: { options: ["patient","patiently","patients","patience"], correct: "patience" },
+  65: { options: ["wearing","having","taking","putting"], correct: "putting" },
+  66: { options: ["bridge","back","wing","holes"], correct: "bridge" },
+  67: { options: ["touching","to touch","to touching","touch"], correct: "touching" },
+  68: { options: ["using","useful","used","uses"], correct: "used" },
+  73: {
+    options: [
+      "are widened thanks to scientific publications.",
+      "helps to promote international cooperation and aims to encourage significant scientific advancements.",
+      "never stops going hand in hand with many world-changing discoveries and inventions.",
+      "allows the books to reach the masses."
+    ],
+    correct: "never stops going hand in hand with many world-changing discoveries and inventions."
+  },
+  74: {
+    options: [
+      "are widened thanks to scientific publications.",
+      "helps to promote international cooperation and aims to encourage significant scientific advancements.",
+      "never stops going hand in hand with many world-changing discoveries and inventions.",
+      "allows the books to reach the masses."
+    ],
+    correct: "helps to promote international cooperation and aims to encourage significant scientific advancements."
+  },
+  75: {
+    options: [
+      "are widened thanks to scientific publications.",
+      "helps to promote international cooperation and aims to encourage significant scientific advancements.",
+      "never stops going hand in hand with many world-changing discoveries and inventions.",
+      "allows the books to reach the masses."
+    ],
+    correct: "are widened thanks to scientific publications."
+  },
+  76: {
+    options: [
+      "are widened thanks to scientific publications.",
+      "helps to promote international cooperation and aims to encourage significant scientific advancements.",
+      "never stops going hand in hand with many world-changing discoveries and inventions.",
+      "allows the books to reach the masses."
+    ],
+    correct: "allows the books to reach the masses."
+  },
+  77: { options: ["so","although","and","but"], correct: "but" },
+  78: { options: ["drawings","types","skins","walls"], correct: "drawings" },
+  79: { options: ["form","means","record","method"], correct: "form" },
+  80: { options: ["saved","memorized","recorded","remembered"], correct: "recorded" },
+  81: { options: ["told","spoken","said","talked"], correct: "spoken" },
+  82: { options: ["Not many","None","Many people","Everybody"], correct: "None" },
+  83: {
+    options: [
+      "To answer the questions about the Earth.",
+      "To build an Earth-like planet.",
+      "To find life on other planets.",
+      "To find new Earth-sized planets."
+    ],
+    correct: "To find life on other planets."
+  },
+  84: { options: ["Their temperature","Their sizes","Their systems","Their age"], correct: "Their temperature" },
+  85: { options: ["The Earth","The Mars","Gravity","A planet"], correct: "A planet" },
+  86: {
+    options: [
+      "The solar system",
+      "Life on the Earth",
+      "Requirements for life on other planets",
+      "The mysteries of the outer space"
+    ],
+    correct: "Requirements for life on other planets"
+  },
+  87: {
+    options: [
+      "the difference between hardware and software.",
+      "some of the hardware and software of a computer.",
+      "the definition of hardware and software of a computer.",
+      "some facts concerning computer's hardware and software."
+    ],
+    correct: "the definition of hardware and software of a computer."
+  },
+  88: { options: ["material","natural","logical","mental"], correct: "material" },
+  89: {
+    options: [
+      "Hardware and its operation system.",
+      "Hardware and software work together.",
+      "The superior role of software to its hardware.",
+      "The way hardware and software function."
+    ],
+    correct: "Hardware and software work together."
+  },
+  90: {
+    options: [
+      "Some of the hardware inside a computer are microchips, hard drives, monitors, keyboards.",
+      "Video games, photo editors, and web browsers are not software.",
+      "When a smartphone is making a call, it starts receiving instructions from the user.",
+      "A smartphone, a computer, or a similar device must have functioning software to operate."
+    ],
+    correct: "A smartphone, a computer, or a similar device must have functioning software to operate."
+  },
+  91: {
+    options: [
+      "if there were no software, there would be no hardware.",
+      "if a hardware had no software, it could create one on its own.",
+      "in 2100 humans will still be using technological devices which have both hardware and software.",
+      "we will only use the technological devices that have both hardware and software in 100 years' time."
+    ],
+    correct: "in 2100 humans will still be using technological devices which have both hardware and software."
+  }
+};
+
+const allQNums = [61,62,63,64,65,66,67,68,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91];
+const answered = {};
+let correctCount = 0;
+
+// ===== SHUFFLE =====
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ===== BUILD OPTIONS =====
+function buildOptions() {
+  allQNums.forEach(qn => {
+    const container = document.getElementById('opts-' + qn);
+    if (!container) return;
+    const q = questions[qn];
+    const shuffled = shuffle(q.options);
+    container.innerHTML = '';
+    shuffled.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.textContent = opt;
+      btn.onclick = () => handleAnswer(qn, opt, btn, container);
+      container.appendChild(btn);
+    });
+  });
+}
+
+// ===== HANDLE ANSWER =====
+function handleAnswer(qn, selected, btn, container) {
+  if (answered[qn]) return;
+  answered[qn] = selected;
+
+  const correct = questions[qn].correct;
+  const allBtns = container.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (selected === correct) {
+    btn.classList.add('correct');
+    correctCount++;
+    playDing();
+    spawnConfetti();
+  } else {
+    btn.classList.add('wrong');
+    playTingTing();
+    allBtns.forEach(b => {
+      if (b.textContent === correct) b.classList.add('correct');
+    });
+  }
+
+  // Show explanation
+  const expBox = document.getElementById('exp-' + qn);
+  if (expBox) expBox.classList.add('show');
+
+  // Update blank if applicable
+  const blank = document.getElementById('blank-' + qn);
+  if (blank) {
+    blank.textContent = correct;
+    blank.classList.add('answered');
+  }
+
+  document.getElementById('qcard-' + qn).classList.add('answered');
+  updateProgress();
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  const count = Object.keys(answered).length;
+  document.getElementById('ansCount').textContent = count;
+  const pct = (count / allQNums.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// ===== AUDIO =====
+function createAudioContext() {
+  try { return new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; }
+}
+function playDing() {
+  const ctx = createAudioContext(); if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.frequency.setValueAtTime(880, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.2);
+  gain.gain.setValueAtTime(0.4, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+  osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.8);
+}
+function playTingTing() {
+  const ctx = createAudioContext(); if (!ctx) return;
+  [0, 0.15].forEach(t => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 440;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime + t);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.3);
+    osc.start(ctx.currentTime + t); osc.stop(ctx.currentTime + t + 0.3);
+  });
+}
+
+// ===== CONFETTI =====
+function spawnConfetti() {
+  const colors = ['#ffd54f','#f48fb1','#80deea','#69f0ae','#ff8a65','#ce93d8'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left: ${Math.random()*100}vw;
+      top: -20px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      width: ${6+Math.random()*8}px;
+      height: ${6+Math.random()*8}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${1.5+Math.random()*2}s;
+      animation-delay: ${Math.random()*0.5}s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+}
+
+// ===== TRANSLATE TOGGLE =====
+function toggleTrans(id) {
+  const box = document.getElementById(id);
+  if (!box) return;
+  box.classList.toggle('show');
+  const btn = box.previousElementSibling;
+  if (btn && btn.classList.contains('translate-btn')) {
+    btn.textContent = box.classList.contains('show') ? 'Ẩn dịch 🌙' : 'Mở dịch đoạn này 🌟';
+  }
+}
+
+// ===== SUBMIT MODAL =====
+function openSubmitModal() {
+  document.getElementById('submitModal').classList.add('show');
+  setTimeout(() => document.getElementById('studentName').focus(), 200);
+}
+function submitQuiz() {
+  const name = document.getElementById('studentName').value.trim();
+  if (!name) { alert('Vui lòng nhập tên của bạn!'); return; }
+  document.getElementById('submitModal').classList.remove('show');
+  showScorecard(name);
+}
+
+// ===== SCORECARD =====
+function showScorecard(name) {
+  const total = allQNums.length;
+  const score = correctCount;
+  const pct = (score / total) * 100;
+
+  document.getElementById('scoreName').textContent = '🌟 ' + name;
+  document.getElementById('scoreNumber').textContent = score + ' / ' + total;
+
+  let comment, gifSrc;
+  if (pct === 100) {
+    comment = '🎉 Xuất sắc tuyệt vời! Em là thiên tài vũ trụ! MS Chí Nên cực kỳ tự hào về em! Không một lỗi sai nào — đỉnh của đỉnh!';
+    gifSrc = 'https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif';
+  } else if (pct >= 60) {
+    comment = '👏 Rất tốt! Em đã nắm vững phần lớn kiến thức. Hãy ôn lại những câu sai để hoàn thiện hơn nhé! MS Chí Nên tin em sẽ làm tốt hơn nữa!';
+    gifSrc = 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif';
+  } else {
+    comment = '💪 Đừng nản lòng! Thất bại là mẹ thành công. Hãy ôn lại bài, đọc kỹ giải thích từng câu và thử lại nhé! MS Chí Nên luôn cổ vũ em!';
+    gifSrc = 'https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif';
+  }
+
+  document.getElementById('scoreComment').textContent = comment;
+  document.getElementById('scoreGif').src = gifSrc;
+  document.getElementById('scorecard').classList.add('show');
+}
+
+// ===== FLOATING EMOJIS =====
+function spawnEmojis() {
+  const emojis = ['🚀','🪐','⭐','🌌','🛸','☄️','🌠','🔭'];
+  const container = document.getElementById('floatingEmojis');
+  emojis.forEach((emoji, i) => {
+    const el = document.createElement('div');
+    el.className = 'emoji-float';
+    el.textContent = emoji;
+    el.style.cssText = `
+      left: ${5 + (i / emojis.length) * 90}%;
+      font-size: ${1.5 + Math.random() * 2}rem;
+      animation-duration: ${15 + Math.random() * 20}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+    container.appendChild(el);
+  });
+}
+
+// ===== INIT =====
+buildOptions();
+spawnEmojis();
+</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>

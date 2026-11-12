@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Reading Test – MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --pink: #ff6eb4; --teal: #3dd6c8; --purple: #8b5cf6; --amber: #f59e0b;
+  --green: #22c55e; --red: #ef4444; --navy: #1e3a5f;
+  --glass: rgba(255, 255, 255, 0.28); --glass-border: rgba(255, 255, 255, 0.55);
+}
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffd6ec, #c8f4ff, #d4fde4, #ffe8cc, #e8d9ff);
+  background-size: 500% 500%;
+  animation: bgShift 14s ease infinite;
+  overflow-x: hidden;
+}
+@keyframes bgShift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+
+/* ── GIAO DIỆN MÀN HÌNH KHÓA (Đã chỉnh tông xuyệt tông với giao diện chính) ── */
+#passwordModal {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, 0.52); backdrop-filter: blur(10px);
+}
+.pw-card {
+  background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px);
+  border: 1.5px solid var(--glass-border); border-radius: 24px; padding: 48px 40px 40px; 
+  max-width: 440px; width: 93%; text-align: center; position: relative; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+.pw-crest { font-size: 4rem; margin-bottom: 8px; display: block; }
+.pw-title { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; letter-spacing: 1px; }
+.pw-sub   { font-size: .95rem; color: #555; margin-bottom: 24px; font-weight: 600; }
+.pw-input {
+  width: 100%; padding: 13px 20px; border-radius: 12px;
+  border: 2px solid #a78bfa; background: rgba(255, 255, 255, 0.85);
+  color: var(--navy); font-size: 1.1rem; font-family: 'Nunito', sans-serif; font-weight: 700;
+  outline: none; letter-spacing: 3px; text-align: center; transition: all .3s;
+}
+.pw-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,92,246,0.2); }
+.pw-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.25); animation: shake .4s ease; }
+.pw-input::placeholder { color: #999; letter-spacing: 1px; font-weight: 600; }
+.pw-btn {
+  width: 100%; padding: 14px; margin-top: 14px; border-radius: 12px; border: none;
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+  color: #fff; font-size: 1.1rem; font-weight: 800; font-family: 'Baloo 2', cursive;
+  cursor: pointer; letter-spacing: .5px; transition: transform .2s;
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+}
+.pw-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5); }
+.pw-err { color: #dc2626; font-size: .88rem; margin-top: 10px; display: none; font-weight: 700; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 15%,45%,75%{transform:translateX(-6px)} 30%,60%,90%{transform:translateX(6px)} }
+
+/* ── CÁC PHẦN CÒN LẠI CỦA GIAO DIỆN ── */
+.float-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.float-bg svg { width: 100%; height: 100%; }
+
+.header {
+  position: relative; z-index: 20; padding: 10px 24px 8px;
+  background: rgba(255, 255, 255, 0.32); backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid var(--glass-border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+}
+.header-title { font-family: 'Baloo 2', cursive; font-size: 1.25rem; color: var(--navy); font-weight: 800; letter-spacing: -0.3px; }
+.header-title span { color: var(--purple); }
+.header-sub { font-size: 0.7rem; color: #666; font-weight: 600; letter-spacing: 0.3px; }
+.score-pill {
+  background: linear-gradient(135deg, var(--purple), #2563eb);
+  color: #fff; border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 700;
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.35);
+}
+
+.tabs {
+  position: relative; z-index: 15; display: flex; justify-content: center; gap: 8px; padding: 10px 16px; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 7px 18px; border-radius: 30px; border: none; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.42); color: #555;
+  backdrop-filter: blur(8px); border: 1.5px solid var(--glass-border);
+  transition: all 0.3s; white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(37, 99, 235, 0.3));
+  color: var(--navy); box-shadow: 0 3px 14px rgba(139, 92, 246, 0.3); border-color: rgba(139, 92, 246, 0.4);
+}
+.tab-btn:hover:not(.active) { transform: translateY(-1px); background: rgba(255, 255, 255, 0.6); }
+
+.exercise { display: none; position: relative; z-index: 5; height: calc(100vh - 148px); }
+.exercise.active { display: flex; }
+.passage-panel, .questions-panel {
+  width: 50%; height: 100%; overflow-y: auto; padding: 16px 14px 80px; scroll-behavior: smooth;
+}
+.passage-panel { border-right: 1.5px solid rgba(255, 255, 255, 0.5); }
+
+.glass-card {
+  background: var(--glass); backdrop-filter: blur(14px); border: 1.5px solid var(--glass-border);
+  border-radius: 18px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+}
+.passage-title {
+  font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 800; color: var(--navy);
+  text-align: center; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.section-title { font-style: italic; font-weight: 800; color: var(--purple); margin: 12px 0 5px; font-size: 0.93rem; }
+.para-text { line-height: 1.75; color: #2d3748; font-size: 0.88rem; font-weight: 600; }
+
+.btn-translate {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 5px 13px; border-radius: 20px;
+  border: none; background: linear-gradient(135deg, #a78bfa, #60a5fa); color: #fff; font-size: 0.75rem;
+  font-weight: 700; cursor: pointer; transition: all 0.25s; font-family: 'Nunito', sans-serif;
+}
+.btn-translate:hover { transform: scale(1.05); box-shadow: 0 3px 12px rgba(124, 58, 237, 0.4); }
+.translation {
+  display: none; margin-top: 9px; padding: 11px 14px; background: rgba(255, 248, 220, 0.75);
+  border-radius: 12px; font-size: 0.83rem; color: #5d4037; line-height: 1.65; font-weight: 600; border-left: 3px solid #f59e0b;
+}
+
+.glossary-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.glossary-table th { background: rgba(139, 92, 246, 0.2); padding: 7px 10px; text-align: left; color: var(--navy); font-weight: 800; font-size: 0.78rem; }
+.glossary-table td { padding: 6px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.4); font-weight: 600; color: #374151; }
+.glossary-table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.22); }
+.glossary-table td:first-child { color: var(--purple); font-weight: 800; }
+
+.q-card {
+  background: rgba(255, 255, 255, 0.38); backdrop-filter: blur(10px); border: 1.5px solid var(--glass-border);
+  border-radius: 16px; padding: 15px 16px; margin-bottom: 13px; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06); transition: box-shadow 0.2s;
+}
+.q-card:hover { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); }
+.q-num { font-family: 'Baloo 2', cursive; font-weight: 800; color: var(--purple); font-size: 0.82rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.q-num::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--purple); }
+.q-text { font-weight: 700; color: var(--navy); font-size: 0.88rem; margin-bottom: 10px; line-height: 1.5; }
+
+.ans-btn {
+  display: block; width: 100%; padding: 9px 13px; margin: 5px 0; border-radius: 11px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55); background: rgba(255, 255, 255, 0.45); cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-size: 0.84rem; font-weight: 700; text-align: left; transition: all 0.2s; color: #334155; line-height: 1.45; word-break: break-word;
+}
+.ans-btn:hover:not(:disabled) { background: rgba(167, 139, 250, 0.25); transform: translateX(4px); border-color: rgba(139, 92, 246, 0.4); }
+.ans-btn.correct { background: rgba(34, 197, 94, 0.28); border-color: #16a34a; color: #14532d; }
+.ans-btn.wrong { background: rgba(239, 68, 68, 0.28); border-color: #dc2626; color: #7f1d1d; }
+.ans-btn.show-correct { background: rgba(34, 197, 94, 0.18); border-color: #16a34a; }
+.ans-btn:disabled { cursor: not-allowed; }
+
+.explanation {
+  display: none; margin-top: 11px; padding: 14px 16px; background: rgba(255, 249, 220, 0.85);
+  border-radius: 13px; border-left: 4px solid var(--amber); font-size: 0.81rem; line-height: 1.75; color: #333;
+}
+.explanation.show { display: block; }
+.p-word { color: #1565c0; font-weight: 800; }
+.p-mean { color: #bf360c; font-weight: 800; }
+.p-grammar { text-decoration: underline; text-decoration-color: red; color: #b71c1c; font-weight: 800; }
+.hl-green { color: #1b5e20; font-weight: 800; background: rgba(76, 175, 80, 0.18); padding: 1px 5px; border-radius: 5px; }
+.hl-red { color: #b71c1c; font-weight: 800; text-decoration: line-through; background: rgba(239, 68, 68, 0.12); padding: 1px 5px; border-radius: 5px; }
+
+.blank-passage { line-height: 2.1; font-size: 0.88rem; color: #2d3748; font-weight: 600; }
+.blank-span {
+  display: inline-block; min-width: 55px; border-bottom: 2.5px solid var(--purple); font-weight: 800; color: var(--purple);
+  padding: 0 5px; text-align: center; font-size: 0.82rem; transition: all 0.3s;
+}
+.blank-span.filled-correct { color: #16a34a; border-color: #16a34a; }
+.blank-span.filled-wrong { color: #dc2626; border-color: #dc2626; }
+
+.fixed-submit {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(14px); border-top: 1.5px solid var(--glass-border); padding: 10px; text-align: center;
+}
+.btn-submit {
+  padding: 11px 38px; border-radius: 30px; border: none; background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #fff; font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 800; cursor: pointer;
+  box-shadow: 0 5px 22px rgba(124, 58, 237, 0.42); transition: all 0.3s; letter-spacing: 0.3px;
+}
+.btn-submit:hover { transform: scale(1.06); box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6); }
+
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.52); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px); border-radius: 22px; padding: 32px;
+  max-width: 460px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.modal-box h2 { font-family: 'Baloo 2', cursive; color: var(--navy); margin-bottom: 14px; font-size: 1.4rem; }
+.modal-box p { color: #666; font-size: 0.88rem; margin-bottom: 14px; }
+.modal-box input {
+  width: 100%; padding: 11px 16px; border-radius: 11px; border: 2px solid #a78bfa; font-size: 1rem;
+  margin-bottom: 14px; background: rgba(255, 255, 255, 0.85); font-family: 'Nunito', sans-serif; font-weight: 600; outline: none; transition: border-color 0.2s;
+}
+.modal-box input:focus { border-color: var(--purple); }
+.btn-confirm {
+  padding: 10px 30px; border-radius: 22px; border: none; background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #fff; font-family: 'Baloo 2', cursive; font-weight: 700; cursor: pointer; font-size: 0.95rem;
+}
+
+.scorecard { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.62); backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center; }
+.scorecard.show { display: flex; }
+.score-box {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(240, 230, 255, 0.96));
+  border-radius: 26px; padding: 36px 40px; max-width: 520px; width: 92%; text-align: center;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4); font-family: 'Nunito', sans-serif;
+}
+.score-box h2 { font-family: 'Baloo 2', cursive; font-size: 1.8rem; color: var(--navy); }
+.score-name-lbl { font-size: 1rem; color: #555; margin: 8px 0; font-weight: 700; }
+.score-fraction { font-family: 'Baloo 2', cursive; font-size: 3.6rem; font-weight: 800; color: var(--purple); margin: 10px 0; }
+.score-gif { width: 200px; border-radius: 14px; margin: 12px auto; display: block; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }
+.score-comment { font-size: 1rem; color: #374151; margin: 14px 0; font-weight: 700; line-height: 1.5; }
+.score-teacher { font-size: 0.78rem; color: #999; margin-top: 6px; font-style: italic; }
+.btn-close-score {
+  padding: 10px 30px; border-radius: 22px; border: none; background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #fff; font-family: 'Baloo 2', cursive; font-weight: 700; cursor: pointer; margin-top: 18px; font-size: 0.95rem;
+}
+
+.confetti-piece { position: fixed; pointer-events: none; z-index: 9999; animation: confettiFall 3s ease-out forwards; }
+@keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(102vh) rotate(800deg); opacity: 0; } }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 3px; }
+
+.options-box {
+  background: rgba(167, 139, 250, 0.14); border-radius: 13px; padding: 11px 14px; margin-bottom: 12px;
+  font-size: 0.82rem; border-left: 3px solid var(--purple); line-height: 1.75; color: #374151; font-weight: 600;
+}
+.options-box strong { color: var(--navy); display: block; margin-bottom: 4px; }
+
+@media(max-width:700px) {
+  .exercise.active { flex-direction: column; height: auto; }
+  .passage-panel, .questions-panel { width: 100%; height: auto; border-right: none; }
+}
+</style>
+</head>
+<body>
+
+<audio id="wrongAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/File%20nghe%20Ket%20A2/huh_sound_effect-www_tiengdong_com.mp3"></audio>
+<audio id="introAudio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/export_dcyCDfhAokgnwEKEgvFUkr.mp3"></audio>
+
+<div id="passwordModal">
+  <div class="pw-card">
+    <span class="pw-crest">🔒</span>
+    <div class="pw-title">BẢO MẬT</div>
+    <div class="pw-sub">Vui lòng nhập mật khẩu để làm bài</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Nhập mật khẩu..." autocomplete="off" />
+    <button class="pw-btn" onclick="checkPassword()">XÁC NHẬN</button>
+    <div class="pw-err" id="pwErr">Mật khẩu không đúng! Vui lòng thử lại.</div>
+  </div>
+</div>
+
+<div id="mainContent" style="display:none;">
+
+  <div class="float-bg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <radialGradient id="rg1" cx="25%" cy="25%" r="55%"><stop offset="0%" stop-color="#fce4ec" stop-opacity="0.7"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+        <radialGradient id="rg2" cx="75%" cy="70%" r="55%"><stop offset="0%" stop-color="#e3f2fd" stop-opacity="0.7"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+        <radialGradient id="rg3" cx="50%" cy="90%" r="40%"><stop offset="0%" stop-color="#e8f5e9" stop-opacity="0.6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#rg1)"/>
+      <rect width="100%" height="100%" fill="url(#rg2)"/>
+      <rect width="100%" height="100%" fill="url(#rg3)"/>
+      <text x="3%" y="12%" font-size="70" opacity="0.09">💬</text>
+      <text x="88%" y="18%" font-size="58" opacity="0.08">🤝</text>
+      <text x="5%" y="82%" font-size="65" opacity="0.08">🌪️</text>
+      <text x="82%" y="78%" font-size="62" opacity="0.09">🌊</text>
+      <text x="46%" y="50%" font-size="50" opacity="0.06">🌀</text>
+      <text x="20%" y="50%" font-size="42" opacity="0.07">👁️</text>
+      <text x="72%" y="42%" font-size="46" opacity="0.07">🏠</text>
+    </svg>
+  </div>
+
+  <div class="header">
+    <div>
+      <div class="header-title">🎓 English <span>Reading Comprehension</span> Test</div>
+      <div class="header-sub">Giáo viên tạo: MS Chí Nên &nbsp;|&nbsp; 3 Bài đọc · 19 câu hỏi</div>
+    </div>
+    <div class="score-pill" id="live-score">Điểm: 0 / 19</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)">💬 Ex 8 – Non-Verbal Communication</button>
+    <button class="tab-btn" onclick="switchTab(1)">🌪️ Ex 9 – Hurricanes & Tornadoes</button>
+    <button class="tab-btn" onclick="switchTab(2)">🌀 Ex 14 – Linda Typhoon</button>
+  </div>
+
+  <div class="exercise active" id="ex8">
+    <div class="passage-panel">
+      <div class="glass-card">
+        <div class="passage-title">📖 Forms of Non-Verbal Communication</div>
+        <div class="para-text">Non-verbal communication can take many forms. Effectiveness in communication depends on understanding what these forms might be and how their meanings may differ between countries.</div>
+        <button class="btn-translate" onclick="toggleTrans('t8-0')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t8-0">Giao tiếp phi ngôn ngữ có thể có nhiều hình thức. Hiệu quả trong giao tiếp phụ thuộc vào việc hiểu những hình thức đó là gì và ý nghĩa của chúng có thể khác nhau như thế nào giữa các quốc gia.</div>
+        
+        <div class="section-title">Eye contact</div>
+        <div class="para-text">In many Asian cultures, avoiding eye contact is seen as a sign of respect. However, those in Latin and North America consider eye contact important for showing equality among individuals. In Ghana, if a young child looks an adult in the eye, it is considered an act of a <u><strong>stubborn child</strong></u>.</div>
+        <button class="btn-translate" onclick="toggleTrans('t8-1')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t8-1">Trong nhiều nền văn hóa châu Á, tránh giao tiếp bằng mắt được coi là dấu hiệu của sự tôn trọng. Tuy nhiên, những người ở Mỹ Latinh và Bắc Mỹ coi giao tiếp bằng mắt là quan trọng để thể hiện sự bình đẳng giữa các cá nhân. Ở Ghana, nếu một đứa trẻ nhìn thẳng vào mắt người lớn, điều đó bị coi là hành động của một <u><strong>đứa trẻ bướng bỉnh</strong></u>.</div>
+        
+        <div class="section-title">Touch</div>
+        <div class="para-text">A great number of cultural expressions are shown through touch. In America, for example, using a firm handshake is considered appropriate to greet a stranger or business partner. However, in France, it is common to kiss someone you greet on both cheeks. Touching children on the head is fine in North America. However, in Asia, this is considered inappropriate because the head is an important part of the body. In the Middle East, the left hand is often used to clean the body so using that hand to receive a gift or shake hands is considered very rude.</div>
+        <button class="btn-translate" onclick="toggleTrans('t8-2')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t8-2">Rất nhiều biểu đạt văn hóa được thể hiện qua việc tiếp xúc bằng tay. Ở Mỹ, ví dụ, bắt tay chắc được coi là phù hợp để chào hỏi người lạ hoặc đối tác kinh doanh. Tuy nhiên, ở Pháp, người ta thường hôn vào cả hai má của người mình chào. Chạm vào đầu trẻ em là bình thường ở Bắc Mỹ. Tuy nhiên, ở châu Á, điều này bị coi là không phù hợp vì đầu là bộ phận quan trọng của cơ thể. Ở Trung Đông, bàn tay trái thường được dùng để làm sạch cơ thể, vì vậy dùng tay đó để nhận quà hoặc bắt tay bị coi là rất thô lỗ.</div>
+        
+        <div class="section-title">Facial Expressions</div>
+        <div class="para-text">Winking is a facial expression which has different meanings. In Latin America, it is considered a romantic gesture while people in Nigeria wink at their children if they want them to leave the room.</div>
+        <button class="btn-translate" onclick="toggleTrans('t8-3')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t8-3">Nháy mắt là một biểu cảm khuôn mặt có các ý nghĩa khác nhau. Ở Mỹ Latinh, nó được coi là một cử chỉ lãng mạn, trong khi người ở Nigeria nháy mắt với con cái khi họ muốn chúng rời khỏi phòng.</div>
+        
+        <div class="section-title">Posture</div>
+        <div class="para-text">In America, standing with hands on the hips may suggest power or pride, but in Argentina, it may suggest anger.</div>
+        <button class="btn-translate" onclick="toggleTrans('t8-4')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t8-4">Ở Mỹ, đứng chống tay lên hông có thể gợi ý sự quyền lực hoặc tự hào, nhưng ở Argentina, nó có thể gợi ý sự tức giận.</div>
+      </div>
+      
+      <div class="glass-card">
+        <div class="passage-title">📚 Bảng Từ Vựng</div>
+        <table class="glossary-table">
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+          <tr><td>non-verbal</td><td>adj</td><td>phi ngôn ngữ</td></tr>
+          <tr><td>effectiveness</td><td>n</td><td>hiệu quả, tính hiệu quả</td></tr>
+          <tr><td>equality</td><td>n</td><td>sự bình đẳng</td></tr>
+          <tr><td>stubborn</td><td>adj</td><td>bướng bỉnh, cứng đầu</td></tr>
+          <tr><td>appropriate</td><td>adj</td><td>phù hợp, thích hợp</td></tr>
+          <tr><td>inappropriate</td><td>adj</td><td>không phù hợp</td></tr>
+          <tr><td>facial expression</td><td>n phrase</td><td>biểu cảm khuôn mặt</td></tr>
+          <tr><td>winking</td><td>n/v</td><td>nháy mắt</td></tr>
+          <tr><td>romantic gesture</td><td>n phrase</td><td>cử chỉ lãng mạn</td></tr>
+          <tr><td>posture</td><td>n</td><td>tư thế (đứng/ngồi)</td></tr>
+          <tr><td>individual</td><td>n/adj</td><td>cá nhân</td></tr>
+          <tr><td>firm handshake</td><td>n phrase</td><td>cái bắt tay chắc</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="questions-panel">
+      <div class="q-card"><div class="q-num">Câu 1</div><div class="q-text">Why do Latin and North America people think eye contact is important?</div><div class="ans-buttons" id="ans-ex8-1"></div><div class="explanation" id="exp-ex8-1"></div></div>
+      <div class="q-card"><div class="q-num">Câu 2</div><div class="q-text">What does "a stubborn child" mean?</div><div class="ans-buttons" id="ans-ex8-2"></div><div class="explanation" id="exp-ex8-2"></div></div>
+      <div class="q-card"><div class="q-num">Câu 3</div><div class="q-text">What do you do to greet other people in France?</div><div class="ans-buttons" id="ans-ex8-3"></div><div class="explanation" id="exp-ex8-3"></div></div>
+      <div class="q-card"><div class="q-num">Câu 4</div><div class="q-text">Why do people in the Middle East not receive gifts with their left hands?</div><div class="ans-buttons" id="ans-ex8-4"></div><div class="explanation" id="exp-ex8-4"></div></div>
+      <div class="q-card"><div class="q-num">Câu 5</div><div class="q-text">People in Nigeria wink at their children when _____.</div><div class="ans-buttons" id="ans-ex8-5"></div><div class="explanation" id="exp-ex8-5"></div></div>
+      <div class="q-card"><div class="q-num">Câu 6</div><div class="q-text">What is the meaning of standing with hands on the hips in America?</div><div class="ans-buttons" id="ans-ex8-6"></div><div class="explanation" id="exp-ex8-6"></div></div>
+    </div>
+  </div>
+
+  <div class="exercise" id="ex9">
+    <div class="passage-panel">
+      <div class="glass-card">
+        <div class="passage-title">📖 Hurricanes and Tornadoes</div>
+        <div class="para-text">Two of the most dangerous storms which affect Americas are hurricanes and tornadoes. They are very much feared by people who may be in the path of their destruction.</div>
+        <button class="btn-translate" onclick="toggleTrans('t9-0')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t9-0">Hai trong số những cơn bão nguy hiểm nhất ảnh hưởng đến châu Mỹ là bão hurricane và lốc xoáy tornado. Chúng rất được người ta sợ hãi vì có thể nằm trên đường đi của sự tàn phá của chúng.</div>
+        
+        <div class="para-text" style="margin-top:10px">Every year homes are destroyed by their fury and often lives are lost. Most people who live near the coast are forced to evacuate their homes and to move to safer areas until the storm passes. Floods are caused along the coasts by both the heavy rain and a storm tide that is considerably above normal water level. The high winds, coastal flooding and heavy rains associated with a hurricane cause enormous damage.</div>
+        <button class="btn-translate" onclick="toggleTrans('t9-1')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t9-1">Mỗi năm, nhà cửa bị phá hủy bởi sức mạnh của chúng và thường có nhiều sinh mạng bị mất. Hầu hết những người sống gần bờ biển bị buộc phải di tản và chuyển đến các khu vực an toàn hơn cho đến khi bão qua. Lũ lụt xảy ra dọc theo bờ biển do cả mưa lớn và triều bão cao hơn đáng kể so với mực nước bình thường. Gió mạnh, lũ lụt ven biển và mưa lớn liên quan đến bão hurricane gây ra thiệt hại khổng lồ.</div>
+        
+        <div class="para-text" style="margin-top:10px">Hurricanes usually develop between July and October. Once they hit land they carry tremendous power with driving rain and wind.</div>
+        <button class="btn-translate" onclick="toggleTrans('t9-2')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t9-2">Bão hurricane thường hình thành từ tháng Bảy đến tháng Mười. Khi chúng đổ bộ vào đất liền, chúng mang theo sức mạnh khổng lồ cùng mưa lớn và gió.</div>
+        
+        <div class="para-text" style="margin-top:10px">Tornadoes are violent low-pressure storms. These storms occur most often during the summer months and are noticeable by their strong wind and lack of rain. The sky turns black as dust is sucked into the air. Tornadoes are capable of lifting quite heavy objects from the ground. They can pick up trees and cars right into the air and even uplift heavier objects such as homes and railway cars. Both hurricanes and tornadoes cause millions of dollars worth of damage to life and property every year. Today they can be predicted more easily than in the past, but they cannot be stopped or ignored.</div>
+        <button class="btn-translate" onclick="toggleTrans('t9-3')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t9-3">Lốc xoáy tornado là những cơn bão áp suất thấp dữ dội. Những cơn bão này xảy ra thường xuyên nhất vào các tháng hè và có thể nhận ra bởi gió mạnh và ít mưa. Bầu trời chuyển thành màu đen khi bụi bị hút lên không trung. Lốc xoáy có thể nhấc những vật khá nặng lên khỏi mặt đất. Chúng có thể nhấc cây cối và ô tô lên không trung và thậm chí nhấc những vật nặng hơn như nhà cửa và toa xe lửa. Cả bão hurricane và lốc xoáy đều gây thiệt hại hàng triệu đô la cho sinh mạng và tài sản mỗi năm. Ngày nay chúng có thể được dự báo dễ dàng hơn so với trước đây, nhưng chúng không thể bị ngăn chặn hoặc bỏ qua.</div>
+      </div>
+      <div class="glass-card">
+        <div class="passage-title">📚 Bảng Từ Vựng</div>
+        <table class="glossary-table">
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+          <tr><td>hurricane</td><td>n</td><td>bão nhiệt đới mạnh (Đại Tây Dương)</td></tr>
+          <tr><td>tornado</td><td>n</td><td>lốc xoáy</td></tr>
+          <tr><td>destruction</td><td>n</td><td>sự tàn phá, phá hủy</td></tr>
+          <tr><td>evacuate</td><td>v</td><td>sơ tán, di tản</td></tr>
+          <tr><td>considerably</td><td>adv</td><td>đáng kể, khá nhiều</td></tr>
+          <tr><td>enormous</td><td>adj</td><td>khổng lồ, rất lớn</td></tr>
+          <tr><td>tremendous</td><td>adj</td><td>cực kỳ lớn, ghê gớm</td></tr>
+          <tr><td>low-pressure storm</td><td>n phrase</td><td>bão áp suất thấp</td></tr>
+          <tr><td>noticeable</td><td>adj</td><td>đáng chú ý, dễ nhận thấy</td></tr>
+          <tr><td>predict</td><td>v</td><td>dự báo, tiên đoán</td></tr>
+          <tr><td>property</td><td>n</td><td>tài sản</td></tr>
+          <tr><td>fury</td><td>n</td><td>sức mạnh hung dữ, cơn thịnh nộ</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="questions-panel">
+      <div class="q-card"><div class="q-num">Câu 1</div><div class="q-text">What are two of the most dangerous storms which affect America?</div><div class="ans-buttons" id="ans-ex9-1"></div><div class="explanation" id="exp-ex9-1"></div></div>
+      <div class="q-card"><div class="q-num">Câu 2</div><div class="q-text">At which part of the year do hurricanes usually develop?</div><div class="ans-buttons" id="ans-ex9-2"></div><div class="explanation" id="exp-ex9-2"></div></div>
+      <div class="q-card"><div class="q-num">Câu 3</div><div class="q-text">What is the major similarity of both a hurricane and a tornado?</div><div class="ans-buttons" id="ans-ex9-3"></div><div class="explanation" id="exp-ex9-3"></div></div>
+      <div class="q-card"><div class="q-num">Câu 4</div><div class="q-text">Which of the following is true of tornadoes and hurricanes?</div><div class="ans-buttons" id="ans-ex9-4"></div><div class="explanation" id="exp-ex9-4"></div></div>
+      <div class="q-card"><div class="q-num">Câu 5</div><div class="q-text">Which of the following was NOT mentioned in the article?</div><div class="ans-buttons" id="ans-ex9-5"></div><div class="explanation" id="exp-ex9-5"></div></div>
+    </div>
+  </div>
+
+  <div class="exercise" id="ex14">
+    <div class="passage-panel">
+      <div class="glass-card">
+        <div class="passage-title">📖 The Linda Typhoon</div>
+        <div style="font-size:0.78rem;color:#6a1b9a;font-weight:700;margin-bottom:10px;text-align:center">➤ Bốn câu/cụm từ đã bị xóa khỏi văn bản. Chọn A, B, C hoặc D để điền vào chỗ trống phù hợp nhất.</div>
+        <div class="options-box">
+          <strong>Đáp án cho ô trống (1) – (4):</strong>
+          A. causing flash flooding and at least 164 deaths.<br>
+          B. Formed in the sea of the Philippines,<br>
+          C. was an unexpected day when the major storm Linda raged in the South<br>
+          D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.
+        </div>
+        <div class="blank-passage">
+          Vietnam usually has a dozen storms every year from June through the end of November, and most of which occur in the Central and northern provinces. November 2nd, 1997, however, <span class="blank-span" id="b1">(1)</span>. Linda was the worst typhoon in Southern Vietnam over 100 years. <span class="blank-span" id="b2">(2)</span> Linda strengthened as it moved westward. <span class="blank-span" id="b3">(3)</span> Over 3000 people were reported lost and died. Ca Mau province, suffered a direct hit by the storm, had the most damage. Gusts and heavy rainfalls caused flooding, destroyed crops, damaged about 200,000 houses and left about 383,000 people homeless. Linda later struck Thailand, <span class="blank-span" id="b4">(4)</span>. The storm also affected Myanmar, Indonesia, Malaysia, and Cambodia to a lesser degree.
+        </div>
+        <button class="btn-translate" onclick="toggleTrans('t14-0')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t14-0">Việt Nam thường có khoảng một chục cơn bão mỗi năm từ tháng Sáu đến cuối tháng Mười Một, và hầu hết xảy ra ở các tỉnh miền Trung và miền Bắc. Tuy nhiên, ngày 2 tháng 11 năm 1997 (1) là một ngày bất ngờ khi cơn bão lớn Linda hoành hành ở miền Nam. Linda là cơn bão lớn nhất ở miền Nam Việt Nam trong hơn 100 năm. (2) Được hình thành trên biển Philippines, Linda mạnh lên khi di chuyển về phía Tây. (3) Sau đó, nó đổ bộ vào miền Nam cực Việt Nam với sức gió 100 km/giờ. Hơn 3000 người được báo cáo là mất tích và thiệt mạng. Tỉnh Cà Mau chịu tác động trực tiếp của bão và bị thiệt hại nặng nề nhất. Gió giật và mưa lớn gây ra lũ lụt, phá hủy mùa màng, làm hư hại khoảng 200.000 ngôi nhà và khiến khoảng 383.000 người vô gia cư. Linda sau đó đổ bộ vào Thái Lan, (4) gây ra lũ lụt và ít nhất 164 ca tử vong. Cơn bão cũng ảnh hưởng đến Myanmar, Indonesia, Malaysia và Campuchia ở mức độ ít hơn.</div>
+        
+        <div class="options-box" style="margin-top:14px">
+          <strong>Đáp án cho ô trống (5) – (8):</strong>
+          A. The flood killed crops, washed out grain storage facilities<br>
+          B. In the immediate floods<br>
+          C. And homeless refugees were stuck without shelter.<br>
+          D. Millions of people starved
+        </div>
+        <div class="blank-passage">
+          Over 100,000 people were killed <span class="blank-span" id="b5">(5)</span>, but the survivors had problems of their own. <span class="blank-span" id="b6">(6)</span>, leveled houses, and destroyed roads. Many rural communities were homeless and stranded without food, and without any way for aid to reach them. Ultimately, this is why the death toll was so high. <span class="blank-span" id="b7">(7)</span> to death disease swept through weakened communities, <span class="blank-span" id="b8">(8)</span>.
+        </div>
+        <button class="btn-translate" onclick="toggleTrans('t14-1')">Mở dịch đoạn này 🌟</button>
+        <div class="translation" id="t14-1">Hơn 100.000 người đã thiệt mạng (5) trong những trận lũ ngay sau đó, nhưng những người sống sót cũng gặp phải vấn đề riêng của họ. (6) Lũ lụt đã phá hủy mùa màng, cuốn trôi kho lương thực, san phẳng nhà cửa và phá hủy đường sá. Nhiều cộng đồng nông thôn mất nhà cửa và bị cô lập mà không có thức ăn, không có cách nào để viện trợ đến được. Đây là lý do tại sao số người chết lại cao như vậy. (7) Và những người tị nạn vô gia cư bị mắc kẹt không có chỗ trú ẩn, dịch bệnh lan rộng qua các cộng đồng đã suy yếu, (8) hàng triệu người chết đói.</div>
+      </div>
+      <div class="glass-card">
+        <div class="passage-title">📚 Bảng Từ Vựng</div>
+        <table class="glossary-table">
+          <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+          <tr><td>typhoon</td><td>n</td><td>bão nhiệt đới (vùng Thái Bình Dương)</td></tr>
+          <tr><td>raged</td><td>v (past)</td><td>hoành hành dữ dội</td></tr>
+          <tr><td>westward</td><td>adv/adj</td><td>về phía Tây</td></tr>
+          <tr><td>gust</td><td>n</td><td>cơn gió giật mạnh</td></tr>
+          <tr><td>homeless</td><td>adj</td><td>vô gia cư</td></tr>
+          <tr><td>flash flooding</td><td>n phrase</td><td>lũ lụt xảy ra nhanh</td></tr>
+          <tr><td>stranded</td><td>adj</td><td>bị cô lập, mắc kẹt</td></tr>
+          <tr><td>death toll</td><td>n phrase</td><td>số người thiệt mạng</td></tr>
+          <tr><td>grain storage</td><td>n phrase</td><td>kho lương thực</td></tr>
+          <tr><td>weakened</td><td>adj</td><td>đã suy yếu</td></tr>
+          <tr><td>leveled</td><td>v (past)</td><td>san phẳng, phá sập hoàn toàn</td></tr>
+          <tr><td>immediate</td><td>adj</td><td>ngay lập tức, tức thì</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="questions-panel">
+      <div class="q-card"><div class="q-num">Câu 1 – Ô trống (1)</div><div class="q-text">November 2nd, 1997, however, <strong>(1)</strong> _____.</div><div class="ans-buttons" id="ans-ex14-1"></div><div class="explanation" id="exp-ex14-1"></div></div>
+      <div class="q-card"><div class="q-num">Câu 2 – Ô trống (2)</div><div class="q-text"><strong>(2)</strong> _____ Linda strengthened as it moved westward.</div><div class="ans-buttons" id="ans-ex14-2"></div><div class="explanation" id="exp-ex14-2"></div></div>
+      <div class="q-card"><div class="q-num">Câu 3 – Ô trống (3)</div><div class="q-text"><strong>(3)</strong> _____ Over 3000 people were reported lost and died.</div><div class="ans-buttons" id="ans-ex14-3"></div><div class="explanation" id="exp-ex14-3"></div></div>
+      <div class="q-card"><div class="q-num">Câu 4 – Ô trống (4)</div><div class="q-text">Linda later struck Thailand, <strong>(4)</strong> _____.</div><div class="ans-buttons" id="ans-ex14-4"></div><div class="explanation" id="exp-ex14-4"></div></div>
+      <div class="q-card"><div class="q-num">Câu 5 – Ô trống (5)</div><div class="q-text">Over 100,000 people were killed <strong>(5)</strong> _____.</div><div class="ans-buttons" id="ans-ex14-5"></div><div class="explanation" id="exp-ex14-5"></div></div>
+      <div class="q-card"><div class="q-num">Câu 6 – Ô trống (6)</div><div class="q-text"><strong>(6)</strong> _____, leveled houses, and destroyed roads.</div><div class="ans-buttons" id="ans-ex14-6"></div><div class="explanation" id="exp-ex14-6"></div></div>
+      <div class="q-card"><div class="q-num">Câu 7 – Ô trống (7)</div><div class="q-text"><strong>(7)</strong> _____ to death disease swept through weakened communities.</div><div class="ans-buttons" id="ans-ex14-7"></div><div class="explanation" id="exp-ex14-7"></div></div>
+      <div class="q-card"><div class="q-num">Câu 8 – Ô trống (8)</div><div class="q-text">...disease swept through weakened communities, <strong>(8)</strong> _____.</div><div class="ans-buttons" id="ans-ex14-8"></div><div class="explanation" id="exp-ex14-8"></div></div>
+    </div>
+  </div>
+
+  <div class="fixed-submit">
+    <button class="btn-submit" onclick="openSubmit()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button>
+  </div>
+
+  <div class="modal-overlay" id="nameModal">
+    <div class="modal-box">
+      <h2>📝 Nhập Tên Học Sinh</h2>
+      <p>Vui lòng nhập tên đầy đủ để nộp bài và nhận kết quả.</p>
+      <input type="text" id="studentName" placeholder="Ví dụ: Nguyễn Văn An"/>
+      <div><button class="btn-confirm" onclick="submitExam()">✅ Xác nhận &amp; Nộp bài</button></div>
+    </div>
+  </div>
+
+  <div class="scorecard" id="scorecard">
+    <div class="score-box">
+      <h2>🏆 KẾT QUẢ BÀI THI</h2>
+      <div class="score-name-lbl" id="sc-name"></div>
+      <div class="score-fraction" id="sc-num"></div>
+      <img class="score-gif" id="sc-gif" src="" alt="result"/>
+      <div class="score-comment" id="sc-comment"></div>
+      <div class="score-teacher">— Nhận xét bởi: MS Chí Nên —</div>
+      <button class="btn-close-score" onclick="document.getElementById('scorecard').classList.remove('show')">Đóng ✕</button>
+    </div>
+  </div>
+
+</div> <script>
+// ═══ PASSWORD LOGIC ═══
+const _k  = [49, 54, 49, 49]; // Mật khẩu: 1611
+const _pw = _k.map(c => String.fromCharCode(c)).join('');
+
+function checkPassword() {
+  const inp = document.getElementById('pwInput');
+  const err = document.getElementById('pwErr');
+  if (inp.value === _pw) {
+    document.getElementById('passwordModal').style.display = 'none';
+    const main = document.getElementById('mainContent');
+    if(main) main.style.display = 'block';
+    
+    // Play intro audio when unlocked
+    const introAudio = document.getElementById('introAudio');
+    if(introAudio) {
+      introAudio.currentTime = 0;
+      introAudio.play().catch(e => console.log("Audio play prevented by browser:", e));
+    }
+  } else {
+    inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error');
+    err.style.display = 'block'; setTimeout(() => inp.classList.remove('error'), 500);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const pwInput = document.getElementById('pwInput');
+  if(pwInput) pwInput.addEventListener('keydown', e => { if (e.key==='Enter') checkPassword(); });
+});
+
+// ═══ QUESTION DATA ═══
+const QUESTIONS = {
+  'ex8-1':{ opts:[{t:'Because they think it shows respect.',c:false},{t:'Because they think it shows equality.',c:true},{t:'Because they think it shows importance.',c:false},{t:'Because they think it shows difference.',c:false}], exp:`<strong>🔍 Dịch:</strong> Tại sao người ở Mỹ Latinh và Bắc Mỹ cho rằng giao tiếp bằng mắt là quan trọng?<br><br>✅ <span class='hl-green'>Because they think it shows equality.</span> (Vì họ nghĩ nó thể hiện sự bình đẳng.) → Đúng!`},
+  'ex8-2':{ opts:[{t:'A child who listens to the adults.',c:false},{t:"A child who doesn't listen to the adults.",c:true},{t:'A child who respects the adults.',c:false},{t:'A lovely child.',c:false}], exp:`<strong>🔍 Dịch:</strong> "a stubborn child" có nghĩa là gì?<br><br>✅ <span class='hl-green'>A child who doesn't listen to the adults.</span> (Một đứa trẻ không nghe lời người lớn.) → Đúng! <span class='p-word'>stubborn</span> = <span class='p-mean'>bướng bỉnh, cứng đầu</span>.`},
+  'ex8-3':{ opts:[{t:'Shrug your shoulder.',c:false},{t:'Kiss on their cheeks.',c:true},{t:'Shake hands.',c:false},{t:'Raise your fists.',c:false}], exp:`<strong>🔍 Dịch:</strong> Bạn làm gì để chào hỏi người khác ở Pháp?<br><br>✅ <span class='hl-green'>Kiss on their cheeks.</span> (Hôn vào má của họ.) → Đúng!`},
+  'ex8-4':{ opts:[{t:'Because the left hand is often used to clean the body.',c:true},{t:"Because the left hand is often used to touch children's heads.",c:false},{t:'Because the left hand is often used to shake hands.',c:false},{t:'Because the left hand is often used to wear watch.',c:false}], exp:`<strong>🔍 Dịch:</strong> Tại sao người ở Trung Đông không nhận quà bằng tay trái?<br><br>✅ <span class='hl-green'>Because the left hand is often used to clean the body.</span> (Vì tay trái thường được dùng để làm sạch cơ thể.) → Đúng!`},
+  'ex8-5':{ opts:[{t:'they want them to do house work.',c:false},{t:'they want to show their love.',c:false},{t:'they want them to leave the room.',c:true},{t:'they want them to leave the classroom.',c:false}], exp:`<strong>🔍 Dịch:</strong> Người ở Nigeria nháy mắt với con cái khi nào?<br><br>✅ <span class='hl-green'>they want them to leave the room.</span> (họ muốn chúng rời khỏi phòng.) → Đúng!`},
+  'ex8-6':{ opts:[{t:'Power',c:false},{t:'Pride',c:false},{t:'Anger',c:false},{t:'Both A & B',c:true}], exp:`<strong>🔍 Dịch:</strong> Ý nghĩa của việc đứng chống tay lên hông ở Mỹ là gì?<br><br>✅ <span class='hl-green'>Both A & B</span> → Đúng! Bài đề cập đến cả hai nghĩa: <span class='p-word'>power</span> <span class='p-mean'>(quyền lực)</span> và <span class='p-word'>pride</span> <span class='p-mean'>(tự hào)</span>.`},
+  'ex9-1':{ opts:[{t:'Hurricanes and tornadoes.',c:true},{t:'Typhoons and thunderstorms.',c:false},{t:'Thunderstorms and hurricanes.',c:false},{t:'Hurricanes and typhoons.',c:false}], exp:`<strong>🔍 Dịch:</strong> Hai cơn bão nguy hiểm nhất ảnh hưởng đến Mỹ là gì?<br><br>✅ <span class='hl-green'>Hurricanes and tornadoes.</span> → Đúng!`},
+  'ex9-2':{ opts:[{t:'July and August only.',c:false},{t:'All year round.',c:false},{t:'From the seventh to the ninth month.',c:false},{t:'Between July and October.',c:true}], exp:`<strong>🔍 Dịch:</strong> Vào thời điểm nào bão hurricane thường hình thành?<br><br>✅ <span class='hl-green'>Between July and October.</span> (Từ tháng 7 đến tháng 10.) → Đúng!`},
+  'ex9-3':{ opts:[{t:'They cover only a small area.',c:false},{t:'They can cause great damage.',c:true},{t:'They are not accompanied by rain.',c:false},{t:'They have either wind or speed.',c:false}], exp:`<strong>🔍 Dịch:</strong> Điểm tương đồng chính của cả hurricane và tornado là gì?<br><br>✅ <span class='hl-green'>They can cause great damage.</span> (Chúng có thể gây ra thiệt hại lớn.) → Đúng!`},
+  'ex9-4':{ opts:[{t:'They cannot be predicted with accuracy.',c:false},{t:'They are easier to control today than in the past.',c:false},{t:'They can be predicted today with greater accuracy.',c:true},{t:'They cannot be predicted today with greater accuracy.',c:false}], exp:`<strong>🔍 Dịch:</strong> Điều nào đúng về lốc xoáy và bão hurricane?<br><br>✅ <span class='hl-green'>They can be predicted today with greater accuracy.</span> (Chúng có thể được dự báo ngày nay chính xác hơn.) → Đúng!`},
+  'ex9-5':{ opts:[{t:'The number of people killed each year by these storms.',c:true},{t:'The tremendous power killed each year by these storms.',c:false},{t:'The damage caused by hurricanes and tornadoes.',c:false},{t:'The time of year when they are most likely to strike.',c:false}], exp:`<strong>🔍 Dịch:</strong> Điều nào KHÔNG được đề cập trong bài?<br><br>✅ <span class='hl-green'>The number of people killed each year by these storms.</span> → Đúng! Bài không đưa ra con số cụ thể.`},
+  'ex14-1':{ opts:[{t:'A. causing flash flooding and at least 164 deaths.',c:false},{t:'B. Formed in the sea of the Philippines,',c:false},{t:'C. was an unexpected day when the major storm Linda raged in the South',c:true},{t:'D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.',c:false}], exp:`✅ <span class='hl-green'>C. was an unexpected day when the major storm Linda raged in the South</span> → Đúng cấu trúc vị ngữ cho chủ ngữ "November 2nd, 1997".`},
+  'ex14-2':{ opts:[{t:'A. causing flash flooding and at least 164 deaths.',c:false},{t:'B. Formed in the sea of the Philippines,',c:true},{t:'C. was an unexpected day when the major storm Linda raged in the South',c:false},{t:'D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.',c:false}], exp:`✅ <span class='hl-green'>B. Formed in the sea of the Philippines,</span> → Cung cấp thông tin nguồn gốc hình thành của Linda trước khi nó mạnh lên hướng Tây.`},
+  'ex14-3':{ opts:[{t:'A. causing flash flooding and at least 164 deaths.',c:false},{t:'B. Formed in the sea of the Philippines,',c:false},{t:'C. was an unexpected day when the major storm Linda raged in the South',c:false},{t:'D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.',c:true}], exp:`✅ <span class='hl-green'>D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.</span> → Mô tả bão đổ bộ là nguyên nhân gây ra 3000 người chết ở câu sau.`},
+  'ex14-4':{ opts:[{t:'A. causing flash flooding and at least 164 deaths.',c:true},{t:'B. Formed in the sea of the Philippines,',c:false},{t:'C. was an unexpected day when the major storm Linda raged in the South',c:false},{t:'D. Later, it struck extreme Southern Vietnam with winds of 100 kilometres an hour.',c:false}], exp:`✅ <span class='hl-green'>A. causing flash flooding and at least 164 deaths.</span> → Mô tả hậu quả khi Linda đổ bộ vào Thái Lan.`},
+  'ex14-5':{ opts:[{t:'A. The flood killed crops, washed out grain storage facilities',c:false},{t:'B. In the immediate floods',c:true},{t:'C. And homeless refugees were stuck without shelter.',c:false},{t:'D. Millions of people starved',c:false}], exp:`✅ <span class='hl-green'>B. In the immediate floods</span> → Cụm giới từ chỉ hoàn cảnh tử vong.`},
+  'ex14-6':{ opts:[{t:'A. The flood killed crops, washed out grain storage facilities',c:true},{t:'B. In the immediate floods',c:false},{t:'C. And homeless refugees were stuck without shelter.',c:false},{t:'D. Millions of people starved',c:false}], exp:`✅ <span class='hl-green'>A. The flood killed crops...</span> → Chủ ngữ "The flood" dẫn đầu chuỗi hành động song song (leveled, destroyed).`},
+  'ex14-7':{ opts:[{t:'A. The flood killed crops, washed out grain storage facilities',c:false},{t:'B. In the immediate floods',c:false},{t:'C. And homeless refugees were stuck without shelter.',c:true},{t:'D. Millions of people starved',c:false}], exp:`✅ <span class='hl-green'>C. And homeless refugees were stuck without shelter.</span> → Cung cấp bối cảnh làm điều kiện cho dịch bệnh bùng phát.`},
+  'ex14-8':{ opts:[{t:'A. The flood killed crops, washed out grain storage facilities',c:false},{t:'B. In the immediate floods',c:false},{t:'C. And homeless refugees were stuck without shelter.',c:false},{t:'D. Millions of people starved',c:true}], exp:`✅ <span class='hl-green'>D. Millions of people starved</span> → Hậu quả cuối cùng bi thảm nhất của chuỗi thảm họa.`}
+};
+
+// ═══ STATE ═══
+const answered = {};
+const TOTAL = Object.keys(QUESTIONS).length;
+
+// ═══ AUDIO ═══
+let audioCtx;
+function getACtx() { return audioCtx || (audioCtx = new(window.AudioContext || window.webkitAudioContext)()); }
+function playDing() {
+  const c = getACtx(), o = c.createOscillator(), g = c.createGain();
+  o.connect(g); g.connect(c.destination);
+  o.frequency.setValueAtTime(880, c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1320, c.currentTime + 0.08);
+  g.gain.setValueAtTime(0.3, c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.9);
+  o.start(c.currentTime); o.stop(c.currentTime + 0.9);
+}
+
+// Chơi âm thanh "Huh" khi trả lời sai bằng thẻ <audio>
+function playErr() {
+  const wrongAudio = document.getElementById('wrongAudio');
+  if(wrongAudio) {
+    wrongAudio.currentTime = 0;
+    wrongAudio.play().catch(e => console.log("Audio play prevented:", e));
+  }
+}
+
+// ═══ CONFETTI ═══
+function confetti() {
+  const cols = ['#ff6b9d', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9f43', '#a78bfa', '#ff6b6b'];
+  for (let i = 0; i < 90; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;top:-15px;
+      width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      border-radius:${Math.random()>.5?'50%':'3px'};
+      animation-duration:${Math.random()*2+2.5}s;
+      animation-delay:${Math.random()*0.6}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4500);
+  }
+}
+
+// ═══ SHUFFLE ═══
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  } return a;
+}
+
+// ═══ RENDER ═══
+function renderAll() {
+  Object.keys(QUESTIONS).forEach(qid => {
+    const q = QUESTIONS[qid];
+    const c = document.getElementById('ans-' + qid);
+    if (!c) return;
+    const opts = shuffle([...q.opts]);
+    c.innerHTML = '';
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'ans-btn';
+      btn.textContent = opt.t;
+      btn.dataset.correct = opt.c;
+      btn.onclick = () => handleAns(qid, btn, opt.c);
+      c.appendChild(btn);
+    });
+  });
+}
+
+// ═══ HANDLE ANSWER ═══
+function handleAns(qid, clicked, correct) {
+  if (answered[qid]) return;
+  answered[qid] = correct ? 'correct' : 'wrong';
+  const cont = document.getElementById('ans-' + qid);
+  const allBtns = cont.querySelectorAll('.ans-btn');
+  allBtns.forEach(b => b.disabled = true);
+  if (correct) {
+    clicked.classList.add('correct');
+    playDing(); confetti();
+  } else {
+    clicked.classList.add('wrong');
+    clicked.classList.add('shake');
+    playErr();
+    allBtns.forEach(b => { if (b.dataset.correct === 'true') b.classList.add('show-correct'); });
+    setTimeout(() => clicked.classList.remove('shake'), 600);
+  }
+  const exp = document.getElementById('exp-' + qid);
+  exp.innerHTML = QUESTIONS[qid].exp;
+  exp.classList.add('show');
+  updateBlank(qid, correct);
+  updateLiveScore();
+}
+
+function updateBlank(qid, correct) {
+  if (!qid.startsWith('ex14')) return;
+  const num = qid.replace('ex14-', '');
+  const el = document.getElementById('b' + num);
+  if (!el) return;
+  const cont = document.getElementById('ans-' + qid);
+  const correctBtn = cont.querySelector('.ans-btn[data-correct="true"]');
+  if (correctBtn) {
+    const letter = correctBtn.textContent.charAt(0);
+    el.textContent = '(' + num + ') ✓' + letter;
+    el.className = 'blank-span ' + (correct ? 'filled-correct' : 'filled-wrong');
+  }
+}
+
+function updateLiveScore() {
+  const c = Object.values(answered).filter(v => v === 'correct').length;
+  document.getElementById('live-score').textContent = `Điểm: ${c} / ${TOTAL}`;
+}
+
+// ═══ TABS ═══
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('.exercise').forEach((e, i) => e.classList.toggle('active', i === idx));
+}
+
+// ═══ TRANSLATE ═══
+function toggleTrans(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+// ═══ SUBMIT ═══
+function openSubmit() { document.getElementById('nameModal').classList.add('show'); }
+
+function submitExam() {
+  const name = document.getElementById('studentName').value.trim();
+  if (!name) { alert('⚠️ Vui lòng nhập tên học sinh!'); return; }
+  document.getElementById('nameModal').classList.remove('show');
+  
+  const correct = Object.values(answered).filter(v => v === 'correct').length;
+  
+  document.getElementById('sc-name').textContent = `Học sinh: ${name}`;
+  document.getElementById('sc-num').textContent = `${correct} / ${TOTAL}`;
+
+  let gif = "";
+  let comment = "";
+  const ratio = correct / TOTAL;
+
+  if (ratio === 1) {
+    gif = "https://media.tenor.com/Qv377o5_NFEAAAAi/cat-nod.gif";
+    comment = "Tuyệt đỉnh! Trọn vẹn điểm số. Cô rất tự hào về em! 🌟";
+    confetti();
+  } else if (ratio >= 0.7) {
+    gif = "https://media1.tenor.com/m/y2M2g-i8k8gAAAAC/good-job-cat.gif";
+    comment = "Rất tốt! Em đã nắm vững các bài đọc. Cố gắng phát huy nhé! 🔥";
+    confetti();
+  } else if (ratio >= 0.5) {
+    gif = "https://media.tenor.com/X-R8YwU4S-UAAAAi/mocha-bear.gif";
+    comment = "Làm tốt lắm! Em hãy đọc kỹ lại phần giải thích ở các câu sai để hiểu bài sâu hơn nhé! 👍";
+  } else {
+    gif = "https://media.tenor.com/QZ6y4M4oHokAAAAi/sad-cat.gif";
+    comment = "Đừng nản chí! Hãy xem kỹ bảng từ vựng và dịch nghĩa, sau đó thử làm lại bài nhé! 💪";
+  }
+
+  document.getElementById('sc-gif').src = gif;
+  document.getElementById('sc-comment').textContent = comment;
+  document.getElementById('scorecard').classList.add('show');
+}
+
+// ═══ INIT ═══
+window.onload = () => {
+  renderAll();
+};
+</script>
+
+<script>
+// Auto-bypass password lock for MS Chi Nen
+(function() {
+    function unlock() {
+        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
+        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
+        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
+        if (main) { main.style.setProperty('display', 'block', 'important'); }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
+})();
+</script>
+
+</body>
+</html>
