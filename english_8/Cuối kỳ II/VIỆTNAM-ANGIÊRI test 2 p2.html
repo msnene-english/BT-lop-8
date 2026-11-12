@@ -1,981 +1,1959 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Tập Tiếng Anh - MS Chí Nên</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
-
-        :root {
-            --bg-gradient: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            
-            /* Explanation Colors */
-            --p-word: #1e88e5; /* Xanh dương */
-            --p-mean: #d84315; /* Đất nung */
-            --p-grammar: #d32f2f; /* Đỏ - dùng gạch chân */
-            --hl-green: #2e7d32; /* Xanh lá */
-            --hl-red: #c62828; /* Đỏ sậm */
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(-45deg, #ffafbd, #ffc3a0, #a1c4fd, #c2e9fb);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            color: #333;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Floating SVGs */
-        .floating-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .float-icon {
-            position: absolute;
-            font-size: 3rem;
-            animation: float 10s ease-in-out infinite;
-            opacity: 0.5;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(15deg); }
-        }
-
-        /* Overlay Bắt Đầu */
-        #start-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .start-btn {
-            padding: 20px 40px;
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6dd5ed, #2193b0);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        .start-btn:hover { transform: scale(1.05); }
-
-        /* Banner Nhắc Nhở */
-        .sticky-banner {
-            background: rgba(255, 235, 59, 0.9);
-            color: #d32f2f;
-            text-align: center;
-            padding: 8px;
-            font-weight: 800;
-            font-size: 14px;
-            z-index: 100;
-            border-bottom: 2px solid #fbc02d;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Header */
-        header {
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-        .header-title {
-            font-size: 14px;
-            font-weight: 800;
-            color: #444;
-            letter-spacing: 1px;
-            opacity: 0.8;
-        }
-
-        /* Split Layout */
-        .container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            z-index: 10;
-            padding: 20px;
-            gap: 20px;
-        }
-
-        .pane {
-            flex: 1;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: var(--glass-shadow);
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        /* Scrollbar custom */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-
-        /* Reading Styles */
-        .passage-box {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .passage-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #2193b0;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        .paragraph {
-            font-size: 17px;
-            line-height: 1.8;
-            margin-bottom: 10px;
-        }
-        .btn-translate {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid #ddd;
-            padding: 5px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-            transition: all 0.3s;
-            margin-bottom: 15px;
-        }
-        .btn-translate:hover { background: #fff; color: #ff6b6b; }
-        .translation-content {
-            display: none;
-            background: #fff9e6;
-            padding: 15px;
-            border-left: 4px solid #ffca28;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 16px;
-            color: #444;
-        }
-
-        /* Glossary Table */
-        .glossary {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .glossary th, .glossary td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .glossary th { background: #6dd5ed; color: #fff; font-weight: 800; }
-
-        /* Quiz Styles */
-        .question-card {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-        .q-text { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .option-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid transparent;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .option-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            border-color: #6dd5ed;
-        }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
-        
-        .opt-correct {
-            background: #a5d6a7 !important;
-            border-color: #2e7d32 !important;
-            color: #1b5e20 !important;
-        }
-        .opt-wrong {
-            background: #ef9a9a !important;
-            border-color: #c62828 !important;
-            color: #b71c1c !important;
-            animation: shake 0.4s;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* Explanation Box */
-        .explanation-box {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-left: 5px solid #2193b0;
-            border-radius: 8px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        
-        /* Master Teacher Formatting */
-        .p-word { color: var(--p-word); font-weight: bold; }
-        .p-mean { color: var(--p-mean); font-weight: bold; }
-        .p-grammar { color: var(--p-grammar); font-weight: bold; text-decoration: underline; }
-        .hl-green { color: var(--hl-green); font-weight: bold; }
-        .hl-red { color: var(--hl-red); font-weight: bold; text-decoration: line-through; }
-        .exp-quote {
-            background: #e3f2fd;
-            padding: 8px;
-            border-radius: 5px;
-            font-style: italic;
-            margin: 5px 0;
-            display: inline-block;
-        }
-
-        /* Submit Area */
-        .submit-area { text-align: center; margin-top: 30px; padding-bottom: 50px; }
-        .submit-btn {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            color: #d32f2f;
-            border: 2px solid #fff;
-            padding: 15px 40px;
-            font-size: 20px;
-            font-weight: 800;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
-            transition: transform 0.3s;
-        }
-        .submit-btn:hover { transform: scale(1.05); }
-
-        /* Modal */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000;
-            justify-content: center; align-items: center;
-        }
-        .modal-content {
-            background: white; padding: 30px; border-radius: 20px;
-            text-align: center; width: 400px; max-width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal-input {
-            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #eee;
-            border-radius: 10px; font-size: 16px; outline: none;
-        }
-        .modal-input:focus { border-color: #6dd5ed; }
-        .modal-btn {
-            background: #6dd5ed; color: white; border: none; padding: 10px 20px;
-            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px;
-        }
-        .result-gif { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin: 15px 0; }
-        .score-text { font-size: 36px; font-weight: 900; color: #2193b0; margin: 10px 0; }
-
-        canvas#confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-    </style>
-</head>
-<body>
-
-    <audio id="audio-intro" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/File%20nghe%20Ket%20A2/ti%E1%BA%BFng%20%C4%91%E1%BB%8Dc%20kh%C3%ADch%20l%E1%BB%87%20p1.mp3"></audio>
-    <audio id="audio-correct" src="https://www.myinstants.com/media/sounds/correct_sound.mp3"></audio>
-    <audio id="audio-wrong" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Am_thanh_meme_Oi_doi_oi_huan_hoa_hong-www_tiengdong_com.mp3"></audio>
-
-    <div id="start-overlay">
-        <h1 style="color:white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align:center;">LỚP HỌC MS Chí Nên</h1>
-        <p style="color:white; margin-bottom: 30px; font-size: 18px; font-weight: bold;">Sẵn sàng bứt phá chưa nào?</p>
-        <button class="start-btn" onclick="startApp()">BẮT ĐẦU LÀM BÀI 🚀</button>
-    </div>
-
-    <div class="floating-bg">
-        <div class="float-icon" style="top: 10%; left: 10%; animation-delay: 0s;">🚀</div>
-        <div class="float-icon" style="top: 70%; left: 80%; animation-delay: 2s;">🧪</div>
-        <div class="float-icon" style="top: 40%; left: 90%; animation-delay: 4s;">🌊</div>
-        <div class="float-icon" style="top: 80%; left: 20%; animation-delay: 1s;">🪐</div>
-        <div class="float-icon" style="top: 20%; left: 60%; animation-delay: 3s;">🛸</div>
-    </div>
-
-    <div class="sticky-banner">
-        ⚠️ LỜI NHẮC TỪ MS Chí Nên: Chỉ có đọc kỹ giải thích, ghi lại từ/cấu trúc mới vào vở thì mới giỏi lên. Làm cho xong mà không đọc giải thích là phí hoài công sức! ⚠️
-    </div>
-
-    <header>
-        <div class="header-title">👨‍🏫 Giáo viên tạo: MS Chí Nên</div>
-        <div style="font-weight: bold; color: #444;" id="score-tracker">Điểm: 0/0</div>
-    </header>
-
-    <div class="container">
-        <div class="pane reading-pane" id="reading-content">
-            </div>
-
-        <div class="pane quiz-pane" id="quiz-content">
-            <div id="questions-container"></div>
-            <div class="submit-area">
-                <button class="submit-btn" onclick="openSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="name-modal">
-        <div class="modal-content">
-            <h2>Nhập tên của bạn</h2>
-            <p style="color: #666; font-size: 14px; margin-top: 5px;">Bạn cần nhập tên để lưu kết quả nhé!</p>
-            <input type="text" id="student-name" class="modal-input" placeholder="Ví dụ: Nguyễn Văn A">
-            <button class="modal-btn" onclick="showResults()">Nộp bài ngay</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="result-modal">
-        <div class="modal-content">
-            <h2 id="res-name">Tên học sinh</h2>
-            <div class="score-text" id="res-score">0/20</div>
-            <img id="res-gif" class="result-gif" src="" alt="Result GIF">
-            <p id="res-comment" style="font-weight: bold; font-size: 18px; color: #d32f2f; margin-top: 10px;"></p>
-            <button class="modal-btn" style="margin-top: 15px;" onclick="location.reload()">Làm lại bài này</button>
-        </div>
-    </div>
-
-    <canvas id="confetti"></canvas>
-
-    <script>
-        // --- 1. DỮ LIỆU ĐỌC HIỂU (PASSAGES) ---
-        const passages = [
-            {
-                id: 1,
-                title: "SCIENCE LAB SAFETY GUIDE",
-                paragraphs: [
-                    {
-                        en: "Follow these steps to ensure a safe and productive lab experience: Before starting any experiment, (13) ____ the instructions carefully to understand the procedure. Always wait (14) _____ your instructor’s permission before handling chemicals or equipment.",
-                        vi: "Làm theo các bước sau để đảm bảo trải nghiệm phòng thí nghiệm an toàn và hiệu quả: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy (13) ____ các hướng dẫn một cách cẩn thận để hiểu quy trình. Luôn chờ đợi (14) _____ sự cho phép của người hướng dẫn trước khi xử lý hóa chất hoặc thiết bị."
-                    },
-                    {
-                        en: "If you have any allergies or health concerns, inform (15) _____ lab supervisor immediately. To avoid accidents, be (16) _____ when measuring substances and follow all safety protocols.",
-                        vi: "Nếu bạn có bất kỳ dị ứng hoặc vấn đề sức khỏe nào, hãy thông báo ngay lập tức cho (15) _____ người giám sát phòng thí nghiệm. Để tránh tai nạn, hãy (16) _____ khi đo lường các chất và tuân thủ tất cả các quy trình an toàn."
-                    }
-                ],
-                glossary: [
-                    { word: "Ensure", pos: "v", mean: "Đảm bảo" },
-                    { word: "Productive", pos: "adj", mean: "Hiệu quả, năng suất" },
-                    { word: "Procedure", pos: "n", mean: "Quy trình, thủ tục" },
-                    { word: "Instructor", pos: "n", mean: "Người hướng dẫn/Giảng viên" },
-                    { word: "Chemical", pos: "n", mean: "Hóa chất" },
-                    { word: "Equipment", pos: "n", mean: "Trang thiết bị" },
-                    { word: "Allergy", pos: "n", mean: "Sự dị ứng" },
-                    { word: "Supervisor", pos: "n", mean: "Người giám sát" },
-                    { word: "Substance", pos: "n", mean: "Chất, vật chất" },
-                    { word: "Protocol", pos: "n", mean: "Giao thức/Quy tắc an toàn" }
-                ]
-            },
-            {
-                id: 2,
-                title: "TELEVISION",
-                paragraphs: [
-                    {
-                        en: "Television is an important (19) _____ of the 20th century. It has been so popular that now we can't imagine what life would be like if there were no television. Television is a major means of communication, it brings pictures and sounds (20) _____ around the world into millions of homes.",
-                        vi: "Tiếng hình là một (19) _____ quan trọng của thế kỷ 20. Nó đã trở nên quá phổ biến đến mức giờ đây chúng ta không thể tưởng tượng cuộc sống sẽ ra sao nếu không có tivi. Tivi là một phương tiện truyền thông chính, nó mang những hình ảnh và âm thanh (20) _____ trên khắp thế giới vào hàng triệu ngôi nhà."
-                    },
-                    {
-                        en: "Though television (21) _____ can see and learn about people, places and things in far away lands, television widens our knowledge by introducing us to new ideas (22) _____ us to new hobbies and recreations. In addition to the news, television provides us with a variety of programs that can satisfy (23) _____ taste. Most people now seem to like spending their evenings watching television. It is (24) _____ for them to sit at home watching television.",
-                        vi: "Mặc dù (21) _____ truyền hình có thể nhìn thấy và tìm hiểu về con người, địa điểm và sự vật ở những vùng đất xa xôi, tivi mở rộng kiến thức của chúng ta bằng cách giới thiệu cho chúng ta những ý tưởng mới (22) _____ chúng ta đến với những sở thích và hoạt động giải trí mới. Ngoài tin tức, tivi cung cấp cho chúng ta nhiều chương trình có thể thỏa mãn (23) _____ thị hiếu. Hầu hết mọi người hiện nay dường như thích dành buổi tối của họ để xem tivi. Điều đó thật (24) _____ cho họ khi ngồi ở nhà xem tivi."
-                    }
-                ],
-                glossary: [
-                    { word: "Imagine", pos: "v", mean: "Tưởng tượng" },
-                    { word: "Communication", pos: "n", mean: "Sự giao tiếp, truyền thông" },
-                    { word: "Widen", pos: "v", mean: "Mở rộng" },
-                    { word: "Knowledge", pos: "n", mean: "Kiến thức" },
-                    { word: "Introduce", pos: "v", mean: "Giới thiệu" },
-                    { word: "Recreation", pos: "n", mean: "Sự giải trí" },
-                    { word: "Variety", pos: "n", mean: "Sự đa dạng" },
-                    { word: "Satisfy", pos: "v", mean: "Làm thỏa mãn, đáp ứng" },
-                    { word: "Taste", pos: "n", mean: "Thị hiếu, khẩu vị" },
-                    { word: "Convenient", pos: "adj", mean: "Tiện lợi" }
-                ]
-            },
-            {
-                id: 3,
-                title: "WHAT IS A TSUNAMI",
-                paragraphs: [
-                    {
-                        en: "A tsunami is a string of large ocean waves. Some people call it a 'wave train' or a 'tidal wave.' Tsunamis, unlike normal ocean waves, are not caused by tides. The word tsunami comes from the Japanese. Tsunamis are caused by a sudden, large motion on the ocean floor. They can be caused by an earthquake under the ocean. Sometimes an underwater landslide or volcano is the cause.",
-                        vi: "Sóng thần là một chuỗi các con sóng lớn của đại dương. Một số người gọi nó là 'đoàn tàu sóng' hoặc 'sóng thủy triều.' Sóng thần, không giống như sóng biển bình thường, không phải do thủy triều gây ra. Từ tsunami bắt nguồn từ tiếng Nhật. Sóng thần được gây ra bởi một chuyển động lớn, đột ngột dưới đáy đại dương. Chúng có thể được gây ra bởi một trận động đất dưới đại dương. Đôi khi một vụ lở đất dưới nước hoặc núi lửa là nguyên nhân."
-                    },
-                    {
-                        en: "When one of these things happens, the energy passes through the ocean water. Just like the ripples from a rock being thrown into a pond, the energy released by one of these motions spreads out in all directions. The energy can travel many miles away. Tsunamis move at high speeds. Most tsunamis happen in the Pacific Ocean. In the deep waters, a tsunami may travel 450 miles per hour. Out in the ocean, a tsunami may be hard to see.",
-                        vi: "Khi một trong những điều này xảy ra, năng lượng đi qua nước đại dương. Giống như những gợn sóng từ một hòn đá bị ném xuống ao, năng lượng được giải phóng bởi một trong những chuyển động này lan truyền theo mọi hướng. Năng lượng có thể đi xa nhiều dặm. Sóng thần di chuyển với tốc độ cao. Hầu hết các trận sóng thần xảy ra ở Thái Bình Dương. Ở vùng nước sâu, một trận sóng thần có thể di chuyển 450 dặm một giờ. Ngoài đại dương, sóng thần có thể rất khó để nhìn thấy."
-                    },
-                    {
-                        en: "As it comes close to shore, its speed slows down. The height of the wave builds. The tsunami may suddenly rise into a wave ten to one hundred feet high. These large waves are a disaster for coastal regions and people living there. Tsunami warning networks alert people living along coastlines in the Pacific Ocean. When a warning is sounded, people can move away from the coast to higher ground. The wavelength can be as long as 150 miles. This means the time (wave period) between the giant waves is long, too. Giant waves on shore can last for hours or even days after the earthquake or other disturbance.",
-                        vi: "Khi tiến gần vào bờ, tốc độ của nó chậm lại. Chiều cao của sóng dâng lên. Sóng thần có thể đột ngột dâng lên thành một con sóng cao từ mười đến một trăm feet. Những con sóng lớn này là một thảm họa cho các khu vực ven biển và những người sống ở đó. Mạng lưới cảnh báo sóng thần cảnh báo người dân sống dọc theo đường bờ biển ở Thái Bình Dương. Khi cảnh báo vang lên, người dân có thể rời khỏi bờ biển để lên vùng đất cao hơn. Bước sóng có thể dài tới 150 dặm. Điều này có nghĩa là thời gian (chu kỳ sóng) giữa những con sóng khổng lồ cũng rất dài. Sóng khổng lồ trên bờ có thể kéo dài hàng giờ hoặc thậm chí hàng ngày sau trận động đất hoặc các sự xáo trộn khác."
-                    }
-                ],
-                glossary: [
-                    { word: "String", pos: "n", mean: "Chuỗi, sợi dây" },
-                    { word: "Tidal", pos: "adj", mean: "Thuộc thủy triều" },
-                    { word: "Sudden", pos: "adj", mean: "Đột ngột" },
-                    { word: "Landslide", pos: "n", mean: "Sự lở đất" },
-                    { word: "Ripple", pos: "n", mean: "Gợn sóng" },
-                    { word: "Release", pos: "v", mean: "Giải phóng, phát hành" },
-                    { word: "Direction", pos: "n", mean: "Hướng, phương hướng" },
-                    { word: "Disaster", pos: "n", mean: "Thảm họa" },
-                    { word: "Alert", pos: "v", mean: "Cảnh báo, báo động" },
-                    { word: "Disturbance", pos: "n", mean: "Sự nhiễu loạn, xáo trộn" }
-                ]
-            },
-            {
-                id: 4,
-                title: "LIFE ON OTHER PLANETS",
-                paragraphs: [
-                    {
-                        en: "_________ (37). With advanced telescopes, researchers have discovered planets outside our solar system, called exoplanets, which could have the right conditions for life. _________ (38) Mars, our neighboring planet, is one of the best candidates. Rovers have found signs of water in the past, and future missions may discover more clues. _________ (39), the search continues. If life exists elsewhere, it would change how we see ourselves in the universe, _________ (40) beginning a new chapter in space exploration.",
-                        vi: "_________ (37). Với các kính viễn vọng tiên tiến, các nhà nghiên cứu đã phát hiện ra các hành tinh ngoài hệ mặt trời của chúng ta, được gọi là ngoại hành tinh, có thể có các điều kiện thích hợp cho sự sống. _________ (38) Sao Hỏa, hành tinh láng giềng của chúng ta, là một trong những ứng cử viên sáng giá nhất. Các xe tự hành đã tìm thấy dấu vết của nước trong quá khứ, và các sứ mệnh trong tương lai có thể khám phá thêm nhiều manh mối. _________ (39), cuộc tìm kiếm vẫn tiếp tục. Nếu sự sống tồn tại ở một nơi nào khác, nó sẽ thay đổi cách chúng ta nhìn nhận bản thân trong vũ trụ, _________ (40) mở ra một chương mới trong công cuộc khám phá không gian."
-                    }
-                ],
-                glossary: [
-                    { word: "Advanced", pos: "adj", mean: "Tiên tiến, cao cấp" },
-                    { word: "Telescope", pos: "n", mean: "Kính viễn vọng" },
-                    { word: "Researcher", pos: "n", mean: "Nhà nghiên cứu" },
-                    { word: "Exoplanet", pos: "n", mean: "Ngoại hành tinh" },
-                    { word: "Condition", pos: "n", mean: "Điều kiện" },
-                    { word: "Neighboring", pos: "adj", mean: "Lân cận, láng giềng" },
-                    { word: "Candidate", pos: "n", mean: "Ứng cử viên" },
-                    { word: "Rover", pos: "n", mean: "Xe tự hành (thám hiểm vũ trụ)" },
-                    { word: "Mission", pos: "n", mean: "Sứ mệnh, nhiệm vụ" },
-                    { word: "Exploration", pos: "n", mean: "Sự thám hiểm, khám phá" }
-                ]
-            }
-        ];
-
-        // --- 2. DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH (KHÔNG NHÃN A,B,C,D) ---
-        const rawQuestions = [
-            // Passage 1
-            {
-                q: "Question 13: Before starting any experiment, (13) ____ the instructions carefully...",
-                opts: [
-                    { t: "review", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>review</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>xem xét/đọc kĩ</span>. Rất phù hợp với ngữ cảnh 'review the instructions carefully' (đọc kĩ hướng dẫn cẩn thận)." },
-                    { t: "scan", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>scan</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>nhìn lướt qua</span>. Không thể đi với trạng từ 'carefully' (cẩn thận)." },
-                    { t: "follow", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>follow</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>tuân theo</span>. Vế sau là 'to understand' (để hiểu), bạn phải đọc/xem xét thì mới hiểu được, chứ không phải 'tuân theo để hiểu'." },
-                    { t: "check", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>check</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>kiểm tra</span>. Collocation (sự kết hợp từ) 'review instructions' tự nhiên hơn trong ngữ cảnh học thuật/phòng lab." }
-                ],
-                exp_trans: "Dịch câu hỏi: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy (13) ____ các hướng dẫn một cách cẩn thận để hiểu quy trình.",
-                exp_quote: "Before starting any experiment, review the instructions carefully to understand the procedure.",
-                exp_quote_trans: "👉 Dịch: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy <span class='hl-green'>xem xét kỹ</span> các hướng dẫn một cách cẩn thận để hiểu quy trình."
-            },
-            {
-                q: "Question 14: Always wait (14) _____ your instructor’s permission...",
-                opts: [
-                    { t: "for", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cấu trúc: <span class='p-grammar'>wait for sth/sb</span> (chờ đợi điều gì/ai đó)." },
-                    { t: "with", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không dùng 'wait with' trong trường hợp xin phép." },
-                    { t: "until", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'Wait until' (đợi cho đến khi) cần một mệnh đề (clause) hoặc cụm từ chỉ thời gian phía sau." },
-                    { t: "on", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'Wait on' mang nghĩa phục vụ (phục vụ bàn)." }
-                ],
-                exp_trans: "Dịch câu hỏi: Luôn chờ đợi (14) _____ sự cho phép của người hướng dẫn...",
-                exp_quote: "Always wait for your instructor’s permission before handling chemicals...",
-                exp_quote_trans: "👉 Dịch: Luôn <span class='hl-green'>chờ đợi</span> sự cho phép của người hướng dẫn trước khi xử lý hóa chất..."
-            },
-            {
-                q: "Question 15: ...inform (15) _____ lab supervisor immediately.",
-                opts: [
-                    { t: "the", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Dùng mạo từ xác định <span class='p-grammar'>'the'</span> vì 'lab supervisor' (người giám sát phòng lab) là một đối tượng cụ thể mà cả người nói và người nghe đều biết trong ngữ cảnh phòng thí nghiệm đó." },
-                    { t: "a", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'a' dùng cho đối tượng không xác định." },
-                    { t: "an", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'an' đứng trước nguyên âm, sai ngữ pháp ở đây." },
-                    { t: "X", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Danh từ đếm được số ít 'supervisor' không thể đứng một mình mà không có mạo từ." }
-                ],
-                exp_trans: "Dịch câu hỏi: ...hãy thông báo cho (15) _____ người giám sát phòng thí nghiệm ngay lập tức.",
-                exp_quote: "If you have any allergies or health concerns, inform the lab supervisor immediately.",
-                exp_quote_trans: "👉 Dịch: Nếu bạn có bất kỳ dị ứng nào, hãy thông báo cho <span class='hl-green'>người (đó)</span> giám sát phòng thí nghiệm ngay lập tức."
-            },
-            {
-                q: "Question 16: To avoid accidents, be (16) _____ when measuring substances...",
-                opts: [
-                    { t: "careful", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>careful</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>cẩn thận</span>. Collocation chuẩn: 'be careful when V-ing'." },
-                    { t: "exact", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>exact</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>chính xác tuyệt đối</span>. Không dùng 'be exact when measuring'." },
-                    { t: "cautious", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>cautious</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>đề phòng, thận trọng (với nguy hiểm)</span>. Mặc dù gần nghĩa nhưng 'careful' tự nhiên và phổ biến hơn khi nói về thao tác đong đếm." },
-                    { t: "precise", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>precise</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>chính xác tỉ mỉ</span>. Giống 'exact', không ưu tiên bằng 'careful' ở đây." }
-                ],
-                exp_trans: "Dịch câu hỏi: Để tránh tai nạn, hãy (16) _____ khi đo lường các chất...",
-                exp_quote: "To avoid accidents, be careful when measuring substances...",
-                exp_quote_trans: "👉 Dịch: Để tránh tai nạn, hãy <span class='hl-green'>cẩn thận</span> khi đo lường các chất..."
-            },
-            // Passage 2
-            {
-                q: "Question 19: Television is an important (19) _____ of the 20th century.",
-                opts: [
-                    { t: "invention", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>invention</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>phát minh</span>. Cần một danh từ đứng sau tính từ 'important'. Tivi là một phát minh." },
-                    { t: "invent", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>invent</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>phát minh</span>. Là động từ, sai từ loại." },
-                    { t: "inventing", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>inventing</span> (<span class='p-grammar'>v-ing</span>). Sai từ loại." },
-                    { t: "inventor", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>inventor</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>nhà phát minh</span>. Sai nghĩa vì Tivi là đồ vật, không phải con người." }
-                ],
-                exp_trans: "Dịch câu hỏi: Truyền hình là một (19) _____ quan trọng của thế kỷ 20.",
-                exp_quote: "Television is an important invention of the 20th century.",
-                exp_quote_trans: "👉 Dịch: Truyền hình là một <span class='hl-green'>phát minh</span> quan trọng của thế kỷ 20."
-            },
-            {
-                q: "Question 20: ...it brings pictures and sounds (20) _____ around the world...",
-                opts: [
-                    { t: "from", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cụm từ: <span class='p-grammar'>from around the world</span> (từ khắp nơi trên thế giới)." },
-                    { t: "at", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không dùng 'at around the world'." },
-                    { t: "in", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Mặc dù có 'in the world' nhưng không đi với 'around' theo cách này." },
-                    { t: "of", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai giới từ." }
-                ],
-                exp_trans: "Dịch câu hỏi: ...nó mang hình ảnh và âm thanh (20) _____ khắp thế giới...",
-                exp_quote: "...it brings pictures and sounds from around the world into millions of homes.",
-                exp_quote_trans: "👉 Dịch: ...nó mang hình ảnh và âm thanh <span class='hl-green'>từ</span> khắp nơi trên thế giới vào hàng triệu ngôi nhà."
-            },
-            {
-                q: "Question 21: Though television (21) _____ can see and learn about people...",
-                opts: [
-                    { t: "viewers", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>viewers</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (xem truyền hình)</span>. Đây là từ vựng chuyên biệt dùng cho người xem TV." },
-                    { t: "audience", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>audience</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (trong hội trường, nhà hát)</span>." },
-                    { t: "spectators", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>spectators</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (xem thể thao trực tiếp ngoài trời)</span>." },
-                    { t: "people", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>people</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>mọi người</span>. Quá chung chung, không sát nghĩa bằng viewers." }
-                ],
-                exp_trans: "Dịch câu hỏi: Mặc dù (21) _____ truyền hình có thể nhìn thấy và tìm hiểu về mọi người...",
-                exp_quote: "Though television viewers can see and learn about people, places and things...",
-                exp_quote_trans: "👉 Dịch: Mặc dù <span class='hl-green'>khán giả xem truyền hình</span> có thể nhìn thấy và tìm hiểu..."
-            },
-            {
-                q: "Question 22: ...introducing us to new ideas (22) _____ us to new hobbies...",
-                opts: [
-                    { t: "which may lead", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Dùng đại từ quan hệ <span class='p-grammar'>which</span> để thay thế cho danh từ chỉ vật 'new ideas' ngay phía trước. 'may lead us to' (có thể dẫn chúng xuất đến)." },
-                    { t: "who may lead", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'who' dùng cho người, trong khi 'ideas' là vật." },
-                    { t: "may leading", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sau động từ khuyết thiếu 'may' phải là động từ nguyên thể (lead), không dùng V-ing (leading)." },
-                    { t: "may leads", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sau 'may' động từ không thêm 's'." }
-                ],
-                exp_trans: "Dịch câu hỏi: ...giới thiệu cho chúng ta những ý tưởng mới (22) _____ chúng ta đến với những sở thích mới...",
-                exp_quote: "...introducing us to new ideas which may lead us to new hobbies...",
-                exp_quote_trans: "👉 Dịch: ...giới thiệu cho chúng ta những ý tưởng mới, <span class='hl-green'>những điều mà có thể dẫn</span> chúng ta đến với sở thích mới..."
-            },
-            {
-                q: "Question 23: ...programs that can satisfy (23) _____ taste.",
-                opts: [
-                    { t: "every", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>every + N (số ít)</span>: mọi/tất cả. Cụm từ 'every taste' mang nghĩa 'mọi thị hiếu/khẩu vị'." },
-                    { t: "each", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'each' nhấn mạnh vào từng cá nhân riêng lẻ, không phù hợp bằng 'every' mang tính tổng thể bao quát ở đây." },
-                    { t: "many", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'many' phải đi với danh từ số nhiều (tastes)." },
-                    { t: "all", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'all' phải đi với danh từ số nhiều (tastes) hoặc danh từ không đếm được." }
-                ],
-                exp_trans: "Dịch câu hỏi: ...các chương trình có thể thỏa mãn (23) _____ thị hiếu.",
-                exp_quote: "...television provides us with a variety of programs that can satisfy every taste.",
-                exp_quote_trans: "👉 Dịch: ...tivi cung cấp nhiều chương trình có thể thỏa mãn <span class='hl-green'>mọi</span> thị hiếu."
-            },
-            {
-                q: "Question 24: It is (24) _____ for them to sit at home watching television.",
-                opts: [
-                    { t: "convenient", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cấu trúc: <span class='p-grammar'>It is + adj + for sb + to V</span>. Chỉ cần tính từ gốc ở đây." },
-                    { t: "as convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Thừa chữ 'as' (chỉ dùng trong so sánh bằng as...as)." },
-                    { t: "most convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Nếu dùng so sánh nhất cần có mạo từ 'the'." },
-                    { t: "more convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không có vế so sánh 'than' trong câu." }
-                ],
-                exp_trans: "Dịch câu hỏi: Thật là (24) _____ cho họ khi ngồi ở nhà xem tivi.",
-                exp_quote: "It is convenient for them to sit at home watching television.",
-                exp_quote_trans: "👉 Dịch: Thật là <span class='hl-green'>tiện lợi</span> cho họ khi ngồi ở nhà xem tivi."
-            },
-            // Passage 3
-            {
-                q: "Question 31: What is the main idea of the passage?",
-                opts: [
-                    { t: "How tsunamis are formed and their impact", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc giải thích nguyên nhân hình thành (động đất, lở đất dưới đáy biển) và tác động của nó (thảm họa cho vùng ven biển)." },
-                    { t: "How tides affect the ocean", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đoạn 1 khẳng định rõ sóng thần KHÔNG PHẢI do thủy triều (not caused by tides)." },
-                    { t: "The history of the word “tsunami”", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tác giả chỉ nhắc nhẹ chữ này xuất phát từ tiếng Nhật, không phải ý chính toàn bài." },
-                    { t: "How earthquakes destroy coastal cities.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đây chỉ là một ý nhỏ, bài tập trung vào sóng thần (tsunami) chứ không chỉ động đất." }
-                ],
-                exp_trans: "Dịch câu hỏi: Ý chính của đoạn văn là gì?",
-                exp_quote: "Tsunamis are caused by a sudden, large motion... These large waves are a disaster for coastal regions...",
-                exp_quote_trans: "👉 Dịch: Sóng thần được <span class='hl-green'>gây ra bởi</span> chuyển động lớn... Những con sóng lớn này là <span class='hl-green'>thảm họa</span> cho vùng ven biển..."
-            },
-            {
-                q: "Question 32: Which word has the same meaning as “disaster” in the text?",
-                opts: [
-                    { t: "Tragedy", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>Tragedy</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>bi kịch, thảm kịch</span> đồng nghĩa với <span class='p-word'>disaster</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>thảm họa</span>." },
-                    { t: "Warning", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Warning</span> là cảnh báo." },
-                    { t: "Motion", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Motion</span> là sự chuyển động." },
-                    { t: "Ground", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Ground</span> là mặt đất." }
-                ],
-                exp_trans: "Dịch câu hỏi: Từ nào đồng nghĩa với từ 'disaster' (thảm họa) trong bài?",
-                exp_quote: "These large waves are a disaster for coastal regions...",
-                exp_quote_trans: "👉 Dịch: Những con sóng lớn này là một <span class='hl-green'>thảm họa</span> cho các vùng ven biển..."
-            },
-            {
-                q: "Question 33: Which word is the OPPOSITE of “shallow” as used in the text?",
-                opts: [
-                    { t: "Deep", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>Deep</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>sâu</span> là từ trái nghĩa trực tiếp của <span class='p-word'>shallow</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>nông, cạn</span>." },
-                    { t: "High", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>High</span> (cao) trái nghĩa với Low (thấp)." },
-                    { t: "Slow", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Slow</span> (chậm) trái nghĩa với Fast/Quick (nhanh)." },
-                    { t: "Low", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Low</span> (thấp) trái nghĩa với High (cao)." }
-                ],
-                exp_trans: "Dịch câu hỏi: Từ nào TRÁI NGHĨA với từ 'shallow' (nông) được dùng trong bài?",
-                exp_quote: "In the deep waters, a tsunami may travel 450 miles per hour.",
-                exp_quote_trans: "👉 Dịch: Ở những vùng nước <span class='hl-green'>sâu</span>, sóng thần có thể di chuyển 450 dặm/giờ."
-            },
-            {
-                q: "Question 34: Which of the following is NOT TRUE according to the text?",
-                opts: [
-                    { t: "Tsunamis are caused by tides", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Ý này SAI so với bài đọc, do đó nó là đáp án đúng cho câu hỏi 'NOT TRUE' (Không đúng)." },
-                    { t: "Most tsunamis happen in the Pacific Ocean", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (Most tsunamis happen in the Pacific Ocean)." },
-                    { t: "Tsunamis can travel at high speeds in deep water", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (travel 450 miles per hour in deep waters)." },
-                    { t: "People are warned about tsunamis through special networks.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (Tsunami warning networks alert people...)." }
-                ],
-                exp_trans: "Dịch câu hỏi: Điều nào sau đây là KHÔNG ĐÚNG theo bài đọc?",
-                exp_quote: "Tsunamis, unlike normal ocean waves, are not caused by tides.",
-                exp_quote_trans: "👉 Dịch: Sóng thần, không giống sóng biển bình thường, <span class='hl-green'>không phải do thủy triều gây ra</span>."
-            },
-            {
-                q: "Question 35: What usually causes a tsunami to form?",
-                opts: [
-                    { t: "Large movements on the ocean floor", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc ghi rõ nguyên nhân là do chuyển động lớn, đột ngột dưới đáy đại dương." },
-                    { t: "High tides on the ocean surface", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Bài đọc đã phủ nhận việc thủy triều gây ra sóng thần." },
-                    { t: "Strong winds blowing across the sea", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Gió mạnh gây ra sóng biển thường, không phải sóng thần." },
-                    { t: "Ripples caused by boats", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tác giả chỉ mượn hình ảnh 'ripples' (gợn sóng từ hòn đá) để so sánh cách năng lượng lan truyền, không phải do tàu bè." }
-                ],
-                exp_trans: "Dịch câu hỏi: Điều gì thường khiến sóng thần hình thành?",
-                exp_quote: "Tsunamis are caused by a sudden, large motion on the ocean floor.",
-                exp_quote_trans: "👉 Dịch: Sóng thần được gây ra bởi một <span class='hl-green'>chuyển động lớn</span>, đột ngột dưới đáy đại dương."
-            },
-            {
-                q: "Question 36: Why are tsunamis hard to see in the middle of the ocean?",
-                opts: [
-                    { t: "Their height is low in deep water", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc nói ở vùng nước sâu nó đi rất nhanh, và khi gần bờ nó mới 'dâng lên chiều cao' (height builds), suy ra ở ngoài khơi độ cao của nó thấp." },
-                    { t: "They travel too slowly", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Ngoài khơi nó di chuyển rất nhanh (450 dặm/giờ)." },
-                    { t: "Their speed makes them invisible", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tốc độ không phải lý do duy nhất khiến nó tàng hình, mà do độ cao sóng thấp." },
-                    { t: "The ocean water blocks the waves", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Nước biển không chặn sóng." }
-                ],
-                exp_trans: "Dịch câu hỏi: Tại sao sóng thần khó nhìn thấy ở giữa đại dương?",
-                exp_quote: "Out in the ocean, a tsunami may be hard to see. As it comes close to shore... The height of the wave builds.",
-                exp_quote_trans: "👉 Dịch: Ngoài đại dương, sóng thần khó nhìn thấy. Khi nó gần bờ... <span class='hl-green'>Chiều cao của sóng mới dâng lên</span>."
-            },
-            // Passage 4
-            {
-                q: "Question 37: _________ (37). With advanced telescopes, researchers have discovered planets...",
-                opts: [
-                    { t: "Many scientists believe that life may exist on other planets.", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Đây là câu chủ đề hoàn hảo mở đầu đoạn văn, dẫn dắt vào việc các nhà khoa học đang dùng kính viễn vọng để tìm kiếm hành tinh có điều kiện sống." },
-                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đặt ở đầu câu sẽ làm đoạn văn bị gãy logic, vì vế sau không phải mệnh đề chính của 'Although'." },
-                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này phù hợp để chốt lại đoạn văn hơn là mở bài." },
-                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'These planets' (Những hành tinh này) không có tiền đề để tham chiếu nếu đứng ngay câu đầu tiên." }
-                ],
-                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (37).",
-                exp_quote: "With advanced telescopes, researchers have discovered planets outside our solar system...",
-                exp_quote_trans: "👉 Dịch: Với kính viễn vọng tiên tiến, các nhà nghiên cứu đã phát hiện ra các hành tinh... (Câu trước đó cần nêu ý chính: <span class='hl-green'>Nhiều nhà khoa học tin rằng sự sống có thể tồn tại trên hành tinh khác</span>)."
-            },
-            {
-                q: "Question 38: ...which could have the right conditions for life. _________ (38) Mars, our neighboring planet...",
-                opts: [
-                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cụm từ 'These planets' nối tiếp hoàn hảo với danh từ 'exoplanets' ở câu trước. Giải thích thêm về 'right conditions for life' (điều kiện thích hợp cho sự sống)." },
-                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đã dùng ở câu 37." },
-                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không liên kết logic với câu trước và sau." },
-                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu mang tính kết luận, không phù hợp ở giữa đoạn liệt kê điều kiện." }
-                ],
-                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (38).",
-                exp_quote: "...which could have the right conditions for life. [38] Mars, our neighboring planet...",
-                exp_quote_trans: "👉 Dịch: ...có thể có các điều kiện thích hợp cho sự sống. <span class='hl-green'>Những hành tinh này có thể có nước, oxy...</span> Sao hỏa, hành tinh láng giềng..."
-            },
-            {
-                q: "Question 39: ...and future missions may discover more clues. _________ (39), the search continues.",
-                opts: [
-                    { t: "Although we have not found aliens yet", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Logic mệnh đề nhượng bộ: 'Mặc dù chúng ta chưa tìm thấy người ngoài hành tinh, (nhưng) cuộc tìm kiếm vẫn tiếp tục'." },
-                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Lặp ý, sai ngữ pháp đoạn này." },
-                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không ghép được với vế 'the search continues' phía sau." },
-                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Lạc quẻ về mặt logic chuyển ý." }
-                ],
-                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (39).",
-                exp_quote: "[39], the search continues.",
-                exp_quote_trans: "👉 Dịch: <span class='hl-green'>Mặc dù chúng ta chưa tìm thấy người ngoài hành tinh</span>, cuộc tìm kiếm vẫn tiếp tục."
-            },
-            {
-                q: "Question 40: If life exists elsewhere, it would change how we see ourselves in the universe, _________ (40) beginning a new chapter in space exploration.",
-                opts: [
-                    { t: "One day, humans may even live on another planet", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Câu mang tính tầm nhìn, kết luận. Khi ghép vào sẽ tạo thành một ý tưởng mở rộng: thay đổi cách chúng ta nhìn nhận, (và) một ngày nào đó con người có thể sống ở hành tinh khác, bắt đầu một chương mới..." },
-                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai ngữ pháp hoàn toàn khi nối vào cụm V-ing." },
-                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Ý này thuộc về mở bài." },
-                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai ngữ cảnh kết luận." }
-                ],
-                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (40).",
-                exp_quote: "If life exists elsewhere, it would change how we see ourselves in the universe, [40] beginning a new chapter...",
-                exp_quote_trans: "👉 Dịch: Nếu sự sống tồn tại ở nơi khác, nó sẽ thay đổi góc nhìn của chúng ta, <span class='hl-green'>Một ngày nào đó con người có thể sống trên hành tinh khác</span> mở ra chương mới..."
-            }
-        ];
-
-        let score = 0;
-        let totalQuestions = rawQuestions.length;
-        let answeredQuestions = new Set();
-
-        // Xáo trộn array
-        function shuffle(array) {
-            let currentIndex = array.length, randomIndex;
-            while (currentIndex != 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-            }
-            return array;
-        }
-
-        function startApp() {
-            document.getElementById('start-overlay').style.display = 'none';
-            document.getElementById('audio-intro').play().catch(e => console.log('Audio autoplay prevented'));
-            renderPassages();
-            renderQuiz();
-            document.getElementById('score-tracker').innerText = `Điểm: 0/${totalQuestions}`;
-        }
-
-        function renderPassages() {
-            const container = document.getElementById('reading-content');
-            let htmlStr = '';
-            passages.forEach(p => {
-                let html = `<div class="passage-box">
-                    <div class="passage-title">${p.title}</div>`;
-                
-                p.paragraphs.forEach((para, idx) => {
-                    const tid = `trans-${p.id}-${idx}`;
-                    html += `<p class="paragraph">${para.en}</p>
-                             <button class="btn-translate" onclick="toggleTrans('${tid}')">Mở dịch đoạn này 🌟</button>
-                             <div id="${tid}" class="translation-content">${para.vi}</div>`;
-                });
-
-                html += `<table class="glossary">
-                            <tr><th>Từ vựng (Vocabulary)</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>`;
-                p.glossary.forEach(g => {
-                    html += `<tr>
-                        <td style="color:#1e88e5; font-weight:bold;">${g.word}</td>
-                        <td style="color:#d32f2f; font-weight:bold;">${g.pos}</td>
-                        <td>${g.mean}</td>
-                    </tr>`;
-                });
-                html += `</table></div>`;
-                htmlStr += html;
-            });
-            container.innerHTML = htmlStr;
-        }
-
-        function toggleTrans(id) {
-            const el = document.getElementById(id);
-            if(el.style.display === 'block') {
-                el.style.display = 'none';
-            } else {
-                el.style.display = 'block';
-            }
-        }
-
-        function renderQuiz() {
-            const container = document.getElementById('questions-container');
-            let htmlStr = '';
-            rawQuestions.forEach((q, qIndex) => {
-                // Xáo trộn đáp án
-                let shuffledOpts = shuffle([...q.opts]);
-                
-                let html = `<div class="question-card" id="qcard-${qIndex}">
-                    <div class="q-text">${q.q}</div>
-                    <div class="options-grid">`;
-                
-                shuffledOpts.forEach((opt, oIndex) => {
-                    // MÃ HÓA CHUỖI ĐỂ TRÁNH LỖI NGOẶC NHÁY (Thay vì chèn string trực tiếp, dùng thuật toán URL encoding)
-                    let safeExp = encodeURIComponent(opt.exp).replace(/'/g, "%27");
-                    
-                    html += `<button class="option-btn opt-btn-${qIndex}" 
-                        onclick="checkAnswer(${qIndex}, ${opt.c}, this, '${safeExp}')">${opt.t}</button>`;
-                });
-
-                html += `</div>
-                    <div class="explanation-box" id="exp-${qIndex}">
-                        <div style="font-weight:bold; color: #2193b0; margin-bottom: 5px;">📜 GIẢI THÍCH CHI TIẾT:</div>
-                        <div style="margin-bottom: 10px; font-weight: bold; color: #d84315;">${q.exp_trans}</div>
-                        <div id="exp-dynamic-${qIndex}" style="margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; border: 1px solid #ddd;"></div>
-                        <div style="border-top: 1px dashed #ccc; padding-top: 10px;">
-                            <div style="font-weight:bold; color: #d84315;">🔍 Dẫn chứng trong bài:</div>
-                            <div class="exp-quote">"${q.exp_quote}"</div>
-                            <div>${q.exp_quote_trans}</div>
-                        </div>
-                    </div>
-                </div>`;
-                htmlStr += html;
-            });
-            container.innerHTML = htmlStr;
-        }
-
-        function checkAnswer(qIndex, isCorrect, btnEl, encodedExp) {
-            if(answeredQuestions.has(qIndex)) return; // Không cho bấm lại
-
-            const allBtns = document.querySelectorAll(`.opt-btn-${qIndex}`);
-            const expBox = document.getElementById(`exp-${qIndex}`);
-            const expDynamic = document.getElementById(`exp-dynamic-${qIndex}`);
-
-            // GIẢI MÃ CHUỖI GIẢI THÍCH ĐỂ HIỂN THỊ HTML ĐẸP MẮT
-            let optExp = decodeURIComponent(encodedExp);
-
-            // Khóa tất cả nút trong câu này
-            allBtns.forEach(btn => btn.disabled = true);
-
-            expDynamic.innerHTML = `<div><strong style="color: #444;">Phân tích đáp án vừa chọn:</strong> <br> ${optExp}</div>`;
-            expBox.style.display = 'block';
-
-            if(isCorrect) {
-                btnEl.classList.add('opt-correct');
-                document.getElementById('audio-correct').currentTime = 0;
-                document.getElementById('audio-correct').play();
-                fireConfetti();
-                if(!answeredQuestions.has(qIndex)) {
-                    score++;
-                    updateScore();
-                }
-            } else {
-                btnEl.classList.add('opt-wrong');
-                document.getElementById('audio-wrong').currentTime = 0;
-                document.getElementById('audio-wrong').play();
-                
-                // Highlight đáp án đúng bằng cách kiểm tra chuỗi true trong function call
-                allBtns.forEach(btn => {
-                    if(btn.getAttribute('onclick').includes(', true,')) {
-                        btn.style.border = "3px solid #2e7d32";
-                        btn.style.boxShadow = "0 0 15px rgba(46, 125, 50, 0.6)";
-                    }
-                });
-            }
-            answeredQuestions.add(qIndex);
-        }
-
-        function updateScore() {
-            document.getElementById('score-tracker').innerText = `Điểm: ${score}/${totalQuestions}`;
-        }
-
-        function openSubmitModal() {
-            document.getElementById('name-modal').style.display = 'flex';
-        }
-
-        function showResults() {
-            const name = document.getElementById('student-name').value.trim();
-            if(!name) { alert("Vui lòng nhập tên trước khi nộp bài!"); return; }
-
-            document.getElementById('name-modal').style.display = 'none';
-            document.getElementById('result-modal').style.display = 'flex';
-            
-            document.getElementById('res-name').innerText = `Học viên: ${name}`;
-            document.getElementById('res-score').innerText = `${score}/${totalQuestions}`;
-
-            const percent = score / totalQuestions;
-            let gifSrc = "", comment = "";
-
-            if(percent === 1) {
-                gifSrc = "https://media.giphy.com/media/l41YkxvU8c7J7Bba0/giphy.gif"; // Thiên tài
-                comment = "LỜI PHÊ TỪ MS Chí Nên: Tuyệt đỉnh! Con đích thị là thiên tài ngoại ngữ! 🌟🌟🌟";
-                fireConfettiContinuous();
-            } else if (percent >= 0.6) {
-                gifSrc = "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // High five
-                comment = "LỜI PHÊ TỪ MS Chí Nên: Rất tốt! Nhớ đọc kỹ giải thích các câu sai để rút kinh nghiệm nhé! 👏";
-            } else {
-                gifSrc = "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif"; // Crying
-                comment = "LỜI PHÊ TỪ MS Chí Nên: Cố lên con! Bắt buộc phải chép lại toàn bộ từ mới và cấu trúc vào vở học nhé! 💪";
-            }
-
-            document.getElementById('res-gif').src = gifSrc;
-            document.getElementById('res-comment').innerText = comment;
-        }
-
-        // --- Mini Canvas Confetti Engine ---
-        let canvas = document.getElementById('confetti');
-        let ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particles = [];
-
-        function fireConfetti() {
-            for(let i=0; i<50; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: -10,
-                    size: Math.random() * 10 + 5,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    speedY: Math.random() * 3 + 2,
-                    speedX: Math.random() * 4 - 2,
-                    rotation: Math.random() * 360
-                });
-            }
-        }
-
-        function fireConfettiContinuous() {
-            setInterval(fireConfetti, 500);
-        }
-
-        function drawConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, index) => {
-                ctx.save();
-                ctx.translate(p.x, p.y);
-                ctx.rotate(p.rotation * Math.PI / 180);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
-                ctx.restore();
-
-                p.y += p.speedY;
-                p.x += p.speedX;
-                p.rotation += 5;
-
-                if(p.y > canvas.height) particles.splice(index, 1);
-            });
-            requestAnimationFrame(drawConfetti);
-        }
-        drawConfetti();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-    </script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bài Tập Tiếng Anh - MS Chí Nên</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
+
+
+
+        :root {
+
+            --bg-gradient: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
+
+            --glass-bg: rgba(255, 255, 255, 0.45);
+
+            --glass-border: rgba(255, 255, 255, 0.6);
+
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+            
+
+            /* Explanation Colors */
+
+            --p-word: #1e88e5; /* Xanh dương */
+
+            --p-mean: #d84315; /* Đất nung */
+
+            --p-grammar: #d32f2f; /* Đỏ - dùng gạch chân */
+
+            --hl-green: #2e7d32; /* Xanh lá */
+
+            --hl-red: #c62828; /* Đỏ sậm */
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: 'Nunito', sans-serif;
+
+        }
+
+
+
+        body {
+
+            background: linear-gradient(-45deg, #ffafbd, #ffc3a0, #a1c4fd, #c2e9fb);
+
+            background-size: 400% 400%;
+
+            animation: gradientBG 15s ease infinite;
+
+            height: 100vh;
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            color: #333;
+
+        }
+
+
+
+        @keyframes gradientBG {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        /* Floating SVGs */
+
+        .floating-bg {
+
+            position: absolute;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            overflow: hidden;
+
+        }
+
+        .float-icon {
+
+            position: absolute;
+
+            font-size: 3rem;
+
+            animation: float 10s ease-in-out infinite;
+
+            opacity: 0.5;
+
+        }
+
+        @keyframes float {
+
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+
+            50% { transform: translateY(-30px) rotate(15deg); }
+
+        }
+
+
+
+        /* Overlay Bắt Đầu */
+
+        #start-overlay {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(15px);
+
+            z-index: 9999;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+        .start-btn {
+
+            padding: 20px 40px;
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 50px;
+
+            cursor: pointer;
+
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+            transition: transform 0.2s;
+
+        }
+
+        .start-btn:hover { transform: scale(1.05); }
+
+
+
+        /* Banner Nhắc Nhở */
+
+        .sticky-banner {
+
+            background: rgba(255, 235, 59, 0.9);
+
+            color: #d32f2f;
+
+            text-align: center;
+
+            padding: 8px;
+
+            font-weight: 800;
+
+            font-size: 14px;
+
+            z-index: 100;
+
+            border-bottom: 2px solid #fbc02d;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        }
+
+
+
+        /* Header */
+
+        header {
+
+            padding: 10px 20px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            z-index: 10;
+
+            background: rgba(255, 255, 255, 0.2);
+
+            backdrop-filter: blur(10px);
+
+            border-bottom: 1px solid var(--glass-border);
+
+        }
+
+        .header-title {
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            color: #444;
+
+            letter-spacing: 1px;
+
+            opacity: 0.8;
+
+        }
+
+
+
+        /* Split Layout */
+
+        .container {
+
+            display: flex;
+
+            flex: 1;
+
+            overflow: hidden;
+
+            z-index: 10;
+
+            padding: 20px;
+
+            gap: 20px;
+
+        }
+
+
+
+        .pane {
+
+            flex: 1;
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid var(--glass-border);
+
+            border-radius: 20px;
+
+            box-shadow: var(--glass-shadow);
+
+            padding: 25px;
+
+            overflow-y: auto;
+
+        }
+
+
+
+        /* Scrollbar custom */
+
+        ::-webkit-scrollbar { width: 8px; }
+
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+
+
+        /* Reading Styles */
+
+        .passage-box {
+
+            background: rgba(255, 255, 255, 0.5);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            margin-bottom: 30px;
+
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+
+        }
+
+        .passage-title {
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            color: #2193b0;
+
+            margin-bottom: 15px;
+
+            text-transform: uppercase;
+
+        }
+
+        .paragraph {
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            margin-bottom: 10px;
+
+        }
+
+        .btn-translate {
+
+            background: rgba(255, 255, 255, 0.7);
+
+            border: 1px solid #ddd;
+
+            padding: 5px 12px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #555;
+
+            transition: all 0.3s;
+
+            margin-bottom: 15px;
+
+        }
+
+        .btn-translate:hover { background: #fff; color: #ff6b6b; }
+
+        .translation-content {
+
+            display: none;
+
+            background: #fff9e6;
+
+            padding: 15px;
+
+            border-left: 4px solid #ffca28;
+
+            border-radius: 5px;
+
+            margin-bottom: 15px;
+
+            font-size: 16px;
+
+            color: #444;
+
+        }
+
+
+
+        /* Glossary Table */
+
+        .glossary {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+
+            background: rgba(255, 255, 255, 0.8);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+        .glossary th, .glossary td {
+
+            padding: 10px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eee;
+
+        }
+
+        .glossary th { background: #6dd5ed; color: #fff; font-weight: 800; }
+
+
+
+        /* Quiz Styles */
+
+        .question-card {
+
+            background: rgba(255, 255, 255, 0.6);
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+        }
+
+        .q-text { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+
+        .options-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+        .option-btn {
+
+            background: rgba(255, 255, 255, 0.9);
+
+            border: 2px solid transparent;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+            text-align: center;
+
+        }
+
+        .option-btn:hover:not(:disabled) {
+
+            transform: translateY(-2px);
+
+            border-color: #6dd5ed;
+
+        }
+
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+
+        
+
+        .opt-correct {
+
+            background: #a5d6a7 !important;
+
+            border-color: #2e7d32 !important;
+
+            color: #1b5e20 !important;
+
+        }
+
+        .opt-wrong {
+
+            background: #ef9a9a !important;
+
+            border-color: #c62828 !important;
+
+            color: #b71c1c !important;
+
+            animation: shake 0.4s;
+
+        }
+
+
+
+        @keyframes shake {
+
+            0% { transform: translateX(0); }
+
+            25% { transform: translateX(-5px); }
+
+            50% { transform: translateX(5px); }
+
+            75% { transform: translateX(-5px); }
+
+            100% { transform: translateX(0); }
+
+        }
+
+
+
+        /* Explanation Box */
+
+        .explanation-box {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            background: #f8f9fa;
+
+            border-left: 5px solid #2193b0;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+        }
+
+        
+
+        /* Master Teacher Formatting */
+
+        .p-word { color: var(--p-word); font-weight: bold; }
+
+        .p-mean { color: var(--p-mean); font-weight: bold; }
+
+        .p-grammar { color: var(--p-grammar); font-weight: bold; text-decoration: underline; }
+
+        .hl-green { color: var(--hl-green); font-weight: bold; }
+
+        .hl-red { color: var(--hl-red); font-weight: bold; text-decoration: line-through; }
+
+        .exp-quote {
+
+            background: #e3f2fd;
+
+            padding: 8px;
+
+            border-radius: 5px;
+
+            font-style: italic;
+
+            margin: 5px 0;
+
+            display: inline-block;
+
+        }
+
+
+
+        /* Submit Area */
+
+        .submit-area { text-align: center; margin-top: 30px; padding-bottom: 50px; }
+
+        .submit-btn {
+
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+
+            color: #d32f2f;
+
+            border: 2px solid #fff;
+
+            padding: 15px 40px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            border-radius: 50px;
+
+            cursor: pointer;
+
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+
+            transition: transform 0.3s;
+
+        }
+
+        .submit-btn:hover { transform: scale(1.05); }
+
+
+
+        /* Modal */
+
+        .modal-overlay {
+
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000;
+
+            justify-content: center; align-items: center;
+
+        }
+
+        .modal-content {
+
+            background: white; padding: 30px; border-radius: 20px;
+
+            text-align: center; width: 400px; max-width: 90%;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+        }
+
+        .modal-input {
+
+            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #eee;
+
+            border-radius: 10px; font-size: 16px; outline: none;
+
+        }
+
+        .modal-input:focus { border-color: #6dd5ed; }
+
+        .modal-btn {
+
+            background: #6dd5ed; color: white; border: none; padding: 10px 20px;
+
+            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px;
+
+        }
+
+        .result-gif { width: 100%; max-height: 200px; object-fit: contain; border-radius: 10px; margin: 15px 0; }
+
+        .score-text { font-size: 36px; font-weight: 900; color: #2193b0; margin: 10px 0; }
+
+
+
+        canvas#confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <audio id="audio-intro" src="https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/File%20nghe%20Ket%20A2/ti%E1%BA%BFng%20%C4%91%E1%BB%8Dc%20kh%C3%ADch%20l%E1%BB%87%20p1.mp3"></audio>
+
+    <audio id="audio-correct" src="https://www.myinstants.com/media/sounds/correct_sound.mp3"></audio>
+
+    <audio id="audio-wrong" src="https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Am_thanh_meme_Oi_doi_oi_huan_hoa_hong-www_tiengdong_com.mp3"></audio>
+
+
+
+    <div id="start-overlay">
+
+        <h1 style="color:white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); text-align:center;">LỚP HỌC MS Chí Nên</h1>
+
+        <p style="color:white; margin-bottom: 30px; font-size: 18px; font-weight: bold;">Sẵn sàng bứt phá chưa nào?</p>
+
+        <button class="start-btn" onclick="startApp()">BẮT ĐẦU LÀM BÀI 🚀</button>
+
+    </div>
+
+
+
+    <div class="floating-bg">
+
+        <div class="float-icon" style="top: 10%; left: 10%; animation-delay: 0s;">🚀</div>
+
+        <div class="float-icon" style="top: 70%; left: 80%; animation-delay: 2s;">🧪</div>
+
+        <div class="float-icon" style="top: 40%; left: 90%; animation-delay: 4s;">🌊</div>
+
+        <div class="float-icon" style="top: 80%; left: 20%; animation-delay: 1s;">🪐</div>
+
+        <div class="float-icon" style="top: 20%; left: 60%; animation-delay: 3s;">🛸</div>
+
+    </div>
+
+
+
+    <div class="sticky-banner">
+
+        ⚠️ LỜI NHẮC TỪ MS Chí Nên: Chỉ có đọc kỹ giải thích, ghi lại từ/cấu trúc mới vào vở thì mới giỏi lên. Làm cho xong mà không đọc giải thích là phí hoài công sức! ⚠️
+
+    </div>
+
+
+
+    <header>
+
+        <div class="header-title">👨‍🏫 Giáo viên tạo: MS Chí Nên</div>
+
+        <div style="font-weight: bold; color: #444;" id="score-tracker">Điểm: 0/0</div>
+
+    </header>
+
+
+
+    <div class="container">
+
+        <div class="pane reading-pane" id="reading-content">
+
+            </div>
+
+
+
+        <div class="pane quiz-pane" id="quiz-content">
+
+            <div id="questions-container"></div>
+
+            <div class="submit-area">
+
+                <button class="submit-btn" onclick="openSubmitModal()">🎯 NỘP BÀI TÍNH ĐIỂM & XEM KẾT QUẢ</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="modal-overlay" id="name-modal">
+
+        <div class="modal-content">
+
+            <h2>Nhập tên của bạn</h2>
+
+            <p style="color: #666; font-size: 14px; margin-top: 5px;">Bạn cần nhập tên để lưu kết quả nhé!</p>
+
+            <input type="text" id="student-name" class="modal-input" placeholder="Ví dụ: Nguyễn Văn A">
+
+            <button class="modal-btn" onclick="showResults()">Nộp bài ngay</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="modal-overlay" id="result-modal">
+
+        <div class="modal-content">
+
+            <h2 id="res-name">Tên học sinh</h2>
+
+            <div class="score-text" id="res-score">0/20</div>
+
+            <img id="res-gif" class="result-gif" src="" alt="Result GIF">
+
+            <p id="res-comment" style="font-weight: bold; font-size: 18px; color: #d32f2f; margin-top: 10px;"></p>
+
+            <button class="modal-btn" style="margin-top: 15px;" onclick="location.reload()">Làm lại bài này</button>
+
+        </div>
+
+    </div>
+
+
+
+    <canvas id="confetti"></canvas>
+
+
+
+    <script>
+
+        // --- 1. DỮ LIỆU ĐỌC HIỂU (PASSAGES) ---
+
+        const passages = [
+
+            {
+
+                id: 1,
+
+                title: "SCIENCE LAB SAFETY GUIDE",
+
+                paragraphs: [
+
+                    {
+
+                        en: "Follow these steps to ensure a safe and productive lab experience: Before starting any experiment, (13) ____ the instructions carefully to understand the procedure. Always wait (14) _____ your instructor’s permission before handling chemicals or equipment.",
+
+                        vi: "Làm theo các bước sau để đảm bảo trải nghiệm phòng thí nghiệm an toàn và hiệu quả: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy (13) ____ các hướng dẫn một cách cẩn thận để hiểu quy trình. Luôn chờ đợi (14) _____ sự cho phép của người hướng dẫn trước khi xử lý hóa chất hoặc thiết bị."
+
+                    },
+
+                    {
+
+                        en: "If you have any allergies or health concerns, inform (15) _____ lab supervisor immediately. To avoid accidents, be (16) _____ when measuring substances and follow all safety protocols.",
+
+                        vi: "Nếu bạn có bất kỳ dị ứng hoặc vấn đề sức khỏe nào, hãy thông báo ngay lập tức cho (15) _____ người giám sát phòng thí nghiệm. Để tránh tai nạn, hãy (16) _____ khi đo lường các chất và tuân thủ tất cả các quy trình an toàn."
+
+                    }
+
+                ],
+
+                glossary: [
+
+                    { word: "Ensure", pos: "v", mean: "Đảm bảo" },
+
+                    { word: "Productive", pos: "adj", mean: "Hiệu quả, năng suất" },
+
+                    { word: "Procedure", pos: "n", mean: "Quy trình, thủ tục" },
+
+                    { word: "Instructor", pos: "n", mean: "Người hướng dẫn/Giảng viên" },
+
+                    { word: "Chemical", pos: "n", mean: "Hóa chất" },
+
+                    { word: "Equipment", pos: "n", mean: "Trang thiết bị" },
+
+                    { word: "Allergy", pos: "n", mean: "Sự dị ứng" },
+
+                    { word: "Supervisor", pos: "n", mean: "Người giám sát" },
+
+                    { word: "Substance", pos: "n", mean: "Chất, vật chất" },
+
+                    { word: "Protocol", pos: "n", mean: "Giao thức/Quy tắc an toàn" }
+
+                ]
+
+            },
+
+            {
+
+                id: 2,
+
+                title: "TELEVISION",
+
+                paragraphs: [
+
+                    {
+
+                        en: "Television is an important (19) _____ of the 20th century. It has been so popular that now we can't imagine what life would be like if there were no television. Television is a major means of communication, it brings pictures and sounds (20) _____ around the world into millions of homes.",
+
+                        vi: "Tiếng hình là một (19) _____ quan trọng của thế kỷ 20. Nó đã trở nên quá phổ biến đến mức giờ đây chúng ta không thể tưởng tượng cuộc sống sẽ ra sao nếu không có tivi. Tivi là một phương tiện truyền thông chính, nó mang những hình ảnh và âm thanh (20) _____ trên khắp thế giới vào hàng triệu ngôi nhà."
+
+                    },
+
+                    {
+
+                        en: "Though television (21) _____ can see and learn about people, places and things in far away lands, television widens our knowledge by introducing us to new ideas (22) _____ us to new hobbies and recreations. In addition to the news, television provides us with a variety of programs that can satisfy (23) _____ taste. Most people now seem to like spending their evenings watching television. It is (24) _____ for them to sit at home watching television.",
+
+                        vi: "Mặc dù (21) _____ truyền hình có thể nhìn thấy và tìm hiểu về con người, địa điểm và sự vật ở những vùng đất xa xôi, tivi mở rộng kiến thức của chúng ta bằng cách giới thiệu cho chúng ta những ý tưởng mới (22) _____ chúng ta đến với những sở thích và hoạt động giải trí mới. Ngoài tin tức, tivi cung cấp cho chúng ta nhiều chương trình có thể thỏa mãn (23) _____ thị hiếu. Hầu hết mọi người hiện nay dường như thích dành buổi tối của họ để xem tivi. Điều đó thật (24) _____ cho họ khi ngồi ở nhà xem tivi."
+
+                    }
+
+                ],
+
+                glossary: [
+
+                    { word: "Imagine", pos: "v", mean: "Tưởng tượng" },
+
+                    { word: "Communication", pos: "n", mean: "Sự giao tiếp, truyền thông" },
+
+                    { word: "Widen", pos: "v", mean: "Mở rộng" },
+
+                    { word: "Knowledge", pos: "n", mean: "Kiến thức" },
+
+                    { word: "Introduce", pos: "v", mean: "Giới thiệu" },
+
+                    { word: "Recreation", pos: "n", mean: "Sự giải trí" },
+
+                    { word: "Variety", pos: "n", mean: "Sự đa dạng" },
+
+                    { word: "Satisfy", pos: "v", mean: "Làm thỏa mãn, đáp ứng" },
+
+                    { word: "Taste", pos: "n", mean: "Thị hiếu, khẩu vị" },
+
+                    { word: "Convenient", pos: "adj", mean: "Tiện lợi" }
+
+                ]
+
+            },
+
+            {
+
+                id: 3,
+
+                title: "WHAT IS A TSUNAMI",
+
+                paragraphs: [
+
+                    {
+
+                        en: "A tsunami is a string of large ocean waves. Some people call it a 'wave train' or a 'tidal wave.' Tsunamis, unlike normal ocean waves, are not caused by tides. The word tsunami comes from the Japanese. Tsunamis are caused by a sudden, large motion on the ocean floor. They can be caused by an earthquake under the ocean. Sometimes an underwater landslide or volcano is the cause.",
+
+                        vi: "Sóng thần là một chuỗi các con sóng lớn của đại dương. Một số người gọi nó là 'đoàn tàu sóng' hoặc 'sóng thủy triều.' Sóng thần, không giống như sóng biển bình thường, không phải do thủy triều gây ra. Từ tsunami bắt nguồn từ tiếng Nhật. Sóng thần được gây ra bởi một chuyển động lớn, đột ngột dưới đáy đại dương. Chúng có thể được gây ra bởi một trận động đất dưới đại dương. Đôi khi một vụ lở đất dưới nước hoặc núi lửa là nguyên nhân."
+
+                    },
+
+                    {
+
+                        en: "When one of these things happens, the energy passes through the ocean water. Just like the ripples from a rock being thrown into a pond, the energy released by one of these motions spreads out in all directions. The energy can travel many miles away. Tsunamis move at high speeds. Most tsunamis happen in the Pacific Ocean. In the deep waters, a tsunami may travel 450 miles per hour. Out in the ocean, a tsunami may be hard to see.",
+
+                        vi: "Khi một trong những điều này xảy ra, năng lượng đi qua nước đại dương. Giống như những gợn sóng từ một hòn đá bị ném xuống ao, năng lượng được giải phóng bởi một trong những chuyển động này lan truyền theo mọi hướng. Năng lượng có thể đi xa nhiều dặm. Sóng thần di chuyển với tốc độ cao. Hầu hết các trận sóng thần xảy ra ở Thái Bình Dương. Ở vùng nước sâu, một trận sóng thần có thể di chuyển 450 dặm một giờ. Ngoài đại dương, sóng thần có thể rất khó để nhìn thấy."
+
+                    },
+
+                    {
+
+                        en: "As it comes close to shore, its speed slows down. The height of the wave builds. The tsunami may suddenly rise into a wave ten to one hundred feet high. These large waves are a disaster for coastal regions and people living there. Tsunami warning networks alert people living along coastlines in the Pacific Ocean. When a warning is sounded, people can move away from the coast to higher ground. The wavelength can be as long as 150 miles. This means the time (wave period) between the giant waves is long, too. Giant waves on shore can last for hours or even days after the earthquake or other disturbance.",
+
+                        vi: "Khi tiến gần vào bờ, tốc độ của nó chậm lại. Chiều cao của sóng dâng lên. Sóng thần có thể đột ngột dâng lên thành một con sóng cao từ mười đến một trăm feet. Những con sóng lớn này là một thảm họa cho các khu vực ven biển và những người sống ở đó. Mạng lưới cảnh báo sóng thần cảnh báo người dân sống dọc theo đường bờ biển ở Thái Bình Dương. Khi cảnh báo vang lên, người dân có thể rời khỏi bờ biển để lên vùng đất cao hơn. Bước sóng có thể dài tới 150 dặm. Điều này có nghĩa là thời gian (chu kỳ sóng) giữa những con sóng khổng lồ cũng rất dài. Sóng khổng lồ trên bờ có thể kéo dài hàng giờ hoặc thậm chí hàng ngày sau trận động đất hoặc các sự xáo trộn khác."
+
+                    }
+
+                ],
+
+                glossary: [
+
+                    { word: "String", pos: "n", mean: "Chuỗi, sợi dây" },
+
+                    { word: "Tidal", pos: "adj", mean: "Thuộc thủy triều" },
+
+                    { word: "Sudden", pos: "adj", mean: "Đột ngột" },
+
+                    { word: "Landslide", pos: "n", mean: "Sự lở đất" },
+
+                    { word: "Ripple", pos: "n", mean: "Gợn sóng" },
+
+                    { word: "Release", pos: "v", mean: "Giải phóng, phát hành" },
+
+                    { word: "Direction", pos: "n", mean: "Hướng, phương hướng" },
+
+                    { word: "Disaster", pos: "n", mean: "Thảm họa" },
+
+                    { word: "Alert", pos: "v", mean: "Cảnh báo, báo động" },
+
+                    { word: "Disturbance", pos: "n", mean: "Sự nhiễu loạn, xáo trộn" }
+
+                ]
+
+            },
+
+            {
+
+                id: 4,
+
+                title: "LIFE ON OTHER PLANETS",
+
+                paragraphs: [
+
+                    {
+
+                        en: "_________ (37). With advanced telescopes, researchers have discovered planets outside our solar system, called exoplanets, which could have the right conditions for life. _________ (38) Mars, our neighboring planet, is one of the best candidates. Rovers have found signs of water in the past, and future missions may discover more clues. _________ (39), the search continues. If life exists elsewhere, it would change how we see ourselves in the universe, _________ (40) beginning a new chapter in space exploration.",
+
+                        vi: "_________ (37). Với các kính viễn vọng tiên tiến, các nhà nghiên cứu đã phát hiện ra các hành tinh ngoài hệ mặt trời của chúng ta, được gọi là ngoại hành tinh, có thể có các điều kiện thích hợp cho sự sống. _________ (38) Sao Hỏa, hành tinh láng giềng của chúng ta, là một trong những ứng cử viên sáng giá nhất. Các xe tự hành đã tìm thấy dấu vết của nước trong quá khứ, và các sứ mệnh trong tương lai có thể khám phá thêm nhiều manh mối. _________ (39), cuộc tìm kiếm vẫn tiếp tục. Nếu sự sống tồn tại ở một nơi nào khác, nó sẽ thay đổi cách chúng ta nhìn nhận bản thân trong vũ trụ, _________ (40) mở ra một chương mới trong công cuộc khám phá không gian."
+
+                    }
+
+                ],
+
+                glossary: [
+
+                    { word: "Advanced", pos: "adj", mean: "Tiên tiến, cao cấp" },
+
+                    { word: "Telescope", pos: "n", mean: "Kính viễn vọng" },
+
+                    { word: "Researcher", pos: "n", mean: "Nhà nghiên cứu" },
+
+                    { word: "Exoplanet", pos: "n", mean: "Ngoại hành tinh" },
+
+                    { word: "Condition", pos: "n", mean: "Điều kiện" },
+
+                    { word: "Neighboring", pos: "adj", mean: "Lân cận, láng giềng" },
+
+                    { word: "Candidate", pos: "n", mean: "Ứng cử viên" },
+
+                    { word: "Rover", pos: "n", mean: "Xe tự hành (thám hiểm vũ trụ)" },
+
+                    { word: "Mission", pos: "n", mean: "Sứ mệnh, nhiệm vụ" },
+
+                    { word: "Exploration", pos: "n", mean: "Sự thám hiểm, khám phá" }
+
+                ]
+
+            }
+
+        ];
+
+
+
+        // --- 2. DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH (KHÔNG NHÃN A,B,C,D) ---
+
+        const rawQuestions = [
+
+            // Passage 1
+
+            {
+
+                q: "Question 13: Before starting any experiment, (13) ____ the instructions carefully...",
+
+                opts: [
+
+                    { t: "review", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>review</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>xem xét/đọc kĩ</span>. Rất phù hợp với ngữ cảnh 'review the instructions carefully' (đọc kĩ hướng dẫn cẩn thận)." },
+
+                    { t: "scan", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>scan</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>nhìn lướt qua</span>. Không thể đi với trạng từ 'carefully' (cẩn thận)." },
+
+                    { t: "follow", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>follow</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>tuân theo</span>. Vế sau là 'to understand' (để hiểu), bạn phải đọc/xem xét thì mới hiểu được, chứ không phải 'tuân theo để hiểu'." },
+
+                    { t: "check", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>check</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>kiểm tra</span>. Collocation (sự kết hợp từ) 'review instructions' tự nhiên hơn trong ngữ cảnh học thuật/phòng lab." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy (13) ____ các hướng dẫn một cách cẩn thận để hiểu quy trình.",
+
+                exp_quote: "Before starting any experiment, review the instructions carefully to understand the procedure.",
+
+                exp_quote_trans: "👉 Dịch: Trước khi bắt đầu bất kỳ thí nghiệm nào, hãy <span class='hl-green'>xem xét kỹ</span> các hướng dẫn một cách cẩn thận để hiểu quy trình."
+
+            },
+
+            {
+
+                q: "Question 14: Always wait (14) _____ your instructor’s permission...",
+
+                opts: [
+
+                    { t: "for", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cấu trúc: <span class='p-grammar'>wait for sth/sb</span> (chờ đợi điều gì/ai đó)." },
+
+                    { t: "with", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không dùng 'wait with' trong trường hợp xin phép." },
+
+                    { t: "until", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'Wait until' (đợi cho đến khi) cần một mệnh đề (clause) hoặc cụm từ chỉ thời gian phía sau." },
+
+                    { t: "on", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'Wait on' mang nghĩa phục vụ (phục vụ bàn)." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Luôn chờ đợi (14) _____ sự cho phép của người hướng dẫn...",
+
+                exp_quote: "Always wait for your instructor’s permission before handling chemicals...",
+
+                exp_quote_trans: "👉 Dịch: Luôn <span class='hl-green'>chờ đợi</span> sự cho phép của người hướng dẫn trước khi xử lý hóa chất..."
+
+            },
+
+            {
+
+                q: "Question 15: ...inform (15) _____ lab supervisor immediately.",
+
+                opts: [
+
+                    { t: "the", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Dùng mạo từ xác định <span class='p-grammar'>'the'</span> vì 'lab supervisor' (người giám sát phòng lab) là một đối tượng cụ thể mà cả người nói và người nghe đều biết trong ngữ cảnh phòng thí nghiệm đó." },
+
+                    { t: "a", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'a' dùng cho đối tượng không xác định." },
+
+                    { t: "an", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'an' đứng trước nguyên âm, sai ngữ pháp ở đây." },
+
+                    { t: "X", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Danh từ đếm được số ít 'supervisor' không thể đứng một mình mà không có mạo từ." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: ...hãy thông báo cho (15) _____ người giám sát phòng thí nghiệm ngay lập tức.",
+
+                exp_quote: "If you have any allergies or health concerns, inform the lab supervisor immediately.",
+
+                exp_quote_trans: "👉 Dịch: Nếu bạn có bất kỳ dị ứng nào, hãy thông báo cho <span class='hl-green'>người (đó)</span> giám sát phòng thí nghiệm ngay lập tức."
+
+            },
+
+            {
+
+                q: "Question 16: To avoid accidents, be (16) _____ when measuring substances...",
+
+                opts: [
+
+                    { t: "careful", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>careful</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>cẩn thận</span>. Collocation chuẩn: 'be careful when V-ing'." },
+
+                    { t: "exact", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>exact</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>chính xác tuyệt đối</span>. Không dùng 'be exact when measuring'." },
+
+                    { t: "cautious", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>cautious</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>đề phòng, thận trọng (với nguy hiểm)</span>. Mặc dù gần nghĩa nhưng 'careful' tự nhiên và phổ biến hơn khi nói về thao tác đong đếm." },
+
+                    { t: "precise", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>precise</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>chính xác tỉ mỉ</span>. Giống 'exact', không ưu tiên bằng 'careful' ở đây." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Để tránh tai nạn, hãy (16) _____ khi đo lường các chất...",
+
+                exp_quote: "To avoid accidents, be careful when measuring substances...",
+
+                exp_quote_trans: "👉 Dịch: Để tránh tai nạn, hãy <span class='hl-green'>cẩn thận</span> khi đo lường các chất..."
+
+            },
+
+            // Passage 2
+
+            {
+
+                q: "Question 19: Television is an important (19) _____ of the 20th century.",
+
+                opts: [
+
+                    { t: "invention", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>invention</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>phát minh</span>. Cần một danh từ đứng sau tính từ 'important'. Tivi là một phát minh." },
+
+                    { t: "invent", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>invent</span> (<span class='p-grammar'>v</span>) - <span class='p-mean'>phát minh</span>. Là động từ, sai từ loại." },
+
+                    { t: "inventing", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>inventing</span> (<span class='p-grammar'>v-ing</span>). Sai từ loại." },
+
+                    { t: "inventor", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>inventor</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>nhà phát minh</span>. Sai nghĩa vì Tivi là đồ vật, không phải con người." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Truyền hình là một (19) _____ quan trọng của thế kỷ 20.",
+
+                exp_quote: "Television is an important invention of the 20th century.",
+
+                exp_quote_trans: "👉 Dịch: Truyền hình là một <span class='hl-green'>phát minh</span> quan trọng của thế kỷ 20."
+
+            },
+
+            {
+
+                q: "Question 20: ...it brings pictures and sounds (20) _____ around the world...",
+
+                opts: [
+
+                    { t: "from", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cụm từ: <span class='p-grammar'>from around the world</span> (từ khắp nơi trên thế giới)." },
+
+                    { t: "at", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không dùng 'at around the world'." },
+
+                    { t: "in", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Mặc dù có 'in the world' nhưng không đi với 'around' theo cách này." },
+
+                    { t: "of", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai giới từ." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: ...nó mang hình ảnh và âm thanh (20) _____ khắp thế giới...",
+
+                exp_quote: "...it brings pictures and sounds from around the world into millions of homes.",
+
+                exp_quote_trans: "👉 Dịch: ...nó mang hình ảnh và âm thanh <span class='hl-green'>từ</span> khắp nơi trên thế giới vào hàng triệu ngôi nhà."
+
+            },
+
+            {
+
+                q: "Question 21: Though television (21) _____ can see and learn about people...",
+
+                opts: [
+
+                    { t: "viewers", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>viewers</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (xem truyền hình)</span>. Đây là từ vựng chuyên biệt dùng cho người xem TV." },
+
+                    { t: "audience", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>audience</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (trong hội trường, nhà hát)</span>." },
+
+                    { t: "spectators", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>spectators</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>khán giả (xem thể thao trực tiếp ngoài trời)</span>." },
+
+                    { t: "people", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>people</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>mọi người</span>. Quá chung chung, không sát nghĩa bằng viewers." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Mặc dù (21) _____ truyền hình có thể nhìn thấy và tìm hiểu về mọi người...",
+
+                exp_quote: "Though television viewers can see and learn about people, places and things...",
+
+                exp_quote_trans: "👉 Dịch: Mặc dù <span class='hl-green'>khán giả xem truyền hình</span> có thể nhìn thấy và tìm hiểu..."
+
+            },
+
+            {
+
+                q: "Question 22: ...introducing us to new ideas (22) _____ us to new hobbies...",
+
+                opts: [
+
+                    { t: "which may lead", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Dùng đại từ quan hệ <span class='p-grammar'>which</span> để thay thế cho danh từ chỉ vật 'new ideas' ngay phía trước. 'may lead us to' (có thể dẫn chúng xuất đến)." },
+
+                    { t: "who may lead", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'who' dùng cho người, trong khi 'ideas' là vật." },
+
+                    { t: "may leading", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sau động từ khuyết thiếu 'may' phải là động từ nguyên thể (lead), không dùng V-ing (leading)." },
+
+                    { t: "may leads", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sau 'may' động từ không thêm 's'." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: ...giới thiệu cho chúng ta những ý tưởng mới (22) _____ chúng ta đến với những sở thích mới...",
+
+                exp_quote: "...introducing us to new ideas which may lead us to new hobbies...",
+
+                exp_quote_trans: "👉 Dịch: ...giới thiệu cho chúng ta những ý tưởng mới, <span class='hl-green'>những điều mà có thể dẫn</span> chúng ta đến với sở thích mới..."
+
+            },
+
+            {
+
+                q: "Question 23: ...programs that can satisfy (23) _____ taste.",
+
+                opts: [
+
+                    { t: "every", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-grammar'>every + N (số ít)</span>: mọi/tất cả. Cụm từ 'every taste' mang nghĩa 'mọi thị hiếu/khẩu vị'." },
+
+                    { t: "each", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'each' nhấn mạnh vào từng cá nhân riêng lẻ, không phù hợp bằng 'every' mang tính tổng thể bao quát ở đây." },
+
+                    { t: "many", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'many' phải đi với danh từ số nhiều (tastes)." },
+
+                    { t: "all", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'all' phải đi với danh từ số nhiều (tastes) hoặc danh từ không đếm được." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: ...các chương trình có thể thỏa mãn (23) _____ thị hiếu.",
+
+                exp_quote: "...television provides us with a variety of programs that can satisfy every taste.",
+
+                exp_quote_trans: "👉 Dịch: ...tivi cung cấp nhiều chương trình có thể thỏa mãn <span class='hl-green'>mọi</span> thị hiếu."
+
+            },
+
+            {
+
+                q: "Question 24: It is (24) _____ for them to sit at home watching television.",
+
+                opts: [
+
+                    { t: "convenient", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cấu trúc: <span class='p-grammar'>It is + adj + for sb + to V</span>. Chỉ cần tính từ gốc ở đây." },
+
+                    { t: "as convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Thừa chữ 'as' (chỉ dùng trong so sánh bằng as...as)." },
+
+                    { t: "most convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Nếu dùng so sánh nhất cần có mạo từ 'the'." },
+
+                    { t: "more convenient", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không có vế so sánh 'than' trong câu." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Thật là (24) _____ cho họ khi ngồi ở nhà xem tivi.",
+
+                exp_quote: "It is convenient for them to sit at home watching television.",
+
+                exp_quote_trans: "👉 Dịch: Thật là <span class='hl-green'>tiện lợi</span> cho họ khi ngồi ở nhà xem tivi."
+
+            },
+
+            // Passage 3
+
+            {
+
+                q: "Question 31: What is the main idea of the passage?",
+
+                opts: [
+
+                    { t: "How tsunamis are formed and their impact", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc giải thích nguyên nhân hình thành (động đất, lở đất dưới đáy biển) và tác động của nó (thảm họa cho vùng ven biển)." },
+
+                    { t: "How tides affect the ocean", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đoạn 1 khẳng định rõ sóng thần KHÔNG PHẢI do thủy triều (not caused by tides)." },
+
+                    { t: "The history of the word “tsunami”", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tác giả chỉ nhắc nhẹ chữ này xuất phát từ tiếng Nhật, không phải ý chính toàn bài." },
+
+                    { t: "How earthquakes destroy coastal cities.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đây chỉ là một ý nhỏ, bài tập trung vào sóng thần (tsunami) chứ không chỉ động đất." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Ý chính của đoạn văn là gì?",
+
+                exp_quote: "Tsunamis are caused by a sudden, large motion... These large waves are a disaster for coastal regions...",
+
+                exp_quote_trans: "👉 Dịch: Sóng thần được <span class='hl-green'>gây ra bởi</span> chuyển động lớn... Những con sóng lớn này là <span class='hl-green'>thảm họa</span> cho vùng ven biển..."
+
+            },
+
+            {
+
+                q: "Question 32: Which word has the same meaning as “disaster” in the text?",
+
+                opts: [
+
+                    { t: "Tragedy", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>Tragedy</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>bi kịch, thảm kịch</span> đồng nghĩa với <span class='p-word'>disaster</span> (<span class='p-grammar'>n</span>) - <span class='p-mean'>thảm họa</span>." },
+
+                    { t: "Warning", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Warning</span> là cảnh báo." },
+
+                    { t: "Motion", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Motion</span> là sự chuyển động." },
+
+                    { t: "Ground", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Ground</span> là mặt đất." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Từ nào đồng nghĩa với từ 'disaster' (thảm họa) trong bài?",
+
+                exp_quote: "These large waves are a disaster for coastal regions...",
+
+                exp_quote_trans: "👉 Dịch: Những con sóng lớn này là một <span class='hl-green'>thảm họa</span> cho các vùng ven biển..."
+
+            },
+
+            {
+
+                q: "Question 33: Which word is the OPPOSITE of “shallow” as used in the text?",
+
+                opts: [
+
+                    { t: "Deep", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> <span class='p-word'>Deep</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>sâu</span> là từ trái nghĩa trực tiếp của <span class='p-word'>shallow</span> (<span class='p-grammar'>adj</span>) - <span class='p-mean'>nông, cạn</span>." },
+
+                    { t: "High", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>High</span> (cao) trái nghĩa với Low (thấp)." },
+
+                    { t: "Slow", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Slow</span> (chậm) trái nghĩa với Fast/Quick (nhanh)." },
+
+                    { t: "Low", c: false, exp: "<span class='hl-red'>❌ Sai.</span> <span class='p-word'>Low</span> (thấp) trái nghĩa với High (cao)." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Từ nào TRÁI NGHĨA với từ 'shallow' (nông) được dùng trong bài?",
+
+                exp_quote: "In the deep waters, a tsunami may travel 450 miles per hour.",
+
+                exp_quote_trans: "👉 Dịch: Ở những vùng nước <span class='hl-green'>sâu</span>, sóng thần có thể di chuyển 450 dặm/giờ."
+
+            },
+
+            {
+
+                q: "Question 34: Which of the following is NOT TRUE according to the text?",
+
+                opts: [
+
+                    { t: "Tsunamis are caused by tides", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Ý này SAI so với bài đọc, do đó nó là đáp án đúng cho câu hỏi 'NOT TRUE' (Không đúng)." },
+
+                    { t: "Most tsunamis happen in the Pacific Ocean", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (Most tsunamis happen in the Pacific Ocean)." },
+
+                    { t: "Tsunamis can travel at high speeds in deep water", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (travel 450 miles per hour in deep waters)." },
+
+                    { t: "People are warned about tsunamis through special networks.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này ĐÚNG theo bài đọc (Tsunami warning networks alert people...)." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Điều nào sau đây là KHÔNG ĐÚNG theo bài đọc?",
+
+                exp_quote: "Tsunamis, unlike normal ocean waves, are not caused by tides.",
+
+                exp_quote_trans: "👉 Dịch: Sóng thần, không giống sóng biển bình thường, <span class='hl-green'>không phải do thủy triều gây ra</span>."
+
+            },
+
+            {
+
+                q: "Question 35: What usually causes a tsunami to form?",
+
+                opts: [
+
+                    { t: "Large movements on the ocean floor", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc ghi rõ nguyên nhân là do chuyển động lớn, đột ngột dưới đáy đại dương." },
+
+                    { t: "High tides on the ocean surface", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Bài đọc đã phủ nhận việc thủy triều gây ra sóng thần." },
+
+                    { t: "Strong winds blowing across the sea", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Gió mạnh gây ra sóng biển thường, không phải sóng thần." },
+
+                    { t: "Ripples caused by boats", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tác giả chỉ mượn hình ảnh 'ripples' (gợn sóng từ hòn đá) để so sánh cách năng lượng lan truyền, không phải do tàu bè." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Điều gì thường khiến sóng thần hình thành?",
+
+                exp_quote: "Tsunamis are caused by a sudden, large motion on the ocean floor.",
+
+                exp_quote_trans: "👉 Dịch: Sóng thần được gây ra bởi một <span class='hl-green'>chuyển động lớn</span>, đột ngột dưới đáy đại dương."
+
+            },
+
+            {
+
+                q: "Question 36: Why are tsunamis hard to see in the middle of the ocean?",
+
+                opts: [
+
+                    { t: "Their height is low in deep water", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Bài đọc nói ở vùng nước sâu nó đi rất nhanh, và khi gần bờ nó mới 'dâng lên chiều cao' (height builds), suy ra ở ngoài khơi độ cao của nó thấp." },
+
+                    { t: "They travel too slowly", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Ngoài khơi nó di chuyển rất nhanh (450 dặm/giờ)." },
+
+                    { t: "Their speed makes them invisible", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Tốc độ không phải lý do duy nhất khiến nó tàng hình, mà do độ cao sóng thấp." },
+
+                    { t: "The ocean water blocks the waves", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Nước biển không chặn sóng." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Tại sao sóng thần khó nhìn thấy ở giữa đại dương?",
+
+                exp_quote: "Out in the ocean, a tsunami may be hard to see. As it comes close to shore... The height of the wave builds.",
+
+                exp_quote_trans: "👉 Dịch: Ngoài đại dương, sóng thần khó nhìn thấy. Khi nó gần bờ... <span class='hl-green'>Chiều cao của sóng mới dâng lên</span>."
+
+            },
+
+            // Passage 4
+
+            {
+
+                q: "Question 37: _________ (37). With advanced telescopes, researchers have discovered planets...",
+
+                opts: [
+
+                    { t: "Many scientists believe that life may exist on other planets.", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Đây là câu chủ đề hoàn hảo mở đầu đoạn văn, dẫn dắt vào việc các nhà khoa học đang dùng kính viễn vọng để tìm kiếm hành tinh có điều kiện sống." },
+
+                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đặt ở đầu câu sẽ làm đoạn văn bị gãy logic, vì vế sau không phải mệnh đề chính của 'Although'." },
+
+                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu này phù hợp để chốt lại đoạn văn hơn là mở bài." },
+
+                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> 'These planets' (Những hành tinh này) không có tiền đề để tham chiếu nếu đứng ngay câu đầu tiên." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (37).",
+
+                exp_quote: "With advanced telescopes, researchers have discovered planets outside our solar system...",
+
+                exp_quote_trans: "👉 Dịch: Với kính viễn vọng tiên tiến, các nhà nghiên cứu đã phát hiện ra các hành tinh... (Câu trước đó cần nêu ý chính: <span class='hl-green'>Nhiều nhà khoa học tin rằng sự sống có thể tồn tại trên hành tinh khác</span>)."
+
+            },
+
+            {
+
+                q: "Question 38: ...which could have the right conditions for life. _________ (38) Mars, our neighboring planet...",
+
+                opts: [
+
+                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Cụm từ 'These planets' nối tiếp hoàn hảo với danh từ 'exoplanets' ở câu trước. Giải thích thêm về 'right conditions for life' (điều kiện thích hợp cho sự sống)." },
+
+                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Đã dùng ở câu 37." },
+
+                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không liên kết logic với câu trước và sau." },
+
+                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Câu mang tính kết luận, không phù hợp ở giữa đoạn liệt kê điều kiện." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (38).",
+
+                exp_quote: "...which could have the right conditions for life. [38] Mars, our neighboring planet...",
+
+                exp_quote_trans: "👉 Dịch: ...có thể có các điều kiện thích hợp cho sự sống. <span class='hl-green'>Những hành tinh này có thể có nước, oxy...</span> Sao hỏa, hành tinh láng giềng..."
+
+            },
+
+            {
+
+                q: "Question 39: ...and future missions may discover more clues. _________ (39), the search continues.",
+
+                opts: [
+
+                    { t: "Although we have not found aliens yet", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Logic mệnh đề nhượng bộ: 'Mặc dù chúng ta chưa tìm thấy người ngoài hành tinh, (nhưng) cuộc tìm kiếm vẫn tiếp tục'." },
+
+                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Lặp ý, sai ngữ pháp đoạn này." },
+
+                    { t: "One day, humans may even live on another planet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Không ghép được với vế 'the search continues' phía sau." },
+
+                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Lạc quẻ về mặt logic chuyển ý." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (39).",
+
+                exp_quote: "[39], the search continues.",
+
+                exp_quote_trans: "👉 Dịch: <span class='hl-green'>Mặc dù chúng ta chưa tìm thấy người ngoài hành tinh</span>, cuộc tìm kiếm vẫn tiếp tục."
+
+            },
+
+            {
+
+                q: "Question 40: If life exists elsewhere, it would change how we see ourselves in the universe, _________ (40) beginning a new chapter in space exploration.",
+
+                opts: [
+
+                    { t: "One day, humans may even live on another planet", c: true, exp: "<span class='hl-green'>✅ Đúng.</span> Câu mang tính tầm nhìn, kết luận. Khi ghép vào sẽ tạo thành một ý tưởng mở rộng: thay đổi cách chúng ta nhìn nhận, (và) một ngày nào đó con người có thể sống ở hành tinh khác, bắt đầu một chương mới..." },
+
+                    { t: "Although we have not found aliens yet", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai ngữ pháp hoàn toàn khi nối vào cụm V-ing." },
+
+                    { t: "Many scientists believe that life may exist on other planets.", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Ý này thuộc về mở bài." },
+
+                    { t: "These planets may have water, oxygen, and temperatures that support living organisms", c: false, exp: "<span class='hl-red'>❌ Sai.</span> Sai ngữ cảnh kết luận." }
+
+                ],
+
+                exp_trans: "Dịch câu hỏi: Chọn câu phù hợp để điền vào chỗ trống (40).",
+
+                exp_quote: "If life exists elsewhere, it would change how we see ourselves in the universe, [40] beginning a new chapter...",
+
+                exp_quote_trans: "👉 Dịch: Nếu sự sống tồn tại ở nơi khác, nó sẽ thay đổi góc nhìn của chúng ta, <span class='hl-green'>Một ngày nào đó con người có thể sống trên hành tinh khác</span> mở ra chương mới..."
+
+            }
+
+        ];
+
+
+
+        let score = 0;
+
+        let totalQuestions = rawQuestions.length;
+
+        let answeredQuestions = new Set();
+
+
+
+        // Xáo trộn array
+
+        function shuffle(array) {
+
+            let currentIndex = array.length, randomIndex;
+
+            while (currentIndex != 0) {
+
+                randomIndex = Math.floor(Math.random() * currentIndex);
+
+                currentIndex--;
+
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+
+            }
+
+            return array;
+
+        }
+
+
+
+        function startApp() {
+
+            document.getElementById('start-overlay').style.display = 'none';
+
+            document.getElementById('audio-intro').play().catch(e => console.log('Audio autoplay prevented'));
+
+            renderPassages();
+
+            renderQuiz();
+
+            document.getElementById('score-tracker').innerText = `Điểm: 0/${totalQuestions}`;
+
+        }
+
+
+
+        function renderPassages() {
+
+            const container = document.getElementById('reading-content');
+
+            let htmlStr = '';
+
+            passages.forEach(p => {
+
+                let html = `<div class="passage-box">
+
+                    <div class="passage-title">${p.title}</div>`;
+
+                
+
+                p.paragraphs.forEach((para, idx) => {
+
+                    const tid = `trans-${p.id}-${idx}`;
+
+                    html += `<p class="paragraph">${para.en}</p>
+
+                             <button class="btn-translate" onclick="toggleTrans('${tid}')">Mở dịch đoạn này 🌟</button>
+
+                             <div id="${tid}" class="translation-content">${para.vi}</div>`;
+
+                });
+
+
+
+                html += `<table class="glossary">
+
+                            <tr><th>Từ vựng (Vocabulary)</th><th>Từ loại</th><th>Nghĩa tiếng Việt</th></tr>`;
+
+                p.glossary.forEach(g => {
+
+                    html += `<tr>
+
+                        <td style="color:#1e88e5; font-weight:bold;">${g.word}</td>
+
+                        <td style="color:#d32f2f; font-weight:bold;">${g.pos}</td>
+
+                        <td>${g.mean}</td>
+
+                    </tr>`;
+
+                });
+
+                html += `</table></div>`;
+
+                htmlStr += html;
+
+            });
+
+            container.innerHTML = htmlStr;
+
+        }
+
+
+
+        function toggleTrans(id) {
+
+            const el = document.getElementById(id);
+
+            if(el.style.display === 'block') {
+
+                el.style.display = 'none';
+
+            } else {
+
+                el.style.display = 'block';
+
+            }
+
+        }
+
+
+
+        function renderQuiz() {
+
+            const container = document.getElementById('questions-container');
+
+            let htmlStr = '';
+
+            rawQuestions.forEach((q, qIndex) => {
+
+                // Xáo trộn đáp án
+
+                let shuffledOpts = shuffle([...q.opts]);
+
+                
+
+                let html = `<div class="question-card" id="qcard-${qIndex}">
+
+                    <div class="q-text">${q.q}</div>
+
+                    <div class="options-grid">`;
+
+                
+
+                shuffledOpts.forEach((opt, oIndex) => {
+
+                    // MÃ HÓA CHUỖI ĐỂ TRÁNH LỖI NGOẶC NHÁY (Thay vì chèn string trực tiếp, dùng thuật toán URL encoding)
+
+                    let safeExp = encodeURIComponent(opt.exp).replace(/'/g, "%27");
+
+                    
+
+                    html += `<button class="option-btn opt-btn-${qIndex}" 
+
+                        onclick="checkAnswer(${qIndex}, ${opt.c}, this, '${safeExp}')">${opt.t}</button>`;
+
+                });
+
+
+
+                html += `</div>
+
+                    <div class="explanation-box" id="exp-${qIndex}">
+
+                        <div style="font-weight:bold; color: #2193b0; margin-bottom: 5px;">📜 GIẢI THÍCH CHI TIẾT:</div>
+
+                        <div style="margin-bottom: 10px; font-weight: bold; color: #d84315;">${q.exp_trans}</div>
+
+                        <div id="exp-dynamic-${qIndex}" style="margin-bottom: 15px; padding: 10px; background: #fff; border-radius: 8px; border: 1px solid #ddd;"></div>
+
+                        <div style="border-top: 1px dashed #ccc; padding-top: 10px;">
+
+                            <div style="font-weight:bold; color: #d84315;">🔍 Dẫn chứng trong bài:</div>
+
+                            <div class="exp-quote">"${q.exp_quote}"</div>
+
+                            <div>${q.exp_quote_trans}</div>
+
+                        </div>
+
+                    </div>
+
+                </div>`;
+
+                htmlStr += html;
+
+            });
+
+            container.innerHTML = htmlStr;
+
+        }
+
+
+
+        function checkAnswer(qIndex, isCorrect, btnEl, encodedExp) {
+
+            if(answeredQuestions.has(qIndex)) return; // Không cho bấm lại
+
+
+
+            const allBtns = document.querySelectorAll(`.opt-btn-${qIndex}`);
+
+            const expBox = document.getElementById(`exp-${qIndex}`);
+
+            const expDynamic = document.getElementById(`exp-dynamic-${qIndex}`);
+
+
+
+            // GIẢI MÃ CHUỖI GIẢI THÍCH ĐỂ HIỂN THỊ HTML ĐẸP MẮT
+
+            let optExp = decodeURIComponent(encodedExp);
+
+
+
+            // Khóa tất cả nút trong câu này
+
+            allBtns.forEach(btn => btn.disabled = true);
+
+
+
+            expDynamic.innerHTML = `<div><strong style="color: #444;">Phân tích đáp án vừa chọn:</strong> <br> ${optExp}</div>`;
+
+            expBox.style.display = 'block';
+
+
+
+            if(isCorrect) {
+
+                btnEl.classList.add('opt-correct');
+
+                document.getElementById('audio-correct').currentTime = 0;
+
+                document.getElementById('audio-correct').play();
+
+                fireConfetti();
+
+                if(!answeredQuestions.has(qIndex)) {
+
+                    score++;
+
+                    updateScore();
+
+                }
+
+            } else {
+
+                btnEl.classList.add('opt-wrong');
+
+                document.getElementById('audio-wrong').currentTime = 0;
+
+                document.getElementById('audio-wrong').play();
+
+                
+
+                // Highlight đáp án đúng bằng cách kiểm tra chuỗi true trong function call
+
+                allBtns.forEach(btn => {
+
+                    if(btn.getAttribute('onclick').includes(', true,')) {
+
+                        btn.style.border = "3px solid #2e7d32";
+
+                        btn.style.boxShadow = "0 0 15px rgba(46, 125, 50, 0.6)";
+
+                    }
+
+                });
+
+            }
+
+            answeredQuestions.add(qIndex);
+
+        }
+
+
+
+        function updateScore() {
+
+            document.getElementById('score-tracker').innerText = `Điểm: ${score}/${totalQuestions}`;
+
+        }
+
+
+
+        function openSubmitModal() {
+
+            document.getElementById('name-modal').style.display = 'flex';
+
+        }
+
+
+
+        function showResults() {
+
+            const name = document.getElementById('student-name').value.trim();
+
+            if(!name) { alert("Vui lòng nhập tên trước khi nộp bài!"); return; }
+
+
+
+            document.getElementById('name-modal').style.display = 'none';
+
+            document.getElementById('result-modal').style.display = 'flex';
+
+            
+
+            document.getElementById('res-name').innerText = `Học viên: ${name}`;
+
+            document.getElementById('res-score').innerText = `${score}/${totalQuestions}`;
+
+
+
+            const percent = score / totalQuestions;
+
+            let gifSrc = "", comment = "";
+
+
+
+            if(percent === 1) {
+
+                gifSrc = "https://media.giphy.com/media/l41YkxvU8c7J7Bba0/giphy.gif"; // Thiên tài
+
+                comment = "LỜI PHÊ TỪ MS Chí Nên: Tuyệt đỉnh! Con đích thị là thiên tài ngoại ngữ! 🌟🌟🌟";
+
+                fireConfettiContinuous();
+
+            } else if (percent >= 0.6) {
+
+                gifSrc = "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // High five
+
+                comment = "LỜI PHÊ TỪ MS Chí Nên: Rất tốt! Nhớ đọc kỹ giải thích các câu sai để rút kinh nghiệm nhé! 👏";
+
+            } else {
+
+                gifSrc = "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif"; // Crying
+
+                comment = "LỜI PHÊ TỪ MS Chí Nên: Cố lên con! Bắt buộc phải chép lại toàn bộ từ mới và cấu trúc vào vở học nhé! 💪";
+
+            }
+
+
+
+            document.getElementById('res-gif').src = gifSrc;
+
+            document.getElementById('res-comment').innerText = comment;
+
+        }
+
+
+
+        // --- Mini Canvas Confetti Engine ---
+
+        let canvas = document.getElementById('confetti');
+
+        let ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+
+
+        function fireConfetti() {
+
+            for(let i=0; i<50; i++) {
+
+                particles.push({
+
+                    x: Math.random() * canvas.width,
+
+                    y: -10,
+
+                    size: Math.random() * 10 + 5,
+
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+
+                    speedY: Math.random() * 3 + 2,
+
+                    speedX: Math.random() * 4 - 2,
+
+                    rotation: Math.random() * 360
+
+                });
+
+            }
+
+        }
+
+
+
+        function fireConfettiContinuous() {
+
+            setInterval(fireConfetti, 500);
+
+        }
+
+
+
+        function drawConfetti() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, index) => {
+
+                ctx.save();
+
+                ctx.translate(p.x, p.y);
+
+                ctx.rotate(p.rotation * Math.PI / 180);
+
+                ctx.fillStyle = p.color;
+
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+
+                ctx.restore();
+
+
+
+                p.y += p.speedY;
+
+                p.x += p.speedX;
+
+                p.rotation += 5;
+
+
+
+                if(p.y > canvas.height) particles.splice(index, 1);
+
+            });
+
+            requestAnimationFrame(drawConfetti);
+
+        }
+
+        drawConfetti();
+
+
+
+        window.addEventListener('resize', () => {
+
+            canvas.width = window.innerWidth;
+
+            canvas.height = window.innerHeight;
+
+        });
+
+
+
+    </script>
+
 <script>/*devclean*/(function(){
 var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
     SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
@@ -992,23 +1970,71 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===
 })();</script>
 
 <script>
-// Auto-bypass password lock for MS Chi Nen
+// Remove password lock completely - direct quiz access
 (function() {
-    function unlock() {
-        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
-        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
-        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
-        if (main) { main.style.setProperty('display', 'block', 'important'); }
+    function unlockNow() {
+        // 1. Remove all password modals
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        // Also remove any elements with class containing password-modal or lock-overlay
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        // 2. Display main content containers
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                // If it was hidden, show it
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    // Try flex if header or mainContent in some themes, else block
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        // Specific fix for Reading Mastery theme (Tay Mo p2, p7, etc.)
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        // 3. Trigger render / init functions if not yet rendered
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
         if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
         if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', unlock);
+        document.addEventListener('DOMContentLoaded', unlockNow);
     } else {
-        unlock();
+        unlockNow();
     }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
 })();
 </script>
+</body>
 
-</body>
 </html>

@@ -1,971 +1,1939 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MS Chí Nên - English Master Test</title>
-    <style>
-        /* CSS BIẾN MÀU TƯƠI SÁNG & CƠ BẢN */
-        :root {
-            --neon-pink: #ff9a9e;
-            --neon-peach: #fecfef;
-            --neon-blue: #a1c4fd;
-            --neon-cyan: #c2e9fb;
-            --neon-yellow: #fdfbfb;
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            
-            /* Màu chữ cho phần giải thích */
-            --word-blue: #0056b3;
-            --mean-terra: #d35400;
-            --grammar-red: #c0392b;
-            --correct-green: #27ae60;
-            --incorrect-red: #c0392b;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; 
-            color: #2c3e50;
-        }
-
-        /* BACKGROUND GRADIENT LOANG TƯƠI SÁNG */
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2;
-            background: linear-gradient(120deg, var(--neon-pink), var(--neon-peach), var(--neon-blue), var(--neon-cyan), var(--neon-yellow));
-            background-size: 300% 300%;
-            animation: gradientBG 10s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* HIỆU ỨNG VẬT BAY BAY */
-        .floating-emojis {
-            position: fixed; width: 100vw; height: 100vh; top: 0; left: 0;
-            pointer-events: none; z-index: -1; overflow: hidden;
-        }
-        .fly-item {
-            position: absolute;
-            font-size: 3.5rem;
-            bottom: -15%;
-            opacity: 0.6;
-            animation: flyUp linear infinite;
-        }
-        @keyframes flyUp {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-120vh) rotate(360deg); }
-        }
-        
-        /* HEADER TINH TẾ */
-        header {
-            position: fixed;
-            top: 0; width: 100%; height: 40px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: #444;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-        }
-
-        /* BẢNG THÔNG BÁO NỔI (FLOATING ALERT) */
-        .floating-alert {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 300px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 3px solid #ff0844;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(255, 8, 68, 0.4);
-            z-index: 999;
-            animation: pulseBorder 2s infinite;
-            font-size: 15px;
-            color: #333;
-            line-height: 1.5;
-            backdrop-filter: blur(10px);
-        }
-        .floating-alert h4 {
-            margin: 0 0 8px 0; color: #d90429; font-size: 17px; text-transform: uppercase;
-        }
-        .floating-alert p { margin: 0; font-weight: 600; }
-        @keyframes pulseBorder {
-            0% { box-shadow: 0 0 0 0 rgba(255, 8, 68, 0.6); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 8, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 8, 68, 0); }
-        }
-
-        /* SPLIT SCREEN LAYOUT */
-        .app-container {
-            display: flex;
-            height: 100vh;
-            padding-top: 40px;
-            box-sizing: border-box;
-        }
-        .left-pane, .right-pane {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-        .left-pane { border-right: 2px dashed rgba(255,255,255,0.7); }
-        
-        /* SCROLLBAR THẨM MỸ */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.9); border-radius: 10px; }
-
-        /* GLASSMORPHISM COMPONENTS */
-        .glass-box {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: var(--glass-shadow);
-        }
-
-        /* READING PASSAGE */
-        .passage-title { font-size: 22px; font-weight: 900; color: #1a252f; text-align: center; margin-bottom: 20px; text-transform: uppercase;}
-        .passage-text { font-size: 16.5px; line-height: 1.8; text-align: justify; }
-        .blank-space { display: inline-block; width: 60px; border-bottom: 2px solid #333; text-align: center; font-weight: bold; }
-
-        /* NÚT DỊCH & BẢNG TỪ VỰNG */
-        .btn-translate {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none; padding: 10px 20px; border-radius: 25px; color: #fff;
-            font-weight: bold; cursor: pointer; display: block; margin: 20px auto;
-            transition: transform 0.2s, box-shadow 0.2s; font-size: 15px;
-        }
-        .btn-translate:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4); }
-        .translation-text {
-            background: rgba(255,255,255,0.75); padding: 18px; border-radius: 15px;
-            font-size: 15.5px; line-height: 1.7; display: none; margin-bottom: 20px;
-            border-left: 5px solid #764ba2;
-        }
-        
-        .glossary-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(255,255,255,0.6); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
-        .glossary-table th, .glossary-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); }
-        .glossary-table th { background: rgba(255,255,255,0.8); font-weight: 800; color: #2c3e50;}
-
-        /* BÀI TẬP TRẮC NGHIỆM */
-        .question-card { margin-bottom: 30px; transition: 0.3s; }
-        .question-text { font-weight: bold; font-size: 17px; margin-bottom: 18px; }
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        .option-btn {
-            background: rgba(255,255,255,0.8);
-            border: 2px solid transparent;
-            padding: 14px 20px;
-            border-radius: 15px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            color: #333;
-        }
-        .option-btn:hover:not(:disabled) { background: #fff; transform: translateX(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-
-        /* Trạng thái sau khi bấm (Instant Feedback) */
-        .option-btn.correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724 !important; font-weight: bold; transform: translateX(5px); }
-        .option-btn.wrong { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24 !important; }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
-
-        /* GIẢI THÍCH MASTER CHUẨN MỰC */
-        .explanation-box {
-            margin-top: 18px;
-            padding: 18px;
-            background: #fff;
-            border-radius: 15px;
-            border-left: 6px solid #ffcc00;
-            display: none;
-            font-size: 15.5px;
-            line-height: 1.7;
-            animation: fadeIn 0.6s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .p-word { color: var(--word-blue); font-weight: bold; }
-        .p-mean { color: var(--mean-terra); font-weight: bold; font-style: italic; }
-        .p-grammar { color: var(--grammar-red); text-decoration: underline; font-weight: bold; }
-        .hl-green { color: var(--correct-green); font-weight: bold; }
-        .hl-red { color: var(--incorrect-red); text-decoration: line-through; }
-        .quote-en { background: #f8f9fa; padding: 10px; border-radius: 8px; font-style: italic; display: block; margin: 12px 0; border: 1px solid #eee;}
-        .quote-vi { font-weight: bold; color: #444; }
-
-        /* HIỆU ỨNG & ANIMATION */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-        .shake { animation: shake 0.4s ease-in-out; }
-
-        .confetti {
-            position: fixed; width: 12px; height: 12px; background-color: #f00;
-            animation: fall linear forwards; z-index: 9999; border-radius: 2px;
-        }
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* NÚT TỔNG KẾT & POPUP */
-        .submit-btn {
-            background: linear-gradient(45deg, #00b09b, #96c93d);
-            color: white; border: none; padding: 16px 30px; font-size: 19px;
-            border-radius: 30px; cursor: pointer; width: 100%; font-weight: 900;
-            text-transform: uppercase; margin-top: 20px;
-            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.4); transition: 0.3s;
-        }
-        .submit-btn:hover { transform: scale(1.03); box-shadow: 0 10px 25px rgba(0, 176, 155, 0.6); }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-content {
-            background: rgba(255, 255, 255, 0.95); padding: 35px; border-radius: 25px;
-            text-align: center; width: 90%; max-width: 450px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            border: 2px solid #fff;
-        }
-        .modal-content h2 { color: #2c3e50; margin-top: 0; }
-        .modal-content input {
-            width: 90%; padding: 12px; margin: 20px 0; border: 2px solid #ddd;
-            border-radius: 12px; font-size: 17px; text-align: center; outline: none;
-            transition: 0.3s;
-        }
-        .modal-content input:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); }
-        
-        .start-btn { 
-            background: linear-gradient(45deg, #3498db, #2980b9); 
-            color: #fff; padding: 12px 25px; border: none; border-radius: 12px; 
-            font-size: 17px; cursor: pointer; font-weight: bold; width: 100%;
-            transition: 0.2s;
-        }
-        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
-        .result-gif { width: 100%; border-radius: 15px; margin: 15px 0; max-height: 250px; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
-        
-        @media (max-width: 768px) {
-            .app-container { flex-direction: column; overflow: auto; }
-            .left-pane, .right-pane { flex: none; width: 100%; overflow: visible; border-right: none;}
-            body { overflow: auto; }
-            .floating-alert { width: calc(100% - 40px); bottom: 10px; right: 20px; left: 20px; }
-        }
-    </style>
-</head>
-<body>
-
-    <audio id="bg-audio" src="https://hoctienganhcungcoMS Chí Nên.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/export_dcyCDfhAokgnwEKEgvFUkr.mp3"></audio>
-
-    <div class="bg-animation"></div>
-    <div class="floating-emojis">
-        <span class="fly-item" style="left: 5%; animation-duration: 15s; animation-delay: 0s;">🚀</span>
-        <span class="fly-item" style="left: 20%; animation-duration: 20s; animation-delay: -5s;">🪐</span>
-        <span class="fly-item" style="left: 35%; animation-duration: 17s; animation-delay: -2s;">✈️</span>
-        <span class="fly-item" style="left: 55%; animation-duration: 22s; animation-delay: -8s;">👽</span>
-        <span class="fly-item" style="left: 70%; animation-duration: 14s; animation-delay: -4s;">🍳</span>
-        <span class="fly-item" style="left: 85%; animation-duration: 25s; animation-delay: -10s;">🥕</span>
-        <span class="fly-item" style="left: 92%; animation-duration: 16s; animation-delay: -7s;">🔭</span>
-        <span class="fly-item" style="left: 15%; animation-duration: 19s; animation-delay: -3s;">💻</span>
-        <span class="fly-item" style="left: 45%; animation-duration: 24s; animation-delay: -12s;">📹</span>
-        <span class="fly-item" style="left: 80%; animation-duration: 18s; animation-delay: -6s;">🌍</span>
-    </div>
-
-    <div class="floating-alert" id="sticky-reminder" style="display: none;">
-        <h4>🚨 Lời Nhắc Khắc Cốt Ghi Tâm:</h4>
-        <p>Học tiếng Anh không phải chạy KPI! Làm bài xong mà lướt qua giải thích hay lười chép từ mới thì thà đi ngủ còn hơn. <strong>Chỉ có đọc thật sâu và ghi chép cẩn thận</strong> mới là chân ái để tiến bộ! ✍️🔥</p>
-    </div>
-
-    <header>Giáo viên tạo: MS Chí Nên</header>
-
-    <div class="app-container">
-        <div class="left-pane">
-            
-            <div class="glass-box" id="passage1">
-                <div class="passage-title">ALIEN LIFE RESEARCH GUIDE</div>
-                <div class="passage-text">
-                    Follow these steps to contribute to the search for extraterrestrial life:<br><br>
-                    • Before using a telescope, <b>(13)</b> <span class="blank-space"></span> the night sky for unusual patterns or moving objects.<br>
-                    • Scientists often wait <b>(14)</b> <span class="blank-space"></span> years to detect signals from distant planets.<br>
-                    • If you find any strange data, report it to <b>(15)</b> <span class="blank-space"></span> research team immediately.<br>
-                    • To avoid false alarms, be <b>(16)</b> <span class="blank-space"></span> when analyzing signals and rule out natural causes first.
-                </div>
-                <button class="btn-translate" onclick="toggleDisplay('trans1')">Mở dịch đoạn này 🌟</button>
-                <div class="translation-text" id="trans1">
-                    <b>HƯỚNG DẪN NGHIÊN CỨU SỰ SỐNG NGOÀI HÀNH TINH</b><br>
-                    Làm theo các bước sau để đóng góp vào việc tìm kiếm sự sống ngoài Trái Đất:<br>
-                    • Trước khi sử dụng kính viễn vọng, (13) ____ bầu trời đêm để tìm các kiểu mẫu bất thường hoặc các vật thể đang di chuyển.<br>
-                    • Các nhà khoa học thường chờ đợi (14) _____ nhiều năm để phát hiện các tín hiệu từ các hành tinh xa xôi.<br>
-                    • Nếu bạn tìm thấy bất kỳ dữ liệu kỳ lạ nào, hãy báo cáo cho (15) _____ nhóm nghiên cứu ngay lập tức.<br>
-                    • Để tránh báo động giả, hãy (16) _____ khi phân tích các tín hiệu và loại trừ các nguyên nhân tự nhiên trước.
-                </div>
-                <table class="glossary-table">
-                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                    <tr><td>Extraterrestrial</td><td>adj</td><td>Ngoài Trái Đất</td></tr>
-                    <tr><td>Telescope</td><td>n</td><td>Kính viễn vọng</td></tr>
-                    <tr><td>Observe</td><td>v</td><td>Quan sát</td></tr>
-                    <tr><td>Detect</td><td>v</td><td>Phát hiện</td></tr>
-                    <tr><td>Signal</td><td>n</td><td>Tín hiệu</td></tr>
-                    <tr><td>Distant</td><td>adj</td><td>Xa xôi</td></tr>
-                    <tr><td>Immediately</td><td>adv</td><td>Ngay lập tức</td></tr>
-                    <tr><td>False alarm</td><td>n phrase</td><td>Báo động giả</td></tr>
-                    <tr><td>Analyze</td><td>v</td><td>Phân tích</td></tr>
-                    <tr><td>Rule out</td><td>phrasal verb</td><td>Loại trừ</td></tr>
-                </table>
-            </div>
-
-            <div class="glass-box" id="passage2">
-                <div class="passage-title">E-MAIL VS LETTERS</div>
-                <div class="passage-text">
-                    There can't be many people <b>(19)</b> <span class="blank-space"></span> unaware of e-mail, even if they have never actually sent one. Besides there are some similarities between e-mail and letters, there are also many differences. The first is that e-mail <b>(20)</b> <span class="blank-space"></span>, so it can be a <b>(21)</b> <span class="blank-space"></span> of communication when speed is important. This speed means that e-mail is more practical for communicating over large distances. Another difference is that e-mail tends to be relatively informal. People are much more possible <b>(22)</b> <span class="blank-space"></span> language which they would consider unsuitable for a formal letter. Words spelled incorrectly in an e-mail are less likely to be checked than in a letter. One explanation for this is that an e-mail seems to be <b>(23)</b> <span class="blank-space"></span> something written on paper. We can be sure that the future development of e-mail will have all kinds of expected effects on the way we <b>(24)</b> <span class="blank-space"></span>.
-                </div>
-                <button class="btn-translate" onclick="toggleDisplay('trans2')">Mở dịch đoạn này 🌟</button>
-                <div class="translation-text" id="trans2">
-                    Không thể có nhiều người (19) ____ không biết đến e-mail, ngay cả khi họ chưa bao giờ thực sự gửi một cái. Bên cạnh việc có một số điểm tương đồng giữa e-mail và thư tay, cũng có rất nhiều điểm khác biệt. Đầu tiên là e-mail (20) ____, vì vậy nó có thể là một (21) ____ giao tiếp khi tốc độ là yếu tố quan trọng. Tốc độ này có nghĩa là e-mail thực tế hơn để giao tiếp qua khoảng cách lớn. Một điểm khác biệt nữa là e-mail có xu hướng tương đối không trang trọng. Mọi người có nhiều khả năng (22) ____ ngôn ngữ mà họ sẽ coi là không phù hợp cho một lá thư trang trọng. Các từ viết sai chính tả trong một e-mail ít có khả năng được kiểm tra hơn so với trong một lá thư. Một lời giải thích cho điều này là một e-mail dường như (23) ____ một cái gì đó được viết trên giấy. Chúng ta có thể chắc chắn rằng sự phát triển trong tương lai của e-mail sẽ có đủ loại tác động có thể dự đoán đối với cách chúng ta (24) ____.
-                </div>
-                <table class="glossary-table">
-                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                    <tr><td>Unaware</td><td>adj</td><td>Không nhận thức được, không biết</td></tr>
-                    <tr><td>Similarity</td><td>n</td><td>Sự tương đồng</td></tr>
-                    <tr><td>Instantly</td><td>adv</td><td>Ngay lập tức</td></tr>
-                    <tr><td>Deliver</td><td>v</td><td>Giao, chuyển phát</td></tr>
-                    <tr><td>Practical</td><td>adj</td><td>Thực tế, thiết thực</td></tr>
-                    <tr><td>Relatively</td><td>adv</td><td>Tương đối</td></tr>
-                    <tr><td>Informal</td><td>adj</td><td>Không trang trọng, thân mật</td></tr>
-                    <tr><td>Unsuitable</td><td>adj</td><td>Không phù hợp</td></tr>
-                    <tr><td>Permanent</td><td>adj</td><td>Lâu dài, vĩnh cửu</td></tr>
-                    <tr><td>Effect</td><td>n</td><td>Tác động, ảnh hưởng</td></tr>
-                </table>
-            </div>
-
-            <div class="glass-box" id="passage3">
-                <div class="passage-title">BENEFITS OF VIDEO CONFERENCING</div>
-                <div class="passage-text">
-                    Video conferencing is the technology that allows you to hold meetings with people who are in different places while seeing them and talking to them in real time. It is different from simple video calling, which is often one-to-one video communication. In the past, video conferencing needed complex and expensive equipment. Today, it's easy to join in a video conference on your computer or smart phone with Internet connectivity. Moreover, video conferencing is also an important tool for people who work away from the office, often at home because it helps to save time and money for them.<br><br>
-                    Video conferencing can help teachers in teaching, too. Video conferencing is a great way of learning and sharing knowledge beyond distance. Courses can take place with the teacher and each different student living in a different location. This will help education spread even to remote mountainous areas.
-                </div>
-                <button class="btn-translate" onclick="toggleDisplay('trans3')">Mở dịch đoạn này 🌟</button>
-                <div class="translation-text" id="trans3">
-                    Hội nghị truyền hình là công nghệ cho phép bạn tổ chức các cuộc họp với những người ở những nơi khác nhau trong khi vẫn nhìn thấy và nói chuyện với họ trong thời gian thực. Nó khác với gọi video đơn giản, vốn thường là giao tiếp video một-một. Trong quá khứ, hội nghị truyền hình cần thiết bị phức tạp và đắt tiền. Ngày nay, thật dễ dàng để tham gia một hội nghị truyền hình trên máy tính hoặc điện thoại thông minh có kết nối Internet. Hơn nữa, hội nghị truyền hình cũng là một công cụ quan trọng đối với những người làm việc xa văn phòng, thường là ở nhà vì nó giúp họ tiết kiệm thời gian và tiền bạc.<br><br>
-                    Hội nghị truyền hình cũng có thể giúp giáo viên trong việc giảng dạy. Hội nghị truyền hình là một cách tuyệt vời để học tập và chia sẻ kiến thức vượt qua khoảng cách. Các khóa học có thể diễn ra với giáo viên và mỗi học sinh khác nhau sống ở một vị trí khác nhau. Điều này sẽ giúp giáo dục lan rộng đến tận những vùng núi hẻo lánh.
-                </div>
-                <table class="glossary-table">
-                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                    <tr><td>Video conferencing</td><td>n phrase</td><td>Hội nghị truyền hình</td></tr>
-                    <tr><td>Complex</td><td>adj</td><td>Phức tạp</td></tr>
-                    <tr><td>Equipment</td><td>n</td><td>Thiết bị</td></tr>
-                    <tr><td>Connectivity</td><td>n</td><td>Khả năng kết nối</td></tr>
-                    <tr><td>Moreover</td><td>adv</td><td>Hơn nữa</td></tr>
-                    <tr><td>Knowledge</td><td>n</td><td>Kiến thức</td></tr>
-                    <tr><td>Beyond</td><td>prep</td><td>Vượt ra ngoài</td></tr>
-                    <tr><td>Distance</td><td>n</td><td>Khoảng cách</td></tr>
-                    <tr><td>Location</td><td>n</td><td>Vị trí, địa điểm</td></tr>
-                    <tr><td>Remote</td><td>adj</td><td>Xa xôi hẻo lánh</td></tr>
-                </table>
-            </div>
-
-            <div class="glass-box" id="passage4">
-                <div class="passage-title">THE IMPACT OF SCIENCE AND TECHNOLOGY</div>
-                <div class="passage-text">
-                    <b>(37)</b> <span class="blank-space"></span>. From smartphones to electric cars, modern inventions make life more convenient and efficient. In medicine, new technologies help doctors diagnose and treat diseases more accurately. <b>(38)</b> <span class="blank-space"></span> solar and wind power to protect the environment. In education, online learning platforms give students access to knowledge from anywhere in the world. <b>(39)</b> <span class="blank-space"></span>. However, it is important to use technology responsibly to avoid negative effects, such as pollution or job loss due to automation. <b>(40)</b> <span class="blank-space"></span>
-                </div>
-                <button class="btn-translate" onclick="toggleDisplay('trans4')">Mở dịch đoạn này 🌟</button>
-                <div class="translation-text" id="trans4">
-                    (37) ____. Từ điện thoại thông minh đến ô tô điện, những phát minh hiện đại làm cho cuộc sống trở nên tiện lợi và hiệu quả hơn. Trong y học, các công nghệ mới giúp bác sĩ chẩn đoán và điều trị bệnh chính xác hơn. (38) ____ năng lượng mặt trời và gió để bảo vệ môi trường. Trong giáo dục, các nền tảng học trực tuyến giúp học sinh tiếp cận kiến thức từ bất cứ đâu trên thế giới. (39) ____. Tuy nhiên, điều quan trọng là phải sử dụng công nghệ một cách có trách nhiệm để tránh các tác động tiêu cực, chẳng hạn như ô nhiễm hoặc mất việc làm do tự động hóa. (40) ____.
-                </div>
-                <table class="glossary-table">
-                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                    <tr><td>Impact</td><td>n</td><td>Tác động, ảnh hưởng</td></tr>
-                    <tr><td>Invention</td><td>n</td><td>Phát minh</td></tr>
-                    <tr><td>Convenient</td><td>adj</td><td>Tiện lợi</td></tr>
-                    <tr><td>Efficient</td><td>adj</td><td>Hiệu quả</td></tr>
-                    <tr><td>Diagnose</td><td>v</td><td>Chẩn đoán</td></tr>
-                    <tr><td>Accurately</td><td>adv</td><td>Một cách chính xác</td></tr>
-                    <tr><td>Renewable</td><td>adj</td><td>Có thể tái tạo</td></tr>
-                    <tr><td>Access</td><td>n</td><td>Sự tiếp cận</td></tr>
-                    <tr><td>Automation</td><td>n</td><td>Sự tự động hóa</td></tr>
-                    <tr><td>Unpredictable</td><td>adj</td><td>Không thể đoán trước</td></tr>
-                </table>
-            </div>
-            <br><br><br>
-        </div>
-
-        <div class="right-pane" id="quiz-container">
-            </div>
-    </div>
-
-    <div class="modal-overlay" id="name-modal">
-        <div class="modal-content">
-            <h2>🎯 Nhập tên của con để làm bài nhé!</h2>
-            <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A">
-            <button class="start-btn" onclick="startQuiz()">BẮT ĐẦU LÀM BÀI 🚀</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="result-modal">
-        <div class="modal-content">
-            <h2 id="res-name">Tên học sinh</h2>
-            <h1 style="color: #d90429; font-size: 45px; margin: 10px 0;" id="res-score">0/20</h1>
-            <p id="res-cmt" style="font-weight: bold; font-size: 19px; line-height: 1.5;"></p>
-            <img id="res-gif" class="result-gif" src="" alt="Meme">
-            <button class="start-btn" onclick="location.reload()" style="margin-top: 10px;">LÀM LẠI BÀI 🔄</button>
-        </div>
-    </div>
-
-    <script>
-        // WEB AUDIO API CHO TƯƠNG TÁC ÂM THANH
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioCtx = new AudioContext();
-
-        function playSound(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
-                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
-            } else {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(250, audioCtx.currentTime + 0.1);
-                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-            }
-        }
-
-        // CONFETTI HIỆU ỨNG PHÁO HOA
-        function createConfetti() {
-            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
-            for(let i = 0; i < 60; i++) {
-                const conf = document.createElement('div');
-                conf.classList.add('confetti');
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 4000);
-            }
-        }
-
-        function toggleDisplay(id) {
-            const el = document.getElementById(id);
-            el.style.display = el.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH CHUẨN MASTER (Đã bỏ nhãn A B C D)
-        const questionsData = [
-            {
-                id: 13, text: "Question 13 (Alien Life Research Guide)",
-                options: [
-                    {text: "observe", correct: true}, {text: "explore", correct: false}, {text: "examine", correct: false}, {text: "stare", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Trước khi sử dụng kính viễn vọng, (13) ____ bầu trời đêm để tìm các kiểu mẫu bất thường hoặc các vật thể đang di chuyển.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>explore</span> ❌ Sai. <span class='p-word'>explore</span> (<span class='p-grammar'>v</span>) mang nghĩa <span class='p-mean'>khám phá</span>, đi sâu vào để tìm hiểu, không hợp với việc đứng một chỗ tìm bằng mắt.<br>
-                    - <span class='hl-red'>examine</span> ❌ Sai. <span class='p-word'>examine</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>kiểm tra chi tiết</span>, thường dùng cho đồ vật cầm nắm được hoặc kiểm tra y tế.<br>
-                    - <span class='hl-red'>stare</span> ❌ Sai. <span class='p-word'>stare</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>nhìn chằm chằm</span> (thường do ngạc nhiên hoặc bất lịch sự).<br>
-                    - <span class='hl-green'>observe</span> ✅ Đúng. <span class='p-word'>observe</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>quan sát</span>, hoàn toàn phù hợp với hành động dùng mắt thường hoặc kính viễn vọng để theo dõi bầu trời.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Before using a telescope, observe the night sky..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Trước khi sử dụng kính viễn vọng, hãy <span style='color:red;'>quan sát</span> bầu trời đêm..."</span>
-                `
-            },
-            {
-                id: 14, text: "Question 14 (Alien Life Research Guide)",
-                options: [
-                    {text: "with", correct: false}, {text: "for", correct: true}, {text: "during", correct: false}, {text: "in", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Các nhà khoa học thường chờ đợi (14) _____ nhiều năm để phát hiện các tín hiệu từ các hành tinh xa xôi.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>with / during / in</span> ❌ Sai. Không đi kèm với động từ wait để chỉ khoảng thời gian theo cách này.<br>
-                    - <span class='hl-green'>for</span> ✅ Đúng. Cấu trúc <span class='p-grammar'>wait for + khoảng thời gian</span> nghĩa là <span class='p-mean'>chờ đợi trong bao lâu</span>.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Scientists often wait for years..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Các nhà khoa học thường chờ đợi <span style='color:red;'>trong (nhiều)</span> năm..."</span>
-                `
-            },
-            {
-                id: 15, text: "Question 15 (Alien Life Research Guide)",
-                options: [
-                    {text: "the", correct: true}, {text: "a", correct: false}, {text: "an", correct: false}, {text: "X", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Nếu bạn tìm thấy bất kỳ dữ liệu kỳ lạ nào, hãy báo cáo cho (15) _____ nhóm nghiên cứu ngay lập tức.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>a / an</span> ❌ Sai. Mạo từ không xác định dùng cho đối tượng chưa được nhắc đến.<br>
-                    - <span class='hl-red'>X (Không điền)</span> ❌ Sai ngữ pháp vì "research team" là danh từ đếm được số ít.<br>
-                    - <span class='hl-green'>the</span> ✅ Đúng. "nhóm nghiên cứu" ở đây là một đối tượng <span class='p-grammar'>đã xác định</span> trong ngữ cảnh của bài viết hướng dẫn này.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...report it to the research team immediately."</span>
-                    👉 <span class='quote-vi'>Dịch: "...hãy báo cáo cho nhóm nghiên cứu <span style='color:red;'>(đó)</span> ngay lập tức."</span>
-                `
-            },
-            {
-                id: 16, text: "Question 16 (Alien Life Research Guide)",
-                options: [
-                    {text: "logical", correct: false}, {text: "patient", correct: false}, {text: "careful", correct: true}, {text: "through", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Để tránh báo động giả, hãy (16) _____ khi phân tích các tín hiệu...<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>logical</span> ❌ Sai. <span class='p-word'>logical</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>có logic</span>.<br>
-                    - <span class='hl-red'>patient</span> ❌ Sai. <span class='p-word'>patient</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>kiên nhẫn</span>.<br>
-                    - <span class='hl-red'>through</span> ❌ Sai.<br>
-                    - <span class='hl-green'>careful</span> ✅ Đúng. <span class='p-word'>careful</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>cẩn thận</span>. Cần cẩn thận khi phân tích để tránh nhầm lẫn.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"To avoid false alarms, be careful when analyzing..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Để tránh báo động giả, hãy <span style='color:red;'>cẩn thận</span> khi phân tích..."</span>
-                `
-            },
-            {
-                id: 19, text: "Question 19 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "which are", correct: false}, {text: "who are", correct: true}, {text: "who is", correct: false}, {text: "that is", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Không thể có nhiều người (19) ______ không biết đến e-mail...<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>which are</span> ❌ Sai. <span class='p-word'>which</span> dùng thay thế cho vật, không dùng cho người ("people").<br>
-                    - <span class='hl-red'>who is / that is</span> ❌ Sai. Danh từ "people" (<span class='p-mean'>mọi người</span>) là danh từ số nhiều nên động từ to-be theo sau đại từ quan hệ phải là số nhiều.<br>
-                    - <span class='hl-green'>who are</span> ✅ Đúng. <span class='p-word'>who</span> thay thế cho danh từ chỉ người "people", to-be chia số nhiều là <span class='p-grammar'>are</span>.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"There can't be many people who are unaware of e-mail..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Không thể có nhiều người <span style='color:red;'>những người mà</span> không biết đến e-mail..."</span>
-                `
-            },
-            {
-                id: 20, text: "Question 20 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "is instantly delivered", correct: true}, {text: "is instantly deliver", correct: false}, {text: "are instantly delivered", correct: false}, {text: "are instantly deliver", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Đầu tiên là e-mail (20) ____, vì vậy nó có thể là...<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>are...</span> ❌ Sai. Chủ ngữ là "e-mail" (số ít) nên động từ to-be phải là "is".<br>
-                    - <span class='hl-red'>is instantly deliver</span> ❌ Sai. Cấu trúc bị động phải là to-be + V3/ed (delivered).<br>
-                    - <span class='hl-green'>is instantly delivered</span> ✅ Đúng. E-mail được gửi đi nên phải dùng thể <span class='p-grammar'>bị động (Passive Voice): S + is + adv + V3/ed</span>.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"The first is that e-mail is instantly delivered..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Đầu tiên là e-mail <span style='color:red;'>được gửi ngay lập tức</span>..."</span>
-                `
-            },
-            {
-                id: 21, text: "Question 21 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "very effective means", correct: true}, {text: "effective very mean", correct: false}, {text: "effective very means", correct: false}, {text: "very effective mean", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> ...vì vậy nó có thể là một (21) ______ giao tiếp khi tốc độ là quan trọng.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>mean</span> ❌ Sai. Từ "mean" không có 's' mang nghĩa là tính từ (kéo kiệt) hoặc động từ (có nghĩa là).<br>
-                    - <span class='hl-red'>effective very</span> ❌ Sai. Trạng từ chỉ mức độ "very" phải đứng trước tính từ "effective".<br>
-                    - <span class='hl-green'>very effective means</span> ✅ Đúng. <span class='p-word'>a means</span> (<span class='p-grammar'>n</span>) nghĩa là <span class='p-mean'>một phương tiện</span> (từ này luôn có 's' ở tận cùng dù số ít hay nhiều). Trật tự đúng: Adv + Adj + Noun.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...so it can be a very effective means of communication..."</span>
-                    👉 <span class='quote-vi'>Dịch: "...vì vậy nó có thể là một <span style='color:red;'>phương tiện rất hiệu quả</span> trong giao tiếp..."</span>
-                `
-            },
-            {
-                id: 22, text: "Question 22 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "to using", correct: false}, {text: "using", correct: false}, {text: "to use", correct: true}, {text: "to be used", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Mọi người có nhiều khả năng (22) ______ ngôn ngữ mà họ sẽ coi là không phù hợp cho một lá thư trang trọng.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>using / to using</span> ❌ Sai cấu trúc.<br>
-                    - <span class='hl-red'>to be used</span> ❌ Sai. Đây là thể bị động, nhưng ở đây "mọi người" (people) chủ động sử dụng ngôn ngữ.<br>
-                    - <span class='hl-green'>to use</span> ✅ Đúng. Cấu trúc <span class='p-grammar'>be possible / likely + to V</span> (có khả năng làm gì đó).<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"People are much more possible to use language which..."</span>
-                    👉 <span class='quote-vi'>Dịch: "Mọi người có nhiều khả năng <span style='color:red;'>sử dụng</span> ngôn ngữ mà..."</span>
-                `
-            },
-            {
-                id: 23, text: "Question 23 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "most permanent than", correct: false}, {text: "more permanent as", correct: false}, {text: "less permanent as", correct: false}, {text: "less permanent than", correct: true}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Một lời giải thích cho điều này là một e-mail dường như (23) ______ một cái gì đó được viết trên giấy.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>most / as</span> ❌ Sai. Có than thì không dùng most hay as.<br>
-                    - <span class='hl-green'>less permanent than</span> ✅ Đúng. Cấu trúc so sánh kém hơn: <span class='p-grammar'>less + long adj + than</span>. Email ít mang tính lưu trữ lâu dài bằng giấy.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...an e-mail seems to be less permanent than something written on paper."</span>
-                    👉 <span class='quote-vi'>Dịch: "...một e-mail dường như <span style='color:red;'>ít vĩnh cửu/lâu dài hơn</span> một cái gì đó được viết trên giấy."</span>
-                `
-            },
-            {
-                id: 24, text: "Question 24 (E-MAIL VS LETTERS)",
-                options: [
-                    {text: "communicate", correct: true}, {text: "communicative", correct: false}, {text: "communicating", correct: false}, {text: "communication", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> ...sẽ có đủ loại tác động có thể dự đoán đối với cách chúng ta (24) ______.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>communicative / communication</span> ❌ Sai từ loại. "we" là đại từ nhân xưng, theo sau phải là Động từ.<br>
-                    - <span class='hl-red'>communicating</span> ❌ Sai vì thiếu to-be.<br>
-                    - <span class='hl-green'>communicate</span> ✅ Đúng. Động từ nguyên thể chia theo chủ ngữ số nhiều "we" ở thì hiện tại đơn.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...effects on the way we communicate."</span>
-                    👉 <span class='quote-vi'>Dịch: "...tác động đối với cách chúng ta <span style='color:red;'>giao tiếp</span>."</span>
-                `
-            },
-            {
-                id: 31, text: "Question 31 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "Video conferencing facilitates remote interaction and learning.", correct: true}, 
-                    {text: "It is mainly for teachers in remote areas.", correct: false}, 
-                    {text: "It has replaced all face-to-face meetings and classes.", correct: false}, 
-                    {text: "It is hard and expensive to use.", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Ý chính của đoạn văn là gì?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>Các đáp án khác</span> ❌ Sai. Quá hẹp, sai sự thật (chưa thay thế toàn bộ), hoặc ngược lại với bài đọc.<br>
-                    - <span class='hl-green'>Video conferencing facilitates remote interaction and learning.</span> ✅ Đúng. Bao quát cả đoạn 1 (tương tác từ xa) và đoạn 2 (học tập).<br>
-                    📖 <b>Dẫn chứng:</b> Toàn bài nói về việc tổ chức cuộc họp khác nơi (đoạn 1) và chia sẻ kiến thức vượt khoảng cách (đoạn 2).<br>
-                    👉 <span class='quote-vi'>Dịch: "<span style='color:red;'>Hội nghị truyền hình tạo điều kiện cho sự tương tác và học tập từ xa.</span>"</span>
-                `
-            },
-            {
-                id: 32, text: "Question 32 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "People can see and touch each other", correct: false}, 
-                    {text: "People can see and use telepathy", correct: false}, 
-                    {text: "People can see and talk to each other", correct: true}, 
-                    {text: "People can talk and touch each other.", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Mọi người có thể làm gì với hội nghị truyền hình?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>Các đáp án chứa "touch"</span> ❌ Sai. Qua mạng không thể chạm vào nhau.<br>
-                    - <span class='hl-red'>Đáp án chứa "telepathy"</span> ❌ Sai. Telepathy là thần giao cách cảm, là hư cấu.<br>
-                    - <span class='hl-green'>People can see and talk to each other</span> ✅ Đúng.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...seeing them and talking to them in real time."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "...<span style='color:red;'>nhìn thấy họ và nói chuyện với họ</span> trong thời gian thực."</span>
-                `
-            },
-            {
-                id: 33, text: "Question 33 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "Video calling is often one-to-one communication", correct: false}, 
-                    {text: "Video conferencing can happen between many people", correct: false}, 
-                    {text: "In the past, video conferencing needed simple equipment", correct: true}, 
-                    {text: "Today, video conferencing only requires a smartphone with Internet connectivity.", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Câu nào dưới đây KHÔNG ĐÚNG?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>Các đáp án khác</span> ❌ Sai vì chúng là các thông tin ĐÚNG có trong bài.<br>
-                    - <span class='hl-green'>In the past, video conferencing needed simple equipment</span> ✅ Đúng vì đây là câu nói SAI SỰ THẬT so với bài.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"In the past, video conferencing needed complex and expensive equipment."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "Trong quá khứ, hội nghị truyền hình cần thiết bị <span style='color:red;'>phức tạp và đắt tiền</span> (chứ không phải simple)."</span>
-                `
-            },
-            {
-                id: 34, text: "Question 34 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "Enable", correct: false}, {text: "permit", correct: false}, {text: "let", correct: false}, {text: "prevent", correct: true}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Từ "allow" TRÁI NGHĨA với từ nào?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>Enable / permit / let</span> ❌ Sai. Đây đều là TỪ ĐỒNG NGHĨA.<br>
-                    - <span class='hl-green'>prevent</span> ✅ Đúng. <span class='p-word'>allow</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>cho phép</span> ><span class='p-word'>prevent</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>ngăn cản</span>.<br>
-                    📖 <b>Dẫn chứng:</b> Từ vựng đối lập trực tiếp.
-                `
-            },
-            {
-                id: 35, text: "Question 35 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "Unaffordable", correct: true}, {text: "cheap", correct: false}, {text: "reasonable", correct: false}, {text: "consumable", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Từ "expensive" ĐỒNG NGHĨA nhất với từ nào?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-red'>cheap / reasonable</span> ❌ Sai. Là trái nghĩa.<br>
-                    - <span class='hl-red'>consumable</span> ❌ Sai. Nghĩa là đồ tiêu hao được.<br>
-                    - <span class='hl-green'>Unaffordable</span> ✅ Đúng. <span class='p-word'>expensive</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>đắt đỏ</span>. <span class='p-word'>unaffordable</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>không thể chi trả nổi</span>.<br>
-                    📖 <b>Dẫn chứng:</b> Từ đồng nghĩa theo ngữ cảnh.
-                `
-            },
-            {
-                id: 36, text: "Question 36 (BENEFITS OF VIDEO CONFERENCING)",
-                options: [
-                    {text: "It still requires very expensive and complex equipment.", correct: false}, 
-                    {text: "It can only be used on office computers.", correct: false}, 
-                    {text: "It is now easy to join using a smartphone or computer with the Internet.", correct: true}, 
-                    {text: "It has become more difficult and complicated to use.", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Hội nghị truyền hình ngày nay đã thay đổi như thế nào so với quá khứ?<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - <span class='hl-green'>It is now easy to join using a smartphone or computer with the Internet.</span> ✅ Đúng.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Today, it's easy to join in a video conference on your computer or smart phone with Internet connectivity."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "Ngày nay, <span style='color:red;'>thật dễ dàng để tham gia hội nghị truyền hình trên máy tính hoặc điện thoại thông minh có kết nối Internet</span>."</span>
-                `
-            },
-            {
-                id: 37, text: "Question 37 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
-                options: [
-                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
-                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
-                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
-                    {text: "Science and technology have greatly improved our daily lives", correct: true}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (37) đầu đoạn văn.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - Câu tiếp theo: "Từ điện thoại thông minh đến ô tô điện, những phát minh hiện đại làm cho cuộc sống trở nên tiện lợi..." -> Đây là dẫn chứng cho việc khoa học cải thiện cuộc sống.<br>
-                    - <span class='hl-green'>Science and technology have greatly improved our daily lives</span> ✅ Đúng. Đây là câu chủ đề hoàn hảo mở đầu cho đoạn văn.<br>
-                    📖 <b>Dẫn chứng:</b> Câu giới thiệu khái quát mở đầu cho việc liệt kê các cải thiện trong đời sống.
-                `
-            },
-            {
-                id: 38, text: "Question 38 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
-                options: [
-                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
-                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
-                    {text: "Scientists are also exploring renewable energy sources like", correct: true}, 
-                    {text: "Science and technology have greatly improved our daily lives", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (38).<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - Đằng sau chỗ trống là: "... solar and wind power to protect the environment." (... năng lượng mặt trời và gió để bảo vệ môi trường).<br>
-                    - Chỉ có câu kết thúc bằng từ "like" (như là) mới ghép với phía sau tạo thành câu hoàn chỉnh.<br>
-                    - <span class='hl-green'>Scientists are also exploring renewable energy sources like</span> ✅ Đúng.<br>
-                    📖 <b>Dẫn chứng:</b> Ghép lại: <span class='quote-en'>"Scientists are also exploring renewable energy sources like solar and wind power..."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "Các nhà khoa học cũng đang khám phá <span style='color:red;'>các nguồn năng lượng tái tạo như</span> năng lượng mặt trời và gió..."</span>
-                `
-            },
-            {
-                id: 39, text: "Question 39 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
-                options: [
-                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
-                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: true}, 
-                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
-                    {text: "Science and technology have greatly improved our daily lives", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (39).<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - Đằng sau là "However,... to avoid negative effects, such as pollution or job loss" (Tuy nhiên, cần tránh tác động tiêu cực như mất việc).<br>
-                    - Suy ra phía trước phải là một ý tích cực về việc làm thì "However" (tuy nhiên) mới dẫn tới cảnh báo mất việc làm.<br>
-                    - <span class='hl-green'>As technology continues to develop, it creates new jobs and opportunities</span> ✅ Đúng.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"As technology continues to develop, it creates new jobs and opportunities. However, it is important to... avoid negative effects, such as pollution or job loss..."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "<span style='color:red;'>Nó tạo ra việc làm mới</span>. Tuy nhiên, cần tránh rủi ro <span style='color:red;'>mất việc làm</span>."</span>
-                `
-            },
-            {
-                id: 40, text: "Question 40 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
-                options: [
-                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: true}, 
-                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
-                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
-                    {text: "Science and technology have greatly improved our daily lives", correct: false}
-                ],
-                explanation: `
-                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (40) cuối đoạn.<br>
-                    🔍 <b>Phân tích đáp án:</b><br>
-                    - Cuối đoạn văn cần một câu kết luận hướng về tương lai.<br>
-                    - <span class='hl-green'>Science and technology will continue to shape the future in exciting and unpredictable ways.</span> ✅ Đúng. Câu này dùng thì tương lai "will continue" làm câu kết luận xuất sắc.<br>
-                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Science and technology will continue to shape the future in exciting and unpredictable ways."</span><br>
-                    👉 <span class='quote-vi'>Dịch: "Khoa học và công nghệ sẽ <span style='color:red;'>tiếp tục định hình tương lai</span> theo những cách thú vị và không thể đoán trước."</span>
-                `
-            }
-        ];
-
-        // Xáo trộn mảng
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        let answeredQuestions = 0;
-        let currentScore = 0; // Biến tính điểm tích lũy
-        let quizSubmitted = false;
-        let audioPlayed = false;
-
-        function renderQuestions() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = '';
-
-            questionsData.forEach((q, index) => {
-                const card = document.createElement('div');
-                card.className = 'glass-box question-card';
-                card.id = `q-card-${q.id}`;
-                
-                // Tiêu đề câu hỏi
-                const title = document.createElement('div');
-                title.className = 'question-text';
-                title.innerHTML = `Câu ${index + 1}: ${q.text}`;
-                card.appendChild(title);
-
-                // Ghi chú nhỏ cho học sinh
-                const hint = document.createElement('div');
-                hint.style.fontSize = '13px';
-                hint.style.color = '#e74c3c';
-                hint.style.marginBottom = '10px';
-                hint.style.fontStyle = 'italic';
-                hint.innerHTML = '👉 Đọc kỹ rồi click chọn nhé. Chọn xong là máy chấm điểm và hiện giải thích luôn đó!';
-                card.appendChild(hint);
-
-                // Grid chứa các nút đáp án
-                const grid = document.createElement('div');
-                grid.className = 'options-grid';
-                
-                let opts = [...q.options];
-                shuffleArray(opts);
-
-                opts.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerHTML = opt.text;
-                    
-                    btn.onclick = () => {
-                        if (card.dataset.answered === "true") return; // Ngăn chọn lại
-                        
-                        card.dataset.answered = "true";
-                        answeredQuestions++;
-                        
-                        const isCorrectOpt = opt.correct;
-
-                        // Khóa tất cả các nút và làm nổi bật đáp án đúng
-                        const allBtns = grid.querySelectorAll('.option-btn');
-                        allBtns.forEach(b => {
-                            b.disabled = true;
-                            // Kiểm tra xem nút đang duyệt có phải là đáp án đúng trong mảng không
-                            const isThisCorrect = q.options.find(o => o.text === b.innerHTML).correct;
-                            if (isThisCorrect) {
-                                b.classList.add('correct');
-                            }
-                        });
-
-                        // Xử lý nút học sinh vừa bấm
-                        if (isCorrectOpt) {
-                            currentScore++;
-                            playSound('correct');
-                        } else {
-                            btn.classList.add('wrong');
-                            btn.classList.add('shake');
-                            playSound('wrong');
-                        }
-                        
-                        // Hiện giải thích ngay lập tức
-                        const expl = card.querySelector('.explanation-box');
-                        if (expl) expl.style.display = 'block';
-                    };
-                    
-                    grid.appendChild(btn);
-                });
-
-                card.appendChild(grid);
-
-                // Tạo sẵn khung giải thích (sẽ bị ẩn cho đến khi click)
-                const expl = document.createElement('div');
-                expl.className = 'explanation-box';
-                expl.innerHTML = q.explanation;
-                card.appendChild(expl);
-
-                container.appendChild(card);
-            });
-
-            // Thêm nút Xem Tổng Kết Điểm
-            const submitBtn = document.createElement('button');
-            submitBtn.className = 'submit-btn';
-            submitBtn.innerHTML = '🎯 XEM TỔNG KẾT ĐIỂM';
-            submitBtn.onclick = submitQuiz;
-            container.appendChild(submitBtn);
-        }
-
-        function startQuiz() {
-            const name = document.getElementById('student-name').value.trim();
-            if(!name) {
-                alert("Con quên chưa nhập tên kìa! Nhập tên để cô chấm điểm nhé.");
-                return;
-            }
-            document.getElementById('name-modal').style.display = 'none';
-            document.getElementById('sticky-reminder').style.display = 'block';
-
-            if(!audioPlayed) {
-                const bgAudio = document.getElementById('bg-audio');
-                bgAudio.play().catch(e => console.log("Audio block:", e));
-                audioPlayed = true;
-            }
-        }
-
-        function submitQuiz() {
-            if(quizSubmitted) return;
-
-            if(answeredQuestions < questionsData.length) {
-                if(!confirm(`Con mới làm ${answeredQuestions}/${questionsData.length} câu. Chắc chắn muốn kết thúc bài sớm chứ?`)) {
-                    return;
-                }
-            }
-            
-            quizSubmitted = true;
-
-            // Hiển thị Popup
-            const name = document.getElementById('student-name').value || "Học sinh ẩn danh";
-            const percent = (currentScore / questionsData.length) * 100;
-            
-            document.getElementById('res-name').innerText = `Học sinh: ${name}`;
-            document.getElementById('res-score').innerText = `Điểm số: ${currentScore}/${questionsData.length}`;
-            
-            const cmt = document.getElementById('res-cmt');
-            const gif = document.getElementById('res-gif');
-
-            if(percent === 100) {
-                playSound('correct');
-                createConfetti();
-                cmt.innerText = "Tuyệt đỉnh! Con chính là Thiên Tài tiếng Anh! 🌟 MS Chí Nên rất tự hào!";
-                cmt.style.color = "#27ae60";
-                gif.src = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif";
-            } else if(percent >= 60) {
-                playSound('correct');
-                createConfetti();
-                cmt.innerText = "Rất tốt! Con đã cố gắng hết sức. High-five! ✋ Nhớ đọc phần giải thích Master bên dưới nhé!";
-                cmt.style.color = "#2980b9";
-                gif.src = "https://media.giphy.com/media/3oz8xAFtjouKvtCE7u/giphy.gif";
-            } else {
-                playSound('wrong');
-                cmt.innerText = "Điểm số chưa cao nhưng không sao! Kéo xuống ĐỌC THẬT KỸ và CHÉP LẠI giải thích chi tiết, trình độ sẽ lên ngay! Cố lên! 💪";
-                cmt.style.color = "#c0392b";
-                gif.src = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
-            }
-
-            document.getElementById('result-modal').style.display = 'flex';
-        }
-
-        window.onload = () => {
-            document.getElementById('name-modal').style.display = 'flex';
-            renderQuestions();
-        };
-    </script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MS Chí Nên - English Master Test</title>
+
+    <style>
+
+        /* CSS BIẾN MÀU TƯƠI SÁNG & CƠ BẢN */
+
+        :root {
+
+            --neon-pink: #ff9a9e;
+
+            --neon-peach: #fecfef;
+
+            --neon-blue: #a1c4fd;
+
+            --neon-cyan: #c2e9fb;
+
+            --neon-yellow: #fdfbfb;
+
+            --glass-bg: rgba(255, 255, 255, 0.45);
+
+            --glass-border: rgba(255, 255, 255, 0.8);
+
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+            
+
+            /* Màu chữ cho phần giải thích */
+
+            --word-blue: #0056b3;
+
+            --mean-terra: #d35400;
+
+            --grammar-red: #c0392b;
+
+            --correct-green: #27ae60;
+
+            --incorrect-red: #c0392b;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            overflow: hidden; 
+
+            color: #2c3e50;
+
+        }
+
+
+
+        /* BACKGROUND GRADIENT LOANG TƯƠI SÁNG */
+
+        .bg-animation {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100vw; height: 100vh;
+
+            z-index: -2;
+
+            background: linear-gradient(120deg, var(--neon-pink), var(--neon-peach), var(--neon-blue), var(--neon-cyan), var(--neon-yellow));
+
+            background-size: 300% 300%;
+
+            animation: gradientBG 10s ease infinite;
+
+        }
+
+        @keyframes gradientBG {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        /* HIỆU ỨNG VẬT BAY BAY */
+
+        .floating-emojis {
+
+            position: fixed; width: 100vw; height: 100vh; top: 0; left: 0;
+
+            pointer-events: none; z-index: -1; overflow: hidden;
+
+        }
+
+        .fly-item {
+
+            position: absolute;
+
+            font-size: 3.5rem;
+
+            bottom: -15%;
+
+            opacity: 0.6;
+
+            animation: flyUp linear infinite;
+
+        }
+
+        @keyframes flyUp {
+
+            0% { transform: translateY(0) rotate(0deg); }
+
+            100% { transform: translateY(-120vh) rotate(360deg); }
+
+        }
+
+        
+
+        /* HEADER TINH TẾ */
+
+        header {
+
+            position: fixed;
+
+            top: 0; width: 100%; height: 40px;
+
+            background: rgba(255, 255, 255, 0.3);
+
+            backdrop-filter: blur(8px);
+
+            z-index: 100;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #444;
+
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+
+        }
+
+
+
+        /* BẢNG THÔNG BÁO NỔI (FLOATING ALERT) */
+
+        .floating-alert {
+
+            position: fixed;
+
+            bottom: 25px;
+
+            right: 25px;
+
+            width: 300px;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            border: 3px solid #ff0844;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 10px 30px rgba(255, 8, 68, 0.4);
+
+            z-index: 999;
+
+            animation: pulseBorder 2s infinite;
+
+            font-size: 15px;
+
+            color: #333;
+
+            line-height: 1.5;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+        .floating-alert h4 {
+
+            margin: 0 0 8px 0; color: #d90429; font-size: 17px; text-transform: uppercase;
+
+        }
+
+        .floating-alert p { margin: 0; font-weight: 600; }
+
+        @keyframes pulseBorder {
+
+            0% { box-shadow: 0 0 0 0 rgba(255, 8, 68, 0.6); }
+
+            70% { box-shadow: 0 0 0 10px rgba(255, 8, 68, 0); }
+
+            100% { box-shadow: 0 0 0 0 rgba(255, 8, 68, 0); }
+
+        }
+
+
+
+        /* SPLIT SCREEN LAYOUT */
+
+        .app-container {
+
+            display: flex;
+
+            height: 100vh;
+
+            padding-top: 40px;
+
+            box-sizing: border-box;
+
+        }
+
+        .left-pane, .right-pane {
+
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+            scroll-behavior: smooth;
+
+        }
+
+        .left-pane { border-right: 2px dashed rgba(255,255,255,0.7); }
+
+        
+
+        /* SCROLLBAR THẨM MỸ */
+
+        ::-webkit-scrollbar { width: 8px; }
+
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.9); border-radius: 10px; }
+
+
+
+        /* GLASSMORPHISM COMPONENTS */
+
+        .glass-box {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid var(--glass-border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow: var(--glass-shadow);
+
+        }
+
+
+
+        /* READING PASSAGE */
+
+        .passage-title { font-size: 22px; font-weight: 900; color: #1a252f; text-align: center; margin-bottom: 20px; text-transform: uppercase;}
+
+        .passage-text { font-size: 16.5px; line-height: 1.8; text-align: justify; }
+
+        .blank-space { display: inline-block; width: 60px; border-bottom: 2px solid #333; text-align: center; font-weight: bold; }
+
+
+
+        /* NÚT DỊCH & BẢNG TỪ VỰNG */
+
+        .btn-translate {
+
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            border: none; padding: 10px 20px; border-radius: 25px; color: #fff;
+
+            font-weight: bold; cursor: pointer; display: block; margin: 20px auto;
+
+            transition: transform 0.2s, box-shadow 0.2s; font-size: 15px;
+
+        }
+
+        .btn-translate:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4); }
+
+        .translation-text {
+
+            background: rgba(255,255,255,0.75); padding: 18px; border-radius: 15px;
+
+            font-size: 15.5px; line-height: 1.7; display: none; margin-bottom: 20px;
+
+            border-left: 5px solid #764ba2;
+
+        }
+
+        
+
+        .glossary-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(255,255,255,0.6); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+
+        .glossary-table th, .glossary-table td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); }
+
+        .glossary-table th { background: rgba(255,255,255,0.8); font-weight: 800; color: #2c3e50;}
+
+
+
+        /* BÀI TẬP TRẮC NGHIỆM */
+
+        .question-card { margin-bottom: 30px; transition: 0.3s; }
+
+        .question-text { font-weight: bold; font-size: 17px; margin-bottom: 18px; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+        .option-btn {
+
+            background: rgba(255,255,255,0.8);
+
+            border: 2px solid transparent;
+
+            padding: 14px 20px;
+
+            border-radius: 15px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            transition: all 0.3s ease;
+
+            font-family: inherit;
+
+            color: #333;
+
+        }
+
+        .option-btn:hover:not(:disabled) { background: #fff; transform: translateX(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+
+
+        /* Trạng thái sau khi bấm (Instant Feedback) */
+
+        .option-btn.correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724 !important; font-weight: bold; transform: translateX(5px); }
+
+        .option-btn.wrong { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24 !important; }
+
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+
+
+
+        /* GIẢI THÍCH MASTER CHUẨN MỰC */
+
+        .explanation-box {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            background: #fff;
+
+            border-radius: 15px;
+
+            border-left: 6px solid #ffcc00;
+
+            display: none;
+
+            font-size: 15.5px;
+
+            line-height: 1.7;
+
+            animation: fadeIn 0.6s ease;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        
+
+        .p-word { color: var(--word-blue); font-weight: bold; }
+
+        .p-mean { color: var(--mean-terra); font-weight: bold; font-style: italic; }
+
+        .p-grammar { color: var(--grammar-red); text-decoration: underline; font-weight: bold; }
+
+        .hl-green { color: var(--correct-green); font-weight: bold; }
+
+        .hl-red { color: var(--incorrect-red); text-decoration: line-through; }
+
+        .quote-en { background: #f8f9fa; padding: 10px; border-radius: 8px; font-style: italic; display: block; margin: 12px 0; border: 1px solid #eee;}
+
+        .quote-vi { font-weight: bold; color: #444; }
+
+
+
+        /* HIỆU ỨNG & ANIMATION */
+
+        @keyframes shake {
+
+            0%, 100% { transform: translateX(0); }
+
+            20%, 60% { transform: translateX(-6px); }
+
+            40%, 80% { transform: translateX(6px); }
+
+        }
+
+        .shake { animation: shake 0.4s ease-in-out; }
+
+
+
+        .confetti {
+
+            position: fixed; width: 12px; height: 12px; background-color: #f00;
+
+            animation: fall linear forwards; z-index: 9999; border-radius: 2px;
+
+        }
+
+        @keyframes fall {
+
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+
+        }
+
+
+
+        /* NÚT TỔNG KẾT & POPUP */
+
+        .submit-btn {
+
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+
+            color: white; border: none; padding: 16px 30px; font-size: 19px;
+
+            border-radius: 30px; cursor: pointer; width: 100%; font-weight: 900;
+
+            text-transform: uppercase; margin-top: 20px;
+
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.4); transition: 0.3s;
+
+        }
+
+        .submit-btn:hover { transform: scale(1.03); box-shadow: 0 10px 25px rgba(0, 176, 155, 0.6); }
+
+
+
+        .modal-overlay {
+
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+
+        }
+
+        .modal-content {
+
+            background: rgba(255, 255, 255, 0.95); padding: 35px; border-radius: 25px;
+
+            text-align: center; width: 90%; max-width: 450px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+
+            border: 2px solid #fff;
+
+        }
+
+        .modal-content h2 { color: #2c3e50; margin-top: 0; }
+
+        .modal-content input {
+
+            width: 90%; padding: 12px; margin: 20px 0; border: 2px solid #ddd;
+
+            border-radius: 12px; font-size: 17px; text-align: center; outline: none;
+
+            transition: 0.3s;
+
+        }
+
+        .modal-content input:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.2); }
+
+        
+
+        .start-btn { 
+
+            background: linear-gradient(45deg, #3498db, #2980b9); 
+
+            color: #fff; padding: 12px 25px; border: none; border-radius: 12px; 
+
+            font-size: 17px; cursor: pointer; font-weight: bold; width: 100%;
+
+            transition: 0.2s;
+
+        }
+
+        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
+
+        .result-gif { width: 100%; border-radius: 15px; margin: 15px 0; max-height: 250px; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+
+        
+
+        @media (max-width: 768px) {
+
+            .app-container { flex-direction: column; overflow: auto; }
+
+            .left-pane, .right-pane { flex: none; width: 100%; overflow: visible; border-right: none;}
+
+            body { overflow: auto; }
+
+            .floating-alert { width: calc(100% - 40px); bottom: 10px; right: 20px; left: 20px; }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <audio id="bg-audio" src="https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/export_dcyCDfhAokgnwEKEgvFUkr.mp3"></audio>
+
+
+
+    <div class="bg-animation"></div>
+
+    <div class="floating-emojis">
+
+        <span class="fly-item" style="left: 5%; animation-duration: 15s; animation-delay: 0s;">🚀</span>
+
+        <span class="fly-item" style="left: 20%; animation-duration: 20s; animation-delay: -5s;">🪐</span>
+
+        <span class="fly-item" style="left: 35%; animation-duration: 17s; animation-delay: -2s;">✈️</span>
+
+        <span class="fly-item" style="left: 55%; animation-duration: 22s; animation-delay: -8s;">👽</span>
+
+        <span class="fly-item" style="left: 70%; animation-duration: 14s; animation-delay: -4s;">🍳</span>
+
+        <span class="fly-item" style="left: 85%; animation-duration: 25s; animation-delay: -10s;">🥕</span>
+
+        <span class="fly-item" style="left: 92%; animation-duration: 16s; animation-delay: -7s;">🔭</span>
+
+        <span class="fly-item" style="left: 15%; animation-duration: 19s; animation-delay: -3s;">💻</span>
+
+        <span class="fly-item" style="left: 45%; animation-duration: 24s; animation-delay: -12s;">📹</span>
+
+        <span class="fly-item" style="left: 80%; animation-duration: 18s; animation-delay: -6s;">🌍</span>
+
+    </div>
+
+
+
+    <div class="floating-alert" id="sticky-reminder" style="display: none;">
+
+        <h4>🚨 Lời Nhắc Khắc Cốt Ghi Tâm:</h4>
+
+        <p>Học tiếng Anh không phải chạy KPI! Làm bài xong mà lướt qua giải thích hay lười chép từ mới thì thà đi ngủ còn hơn. <strong>Chỉ có đọc thật sâu và ghi chép cẩn thận</strong> mới là chân ái để tiến bộ! ✍️🔥</p>
+
+    </div>
+
+
+
+    <header>Giáo viên tạo: MS Chí Nên</header>
+
+
+
+    <div class="app-container">
+
+        <div class="left-pane">
+
+            
+
+            <div class="glass-box" id="passage1">
+
+                <div class="passage-title">ALIEN LIFE RESEARCH GUIDE</div>
+
+                <div class="passage-text">
+
+                    Follow these steps to contribute to the search for extraterrestrial life:<br><br>
+
+                    • Before using a telescope, <b>(13)</b> <span class="blank-space"></span> the night sky for unusual patterns or moving objects.<br>
+
+                    • Scientists often wait <b>(14)</b> <span class="blank-space"></span> years to detect signals from distant planets.<br>
+
+                    • If you find any strange data, report it to <b>(15)</b> <span class="blank-space"></span> research team immediately.<br>
+
+                    • To avoid false alarms, be <b>(16)</b> <span class="blank-space"></span> when analyzing signals and rule out natural causes first.
+
+                </div>
+
+                <button class="btn-translate" onclick="toggleDisplay('trans1')">Mở dịch đoạn này 🌟</button>
+
+                <div class="translation-text" id="trans1">
+
+                    <b>HƯỚNG DẪN NGHIÊN CỨU SỰ SỐNG NGOÀI HÀNH TINH</b><br>
+
+                    Làm theo các bước sau để đóng góp vào việc tìm kiếm sự sống ngoài Trái Đất:<br>
+
+                    • Trước khi sử dụng kính viễn vọng, (13) ____ bầu trời đêm để tìm các kiểu mẫu bất thường hoặc các vật thể đang di chuyển.<br>
+
+                    • Các nhà khoa học thường chờ đợi (14) _____ nhiều năm để phát hiện các tín hiệu từ các hành tinh xa xôi.<br>
+
+                    • Nếu bạn tìm thấy bất kỳ dữ liệu kỳ lạ nào, hãy báo cáo cho (15) _____ nhóm nghiên cứu ngay lập tức.<br>
+
+                    • Để tránh báo động giả, hãy (16) _____ khi phân tích các tín hiệu và loại trừ các nguyên nhân tự nhiên trước.
+
+                </div>
+
+                <table class="glossary-table">
+
+                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                    <tr><td>Extraterrestrial</td><td>adj</td><td>Ngoài Trái Đất</td></tr>
+
+                    <tr><td>Telescope</td><td>n</td><td>Kính viễn vọng</td></tr>
+
+                    <tr><td>Observe</td><td>v</td><td>Quan sát</td></tr>
+
+                    <tr><td>Detect</td><td>v</td><td>Phát hiện</td></tr>
+
+                    <tr><td>Signal</td><td>n</td><td>Tín hiệu</td></tr>
+
+                    <tr><td>Distant</td><td>adj</td><td>Xa xôi</td></tr>
+
+                    <tr><td>Immediately</td><td>adv</td><td>Ngay lập tức</td></tr>
+
+                    <tr><td>False alarm</td><td>n phrase</td><td>Báo động giả</td></tr>
+
+                    <tr><td>Analyze</td><td>v</td><td>Phân tích</td></tr>
+
+                    <tr><td>Rule out</td><td>phrasal verb</td><td>Loại trừ</td></tr>
+
+                </table>
+
+            </div>
+
+
+
+            <div class="glass-box" id="passage2">
+
+                <div class="passage-title">E-MAIL VS LETTERS</div>
+
+                <div class="passage-text">
+
+                    There can't be many people <b>(19)</b> <span class="blank-space"></span> unaware of e-mail, even if they have never actually sent one. Besides there are some similarities between e-mail and letters, there are also many differences. The first is that e-mail <b>(20)</b> <span class="blank-space"></span>, so it can be a <b>(21)</b> <span class="blank-space"></span> of communication when speed is important. This speed means that e-mail is more practical for communicating over large distances. Another difference is that e-mail tends to be relatively informal. People are much more possible <b>(22)</b> <span class="blank-space"></span> language which they would consider unsuitable for a formal letter. Words spelled incorrectly in an e-mail are less likely to be checked than in a letter. One explanation for this is that an e-mail seems to be <b>(23)</b> <span class="blank-space"></span> something written on paper. We can be sure that the future development of e-mail will have all kinds of expected effects on the way we <b>(24)</b> <span class="blank-space"></span>.
+
+                </div>
+
+                <button class="btn-translate" onclick="toggleDisplay('trans2')">Mở dịch đoạn này 🌟</button>
+
+                <div class="translation-text" id="trans2">
+
+                    Không thể có nhiều người (19) ____ không biết đến e-mail, ngay cả khi họ chưa bao giờ thực sự gửi một cái. Bên cạnh việc có một số điểm tương đồng giữa e-mail và thư tay, cũng có rất nhiều điểm khác biệt. Đầu tiên là e-mail (20) ____, vì vậy nó có thể là một (21) ____ giao tiếp khi tốc độ là yếu tố quan trọng. Tốc độ này có nghĩa là e-mail thực tế hơn để giao tiếp qua khoảng cách lớn. Một điểm khác biệt nữa là e-mail có xu hướng tương đối không trang trọng. Mọi người có nhiều khả năng (22) ____ ngôn ngữ mà họ sẽ coi là không phù hợp cho một lá thư trang trọng. Các từ viết sai chính tả trong một e-mail ít có khả năng được kiểm tra hơn so với trong một lá thư. Một lời giải thích cho điều này là một e-mail dường như (23) ____ một cái gì đó được viết trên giấy. Chúng ta có thể chắc chắn rằng sự phát triển trong tương lai của e-mail sẽ có đủ loại tác động có thể dự đoán đối với cách chúng ta (24) ____.
+
+                </div>
+
+                <table class="glossary-table">
+
+                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                    <tr><td>Unaware</td><td>adj</td><td>Không nhận thức được, không biết</td></tr>
+
+                    <tr><td>Similarity</td><td>n</td><td>Sự tương đồng</td></tr>
+
+                    <tr><td>Instantly</td><td>adv</td><td>Ngay lập tức</td></tr>
+
+                    <tr><td>Deliver</td><td>v</td><td>Giao, chuyển phát</td></tr>
+
+                    <tr><td>Practical</td><td>adj</td><td>Thực tế, thiết thực</td></tr>
+
+                    <tr><td>Relatively</td><td>adv</td><td>Tương đối</td></tr>
+
+                    <tr><td>Informal</td><td>adj</td><td>Không trang trọng, thân mật</td></tr>
+
+                    <tr><td>Unsuitable</td><td>adj</td><td>Không phù hợp</td></tr>
+
+                    <tr><td>Permanent</td><td>adj</td><td>Lâu dài, vĩnh cửu</td></tr>
+
+                    <tr><td>Effect</td><td>n</td><td>Tác động, ảnh hưởng</td></tr>
+
+                </table>
+
+            </div>
+
+
+
+            <div class="glass-box" id="passage3">
+
+                <div class="passage-title">BENEFITS OF VIDEO CONFERENCING</div>
+
+                <div class="passage-text">
+
+                    Video conferencing is the technology that allows you to hold meetings with people who are in different places while seeing them and talking to them in real time. It is different from simple video calling, which is often one-to-one video communication. In the past, video conferencing needed complex and expensive equipment. Today, it's easy to join in a video conference on your computer or smart phone with Internet connectivity. Moreover, video conferencing is also an important tool for people who work away from the office, often at home because it helps to save time and money for them.<br><br>
+
+                    Video conferencing can help teachers in teaching, too. Video conferencing is a great way of learning and sharing knowledge beyond distance. Courses can take place with the teacher and each different student living in a different location. This will help education spread even to remote mountainous areas.
+
+                </div>
+
+                <button class="btn-translate" onclick="toggleDisplay('trans3')">Mở dịch đoạn này 🌟</button>
+
+                <div class="translation-text" id="trans3">
+
+                    Hội nghị truyền hình là công nghệ cho phép bạn tổ chức các cuộc họp với những người ở những nơi khác nhau trong khi vẫn nhìn thấy và nói chuyện với họ trong thời gian thực. Nó khác với gọi video đơn giản, vốn thường là giao tiếp video một-một. Trong quá khứ, hội nghị truyền hình cần thiết bị phức tạp và đắt tiền. Ngày nay, thật dễ dàng để tham gia một hội nghị truyền hình trên máy tính hoặc điện thoại thông minh có kết nối Internet. Hơn nữa, hội nghị truyền hình cũng là một công cụ quan trọng đối với những người làm việc xa văn phòng, thường là ở nhà vì nó giúp họ tiết kiệm thời gian và tiền bạc.<br><br>
+
+                    Hội nghị truyền hình cũng có thể giúp giáo viên trong việc giảng dạy. Hội nghị truyền hình là một cách tuyệt vời để học tập và chia sẻ kiến thức vượt qua khoảng cách. Các khóa học có thể diễn ra với giáo viên và mỗi học sinh khác nhau sống ở một vị trí khác nhau. Điều này sẽ giúp giáo dục lan rộng đến tận những vùng núi hẻo lánh.
+
+                </div>
+
+                <table class="glossary-table">
+
+                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                    <tr><td>Video conferencing</td><td>n phrase</td><td>Hội nghị truyền hình</td></tr>
+
+                    <tr><td>Complex</td><td>adj</td><td>Phức tạp</td></tr>
+
+                    <tr><td>Equipment</td><td>n</td><td>Thiết bị</td></tr>
+
+                    <tr><td>Connectivity</td><td>n</td><td>Khả năng kết nối</td></tr>
+
+                    <tr><td>Moreover</td><td>adv</td><td>Hơn nữa</td></tr>
+
+                    <tr><td>Knowledge</td><td>n</td><td>Kiến thức</td></tr>
+
+                    <tr><td>Beyond</td><td>prep</td><td>Vượt ra ngoài</td></tr>
+
+                    <tr><td>Distance</td><td>n</td><td>Khoảng cách</td></tr>
+
+                    <tr><td>Location</td><td>n</td><td>Vị trí, địa điểm</td></tr>
+
+                    <tr><td>Remote</td><td>adj</td><td>Xa xôi hẻo lánh</td></tr>
+
+                </table>
+
+            </div>
+
+
+
+            <div class="glass-box" id="passage4">
+
+                <div class="passage-title">THE IMPACT OF SCIENCE AND TECHNOLOGY</div>
+
+                <div class="passage-text">
+
+                    <b>(37)</b> <span class="blank-space"></span>. From smartphones to electric cars, modern inventions make life more convenient and efficient. In medicine, new technologies help doctors diagnose and treat diseases more accurately. <b>(38)</b> <span class="blank-space"></span> solar and wind power to protect the environment. In education, online learning platforms give students access to knowledge from anywhere in the world. <b>(39)</b> <span class="blank-space"></span>. However, it is important to use technology responsibly to avoid negative effects, such as pollution or job loss due to automation. <b>(40)</b> <span class="blank-space"></span>
+
+                </div>
+
+                <button class="btn-translate" onclick="toggleDisplay('trans4')">Mở dịch đoạn này 🌟</button>
+
+                <div class="translation-text" id="trans4">
+
+                    (37) ____. Từ điện thoại thông minh đến ô tô điện, những phát minh hiện đại làm cho cuộc sống trở nên tiện lợi và hiệu quả hơn. Trong y học, các công nghệ mới giúp bác sĩ chẩn đoán và điều trị bệnh chính xác hơn. (38) ____ năng lượng mặt trời và gió để bảo vệ môi trường. Trong giáo dục, các nền tảng học trực tuyến giúp học sinh tiếp cận kiến thức từ bất cứ đâu trên thế giới. (39) ____. Tuy nhiên, điều quan trọng là phải sử dụng công nghệ một cách có trách nhiệm để tránh các tác động tiêu cực, chẳng hạn như ô nhiễm hoặc mất việc làm do tự động hóa. (40) ____.
+
+                </div>
+
+                <table class="glossary-table">
+
+                    <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                    <tr><td>Impact</td><td>n</td><td>Tác động, ảnh hưởng</td></tr>
+
+                    <tr><td>Invention</td><td>n</td><td>Phát minh</td></tr>
+
+                    <tr><td>Convenient</td><td>adj</td><td>Tiện lợi</td></tr>
+
+                    <tr><td>Efficient</td><td>adj</td><td>Hiệu quả</td></tr>
+
+                    <tr><td>Diagnose</td><td>v</td><td>Chẩn đoán</td></tr>
+
+                    <tr><td>Accurately</td><td>adv</td><td>Một cách chính xác</td></tr>
+
+                    <tr><td>Renewable</td><td>adj</td><td>Có thể tái tạo</td></tr>
+
+                    <tr><td>Access</td><td>n</td><td>Sự tiếp cận</td></tr>
+
+                    <tr><td>Automation</td><td>n</td><td>Sự tự động hóa</td></tr>
+
+                    <tr><td>Unpredictable</td><td>adj</td><td>Không thể đoán trước</td></tr>
+
+                </table>
+
+            </div>
+
+            <br><br><br>
+
+        </div>
+
+
+
+        <div class="right-pane" id="quiz-container">
+
+            </div>
+
+    </div>
+
+
+
+    <div class="modal-overlay" id="name-modal">
+
+        <div class="modal-content">
+
+            <h2>🎯 Nhập tên của con để làm bài nhé!</h2>
+
+            <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A">
+
+            <button class="start-btn" onclick="startQuiz()">BẮT ĐẦU LÀM BÀI 🚀</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="modal-overlay" id="result-modal">
+
+        <div class="modal-content">
+
+            <h2 id="res-name">Tên học sinh</h2>
+
+            <h1 style="color: #d90429; font-size: 45px; margin: 10px 0;" id="res-score">0/20</h1>
+
+            <p id="res-cmt" style="font-weight: bold; font-size: 19px; line-height: 1.5;"></p>
+
+            <img id="res-gif" class="result-gif" src="" alt="Meme">
+
+            <button class="start-btn" onclick="location.reload()" style="margin-top: 10px;">LÀM LẠI BÀI 🔄</button>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        // WEB AUDIO API CHO TƯƠNG TÁC ÂM THANH
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+        const audioCtx = new AudioContext();
+
+
+
+        function playSound(type) {
+
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+
+            const gainNode = audioCtx.createGain();
+
+            osc.connect(gainNode);
+
+            gainNode.connect(audioCtx.destination);
+
+            
+
+            if (type === 'correct') {
+
+                osc.type = 'sine';
+
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+
+            } else {
+
+                osc.type = 'square';
+
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+                osc.frequency.setValueAtTime(250, audioCtx.currentTime + 0.1);
+
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+
+            }
+
+        }
+
+
+
+        // CONFETTI HIỆU ỨNG PHÁO HOA
+
+        function createConfetti() {
+
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
+
+            for(let i = 0; i < 60; i++) {
+
+                const conf = document.createElement('div');
+
+                conf.classList.add('confetti');
+
+                conf.style.left = Math.random() * 100 + 'vw';
+
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+
+                document.body.appendChild(conf);
+
+                setTimeout(() => conf.remove(), 4000);
+
+            }
+
+        }
+
+
+
+        function toggleDisplay(id) {
+
+            const el = document.getElementById(id);
+
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+
+        }
+
+
+
+        // DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH CHUẨN MASTER (Đã bỏ nhãn A B C D)
+
+        const questionsData = [
+
+            {
+
+                id: 13, text: "Question 13 (Alien Life Research Guide)",
+
+                options: [
+
+                    {text: "observe", correct: true}, {text: "explore", correct: false}, {text: "examine", correct: false}, {text: "stare", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Trước khi sử dụng kính viễn vọng, (13) ____ bầu trời đêm để tìm các kiểu mẫu bất thường hoặc các vật thể đang di chuyển.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>explore</span> ❌ Sai. <span class='p-word'>explore</span> (<span class='p-grammar'>v</span>) mang nghĩa <span class='p-mean'>khám phá</span>, đi sâu vào để tìm hiểu, không hợp với việc đứng một chỗ tìm bằng mắt.<br>
+
+                    - <span class='hl-red'>examine</span> ❌ Sai. <span class='p-word'>examine</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>kiểm tra chi tiết</span>, thường dùng cho đồ vật cầm nắm được hoặc kiểm tra y tế.<br>
+
+                    - <span class='hl-red'>stare</span> ❌ Sai. <span class='p-word'>stare</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>nhìn chằm chằm</span> (thường do ngạc nhiên hoặc bất lịch sự).<br>
+
+                    - <span class='hl-green'>observe</span> ✅ Đúng. <span class='p-word'>observe</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>quan sát</span>, hoàn toàn phù hợp với hành động dùng mắt thường hoặc kính viễn vọng để theo dõi bầu trời.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Before using a telescope, observe the night sky..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Trước khi sử dụng kính viễn vọng, hãy <span style='color:red;'>quan sát</span> bầu trời đêm..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 14, text: "Question 14 (Alien Life Research Guide)",
+
+                options: [
+
+                    {text: "with", correct: false}, {text: "for", correct: true}, {text: "during", correct: false}, {text: "in", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Các nhà khoa học thường chờ đợi (14) _____ nhiều năm để phát hiện các tín hiệu từ các hành tinh xa xôi.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>with / during / in</span> ❌ Sai. Không đi kèm với động từ wait để chỉ khoảng thời gian theo cách này.<br>
+
+                    - <span class='hl-green'>for</span> ✅ Đúng. Cấu trúc <span class='p-grammar'>wait for + khoảng thời gian</span> nghĩa là <span class='p-mean'>chờ đợi trong bao lâu</span>.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Scientists often wait for years..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Các nhà khoa học thường chờ đợi <span style='color:red;'>trong (nhiều)</span> năm..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 15, text: "Question 15 (Alien Life Research Guide)",
+
+                options: [
+
+                    {text: "the", correct: true}, {text: "a", correct: false}, {text: "an", correct: false}, {text: "X", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Nếu bạn tìm thấy bất kỳ dữ liệu kỳ lạ nào, hãy báo cáo cho (15) _____ nhóm nghiên cứu ngay lập tức.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>a / an</span> ❌ Sai. Mạo từ không xác định dùng cho đối tượng chưa được nhắc đến.<br>
+
+                    - <span class='hl-red'>X (Không điền)</span> ❌ Sai ngữ pháp vì "research team" là danh từ đếm được số ít.<br>
+
+                    - <span class='hl-green'>the</span> ✅ Đúng. "nhóm nghiên cứu" ở đây là một đối tượng <span class='p-grammar'>đã xác định</span> trong ngữ cảnh của bài viết hướng dẫn này.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...report it to the research team immediately."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "...hãy báo cáo cho nhóm nghiên cứu <span style='color:red;'>(đó)</span> ngay lập tức."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 16, text: "Question 16 (Alien Life Research Guide)",
+
+                options: [
+
+                    {text: "logical", correct: false}, {text: "patient", correct: false}, {text: "careful", correct: true}, {text: "through", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Để tránh báo động giả, hãy (16) _____ khi phân tích các tín hiệu...<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>logical</span> ❌ Sai. <span class='p-word'>logical</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>có logic</span>.<br>
+
+                    - <span class='hl-red'>patient</span> ❌ Sai. <span class='p-word'>patient</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>kiên nhẫn</span>.<br>
+
+                    - <span class='hl-red'>through</span> ❌ Sai.<br>
+
+                    - <span class='hl-green'>careful</span> ✅ Đúng. <span class='p-word'>careful</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>cẩn thận</span>. Cần cẩn thận khi phân tích để tránh nhầm lẫn.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"To avoid false alarms, be careful when analyzing..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Để tránh báo động giả, hãy <span style='color:red;'>cẩn thận</span> khi phân tích..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 19, text: "Question 19 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "which are", correct: false}, {text: "who are", correct: true}, {text: "who is", correct: false}, {text: "that is", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Không thể có nhiều người (19) ______ không biết đến e-mail...<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>which are</span> ❌ Sai. <span class='p-word'>which</span> dùng thay thế cho vật, không dùng cho người ("people").<br>
+
+                    - <span class='hl-red'>who is / that is</span> ❌ Sai. Danh từ "people" (<span class='p-mean'>mọi người</span>) là danh từ số nhiều nên động từ to-be theo sau đại từ quan hệ phải là số nhiều.<br>
+
+                    - <span class='hl-green'>who are</span> ✅ Đúng. <span class='p-word'>who</span> thay thế cho danh từ chỉ người "people", to-be chia số nhiều là <span class='p-grammar'>are</span>.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"There can't be many people who are unaware of e-mail..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Không thể có nhiều người <span style='color:red;'>những người mà</span> không biết đến e-mail..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 20, text: "Question 20 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "is instantly delivered", correct: true}, {text: "is instantly deliver", correct: false}, {text: "are instantly delivered", correct: false}, {text: "are instantly deliver", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Đầu tiên là e-mail (20) ____, vì vậy nó có thể là...<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>are...</span> ❌ Sai. Chủ ngữ là "e-mail" (số ít) nên động từ to-be phải là "is".<br>
+
+                    - <span class='hl-red'>is instantly deliver</span> ❌ Sai. Cấu trúc bị động phải là to-be + V3/ed (delivered).<br>
+
+                    - <span class='hl-green'>is instantly delivered</span> ✅ Đúng. E-mail được gửi đi nên phải dùng thể <span class='p-grammar'>bị động (Passive Voice): S + is + adv + V3/ed</span>.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"The first is that e-mail is instantly delivered..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Đầu tiên là e-mail <span style='color:red;'>được gửi ngay lập tức</span>..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 21, text: "Question 21 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "very effective means", correct: true}, {text: "effective very mean", correct: false}, {text: "effective very means", correct: false}, {text: "very effective mean", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> ...vì vậy nó có thể là một (21) ______ giao tiếp khi tốc độ là quan trọng.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>mean</span> ❌ Sai. Từ "mean" không có 's' mang nghĩa là tính từ (kéo kiệt) hoặc động từ (có nghĩa là).<br>
+
+                    - <span class='hl-red'>effective very</span> ❌ Sai. Trạng từ chỉ mức độ "very" phải đứng trước tính từ "effective".<br>
+
+                    - <span class='hl-green'>very effective means</span> ✅ Đúng. <span class='p-word'>a means</span> (<span class='p-grammar'>n</span>) nghĩa là <span class='p-mean'>một phương tiện</span> (từ này luôn có 's' ở tận cùng dù số ít hay nhiều). Trật tự đúng: Adv + Adj + Noun.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...so it can be a very effective means of communication..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "...vì vậy nó có thể là một <span style='color:red;'>phương tiện rất hiệu quả</span> trong giao tiếp..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 22, text: "Question 22 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "to using", correct: false}, {text: "using", correct: false}, {text: "to use", correct: true}, {text: "to be used", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Mọi người có nhiều khả năng (22) ______ ngôn ngữ mà họ sẽ coi là không phù hợp cho một lá thư trang trọng.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>using / to using</span> ❌ Sai cấu trúc.<br>
+
+                    - <span class='hl-red'>to be used</span> ❌ Sai. Đây là thể bị động, nhưng ở đây "mọi người" (people) chủ động sử dụng ngôn ngữ.<br>
+
+                    - <span class='hl-green'>to use</span> ✅ Đúng. Cấu trúc <span class='p-grammar'>be possible / likely + to V</span> (có khả năng làm gì đó).<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"People are much more possible to use language which..."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "Mọi người có nhiều khả năng <span style='color:red;'>sử dụng</span> ngôn ngữ mà..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 23, text: "Question 23 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "most permanent than", correct: false}, {text: "more permanent as", correct: false}, {text: "less permanent as", correct: false}, {text: "less permanent than", correct: true}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Một lời giải thích cho điều này là một e-mail dường như (23) ______ một cái gì đó được viết trên giấy.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>most / as</span> ❌ Sai. Có than thì không dùng most hay as.<br>
+
+                    - <span class='hl-green'>less permanent than</span> ✅ Đúng. Cấu trúc so sánh kém hơn: <span class='p-grammar'>less + long adj + than</span>. Email ít mang tính lưu trữ lâu dài bằng giấy.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...an e-mail seems to be less permanent than something written on paper."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "...một e-mail dường như <span style='color:red;'>ít vĩnh cửu/lâu dài hơn</span> một cái gì đó được viết trên giấy."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 24, text: "Question 24 (E-MAIL VS LETTERS)",
+
+                options: [
+
+                    {text: "communicate", correct: true}, {text: "communicative", correct: false}, {text: "communicating", correct: false}, {text: "communication", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> ...sẽ có đủ loại tác động có thể dự đoán đối với cách chúng ta (24) ______.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>communicative / communication</span> ❌ Sai từ loại. "we" là đại từ nhân xưng, theo sau phải là Động từ.<br>
+
+                    - <span class='hl-red'>communicating</span> ❌ Sai vì thiếu to-be.<br>
+
+                    - <span class='hl-green'>communicate</span> ✅ Đúng. Động từ nguyên thể chia theo chủ ngữ số nhiều "we" ở thì hiện tại đơn.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...effects on the way we communicate."</span>
+
+                    👉 <span class='quote-vi'>Dịch: "...tác động đối với cách chúng ta <span style='color:red;'>giao tiếp</span>."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 31, text: "Question 31 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "Video conferencing facilitates remote interaction and learning.", correct: true}, 
+
+                    {text: "It is mainly for teachers in remote areas.", correct: false}, 
+
+                    {text: "It has replaced all face-to-face meetings and classes.", correct: false}, 
+
+                    {text: "It is hard and expensive to use.", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Ý chính của đoạn văn là gì?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>Các đáp án khác</span> ❌ Sai. Quá hẹp, sai sự thật (chưa thay thế toàn bộ), hoặc ngược lại với bài đọc.<br>
+
+                    - <span class='hl-green'>Video conferencing facilitates remote interaction and learning.</span> ✅ Đúng. Bao quát cả đoạn 1 (tương tác từ xa) và đoạn 2 (học tập).<br>
+
+                    📖 <b>Dẫn chứng:</b> Toàn bài nói về việc tổ chức cuộc họp khác nơi (đoạn 1) và chia sẻ kiến thức vượt khoảng cách (đoạn 2).<br>
+
+                    👉 <span class='quote-vi'>Dịch: "<span style='color:red;'>Hội nghị truyền hình tạo điều kiện cho sự tương tác và học tập từ xa.</span>"</span>
+
+                `
+
+            },
+
+            {
+
+                id: 32, text: "Question 32 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "People can see and touch each other", correct: false}, 
+
+                    {text: "People can see and use telepathy", correct: false}, 
+
+                    {text: "People can see and talk to each other", correct: true}, 
+
+                    {text: "People can talk and touch each other.", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Mọi người có thể làm gì với hội nghị truyền hình?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>Các đáp án chứa "touch"</span> ❌ Sai. Qua mạng không thể chạm vào nhau.<br>
+
+                    - <span class='hl-red'>Đáp án chứa "telepathy"</span> ❌ Sai. Telepathy là thần giao cách cảm, là hư cấu.<br>
+
+                    - <span class='hl-green'>People can see and talk to each other</span> ✅ Đúng.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"...seeing them and talking to them in real time."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "...<span style='color:red;'>nhìn thấy họ và nói chuyện với họ</span> trong thời gian thực."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 33, text: "Question 33 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "Video calling is often one-to-one communication", correct: false}, 
+
+                    {text: "Video conferencing can happen between many people", correct: false}, 
+
+                    {text: "In the past, video conferencing needed simple equipment", correct: true}, 
+
+                    {text: "Today, video conferencing only requires a smartphone with Internet connectivity.", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Câu nào dưới đây KHÔNG ĐÚNG?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>Các đáp án khác</span> ❌ Sai vì chúng là các thông tin ĐÚNG có trong bài.<br>
+
+                    - <span class='hl-green'>In the past, video conferencing needed simple equipment</span> ✅ Đúng vì đây là câu nói SAI SỰ THẬT so với bài.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"In the past, video conferencing needed complex and expensive equipment."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "Trong quá khứ, hội nghị truyền hình cần thiết bị <span style='color:red;'>phức tạp và đắt tiền</span> (chứ không phải simple)."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 34, text: "Question 34 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "Enable", correct: false}, {text: "permit", correct: false}, {text: "let", correct: false}, {text: "prevent", correct: true}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Từ "allow" TRÁI NGHĨA với từ nào?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>Enable / permit / let</span> ❌ Sai. Đây đều là TỪ ĐỒNG NGHĨA.<br>
+
+                    - <span class='hl-green'>prevent</span> ✅ Đúng. <span class='p-word'>allow</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>cho phép</span> ><span class='p-word'>prevent</span> (<span class='p-grammar'>v</span>) nghĩa là <span class='p-mean'>ngăn cản</span>.<br>
+
+                    📖 <b>Dẫn chứng:</b> Từ vựng đối lập trực tiếp.
+
+                `
+
+            },
+
+            {
+
+                id: 35, text: "Question 35 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "Unaffordable", correct: true}, {text: "cheap", correct: false}, {text: "reasonable", correct: false}, {text: "consumable", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Từ "expensive" ĐỒNG NGHĨA nhất với từ nào?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-red'>cheap / reasonable</span> ❌ Sai. Là trái nghĩa.<br>
+
+                    - <span class='hl-red'>consumable</span> ❌ Sai. Nghĩa là đồ tiêu hao được.<br>
+
+                    - <span class='hl-green'>Unaffordable</span> ✅ Đúng. <span class='p-word'>expensive</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>đắt đỏ</span>. <span class='p-word'>unaffordable</span> (<span class='p-grammar'>adj</span>) = <span class='p-mean'>không thể chi trả nổi</span>.<br>
+
+                    📖 <b>Dẫn chứng:</b> Từ đồng nghĩa theo ngữ cảnh.
+
+                `
+
+            },
+
+            {
+
+                id: 36, text: "Question 36 (BENEFITS OF VIDEO CONFERENCING)",
+
+                options: [
+
+                    {text: "It still requires very expensive and complex equipment.", correct: false}, 
+
+                    {text: "It can only be used on office computers.", correct: false}, 
+
+                    {text: "It is now easy to join using a smartphone or computer with the Internet.", correct: true}, 
+
+                    {text: "It has become more difficult and complicated to use.", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Hội nghị truyền hình ngày nay đã thay đổi như thế nào so với quá khứ?<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - <span class='hl-green'>It is now easy to join using a smartphone or computer with the Internet.</span> ✅ Đúng.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Today, it's easy to join in a video conference on your computer or smart phone with Internet connectivity."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "Ngày nay, <span style='color:red;'>thật dễ dàng để tham gia hội nghị truyền hình trên máy tính hoặc điện thoại thông minh có kết nối Internet</span>."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 37, text: "Question 37 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
+
+                options: [
+
+                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
+
+                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
+
+                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
+
+                    {text: "Science and technology have greatly improved our daily lives", correct: true}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (37) đầu đoạn văn.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - Câu tiếp theo: "Từ điện thoại thông minh đến ô tô điện, những phát minh hiện đại làm cho cuộc sống trở nên tiện lợi..." -> Đây là dẫn chứng cho việc khoa học cải thiện cuộc sống.<br>
+
+                    - <span class='hl-green'>Science and technology have greatly improved our daily lives</span> ✅ Đúng. Đây là câu chủ đề hoàn hảo mở đầu cho đoạn văn.<br>
+
+                    📖 <b>Dẫn chứng:</b> Câu giới thiệu khái quát mở đầu cho việc liệt kê các cải thiện trong đời sống.
+
+                `
+
+            },
+
+            {
+
+                id: 38, text: "Question 38 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
+
+                options: [
+
+                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
+
+                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
+
+                    {text: "Scientists are also exploring renewable energy sources like", correct: true}, 
+
+                    {text: "Science and technology have greatly improved our daily lives", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (38).<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - Đằng sau chỗ trống là: "... solar and wind power to protect the environment." (... năng lượng mặt trời và gió để bảo vệ môi trường).<br>
+
+                    - Chỉ có câu kết thúc bằng từ "like" (như là) mới ghép với phía sau tạo thành câu hoàn chỉnh.<br>
+
+                    - <span class='hl-green'>Scientists are also exploring renewable energy sources like</span> ✅ Đúng.<br>
+
+                    📖 <b>Dẫn chứng:</b> Ghép lại: <span class='quote-en'>"Scientists are also exploring renewable energy sources like solar and wind power..."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "Các nhà khoa học cũng đang khám phá <span style='color:red;'>các nguồn năng lượng tái tạo như</span> năng lượng mặt trời và gió..."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 39, text: "Question 39 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
+
+                options: [
+
+                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: false}, 
+
+                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: true}, 
+
+                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
+
+                    {text: "Science and technology have greatly improved our daily lives", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (39).<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - Đằng sau là "However,... to avoid negative effects, such as pollution or job loss" (Tuy nhiên, cần tránh tác động tiêu cực như mất việc).<br>
+
+                    - Suy ra phía trước phải là một ý tích cực về việc làm thì "However" (tuy nhiên) mới dẫn tới cảnh báo mất việc làm.<br>
+
+                    - <span class='hl-green'>As technology continues to develop, it creates new jobs and opportunities</span> ✅ Đúng.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"As technology continues to develop, it creates new jobs and opportunities. However, it is important to... avoid negative effects, such as pollution or job loss..."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "<span style='color:red;'>Nó tạo ra việc làm mới</span>. Tuy nhiên, cần tránh rủi ro <span style='color:red;'>mất việc làm</span>."</span>
+
+                `
+
+            },
+
+            {
+
+                id: 40, text: "Question 40 (THE IMPACT OF SCIENCE AND TECHNOLOGY)",
+
+                options: [
+
+                    {text: "Science and technology will continue to shape the future in exciting and unpredictable ways.", correct: true}, 
+
+                    {text: "As technology continues to develop, it creates new jobs and opportunities", correct: false}, 
+
+                    {text: "Scientists are also exploring renewable energy sources like", correct: false}, 
+
+                    {text: "Science and technology have greatly improved our daily lives", correct: false}
+
+                ],
+
+                explanation: `
+
+                    📝 <b>Dịch câu hỏi:</b> Điền câu thích hợp vào vị trí (40) cuối đoạn.<br>
+
+                    🔍 <b>Phân tích đáp án:</b><br>
+
+                    - Cuối đoạn văn cần một câu kết luận hướng về tương lai.<br>
+
+                    - <span class='hl-green'>Science and technology will continue to shape the future in exciting and unpredictable ways.</span> ✅ Đúng. Câu này dùng thì tương lai "will continue" làm câu kết luận xuất sắc.<br>
+
+                    📖 <b>Dẫn chứng:</b> <span class='quote-en'>"Science and technology will continue to shape the future in exciting and unpredictable ways."</span><br>
+
+                    👉 <span class='quote-vi'>Dịch: "Khoa học và công nghệ sẽ <span style='color:red;'>tiếp tục định hình tương lai</span> theo những cách thú vị và không thể đoán trước."</span>
+
+                `
+
+            }
+
+        ];
+
+
+
+        // Xáo trộn mảng
+
+        function shuffleArray(array) {
+
+            for (let i = array.length - 1; i > 0; i--) {
+
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [array[i], array[j]] = [array[j], array[i]];
+
+            }
+
+        }
+
+
+
+        let answeredQuestions = 0;
+
+        let currentScore = 0; // Biến tính điểm tích lũy
+
+        let quizSubmitted = false;
+
+        let audioPlayed = false;
+
+
+
+        function renderQuestions() {
+
+            const container = document.getElementById('quiz-container');
+
+            container.innerHTML = '';
+
+
+
+            questionsData.forEach((q, index) => {
+
+                const card = document.createElement('div');
+
+                card.className = 'glass-box question-card';
+
+                card.id = `q-card-${q.id}`;
+
+                
+
+                // Tiêu đề câu hỏi
+
+                const title = document.createElement('div');
+
+                title.className = 'question-text';
+
+                title.innerHTML = `Câu ${index + 1}: ${q.text}`;
+
+                card.appendChild(title);
+
+
+
+                // Ghi chú nhỏ cho học sinh
+
+                const hint = document.createElement('div');
+
+                hint.style.fontSize = '13px';
+
+                hint.style.color = '#e74c3c';
+
+                hint.style.marginBottom = '10px';
+
+                hint.style.fontStyle = 'italic';
+
+                hint.innerHTML = '👉 Đọc kỹ rồi click chọn nhé. Chọn xong là máy chấm điểm và hiện giải thích luôn đó!';
+
+                card.appendChild(hint);
+
+
+
+                // Grid chứa các nút đáp án
+
+                const grid = document.createElement('div');
+
+                grid.className = 'options-grid';
+
+                
+
+                let opts = [...q.options];
+
+                shuffleArray(opts);
+
+
+
+                opts.forEach(opt => {
+
+                    const btn = document.createElement('button');
+
+                    btn.className = 'option-btn';
+
+                    btn.innerHTML = opt.text;
+
+                    
+
+                    btn.onclick = () => {
+
+                        if (card.dataset.answered === "true") return; // Ngăn chọn lại
+
+                        
+
+                        card.dataset.answered = "true";
+
+                        answeredQuestions++;
+
+                        
+
+                        const isCorrectOpt = opt.correct;
+
+
+
+                        // Khóa tất cả các nút và làm nổi bật đáp án đúng
+
+                        const allBtns = grid.querySelectorAll('.option-btn');
+
+                        allBtns.forEach(b => {
+
+                            b.disabled = true;
+
+                            // Kiểm tra xem nút đang duyệt có phải là đáp án đúng trong mảng không
+
+                            const isThisCorrect = q.options.find(o => o.text === b.innerHTML).correct;
+
+                            if (isThisCorrect) {
+
+                                b.classList.add('correct');
+
+                            }
+
+                        });
+
+
+
+                        // Xử lý nút học sinh vừa bấm
+
+                        if (isCorrectOpt) {
+
+                            currentScore++;
+
+                            playSound('correct');
+
+                        } else {
+
+                            btn.classList.add('wrong');
+
+                            btn.classList.add('shake');
+
+                            playSound('wrong');
+
+                        }
+
+                        
+
+                        // Hiện giải thích ngay lập tức
+
+                        const expl = card.querySelector('.explanation-box');
+
+                        if (expl) expl.style.display = 'block';
+
+                    };
+
+                    
+
+                    grid.appendChild(btn);
+
+                });
+
+
+
+                card.appendChild(grid);
+
+
+
+                // Tạo sẵn khung giải thích (sẽ bị ẩn cho đến khi click)
+
+                const expl = document.createElement('div');
+
+                expl.className = 'explanation-box';
+
+                expl.innerHTML = q.explanation;
+
+                card.appendChild(expl);
+
+
+
+                container.appendChild(card);
+
+            });
+
+
+
+            // Thêm nút Xem Tổng Kết Điểm
+
+            const submitBtn = document.createElement('button');
+
+            submitBtn.className = 'submit-btn';
+
+            submitBtn.innerHTML = '🎯 XEM TỔNG KẾT ĐIỂM';
+
+            submitBtn.onclick = submitQuiz;
+
+            container.appendChild(submitBtn);
+
+        }
+
+
+
+        function startQuiz() {
+
+            const name = document.getElementById('student-name').value.trim();
+
+            if(!name) {
+
+                alert("Con quên chưa nhập tên kìa! Nhập tên để cô chấm điểm nhé.");
+
+                return;
+
+            }
+
+            document.getElementById('name-modal').style.display = 'none';
+
+            document.getElementById('sticky-reminder').style.display = 'block';
+
+
+
+            if(!audioPlayed) {
+
+                const bgAudio = document.getElementById('bg-audio');
+
+                bgAudio.play().catch(e => console.log("Audio block:", e));
+
+                audioPlayed = true;
+
+            }
+
+        }
+
+
+
+        function submitQuiz() {
+
+            if(quizSubmitted) return;
+
+
+
+            if(answeredQuestions < questionsData.length) {
+
+                if(!confirm(`Con mới làm ${answeredQuestions}/${questionsData.length} câu. Chắc chắn muốn kết thúc bài sớm chứ?`)) {
+
+                    return;
+
+                }
+
+            }
+
+            
+
+            quizSubmitted = true;
+
+
+
+            // Hiển thị Popup
+
+            const name = document.getElementById('student-name').value || "Học sinh ẩn danh";
+
+            const percent = (currentScore / questionsData.length) * 100;
+
+            
+
+            document.getElementById('res-name').innerText = `Học sinh: ${name}`;
+
+            document.getElementById('res-score').innerText = `Điểm số: ${currentScore}/${questionsData.length}`;
+
+            
+
+            const cmt = document.getElementById('res-cmt');
+
+            const gif = document.getElementById('res-gif');
+
+
+
+            if(percent === 100) {
+
+                playSound('correct');
+
+                createConfetti();
+
+                cmt.innerText = "Tuyệt đỉnh! Con chính là Thiên Tài tiếng Anh! 🌟 MS Chí Nên rất tự hào!";
+
+                cmt.style.color = "#27ae60";
+
+                gif.src = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif";
+
+            } else if(percent >= 60) {
+
+                playSound('correct');
+
+                createConfetti();
+
+                cmt.innerText = "Rất tốt! Con đã cố gắng hết sức. High-five! ✋ Nhớ đọc phần giải thích Master bên dưới nhé!";
+
+                cmt.style.color = "#2980b9";
+
+                gif.src = "https://media.giphy.com/media/3oz8xAFtjouKvtCE7u/giphy.gif";
+
+            } else {
+
+                playSound('wrong');
+
+                cmt.innerText = "Điểm số chưa cao nhưng không sao! Kéo xuống ĐỌC THẬT KỸ và CHÉP LẠI giải thích chi tiết, trình độ sẽ lên ngay! Cố lên! 💪";
+
+                cmt.style.color = "#c0392b";
+
+                gif.src = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
+
+            }
+
+
+
+            document.getElementById('result-modal').style.display = 'flex';
+
+        }
+
+
+
+        window.onload = () => {
+
+            document.getElementById('name-modal').style.display = 'flex';
+
+            renderQuestions();
+
+        };
+
+    </script>
+
 <script>/*devclean*/(function(){
 var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
     SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
@@ -982,23 +1950,71 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===
 })();</script>
 
 <script>
-// Auto-bypass password lock for MS Chi Nen
+// Remove password lock completely - direct quiz access
 (function() {
-    function unlock() {
-        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
-        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
-        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
-        if (main) { main.style.setProperty('display', 'block', 'important'); }
+    function unlockNow() {
+        // 1. Remove all password modals
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        // Also remove any elements with class containing password-modal or lock-overlay
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        // 2. Display main content containers
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                // If it was hidden, show it
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    // Try flex if header or mainContent in some themes, else block
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        // Specific fix for Reading Mastery theme (Tay Mo p2, p7, etc.)
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        // 3. Trigger render / init functions if not yet rendered
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
         if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
         if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', unlock);
+        document.addEventListener('DOMContentLoaded', unlockNow);
     } else {
-        unlock();
+        unlockNow();
     }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
 })();
 </script>
+</body>
 
-</body>
 </html>

@@ -1,588 +1,1202 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Kiểm Tra Tiếng Anh - MS Chí Nên</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #8854C0;
-            --secondary: #00C9A7;
-            --accent: #FDCB6E;
-            --correct: #00D26A;
-            --wrong: #FF4757;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-dark: #2d3436;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
-
-        body {
-            overflow: hidden;
-            background: linear-gradient(-45deg, #8854C0, #FF9A9E, #FECFEF, #00C9A7);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--text-dark); height: 100vh;
-        }
-
-        body::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='30' font-size='25'%3E🌸%3C/text%3E%3Ctext x='100' y='80' font-size='30'%3E🐱%3C/text%3E%3Ctext x='40' y='130' font-size='25'%3E🌺%3C/text%3E%3Ctext x='120' y='20' font-size='20'%3E🐈%3C/text%3E%3C/svg%3E");
-            animation: floatPattern 40s linear infinite; z-index: -1; opacity: 0.5;
-        }
-
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes floatPattern { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
-
-        .shake { animation: shake 0.4s ease-in-out; }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center; z-index: 9999;
-        }
-
-        .glass-panel {
-            background: var(--glass-bg); border: 2px solid var(--glass-border);
-            border-radius: 20px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center; max-width: 500px; width: 90%; backdrop-filter: blur(20px);
-            max-height: 90vh; overflow-y: auto;
-        }
-
-        .glass-panel h2 { font-size: 1.8rem; color: var(--primary); margin-bottom: 15px; }
-        
-        .input-field {
-            width: 100%; padding: 15px; margin: 15px 0; border: 3px solid #eee; border-radius: 15px;
-            font-size: 1.2rem; font-weight: bold; outline: none; transition: 0.3s;
-        }
-        .input-field:focus { border-color: var(--primary); }
-        .input-field.error { border-color: var(--wrong); }
-
-        .btn-primary {
-            background: var(--primary); color: white; border: none; padding: 15px 30px; 
-            font-size: 1.2rem; font-weight: bold; border-radius: 15px; cursor: pointer;
-            box-shadow: 0 6px 0 #5b3882, 0 10px 10px rgba(0,0,0,0.2); transition: 0.2s; width: 100%;
-        }
-        .btn-primary:active { transform: translateY(6px); box-shadow: 0 0 0 #5b3882; }
-
-        #main-content { display: none; height: 100vh; flex-direction: column; }
-
-        .top-bar {
-            height: 70px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); 
-            border-bottom: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 10;
-        }
-        .top-bar h3 { color: var(--primary); font-size: 1.2rem; }
-        
-        #timer-container { display: flex; gap: 10px; align-items: center; }
-        #timer-display {
-            font-size: 1.5rem; font-weight: 800; color: var(--wrong); background: white; 
-            padding: 5px 15px; border-radius: 10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .split-screen { display: flex; flex: 1; overflow: hidden; }
-        .pane { flex: 1; overflow-y: auto; padding: 30px; scroll-behavior: smooth; }
-        .left-pane { border-right: 2px solid rgba(255,255,255,0.5); }
-
-        .passage-box {
-            background: var(--glass-bg); padding: 25px; border-radius: 20px; 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1); margin-bottom: 30px; border: 1px solid var(--glass-border);
-        }
-        .passage-box h4 { font-size: 1.4rem; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;}
-        .passage-box p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 15px; text-align: justify;}
-        
-        .translate-btn {
-            background: #FFEAA7; color: #D63031; border: none; padding: 8px 15px; border-radius: 12px; 
-            font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #FDCB6E; margin-bottom: 15px; 
-            transition: 0.2s; font-size: 0.95rem; display: block;
-        }
-        .translate-btn:active { transform: translateY(4px); box-shadow: none; }
-        
-        .translation-text {
-            display: none; background: #e0f7fa; padding: 15px; border-radius: 10px; 
-            border-left: 5px solid var(--secondary); font-size: 1.05rem; font-style: italic; margin-bottom: 20px;
-        }
-
-        .glossary-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 15px; overflow: hidden; }
-        .glossary-table th, .glossary-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        .glossary-table th { background: var(--secondary); color: white; }
-
-        .question-card {
-            background: var(--glass-bg); padding: 25px; border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid var(--glass-border);
-        }
-        .question-text { font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; }
-        .options-grid { display: flex; flex-direction: column; gap: 12px; }
-        
-        .option-btn {
-            background: white; border: 2px solid #ddd; padding: 15px; font-size: 1.08rem; 
-            font-weight: 700; border-radius: 15px; cursor: pointer; transition: all 0.2s; text-align: left; box-shadow: 0 4px 0 #ddd;
-        }
-        .option-btn:hover { transform: scale(1.02); border-color: var(--primary); }
-        .option-btn.correct { background: var(--correct); color: white; border-color: #00A855; box-shadow: 0 4px 0 #00A855; }
-        .option-btn.wrong { background: var(--wrong); color: white; border-color: #D63031; box-shadow: 0 4px 0 #D63031; }
-        .option-btn:disabled { cursor: not-allowed; pointer-events: none; }
-
-        .explanation-box {
-            display: none; margin-top: 20px; padding: 20px; background: #fff3e0; border-radius: 15px; 
-            border-left: 6px solid var(--accent); font-size: 1rem; line-height: 1.6; animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .explanation-box .vi-trans { font-weight: bold; color: #555; margin-bottom: 10px; display: block;}
-        .explanation-box .proof { background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px dashed #ef9a9a;}
-
-        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; }
-        .result-gif { width: 100%; max-height: 250px; object-fit: contain; border-radius: 15px; margin: 15px 0; }
-        
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
-    </style>
-</head>
-<body>
-
-    <canvas id="confetti-canvas"></canvas>
-
-    <div id="password-modal" class="modal-overlay">
-        <div class="glass-panel">
-            <h2>🔒 Lớp học Bí mật</h2>
-            <p>Nhập mật khẩu để làm bài nhé!</p>
-            <input type="password" id="pass-input" class="input-field" placeholder="Nhập mật khẩu...">
-            <button class="btn-primary" onclick="checkPassword()">MỞ KHÓA 🚀</button>
-        </div>
-    </div>
-
-    <div id="name-modal" class="modal-overlay" style="display: none;">
-        <div class="glass-panel">
-            <h2>🎯 Sắp xong rồi!</h2>
-            <p>Nhập tên của bạn để xem điểm số tuyệt vời nào!</p>
-            <input type="text" id="name-input" class="input-field" placeholder="Ví dụ: Nguyễn Văn A...">
-            <p id="name-error" style="color: red; display: none; margin-bottom: 10px;">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</p>
-            <button class="btn-primary" onclick="submitTest()">XEM KẾT QUẢ 🎉</button>
-        </div>
-    </div>
-
-    <div id="result-modal" class="modal-overlay" style="display: none;">
-        <div class="glass-panel">
-            <h2 id="result-title">🌟 THIÊN TÀI!</h2>
-            <img id="result-meme" class="result-gif" src="" alt="Meme">
-            <h3 style="font-size: 2rem; color: var(--primary); margin: 15px 0;" id="result-score">10/10</h3>
-            <p id="result-message" style="font-size: 1.2rem; margin-bottom: 20px;">Làm tốt lắm!</p>
-            <button class="btn-primary" onclick="location.reload()">LÀM LẠI TỪ ĐẦU 🔄</button>
-        </div>
-    </div>
-
-    <div id="main-content">
-        <div class="top-bar">
-            <h3>👩‍🏫 MS Chí Nên</h3>
-            <div id="timer-container">
-                <button id="start-btn" class="btn-primary" style="padding: 10px 20px; font-size: 1rem; box-shadow: 0 4px 0 #5b3882;" onclick="startTimer()">BẮT ĐẦU TÍNH GIỜ</button>
-                <div id="timer-display">10:00</div>
-            </div>
-        </div>
-
-        <div class="split-screen">
-            <div class="left-pane pane" id="reading-pane">
-                
-                <div class="passage-box">
-                    <h4>🛍️ Passage 1: Attention, Shoppers!</h4>
-                    <p>Welcome to our shopping center! We are excited to offer you great deals and special (13) ________ on a wide range of products.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Chào mừng đến với trung tâm mua sắm của chúng tôi! Chúng tôi rất hào hứng mang đến cho bạn những ưu đãi tuyệt vời và mức giảm giá đặc biệt cho vô số các sản phẩm.</div>
-
-                    <p>Visit our fashion stores on the second floor for the latest trends at affordable prices. Don't forget to stop by the food court at lunchtime to enjoy (14) ________ delicious meal with your family.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Hãy ghé thăm các cửa hàng thời trang của chúng tôi trên tầng hai để cập nhật những xu hướng mới nhất với giá cả phải chăng. Đừng quên dừng chân tại khu ẩm thực vào giờ trưa để thưởng thức một bữa ăn ngon miệng cùng gia đình nhé.</div>
-
-                    <p>This weekend, there is a big sale at the electronics store near the main entrance. Also, our supermarket (15) ________ fresh fruits and vegetables on sale. For your convenience, customer service is available at the information desk (16) ________ 10 AM and 8 PM. Thank you for shopping with us, and have a wonderful day!</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Cuối tuần này, có một đợt giảm giá lớn tại cửa hàng điện tử gần lối vào chính. Ngoài ra, siêu thị của chúng tôi cũng có bán trái cây và rau củ tươi đang được giảm giá. Để thuận tiện cho bạn, dịch vụ chăm sóc khách hàng luôn sẵn sàng tại quầy thông tin từ 10 giờ sáng đến 8 giờ tối. Cảm ơn bạn đã mua sắm cùng chúng tôi và chúc bạn một ngày tuyệt vời!</div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td>Affordable</td><td>Adj</td><td>Giá cả phải chăng, hợp lý</td></tr>
-                        <tr><td>Trend</td><td>Noun</td><td>Xu hướng</td></tr>
-                        <tr><td>Convenience</td><td>Noun</td><td>Sự thuận tiện</td></tr>
-                        <tr><td>Wide range</td><td>Noun phrase</td><td>Sự đa dạng, nhiều loại</td></tr>
-                    </table>
-                </div>
-
-                <div class="passage-box">
-                    <h4>💻 Passage 2: Online Classes</h4>
-                    <p>Online classes are a popular way to study using the internet. Today, (19)___________ schools, colleges, and universities offer online lessons, so students can learn from home.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Lớp học trực tuyến là một cách phổ biến để học tập sử dụng internet. Ngày nay, nhiều trường học, trường cao đẳng và đại học cung cấp các bài học trực tuyến, vì vậy học sinh có thể học từ nhà.</div>
-
-                    <p>Students only need a computer, tablet, or smartphone to join the class. Teachers explain lessons through videos, and students can (20) __________ questions by typing in the chat or talking on video calls.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Học sinh chỉ cần máy tính, máy tính bảng hoặc điện thoại thông minh để tham gia lớp học. Giáo viên giảng bài qua video, và học sinh có thể hỏi câu hỏi bằng cách gõ vào khung chat hoặc nói chuyện qua cuộc gọi video.</div>
-
-                    <p>Online classes are very useful because students can study anytime and anywhere. This is (21) __________ for students who live far away from schools. Besides lessons from teachers, students can also find many free courses on websites. These courses teach (22) ___________, like math, science or English.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Các lớp học trực tuyến rất hữu ích vì học sinh có thể học mọi lúc mọi nơi. Điều này rất có ích cho những học sinh sống xa trường. Bên cạnh bài học từ giáo viên, học sinh cũng có thể tìm thấy nhiều khóa học miễn phí trên các trang web. Những khóa học này dạy nhiều môn học khác nhau, như toán, khoa học hoặc tiếng Anh.</div>
-                    
-                    <p>(23) __________, online learning is not always easy. Some students do not have a quiet place to study at home, which makes it hard to focus. Also, there are many distractions at home, like family, games, or social media. To be successful with online learning, students need to try their best to focus (24) __________ their lessons.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Tuy nhiên, học trực tuyến không phải lúc nào cũng dễ dàng. Một số học sinh không có không gian yên tĩnh để học ở nhà, điều này làm cho việc tập trung trở nên khó khăn. Ngoài ra, có nhiều sự xao nhãng ở nhà, như gia đình, trò chơi, hoặc mạng xã hội. Để thành công với việc học trực tuyến, học sinh cần cố gắng hết sức để tập trung vào bài học của mình.</div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td>Distraction</td><td>Noun</td><td>Sự xao nhãng, mất tập trung</td></tr>
-                        <tr><td>Focus</td><td>Verb/Noun</td><td>Tập trung</td></tr>
-                        <tr><td>Useful</td><td>Adj</td><td>Hữu ích</td></tr>
-                    </table>
-                </div>
-
-                 <div class="passage-box">
-                    <h4>⛰️ Passage 3: Landslides in Malaysia</h4>
-                    <p>Landslides are a common problem in Malaysia. A landslide happens when rocks, soil, and mud slide down a hill or mountain. There are different causes of landslides, such as heavy rain, earthquakes, and cutting down trees.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Sạt lở đất là một vấn đề phổ biến ở Malaysia. Sạt lở đất xảy ra khi đá, đất và bùn trượt xuống từ đồi hoặc núi. Có nhiều nguyên nhân khác nhau gây ra sạt lở đất, chẳng hạn như mưa lớn, động đất và việc chặt phá cây rừng.</div>
-
-                    <p>Malaysia has many hills and mountains, so some places have a high risk of landslides. They often happen in the rainy season when the ground becomes too wet and soft. Landslides can destroy houses, roads, and buildings. Sometimes, people get hurt or even die.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Malaysia có nhiều đồi núi, do đó một số nơi có nguy cơ sạt lở đất cao. Chúng thường xảy ra vào mùa mưa khi mặt đất trở nên quá ẩm ướt và mềm nhão. Sạt lở đất có thể phá hủy nhà cửa, đường sá và các tòa nhà. Đôi khi, con người bị thương hoặc thậm chí thiệt mạng.</div>
-
-                    <p>One of the worst landslides in Malaysia happened in 1993 at the Highland Towers in Selangor. After many days of heavy rain, the ground became too weak. A big landslide caused a tall apartment building to fall. Sadly, 48 people lost their lives.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Một trong những trận sạt lở đất tồi tệ nhất ở Malaysia xảy ra vào năm 1993 tại Highland Towers ở Selangor. Sau nhiều ngày mưa lớn, mặt đất trở nên quá yếu. Một trận sạt lở đất lớn đã làm đổ sập một tòa nhà chung cư cao tầng. Đáng buồn thay, 48 người đã thiệt mạng.</div>
-                    
-                    <p>To stop landslides, the government has made stronger rules for building houses and roads. They also check unsafe areas and improve drainage systems to keep the ground strong and dry. However, because of climate change, there is more heavy rain, so landslides are still a big problem in Malaysia.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Để ngăn chặn sạt lở đất, chính phủ đã ban hành các quy định nghiêm ngặt hơn đối với việc xây dựng nhà cửa và đường sá. Họ cũng kiểm tra các khu vực không an toàn và cải thiện hệ thống thoát nước để giữ cho mặt đất luôn chắc chắn và khô ráo. Tuy nhiên, do biến đổi khí hậu, có nhiều mưa lớn hơn, vì vậy sạt lở đất vẫn là một vấn đề lớn ở Malaysia.</div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td>Landslide</td><td>Noun</td><td>Sạt lở đất</td></tr>
-                        <tr><td>Risk</td><td>Noun</td><td>Rủi ro, nguy cơ</td></tr>
-                        <tr><td>Drainage system</td><td>Noun phrase</td><td>Hệ thống thoát nước</td></tr>
-                        <tr><td>Climate change</td><td>Noun phrase</td><td>Biến đổi khí hậu</td></tr>
-                    </table>
-                </div>
-
-                <div class="passage-box">
-                    <h4>🌌 Passage 4: Holography</h4>
-                    <p>Holography is a special way to make pictures. These pictures are called holograms. They are not flat like normal photos. Instead, they look 3D, like real objects. When you move around a hologram, you can see different sides, (37)______.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Phép in toàn ảnh (Holography) là một cách đặc biệt để tạo ra hình ảnh. Những hình ảnh này được gọi là ảnh toàn ký (holograms). Chúng không phẳng như những bức ảnh bình thường. Thay vào đó, chúng trông giống như 3D, giống như các vật thể thực. Khi bạn di chuyển xung quanh một ảnh toàn ký, bạn có thể nhìn thấy các mặt khác nhau, y như đang nhìn vào một vật thật.</div>
-
-                    <p>Holograms are made using lasers. A laser light shines on the object, and the light reflects back to a special camera. The camera records the light from different angles. (38) ____.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Ảnh toàn ký được tạo ra bằng cách sử dụng tia laser. Một ánh sáng laser chiếu vào vật thể, và ánh sáng phản xạ lại một máy ảnh đặc biệt. Máy ảnh ghi lại ánh sáng từ nhiều góc độ khác nhau. Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D.</div>
-
-                    <p>Today, holograms are used in many ways. In some museums, you can see holograms of dinosaurs or old buildings. (39)___________. In some concerts, singers who are not alive anymore appear as holograms and perform on stage. Holograms are also used on money to stop fake notes.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Ngày nay, ảnh toàn ký được sử dụng theo nhiều cách. Ở một số bảo tàng, bạn có thể thấy ảnh toàn ký của khủng long hoặc các tòa nhà cổ. Chúng giúp mọi người học lịch sử một cách thú vị. Trong một số buổi hòa nhạc, các ca sĩ không còn sống nữa xuất hiện dưới dạng ảnh toàn ký và biểu diễn trên sân khấu. Ảnh toàn ký cũng được sử dụng trên tiền để ngăn chặn tiền giả.</div>
-
-                    <p>In the future, people might use holograms for video calls. Instead of seeing your friend on a screen, (40)___________, sitting in your room! Holography makes the future exciting.</p>
-                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
-                    <div class="translation-text">Trong tương lai, mọi người có thể sử dụng ảnh toàn ký cho các cuộc gọi video. Thay vì nhìn thấy bạn của bạn trên màn hình, bạn có thể nhìn thấy họ dưới dạng 3D, ngồi ngay trong phòng của bạn! Phép in toàn ảnh làm cho tương lai trở nên thú vị.</div>
-
-                    <table class="glossary-table">
-                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
-                        <tr><td>Holography</td><td>Noun</td><td>Phép in toàn ảnh</td></tr>
-                        <tr><td>Reflect</td><td>Verb</td><td>Phản xạ, dội lại</td></tr>
-                        <tr><td>Angle</td><td>Noun</td><td>Góc độ</td></tr>
-                        <tr><td>Fake notes</td><td>Noun phrase</td><td>Tiền giả</td></tr>
-                    </table>
-                </div>
-
-            </div>
-
-            <div class="right-pane pane" id="exercise-pane">
-                <div id="quiz-container"></div>
-                <button class="btn-primary" style="margin-top: 30px; font-size: 1.5rem; padding: 20px;" onclick="showNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ 🎯</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', event => {
-            if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
-                event.preventDefault();
-            }
-        });
-
-        const securePass = [104, 116, 114, 102, 110, 102, 115, 122, 113, 110, 120]; 
-
-        function checkPassword() {
-            const input = document.getElementById("pass-input");
-            const val = input.value;
-            let isValid = val.length === securePass.length;
-            
-            if(isValid) {
-                for(let i = 0; i < val.length; i++) {
-                    if(val.charCodeAt(i) + 5 !== securePass[i]) {
-                        isValid = false; break;
-                    }
-                }
-            }
-
-            if (isValid) {
-                document.getElementById("password-modal").style.display = "none";
-                document.getElementById("main-content").style.display = "flex";
-                initAudio();
-            } else {
-                input.classList.add("error", "shake");
-                setTimeout(() => input.classList.remove("error", "shake"), 400);
-            }
-        }
-        document.getElementById("pass-input").addEventListener("keypress", function(e) {
-            if(e.key === "Enter") checkPassword();
-        });
-
-        let audioCtx;
-        function initAudio() { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-        
-        function playDing() {
-            if(!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = "sine"; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-        }
-
-        function playWrong() {
-            if(!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = "sawtooth";
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.3);
-            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-        }
-
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particles = [];
-        
-        function fireConfetti() {
-            for(let i=0; i<100; i++) {
-                particles.push({
-                    x: canvas.width / 2, y: canvas.height / 2, r: Math.random() * 6 + 4,
-                    dx: Math.random() * 10 - 5, dy: Math.random() * -10 - 5,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
-                });
-            }
-            animateConfetti();
-        }
-        function animateConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.x += p.dx; p.y += p.dy; p.dy += 0.2; 
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fillStyle = p.color; ctx.fill();
-                if(p.y > canvas.height) particles.splice(i, 1);
-            });
-            if(particles.length > 0) requestAnimationFrame(animateConfetti);
-        }
-
-        let time = 600; 
-        let timerInterval;
-        let timerRunning = false;
-        function startTimer() {
-            if(timerRunning) return;
-            timerRunning = true;
-            document.getElementById("start-btn").innerText = "ĐANG TÍNH GIỜ...";
-            timerInterval = setInterval(() => {
-                time--;
-                let m = Math.floor(time / 60).toString().padStart(2, '0');
-                let s = (time % 60).toString().padStart(2, '0');
-                document.getElementById("timer-display").innerText = `${m}:${s}`;
-                if(time <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.");
-                }
-            }, 1000);
-        }
-
-        function toggleTranslate(btn) {
-            const transDiv = btn.nextElementSibling;
-            if(transDiv.style.display === "block") {
-                transDiv.style.display = "none"; btn.innerText = "Mở dịch đoạn này 🌟";
-            } else {
-                transDiv.style.display = "block"; btn.innerText = "Đóng bản dịch 🙈";
-            }
-        }
-
-        const quizData = [
-            { id: 13, qText: "Question 13", qTrans: "Chọn từ phù hợp nhất cho ô trống (13).", options: [{text: "decoration", correct: false, exp: "sự trang trí. ❌ Sai vì không hợp ngữ cảnh."}, {text: "discount", correct: true, exp: "giảm giá. ✅ Đúng vì đi kèm với 'special' tạo thành cụm từ 'special discount' (mức giảm giá đặc biệt)."}, {text: "entertainment", correct: false, exp: "sự giải trí. ❌ Sai ngữ cảnh."}, {text: "entrance", correct: false, exp: "lối vào. ❌ Sai ngữ cảnh."}], quote: "...offer you great deals and special (13) discount on a wide range of products.", quoteTrans: "mang đến cho bạn những ưu đãi tuyệt vời và mức <span style='color:red; font-weight:bold'>giảm giá</span> đặc biệt..." },
-            { id: 14, qText: "Question 14", qTrans: "Chọn mạo từ phù hợp nhất cho ô trống (14).", options: [{text: "the", correct: false, exp: "mạo từ xác định. ❌ Sai vì 'delicious meal' chưa được xác định trước đó."}, {text: "an", correct: false, exp: "mạo từ không xác định. ❌ Sai vì 'delicious' bắt đầu bằng phụ âm 'd'."}, {text: "a", correct: true, exp: "mạo từ không xác định. ✅ Đúng vì dùng trước danh từ số ít đếm được chỉ một bữa ăn nói chung."}, {text: "no article", correct: false, exp: "không mạo từ. ❌ Sai vì 'meal' là danh từ đếm được số ít, cần mạo từ."}], quote: "...enjoy (14) a delicious meal with your family.", quoteTrans: "...thưởng thức <span style='color:red; font-weight:bold'>một</span> bữa ăn ngon miệng cùng gia đình nhé." },
-            { id: 15, qText: "Question 15", qTrans: "Chọn động từ phù hợp cho ô trống (15).", options: [{text: "are having", correct: false, exp: "❌ Sai vì chủ ngữ 'our supermarket' là số ít."}, {text: "had", correct: false, exp: "❌ Sai vì bối cảnh bài đang ở hiện tại."}, {text: "have", correct: false, exp: "❌ Sai vì 'our supermarket' là số ít."}, {text: "has", correct: true, exp: "có. ✅ Đúng vì 'supermarket' là danh từ số ít, động từ chia ở hiện tại đơn là 'has'."}], quote: "Also, our supermarket (15) has fresh fruits and vegetables on sale.", quoteTrans: "Ngoài ra, siêu thị của chúng tôi cũng <span style='color:red; font-weight:bold'>có</span> bán trái cây và rau củ tươi đang được giảm giá." },
-            { id: 16, qText: "Question 16", qTrans: "Chọn giới từ phù hợp cho ô trống (16).", options: [{text: "in", correct: false, exp: "trong. ❌ Sai ngữ pháp."}, {text: "from", correct: false, exp: "từ. ❌ Thường đi với 'to' (from A to B)."}, {text: "on", correct: false, exp: "trên. ❌ Sai ngữ pháp."}, {text: "between", correct: true, exp: "giữa. ✅ Đúng cấu trúc 'between A and B'."}], quote: "...available at the information desk (16) between 10 AM and 8 PM.", quoteTrans: "...sẵn sàng tại quầy thông tin <span style='color:red; font-weight:bold'>giữa</span> 10 giờ sáng và 8 giờ tối." },
-            
-            { id: 19, qText: "Question 19", qTrans: "Chọn lượng từ phù hợp nhất cho ô trống (19).", options: [{text: "a little", correct: false, exp: "một chút. ❌ Đi với danh từ không đếm được."}, {text: "many", correct: true, exp: "nhiều. ✅ Đi với danh từ đếm được số nhiều (schools, colleges)."}, {text: "much", correct: false, exp: "nhiều. ❌ Đi với danh từ không đếm được."}, {text: "a few", correct: false, exp: "một vài. ❌ Nghĩa không phù hợp bằng 'many'."}], quote: "Today, (19) many schools, colleges, and universities offer online lessons...", quoteTrans: "Ngày nay, <span style='color:red; font-weight:bold'>nhiều</span> trường học, trường cao đẳng và đại học cung cấp các bài học trực tuyến..." },
-            { id: 20, qText: "Question 20", qTrans: "Chọn dạng động từ phù hợp cho ô trống (20).", options: [{text: "ask", correct: true, exp: "hỏi. ✅ Đứng sau 'can' cần dùng V nguyên thể."}, {text: "asking", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}, {text: "asked", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}, {text: "asks", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}], quote: "...and students can (20) ask questions by typing...", quoteTrans: "...và học sinh có thể <span style='color:red; font-weight:bold'>hỏi</span> câu hỏi bằng cách gõ..." },
-            { id: 21, qText: "Question 21", qTrans: "Chọn tính từ phù hợp cho ô trống (21).", options: [{text: "hard", correct: false, exp: "khó khăn. ❌ Sai ngữ cảnh."}, {text: "inconvenient", correct: false, exp: "bất tiện. ❌ Sai nghĩa."}, {text: "helpful", correct: true, exp: "hữu ích. ✅ Đúng vì việc học mọi lúc mọi nơi rất có lợi cho học sinh ở xa."}, {text: "difficult", correct: false, exp: "khó. ❌ Sai nghĩa."}], quote: "This is (21) helpful for students who live far away from schools.", quoteTrans: "Điều này rất <span style='color:red; font-weight:bold'>hữu ích</span> cho những học sinh sống xa trường." },
-            { id: 22, qText: "Question 22", qTrans: "Chọn cụm danh từ phù hợp cho ô trống (22).", options: [{text: "different subject", correct: false, exp: "❌ Sai vì 'subject' phải để số nhiều khi liệt kê 'math, science or English'."}, {text: "different subjects", correct: true, exp: "nhiều môn học khác nhau. ✅ Đúng vì sau nó liệt kê nhiều môn học."}, {text: "subject difference", correct: false, exp: "❌ Sai cấu trúc."}, {text: "difference subjects", correct: false, exp: "❌ Sai cấu trúc."}], quote: "These courses teach (22) different subjects, like math, science or English.", quoteTrans: "Những khóa học này dạy <span style='color:red; font-weight:bold'>nhiều môn học khác nhau</span>, như toán, khoa học hoặc tiếng Anh." },
-            { id: 23, qText: "Question 23", qTrans: "Chọn từ nối phù hợp cho ô trống (23).", options: [{text: "So", correct: false, exp: "Vì vậy. ❌ Không thể hiện sự tương phản."}, {text: "Moreover", correct: false, exp: "Hơn nữa. ❌ Không thể hiện sự tương phản."}, {text: "Therefore", correct: false, exp: "Do đó. ❌ Không thể hiện sự tương phản."}, {text: "However", correct: true, exp: "Tuy nhiên. ✅ Đúng vì đoạn trước nói về lợi ích, đoạn này nói về khó khăn."}], quote: "(23) However, online learning is not always easy.", quoteTrans: "<span style='color:red; font-weight:bold'>Tuy nhiên</span>, học trực tuyến không phải lúc nào cũng dễ dàng." },
-            { id: 24, qText: "Question 24", qTrans: "Chọn giới từ phù hợp cho ô trống (24).", options: [{text: "in", correct: false, exp: "❌ Sai giới từ đi với 'focus'."}, {text: "at", correct: false, exp: "❌ Sai giới từ."}, {text: "to", correct: false, exp: "❌ Sai giới từ."}, {text: "on", correct: true, exp: "vào. ✅ Đúng vì cấu trúc là 'focus on something'."}], quote: "...students need to try their best to focus (24) on their lessons.", quoteTrans: "...học sinh cần cố gắng hết sức để tập trung <span style='color:red; font-weight:bold'>vào</span> bài học của mình." },
-
-            { id: 31, qText: "Question 31. What is the main idea of the reading passage?", qTrans: "Ý chính của đoạn văn đọc là gì?", options: [{text: "The landslides in Malaysia", correct: true, exp: "Sạt lở đất ở Malaysia. ✅ Đoạn văn xuyên suốt bàn về vấn đề này."}, {text: "Climate change in Malaysia", correct: false, exp: "Biến đổi khí hậu. ❌ Chỉ là một chi tiết nhỏ."}, {text: "Different types of natural disasters in Malaysia", correct: false, exp: "Các loại hình thiên tai. ❌ Bài chỉ nói về sạt lở đất."}, {text: "Landslides around the world", correct: false, exp: "Sạt lở đất trên thế giới. ❌ Bài chỉ tập trung vào Malaysia."}], quote: "Landslides are a common problem in Malaysia.", quoteTrans: "<span style='color:red; font-weight:bold'>Sạt lở đất</span> là một vấn đề phổ biến ở <span style='color:red; font-weight:bold'>Malaysia</span>." },
-            { id: 32, qText: "Question 32. When do landslides usually happen in Malaysia?", qTrans: "Sạt lở đất thường xảy ra ở Malaysia khi nào?", options: [{text: "In the dry season", correct: false, exp: "Mùa khô. ❌ Sai thông tin."}, {text: "In winter", correct: false, exp: "Vào mùa đông. ❌ Sai thông tin."}, {text: "During the rainy season", correct: true, exp: "Vào mùa mưa. ✅ Đúng vì bài có ghi rõ điều này."}, {text: "In summer", correct: false, exp: "Vào mùa hè. ❌ Sai thông tin."}], quote: "They often happen in the rainy season when the ground becomes too wet and soft.", quoteTrans: "Chúng thường xảy ra vào <span style='color:red; font-weight:bold'>mùa mưa</span> khi mặt đất trở nên quá ẩm ướt và mềm nhão." },
-            { id: 33, qText: "Question 33. The word unsafe in the text is CLOSEST in meaning to _____.", qTrans: "Từ 'unsafe' trong văn bản GẦN nghĩa nhất với từ nào?", options: [{text: "Careful", correct: false, exp: "Cẩn thận. ❌ Không liên quan."}, {text: "Dangerous", correct: true, exp: "Nguy hiểm. ✅ Unsafe = không an toàn = Dangerous."}, {text: "Strong", correct: false, exp: "Mạnh mẽ. ❌ Sai nghĩa."}, {text: "Safe", correct: false, exp: "An toàn. ❌ Đây là từ trái nghĩa."}], quote: "They also check unsafe areas...", quoteTrans: "Họ cũng kiểm tra các khu vực <span style='color:red; font-weight:bold'>không an toàn (nguy hiểm)</span>..." },
-            { id: 34, qText: "Question 34. What does the government do to stop landslides?", qTrans: "Chính phủ làm gì để ngăn chặn sạt lở đất?", options: [{text: "Build more houses on hills", correct: false, exp: "Xây thêm nhà trên đồi. ❌ Sai thông tin."}, {text: "Dig big holes in the ground", correct: false, exp: "Đào những hố lớn trên mặt đất. ❌ Sai thông tin."}, {text: "Cut down trees near mountains", correct: false, exp: "Chặt cây gần núi. ❌ Đây là nguyên nhân, không phải giải pháp."}, {text: "Make stronger rules and check dangerous areas", correct: true, exp: "Ban hành các quy định nghiêm ngặt hơn và kiểm tra các khu vực nguy hiểm. ✅ Đúng với dẫn chứng trong bài."}], quote: "To stop landslides, the government has made stronger rules for building... They also check unsafe areas...", quoteTrans: "Để ngăn chặn sạt lở đất, chính phủ đã <span style='color:red; font-weight:bold'>ban hành các quy định nghiêm ngặt hơn</span>... Họ cũng <span style='color:red; font-weight:bold'>kiểm tra các khu vực không an toàn</span>..." },
-            { id: 35, qText: "Question 35. The word build in the text is OPPOSITE in meaning to _____.", qTrans: "Từ 'build' (xây dựng) TRÁI NGHĨA với từ nào?", options: [{text: "make", correct: false, exp: "làm, tạo ra. ❌ Đây là từ đồng nghĩa."}, {text: "fix", correct: false, exp: "sửa chữa. ❌ Không phải trái nghĩa."}, {text: "destroy", correct: true, exp: "phá hủy. ✅ Đúng vì 'destroy' trái nghĩa với 'build' (xây dựng)."}, {text: "keep", correct: false, exp: "giữ. ❌ Không liên quan."}], quote: "...rules for building houses and roads.", quoteTrans: "...các quy định đối với việc <span style='color:red; font-weight:bold'>xây dựng</span> nhà cửa và đường sá." },
-            { id: 36, qText: "Question 36. Which of the following is NOT mentioned as a cause of landslides in the passage?", qTrans: "Điều nào sau đây KHÔNG được nhắc đến như một nguyên nhân gây sạt lở đất?", options: [{text: "Heavy rain", correct: false, exp: "Mưa lớn. ❌ Có nhắc đến."}, {text: "Earthquakes", correct: false, exp: "Động đất. ❌ Có nhắc đến."}, {text: "Cutting down trees", correct: false, exp: "Chặt phá cây rừng. ❌ Có nhắc đến."}, {text: "Volcanic eruptions", correct: true, exp: "Phun trào núi lửa. ✅ Đúng vì chi tiết này hoàn toàn không có trong bài."}], quote: "There are different causes of landslides, such as heavy rain, earthquakes, and cutting down trees.", quoteTrans: "Có nhiều nguyên nhân khác nhau gây ra sạt lở đất, chẳng hạn như <span style='color:red; font-weight:bold'>mưa lớn, động đất và việc chặt phá cây rừng</span>." },
-
-            { id: 37, qText: "Question 37", qTrans: "Chọn câu phù hợp điền vào chỗ trống (37).", options: [{text: "you could see them in 3D", correct: false, exp: "bạn có thể nhìn thấy chúng 3D. ❌ Phù hợp với câu 40 hơn."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "Sau đó thông tin được dùng để tạo ảnh. ❌ Phù hợp với quá trình tạo ảnh ở câu 38."}, {text: "just like looking at something real", correct: true, exp: "y như đang nhìn vào một vật thật. ✅ Đúng vì câu trước đang miêu tả việc nhìn các mặt khác nhau của vật thể."}, {text: "They help people learn history in a fun way.", correct: false, exp: "Chúng giúp học lịch sử. ❌ Phù hợp với câu 39."}], quote: "When you move around a hologram, you can see different sides, (37) just like looking at something real.", quoteTrans: "Khi bạn di chuyển xung quanh một ảnh toàn ký, bạn có thể nhìn thấy các mặt khác nhau, <span style='color:red; font-weight:bold'>y như đang nhìn vào một vật thật</span>." },
-            { id: 38, qText: "Question 38", qTrans: "Chọn câu phù hợp điền vào chỗ trống (38).", options: [{text: "you could see them in 3D", correct: false, exp: "❌ Không hợp logic."}, {text: "Later, this information is used to make the 3D picture.", correct: true, exp: "Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D. ✅ Đúng vì câu trước nói về việc máy ảnh ghi lại thông tin ánh sáng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng ở câu 37."}, {text: "They help people learn history in a fun way.", correct: false, exp: "❌ Không hợp logic."}], quote: "The camera records the light from different angles. (38) Later, this information is used to make the 3D picture.", quoteTrans: "Máy ảnh ghi lại ánh sáng từ nhiều góc độ khác nhau. <span style='color:red; font-weight:bold'>Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D.</span>" },
-            { id: 39, qText: "Question 39", qTrans: "Chọn câu phù hợp điền vào chỗ trống (39).", options: [{text: "you could see them in 3D", correct: false, exp: "❌ Không hợp ngữ cảnh bảo tàng."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "❌ Đã dùng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng."}, {text: "They help people learn history in a fun way.", correct: true, exp: "Chúng giúp mọi người học lịch sử một cách thú vị. ✅ Đúng vì câu trước nhắc đến khủng long và các tòa nhà cổ trong bảo tàng."}], quote: "In some museums, you can see holograms of dinosaurs or old buildings. (39) They help people learn history in a fun way.", quoteTrans: "Ở một số bảo tàng, bạn có thể thấy ảnh toàn ký của khủng long hoặc các tòa nhà cổ. <span style='color:red; font-weight:bold'>Chúng giúp mọi người học lịch sử một cách thú vị.</span>" },
-            { id: 40, qText: "Question 40", qTrans: "Chọn câu phù hợp điền vào chỗ trống (40).", options: [{text: "you could see them in 3D", correct: true, exp: "bạn có thể nhìn thấy họ dưới dạng 3D. ✅ Đúng vì vế trước nói 'thay vì nhìn thấy trên màn hình', vế sau mô tả sự xuất hiện 3D trong phòng."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "❌ Đã dùng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng."}, {text: "They help people learn history in a fun way.", correct: false, exp: "❌ Đã dùng."}], quote: "Instead of seeing your friend on a screen, (40) you could see them in 3D, sitting in your room!", quoteTrans: "Thay vì nhìn thấy bạn của bạn trên màn hình, <span style='color:red; font-weight:bold'>bạn có thể nhìn thấy họ dưới dạng 3D</span>, ngồi ngay trong phòng của bạn!" }
-        ];
-
-        let score = 0;
-        let answeredCount = 0;
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function renderQuiz() {
-            const container = document.getElementById("quiz-container");
-            container.innerHTML = "";
-
-            quizData.forEach((q, index) => {
-                const card = document.createElement("div");
-                card.className = "question-card";
-                
-                let optionsHtml = "";
-                let shuffledOptions = shuffle([...q.options]);
-                
-                shuffledOptions.forEach((opt, optIndex) => {
-                    optionsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${index}, ${opt.correct}, '${opt.text.replace(/'/g, "\\'")}')">${opt.text}</button>`;
-                });
-
-                card.innerHTML = `
-                    <div class="question-text">📝 ${q.qText}</div>
-                    <div class="options-grid" id="opts-${index}">${optionsHtml}</div>
-                    <div class="explanation-box" id="exp-${index}">
-                        <div class="vi-trans">👉 Dịch câu hỏi: ${q.qTrans}</div>
-                        <ul style="margin-left: 20px; margin-bottom: 10px;">
-                            ${shuffledOptions.map(o => `<li><b>${o.text}</b>: ${o.exp}</li>`).join("")}
-                        </ul>
-                        <div class="proof">
-                            🔍 <b>Dẫn chứng:</b> "${q.quote}"<br>
-                            👉 <b>Dịch:</b> ${q.quoteTrans}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function checkAnswer(btn, qIndex, isCorrect, text) {
-            const optsContainer = document.getElementById(`opts-${qIndex}`);
-            const expBox = document.getElementById(`exp-${qIndex}`);
-            
-            const allBtns = optsContainer.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true);
-
-            if(isCorrect) {
-                btn.classList.add("correct");
-                playDing(); fireConfetti(); score++;
-            } else {
-                btn.classList.add("wrong", "shake"); playWrong();
-                allBtns.forEach(b => {
-                    const correctOpt = quizData[qIndex].options.find(o => o.correct);
-                    if(b.innerText === correctOpt.text) b.classList.add("correct");
-                });
-            }
-            
-            expBox.style.display = "block";
-            answeredCount++;
-        }
-
-        function showNameModal() {
-            if(answeredCount < quizData.length) {
-                if(!confirm("Bạn chưa làm hết bài. Bạn có chắc chắn muốn nộp không?")) return;
-            }
-            document.getElementById("name-modal").style.display = "flex";
-            document.getElementById("name-input").focus();
-        }
-
-        document.getElementById("name-input").addEventListener("keypress", function(e) {
-            if(e.key === "Enter") submitTest();
-        });
-
-        function submitTest() {
-            const nameInput = document.getElementById("name-input");
-            const nameError = document.getElementById("name-error");
-            const studentName = nameInput.value.trim();
-
-            if(!studentName) {
-                nameInput.classList.add("error", "shake");
-                nameError.style.display = "block";
-                setTimeout(() => nameInput.classList.remove("error", "shake"), 400);
-                return;
-            }
-
-            document.getElementById("name-modal").style.display = "none";
-            clearInterval(timerInterval);
-            
-            const percent = (score / quizData.length) * 100;
-            const titleEl = document.getElementById("result-title");
-            const msgEl = document.getElementById("result-message");
-            const imgEl = document.getElementById("result-meme");
-            
-            document.getElementById("result-score").innerText = `${score} / ${quizData.length}`;
-
-            if(percent === 100) {
-                titleEl.innerText = `🌟 THIÊN TÀI!`;
-                msgEl.innerText = `${studentName} xuất sắc tuyệt đối! Em là siêu sao tiếng Anh thực thụ!`;
-                imgEl.src = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif";
-            } else if(percent >= 60) {
-                titleEl.innerText = `👍 RẤT TỐT!`;
-                msgEl.innerText = `${studentName} làm tốt lắm! Cố gắng chút nữa là đạt điểm tối đa nha!`;
-                imgEl.src = "https://media.giphy.com/media/xSM46ernAUN3y/giphy.gif";
-            } else {
-                titleEl.innerText = `💪 CỐ LÊN NHÉ!`;
-                msgEl.innerText = `${studentName} à, học tài thi phận thôi. Hãy đọc kỹ phần giải thích để tiến bộ hơn nhé!`;
-                imgEl.src = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
-            }
-
-            document.getElementById("result-modal").style.display = "flex";
-        }
-
-        window.onload = renderQuiz;
-    </script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bài Kiểm Tra Tiếng Anh - MS Chí Nên</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+
+            --primary: #8854C0;
+
+            --secondary: #00C9A7;
+
+            --accent: #FDCB6E;
+
+            --correct: #00D26A;
+
+            --wrong: #FF4757;
+
+            --glass-bg: rgba(255, 255, 255, 0.85);
+
+            --glass-border: rgba(255, 255, 255, 0.5);
+
+            --text-dark: #2d3436;
+
+        }
+
+
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; user-select: none; }
+
+
+
+        body {
+
+            overflow: hidden;
+
+            background: linear-gradient(-45deg, #8854C0, #FF9A9E, #FECFEF, #00C9A7);
+
+            background-size: 400% 400%;
+
+            animation: gradientBG 15s ease infinite;
+
+            color: var(--text-dark); height: 100vh;
+
+        }
+
+
+
+        body::before {
+
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+
+            background-image: url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='30' font-size='25'%3E🌸%3C/text%3E%3Ctext x='100' y='80' font-size='30'%3E🐱%3C/text%3E%3Ctext x='40' y='130' font-size='25'%3E🌺%3C/text%3E%3Ctext x='120' y='20' font-size='20'%3E🐈%3C/text%3E%3C/svg%3E");
+
+            animation: floatPattern 40s linear infinite; z-index: -1; opacity: 0.5;
+
+        }
+
+
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        @keyframes floatPattern { 0% { background-position: 0 0; } 100% { background-position: 300px 300px; } }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+
+
+        .shake { animation: shake 0.4s ease-in-out; }
+
+
+
+        .modal-overlay {
+
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
+
+        }
+
+
+
+        .glass-panel {
+
+            background: var(--glass-bg); border: 2px solid var(--glass-border);
+
+            border-radius: 20px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+
+            text-align: center; max-width: 500px; width: 90%; backdrop-filter: blur(20px);
+
+            max-height: 90vh; overflow-y: auto;
+
+        }
+
+
+
+        .glass-panel h2 { font-size: 1.8rem; color: var(--primary); margin-bottom: 15px; }
+
+        
+
+        .input-field {
+
+            width: 100%; padding: 15px; margin: 15px 0; border: 3px solid #eee; border-radius: 15px;
+
+            font-size: 1.2rem; font-weight: bold; outline: none; transition: 0.3s;
+
+        }
+
+        .input-field:focus { border-color: var(--primary); }
+
+        .input-field.error { border-color: var(--wrong); }
+
+
+
+        .btn-primary {
+
+            background: var(--primary); color: white; border: none; padding: 15px 30px; 
+
+            font-size: 1.2rem; font-weight: bold; border-radius: 15px; cursor: pointer;
+
+            box-shadow: 0 6px 0 #5b3882, 0 10px 10px rgba(0,0,0,0.2); transition: 0.2s; width: 100%;
+
+        }
+
+        .btn-primary:active { transform: translateY(6px); box-shadow: 0 0 0 #5b3882; }
+
+
+
+        #main-content { display: none; height: 100vh; flex-direction: column; }
+
+
+
+        .top-bar {
+
+            height: 70px; display: flex; justify-content: space-between; align-items: center;
+
+            padding: 0 20px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); 
+
+            border-bottom: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 10;
+
+        }
+
+        .top-bar h3 { color: var(--primary); font-size: 1.2rem; }
+
+        
+
+        #timer-container { display: flex; gap: 10px; align-items: center; }
+
+        #timer-display {
+
+            font-size: 1.5rem; font-weight: 800; color: var(--wrong); background: white; 
+
+            padding: 5px 15px; border-radius: 10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+
+        }
+
+
+
+        .split-screen { display: flex; flex: 1; overflow: hidden; }
+
+        .pane { flex: 1; overflow-y: auto; padding: 30px; scroll-behavior: smooth; }
+
+        .left-pane { border-right: 2px solid rgba(255,255,255,0.5); }
+
+
+
+        .passage-box {
+
+            background: var(--glass-bg); padding: 25px; border-radius: 20px; 
+
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); margin-bottom: 30px; border: 1px solid var(--glass-border);
+
+        }
+
+        .passage-box h4 { font-size: 1.4rem; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;}
+
+        .passage-box p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 15px; text-align: justify;}
+
+        
+
+        .translate-btn {
+
+            background: #FFEAA7; color: #D63031; border: none; padding: 8px 15px; border-radius: 12px; 
+
+            font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #FDCB6E; margin-bottom: 15px; 
+
+            transition: 0.2s; font-size: 0.95rem; display: block;
+
+        }
+
+        .translate-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        
+
+        .translation-text {
+
+            display: none; background: #e0f7fa; padding: 15px; border-radius: 10px; 
+
+            border-left: 5px solid var(--secondary); font-size: 1.05rem; font-style: italic; margin-bottom: 20px;
+
+        }
+
+
+
+        .glossary-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 15px; overflow: hidden; }
+
+        .glossary-table th, .glossary-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+
+        .glossary-table th { background: var(--secondary); color: white; }
+
+
+
+        .question-card {
+
+            background: var(--glass-bg); padding: 25px; border-radius: 20px;
+
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid var(--glass-border);
+
+        }
+
+        .question-text { font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; }
+
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
+
+        
+
+        .option-btn {
+
+            background: white; border: 2px solid #ddd; padding: 15px; font-size: 1.08rem; 
+
+            font-weight: 700; border-radius: 15px; cursor: pointer; transition: all 0.2s; text-align: left; box-shadow: 0 4px 0 #ddd;
+
+        }
+
+        .option-btn:hover { transform: scale(1.02); border-color: var(--primary); }
+
+        .option-btn.correct { background: var(--correct); color: white; border-color: #00A855; box-shadow: 0 4px 0 #00A855; }
+
+        .option-btn.wrong { background: var(--wrong); color: white; border-color: #D63031; box-shadow: 0 4px 0 #D63031; }
+
+        .option-btn:disabled { cursor: not-allowed; pointer-events: none; }
+
+
+
+        .explanation-box {
+
+            display: none; margin-top: 20px; padding: 20px; background: #fff3e0; border-radius: 15px; 
+
+            border-left: 6px solid var(--accent); font-size: 1rem; line-height: 1.6; animation: fadeIn 0.5s ease;
+
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+
+
+        .explanation-box .vi-trans { font-weight: bold; color: #555; margin-bottom: 10px; display: block;}
+
+        .explanation-box .proof { background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 10px; border: 1px dashed #ef9a9a;}
+
+
+
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; }
+
+        .result-gif { width: 100%; max-height: 250px; object-fit: contain; border-radius: 15px; margin: 15px 0; }
+
+        
+
+        ::-webkit-scrollbar { width: 10px; }
+
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <canvas id="confetti-canvas"></canvas>
+
+
+
+    <div id="password-modal" class="modal-overlay">
+
+        <div class="glass-panel">
+
+            <h2>🔒 Lớp học Bí mật</h2>
+
+            <p>Nhập mật khẩu để làm bài nhé!</p>
+
+            <input type="password" id="pass-input" class="input-field" placeholder="Nhập mật khẩu...">
+
+            <button class="btn-primary" onclick="checkPassword()">MỞ KHÓA 🚀</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="name-modal" class="modal-overlay" style="display: none;">
+
+        <div class="glass-panel">
+
+            <h2>🎯 Sắp xong rồi!</h2>
+
+            <p>Nhập tên của bạn để xem điểm số tuyệt vời nào!</p>
+
+            <input type="text" id="name-input" class="input-field" placeholder="Ví dụ: Nguyễn Văn A...">
+
+            <p id="name-error" style="color: red; display: none; margin-bottom: 10px;">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</p>
+
+            <button class="btn-primary" onclick="submitTest()">XEM KẾT QUẢ 🎉</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+
+        <div class="glass-panel">
+
+            <h2 id="result-title">🌟 THIÊN TÀI!</h2>
+
+            <img id="result-meme" class="result-gif" src="" alt="Meme">
+
+            <h3 style="font-size: 2rem; color: var(--primary); margin: 15px 0;" id="result-score">10/10</h3>
+
+            <p id="result-message" style="font-size: 1.2rem; margin-bottom: 20px;">Làm tốt lắm!</p>
+
+            <button class="btn-primary" onclick="location.reload()">LÀM LẠI TỪ ĐẦU 🔄</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="main-content">
+
+        <div class="top-bar">
+
+            <h3>👩‍🏫 MS Chí Nên</h3>
+
+            <div id="timer-container">
+
+                <button id="start-btn" class="btn-primary" style="padding: 10px 20px; font-size: 1rem; box-shadow: 0 4px 0 #5b3882;" onclick="startTimer()">BẮT ĐẦU TÍNH GIỜ</button>
+
+                <div id="timer-display">10:00</div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="split-screen">
+
+            <div class="left-pane pane" id="reading-pane">
+
+                
+
+                <div class="passage-box">
+
+                    <h4>🛍️ Passage 1: Attention, Shoppers!</h4>
+
+                    <p>Welcome to our shopping center! We are excited to offer you great deals and special (13) ________ on a wide range of products.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Chào mừng đến với trung tâm mua sắm của chúng tôi! Chúng tôi rất hào hứng mang đến cho bạn những ưu đãi tuyệt vời và mức giảm giá đặc biệt cho vô số các sản phẩm.</div>
+
+
+
+                    <p>Visit our fashion stores on the second floor for the latest trends at affordable prices. Don't forget to stop by the food court at lunchtime to enjoy (14) ________ delicious meal with your family.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Hãy ghé thăm các cửa hàng thời trang của chúng tôi trên tầng hai để cập nhật những xu hướng mới nhất với giá cả phải chăng. Đừng quên dừng chân tại khu ẩm thực vào giờ trưa để thưởng thức một bữa ăn ngon miệng cùng gia đình nhé.</div>
+
+
+
+                    <p>This weekend, there is a big sale at the electronics store near the main entrance. Also, our supermarket (15) ________ fresh fruits and vegetables on sale. For your convenience, customer service is available at the information desk (16) ________ 10 AM and 8 PM. Thank you for shopping with us, and have a wonderful day!</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Cuối tuần này, có một đợt giảm giá lớn tại cửa hàng điện tử gần lối vào chính. Ngoài ra, siêu thị của chúng tôi cũng có bán trái cây và rau củ tươi đang được giảm giá. Để thuận tiện cho bạn, dịch vụ chăm sóc khách hàng luôn sẵn sàng tại quầy thông tin từ 10 giờ sáng đến 8 giờ tối. Cảm ơn bạn đã mua sắm cùng chúng tôi và chúc bạn một ngày tuyệt vời!</div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td>Affordable</td><td>Adj</td><td>Giá cả phải chăng, hợp lý</td></tr>
+
+                        <tr><td>Trend</td><td>Noun</td><td>Xu hướng</td></tr>
+
+                        <tr><td>Convenience</td><td>Noun</td><td>Sự thuận tiện</td></tr>
+
+                        <tr><td>Wide range</td><td>Noun phrase</td><td>Sự đa dạng, nhiều loại</td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                <div class="passage-box">
+
+                    <h4>💻 Passage 2: Online Classes</h4>
+
+                    <p>Online classes are a popular way to study using the internet. Today, (19)___________ schools, colleges, and universities offer online lessons, so students can learn from home.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Lớp học trực tuyến là một cách phổ biến để học tập sử dụng internet. Ngày nay, nhiều trường học, trường cao đẳng và đại học cung cấp các bài học trực tuyến, vì vậy học sinh có thể học từ nhà.</div>
+
+
+
+                    <p>Students only need a computer, tablet, or smartphone to join the class. Teachers explain lessons through videos, and students can (20) __________ questions by typing in the chat or talking on video calls.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Học sinh chỉ cần máy tính, máy tính bảng hoặc điện thoại thông minh để tham gia lớp học. Giáo viên giảng bài qua video, và học sinh có thể hỏi câu hỏi bằng cách gõ vào khung chat hoặc nói chuyện qua cuộc gọi video.</div>
+
+
+
+                    <p>Online classes are very useful because students can study anytime and anywhere. This is (21) __________ for students who live far away from schools. Besides lessons from teachers, students can also find many free courses on websites. These courses teach (22) ___________, like math, science or English.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Các lớp học trực tuyến rất hữu ích vì học sinh có thể học mọi lúc mọi nơi. Điều này rất có ích cho những học sinh sống xa trường. Bên cạnh bài học từ giáo viên, học sinh cũng có thể tìm thấy nhiều khóa học miễn phí trên các trang web. Những khóa học này dạy nhiều môn học khác nhau, như toán, khoa học hoặc tiếng Anh.</div>
+
+                    
+
+                    <p>(23) __________, online learning is not always easy. Some students do not have a quiet place to study at home, which makes it hard to focus. Also, there are many distractions at home, like family, games, or social media. To be successful with online learning, students need to try their best to focus (24) __________ their lessons.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Tuy nhiên, học trực tuyến không phải lúc nào cũng dễ dàng. Một số học sinh không có không gian yên tĩnh để học ở nhà, điều này làm cho việc tập trung trở nên khó khăn. Ngoài ra, có nhiều sự xao nhãng ở nhà, như gia đình, trò chơi, hoặc mạng xã hội. Để thành công với việc học trực tuyến, học sinh cần cố gắng hết sức để tập trung vào bài học của mình.</div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td>Distraction</td><td>Noun</td><td>Sự xao nhãng, mất tập trung</td></tr>
+
+                        <tr><td>Focus</td><td>Verb/Noun</td><td>Tập trung</td></tr>
+
+                        <tr><td>Useful</td><td>Adj</td><td>Hữu ích</td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                 <div class="passage-box">
+
+                    <h4>⛰️ Passage 3: Landslides in Malaysia</h4>
+
+                    <p>Landslides are a common problem in Malaysia. A landslide happens when rocks, soil, and mud slide down a hill or mountain. There are different causes of landslides, such as heavy rain, earthquakes, and cutting down trees.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Sạt lở đất là một vấn đề phổ biến ở Malaysia. Sạt lở đất xảy ra khi đá, đất và bùn trượt xuống từ đồi hoặc núi. Có nhiều nguyên nhân khác nhau gây ra sạt lở đất, chẳng hạn như mưa lớn, động đất và việc chặt phá cây rừng.</div>
+
+
+
+                    <p>Malaysia has many hills and mountains, so some places have a high risk of landslides. They often happen in the rainy season when the ground becomes too wet and soft. Landslides can destroy houses, roads, and buildings. Sometimes, people get hurt or even die.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Malaysia có nhiều đồi núi, do đó một số nơi có nguy cơ sạt lở đất cao. Chúng thường xảy ra vào mùa mưa khi mặt đất trở nên quá ẩm ướt và mềm nhão. Sạt lở đất có thể phá hủy nhà cửa, đường sá và các tòa nhà. Đôi khi, con người bị thương hoặc thậm chí thiệt mạng.</div>
+
+
+
+                    <p>One of the worst landslides in Malaysia happened in 1993 at the Highland Towers in Selangor. After many days of heavy rain, the ground became too weak. A big landslide caused a tall apartment building to fall. Sadly, 48 people lost their lives.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Một trong những trận sạt lở đất tồi tệ nhất ở Malaysia xảy ra vào năm 1993 tại Highland Towers ở Selangor. Sau nhiều ngày mưa lớn, mặt đất trở nên quá yếu. Một trận sạt lở đất lớn đã làm đổ sập một tòa nhà chung cư cao tầng. Đáng buồn thay, 48 người đã thiệt mạng.</div>
+
+                    
+
+                    <p>To stop landslides, the government has made stronger rules for building houses and roads. They also check unsafe areas and improve drainage systems to keep the ground strong and dry. However, because of climate change, there is more heavy rain, so landslides are still a big problem in Malaysia.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Để ngăn chặn sạt lở đất, chính phủ đã ban hành các quy định nghiêm ngặt hơn đối với việc xây dựng nhà cửa và đường sá. Họ cũng kiểm tra các khu vực không an toàn và cải thiện hệ thống thoát nước để giữ cho mặt đất luôn chắc chắn và khô ráo. Tuy nhiên, do biến đổi khí hậu, có nhiều mưa lớn hơn, vì vậy sạt lở đất vẫn là một vấn đề lớn ở Malaysia.</div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td>Landslide</td><td>Noun</td><td>Sạt lở đất</td></tr>
+
+                        <tr><td>Risk</td><td>Noun</td><td>Rủi ro, nguy cơ</td></tr>
+
+                        <tr><td>Drainage system</td><td>Noun phrase</td><td>Hệ thống thoát nước</td></tr>
+
+                        <tr><td>Climate change</td><td>Noun phrase</td><td>Biến đổi khí hậu</td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+                <div class="passage-box">
+
+                    <h4>🌌 Passage 4: Holography</h4>
+
+                    <p>Holography is a special way to make pictures. These pictures are called holograms. They are not flat like normal photos. Instead, they look 3D, like real objects. When you move around a hologram, you can see different sides, (37)______.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Phép in toàn ảnh (Holography) là một cách đặc biệt để tạo ra hình ảnh. Những hình ảnh này được gọi là ảnh toàn ký (holograms). Chúng không phẳng như những bức ảnh bình thường. Thay vào đó, chúng trông giống như 3D, giống như các vật thể thực. Khi bạn di chuyển xung quanh một ảnh toàn ký, bạn có thể nhìn thấy các mặt khác nhau, y như đang nhìn vào một vật thật.</div>
+
+
+
+                    <p>Holograms are made using lasers. A laser light shines on the object, and the light reflects back to a special camera. The camera records the light from different angles. (38) ____.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Ảnh toàn ký được tạo ra bằng cách sử dụng tia laser. Một ánh sáng laser chiếu vào vật thể, và ánh sáng phản xạ lại một máy ảnh đặc biệt. Máy ảnh ghi lại ánh sáng từ nhiều góc độ khác nhau. Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D.</div>
+
+
+
+                    <p>Today, holograms are used in many ways. In some museums, you can see holograms of dinosaurs or old buildings. (39)___________. In some concerts, singers who are not alive anymore appear as holograms and perform on stage. Holograms are also used on money to stop fake notes.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Ngày nay, ảnh toàn ký được sử dụng theo nhiều cách. Ở một số bảo tàng, bạn có thể thấy ảnh toàn ký của khủng long hoặc các tòa nhà cổ. Chúng giúp mọi người học lịch sử một cách thú vị. Trong một số buổi hòa nhạc, các ca sĩ không còn sống nữa xuất hiện dưới dạng ảnh toàn ký và biểu diễn trên sân khấu. Ảnh toàn ký cũng được sử dụng trên tiền để ngăn chặn tiền giả.</div>
+
+
+
+                    <p>In the future, people might use holograms for video calls. Instead of seeing your friend on a screen, (40)___________, sitting in your room! Holography makes the future exciting.</p>
+
+                    <button class="translate-btn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+
+                    <div class="translation-text">Trong tương lai, mọi người có thể sử dụng ảnh toàn ký cho các cuộc gọi video. Thay vì nhìn thấy bạn của bạn trên màn hình, bạn có thể nhìn thấy họ dưới dạng 3D, ngồi ngay trong phòng của bạn! Phép in toàn ảnh làm cho tương lai trở nên thú vị.</div>
+
+
+
+                    <table class="glossary-table">
+
+                        <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+
+                        <tr><td>Holography</td><td>Noun</td><td>Phép in toàn ảnh</td></tr>
+
+                        <tr><td>Reflect</td><td>Verb</td><td>Phản xạ, dội lại</td></tr>
+
+                        <tr><td>Angle</td><td>Noun</td><td>Góc độ</td></tr>
+
+                        <tr><td>Fake notes</td><td>Noun phrase</td><td>Tiền giả</td></tr>
+
+                    </table>
+
+                </div>
+
+
+
+            </div>
+
+
+
+            <div class="right-pane pane" id="exercise-pane">
+
+                <div id="quiz-container"></div>
+
+                <button class="btn-primary" style="margin-top: 30px; font-size: 1.5rem; padding: 20px;" onclick="showNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ 🎯</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', event => {
+
+            if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
+
+                event.preventDefault();
+
+            }
+
+        });
+
+
+
+        const securePass = [104, 116, 114, 102, 110, 102, 115, 122, 113, 110, 120]; 
+
+
+
+        function checkPassword() {
+
+            const input = document.getElementById("pass-input");
+
+            const val = input.value;
+
+            let isValid = val.length === securePass.length;
+
+            
+
+            if(isValid) {
+
+                for(let i = 0; i < val.length; i++) {
+
+                    if(val.charCodeAt(i) + 5 !== securePass[i]) {
+
+                        isValid = false; break;
+
+                    }
+
+                }
+
+            }
+
+
+
+            if (isValid) {
+
+                document.getElementById("password-modal").style.display = "none";
+
+                document.getElementById("main-content").style.display = "flex";
+
+                initAudio();
+
+            } else {
+
+                input.classList.add("error", "shake");
+
+                setTimeout(() => input.classList.remove("error", "shake"), 400);
+
+            }
+
+        }
+
+        document.getElementById("pass-input").addEventListener("keypress", function(e) {
+
+            if(e.key === "Enter") checkPassword();
+
+        });
+
+
+
+        let audioCtx;
+
+        function initAudio() { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+
+        
+
+        function playDing() {
+
+            if(!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+
+            const gain = audioCtx.createGain();
+
+            osc.connect(gain); gain.connect(audioCtx.destination);
+
+            osc.type = "sine"; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+
+        }
+
+
+
+        function playWrong() {
+
+            if(!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+
+            const gain = audioCtx.createGain();
+
+            osc.connect(gain); gain.connect(audioCtx.destination);
+
+            osc.type = "sawtooth";
+
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+            osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.3);
+
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+
+        }
+
+
+
+        const canvas = document.getElementById('confetti-canvas');
+
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        
+
+        function fireConfetti() {
+
+            for(let i=0; i<100; i++) {
+
+                particles.push({
+
+                    x: canvas.width / 2, y: canvas.height / 2, r: Math.random() * 6 + 4,
+
+                    dx: Math.random() * 10 - 5, dy: Math.random() * -10 - 5,
+
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+
+                });
+
+            }
+
+            animateConfetti();
+
+        }
+
+        function animateConfetti() {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, i) => {
+
+                p.x += p.dx; p.y += p.dy; p.dy += 0.2; 
+
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+
+                ctx.fillStyle = p.color; ctx.fill();
+
+                if(p.y > canvas.height) particles.splice(i, 1);
+
+            });
+
+            if(particles.length > 0) requestAnimationFrame(animateConfetti);
+
+        }
+
+
+
+        let time = 600; 
+
+        let timerInterval;
+
+        let timerRunning = false;
+
+        function startTimer() {
+
+            if(timerRunning) return;
+
+            timerRunning = true;
+
+            document.getElementById("start-btn").innerText = "ĐANG TÍNH GIỜ...";
+
+            timerInterval = setInterval(() => {
+
+                time--;
+
+                let m = Math.floor(time / 60).toString().padStart(2, '0');
+
+                let s = (time % 60).toString().padStart(2, '0');
+
+                document.getElementById("timer-display").innerText = `${m}:${s}`;
+
+                if(time <= 0) {
+
+                    clearInterval(timerInterval);
+
+                    alert("Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm, nhưng nhớ là trong phòng thi thật, bạn chỉ nên làm một bài như thế này trong 10 phút thôi nha.");
+
+                }
+
+            }, 1000);
+
+        }
+
+
+
+        function toggleTranslate(btn) {
+
+            const transDiv = btn.nextElementSibling;
+
+            if(transDiv.style.display === "block") {
+
+                transDiv.style.display = "none"; btn.innerText = "Mở dịch đoạn này 🌟";
+
+            } else {
+
+                transDiv.style.display = "block"; btn.innerText = "Đóng bản dịch 🙈";
+
+            }
+
+        }
+
+
+
+        const quizData = [
+
+            { id: 13, qText: "Question 13", qTrans: "Chọn từ phù hợp nhất cho ô trống (13).", options: [{text: "decoration", correct: false, exp: "sự trang trí. ❌ Sai vì không hợp ngữ cảnh."}, {text: "discount", correct: true, exp: "giảm giá. ✅ Đúng vì đi kèm với 'special' tạo thành cụm từ 'special discount' (mức giảm giá đặc biệt)."}, {text: "entertainment", correct: false, exp: "sự giải trí. ❌ Sai ngữ cảnh."}, {text: "entrance", correct: false, exp: "lối vào. ❌ Sai ngữ cảnh."}], quote: "...offer you great deals and special (13) discount on a wide range of products.", quoteTrans: "mang đến cho bạn những ưu đãi tuyệt vời và mức <span style='color:red; font-weight:bold'>giảm giá</span> đặc biệt..." },
+
+            { id: 14, qText: "Question 14", qTrans: "Chọn mạo từ phù hợp nhất cho ô trống (14).", options: [{text: "the", correct: false, exp: "mạo từ xác định. ❌ Sai vì 'delicious meal' chưa được xác định trước đó."}, {text: "an", correct: false, exp: "mạo từ không xác định. ❌ Sai vì 'delicious' bắt đầu bằng phụ âm 'd'."}, {text: "a", correct: true, exp: "mạo từ không xác định. ✅ Đúng vì dùng trước danh từ số ít đếm được chỉ một bữa ăn nói chung."}, {text: "no article", correct: false, exp: "không mạo từ. ❌ Sai vì 'meal' là danh từ đếm được số ít, cần mạo từ."}], quote: "...enjoy (14) a delicious meal with your family.", quoteTrans: "...thưởng thức <span style='color:red; font-weight:bold'>một</span> bữa ăn ngon miệng cùng gia đình nhé." },
+
+            { id: 15, qText: "Question 15", qTrans: "Chọn động từ phù hợp cho ô trống (15).", options: [{text: "are having", correct: false, exp: "❌ Sai vì chủ ngữ 'our supermarket' là số ít."}, {text: "had", correct: false, exp: "❌ Sai vì bối cảnh bài đang ở hiện tại."}, {text: "have", correct: false, exp: "❌ Sai vì 'our supermarket' là số ít."}, {text: "has", correct: true, exp: "có. ✅ Đúng vì 'supermarket' là danh từ số ít, động từ chia ở hiện tại đơn là 'has'."}], quote: "Also, our supermarket (15) has fresh fruits and vegetables on sale.", quoteTrans: "Ngoài ra, siêu thị của chúng tôi cũng <span style='color:red; font-weight:bold'>có</span> bán trái cây và rau củ tươi đang được giảm giá." },
+
+            { id: 16, qText: "Question 16", qTrans: "Chọn giới từ phù hợp cho ô trống (16).", options: [{text: "in", correct: false, exp: "trong. ❌ Sai ngữ pháp."}, {text: "from", correct: false, exp: "từ. ❌ Thường đi với 'to' (from A to B)."}, {text: "on", correct: false, exp: "trên. ❌ Sai ngữ pháp."}, {text: "between", correct: true, exp: "giữa. ✅ Đúng cấu trúc 'between A and B'."}], quote: "...available at the information desk (16) between 10 AM and 8 PM.", quoteTrans: "...sẵn sàng tại quầy thông tin <span style='color:red; font-weight:bold'>giữa</span> 10 giờ sáng và 8 giờ tối." },
+
+            
+
+            { id: 19, qText: "Question 19", qTrans: "Chọn lượng từ phù hợp nhất cho ô trống (19).", options: [{text: "a little", correct: false, exp: "một chút. ❌ Đi với danh từ không đếm được."}, {text: "many", correct: true, exp: "nhiều. ✅ Đi với danh từ đếm được số nhiều (schools, colleges)."}, {text: "much", correct: false, exp: "nhiều. ❌ Đi với danh từ không đếm được."}, {text: "a few", correct: false, exp: "một vài. ❌ Nghĩa không phù hợp bằng 'many'."}], quote: "Today, (19) many schools, colleges, and universities offer online lessons...", quoteTrans: "Ngày nay, <span style='color:red; font-weight:bold'>nhiều</span> trường học, trường cao đẳng và đại học cung cấp các bài học trực tuyến..." },
+
+            { id: 20, qText: "Question 20", qTrans: "Chọn dạng động từ phù hợp cho ô trống (20).", options: [{text: "ask", correct: true, exp: "hỏi. ✅ Đứng sau 'can' cần dùng V nguyên thể."}, {text: "asking", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}, {text: "asked", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}, {text: "asks", correct: false, exp: "❌ Sai cấu trúc sau 'can'."}], quote: "...and students can (20) ask questions by typing...", quoteTrans: "...và học sinh có thể <span style='color:red; font-weight:bold'>hỏi</span> câu hỏi bằng cách gõ..." },
+
+            { id: 21, qText: "Question 21", qTrans: "Chọn tính từ phù hợp cho ô trống (21).", options: [{text: "hard", correct: false, exp: "khó khăn. ❌ Sai ngữ cảnh."}, {text: "inconvenient", correct: false, exp: "bất tiện. ❌ Sai nghĩa."}, {text: "helpful", correct: true, exp: "hữu ích. ✅ Đúng vì việc học mọi lúc mọi nơi rất có lợi cho học sinh ở xa."}, {text: "difficult", correct: false, exp: "khó. ❌ Sai nghĩa."}], quote: "This is (21) helpful for students who live far away from schools.", quoteTrans: "Điều này rất <span style='color:red; font-weight:bold'>hữu ích</span> cho những học sinh sống xa trường." },
+
+            { id: 22, qText: "Question 22", qTrans: "Chọn cụm danh từ phù hợp cho ô trống (22).", options: [{text: "different subject", correct: false, exp: "❌ Sai vì 'subject' phải để số nhiều khi liệt kê 'math, science or English'."}, {text: "different subjects", correct: true, exp: "nhiều môn học khác nhau. ✅ Đúng vì sau nó liệt kê nhiều môn học."}, {text: "subject difference", correct: false, exp: "❌ Sai cấu trúc."}, {text: "difference subjects", correct: false, exp: "❌ Sai cấu trúc."}], quote: "These courses teach (22) different subjects, like math, science or English.", quoteTrans: "Những khóa học này dạy <span style='color:red; font-weight:bold'>nhiều môn học khác nhau</span>, như toán, khoa học hoặc tiếng Anh." },
+
+            { id: 23, qText: "Question 23", qTrans: "Chọn từ nối phù hợp cho ô trống (23).", options: [{text: "So", correct: false, exp: "Vì vậy. ❌ Không thể hiện sự tương phản."}, {text: "Moreover", correct: false, exp: "Hơn nữa. ❌ Không thể hiện sự tương phản."}, {text: "Therefore", correct: false, exp: "Do đó. ❌ Không thể hiện sự tương phản."}, {text: "However", correct: true, exp: "Tuy nhiên. ✅ Đúng vì đoạn trước nói về lợi ích, đoạn này nói về khó khăn."}], quote: "(23) However, online learning is not always easy.", quoteTrans: "<span style='color:red; font-weight:bold'>Tuy nhiên</span>, học trực tuyến không phải lúc nào cũng dễ dàng." },
+
+            { id: 24, qText: "Question 24", qTrans: "Chọn giới từ phù hợp cho ô trống (24).", options: [{text: "in", correct: false, exp: "❌ Sai giới từ đi với 'focus'."}, {text: "at", correct: false, exp: "❌ Sai giới từ."}, {text: "to", correct: false, exp: "❌ Sai giới từ."}, {text: "on", correct: true, exp: "vào. ✅ Đúng vì cấu trúc là 'focus on something'."}], quote: "...students need to try their best to focus (24) on their lessons.", quoteTrans: "...học sinh cần cố gắng hết sức để tập trung <span style='color:red; font-weight:bold'>vào</span> bài học của mình." },
+
+
+
+            { id: 31, qText: "Question 31. What is the main idea of the reading passage?", qTrans: "Ý chính của đoạn văn đọc là gì?", options: [{text: "The landslides in Malaysia", correct: true, exp: "Sạt lở đất ở Malaysia. ✅ Đoạn văn xuyên suốt bàn về vấn đề này."}, {text: "Climate change in Malaysia", correct: false, exp: "Biến đổi khí hậu. ❌ Chỉ là một chi tiết nhỏ."}, {text: "Different types of natural disasters in Malaysia", correct: false, exp: "Các loại hình thiên tai. ❌ Bài chỉ nói về sạt lở đất."}, {text: "Landslides around the world", correct: false, exp: "Sạt lở đất trên thế giới. ❌ Bài chỉ tập trung vào Malaysia."}], quote: "Landslides are a common problem in Malaysia.", quoteTrans: "<span style='color:red; font-weight:bold'>Sạt lở đất</span> là một vấn đề phổ biến ở <span style='color:red; font-weight:bold'>Malaysia</span>." },
+
+            { id: 32, qText: "Question 32. When do landslides usually happen in Malaysia?", qTrans: "Sạt lở đất thường xảy ra ở Malaysia khi nào?", options: [{text: "In the dry season", correct: false, exp: "Mùa khô. ❌ Sai thông tin."}, {text: "In winter", correct: false, exp: "Vào mùa đông. ❌ Sai thông tin."}, {text: "During the rainy season", correct: true, exp: "Vào mùa mưa. ✅ Đúng vì bài có ghi rõ điều này."}, {text: "In summer", correct: false, exp: "Vào mùa hè. ❌ Sai thông tin."}], quote: "They often happen in the rainy season when the ground becomes too wet and soft.", quoteTrans: "Chúng thường xảy ra vào <span style='color:red; font-weight:bold'>mùa mưa</span> khi mặt đất trở nên quá ẩm ướt và mềm nhão." },
+
+            { id: 33, qText: "Question 33. The word unsafe in the text is CLOSEST in meaning to _____.", qTrans: "Từ 'unsafe' trong văn bản GẦN nghĩa nhất với từ nào?", options: [{text: "Careful", correct: false, exp: "Cẩn thận. ❌ Không liên quan."}, {text: "Dangerous", correct: true, exp: "Nguy hiểm. ✅ Unsafe = không an toàn = Dangerous."}, {text: "Strong", correct: false, exp: "Mạnh mẽ. ❌ Sai nghĩa."}, {text: "Safe", correct: false, exp: "An toàn. ❌ Đây là từ trái nghĩa."}], quote: "They also check unsafe areas...", quoteTrans: "Họ cũng kiểm tra các khu vực <span style='color:red; font-weight:bold'>không an toàn (nguy hiểm)</span>..." },
+
+            { id: 34, qText: "Question 34. What does the government do to stop landslides?", qTrans: "Chính phủ làm gì để ngăn chặn sạt lở đất?", options: [{text: "Build more houses on hills", correct: false, exp: "Xây thêm nhà trên đồi. ❌ Sai thông tin."}, {text: "Dig big holes in the ground", correct: false, exp: "Đào những hố lớn trên mặt đất. ❌ Sai thông tin."}, {text: "Cut down trees near mountains", correct: false, exp: "Chặt cây gần núi. ❌ Đây là nguyên nhân, không phải giải pháp."}, {text: "Make stronger rules and check dangerous areas", correct: true, exp: "Ban hành các quy định nghiêm ngặt hơn và kiểm tra các khu vực nguy hiểm. ✅ Đúng với dẫn chứng trong bài."}], quote: "To stop landslides, the government has made stronger rules for building... They also check unsafe areas...", quoteTrans: "Để ngăn chặn sạt lở đất, chính phủ đã <span style='color:red; font-weight:bold'>ban hành các quy định nghiêm ngặt hơn</span>... Họ cũng <span style='color:red; font-weight:bold'>kiểm tra các khu vực không an toàn</span>..." },
+
+            { id: 35, qText: "Question 35. The word build in the text is OPPOSITE in meaning to _____.", qTrans: "Từ 'build' (xây dựng) TRÁI NGHĨA với từ nào?", options: [{text: "make", correct: false, exp: "làm, tạo ra. ❌ Đây là từ đồng nghĩa."}, {text: "fix", correct: false, exp: "sửa chữa. ❌ Không phải trái nghĩa."}, {text: "destroy", correct: true, exp: "phá hủy. ✅ Đúng vì 'destroy' trái nghĩa với 'build' (xây dựng)."}, {text: "keep", correct: false, exp: "giữ. ❌ Không liên quan."}], quote: "...rules for building houses and roads.", quoteTrans: "...các quy định đối với việc <span style='color:red; font-weight:bold'>xây dựng</span> nhà cửa và đường sá." },
+
+            { id: 36, qText: "Question 36. Which of the following is NOT mentioned as a cause of landslides in the passage?", qTrans: "Điều nào sau đây KHÔNG được nhắc đến như một nguyên nhân gây sạt lở đất?", options: [{text: "Heavy rain", correct: false, exp: "Mưa lớn. ❌ Có nhắc đến."}, {text: "Earthquakes", correct: false, exp: "Động đất. ❌ Có nhắc đến."}, {text: "Cutting down trees", correct: false, exp: "Chặt phá cây rừng. ❌ Có nhắc đến."}, {text: "Volcanic eruptions", correct: true, exp: "Phun trào núi lửa. ✅ Đúng vì chi tiết này hoàn toàn không có trong bài."}], quote: "There are different causes of landslides, such as heavy rain, earthquakes, and cutting down trees.", quoteTrans: "Có nhiều nguyên nhân khác nhau gây ra sạt lở đất, chẳng hạn như <span style='color:red; font-weight:bold'>mưa lớn, động đất và việc chặt phá cây rừng</span>." },
+
+
+
+            { id: 37, qText: "Question 37", qTrans: "Chọn câu phù hợp điền vào chỗ trống (37).", options: [{text: "you could see them in 3D", correct: false, exp: "bạn có thể nhìn thấy chúng 3D. ❌ Phù hợp với câu 40 hơn."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "Sau đó thông tin được dùng để tạo ảnh. ❌ Phù hợp với quá trình tạo ảnh ở câu 38."}, {text: "just like looking at something real", correct: true, exp: "y như đang nhìn vào một vật thật. ✅ Đúng vì câu trước đang miêu tả việc nhìn các mặt khác nhau của vật thể."}, {text: "They help people learn history in a fun way.", correct: false, exp: "Chúng giúp học lịch sử. ❌ Phù hợp với câu 39."}], quote: "When you move around a hologram, you can see different sides, (37) just like looking at something real.", quoteTrans: "Khi bạn di chuyển xung quanh một ảnh toàn ký, bạn có thể nhìn thấy các mặt khác nhau, <span style='color:red; font-weight:bold'>y như đang nhìn vào một vật thật</span>." },
+
+            { id: 38, qText: "Question 38", qTrans: "Chọn câu phù hợp điền vào chỗ trống (38).", options: [{text: "you could see them in 3D", correct: false, exp: "❌ Không hợp logic."}, {text: "Later, this information is used to make the 3D picture.", correct: true, exp: "Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D. ✅ Đúng vì câu trước nói về việc máy ảnh ghi lại thông tin ánh sáng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng ở câu 37."}, {text: "They help people learn history in a fun way.", correct: false, exp: "❌ Không hợp logic."}], quote: "The camera records the light from different angles. (38) Later, this information is used to make the 3D picture.", quoteTrans: "Máy ảnh ghi lại ánh sáng từ nhiều góc độ khác nhau. <span style='color:red; font-weight:bold'>Sau đó, thông tin này được sử dụng để tạo ra bức ảnh 3D.</span>" },
+
+            { id: 39, qText: "Question 39", qTrans: "Chọn câu phù hợp điền vào chỗ trống (39).", options: [{text: "you could see them in 3D", correct: false, exp: "❌ Không hợp ngữ cảnh bảo tàng."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "❌ Đã dùng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng."}, {text: "They help people learn history in a fun way.", correct: true, exp: "Chúng giúp mọi người học lịch sử một cách thú vị. ✅ Đúng vì câu trước nhắc đến khủng long và các tòa nhà cổ trong bảo tàng."}], quote: "In some museums, you can see holograms of dinosaurs or old buildings. (39) They help people learn history in a fun way.", quoteTrans: "Ở một số bảo tàng, bạn có thể thấy ảnh toàn ký của khủng long hoặc các tòa nhà cổ. <span style='color:red; font-weight:bold'>Chúng giúp mọi người học lịch sử một cách thú vị.</span>" },
+
+            { id: 40, qText: "Question 40", qTrans: "Chọn câu phù hợp điền vào chỗ trống (40).", options: [{text: "you could see them in 3D", correct: true, exp: "bạn có thể nhìn thấy họ dưới dạng 3D. ✅ Đúng vì vế trước nói 'thay vì nhìn thấy trên màn hình', vế sau mô tả sự xuất hiện 3D trong phòng."}, {text: "Later, this information is used to make the 3D picture.", correct: false, exp: "❌ Đã dùng."}, {text: "just like looking at something real", correct: false, exp: "❌ Đã dùng."}, {text: "They help people learn history in a fun way.", correct: false, exp: "❌ Đã dùng."}], quote: "Instead of seeing your friend on a screen, (40) you could see them in 3D, sitting in your room!", quoteTrans: "Thay vì nhìn thấy bạn của bạn trên màn hình, <span style='color:red; font-weight:bold'>bạn có thể nhìn thấy họ dưới dạng 3D</span>, ngồi ngay trong phòng của bạn!" }
+
+        ];
+
+
+
+        let score = 0;
+
+        let answeredCount = 0;
+
+
+
+        function shuffle(array) {
+
+            for (let i = array.length - 1; i > 0; i--) {
+
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [array[i], array[j]] = [array[j], array[i]];
+
+            }
+
+            return array;
+
+        }
+
+
+
+        function renderQuiz() {
+
+            const container = document.getElementById("quiz-container");
+
+            container.innerHTML = "";
+
+
+
+            quizData.forEach((q, index) => {
+
+                const card = document.createElement("div");
+
+                card.className = "question-card";
+
+                
+
+                let optionsHtml = "";
+
+                let shuffledOptions = shuffle([...q.options]);
+
+                
+
+                shuffledOptions.forEach((opt, optIndex) => {
+
+                    optionsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${index}, ${opt.correct}, '${opt.text.replace(/'/g, "\\'")}')">${opt.text}</button>`;
+
+                });
+
+
+
+                card.innerHTML = `
+
+                    <div class="question-text">📝 ${q.qText}</div>
+
+                    <div class="options-grid" id="opts-${index}">${optionsHtml}</div>
+
+                    <div class="explanation-box" id="exp-${index}">
+
+                        <div class="vi-trans">👉 Dịch câu hỏi: ${q.qTrans}</div>
+
+                        <ul style="margin-left: 20px; margin-bottom: 10px;">
+
+                            ${shuffledOptions.map(o => `<li><b>${o.text}</b>: ${o.exp}</li>`).join("")}
+
+                        </ul>
+
+                        <div class="proof">
+
+                            🔍 <b>Dẫn chứng:</b> "${q.quote}"<br>
+
+                            👉 <b>Dịch:</b> ${q.quoteTrans}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+
+        function checkAnswer(btn, qIndex, isCorrect, text) {
+
+            const optsContainer = document.getElementById(`opts-${qIndex}`);
+
+            const expBox = document.getElementById(`exp-${qIndex}`);
+
+            
+
+            const allBtns = optsContainer.querySelectorAll('.option-btn');
+
+            allBtns.forEach(b => b.disabled = true);
+
+
+
+            if(isCorrect) {
+
+                btn.classList.add("correct");
+
+                playDing(); fireConfetti(); score++;
+
+            } else {
+
+                btn.classList.add("wrong", "shake"); playWrong();
+
+                allBtns.forEach(b => {
+
+                    const correctOpt = quizData[qIndex].options.find(o => o.correct);
+
+                    if(b.innerText === correctOpt.text) b.classList.add("correct");
+
+                });
+
+            }
+
+            
+
+            expBox.style.display = "block";
+
+            answeredCount++;
+
+        }
+
+
+
+        function showNameModal() {
+
+            if(answeredCount < quizData.length) {
+
+                if(!confirm("Bạn chưa làm hết bài. Bạn có chắc chắn muốn nộp không?")) return;
+
+            }
+
+            document.getElementById("name-modal").style.display = "flex";
+
+            document.getElementById("name-input").focus();
+
+        }
+
+
+
+        document.getElementById("name-input").addEventListener("keypress", function(e) {
+
+            if(e.key === "Enter") submitTest();
+
+        });
+
+
+
+        function submitTest() {
+
+            const nameInput = document.getElementById("name-input");
+
+            const nameError = document.getElementById("name-error");
+
+            const studentName = nameInput.value.trim();
+
+
+
+            if(!studentName) {
+
+                nameInput.classList.add("error", "shake");
+
+                nameError.style.display = "block";
+
+                setTimeout(() => nameInput.classList.remove("error", "shake"), 400);
+
+                return;
+
+            }
+
+
+
+            document.getElementById("name-modal").style.display = "none";
+
+            clearInterval(timerInterval);
+
+            
+
+            const percent = (score / quizData.length) * 100;
+
+            const titleEl = document.getElementById("result-title");
+
+            const msgEl = document.getElementById("result-message");
+
+            const imgEl = document.getElementById("result-meme");
+
+            
+
+            document.getElementById("result-score").innerText = `${score} / ${quizData.length}`;
+
+
+
+            if(percent === 100) {
+
+                titleEl.innerText = `🌟 THIÊN TÀI!`;
+
+                msgEl.innerText = `${studentName} xuất sắc tuyệt đối! Em là siêu sao tiếng Anh thực thụ!`;
+
+                imgEl.src = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif";
+
+            } else if(percent >= 60) {
+
+                titleEl.innerText = `👍 RẤT TỐT!`;
+
+                msgEl.innerText = `${studentName} làm tốt lắm! Cố gắng chút nữa là đạt điểm tối đa nha!`;
+
+                imgEl.src = "https://media.giphy.com/media/xSM46ernAUN3y/giphy.gif";
+
+            } else {
+
+                titleEl.innerText = `💪 CỐ LÊN NHÉ!`;
+
+                msgEl.innerText = `${studentName} à, học tài thi phận thôi. Hãy đọc kỹ phần giải thích để tiến bộ hơn nhé!`;
+
+                imgEl.src = "https://media.giphy.com/media/2rtQMJvhzOnRe/giphy.gif";
+
+            }
+
+
+
+            document.getElementById("result-modal").style.display = "flex";
+
+        }
+
+
+
+        window.onload = renderQuiz;
+
+    </script>
+
 
 <script>
-// Auto-bypass password lock for MS Chi Nen
+// Remove password lock completely - direct quiz access
 (function() {
-    function unlock() {
-        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
-        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
-        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
-        if (main) { main.style.setProperty('display', 'block', 'important'); }
+    function unlockNow() {
+        // 1. Remove all password modals
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        // Also remove any elements with class containing password-modal or lock-overlay
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        // 2. Display main content containers
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                // If it was hidden, show it
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    // Try flex if header or mainContent in some themes, else block
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        // Specific fix for Reading Mastery theme (Tay Mo p2, p7, etc.)
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        // 3. Trigger render / init functions if not yet rendered
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
         if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
         if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
     }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', unlock);
+        document.addEventListener('DOMContentLoaded', unlockNow);
     } else {
-        unlock();
+        unlockNow();
     }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
 })();
 </script>
+</body>
 
-</body>
 </html>

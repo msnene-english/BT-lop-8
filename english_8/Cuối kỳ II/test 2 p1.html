@@ -1,1064 +1,2154 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Success 8 - End of Term 2 (Gamified)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
-    <style>
-        /* CSS VARIABLES - PASTEL & NEON PALETTE */
-        :root {
-            --bg-grad-1: #A18CD1; /* Pastel Purple */
-            --bg-grad-2: #FBC2EB; /* Pastel Pink */
-            --bg-grad-3: #84FAB0; /* Pastel Green */
-            --bg-grad-4: #8FD3F4; /* Pastel Blue */
-            
-            --btn-correct: #00D26A;
-            --btn-correct-shadow: #00A653;
-            --btn-wrong: #FF4757;
-            --btn-wrong-shadow: #D63031;
-            
-            --glass-bg: rgba(255, 255, 255, 0.35);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            
-            --text-main: #2D3436;
-            --text-heading: #6C5CE7;
-        }
-
-        /* GLOBAL STYLES */
-        * {
-            box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            /* Dynamic Looping Gradient Background */
-            background: linear-gradient(-45deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3), var(--bg-grad-4));
-            background-size: 400% 400%;
-            animation: gradientMove 15s ease infinite;
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* FLOATING BACKGROUND PATTERN (STARS & CLOUDS) */
-        .pattern-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 L65 45 L100 50 L65 55 L60 90 L55 55 L20 50 L55 45 Z' fill='rgba(255,255,255,0.2)'/%3E%3Ccircle cx='30' cy='90' r='5' fill='rgba(255,255,255,0.3)'/%3E%3Ccircle cx='90' cy='20' r='8' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
-            background-size: 180px 180px;
-            animation: floatPattern 40s linear infinite;
-        }
-
-        @keyframes floatPattern {
-            from { background-position: 0 0; }
-            to { background-position: 360px 360px; }
-        }
-
-        /* GLASSMORPHISM UTILITY CLASS */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            border-radius: 24px;
-        }
-
-        /* MODALS */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-card {
-            padding: 35px;
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .shake {
-            animation: shakeAnim 0.4s ease-in-out;
-        }
-
-        @keyframes shakeAnim {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-12px); }
-            40%, 80% { transform: translateX(12px); }
-        }
-
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            font-size: 1.15rem;
-            margin: 15px 0;
-            outline: none;
-            color: var(--text-main);
-            font-weight: 700;
-            transition: all 0.3s;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        input:focus {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: var(--text-heading);
-            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            font-size: 1.25rem;
-            font-weight: 900;
-            border-radius: 18px;
-            cursor: pointer;
-            box-shadow: 0 8px 0 #4834D4;
-            transition: all 0.2s;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary:active {
-            transform: translateY(8px);
-            box-shadow: 0 0 0 transparent;
-        }
-
-        /* MAIN APP CONTAINER */
-        #app {
-            display: none;
-            position: relative;
-            z-index: 10;
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            padding: 25px 30px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h3 { margin: 0; color: #444; font-size: 1.15rem; }
-        .header h1 { margin: 10px 0 5px 0; color: var(--text-heading); font-size: 2.2rem; font-weight: 900; text-shadow: 2px 2px 4px rgba(255,255,255,0.5);}
-
-        .instruction-text {
-            padding: 18px 25px;
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin-bottom: 25px;
-            border-left: 8px solid var(--text-heading);
-            color: #2D3436;
-        }
-
-        .question-card {
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .question-text {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        /* Q29 & Q30 Images rendered by CSS */
-        .css-image-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-            margin-bottom: 25px;
-        }
-
-        .sign-no-exit {
-            background: #d32f2f;
-            color: white;
-            padding: 12px;
-            border-radius: 12px;
-            width: 180px;
-            text-align: center;
-            border: 5px solid #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 0 0 3px #d32f2f;
-        }
-        .sign-no-exit .line1 { font-size: 26px; font-weight: 900; margin-bottom: 6px; font-family: 'Arial', sans-serif;}
-        .sign-no-exit .circle { 
-            background: white; border-radius: 50%; width: 55px; height: 55px; 
-            margin: 0 auto 8px; position: relative; border: 5px solid #d32f2f;
-        }
-        .sign-no-exit .circle::after {
-            content: ''; position: absolute; top: 50%; left: 10%; width: 80%; 
-            height: 7px; background: #d32f2f; transform: translateY(-50%);
-        }
-        .sign-no-exit .line2 { font-size: 16px; font-weight: bold; line-height: 1.2; font-family: 'Arial', sans-serif;}
-
-        .notice-bookshop {
-            background: #FFF9C4;
-            border: 5px solid #1E88E5;
-            border-radius: 0 30px 0 0;
-            padding: 20px 30px;
-            text-align: center;
-            color: #333;
-            font-weight: 900;
-            font-size: 20px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
-        }
-
-        /* OPTIONS */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 18px;
-        }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(5px);
-            border: 3px solid rgba(255, 255, 255, 0.8);
-            border-radius: 18px;
-            padding: 18px 22px;
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #2D3436;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 6px 0 rgba(255, 255, 255, 0.4);
-            text-align: left;
-            position: relative;
-        }
-
-        .option-btn:hover:not(:disabled) {
-            transform: scale(1.03) translateY(-4px);
-            background: rgba(255, 255, 255, 0.8);
-            border-color: var(--text-heading);
-            box-shadow: 0 10px 0 var(--text-heading);
-            color: var(--text-heading);
-        }
-
-        .option-btn:active:not(:disabled) {
-            transform: scale(1) translateY(6px);
-            box-shadow: 0 0 0 transparent;
-        }
-
-        .option-btn.correct {
-            background: var(--btn-correct) !important;
-            border-color: white !important;
-            color: white !important;
-            box-shadow: 0 6px 0 var(--btn-correct-shadow) !important;
-            transform: scale(1.02);
-        }
-
-        .option-btn.wrong {
-            background: var(--btn-wrong) !important;
-            border-color: white !important;
-            color: white !important;
-            box-shadow: 0 6px 0 var(--btn-wrong-shadow) !important;
-        }
-
-        .option-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.85;
-        }
-
-        /* EXPLANATION BOX & HIGHLIGHTS */
-        .explanation-box {
-            display: none;
-            margin-top: 25px;
-            background: rgba(255, 255, 255, 0.85);
-            border-left: 8px solid var(--text-heading);
-            border-radius: 15px;
-            padding: 22px;
-            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #2D3436;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .exp-step { margin-bottom: 12px; }
-        .exp-title { font-weight: 900; color: var(--text-heading); margin-bottom: 12px; font-size: 1.2rem; text-transform: uppercase;}
-        
-        /* CÁC CLASS HIGHLIGHT SIÊU DỄ HIỂU */
-        .hl-red { color: #D63031; font-weight: 900; }
-        .hl-green { color: #00A653; font-weight: 900; }
-        .p-word { color: #0984E3; font-weight: 800; } /* Highlight từ vựng */
-        .p-phonetic { color: #6C5CE7; font-weight: 900; background: rgba(108, 92, 231, 0.1); padding: 2px 8px; border-radius: 8px; font-family: 'Arial', sans-serif; display: inline-block; margin: 0 3px;} /* Highlight phiên âm */
-        .p-mean { color: #E17055; font-weight: 800; } /* Highlight nghĩa tiếng việt */
-        .p-grammar { color: #D63031; font-weight: bold; border-bottom: 2px dashed #D63031; padding-bottom: 2px;} /* Highlight ngữ pháp */
-
-        /* SCORE SUBMIT */
-        .submit-container {
-            text-align: center;
-            margin: 50px 0;
-        }
-
-        .btn-submit {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
-            font-size: 1.6rem;
-            padding: 22px 55px;
-            border-radius: 35px;
-            color: white;
-            border: 4px solid rgba(255,255,255,0.5);
-            cursor: pointer;
-            box-shadow: 0 10px 0 #D63031, 0 15px 25px rgba(0,0,0,0.2);
-            font-weight: 900;
-            transition: all 0.2s;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .btn-submit:hover {
-            filter: brightness(1.1);
-        }
-
-        .btn-submit:active {
-            transform: scale(1) translateY(10px);
-            box-shadow: 0 0 0 transparent;
-            animation: none;
-        }
-
-        /* MEME IMAGE */
-        .meme-img {
-            width: 100%;
-            border-radius: 18px;
-            margin-top: 20px;
-            object-fit: cover;
-            max-height: 280px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border: 4px solid white;
-        }
-
-        .error-msg {
-            color: #D63031;
-            font-weight: 900;
-            display: none;
-            margin-top: 10px;
-            background: rgba(255,255,255,0.8);
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        /* CONFETTI CANVAS */
-        #confetti-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 999;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="pattern-overlay"></div>
-    <canvas id="confetti-canvas"></canvas>
-
-    <div id="password-modal" class="modal-overlay">
-        <div class="modal-card glass-panel">
-            <h2 style="color: var(--text-heading); font-size: 2rem; margin-top:0;">🔒 Lớp Học Bí Mật</h2>
-            <p style="font-weight: 800; font-size: 1.1rem; color: #444;">Nhập mật mã để bắt đầu làm bài nhé!</p>
-            <input type="password" id="pass-input" placeholder="Nhập mật khẩu...">
-            <div id="pass-error" class="error-msg">⚠️ Sai mật khẩu rồi! Thử lại nha.</div>
-            <button class="btn-primary" onclick="checkPassword()" style="margin-top: 20px;">🚀 BẮT ĐẦU</button>
-        </div>
-    </div>
-
-    <div id="name-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-card glass-panel">
-            <h2 style="color: #FF6B6B; font-size: 2rem; margin-top:0;">🎯 Hoàn Thành!</h2>
-            <p style="font-weight: 800; font-size: 1.1rem; color: #444;">Nhập tên của em để xem điểm nhé:</p>
-            <input type="text" id="name-input" placeholder="Ví dụ: Nguyễn Văn A...">
-            <div id="name-error" class="error-msg">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</div>
-            <button class="btn-primary" onclick="submitName()" style="margin-top: 20px;">🏆 XEM KẾT QUẢ</button>
-        </div>
-    </div>
-
-    <div id="result-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-card glass-panel" style="max-width: 500px;">
-            <h2 id="result-title" style="font-size: 1.8rem; margin-top:0;"></h2>
-            <p id="result-score" style="font-size: 1.8rem; font-weight: 900; color: var(--text-heading); background: rgba(255,255,255,0.7); padding: 10px; border-radius: 12px;"></p>
-            <img id="result-meme" class="meme-img" src="" alt="Meme">
-            <button class="btn-primary" onclick="location.reload()" style="margin-top: 25px;">🔄 LÀM LẠI TỪ ĐẦU</button>
-        </div>
-    </div>
-
-    <div id="app">
-        <div class="header glass-panel">
-            <h3>Giáo viên tạo: MS Chí Nên</h3>
-            <h1>🌟 BÀI KIỂM TRA CUỐI KỲ 2 🌟</h1>
-            <h3 style="color: #555; margin-top: 8px; font-weight: 800;">Môn: Tiếng Anh - Global Success 8</h3>
-        </div>
-
-        <div id="quiz-container">
-            </div>
-
-        <div class="submit-container">
-            <button class="btn-submit" onclick="showNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ 🎯</button>
-        </div>
-    </div>
-
-<script>
-/* ================= AUDIO SYSTEM ================= */
-let audioCtx;
-
-function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-}
-
-function playDing() {
-    if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.3);
-}
-
-function playBuzz() {
-    if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.3);
-}
-
-/* ================= CONFETTI SYSTEM ================= */
-const canvas = document.getElementById('confetti-canvas');
-const ctx = canvas.getContext('2d');
-let confettis = [];
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-function shootConfetti() {
-    for (let i = 0; i < 120; i++) {
-        confettis.push({
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-            r: Math.random() * 8 + 4,
-            dx: Math.random() * 24 - 12,
-            dy: Math.random() * -25 - 5,
-            color: `hsl(${Math.random() * 360}, 100%, 60%)`
-        });
-    }
-    animateConfetti();
-}
-
-function animateConfetti() {
-    requestAnimationFrame(animateConfetti);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    confettis.forEach((c, index) => {
-        c.x += c.dx;
-        c.y += c.dy;
-        c.dy += 0.6; // gravity
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-        ctx.fillStyle = c.color;
-        ctx.fill();
-        if (c.y > canvas.height) confettis.splice(index, 1);
-    });
-}
-
-/* ================= ANTI-F12 / SECURITY ================= */
-document.addEventListener('contextmenu', event => event.preventDefault());
-document.onkeydown = function(e) {
-    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
-        return false;
-    }
-};
-
-const _0x1a2b = [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115];
-
-function checkPassword() {
-    initAudio(); 
-    const input = document.getElementById('pass-input');
-    const errorMsg = document.getElementById('pass-error');
-    const inputAscii = Array.from(input.value).map(char => char.charCodeAt(0));
-    
-    let isCorrect = true;
-    if (inputAscii.length !== _0x1a2b.length) isCorrect = false;
-    else {
-        for(let i=0; i<_0x1a2b.length; i++) {
-            if(inputAscii[i] !== _0x1a2b[i]) isCorrect = false;
-        }
-    }
-
-    if(isCorrect) {
-        document.getElementById('password-modal').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        playDing();
-    } else {
-        input.classList.add('shake');
-        input.style.borderColor = '#FF4757';
-        errorMsg.style.display = 'block';
-        playBuzz();
-        setTimeout(() => input.classList.remove('shake'), 400);
-    }
-}
-document.getElementById('pass-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') checkPassword();
-});
-
-/* ================= QUIZ DATA & EXPLANATIONS ================= */
-const instructions = {
-    part1: "Mark the letter A, B, C or D on your answer sheet to indicate the word whose underlined part differs from the other three in pronunciation.",
-    part2: "Mark the letter A, B, C, or D on your answer sheet to indicate the word that differs from the other three in the position of primary stress.",
-    part3: "Mark the letter A, B, C, or D on your answer sheet to indicate the correct answer to each of the following questions.",
-    part4: "Put the sentences (a-c) in the correct order, then fill in the blank to make a logical text.",
-    part5: "Choose the sentence that can end the text most appropriately.",
-    part6: "Mark the letter A, B, C or D on your answer sheet to indicate the sentence that is closest in meaning to the original sentence.",
-    part7: "Mark the letter A, B, C or D on your answer sheet to indicate the sentence that is made from the given cues.",
-    part8: "Read the following sign or notice and indicate the correct answer."
-};
-
-const quizData = [
-    {
-        id: "Q1", instruction: instructions.part1,
-        question: "Question 1.",
-        options: [
-            { text: "<u>a</u>partment", correct: false },
-            { text: "sep<u>a</u>rate", correct: false },
-            { text: "<u>a</u>tom", correct: true },
-            { text: "expl<u>a</u>nation", correct: false }
-        ],
-        exp: {
-            step1: "Tìm từ có phần gạch chân chữ <span class='p-word'>'A'</span> phát âm khác các từ còn lại.",
-            step2: "A. <span class='p-word'>apartment</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Căn hộ</span><br>B. <span class='p-word'>separate</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Tách biệt</span><br>C. <span class='p-word'>atom</span> <span class='p-phonetic'>/æ/</span>: <span class='p-mean'>Nguyên tử</span><br>D. <span class='p-word'>explanation</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Lời giải thích</span>",
-            step3: "Chọn <span class='hl-green'>atom</span> vì chữ 'a' ở đây được phát âm là <span class='p-phonetic'>/æ/</span> (a bẹt).",
-            step4: "Các đáp án còn lại sai vì phần gạch chân đều được phát âm là âm ơ ngắn <span class='p-phonetic'>/ə/</span>."
-        }
-    },
-    {
-        id: "Q2", instruction: instructions.part1,
-        question: "Question 2.",
-        options: [
-            { text: "spo<u>ng</u>e", correct: true },
-            { text: "kiddi<u>ng</u>", correct: false },
-            { text: "mouldi<u>ng</u>", correct: false },
-            { text: "bondi<u>ng</u>", correct: false }
-        ],
-        exp: {
-            step1: "Tìm từ có phần gạch chân <span class='p-word'>'NG'</span> phát âm khác các từ còn lại.",
-            step2: "A. <span class='p-word'>sponge</span> <span class='p-phonetic'>/ndʒ/</span>: <span class='p-mean'>Miếng bọt biển</span><br>B. <span class='p-word'>kidding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Đùa cợt</span><br>C. <span class='p-word'>moulding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Đúc, nặn</span><br>D. <span class='p-word'>bonding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Sự liên kết</span>",
-            step3: "Chọn <span class='hl-green'>sponge</span> vì cụm 'ng' ở đây kết hợp với chữ 'e' phía sau để tạo thành âm <span class='p-phonetic'>/ndʒ/</span>.",
-            step4: "Các đáp án còn lại sai vì đuôi '-ng' trong danh động từ (V-ing) đều được phát âm là âm mũi <span class='p-phonetic'>/ŋ/</span> (ngờ)."
-        }
-    },
-    {
-        id: "Q3", instruction: instructions.part2,
-        question: "Question 3.",
-        options: [
-            { text: "rescue", correct: false },
-            { text: "strengthen", correct: false },
-            { text: "system", correct: false },
-            { text: "towards", correct: true }
-        ],
-        exp: {
-            step1: "Tìm từ có trọng âm chính rơi vào vị trí khác.",
-            step2: "A. <span class='p-word'>rescue</span> (Trọng âm 1)<br>B. <span class='p-word'>strengthen</span> (Trọng âm 1)<br>C. <span class='p-word'>system</span> (Trọng âm 1)<br>D. <span class='p-word'>towards</span> (Trọng âm 2)",
-            step3: "Chọn <span class='hl-green'>towards</span> vì trọng âm rơi vào âm tiết thứ 2.",
-            step4: "Các đáp án còn lại sai vì chúng đều có trọng âm rơi vào âm tiết thứ 1."
-        }
-    },
-    {
-        id: "Q4", instruction: instructions.part2,
-        question: "Question 4.",
-        options: [
-            { text: "protection", correct: false },
-            { text: "interest", correct: true },
-            { text: "discussion", correct: false },
-            { text: "commitment", correct: false }
-        ],
-        exp: {
-            step1: "Tìm từ có trọng âm chính rơi vào vị trí khác.",
-            step2: "A. <span class='p-word'>protection</span> (Trọng âm 2)<br>B. <span class='p-word'>interest</span> (Trọng âm 1)<br>C. <span class='p-word'>discussion</span> (Trọng âm 2)<br>D. <span class='p-word'>commitment</span> (Trọng âm 2)",
-            step3: "Chọn <span class='hl-green'>interest</span> vì trọng âm rơi vào âm tiết thứ 1.",
-            step4: "Các từ còn lại sai vì có các hậu tố đặc biệt như <span class='p-grammar'>-tion</span>, <span class='p-grammar'>-ment</span>... trọng âm đều rơi vào âm tiết ngay trước nó (âm tiết thứ 2)."
-        }
-    },
-    {
-        id: "Q5", instruction: instructions.part3,
-        question: "Question 5. The ____ shook the region, leaving buildings damaged and roads cracked.",
-        options: [
-            { text: "Earthquake", correct: true },
-            { text: "shock", correct: false },
-            { text: "tornado", correct: false },
-            { text: "thunderstorm", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Trận ____ đã làm rung chuyển khu vực, khiến các tòa nhà bị hư hỏng và đường xá nứt nẻ.",
-            step2: "A. <span class='p-word'>Earthquake</span>: <span class='p-mean'>Động đất</span><br>B. <span class='p-word'>shock</span>: <span class='p-mean'>Cú sốc</span><br>C. <span class='p-word'>tornado</span>: <span class='p-mean'>Lốc xoáy</span><br>D. <span class='p-word'>thunderstorm</span>: <span class='p-mean'>Bão có sấm sét</span>",
-            step3: "Chọn <span class='hl-green'>Earthquake</span> vì có từ khóa <span class='p-grammar'>shook</span> (quá khứ của shake - rung lắc) và làm nứt đường, đây là đặc trưng của động đất.",
-            step4: "Lốc xoáy hay bão sấm sét thường gây thiệt hại do gió mạnh và mưa, không gây 'rung chuyển' đất và 'nứt đường'. Cú sốc thì không hợp ngữ cảnh thảm họa tự nhiên."
-        }
-    },
-    {
-        id: "Q6", instruction: instructions.part3,
-        question: "Question 6. While I ___________ in the sea, I saw a beautiful turtle.",
-        options: [
-            { text: "am snorkelling", correct: false },
-            { text: "was snorkelling", correct: true },
-            { text: "snorkelled", correct: false },
-            { text: "were snorkelling", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Trong khi tôi ___________ dưới biển, tôi đã nhìn thấy một con rùa xinh đẹp.",
-            step2: "A. <span class='p-mean'>đang lặn</span> (Hiện tại tiếp diễn)<br>B. <span class='p-mean'>đang lặn</span> (Quá khứ tiếp diễn - số ít)<br>C. <span class='p-mean'>đã lặn</span> (Quá khứ đơn)<br>D. <span class='p-mean'>đang lặn</span> (Quá khứ tiếp diễn - số nhiều)",
-            step3: "Chọn <span class='hl-green'>was snorkelling</span> vì đây là cấu trúc 1 hành động đang xảy ra dài trong quá khứ (<span class='p-grammar'>chia QK Tiếp diễn</span>) thì có hành động ngắn khác xen vào (saw - <span class='p-grammar'>chia QK Đơn</span>). Chủ ngữ 'I' đi với 'was'.",
-            step4: "A sai thì (hiện tại). C sai vì cấu trúc với <span class='p-grammar'>While</span> thường cần thì tiếp diễn. D sai vì chủ ngữ 'I' không đi với 'were'."
-        }
-    },
-    {
-        id: "Q7", instruction: instructions.part3,
-        question: "Question 7. These are the children’s shoes. They’re ______.",
-        options: [
-            { text: "their", correct: false },
-            { text: "they", correct: false },
-            { text: "theirs", correct: true },
-            { text: "them", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Đây là những đôi giày của bọn trẻ. Chúng là ______.",
-            step2: "A. <span class='p-word'>their</span> (<span class='p-grammar'>Tính từ sở hữu</span>): của họ (Cần danh từ theo sau)<br>B. <span class='p-word'>they</span> (<span class='p-grammar'>Đại từ nhân xưng</span>): họ<br>C. <span class='p-word'>theirs</span> (<span class='p-grammar'>Đại từ sở hữu</span>): của họ (Không cần danh từ theo sau)<br>D. <span class='p-word'>them</span> (<span class='p-grammar'>Đại từ tân ngữ</span>): họ",
-            step3: "Chọn <span class='hl-green'>theirs</span> vì nó thay thế cho 'their shoes'. Ở cuối câu không có danh từ theo sau nên bắt buộc dùng <span class='p-grammar'>Đại từ sở hữu</span> để tránh lặp từ.",
-            step4: "A sai vì thiếu danh từ phía sau. B và D sai từ loại hoàn toàn."
-        }
-    },
-    {
-        id: "Q9", instruction: instructions.part3,
-        question: "Question 9. We should save energy by using ________ appliances and adopting sustainable practices.",
-        options: [
-            { text: "energy-efficient", correct: true },
-            { text: "energy-consuming", correct: false },
-            { text: "energy-costing", correct: false },
-            { text: "energy-saved", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Chúng ta nên tiết kiệm năng lượng bằng cách sử dụng các thiết bị ________ và áp dụng các biện pháp bền vững.",
-            step2: "A. <span class='p-word'>energy-efficient</span>: <span class='p-mean'>tiết kiệm năng lượng, hiệu suất cao</span><br>B. <span class='p-word'>energy-consuming</span>: <span class='p-mean'>tiêu thụ nhiều năng lượng</span><br>C. <span class='p-word'>energy-costing</span>: <span class='p-mean'>tốn kém năng lượng</span><br>D. <span class='p-word'>energy-saved</span>: <span class='hl-red'>(Từ này không đúng chuẩn cấu trúc ghép từ)</span>",
-            step3: "Chọn <span class='hl-green'>energy-efficient</span> (thiết bị hiệu suất cao/tiết kiệm điện) vì ngữ cảnh câu đang khuyên 'save energy' (tiết kiệm năng lượng).",
-            step4: "B và C mang nghĩa tiêu cực (tốn điện). D sai cách kết hợp từ (thường dùng energy-saving chứ không dùng energy-saved để làm tính từ bổ nghĩa cho máy móc)."
-        }
-    },
-    {
-        id: "Q10", instruction: instructions.part3,
-        question: "Question 10. Nick: “Do you think we will live on the moon one day?”<br>Hoa: “________”",
-        options: [
-            { text: "No, I can’t", correct: false },
-            { text: "I won’t live on the moon", correct: false },
-            { text: "I’m not sure about it", correct: true },
-            { text: "Yeah", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Nick: 'Bạn có nghĩ một ngày nào đó chúng ta sẽ sống trên mặt trăng không?' - Hoa: '____'",
-            step2: "A. Không, tôi không thể<br>B. Tôi sẽ không sống trên mặt trăng<br>C. Mình không chắc về điều đó lắm<br>D. Yeah (quá cộc lốc)",
-            step3: "Chọn <span class='hl-green'>I’m not sure about it</span> vì đây là câu trả lời giao tiếp tự nhiên và lịch sự, thể hiện sự hoài nghi hợp lý về một dự đoán tương lai.",
-            step4: "A sai vì câu hỏi là <span class='p-grammar'>'Do you think'</span> không hỏi về khả năng 'can'. B lạc đề vì câu hỏi là 'chúng ta' (we). D tuy có vẻ đồng ý nhưng không phải cách đáp lại chuẩn mực trong bài kiểm tra (nên dùng Yes, I think so)."
-        }
-    },
-    {
-        id: "Q11", instruction: instructions.part3,
-        question: "Question 11. How ______ ethnic groups live on the northern areas of Viet Nam?",
-        options: [
-            { text: "much", correct: false },
-            { text: "long", correct: false },
-            { text: "far", correct: false },
-            { text: "many", correct: true }
-        ],
-        exp: {
-            step1: "Dịch: Có bao nhiêu nhóm dân tộc sống ở khu vực miền núi phía Bắc Việt Nam?",
-            step2: "A. <span class='p-word'>How much</span>: Bao nhiêu (<span class='p-grammar'>Dùng cho N không đếm được</span>)<br>B. <span class='p-word'>How long</span>: Bao lâu/Dài bao nhiêu<br>C. <span class='p-word'>How far</span>: Bao xa<br>D. <span class='p-word'>How many</span>: Bao nhiêu (<span class='p-grammar'>Dùng cho N đếm được số nhiều</span>)",
-            step3: "Chọn <span class='hl-green'>many</span> vì cụm <span class='p-word'>'ethnic groups'</span> (các nhóm dân tộc) có đuôi 's' là danh từ đếm được số nhiều.",
-            step4: "A sai vì much dùng cho danh từ không đếm được (nước, tiền, thời gian...). B và C sai nghĩa hoàn toàn so với ngữ cảnh hỏi số lượng."
-        }
-    },
-    {
-        id: "Q12", instruction: instructions.part3,
-        question: "Question 12. The workers said that robots _______ them on assembly lines.",
-        options: [
-            { text: "were replacing", correct: true },
-            { text: "are replacing", correct: false },
-            { text: "have been replace", correct: false },
-            { text: "replace", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Các công nhân nói rằng robot _______ họ trên các dây chuyền lắp ráp.",
-            step2: "A. <span class='p-word'>were replacing</span>: đang thay thế (<span class='p-grammar'>Quá khứ tiếp diễn</span>)<br>B. <span class='p-word'>are replacing</span>: đang thay thế (<span class='p-grammar'>Hiện tại tiếp diễn</span>)<br>C. <span class='p-word'>have been replace</span>: (<span class='hl-red'>Sai ngữ pháp</span>)<br>D. <span class='p-word'>replace</span>: thay thế (<span class='p-grammar'>Hiện tại đơn</span>)",
-            step3: "Chọn <span class='hl-green'>were replacing</span> vì đây là <span class='p-grammar'>Câu tường thuật (Reported Speech)</span>. Động từ giới thiệu 'said' chia ở quá khứ, nên mệnh đề phía sau bắt buộc phải lùi thì (từ Hiện tại tiếp diễn lùi về Quá khứ tiếp diễn).",
-            step4: "B, D sai vì chưa lùi thì. C sai cấu trúc ngữ pháp cơ bản (đúng phải là have been replacing)."
-        }
-    },
-    {
-        id: "Q17", instruction: instructions.part4,
-        question: "Question 17. A new sports center opened in our city last week. It has been popular. ______.<br><br>a. The center offers various sports facilities like a swimming pool and a gym.<br>b. Many people are excited to use the new sports center.<br>c. The city built the center to encourage people to be more active.",
-        options: [
-            { text: "a - b - c", correct: false },
-            { text: "c - a - b", correct: true },
-            { text: "b - c - a", correct: false },
-            { text: "c - b - a", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Một trung tâm thể thao mới đã mở... Nó rất phổ biến.<br>a. Trung tâm cung cấp nhiều cơ sở vật chất...<br>b. Nhiều người rất hào hứng sử dụng...<br>c. Thành phố xây trung tâm để khuyến khích mọi người năng động hơn.",
-            step2: "Sắp xếp logic các ý: Mục đích xây dựng -> Chi tiết cơ sở vật chất -> Phản ứng của mọi người.",
-            step3: "Chọn <span class='hl-green'>c - a - b</span>. Mạch văn hợp lý: Đầu tiên nêu lý do thành phố xây dựng (c), sau đó liệt kê trung tâm có những tiện ích gì (a), và cuối cùng là kết quả/cảm xúc người dân hào hứng ra sao (b).",
-            step4: "Các cách sắp xếp khác sẽ làm đoạn văn bị lộn xộn, ví dụ đang nói cảm xúc lại quay lại tả cái bể bơi."
-        }
-    },
-    {
-        id: "Q18", instruction: instructions.part5,
-        question: "Question 18. Choose the sentence that can end the text (in question 17) most appropriately.",
-        options: [
-            { text: "The sports center has become a favorite place for families and athletes.", correct: true },
-            { text: "Some people were disappointed with the opening hours of the center.", correct: false },
-            { text: "The center also provides free sports equipment for everyone.", correct: false },
-            { text: "There were some problems with the center’s facilities initially.", correct: false }
-        ],
-        exp: {
-            step1: "Dịch: Chọn câu kết thúc đoạn văn phù hợp nhất.",
-            step2: "A. Trung tâm đã trở thành địa điểm yêu thích của các gia đình và vận động viên.<br>B. Một số người thất vọng với giờ mở cửa.<br>C. Trung tâm cũng cung cấp thiết bị miễn phí.<br>D. Ban đầu có một số vấn đề với cơ sở vật chất.",
-            step3: "Chọn <span class='hl-green'>Đáp án A</span> vì toàn bộ đoạn văn ở câu 17 đang có giọng điệu vô cùng tích cực (popular, excited, active), câu A tổng kết lại sự thành công đó một cách hoàn hảo.",
-            step4: "B và D sai vì đưa thông tin tiêu cực, đi ngược lại mạch cảm xúc của bài. C đưa thêm một chi tiết nhỏ giọt mới, không mang tính chất chốt lại toàn bài."
-        }
-    },
-    {
-        id: "Q25", instruction: instructions.part6,
-        question: "Question 25. Peter and Jackson are my best friends.",
-        options: [
-            { text: "Peter and Jackson are best friends of mine.", correct: true },
-            { text: "Peter and Jackson are best friends of my.", correct: false },
-            { text: "Peter and Jackson are best friends of me.", correct: false },
-            { text: "Peter and Jackson are mine best friends.", correct: false }
-        ],
-        exp: {
-            step1: "Dịch câu gốc: Peter và Jackson là những người bạn thân nhất của tôi.",
-            step2: "A. Peter... là bạn thân của tôi (Cấu trúc: Noun + of + Đại từ sở hữu)<br>B. sai ngữ pháp (of my)<br>C. sai ngữ pháp (of me)<br>D. sai ngữ pháp (mine best friends)",
-            step3: "Chọn <span class='hl-green'>A. ...best friends of mine</span> vì áp dụng đúng cấu trúc <span class='p-grammar'>Sở hữu kép (Double Possessive)</span>: Danh từ + of + Đại từ sở hữu (mine/yours/hers...).",
-            step4: "B sai vì 'my' phải đứng trước danh từ. C sai vì sau 'of' trong chỉ sự sở hữu bạn bè không dùng tân ngữ 'me'. D sai vì 'mine' không đứng trước danh từ làm tính từ sở hữu được."
-        }
-    },
-    {
-        id: "Q26", instruction: instructions.part6,
-        question: "Question 26. “How many stars are there in the galaxy?” Tom asked.",
-        options: [
-            { text: "Tom asked how many stars there were in the galaxy.", correct: true },
-            { text: "Tom asked how many stars are there in the galaxy.", correct: false },
-            { text: "Tom asked how many stars were there in the galaxy.", correct: false },
-            { text: "Tom asked how many stars having in the galaxy.", correct: false }
-        ],
-        exp: {
-            step1: "Dịch câu gốc: 'Có bao nhiêu ngôi sao trong dải ngân hà?' Tom hỏi.",
-            step2: "A. Tom hỏi có bao nhiêu ngôi sao trong dải ngân hà. (Đã lùi thì + đổi trật tự từ)<br>B. Sai chưa lùi thì.<br>C. Sai trật tự từ.<br>D. Sai ngữ pháp.",
-            step3: "Chọn <span class='hl-green'>A</span> vì trong <span class='p-grammar'>Câu tường thuật dạng câu hỏi (Wh-question)</span>, ta phải thực hiện 2 việc bắt buộc: 1) Lùi thì (are -> were), 2) Đổi trật tự câu từ dạng nghi vấn về dạng khẳng định (were there -> there were).",
-            step4: "B sai vì chưa lùi thì 'are'. C sai vì vẫn giữ nguyên trật tự câu hỏi đảo ngữ 'were there' (đây là lỗi học sinh hay mắc nhất). D sai hoàn toàn cấu trúc."
-        }
-    },
-    {
-        id: "Q27", instruction: instructions.part7,
-        question: "Question 27. He / learn / English / quickly / if / he / practice / frequently.",
-        options: [
-            { text: "He will learn English quickly if he practices it frequently.", correct: true },
-            { text: "He won’t learn English quickly if he practices frequently.", correct: false },
-            { text: "He learns English quickly if he will practice frequently.", correct: false },
-            { text: "He will learn English quickly if he doesn’t practice frequently.", correct: false }
-        ],
-        exp: {
-            step1: "Dịch từ khóa: Anh ấy / học / tiếng Anh / nhanh / nếu / anh ấy / luyện tập / thường xuyên.",
-            step2: "A. Anh ấy SẼ học nhanh NẾU anh ấy luyện tập thường xuyên.<br>B. Anh ấy SẼ KHÔNG học nhanh nếu anh ấy luyện tập...<br>C. Sai ngữ pháp câu điều kiện.<br>D. Sẽ học nhanh nếu KHÔNG luyện tập...",
-            step3: "Chọn <span class='hl-green'>A</span> vì đây là <span class='p-grammar'>Câu điều kiện loại 1</span> (Có thật ở hiện tại/tương lai). Cấu trúc: Mệnh đề chính (S + will + V), If + S + V(hiện tại đơn). Dịch nghĩa cũng hoàn toàn logic.",
-            step4: "B và D sai hoàn toàn về mặt logic ý nghĩa thực tế. C sai cấu trúc ngữ pháp vì mệnh đề chứa 'If' không bao giờ dùng thì tương lai 'will'."
-        }
-    },
-    {
-        id: "Q28", instruction: instructions.part7,
-        question: "Question 28. I/ call/ you/ as soon as/ I/ arrive/ airport.",
-        options: [
-            { text: "I call you as soon as I arrive at the airport.", correct: false },
-            { text: "I will call you as soon as I will arrive at the airport.", correct: false },
-            { text: "I will call you as soon as I arrive at the airport.", correct: true },
-            { text: "I would call you as soon as I arrive at the airport.", correct: false }
-        ],
-        exp: {
-            step1: "Dịch từ khóa: Tôi / gọi / bạn / ngay khi / tôi / đến / sân bay.",
-            step2: "A. Sai thì hiện tại đơn ở vế chính.<br>B. Sai vì mệnh đề chỉ thời gian không dùng tương lai (will arrive).<br>C. Tôi sẽ gọi bạn ngay khi tôi đến sân bay.<br>D. Sai vì 'would' lùi thì không đúng ngữ cảnh tương lai.",
-            step3: "Chọn <span class='hl-green'>C</span> vì áp dụng đúng quy tắc <span class='p-grammar'>Sự hòa hợp thì</span>: Mệnh đề chính dùng Tương lai đơn (will call), mệnh đề thời gian bắt đầu bằng 'as soon as' dùng Hiện tại đơn (arrive).",
-            step4: "A sai vì thiếu 'will' cho hành động hứa hẹn sẽ làm. B sai lỗi kinh điển: tuyệt đối không dùng 'will' ngay sau các từ nối thời gian như 'as soon as/when/until'. D sai thì."
-        }
-    },
-    {
-        id: "Q29", instruction: instructions.part8,
-        question: `Question 29. What does the sign say?
-        <div class="css-image-container">
-            <div class="sign-no-exit">
-                <div class="line1">NO EXIT</div>
-                <div class="circle"></div>
-                <div class="line2">ENTRANCE<br>ONLY</div>
-            </div>
-        </div>`,
-        options: [
-            { text: "You are allowed to enter and exit through this door", correct: false },
-            { text: "This door is meant only for entering and not for exiting", correct: true },
-            { text: "This door is used for both entering and exiting purposes", correct: false },
-            { text: "This door is locked and cannot be used", correct: false }
-        ],
-        exp: {
-            step1: "Dịch câu hỏi: Biển báo này có ý nghĩa gì? Biển báo ghi: <span class='p-word'>'NO EXIT - ENTRANCE ONLY'</span> (<span class='p-mean'>Không có lối ra - Chỉ là lối vào</span>).",
-            step2: "A. Bạn được phép ra và vào qua cửa này.<br>B. Cửa này chỉ dành để vào chứ không để ra.<br>C. Cửa này dùng cho cả mục đích ra và vào.<br>D. Cửa này bị khóa và không thể sử dụng.",
-            step3: "Chọn <span class='hl-green'>B</span> vì 'Entrance only' nghĩa là chỉ được đi vào, đồng nghĩa với 'meant only for entering'. 'No exit' nghĩa là cấm đi ra (not for exiting).",
-            step4: "A và C sai vì biển cấm đi ra. D sai vì cửa vẫn dùng để đi vào bình thường chứ không hề bị khóa (locked)."
-        }
-    },
-    {
-        id: "Q30", instruction: instructions.part8,
-        question: `Question 30. What does the notice say?
-        <div class="css-image-container">
-            <div class="notice-bookshop">
-                BOOKSHOP - CLOSED AFTERNOONS
-            </div>
-        </div>`,
-        options: [
-            { text: "The bookshop is closed all day", correct: false },
-            { text: "The bookshop is open in the morning", correct: true },
-            { text: "The bookshop is open in the afternoon", correct: false },
-            { text: "The bookshop is closed in the morning", correct: false }
-        ],
-        exp: {
-            step1: "Dịch câu hỏi: Thông báo này nói gì? Thông báo ghi: <span class='p-word'>'BOOKSHOP - CLOSED AFTERNOONS'</span> (<span class='p-mean'>Hiệu sách - Đóng cửa các buổi chiều</span>).",
-            step2: "A. Hiệu sách đóng cửa cả ngày.<br>B. Hiệu sách mở cửa vào buổi sáng.<br>C. Hiệu sách mở cửa vào buổi chiều.<br>D. Hiệu sách đóng cửa vào buổi sáng.",
-            step3: "Chọn <span class='hl-green'>B</span>. Vì biển báo nói rõ là 'đóng cửa buổi chiều', ta dùng tư duy suy luận logic là cửa hàng đó sẽ <span class='p-mean'>mở cửa vào buổi sáng</span>.",
-            step4: "A sai vì chỉ đóng cửa chiều chứ không phải cả ngày. C sai vì trái ngược thông báo. D sai vì sáng mở chứ không đóng."
-        }
-    }
-];
-
-/* ================= QUIZ LOGIC ================= */
-let score = 0;
-let answeredCount = 0;
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function renderQuiz() {
-    const container = document.getElementById('quiz-container');
-    container.innerHTML = '';
-    let currentInstruction = '';
-
-    quizData.forEach((item, index) => {
-        if (item.instruction !== currentInstruction) {
-            currentInstruction = item.instruction;
-            const instDiv = document.createElement('div');
-            instDiv.className = 'instruction-text glass-panel';
-            instDiv.innerText = currentInstruction;
-            container.appendChild(instDiv);
-        }
-
-        const card = document.createElement('div');
-        card.className = 'question-card glass-panel';
-        card.id = `card-${index}`;
-
-        const qText = document.createElement('div');
-        qText.className = 'question-text';
-        qText.innerHTML = item.question;
-        card.appendChild(qText);
-
-        const optionsGrid = document.createElement('div');
-        optionsGrid.className = 'options-grid';
-        
-        let shuffledOptions = [...item.options];
-        shuffleArray(shuffledOptions);
-
-        shuffledOptions.forEach((opt) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerHTML = opt.text;
-            btn.onclick = () => handleAnswer(btn, opt.correct, index, optionsGrid);
-            optionsGrid.appendChild(btn);
-        });
-        card.appendChild(optionsGrid);
-
-        const expBox = document.createElement('div');
-        expBox.className = 'explanation-box';
-        expBox.id = `exp-${index}`;
-        expBox.innerHTML = `
-            <div class="exp-title">📚 GIẢI THÍCH CHI TIẾT:</div>
-            <div class="exp-step"><b>1. Dịch / Phân tích:</b> ${item.exp.step1}</div>
-            <div class="exp-step"><b>2. Ý nghĩa các đáp án:</b><br>${item.exp.step2}</div>
-            <div class="exp-step"><b>3. Tại sao đúng?</b><br>${item.exp.step3}</div>
-            <div class="exp-step"><b>4. Tại sao sai?</b><br><span class="hl-red">${item.exp.step4}</span></div>
-        `;
-        card.appendChild(expBox);
-
-        container.appendChild(card);
-    });
-}
-
-function handleAnswer(btn, isCorrect, qIndex, grid) {
-    const buttons = grid.querySelectorAll('.option-btn');
-    buttons.forEach(b => b.disabled = true);
-
-    if (isCorrect) {
-        btn.classList.add('correct');
-        score++;
-        playDing();
-        shootConfetti();
-    } else {
-        btn.classList.add('wrong');
-        btn.classList.add('shake');
-        playBuzz();
-        buttons.forEach(b => {
-            let originalOpt = quizData[qIndex].options.find(o => o.text === b.innerHTML);
-            if(originalOpt && originalOpt.correct) {
-                b.style.border = "4px solid var(--btn-correct)";
-                b.style.color = "var(--btn-correct)";
-                b.style.background = "rgba(255,255,255,0.9)";
-            }
-        });
-    }
-
-    document.getElementById(`exp-${qIndex}`).style.display = 'block';
-    answeredCount++;
-}
-
-/* ================= RESULT & MEME LOGIC ================= */
-function showNameModal() {
-    if(answeredCount < quizData.length) {
-        if(!confirm("⚠️ Em chưa làm hết các câu hỏi. Em có chắc chắn muốn nộp bài sớm không?")) return;
-    }
-    document.getElementById('name-modal').style.display = 'flex';
-}
-
-function submitName() {
-    const nameInput = document.getElementById('name-input');
-    const nameError = document.getElementById('name-error');
-    if(nameInput.value.trim() === '') {
-        nameInput.style.borderColor = '#FF4757';
-        nameInput.classList.add('shake');
-        nameError.style.display = 'block';
-        setTimeout(() => nameInput.classList.remove('shake'), 400);
-        return;
-    }
-
-    document.getElementById('name-modal').style.display = 'none';
-    showResult(nameInput.value.trim());
-}
-document.getElementById('name-input').addEventListener('keypress', function(e) {
-    if(e.key === 'Enter') submitName();
-});
-
-function showResult(studentName) {
-    const total = quizData.length;
-    const percent = Math.round((score / total) * 100);
-    const resultModal = document.getElementById('result-modal');
-    const title = document.getElementById('result-title');
-    const scoreText = document.getElementById('result-score');
-    const memeImg = document.getElementById('result-meme');
-
-    resultModal.style.display = 'flex';
-    scoreText.innerText = `Điểm số: ${score} / ${total} (${percent}%)`;
-
-    if (percent === 100) {
-        title.innerText = `🌟 THIÊN TÀI! ${studentName} xuất sắc tuyệt đối!`;
-        title.style.color = '#00A653';
-        memeImg.src = 'https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'; 
-        shootConfetti();
-        setInterval(shootConfetti, 1500); 
-        playDing();
-    } else if (percent >= 60) {
-        title.innerText = `👏 RẤT TỐT! ${studentName} đã rất cố gắng!`;
-        title.style.color = '#6C5CE7';
-        memeImg.src = 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif'; 
-        playDing();
-    } else {
-        title.innerText = `💪 CỐ LÊN NHÉ! ${studentName} cần luyện tập thêm!`;
-        title.style.color = '#FF4757';
-        memeImg.src = 'https://media.giphy.com/media/OPU6wzx8JlNyc/giphy.gif'; 
-        playBuzz();
-    }
-}
-
-window.onload = () => {
-    renderQuiz();
-}
-</script>
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Global Success 8 - End of Term 2 (Gamified)</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* CSS VARIABLES - PASTEL & NEON PALETTE */
+
+        :root {
+
+            --bg-grad-1: #A18CD1; /* Pastel Purple */
+
+            --bg-grad-2: #FBC2EB; /* Pastel Pink */
+
+            --bg-grad-3: #84FAB0; /* Pastel Green */
+
+            --bg-grad-4: #8FD3F4; /* Pastel Blue */
+
+            
+
+            --btn-correct: #00D26A;
+
+            --btn-correct-shadow: #00A653;
+
+            --btn-wrong: #FF4757;
+
+            --btn-wrong-shadow: #D63031;
+
+            
+
+            --glass-bg: rgba(255, 255, 255, 0.35);
+
+            --glass-border: rgba(255, 255, 255, 0.6);
+
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+            
+
+            --text-main: #2D3436;
+
+            --text-heading: #6C5CE7;
+
+        }
+
+
+
+        /* GLOBAL STYLES */
+
+        * {
+
+            box-sizing: border-box;
+
+            font-family: 'Nunito', sans-serif;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            min-height: 100vh;
+
+            /* Dynamic Looping Gradient Background */
+
+            background: linear-gradient(-45deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3), var(--bg-grad-4));
+
+            background-size: 400% 400%;
+
+            animation: gradientMove 15s ease infinite;
+
+            color: var(--text-main);
+
+            overflow-x: hidden;
+
+        }
+
+
+
+        @keyframes gradientMove {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+
+        /* FLOATING BACKGROUND PATTERN (STARS & CLOUDS) */
+
+        .pattern-overlay {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 10 L65 45 L100 50 L65 55 L60 90 L55 55 L20 50 L55 45 Z' fill='rgba(255,255,255,0.2)'/%3E%3Ccircle cx='30' cy='90' r='5' fill='rgba(255,255,255,0.3)'/%3E%3Ccircle cx='90' cy='20' r='8' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+
+            background-size: 180px 180px;
+
+            animation: floatPattern 40s linear infinite;
+
+        }
+
+
+
+        @keyframes floatPattern {
+
+            from { background-position: 0 0; }
+
+            to { background-position: 360px 360px; }
+
+        }
+
+
+
+        /* GLASSMORPHISM UTILITY CLASS */
+
+        .glass-panel {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid var(--glass-border);
+
+            box-shadow: var(--glass-shadow);
+
+            border-radius: 24px;
+
+        }
+
+
+
+        /* MODALS */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.4);
+
+            backdrop-filter: blur(8px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 1000;
+
+        }
+
+
+
+        .modal-card {
+
+            padding: 35px;
+
+            text-align: center;
+
+            max-width: 450px;
+
+            width: 90%;
+
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        }
+
+
+
+        @keyframes popIn {
+
+            0% { transform: scale(0.5); opacity: 0; }
+
+            100% { transform: scale(1); opacity: 1; }
+
+        }
+
+
+
+        .shake {
+
+            animation: shakeAnim 0.4s ease-in-out;
+
+        }
+
+
+
+        @keyframes shakeAnim {
+
+            0%, 100% { transform: translateX(0); }
+
+            20%, 60% { transform: translateX(-12px); }
+
+            40%, 80% { transform: translateX(12px); }
+
+        }
+
+
+
+        input[type="text"], input[type="password"] {
+
+            width: 100%;
+
+            padding: 16px;
+
+            background: rgba(255, 255, 255, 0.6);
+
+            border: 2px solid rgba(255, 255, 255, 0.8);
+
+            border-radius: 16px;
+
+            font-size: 1.15rem;
+
+            margin: 15px 0;
+
+            outline: none;
+
+            color: var(--text-main);
+
+            font-weight: 700;
+
+            transition: all 0.3s;
+
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+
+        }
+
+
+
+        input:focus {
+
+            background: rgba(255, 255, 255, 0.9);
+
+            border-color: var(--text-heading);
+
+            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+
+        }
+
+
+
+        .btn-primary {
+
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+
+            color: white;
+
+            border: none;
+
+            padding: 16px 32px;
+
+            font-size: 1.25rem;
+
+            font-weight: 900;
+
+            border-radius: 18px;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 0 #4834D4;
+
+            transition: all 0.2s;
+
+            width: 100%;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+
+        .btn-primary:active {
+
+            transform: translateY(8px);
+
+            box-shadow: 0 0 0 transparent;
+
+        }
+
+
+
+        /* MAIN APP CONTAINER */
+
+        #app {
+
+            display: none;
+
+            position: relative;
+
+            z-index: 10;
+
+            max-width: 950px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
+        }
+
+
+
+        .header {
+
+            padding: 25px 30px;
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .header h3 { margin: 0; color: #444; font-size: 1.15rem; }
+
+        .header h1 { margin: 10px 0 5px 0; color: var(--text-heading); font-size: 2.2rem; font-weight: 900; text-shadow: 2px 2px 4px rgba(255,255,255,0.5);}
+
+
+
+        .instruction-text {
+
+            padding: 18px 25px;
+
+            font-size: 1.15rem;
+
+            font-weight: 800;
+
+            margin-bottom: 25px;
+
+            border-left: 8px solid var(--text-heading);
+
+            color: #2D3436;
+
+        }
+
+
+
+        .question-card {
+
+            padding: 30px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+
+        .question-text {
+
+            font-size: 1.3rem;
+
+            font-weight: 800;
+
+            margin-bottom: 25px;
+
+            line-height: 1.6;
+
+        }
+
+
+
+        /* Q29 & Q30 Images rendered by CSS */
+
+        .css-image-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .sign-no-exit {
+
+            background: #d32f2f;
+
+            color: white;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            width: 180px;
+
+            text-align: center;
+
+            border: 5px solid #fff;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 0 0 3px #d32f2f;
+
+        }
+
+        .sign-no-exit .line1 { font-size: 26px; font-weight: 900; margin-bottom: 6px; font-family: 'Arial', sans-serif;}
+
+        .sign-no-exit .circle { 
+
+            background: white; border-radius: 50%; width: 55px; height: 55px; 
+
+            margin: 0 auto 8px; position: relative; border: 5px solid #d32f2f;
+
+        }
+
+        .sign-no-exit .circle::after {
+
+            content: ''; position: absolute; top: 50%; left: 10%; width: 80%; 
+
+            height: 7px; background: #d32f2f; transform: translateY(-50%);
+
+        }
+
+        .sign-no-exit .line2 { font-size: 16px; font-weight: bold; line-height: 1.2; font-family: 'Arial', sans-serif;}
+
+
+
+        .notice-bookshop {
+
+            background: #FFF9C4;
+
+            border: 5px solid #1E88E5;
+
+            border-radius: 0 30px 0 0;
+
+            padding: 20px 30px;
+
+            text-align: center;
+
+            color: #333;
+
+            font-weight: 900;
+
+            font-size: 20px;
+
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
+
+        }
+
+
+
+        /* OPTIONS */
+
+        .options-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 18px;
+
+        }
+
+
+
+        .option-btn {
+
+            background: rgba(255, 255, 255, 0.5);
+
+            backdrop-filter: blur(5px);
+
+            border: 3px solid rgba(255, 255, 255, 0.8);
+
+            border-radius: 18px;
+
+            padding: 18px 22px;
+
+            font-size: 1.15rem;
+
+            font-weight: 800;
+
+            color: #2D3436;
+
+            cursor: pointer;
+
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            box-shadow: 0 6px 0 rgba(255, 255, 255, 0.4);
+
+            text-align: left;
+
+            position: relative;
+
+        }
+
+
+
+        .option-btn:hover:not(:disabled) {
+
+            transform: scale(1.03) translateY(-4px);
+
+            background: rgba(255, 255, 255, 0.8);
+
+            border-color: var(--text-heading);
+
+            box-shadow: 0 10px 0 var(--text-heading);
+
+            color: var(--text-heading);
+
+        }
+
+
+
+        .option-btn:active:not(:disabled) {
+
+            transform: scale(1) translateY(6px);
+
+            box-shadow: 0 0 0 transparent;
+
+        }
+
+
+
+        .option-btn.correct {
+
+            background: var(--btn-correct) !important;
+
+            border-color: white !important;
+
+            color: white !important;
+
+            box-shadow: 0 6px 0 var(--btn-correct-shadow) !important;
+
+            transform: scale(1.02);
+
+        }
+
+
+
+        .option-btn.wrong {
+
+            background: var(--btn-wrong) !important;
+
+            border-color: white !important;
+
+            color: white !important;
+
+            box-shadow: 0 6px 0 var(--btn-wrong-shadow) !important;
+
+        }
+
+
+
+        .option-btn:disabled {
+
+            cursor: not-allowed;
+
+            opacity: 0.85;
+
+        }
+
+
+
+        /* EXPLANATION BOX & HIGHLIGHTS */
+
+        .explanation-box {
+
+            display: none;
+
+            margin-top: 25px;
+
+            background: rgba(255, 255, 255, 0.85);
+
+            border-left: 8px solid var(--text-heading);
+
+            border-radius: 15px;
+
+            padding: 22px;
+
+            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            font-size: 1.1rem;
+
+            line-height: 1.7;
+
+            color: #2D3436;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+        }
+
+
+
+        @keyframes slideDown {
+
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+
+            to { opacity: 1; transform: translateY(0) scale(1); }
+
+        }
+
+
+
+        .exp-step { margin-bottom: 12px; }
+
+        .exp-title { font-weight: 900; color: var(--text-heading); margin-bottom: 12px; font-size: 1.2rem; text-transform: uppercase;}
+
+        
+
+        /* CÁC CLASS HIGHLIGHT SIÊU DỄ HIỂU */
+
+        .hl-red { color: #D63031; font-weight: 900; }
+
+        .hl-green { color: #00A653; font-weight: 900; }
+
+        .p-word { color: #0984E3; font-weight: 800; } /* Highlight từ vựng */
+
+        .p-phonetic { color: #6C5CE7; font-weight: 900; background: rgba(108, 92, 231, 0.1); padding: 2px 8px; border-radius: 8px; font-family: 'Arial', sans-serif; display: inline-block; margin: 0 3px;} /* Highlight phiên âm */
+
+        .p-mean { color: #E17055; font-weight: 800; } /* Highlight nghĩa tiếng việt */
+
+        .p-grammar { color: #D63031; font-weight: bold; border-bottom: 2px dashed #D63031; padding-bottom: 2px;} /* Highlight ngữ pháp */
+
+
+
+        /* SCORE SUBMIT */
+
+        .submit-container {
+
+            text-align: center;
+
+            margin: 50px 0;
+
+        }
+
+
+
+        .btn-submit {
+
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+
+            font-size: 1.6rem;
+
+            padding: 22px 55px;
+
+            border-radius: 35px;
+
+            color: white;
+
+            border: 4px solid rgba(255,255,255,0.5);
+
+            cursor: pointer;
+
+            box-shadow: 0 10px 0 #D63031, 0 15px 25px rgba(0,0,0,0.2);
+
+            font-weight: 900;
+
+            transition: all 0.2s;
+
+            animation: pulse 2s infinite;
+
+        }
+
+        
+
+        @keyframes pulse {
+
+            0% { transform: scale(1); }
+
+            50% { transform: scale(1.05); }
+
+            100% { transform: scale(1); }
+
+        }
+
+
+
+        .btn-submit:hover {
+
+            filter: brightness(1.1);
+
+        }
+
+
+
+        .btn-submit:active {
+
+            transform: scale(1) translateY(10px);
+
+            box-shadow: 0 0 0 transparent;
+
+            animation: none;
+
+        }
+
+
+
+        /* MEME IMAGE */
+
+        .meme-img {
+
+            width: 100%;
+
+            border-radius: 18px;
+
+            margin-top: 20px;
+
+            object-fit: cover;
+
+            max-height: 280px;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+            border: 4px solid white;
+
+        }
+
+
+
+        .error-msg {
+
+            color: #D63031;
+
+            font-weight: 900;
+
+            display: none;
+
+            margin-top: 10px;
+
+            background: rgba(255,255,255,0.8);
+
+            padding: 8px;
+
+            border-radius: 8px;
+
+        }
+
+
+
+        /* CONFETTI CANVAS */
+
+        #confetti-canvas {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            pointer-events: none;
+
+            z-index: 999;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div class="pattern-overlay"></div>
+
+    <canvas id="confetti-canvas"></canvas>
+
+
+
+    <div id="password-modal" class="modal-overlay">
+
+        <div class="modal-card glass-panel">
+
+            <h2 style="color: var(--text-heading); font-size: 2rem; margin-top:0;">🔒 Lớp Học Bí Mật</h2>
+
+            <p style="font-weight: 800; font-size: 1.1rem; color: #444;">Nhập mật mã để bắt đầu làm bài nhé!</p>
+
+            <input type="password" id="pass-input" placeholder="Nhập mật khẩu...">
+
+            <div id="pass-error" class="error-msg">⚠️ Sai mật khẩu rồi! Thử lại nha.</div>
+
+            <button class="btn-primary" onclick="checkPassword()" style="margin-top: 20px;">🚀 BẮT ĐẦU</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="name-modal" class="modal-overlay" style="display: none;">
+
+        <div class="modal-card glass-panel">
+
+            <h2 style="color: #FF6B6B; font-size: 2rem; margin-top:0;">🎯 Hoàn Thành!</h2>
+
+            <p style="font-weight: 800; font-size: 1.1rem; color: #444;">Nhập tên của em để xem điểm nhé:</p>
+
+            <input type="text" id="name-input" placeholder="Ví dụ: Nguyễn Văn A...">
+
+            <div id="name-error" class="error-msg">⚠️ Vui lòng nhập tên trước khi xem điểm nhé!</div>
+
+            <button class="btn-primary" onclick="submitName()" style="margin-top: 20px;">🏆 XEM KẾT QUẢ</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+
+        <div class="modal-card glass-panel" style="max-width: 500px;">
+
+            <h2 id="result-title" style="font-size: 1.8rem; margin-top:0;"></h2>
+
+            <p id="result-score" style="font-size: 1.8rem; font-weight: 900; color: var(--text-heading); background: rgba(255,255,255,0.7); padding: 10px; border-radius: 12px;"></p>
+
+            <img id="result-meme" class="meme-img" src="" alt="Meme">
+
+            <button class="btn-primary" onclick="location.reload()" style="margin-top: 25px;">🔄 LÀM LẠI TỪ ĐẦU</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="app">
+
+        <div class="header glass-panel">
+
+            <h3>Giáo viên tạo: MS Chí Nên</h3>
+
+            <h1>🌟 BÀI KIỂM TRA CUỐI KỲ 2 🌟</h1>
+
+            <h3 style="color: #555; margin-top: 8px; font-weight: 800;">Môn: Tiếng Anh - Global Success 8</h3>
+
+        </div>
+
+
+
+        <div id="quiz-container">
+
+            </div>
+
+
+
+        <div class="submit-container">
+
+            <button class="btn-submit" onclick="showNameModal()">🎯 NỘP BÀI & XEM KẾT QUẢ 🎯</button>
+
+        </div>
+
+    </div>
+
+
 
 <script>
-// Auto-bypass password lock for MS Chi Nen
-(function() {
-    function unlock() {
-        var pw = document.getElementById('passwordModal') || document.getElementById('lockModal') || document.getElementById('pwModal');
-        if (pw) { pw.style.setProperty('display', 'none', 'important'); pw.style.setProperty('visibility', 'hidden', 'important'); }
-        var main = document.getElementById('mainContent') || document.getElementById('quizContainer');
-        if (main) { main.style.setProperty('display', 'block', 'important'); }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
-        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+
+/* ================= AUDIO SYSTEM ================= */
+
+let audioCtx;
+
+
+
+function initAudio() {
+
+    if (!audioCtx) {
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
     }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', unlock);
+
+}
+
+
+
+function playDing() {
+
+    if (!audioCtx) return;
+
+    const osc = audioCtx.createOscillator();
+
+    const gainNode = audioCtx.createGain();
+
+    osc.type = 'sine';
+
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+    osc.connect(gainNode);
+
+    gainNode.connect(audioCtx.destination);
+
+    osc.start();
+
+    osc.stop(audioCtx.currentTime + 0.3);
+
+}
+
+
+
+function playBuzz() {
+
+    if (!audioCtx) return;
+
+    const osc = audioCtx.createOscillator();
+
+    const gainNode = audioCtx.createGain();
+
+    osc.type = 'sawtooth';
+
+    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+    osc.connect(gainNode);
+
+    gainNode.connect(audioCtx.destination);
+
+    osc.start();
+
+    osc.stop(audioCtx.currentTime + 0.3);
+
+}
+
+
+
+/* ================= CONFETTI SYSTEM ================= */
+
+const canvas = document.getElementById('confetti-canvas');
+
+const ctx = canvas.getContext('2d');
+
+let confettis = [];
+
+
+
+function resizeCanvas() {
+
+    canvas.width = window.innerWidth;
+
+    canvas.height = window.innerHeight;
+
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+resizeCanvas();
+
+
+
+function shootConfetti() {
+
+    for (let i = 0; i < 120; i++) {
+
+        confettis.push({
+
+            x: window.innerWidth / 2,
+
+            y: window.innerHeight / 2,
+
+            r: Math.random() * 8 + 4,
+
+            dx: Math.random() * 24 - 12,
+
+            dy: Math.random() * -25 - 5,
+
+            color: `hsl(${Math.random() * 360}, 100%, 60%)`
+
+        });
+
+    }
+
+    animateConfetti();
+
+}
+
+
+
+function animateConfetti() {
+
+    requestAnimationFrame(animateConfetti);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    confettis.forEach((c, index) => {
+
+        c.x += c.dx;
+
+        c.y += c.dy;
+
+        c.dy += 0.6; // gravity
+
+        ctx.beginPath();
+
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+
+        ctx.fillStyle = c.color;
+
+        ctx.fill();
+
+        if (c.y > canvas.height) confettis.splice(index, 1);
+
+    });
+
+}
+
+
+
+/* ================= ANTI-F12 / SECURITY ================= */
+
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+document.onkeydown = function(e) {
+
+    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
+
+        return false;
+
+    }
+
+};
+
+
+
+const _0x1a2b = [99, 111, 109, 97, 105, 97, 110, 117, 108, 105, 115];
+
+
+
+function checkPassword() {
+
+    initAudio(); 
+
+    const input = document.getElementById('pass-input');
+
+    const errorMsg = document.getElementById('pass-error');
+
+    const inputAscii = Array.from(input.value).map(char => char.charCodeAt(0));
+
+    
+
+    let isCorrect = true;
+
+    if (inputAscii.length !== _0x1a2b.length) isCorrect = false;
+
+    else {
+
+        for(let i=0; i<_0x1a2b.length; i++) {
+
+            if(inputAscii[i] !== _0x1a2b[i]) isCorrect = false;
+
+        }
+
+    }
+
+
+
+    if(isCorrect) {
+
+        document.getElementById('password-modal').style.display = 'none';
+
+        document.getElementById('app').style.display = 'block';
+
+        playDing();
+
     } else {
-        unlock();
+
+        input.classList.add('shake');
+
+        input.style.borderColor = '#FF4757';
+
+        errorMsg.style.display = 'block';
+
+        playBuzz();
+
+        setTimeout(() => input.classList.remove('shake'), 400);
+
     }
-})();
+
+}
+
+document.getElementById('pass-input').addEventListener('keypress', function (e) {
+
+    if (e.key === 'Enter') checkPassword();
+
+});
+
+
+
+/* ================= QUIZ DATA & EXPLANATIONS ================= */
+
+const instructions = {
+
+    part1: "Mark the letter A, B, C or D on your answer sheet to indicate the word whose underlined part differs from the other three in pronunciation.",
+
+    part2: "Mark the letter A, B, C, or D on your answer sheet to indicate the word that differs from the other three in the position of primary stress.",
+
+    part3: "Mark the letter A, B, C, or D on your answer sheet to indicate the correct answer to each of the following questions.",
+
+    part4: "Put the sentences (a-c) in the correct order, then fill in the blank to make a logical text.",
+
+    part5: "Choose the sentence that can end the text most appropriately.",
+
+    part6: "Mark the letter A, B, C or D on your answer sheet to indicate the sentence that is closest in meaning to the original sentence.",
+
+    part7: "Mark the letter A, B, C or D on your answer sheet to indicate the sentence that is made from the given cues.",
+
+    part8: "Read the following sign or notice and indicate the correct answer."
+
+};
+
+
+
+const quizData = [
+
+    {
+
+        id: "Q1", instruction: instructions.part1,
+
+        question: "Question 1.",
+
+        options: [
+
+            { text: "<u>a</u>partment", correct: false },
+
+            { text: "sep<u>a</u>rate", correct: false },
+
+            { text: "<u>a</u>tom", correct: true },
+
+            { text: "expl<u>a</u>nation", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Tìm từ có phần gạch chân chữ <span class='p-word'>'A'</span> phát âm khác các từ còn lại.",
+
+            step2: "A. <span class='p-word'>apartment</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Căn hộ</span><br>B. <span class='p-word'>separate</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Tách biệt</span><br>C. <span class='p-word'>atom</span> <span class='p-phonetic'>/æ/</span>: <span class='p-mean'>Nguyên tử</span><br>D. <span class='p-word'>explanation</span> <span class='p-phonetic'>/ə/</span>: <span class='p-mean'>Lời giải thích</span>",
+
+            step3: "Chọn <span class='hl-green'>atom</span> vì chữ 'a' ở đây được phát âm là <span class='p-phonetic'>/æ/</span> (a bẹt).",
+
+            step4: "Các đáp án còn lại sai vì phần gạch chân đều được phát âm là âm ơ ngắn <span class='p-phonetic'>/ə/</span>."
+
+        }
+
+    },
+
+    {
+
+        id: "Q2", instruction: instructions.part1,
+
+        question: "Question 2.",
+
+        options: [
+
+            { text: "spo<u>ng</u>e", correct: true },
+
+            { text: "kiddi<u>ng</u>", correct: false },
+
+            { text: "mouldi<u>ng</u>", correct: false },
+
+            { text: "bondi<u>ng</u>", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Tìm từ có phần gạch chân <span class='p-word'>'NG'</span> phát âm khác các từ còn lại.",
+
+            step2: "A. <span class='p-word'>sponge</span> <span class='p-phonetic'>/ndʒ/</span>: <span class='p-mean'>Miếng bọt biển</span><br>B. <span class='p-word'>kidding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Đùa cợt</span><br>C. <span class='p-word'>moulding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Đúc, nặn</span><br>D. <span class='p-word'>bonding</span> <span class='p-phonetic'>/ŋ/</span>: <span class='p-mean'>Sự liên kết</span>",
+
+            step3: "Chọn <span class='hl-green'>sponge</span> vì cụm 'ng' ở đây kết hợp với chữ 'e' phía sau để tạo thành âm <span class='p-phonetic'>/ndʒ/</span>.",
+
+            step4: "Các đáp án còn lại sai vì đuôi '-ng' trong danh động từ (V-ing) đều được phát âm là âm mũi <span class='p-phonetic'>/ŋ/</span> (ngờ)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q3", instruction: instructions.part2,
+
+        question: "Question 3.",
+
+        options: [
+
+            { text: "rescue", correct: false },
+
+            { text: "strengthen", correct: false },
+
+            { text: "system", correct: false },
+
+            { text: "towards", correct: true }
+
+        ],
+
+        exp: {
+
+            step1: "Tìm từ có trọng âm chính rơi vào vị trí khác.",
+
+            step2: "A. <span class='p-word'>rescue</span> (Trọng âm 1)<br>B. <span class='p-word'>strengthen</span> (Trọng âm 1)<br>C. <span class='p-word'>system</span> (Trọng âm 1)<br>D. <span class='p-word'>towards</span> (Trọng âm 2)",
+
+            step3: "Chọn <span class='hl-green'>towards</span> vì trọng âm rơi vào âm tiết thứ 2.",
+
+            step4: "Các đáp án còn lại sai vì chúng đều có trọng âm rơi vào âm tiết thứ 1."
+
+        }
+
+    },
+
+    {
+
+        id: "Q4", instruction: instructions.part2,
+
+        question: "Question 4.",
+
+        options: [
+
+            { text: "protection", correct: false },
+
+            { text: "interest", correct: true },
+
+            { text: "discussion", correct: false },
+
+            { text: "commitment", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Tìm từ có trọng âm chính rơi vào vị trí khác.",
+
+            step2: "A. <span class='p-word'>protection</span> (Trọng âm 2)<br>B. <span class='p-word'>interest</span> (Trọng âm 1)<br>C. <span class='p-word'>discussion</span> (Trọng âm 2)<br>D. <span class='p-word'>commitment</span> (Trọng âm 2)",
+
+            step3: "Chọn <span class='hl-green'>interest</span> vì trọng âm rơi vào âm tiết thứ 1.",
+
+            step4: "Các từ còn lại sai vì có các hậu tố đặc biệt như <span class='p-grammar'>-tion</span>, <span class='p-grammar'>-ment</span>... trọng âm đều rơi vào âm tiết ngay trước nó (âm tiết thứ 2)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q5", instruction: instructions.part3,
+
+        question: "Question 5. The ____ shook the region, leaving buildings damaged and roads cracked.",
+
+        options: [
+
+            { text: "Earthquake", correct: true },
+
+            { text: "shock", correct: false },
+
+            { text: "tornado", correct: false },
+
+            { text: "thunderstorm", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Trận ____ đã làm rung chuyển khu vực, khiến các tòa nhà bị hư hỏng và đường xá nứt nẻ.",
+
+            step2: "A. <span class='p-word'>Earthquake</span>: <span class='p-mean'>Động đất</span><br>B. <span class='p-word'>shock</span>: <span class='p-mean'>Cú sốc</span><br>C. <span class='p-word'>tornado</span>: <span class='p-mean'>Lốc xoáy</span><br>D. <span class='p-word'>thunderstorm</span>: <span class='p-mean'>Bão có sấm sét</span>",
+
+            step3: "Chọn <span class='hl-green'>Earthquake</span> vì có từ khóa <span class='p-grammar'>shook</span> (quá khứ của shake - rung lắc) và làm nứt đường, đây là đặc trưng của động đất.",
+
+            step4: "Lốc xoáy hay bão sấm sét thường gây thiệt hại do gió mạnh và mưa, không gây 'rung chuyển' đất và 'nứt đường'. Cú sốc thì không hợp ngữ cảnh thảm họa tự nhiên."
+
+        }
+
+    },
+
+    {
+
+        id: "Q6", instruction: instructions.part3,
+
+        question: "Question 6. While I ___________ in the sea, I saw a beautiful turtle.",
+
+        options: [
+
+            { text: "am snorkelling", correct: false },
+
+            { text: "was snorkelling", correct: true },
+
+            { text: "snorkelled", correct: false },
+
+            { text: "were snorkelling", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Trong khi tôi ___________ dưới biển, tôi đã nhìn thấy một con rùa xinh đẹp.",
+
+            step2: "A. <span class='p-mean'>đang lặn</span> (Hiện tại tiếp diễn)<br>B. <span class='p-mean'>đang lặn</span> (Quá khứ tiếp diễn - số ít)<br>C. <span class='p-mean'>đã lặn</span> (Quá khứ đơn)<br>D. <span class='p-mean'>đang lặn</span> (Quá khứ tiếp diễn - số nhiều)",
+
+            step3: "Chọn <span class='hl-green'>was snorkelling</span> vì đây là cấu trúc 1 hành động đang xảy ra dài trong quá khứ (<span class='p-grammar'>chia QK Tiếp diễn</span>) thì có hành động ngắn khác xen vào (saw - <span class='p-grammar'>chia QK Đơn</span>). Chủ ngữ 'I' đi với 'was'.",
+
+            step4: "A sai thì (hiện tại). C sai vì cấu trúc với <span class='p-grammar'>While</span> thường cần thì tiếp diễn. D sai vì chủ ngữ 'I' không đi với 'were'."
+
+        }
+
+    },
+
+    {
+
+        id: "Q7", instruction: instructions.part3,
+
+        question: "Question 7. These are the children’s shoes. They’re ______.",
+
+        options: [
+
+            { text: "their", correct: false },
+
+            { text: "they", correct: false },
+
+            { text: "theirs", correct: true },
+
+            { text: "them", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Đây là những đôi giày của bọn trẻ. Chúng là ______.",
+
+            step2: "A. <span class='p-word'>their</span> (<span class='p-grammar'>Tính từ sở hữu</span>): của họ (Cần danh từ theo sau)<br>B. <span class='p-word'>they</span> (<span class='p-grammar'>Đại từ nhân xưng</span>): họ<br>C. <span class='p-word'>theirs</span> (<span class='p-grammar'>Đại từ sở hữu</span>): của họ (Không cần danh từ theo sau)<br>D. <span class='p-word'>them</span> (<span class='p-grammar'>Đại từ tân ngữ</span>): họ",
+
+            step3: "Chọn <span class='hl-green'>theirs</span> vì nó thay thế cho 'their shoes'. Ở cuối câu không có danh từ theo sau nên bắt buộc dùng <span class='p-grammar'>Đại từ sở hữu</span> để tránh lặp từ.",
+
+            step4: "A sai vì thiếu danh từ phía sau. B và D sai từ loại hoàn toàn."
+
+        }
+
+    },
+
+    {
+
+        id: "Q9", instruction: instructions.part3,
+
+        question: "Question 9. We should save energy by using ________ appliances and adopting sustainable practices.",
+
+        options: [
+
+            { text: "energy-efficient", correct: true },
+
+            { text: "energy-consuming", correct: false },
+
+            { text: "energy-costing", correct: false },
+
+            { text: "energy-saved", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Chúng ta nên tiết kiệm năng lượng bằng cách sử dụng các thiết bị ________ và áp dụng các biện pháp bền vững.",
+
+            step2: "A. <span class='p-word'>energy-efficient</span>: <span class='p-mean'>tiết kiệm năng lượng, hiệu suất cao</span><br>B. <span class='p-word'>energy-consuming</span>: <span class='p-mean'>tiêu thụ nhiều năng lượng</span><br>C. <span class='p-word'>energy-costing</span>: <span class='p-mean'>tốn kém năng lượng</span><br>D. <span class='p-word'>energy-saved</span>: <span class='hl-red'>(Từ này không đúng chuẩn cấu trúc ghép từ)</span>",
+
+            step3: "Chọn <span class='hl-green'>energy-efficient</span> (thiết bị hiệu suất cao/tiết kiệm điện) vì ngữ cảnh câu đang khuyên 'save energy' (tiết kiệm năng lượng).",
+
+            step4: "B và C mang nghĩa tiêu cực (tốn điện). D sai cách kết hợp từ (thường dùng energy-saving chứ không dùng energy-saved để làm tính từ bổ nghĩa cho máy móc)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q10", instruction: instructions.part3,
+
+        question: "Question 10. Nick: “Do you think we will live on the moon one day?”<br>Hoa: “________”",
+
+        options: [
+
+            { text: "No, I can’t", correct: false },
+
+            { text: "I won’t live on the moon", correct: false },
+
+            { text: "I’m not sure about it", correct: true },
+
+            { text: "Yeah", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Nick: 'Bạn có nghĩ một ngày nào đó chúng ta sẽ sống trên mặt trăng không?' - Hoa: '____'",
+
+            step2: "A. Không, tôi không thể<br>B. Tôi sẽ không sống trên mặt trăng<br>C. Mình không chắc về điều đó lắm<br>D. Yeah (quá cộc lốc)",
+
+            step3: "Chọn <span class='hl-green'>I’m not sure about it</span> vì đây là câu trả lời giao tiếp tự nhiên và lịch sự, thể hiện sự hoài nghi hợp lý về một dự đoán tương lai.",
+
+            step4: "A sai vì câu hỏi là <span class='p-grammar'>'Do you think'</span> không hỏi về khả năng 'can'. B lạc đề vì câu hỏi là 'chúng ta' (we). D tuy có vẻ đồng ý nhưng không phải cách đáp lại chuẩn mực trong bài kiểm tra (nên dùng Yes, I think so)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q11", instruction: instructions.part3,
+
+        question: "Question 11. How ______ ethnic groups live on the northern areas of Viet Nam?",
+
+        options: [
+
+            { text: "much", correct: false },
+
+            { text: "long", correct: false },
+
+            { text: "far", correct: false },
+
+            { text: "many", correct: true }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Có bao nhiêu nhóm dân tộc sống ở khu vực miền núi phía Bắc Việt Nam?",
+
+            step2: "A. <span class='p-word'>How much</span>: Bao nhiêu (<span class='p-grammar'>Dùng cho N không đếm được</span>)<br>B. <span class='p-word'>How long</span>: Bao lâu/Dài bao nhiêu<br>C. <span class='p-word'>How far</span>: Bao xa<br>D. <span class='p-word'>How many</span>: Bao nhiêu (<span class='p-grammar'>Dùng cho N đếm được số nhiều</span>)",
+
+            step3: "Chọn <span class='hl-green'>many</span> vì cụm <span class='p-word'>'ethnic groups'</span> (các nhóm dân tộc) có đuôi 's' là danh từ đếm được số nhiều.",
+
+            step4: "A sai vì much dùng cho danh từ không đếm được (nước, tiền, thời gian...). B và C sai nghĩa hoàn toàn so với ngữ cảnh hỏi số lượng."
+
+        }
+
+    },
+
+    {
+
+        id: "Q12", instruction: instructions.part3,
+
+        question: "Question 12. The workers said that robots _______ them on assembly lines.",
+
+        options: [
+
+            { text: "were replacing", correct: true },
+
+            { text: "are replacing", correct: false },
+
+            { text: "have been replace", correct: false },
+
+            { text: "replace", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Các công nhân nói rằng robot _______ họ trên các dây chuyền lắp ráp.",
+
+            step2: "A. <span class='p-word'>were replacing</span>: đang thay thế (<span class='p-grammar'>Quá khứ tiếp diễn</span>)<br>B. <span class='p-word'>are replacing</span>: đang thay thế (<span class='p-grammar'>Hiện tại tiếp diễn</span>)<br>C. <span class='p-word'>have been replace</span>: (<span class='hl-red'>Sai ngữ pháp</span>)<br>D. <span class='p-word'>replace</span>: thay thế (<span class='p-grammar'>Hiện tại đơn</span>)",
+
+            step3: "Chọn <span class='hl-green'>were replacing</span> vì đây là <span class='p-grammar'>Câu tường thuật (Reported Speech)</span>. Động từ giới thiệu 'said' chia ở quá khứ, nên mệnh đề phía sau bắt buộc phải lùi thì (từ Hiện tại tiếp diễn lùi về Quá khứ tiếp diễn).",
+
+            step4: "B, D sai vì chưa lùi thì. C sai cấu trúc ngữ pháp cơ bản (đúng phải là have been replacing)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q17", instruction: instructions.part4,
+
+        question: "Question 17. A new sports center opened in our city last week. It has been popular. ______.<br><br>a. The center offers various sports facilities like a swimming pool and a gym.<br>b. Many people are excited to use the new sports center.<br>c. The city built the center to encourage people to be more active.",
+
+        options: [
+
+            { text: "a - b - c", correct: false },
+
+            { text: "c - a - b", correct: true },
+
+            { text: "b - c - a", correct: false },
+
+            { text: "c - b - a", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Một trung tâm thể thao mới đã mở... Nó rất phổ biến.<br>a. Trung tâm cung cấp nhiều cơ sở vật chất...<br>b. Nhiều người rất hào hứng sử dụng...<br>c. Thành phố xây trung tâm để khuyến khích mọi người năng động hơn.",
+
+            step2: "Sắp xếp logic các ý: Mục đích xây dựng -> Chi tiết cơ sở vật chất -> Phản ứng của mọi người.",
+
+            step3: "Chọn <span class='hl-green'>c - a - b</span>. Mạch văn hợp lý: Đầu tiên nêu lý do thành phố xây dựng (c), sau đó liệt kê trung tâm có những tiện ích gì (a), và cuối cùng là kết quả/cảm xúc người dân hào hứng ra sao (b).",
+
+            step4: "Các cách sắp xếp khác sẽ làm đoạn văn bị lộn xộn, ví dụ đang nói cảm xúc lại quay lại tả cái bể bơi."
+
+        }
+
+    },
+
+    {
+
+        id: "Q18", instruction: instructions.part5,
+
+        question: "Question 18. Choose the sentence that can end the text (in question 17) most appropriately.",
+
+        options: [
+
+            { text: "The sports center has become a favorite place for families and athletes.", correct: true },
+
+            { text: "Some people were disappointed with the opening hours of the center.", correct: false },
+
+            { text: "The center also provides free sports equipment for everyone.", correct: false },
+
+            { text: "There were some problems with the center’s facilities initially.", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch: Chọn câu kết thúc đoạn văn phù hợp nhất.",
+
+            step2: "A. Trung tâm đã trở thành địa điểm yêu thích của các gia đình và vận động viên.<br>B. Một số người thất vọng với giờ mở cửa.<br>C. Trung tâm cũng cung cấp thiết bị miễn phí.<br>D. Ban đầu có một số vấn đề với cơ sở vật chất.",
+
+            step3: "Chọn <span class='hl-green'>Đáp án A</span> vì toàn bộ đoạn văn ở câu 17 đang có giọng điệu vô cùng tích cực (popular, excited, active), câu A tổng kết lại sự thành công đó một cách hoàn hảo.",
+
+            step4: "B và D sai vì đưa thông tin tiêu cực, đi ngược lại mạch cảm xúc của bài. C đưa thêm một chi tiết nhỏ giọt mới, không mang tính chất chốt lại toàn bài."
+
+        }
+
+    },
+
+    {
+
+        id: "Q25", instruction: instructions.part6,
+
+        question: "Question 25. Peter and Jackson are my best friends.",
+
+        options: [
+
+            { text: "Peter and Jackson are best friends of mine.", correct: true },
+
+            { text: "Peter and Jackson are best friends of my.", correct: false },
+
+            { text: "Peter and Jackson are best friends of me.", correct: false },
+
+            { text: "Peter and Jackson are mine best friends.", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch câu gốc: Peter và Jackson là những người bạn thân nhất của tôi.",
+
+            step2: "A. Peter... là bạn thân của tôi (Cấu trúc: Noun + of + Đại từ sở hữu)<br>B. sai ngữ pháp (of my)<br>C. sai ngữ pháp (of me)<br>D. sai ngữ pháp (mine best friends)",
+
+            step3: "Chọn <span class='hl-green'>A. ...best friends of mine</span> vì áp dụng đúng cấu trúc <span class='p-grammar'>Sở hữu kép (Double Possessive)</span>: Danh từ + of + Đại từ sở hữu (mine/yours/hers...).",
+
+            step4: "B sai vì 'my' phải đứng trước danh từ. C sai vì sau 'of' trong chỉ sự sở hữu bạn bè không dùng tân ngữ 'me'. D sai vì 'mine' không đứng trước danh từ làm tính từ sở hữu được."
+
+        }
+
+    },
+
+    {
+
+        id: "Q26", instruction: instructions.part6,
+
+        question: "Question 26. “How many stars are there in the galaxy?” Tom asked.",
+
+        options: [
+
+            { text: "Tom asked how many stars there were in the galaxy.", correct: true },
+
+            { text: "Tom asked how many stars are there in the galaxy.", correct: false },
+
+            { text: "Tom asked how many stars were there in the galaxy.", correct: false },
+
+            { text: "Tom asked how many stars having in the galaxy.", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch câu gốc: 'Có bao nhiêu ngôi sao trong dải ngân hà?' Tom hỏi.",
+
+            step2: "A. Tom hỏi có bao nhiêu ngôi sao trong dải ngân hà. (Đã lùi thì + đổi trật tự từ)<br>B. Sai chưa lùi thì.<br>C. Sai trật tự từ.<br>D. Sai ngữ pháp.",
+
+            step3: "Chọn <span class='hl-green'>A</span> vì trong <span class='p-grammar'>Câu tường thuật dạng câu hỏi (Wh-question)</span>, ta phải thực hiện 2 việc bắt buộc: 1) Lùi thì (are -> were), 2) Đổi trật tự câu từ dạng nghi vấn về dạng khẳng định (were there -> there were).",
+
+            step4: "B sai vì chưa lùi thì 'are'. C sai vì vẫn giữ nguyên trật tự câu hỏi đảo ngữ 'were there' (đây là lỗi học sinh hay mắc nhất). D sai hoàn toàn cấu trúc."
+
+        }
+
+    },
+
+    {
+
+        id: "Q27", instruction: instructions.part7,
+
+        question: "Question 27. He / learn / English / quickly / if / he / practice / frequently.",
+
+        options: [
+
+            { text: "He will learn English quickly if he practices it frequently.", correct: true },
+
+            { text: "He won’t learn English quickly if he practices frequently.", correct: false },
+
+            { text: "He learns English quickly if he will practice frequently.", correct: false },
+
+            { text: "He will learn English quickly if he doesn’t practice frequently.", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch từ khóa: Anh ấy / học / tiếng Anh / nhanh / nếu / anh ấy / luyện tập / thường xuyên.",
+
+            step2: "A. Anh ấy SẼ học nhanh NẾU anh ấy luyện tập thường xuyên.<br>B. Anh ấy SẼ KHÔNG học nhanh nếu anh ấy luyện tập...<br>C. Sai ngữ pháp câu điều kiện.<br>D. Sẽ học nhanh nếu KHÔNG luyện tập...",
+
+            step3: "Chọn <span class='hl-green'>A</span> vì đây là <span class='p-grammar'>Câu điều kiện loại 1</span> (Có thật ở hiện tại/tương lai). Cấu trúc: Mệnh đề chính (S + will + V), If + S + V(hiện tại đơn). Dịch nghĩa cũng hoàn toàn logic.",
+
+            step4: "B và D sai hoàn toàn về mặt logic ý nghĩa thực tế. C sai cấu trúc ngữ pháp vì mệnh đề chứa 'If' không bao giờ dùng thì tương lai 'will'."
+
+        }
+
+    },
+
+    {
+
+        id: "Q28", instruction: instructions.part7,
+
+        question: "Question 28. I/ call/ you/ as soon as/ I/ arrive/ airport.",
+
+        options: [
+
+            { text: "I call you as soon as I arrive at the airport.", correct: false },
+
+            { text: "I will call you as soon as I will arrive at the airport.", correct: false },
+
+            { text: "I will call you as soon as I arrive at the airport.", correct: true },
+
+            { text: "I would call you as soon as I arrive at the airport.", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch từ khóa: Tôi / gọi / bạn / ngay khi / tôi / đến / sân bay.",
+
+            step2: "A. Sai thì hiện tại đơn ở vế chính.<br>B. Sai vì mệnh đề chỉ thời gian không dùng tương lai (will arrive).<br>C. Tôi sẽ gọi bạn ngay khi tôi đến sân bay.<br>D. Sai vì 'would' lùi thì không đúng ngữ cảnh tương lai.",
+
+            step3: "Chọn <span class='hl-green'>C</span> vì áp dụng đúng quy tắc <span class='p-grammar'>Sự hòa hợp thì</span>: Mệnh đề chính dùng Tương lai đơn (will call), mệnh đề thời gian bắt đầu bằng 'as soon as' dùng Hiện tại đơn (arrive).",
+
+            step4: "A sai vì thiếu 'will' cho hành động hứa hẹn sẽ làm. B sai lỗi kinh điển: tuyệt đối không dùng 'will' ngay sau các từ nối thời gian như 'as soon as/when/until'. D sai thì."
+
+        }
+
+    },
+
+    {
+
+        id: "Q29", instruction: instructions.part8,
+
+        question: `Question 29. What does the sign say?
+
+        <div class="css-image-container">
+
+            <div class="sign-no-exit">
+
+                <div class="line1">NO EXIT</div>
+
+                <div class="circle"></div>
+
+                <div class="line2">ENTRANCE<br>ONLY</div>
+
+            </div>
+
+        </div>`,
+
+        options: [
+
+            { text: "You are allowed to enter and exit through this door", correct: false },
+
+            { text: "This door is meant only for entering and not for exiting", correct: true },
+
+            { text: "This door is used for both entering and exiting purposes", correct: false },
+
+            { text: "This door is locked and cannot be used", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch câu hỏi: Biển báo này có ý nghĩa gì? Biển báo ghi: <span class='p-word'>'NO EXIT - ENTRANCE ONLY'</span> (<span class='p-mean'>Không có lối ra - Chỉ là lối vào</span>).",
+
+            step2: "A. Bạn được phép ra và vào qua cửa này.<br>B. Cửa này chỉ dành để vào chứ không để ra.<br>C. Cửa này dùng cho cả mục đích ra và vào.<br>D. Cửa này bị khóa và không thể sử dụng.",
+
+            step3: "Chọn <span class='hl-green'>B</span> vì 'Entrance only' nghĩa là chỉ được đi vào, đồng nghĩa với 'meant only for entering'. 'No exit' nghĩa là cấm đi ra (not for exiting).",
+
+            step4: "A và C sai vì biển cấm đi ra. D sai vì cửa vẫn dùng để đi vào bình thường chứ không hề bị khóa (locked)."
+
+        }
+
+    },
+
+    {
+
+        id: "Q30", instruction: instructions.part8,
+
+        question: `Question 30. What does the notice say?
+
+        <div class="css-image-container">
+
+            <div class="notice-bookshop">
+
+                BOOKSHOP - CLOSED AFTERNOONS
+
+            </div>
+
+        </div>`,
+
+        options: [
+
+            { text: "The bookshop is closed all day", correct: false },
+
+            { text: "The bookshop is open in the morning", correct: true },
+
+            { text: "The bookshop is open in the afternoon", correct: false },
+
+            { text: "The bookshop is closed in the morning", correct: false }
+
+        ],
+
+        exp: {
+
+            step1: "Dịch câu hỏi: Thông báo này nói gì? Thông báo ghi: <span class='p-word'>'BOOKSHOP - CLOSED AFTERNOONS'</span> (<span class='p-mean'>Hiệu sách - Đóng cửa các buổi chiều</span>).",
+
+            step2: "A. Hiệu sách đóng cửa cả ngày.<br>B. Hiệu sách mở cửa vào buổi sáng.<br>C. Hiệu sách mở cửa vào buổi chiều.<br>D. Hiệu sách đóng cửa vào buổi sáng.",
+
+            step3: "Chọn <span class='hl-green'>B</span>. Vì biển báo nói rõ là 'đóng cửa buổi chiều', ta dùng tư duy suy luận logic là cửa hàng đó sẽ <span class='p-mean'>mở cửa vào buổi sáng</span>.",
+
+            step4: "A sai vì chỉ đóng cửa chiều chứ không phải cả ngày. C sai vì trái ngược thông báo. D sai vì sáng mở chứ không đóng."
+
+        }
+
+    }
+
+];
+
+
+
+/* ================= QUIZ LOGIC ================= */
+
+let score = 0;
+
+let answeredCount = 0;
+
+
+
+function shuffleArray(array) {
+
+    for (let i = array.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [array[i], array[j]] = [array[j], array[i]];
+
+    }
+
+}
+
+
+
+function renderQuiz() {
+
+    const container = document.getElementById('quiz-container');
+
+    container.innerHTML = '';
+
+    let currentInstruction = '';
+
+
+
+    quizData.forEach((item, index) => {
+
+        if (item.instruction !== currentInstruction) {
+
+            currentInstruction = item.instruction;
+
+            const instDiv = document.createElement('div');
+
+            instDiv.className = 'instruction-text glass-panel';
+
+            instDiv.innerText = currentInstruction;
+
+            container.appendChild(instDiv);
+
+        }
+
+
+
+        const card = document.createElement('div');
+
+        card.className = 'question-card glass-panel';
+
+        card.id = `card-${index}`;
+
+
+
+        const qText = document.createElement('div');
+
+        qText.className = 'question-text';
+
+        qText.innerHTML = item.question;
+
+        card.appendChild(qText);
+
+
+
+        const optionsGrid = document.createElement('div');
+
+        optionsGrid.className = 'options-grid';
+
+        
+
+        let shuffledOptions = [...item.options];
+
+        shuffleArray(shuffledOptions);
+
+
+
+        shuffledOptions.forEach((opt) => {
+
+            const btn = document.createElement('button');
+
+            btn.className = 'option-btn';
+
+            btn.innerHTML = opt.text;
+
+            btn.onclick = () => handleAnswer(btn, opt.correct, index, optionsGrid);
+
+            optionsGrid.appendChild(btn);
+
+        });
+
+        card.appendChild(optionsGrid);
+
+
+
+        const expBox = document.createElement('div');
+
+        expBox.className = 'explanation-box';
+
+        expBox.id = `exp-${index}`;
+
+        expBox.innerHTML = `
+
+            <div class="exp-title">📚 GIẢI THÍCH CHI TIẾT:</div>
+
+            <div class="exp-step"><b>1. Dịch / Phân tích:</b> ${item.exp.step1}</div>
+
+            <div class="exp-step"><b>2. Ý nghĩa các đáp án:</b><br>${item.exp.step2}</div>
+
+            <div class="exp-step"><b>3. Tại sao đúng?</b><br>${item.exp.step3}</div>
+
+            <div class="exp-step"><b>4. Tại sao sai?</b><br><span class="hl-red">${item.exp.step4}</span></div>
+
+        `;
+
+        card.appendChild(expBox);
+
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+
+function handleAnswer(btn, isCorrect, qIndex, grid) {
+
+    const buttons = grid.querySelectorAll('.option-btn');
+
+    buttons.forEach(b => b.disabled = true);
+
+
+
+    if (isCorrect) {
+
+        btn.classList.add('correct');
+
+        score++;
+
+        playDing();
+
+        shootConfetti();
+
+    } else {
+
+        btn.classList.add('wrong');
+
+        btn.classList.add('shake');
+
+        playBuzz();
+
+        buttons.forEach(b => {
+
+            let originalOpt = quizData[qIndex].options.find(o => o.text === b.innerHTML);
+
+            if(originalOpt && originalOpt.correct) {
+
+                b.style.border = "4px solid var(--btn-correct)";
+
+                b.style.color = "var(--btn-correct)";
+
+                b.style.background = "rgba(255,255,255,0.9)";
+
+            }
+
+        });
+
+    }
+
+
+
+    document.getElementById(`exp-${qIndex}`).style.display = 'block';
+
+    answeredCount++;
+
+}
+
+
+
+/* ================= RESULT & MEME LOGIC ================= */
+
+function showNameModal() {
+
+    if(answeredCount < quizData.length) {
+
+        if(!confirm("⚠️ Em chưa làm hết các câu hỏi. Em có chắc chắn muốn nộp bài sớm không?")) return;
+
+    }
+
+    document.getElementById('name-modal').style.display = 'flex';
+
+}
+
+
+
+function submitName() {
+
+    const nameInput = document.getElementById('name-input');
+
+    const nameError = document.getElementById('name-error');
+
+    if(nameInput.value.trim() === '') {
+
+        nameInput.style.borderColor = '#FF4757';
+
+        nameInput.classList.add('shake');
+
+        nameError.style.display = 'block';
+
+        setTimeout(() => nameInput.classList.remove('shake'), 400);
+
+        return;
+
+    }
+
+
+
+    document.getElementById('name-modal').style.display = 'none';
+
+    showResult(nameInput.value.trim());
+
+}
+
+document.getElementById('name-input').addEventListener('keypress', function(e) {
+
+    if(e.key === 'Enter') submitName();
+
+});
+
+
+
+function showResult(studentName) {
+
+    const total = quizData.length;
+
+    const percent = Math.round((score / total) * 100);
+
+    const resultModal = document.getElementById('result-modal');
+
+    const title = document.getElementById('result-title');
+
+    const scoreText = document.getElementById('result-score');
+
+    const memeImg = document.getElementById('result-meme');
+
+
+
+    resultModal.style.display = 'flex';
+
+    scoreText.innerText = `Điểm số: ${score} / ${total} (${percent}%)`;
+
+
+
+    if (percent === 100) {
+
+        title.innerText = `🌟 THIÊN TÀI! ${studentName} xuất sắc tuyệt đối!`;
+
+        title.style.color = '#00A653';
+
+        memeImg.src = 'https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'; 
+
+        shootConfetti();
+
+        setInterval(shootConfetti, 1500); 
+
+        playDing();
+
+    } else if (percent >= 60) {
+
+        title.innerText = `👏 RẤT TỐT! ${studentName} đã rất cố gắng!`;
+
+        title.style.color = '#6C5CE7';
+
+        memeImg.src = 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif'; 
+
+        playDing();
+
+    } else {
+
+        title.innerText = `💪 CỐ LÊN NHÉ! ${studentName} cần luyện tập thêm!`;
+
+        title.style.color = '#FF4757';
+
+        memeImg.src = 'https://media.giphy.com/media/OPU6wzx8JlNyc/giphy.gif'; 
+
+        playBuzz();
+
+    }
+
+}
+
+
+
+window.onload = () => {
+
+    renderQuiz();
+
+}
+
 </script>
 
-</body>
+
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        // 1. Remove all password modals
+        var pwIds = ['passwordModal', 'password-modal', 'pwModal', 'lockModal', 'passModal', 'authModal'];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+        
+        // Also remove any elements with class containing password-modal or lock-overlay
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay');
+        modalEls.forEach(function(el) {
+            el.style.setProperty('display', 'none', 'important');
+            try { el.remove(); } catch(e) {}
+        });
+
+        // 2. Display main content containers
+        var mainIds = ['mainContent', 'main-content', 'mainHeader', 'main-header', 'quizContainer', 'quiz-container', 'app', 'container'];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                // If it was hidden, show it
+                if (window.getComputedStyle(el).display === 'none' || el.style.display === 'none') {
+                    // Try flex if header or mainContent in some themes, else block
+                    if (id.toLowerCase().includes('header') || el.classList.contains('app-container')) {
+                        el.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        el.style.setProperty('display', 'block', 'important');
+                    }
+                }
+            }
+        });
+
+        // Specific fix for Reading Mastery theme (Tay Mo p2, p7, etc.)
+        var tayMoMain = document.getElementById('mainContent');
+        if (tayMoMain && tayMoMain.classList.contains('main-container')) {
+            tayMoMain.style.setProperty('display', 'flex', 'important');
+        }
+
+        // 3. Trigger render / init functions if not yet rendered
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof createUnicorns === 'function') { try { createUnicorns(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+</body>
+
 </html>
