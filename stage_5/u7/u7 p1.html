@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra Giới Từ - Ms. Mai An </title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #8854C0;
+            --primary-teal: #00C9A7;
+            --correct-green: #00D26A;
+            --wrong-red: #FF4757;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #eef2f5;
+            background-image: radial-gradient(#8854C0 1.5px, transparent 1.5px), radial-gradient(#00C9A7 1.5px, #eef2f5 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+            border: 4px solid var(--primary-pink);
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            margin: 0;
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px #eee;
+        }
+
+        .subtitle {
+            color: var(--primary-teal);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* Question Card */
+        .quiz-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-bottom: 6px solid #e0e0e0;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary-pink);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #2d3436;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-bottom: 5px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            border-color: var(--primary-teal);
+            color: var(--primary-teal);
+            background: #f0fffa;
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: translateY(3px);
+            border-bottom-width: 2px;
+        }
+
+        /* Correct/Wrong Styles */
+        .option-btn.correct {
+            background-color: var(--correct-green);
+            color: white;
+            border-color: #00b85c;
+            border-bottom-color: #008f47;
+            transform: scale(1.02);
+        }
+
+        .option-btn.wrong {
+            background-color: var(--wrong-red);
+            color: white;
+            border-color: #e63b49;
+            border-bottom-color: #c42e3a;
+            animation: shake 0.5s;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        /* Explanation Section */
+        .explanation-box {
+            margin-top: 20px;
+            background: #fff8e1;
+            border: 2px dashed #f6b93b;
+            border-radius: 15px;
+            padding: 20px;
+            display: none; /* Hidden by default */
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .explanation-header {
+            font-weight: 800;
+            color: #e58e26;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .expl-content p {
+            margin: 5px 0;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .vocab-list {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+        }
+
+        .vocab-item {
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .vocab-word {
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .tag-correct {
+            display: inline-block;
+            background: #e6fffa;
+            color: #00C9A7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-2deg); }
+            50% { transform: translateX(5px) rotate(2deg); }
+            75% { transform: translateX(-5px) rotate(-2deg); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Submit Button */
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        .btn-submit {
+            background: var(--primary-pink);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            border-bottom: 6px solid #6c429c;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 10px 20px rgba(136, 84, 192, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-submit:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+        }
+
+        /* Modal Result */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 5px solid var(--primary-teal);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary-pink);
+            margin: 20px 0;
+        }
+
+        .feedback-text {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Canvas for Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Responsive Fixes */
+        @media(max-width: 480px){
+            .question-text { font-size: 1.1rem; }
+            .option-btn { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>TEST GIỚI TỪ (IN/ON/AT)</h1>
+            <div class="subtitle">Giáo viên: Ms. Mai An </div>
+            <p style="margin-top:10px; color: #666;">Chọn đáp án đúng nhất và xem giải thích chi tiết nhé!</p>
+        </header>
+
+        <div id="quiz-container">
+            </div>
+
+        <div class="submit-container">
+            <button class="btn-submit" onclick="submitQuiz()">NỘP BÀI</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary-teal);">KẾT QUẢ CỦA BẠN</h2>
+            <div class="score-display" id="finalScore">0/30</div>
+            <p class="feedback-text" id="finalFeedback">Cố gắng hơn nhé!</p>
+            <button class="btn-submit" onclick="location.reload()" style="font-size: 1rem; padding: 10px 30px;">Làm lại</button>
+        </div>
+    </div>
+
+<script>
+    // --- DATABASE: 30 QUESTIONS ---
+    const questionBank = [
+        {
+            q: "I usually wake up ______ 6 a.m.",
+            options: ["in", "on", "at", "to"],
+            correct: 2, // Index of 'at'
+            expl: {
+                trans: "Tôi thường thức dậy lúc 6 giờ sáng.",
+                vocab: [
+                    "A. in: dùng cho tháng, năm, mùa, buổi.",
+                    "B. on: dùng cho ngày, thứ.",
+                    "C. at: dùng cho giờ cụ thể.",
+                    "D. to: đến (hướng đi)."
+                ],
+                whyCorrect: "Dùng 'at' trước giờ cụ thể (6 a.m, 7 o'clock).",
+                whyWrong: "Các đáp án khác không đi với giờ."
+            }
+        },
+        {
+            q: "My birthday is ______ May.",
+            options: ["in", "on", "at", "from"],
+            correct: 0,
+            expl: {
+                trans: "Sinh nhật của tôi vào tháng Năm.",
+                vocab: [
+                    "A. in: trong (tháng, năm).",
+                    "B. on: vào (ngày cụ thể).",
+                    "C. at: tại (giờ, địa điểm).",
+                    "D. from: từ."
+                ],
+                whyCorrect: "Dùng 'in' trước tháng (in May, in June).",
+                whyWrong: "'On' phải đi kèm ngày (VD: on May 5th). 'At' không dùng cho tháng."
+            }
+        },
+        {
+            q: "We have English classes ______ Mondays.",
+            options: ["in", "at", "on", "of"],
+            correct: 2,
+            expl: {
+                trans: "Chúng tôi có tiết tiếng Anh vào các ngày thứ Hai.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. at: lúc.",
+                    "C. on: vào (ngày/thứ).",
+                    "D. of: của."
+                ],
+                whyCorrect: "Dùng 'on' trước các thứ trong tuần (on Monday, on Sundays).",
+                whyWrong: "'In' dùng cho buổi/tháng/năm. 'At' dùng cho giờ."
+            }
+        },
+        {
+            q: "It is very hot ______ summer.",
+            options: ["on", "in", "at", "to"],
+            correct: 1,
+            expl: {
+                trans: "Trời rất nóng vào mùa hè.",
+                vocab: [
+                    "A. on: trên/vào ngày.",
+                    "B. in: trong/vào mùa.",
+                    "C. at: tại.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Dùng 'in' trước các mùa trong năm (in summer, in winter).",
+                whyWrong: "'On' dùng cho ngày. 'At' dùng cho thời điểm ngắn."
+            }
+        },
+        {
+            q: "See you ______ the morning!",
+            options: ["at", "on", "in", "to"],
+            correct: 2,
+            expl: {
+                trans: "Hẹn gặp lại bạn vào buổi sáng!",
+                vocab: [
+                    "A. at: lúc.",
+                    "B. on: trên.",
+                    "C. in: trong.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Cụm cố định: 'in the morning', 'in the afternoon', 'in the evening'.",
+                whyWrong: "Không dùng 'at' hay 'on' cho các buổi này (trừ khi có thứ đi kèm)."
+            }
+        },
+        {
+            q: "The party is ______ 19th May, 2025.",
+            options: ["in", "at", "on", "of"],
+            correct: 2,
+            expl: {
+                trans: "Bữa tiệc diễn ra vào ngày 19 tháng 5 năm 2025.",
+                vocab: [
+                    "A. in (prep): dùng cho tháng/năm.",
+                    "B. at (prep): dùng cho giờ.",
+                    "C. on (prep): dùng cho ngày cụ thể.",
+                    "D. of (prep): của."
+                ],
+                whyCorrect: "Đây là ngày cụ thể (ngày + tháng + năm) nên bắt buộc dùng 'on'.",
+                whyWrong: "Nếu chỉ có tháng/năm mới dùng 'in'. Có ngày dính vào là phải dùng 'on'."
+            }
+        },
+        {
+            q: "She likes reading books ______ night.",
+            options: ["in", "on", "at", "to"],
+            correct: 2,
+            expl: {
+                trans: "Cô ấy thích đọc sách vào ban đêm.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. on: trên.",
+                    "C. at: vào lúc.",
+                    "D. to: đến."
+                ],
+                whyCorrect: "Cụm cố định: 'at night' (vào ban đêm).",
+                whyWrong: "Ta nói 'in the morning' nhưng lại nói 'at night' (ngoại lệ)."
+            }
+        },
+        {
+            q: "They were born ______ 2010.",
+            options: ["at", "on", "in", "with"],
+            correct: 2,
+            expl: {
+                trans: "Họ sinh năm 2010.",
+                vocab: [
+                    "A. at: lúc.",
+                    "B. on: vào ngày.",
+                    "C. in: vào năm.",
+                    "D. with: với."
+                ],
+                whyCorrect: "Dùng 'in' trước các năm (in 1990, in 2024).",
+                whyWrong: "'On' dùng cho ngày. 'At' dùng cho giờ."
+            }
+        },
+        {
+            q: "Are you free ______ the moment?",
+            options: ["in", "on", "at", "to"],
+            correct: 2,
+            expl: {
+                trans: "Bạn có rảnh ngay lúc này không?",
+                vocab: [
+                    "A. in: trong.",
+                    "B. on: trên.",
+                    "C. at: tại.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Cụm từ cố định: 'at the moment' = now (ngay bây giờ).",
+                whyWrong: "Không dùng in/on the moment."
+            }
+        },
+        {
+            q: "We usually visit our grandparents ______ Christmas.",
+            options: ["in", "on", "at", "from"],
+            correct: 2,
+            expl: {
+                trans: "Chúng tôi thường thăm ông bà vào dịp Giáng sinh.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. on: vào ngày.",
+                    "C. at: vào dịp.",
+                    "D. from: từ."
+                ],
+                whyCorrect: "Dùng 'at' cho một dịp lễ hội kéo dài (at Christmas, at Tet).",
+                whyWrong: "Lưu ý: Nếu nói về NGÀY Giáng sinh cụ thể thì dùng 'on Christmas Day'. Còn nói về dịp lễ chung chung thì dùng 'at Christmas'."
+            }
+        },
+        {
+            q: "I will be back ______ a minute.",
+            options: ["at", "on", "in", "to"],
+            correct: 2,
+            expl: {
+                trans: "Tôi sẽ quay lại trong một phút nữa.",
+                vocab: [
+                    "A. at: lúc.",
+                    "B. on: trên.",
+                    "C. in: trong (khoảng thời gian).",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Cấu trúc: 'in + khoảng thời gian' dùng cho tương lai (nghĩa là: bao lâu nữa thì việc gì xảy ra).",
+                whyWrong: "'At a minute' là sai ngữ pháp trong ngữ cảnh này."
+            }
+        },
+        {
+            q: "Don't sit ______ the floor!",
+            options: ["in", "at", "on", "to"],
+            correct: 2,
+            expl: {
+                trans: "Đừng ngồi trên sàn nhà!",
+                vocab: [
+                    "A. in: trong.",
+                    "B. at: tại.",
+                    "C. on: trên bề mặt.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Dùng 'on' khi vật nằm trên bề mặt của cái gì đó (on the table, on the floor).",
+                whyWrong: "Sàn nhà là bề mặt phẳng nên không dùng 'in' (bên trong) hay 'at'."
+            }
+        },
+        {
+            q: "Someone is standing ______ the door.",
+            options: ["on", "in", "at", "of"],
+            correct: 2,
+            expl: {
+                trans: "Có ai đó đang đứng ở cửa.",
+                vocab: [
+                    "A. on: trên.",
+                    "B. in: trong.",
+                    "C. at: tại (vị trí điểm).",
+                    "D. of: của."
+                ],
+                whyCorrect: "Dùng 'at' để chỉ một vị trí/điểm cụ thể (at the door, at the bus stop).",
+                whyWrong: "'On the door' nghĩa là dán cái gì lên cánh cửa. 'In the door' là sai."
+            }
+        },
+        {
+            q: "We walk ______ the park every morning.",
+            options: ["to", "in", "at", "on"],
+            correct: 0,
+            expl: {
+                trans: "Chúng tôi đi bộ đến công viên mỗi sáng.",
+                vocab: [
+                    "A. to (prep): đến (chỉ hướng chuyển động).",
+                    "B. in (prep): ở trong.",
+                    "C. at (prep): tại.",
+                    "D. on (prep): trên."
+                ],
+                whyCorrect: "Động từ 'walk' chỉ sự di chuyển từ nơi này sang nơi khác -> Dùng 'to'.",
+                whyWrong: "'Walk in the park' nghĩa là đi dạo bên trong công viên (không có hướng đến). Nhưng câu này thường hàm ý đi từ nhà TỚI công viên."
+            }
+        },
+        {
+            q: "My house is ______ the left.",
+            options: ["in", "at", "on", "to"],
+            correct: 2,
+            expl: {
+                trans: "Nhà của tôi ở bên trái.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. at: tại.",
+                    "C. on: trên/bên phía.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Cụm cố định chỉ phương hướng: 'on the left', 'on the right'.",
+                whyWrong: "Không dùng at/in cho left/right."
+            }
+        },
+        {
+            q: "The cat is sleeping ______ the middle of the bed.",
+            options: ["in", "on", "at", "to"],
+            correct: 0,
+            expl: {
+                trans: "Con mèo đang ngủ ở giữa giường.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. on: trên.",
+                    "C. at: tại.",
+                    "D. to: tới."
+                ],
+                whyCorrect: "Cụm từ cố định: 'in the middle of' (ở giữa).",
+                whyWrong: "Dù giường là bề mặt (on), nhưng cụm 'middle' đi với 'in'."
+            }
+        },
+        {
+            q: "We are flying to Phu Quoc ______ tomorrow morning.",
+            options: ["on", "in", "at", "no preposition"],
+            correct: 3,
+            expl: {
+                trans: "Chúng tôi sẽ bay tới Phú Quốc vào sáng mai.",
+                vocab: [
+                    "A. on: dùng cho thứ.",
+                    "B. in: dùng cho buổi.",
+                    "C. at: dùng cho giờ.",
+                    "D. không dùng giới từ."
+                ],
+                whyCorrect: "Trước 'tomorrow', 'yesterday', 'tonight', 'next week', 'last month'... KHÔNG dùng giới từ in/on/at.",
+                whyWrong: "Nói 'in tomorrow morning' là sai ngữ pháp. Chỉ dùng 'tomorrow morning'."
+            }
+        },
+        {
+            q: "He often plays football ______ Thursday evening.",
+            options: ["in", "at", "on", "from"],
+            correct: 2,
+            expl: {
+                trans: "Anh ấy thường đá bóng vào tối thứ Năm.",
+                vocab: [
+                    "A. in: trong.",
+                    "B. at: tại.",
+                    "C. on: vào.",
+                    "D. from: từ."
+                ],
+                whyCorrect: "Quy tắc: Cứ có THỨ (Thursday) dính vào thì dùng 'ON', dù phía sau có buổi (evening). -> 'on Thursday evening'.",
+                whyWrong: "Chỉ dùng 'in the evening' khi không có thứ đi kèm."
+            }
+        },
+        {
+            q: "There is a tree ______ front of my house.",
+            options: ["in", "on", "at", "to"],
+            correct: 0,
+            expl: {
+                trans: "Có một cái cây ở phía trước nhà tôi.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "Cụm từ cố định: 'in front of' (ở phía trước).",
+                whyWrong: "Không có 'on front of' hay 'at front of'."
+            }
+        },
+        {
+            q: "Write your name ______ the top of the page.",
+            options: ["in", "on", "at", "to"],
+            correct: 2,
+            expl: {
+                trans: "Viết tên bạn ở phía trên cùng của trang giấy.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "Cụm từ cố định: 'at the top' (ở đỉnh/đầu) và 'at the bottom' (ở đáy/cuối).",
+                whyWrong: "Dùng 'on the top' khi vật nằm đè lên đỉnh vật khác (VD: on top of the mountain), nhưng với trang giấy thường dùng 'at'."
+            }
+        },
+        {
+            q: "Did you go to Hue ______ 2018?",
+            options: ["on", "in", "at", "to"],
+            correct: 1,
+            expl: {
+                trans: "Bạn đã đi Huế vào năm 2018 phải không?",
+                vocab: [
+                    "A. on", "B. in", "C. at", "D. to"
+                ],
+                whyCorrect: "Năm (2018) đi với giới từ 'in'.",
+                whyWrong: "On + ngày, At + giờ."
+            }
+        },
+        {
+            q: "We like walking ______ the beach.",
+            options: ["in", "at", "on", "to"],
+            correct: 2,
+            expl: {
+                trans: "Chúng tôi thích đi dạo trên bãi biển.",
+                vocab: [
+                    "A. in", "B. at", "C. on", "D. to"
+                ],
+                whyCorrect: "Cụm từ: 'on the beach' (trên bãi biển).",
+                whyWrong: "'In the beach' nghĩa là bị chôn dưới cát. 'At the beach' nghĩa là ở khu vực bãi biển (chung chung), nhưng 'walking' thường dùng 'on'."
+            }
+        },
+        {
+            q: "The shop closes ______ midnight.",
+            options: ["in", "on", "at", "to"],
+            correct: 2,
+            expl: {
+                trans: "Cửa hàng đóng cửa lúc nửa đêm.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "'Midnight' (nửa đêm) là một thời điểm cụ thể -> Dùng 'at' (at midnight, at noon).",
+                whyWrong: "In dùng cho buổi dài. On dùng cho ngày."
+            }
+        },
+        {
+            q: "My father goes to work ______ bus.",
+            options: ["in", "on", "by", "at"],
+            correct: 2,
+            expl: {
+                trans: "Bố tôi đi làm bằng xe buýt.",
+                vocab: [
+                    "A. in", "B. on", "C. by", "D. at"
+                ],
+                whyCorrect: "Chỉ phương tiện đi lại: 'by + phương tiện' (by bus, by car, by plane).",
+                whyWrong: "Nếu dùng 'on' phải là 'on the bus'. Ở đây không có 'the' nên dùng 'by'."
+            }
+        },
+        {
+            q: "We will meet ______ lunchtime.",
+            options: ["in", "on", "at", "of"],
+            correct: 2,
+            expl: {
+                trans: "Chúng ta sẽ gặp nhau vào giờ ăn trưa.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. of"
+                ],
+                whyCorrect: "Lunchtime là một thời điểm xác định trong ngày -> Dùng 'at lunchtime'.",
+                whyWrong: "Không dùng in/on lunchtime."
+            }
+        },
+        {
+            q: "I received a gift ______ my birthday.",
+            options: ["in", "at", "on", "to"],
+            correct: 2,
+            expl: {
+                trans: "Tôi nhận được một món quà vào ngày sinh nhật.",
+                vocab: [
+                    "A. in", "B. at", "C. on", "D. to"
+                ],
+                whyCorrect: "Birthday có chữ 'day' (ngày) -> Dùng 'on' (on my birthday).",
+                whyWrong: "At dùng cho tiệc (at the party). In dùng cho tháng."
+            }
+        },
+        {
+            q: "Can you come ______ my house?",
+            options: ["in", "on", "at", "to"],
+            correct: 3,
+            expl: {
+                trans: "Bạn có thể đến nhà tôi không?",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "Động từ 'come' chỉ sự di chuyển hướng tới đâu -> Dùng 'to' (come to my house).",
+                whyWrong: "Come in: đi vào trong. Nhưng 'come to' phổ biến hơn khi mời ai đến địa điểm."
+            }
+        },
+        {
+            q: "We live ______ the 21st century.",
+            options: ["in", "on", "at", "to"],
+            correct: 0,
+            expl: {
+                trans: "Chúng ta đang sống ở thế kỷ 21.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "Thế kỷ (century) là khoảng thời gian dài -> Dùng 'in' (in the 21st century).",
+                whyWrong: "On dùng cho ngày. At dùng cho điểm thời gian."
+            }
+        },
+        {
+            q: "The meeting starts ______ 20 minutes.",
+            options: ["at", "on", "in", "to"],
+            correct: 2,
+            expl: {
+                trans: "Cuộc họp sẽ bắt đầu trong 20 phút nữa.",
+                vocab: [
+                    "A. at", "B. on", "C. in", "D. to"
+                ],
+                whyCorrect: "Dùng 'in' + khoảng thời gian để chỉ tương lai (bao lâu nữa sẽ xảy ra).",
+                whyWrong: "At 20 minutes là sai (phải là At 8:00...)."
+            }
+        },
+        {
+            q: "They arrived ______ Paris last week.",
+            options: ["in", "on", "at", "to"],
+            correct: 0,
+            expl: {
+                trans: "Họ đã đến Paris tuần trước.",
+                vocab: [
+                    "A. in", "B. on", "C. at", "D. to"
+                ],
+                whyCorrect: "Arrive in: Đến thành phố/quốc gia lớn (arrive in Paris, in Vietnam).",
+                whyWrong: "Arrive at: Đến địa điểm nhỏ (sân bay, nhà ga). Không dùng Arrive to."
+            }
+        }
+    ];
+
+    // --- GAME LOGIC ---
+
+    let shuffledQuestions = [];
+    let currentScore = 0;
+    let answeredCount = 0;
+
+    // Shuffle Array (Fisher-Yates)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Initialize Quiz
+    function initQuiz() {
+        shuffledQuestions = shuffleArray([...questionBank]);
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+
+        shuffledQuestions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `card-${index}`;
+
+            // Create Options HTML
+            let optionsHtml = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer(${index}, ${optIndex}, this)">${String.fromCharCode(65+optIndex)}. ${opt}</button>`;
+            });
+
+            // Explanation HTML
+            const explanationHtml = `
+                <div class="explanation-box" id="expl-${index}">
+                    <div class="explanation-header">
+                        <span>👩‍🏫</span> MS Chí Nên giải thích:
+                    </div>
+                    <div class="expl-content">
+                        <div class="tag-correct">Đáp án đúng: ${item.options[item.correct]}</div>
+                        <p><strong>Dịch câu:</strong> "${item.expl.trans}"</p>
+                        <div class="vocab-list">
+                            ${item.expl.vocab.map(v => `<span class="vocab-item">${v}</span>`).join('')}
+                        </div>
+                        <p style="color: #00D26A;"><strong>✅ Tại sao ĐÚNG:</strong> ${item.expl.whyCorrect}</p>
+                        <p style="color: #FF4757;"><strong>❌ Tại sao SAI:</strong> ${item.expl.whyWrong}</p>
+                    </div>
+                </div>
+            `;
+
+            card.innerHTML = `
+                <div class="question-number">Question ${index + 1}</div>
+                <div class="question-text">${item.q}</div>
+                <div class="options-grid">
+                    ${optionsHtml}
+                </div>
+                ${explanationHtml}
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Check Answer
+    function checkAnswer(questionIndex, selectedOptionIndex, btnElement) {
+        // Prevent re-clicking
+        const card = document.getElementById(`card-${questionIndex}`);
+        if (card.classList.contains('answered')) return;
+        card.classList.add('answered');
+
+        const questionData = shuffledQuestions[questionIndex];
+        const correctIndex = questionData.correct;
+        const allButtons = card.querySelectorAll('.option-btn');
+
+        // Logic
+        if (selectedOptionIndex === correctIndex) {
+            // Correct
+            btnElement.classList.add('correct');
+            playSound('ding');
+            triggerConfetti();
+            currentScore++;
+        } else {
+            // Wrong
+            btnElement.classList.add('wrong');
+            playSound('buzz');
+            // Highlight correct answer
+            allButtons[correctIndex].classList.add('correct');
+        }
+
+        // Disable all buttons
+        allButtons.forEach(btn => btn.disabled = true);
+
+        // Show Explanation
+        document.getElementById(`expl-${questionIndex}`).style.display = 'block';
+    }
+
+    // Submit Quiz
+    function submitQuiz() {
+        const modal = document.getElementById('resultModal');
+        const scoreDisplay = document.getElementById('finalScore');
+        const feedback = document.getElementById('finalFeedback');
+        
+        // Count answered logic could be added, but prompt says sum score
+        scoreDisplay.textContent = `${currentScore} / 30`;
+        
+        if (currentScore === 30) {
+            feedback.textContent = "Xuất sắc! Con là thiên tài tiếng Anh! 🌟🏆";
+            playSound('ding');
+        } else if (currentScore >= 20) {
+            feedback.textContent = "Làm tốt lắm! Con nắm khá vững kiến thức rồi! 🎉";
+        } else {
+            feedback.textContent = "Cố gắng ôn lại bài một chút nữa nhé! Con làm được mà! 💪";
+        }
+
+        modal.style.display = 'flex';
+        triggerConfetti();
+    }
+
+    // --- AUDIO SYSTEM (Base64 to avoid external files) ---
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        // Simple oscillator beep synthesizer to avoid large base64 strings
+        const osc = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        if (type === 'ding') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(500, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1000, audioContext.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.5);
+        } else {
+            // Buzz sound
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioContext.currentTime);
+            osc.frequency.linearRampToValueAtTime(100, audioContext.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.3);
+        }
+    }
+
+    // --- CONFETTI EFFECT ---
+    function triggerConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                color: ['#ff0', '#f00', '#0f0', '#00f', '#0ff', '#f0f'][Math.floor(Math.random() * 6)],
+                size: Math.random() * 10 + 5,
+                speedY: Math.random() * 5 + 2,
+                speedX: Math.random() * 4 - 2
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let activeParticles = 0;
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+                if (p.y < canvas.height) activeParticles++;
+            });
+
+            if (activeParticles > 0) requestAnimationFrame(draw);
+            else ctx.clearRect(0,0,canvas.width, canvas.height);
+        }
+        draw();
+    }
+
+    // Start App
+    initQuiz();
+
+</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>
