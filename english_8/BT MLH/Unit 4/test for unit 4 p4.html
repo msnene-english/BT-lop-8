@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧭 Unit 4 Test p4 — English 8 | MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+:root{
+ --ink:#26324A;--dim:#5E5A4C;
+ --forest:#4E8A57;--forest-d:#2C5A35;
+ --rose:#C27583;--rose-d:#8E3F52;
+ --navy:#4A69A0;--navy-d:#22386A;
+ --olive:#8F9A45;--olive-d:#55601F;
+ --sepia:#A87C55;--sepia-d:#6B4529;
+ --peach:#FED7AA;
+ --card:#FFFCF3;--edge:#E5D5B5;
+ --good:#1B9C5A;--good-bg:#DDF7E6;
+ --bad:#E0503C;--bad-bg:#FFE6E0;
+ --line:#2B3550;
+ --mg:max(0px,calc((100vw - 1240px) / 2));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;
+ background:linear-gradient(rgba(120,92,55,.08) 1px,transparent 1px) 0 0/28px 28px,
+ linear-gradient(90deg,rgba(120,92,55,.08) 1px,transparent 1px) 0 0/28px 28px,
+ radial-gradient(circle,rgba(140,108,66,.13) 1px,transparent 1.6px) 7px 11px/19px 23px,
+ linear-gradient(180deg,#EEE0C3 0%,#F5EBD6 38%,#F0E3C8 70%,#E6D6B4 100%);background-attachment:fixed}
+.pen{font-family:'Patrick Hand','Baloo 2',cursive}
+/* ══ sổ tay nhà thám hiểm: dây treo mẫu lá ép, la bàn, kính lúp soi bọ rùa, đồng hồ quả quýt, khinh khí cầu, bướm có nhãn ══ */
+#kit{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+@keyframes gSw{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+@keyframes gBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes gHop{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes gBob{from{transform:translateY(-9px)}to{transform:translateY(9px)}}
+@keyframes gRot{to{transform:rotate(360deg)}}
+@keyframes gSway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes gPopTxt{0%,40%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}70%,85%{transform:scale(1);opacity:1}100%{transform:scale(.6);opacity:0}}
+@keyframes gFlyX{from{transform:translateX(-140px)}to{transform:translateX(calc(100vw + 140px))}}
+/* lá ép + hoa ép dùng chung */
+.lf{position:relative;display:block;width:var(--s,26px);height:var(--s,26px);border-radius:0 100% 0 100%;background:linear-gradient(135deg,var(--a,#A9C77C),var(--b,#3E7A4A));border:1.5px solid rgba(43,53,80,.55);transform:rotate(var(--t,0deg))}
+.lf::after{content:'';position:absolute;left:-6%;top:50%;width:112%;height:1.5px;margin-top:-1px;background:rgba(255,255,255,.65);transform:rotate(45deg)}
+.lf::before{content:'';position:absolute;right:-8px;bottom:-3px;width:10px;height:2px;background:#6B4529;transform:rotate(45deg)}
+.flw{position:relative;display:block;width:30px;height:30px;
+ background:radial-gradient(circle at 50% 50%,#FED7AA 0 4.5px,#8E5B3A 5px 6px,transparent 6.5px),
+ radial-gradient(circle at 50% 20%,var(--c,#C27583) 0 7px,transparent 7.5px),radial-gradient(circle at 78.6% 40.7%,var(--c,#C27583) 0 7px,transparent 7.5px),
+ radial-gradient(circle at 67.6% 74.3%,var(--c,#C27583) 0 7px,transparent 7.5px),radial-gradient(circle at 32.4% 74.3%,var(--c,#C27583) 0 7px,transparent 7.5px),
+ radial-gradient(circle at 21.4% 40.7%,var(--c,#C27583) 0 7px,transparent 7.5px)}
+/* dây thừng treo thẻ mẫu vật */
+.g-rail{position:absolute;left:0;right:0;top:46px;height:150px}
+.g-rod{position:absolute;left:-10px;right:-10px;top:0;height:5px;border-radius:3px;background:repeating-linear-gradient(90deg,#8A6A45 0 7px,#C9A97B 7px 10px);box-shadow:0 1px 0 rgba(60,40,20,.25)}
+.g-hp{position:absolute;top:2px;width:54px;transform-origin:50% 0;animation:gSw 3.4s ease-in-out infinite alternate}
+.g-hp .str{display:block;margin:0 auto;width:1.5px;height:var(--l,22px);background:#8A6A45}
+.g-hp .pin{display:block;position:relative;z-index:2;margin:-3px auto 0;width:9px;height:14px;border-radius:2px;background:#A87C55;border:1.5px solid var(--line)}
+.spec{position:relative;margin:-5px auto 0;width:50px;height:62px;background:#FFFBF0;border:1.5px solid #CDB894;box-shadow:2px 3px 0 rgba(80,60,30,.18);display:grid;place-items:center;transform:rotate(var(--r,0deg));
+ background-image:linear-gradient(rgba(74,105,160,.08) 1px,transparent 1px);background-size:100% 9px}
+.spec .no{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-family:'Patrick Hand',cursive;font-size:10px;color:#6B4529;line-height:1}
+.spec .lf,.spec .flw{margin-top:-8px}
+/* chim vẽ bút chì + khinh khí cầu phác thảo */
+.g-bird{position:absolute;left:0;animation:gFlyX linear infinite}
+.bd2{position:relative;width:28px;height:12px;animation:gBob 1.5s ease-in-out infinite alternate}
+.bd2 i{position:absolute;top:0;width:15px;height:12px;border-top:2.5px solid #4A4A58;border-radius:60% 60% 0 0}
+.bd2 i.l{left:0;transform-origin:100% 0;animation:gFlapL .34s ease-in-out infinite alternate}
+.bd2 i.r{right:0;transform-origin:0 0;animation:gFlapR .34s ease-in-out infinite alternate}
+@keyframes gFlapL{from{transform:rotate(16deg)}to{transform:rotate(-18deg)}}
+@keyframes gFlapR{from{transform:rotate(-16deg)}to{transform:rotate(18deg)}}
+.g-balw{position:absolute;left:0;top:19vh;animation:gFlyX 80s linear infinite}
+.bal{position:relative;width:84px;height:130px;animation:gBob 3.6s ease-in-out infinite alternate}
+.bal .env{position:absolute;left:0;top:0;width:84px;height:92px;border-radius:50% 50% 46% 46%/56% 56% 44% 44%;border:2.5px solid #4A4A58;
+ background:repeating-linear-gradient(45deg,rgba(74,74,88,.14) 0 1px,transparent 1px 5px),linear-gradient(90deg,rgba(194,117,131,.5) 0 20%,rgba(255,252,243,.75) 20% 40%,rgba(78,138,87,.45) 40% 60%,rgba(255,252,243,.75) 60% 80%,rgba(74,105,160,.45) 80%)}
+.bal .env::after{content:'';position:absolute;inset:-5px -3px -2px -5px;border-radius:inherit;border:1.5px dashed rgba(74,74,88,.5);transform:rotate(-3deg)}
+.bal .rop{position:absolute;top:86px;width:1.5px;height:22px;background:#4A4A58}
+.bal .rop.l{left:28px;transform:rotate(-12deg)}.bal .rop.r{right:28px;transform:rotate(12deg)}
+.bal .bsk{position:absolute;left:29px;top:104px;width:26px;height:20px;border:2.5px solid #4A4A58;border-radius:2px 2px 6px 6px;background:repeating-linear-gradient(90deg,#D6B48A 0 4px,#A87C55 4px 6px)}
+.bal .lbl{position:absolute;left:96px;top:30px;white-space:nowrap;font-family:'Patrick Hand',cursive;font-size:13px;color:#4A4A58;transform:rotate(-6deg)}
+/* lá rơi + bướm có nhãn */
+.g-fall{position:absolute;top:-40px;animation:gFall linear infinite}
+@keyframes gFall{0%{transform:translate(0,0) rotate(0);opacity:0}8%{opacity:.9}35%{transform:translate(24px,35vh) rotate(140deg)}65%{transform:translate(-18px,70vh) rotate(260deg)}92%{opacity:.8}100%{transform:translate(10px,108vh) rotate(380deg);opacity:0}}
+.g-bfw{position:absolute;animation:gFlut var(--d,14s) ease-in-out infinite}
+@keyframes gFlut{0%,100%{transform:translate(0,0)}25%{transform:translate(var(--x1),var(--y1))}50%{transform:translate(var(--x2),var(--y2))}75%{transform:translate(var(--x3),var(--y3))}}
+.bf{position:relative;width:46px;height:34px;transform:rotate(var(--rot,-10deg))}
+.bf .w{position:absolute;top:0;width:23px;height:32px;border:2px solid var(--line);background:radial-gradient(circle at 45% 35%,rgba(255,255,255,.85) 0 3px,transparent 3.5px),radial-gradient(circle at 55% 75%,rgba(255,255,255,.6) 0 2.5px,transparent 3px),var(--c)}
+.bf .w.l{left:0;border-radius:70% 20% 30% 60%/60% 30% 60% 50%;transform-origin:100% 50%;animation:gWg .22s ease-in-out infinite alternate}
+.bf .w.r{right:0;border-radius:20% 70% 60% 30%/30% 60% 50% 60%;transform-origin:0 50%;animation:gWg .22s ease-in-out infinite alternate}
+@keyframes gWg{to{transform:scaleX(.35)}}
+.bf .bd{position:absolute;left:21px;top:3px;width:4px;height:28px;border-radius:2px;background:var(--line);z-index:2}
+.bf .bd::before,.bf .bd::after{content:'';position:absolute;top:-8px;width:1.5px;height:10px;background:var(--line)}
+.bf .bd::before{left:-2px;transform:rotate(-25deg)}.bf .bd::after{right:-2px;transform:rotate(25deg)}
+.bf .tg{position:absolute;left:50%;top:42px;transform:translateX(-50%);white-space:nowrap;font-family:'Patrick Hand',cursive;font-size:12px;line-height:1.15;color:var(--sepia-d);background:#FFFBF0;border:1.5px solid #CDB894;border-radius:3px;padding:0 5px;box-shadow:1px 1px 0 rgba(80,60,30,.2)}
+.bf .tg::before{content:'';position:absolute;left:50%;top:-8px;width:1px;height:8px;background:#8A6A45}
+.g-wide,.g-slim{position:absolute;display:none}
+/* la bàn xoay chậm */
+.g-cmp{left:calc(var(--mg) / 2 - 95px);top:17vh;width:190px;height:220px}
+.cmp{position:absolute;left:0;top:0;width:190px;height:190px;border-radius:50%;border:5px solid var(--line);box-shadow:5px 5px 0 rgba(43,53,80,.2);
+ background:radial-gradient(circle,#FFFBF0 0 60%,#E3CFA7 61% 63%,transparent 64%),repeating-conic-gradient(#2B3550 0 1.6deg,transparent 1.6deg 15deg),radial-gradient(circle,#F3E6CC 0 70%,#D8C29A 71%)}
+.cmp .rose{position:absolute;inset:17%;animation:gRot 50s linear infinite}
+.cmp .rose i{position:absolute;inset:0;clip-path:polygon(50% 0,57% 43%,100% 50%,57% 57%,50% 100%,43% 57%,0 50%,43% 43%)}
+.cmp .rose .b{inset:14%;transform:rotate(45deg);background:linear-gradient(135deg,#C27583 50%,#8E3F52 50%)}
+.cmp .rose .a{background:linear-gradient(135deg,#6F8CC0 50%,#22386A 50%)}
+.cmp .ndl{position:absolute;left:50%;top:21%;bottom:21%;width:16px;margin-left:-8px;z-index:2;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:linear-gradient(180deg,#B4475A 50%,#F7F1E3 50%);animation:gNdl 5s ease-in-out infinite alternate}
+@keyframes gNdl{from{transform:rotate(-20deg)}to{transform:rotate(16deg)}}
+.cmp .hub{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:#FED7AA;border:3px solid var(--line);z-index:3}
+.cmp b{position:absolute;width:26px;height:26px;border-radius:50%;background:#FFFBF0;border:2.5px solid var(--line);display:grid;place-items:center;font-family:'Patrick Hand',cursive;font-size:15px;line-height:1;color:var(--navy-d)}
+.cmp .n{left:calc(50% - 13px);top:-10px;color:#B4475A}.cmp .s{left:calc(50% - 13px);bottom:-10px}.cmp .e{right:-10px;top:calc(50% - 13px)}.cmp .w{left:-10px;top:calc(50% - 13px)}
+.clab{position:absolute;left:50%;bottom:0;transform:translateX(-50%) rotate(-2deg);font-family:'Patrick Hand',cursive;font-size:15px;letter-spacing:1px;color:var(--forest-d);background:#FFFBF0;border:2px dashed var(--forest);border-radius:6px;padding:0 10px;white-space:nowrap}
+/* kính lúp soi bọ rùa */
+.g-mag{left:calc(var(--mg) / 2 - 110px);top:47vh;width:220px;height:170px}
+.lbug{position:absolute;left:92px;top:66px;width:40px;height:30px;animation:gCrawl 6s ease-in-out infinite alternate}
+@keyframes gCrawl{from{transform:translateX(-16px)}to{transform:translateX(16px)}}
+.lbug .sh{position:absolute;left:0;top:2px;width:34px;height:26px;border-radius:50%;border:2.5px solid var(--line);z-index:2;
+ background:radial-gradient(circle at 30% 30%,#2B3550 0 3px,transparent 3.5px),radial-gradient(circle at 30% 72%,#2B3550 0 3px,transparent 3.5px),radial-gradient(circle at 62% 26%,#2B3550 0 2.5px,transparent 3px),radial-gradient(circle at 62% 76%,#2B3550 0 2.5px,transparent 3px),linear-gradient(180deg,transparent 46%,#2B3550 46% 54%,transparent 54%),#D45A5A}
+.lbug .hd{position:absolute;left:28px;top:8px;width:14px;height:14px;border-radius:50%;background:var(--line)}
+.lbug .hd::before,.lbug .hd::after{content:'';position:absolute;left:10px;width:8px;height:1.5px;background:var(--line)}
+.lbug .hd::before{top:1px;transform:rotate(-30deg)}.lbug .hd::after{bottom:1px;transform:rotate(30deg)}
+.mgl{position:absolute;left:62px;top:16px;width:120px;height:120px;z-index:3;animation:gSweep 5s ease-in-out infinite alternate}
+@keyframes gSweep{0%{transform:translate(-44px,12px) rotate(-8deg)}100%{transform:translate(40px,-4px) rotate(8deg)}}
+.mgl .lens{position:absolute;left:0;top:0;width:78px;height:78px;border-radius:50%;border:7px solid #9C7A4C;box-shadow:0 0 0 2.5px var(--line),inset 0 0 0 2px var(--line);
+ background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.9) 0 9%,transparent 24%),radial-gradient(circle,rgba(200,224,242,.32),rgba(150,190,222,.28))}
+.mgl .hdl{position:absolute;left:66px;top:62px;width:50px;height:15px;border-radius:7px;background:linear-gradient(#7A5232,#4A2E18);border:2.5px solid var(--line);transform:rotate(45deg);transform-origin:0 50%}
+/* đồng hồ quả quýt đung đưa */
+.g-wch{right:calc(var(--mg) / 2 - 80px);top:13vh;width:160px;height:230px}
+.wch{position:absolute;left:0;top:0;width:160px;height:210px;transform-origin:80px 0;animation:gSw 2.6s ease-in-out infinite alternate}
+.wch .chn{position:absolute;left:77px;top:0;width:6px;height:44px;background:radial-gradient(circle,#B08D57 0 2.5px,transparent 3px) 0 0/6px 6px}
+.wch .bow{position:absolute;left:67px;top:38px;width:26px;height:24px;border-radius:50%;border:4px solid #B08D57;box-shadow:0 0 0 2px var(--line)}
+.wch .crn{position:absolute;left:71px;top:56px;width:18px;height:14px;border-radius:4px;background:#C9A86A;border:2.5px solid var(--line)}
+.wch .cs{position:absolute;left:10px;top:66px;width:140px;height:140px;border-radius:50%;border:4px solid var(--line);background:radial-gradient(circle at 35% 30%,#F1E2BE,#C9A86A 55%,#8C6A35);box-shadow:5px 5px 0 rgba(43,53,80,.2)}
+.wch .fc2{position:absolute;inset:11px;border-radius:50%;border:2.5px solid var(--line);background:radial-gradient(circle,#FFFBF0 0 74%,transparent 75%),repeating-conic-gradient(#2B3550 0 2.5deg,transparent 2.5deg 30deg),#FFFBF0}
+.wch .fc2 b{position:absolute;font-family:'Patrick Hand',cursive;font-size:13px;line-height:1;color:var(--navy-d)}
+.wch .hd{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:3px;background:var(--line)}
+.wch .hd.h{width:5px;height:26%;margin-left:-2.5px;animation:gRot 720s linear infinite;animation-delay:-250s}
+.wch .hd.m{width:4px;height:36%;margin-left:-2px;animation:gRot 60s linear infinite;animation-delay:-20s}
+.wch .hd.s{width:2px;height:40%;margin-left:-1px;background:#B4475A;animation:gRot 60s steps(60) infinite}
+.wch .pv{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#FED7AA;border:2px solid var(--line)}
+/* thẻ năm giác quan */
+.g-sns{right:calc(var(--mg) / 2 - 108px);top:44vh;width:216px;height:196px}
+.snc{position:absolute;inset:0;background:#FFFBF0;border:2px solid #CDB894;border-radius:6px;box-shadow:4px 5px 0 rgba(80,60,30,.18);transform:rotate(2.5deg);padding:30px 8px 8px;display:grid;grid-template-columns:1fr 1fr;gap:4px;
+ background-image:linear-gradient(rgba(74,105,160,.09) 1px,transparent 1px);background-size:100% 18px}
+.snc::before{content:'';position:absolute;left:50%;top:-11px;width:84px;height:22px;margin-left:-42px;background:rgba(254,215,170,.85);border-left:2px dashed rgba(255,255,255,.8);border-right:2px dashed rgba(255,255,255,.8);transform:rotate(-4deg)}
+.snc .tt{position:absolute;top:8px;left:0;right:0;text-align:center;font-family:'Patrick Hand',cursive;font-size:17px;line-height:1;color:var(--rose-d);letter-spacing:1px}
+.sn{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px}
+.sn .lb{font-family:'Patrick Hand',cursive;font-size:14px;color:var(--navy-d);line-height:1}
+.sic{position:relative;width:60px;height:48px}
+.i-eye .ew{position:absolute;inset:0;animation:gBlink 4s infinite}
+.i-eye .w{position:absolute;left:16px;top:9px;width:28px;height:28px;border-radius:75% 0;transform:rotate(45deg);background:#fff;border:3px solid var(--line);overflow:hidden}
+.i-eye .ir{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:radial-gradient(circle at 60% 40%,#fff 0 1.5px,transparent 2px),radial-gradient(circle,#1d2333 0 3.5px,#4A69A0 4px)}
+.i-eye .ls{position:absolute;top:1px;width:2px;height:7px;background:var(--line);border-radius:1px}
+.i-ear .e{position:absolute;left:14px;top:4px;width:26px;height:40px;border:3px solid var(--line);border-radius:55% 60% 40% 45%/60% 60% 45% 45%;background:#FED7AA}
+.i-ear .e::before{content:'';position:absolute;left:6px;top:8px;width:10px;height:16px;border:2.5px solid var(--line);border-left-color:transparent;border-radius:50%}
+.i-ear .wv{position:absolute;top:12px;width:10px;height:22px;border:2.5px solid var(--navy);border-left:none;border-radius:0 50% 50% 0;animation:gWave 1.4s ease-out infinite}
+@keyframes gWave{0%{opacity:0;transform:translateX(-4px)}40%{opacity:1}100%{opacity:0;transform:translateX(5px)}}
+.i-hand .hw{position:absolute;inset:0;transform-origin:50% 100%;animation:gSway .9s ease-in-out infinite alternate}
+.i-hand .pm{position:absolute;left:16px;top:20px;width:32px;height:24px;border-radius:6px 6px 12px 12px;background:#FED7AA;border:3px solid var(--line)}
+.i-hand .fg{position:absolute;width:9px;border-radius:5px 5px 0 0;background:#FED7AA;border:2.5px solid var(--line);border-bottom:none}
+.i-hand .th{position:absolute;left:7px;top:24px;width:16px;height:9px;border-radius:5px;background:#FED7AA;border:2.5px solid var(--line);transform:rotate(-35deg)}
+.i-nose .ns{position:absolute;left:12px;top:4px;width:18px;height:34px;border-right:3px solid var(--line);border-bottom:3px solid var(--line);border-radius:0 0 14px 0;transform:skewX(-14deg)}
+.i-nose .ns::after{content:'';position:absolute;left:4px;bottom:3px;width:7px;height:5px;border-top:2.5px solid var(--line);border-radius:50% 50% 0 0}
+.i-nose .flw{position:absolute;left:34px;top:16px;transform:scale(.6)}
+.i-nose .sm{position:absolute;left:30px;top:6px;width:8px;height:14px;border-left:2.5px solid var(--rose);border-radius:50%;animation:gSmell 2s ease-in-out infinite}
+@keyframes gSmell{0%{opacity:0;transform:translateY(8px)}40%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+/* thu gọn cho lề hẹp (1366) */
+.g-mini{position:absolute;left:0;top:0;transform-origin:0 0}
+.g-scmp{left:calc(var(--mg) / 2 - 30px);top:23vh;width:60px;height:60px}
+.g-swch{right:calc(var(--mg) / 2 - 24px);top:20vh;width:48px;height:66px}
+.g-ssn{top:43vh;width:56px;height:110px;display:none;flex-direction:column;gap:6px;align-items:center}
+.g-ssn.l{left:calc(var(--mg) / 2 - 28px)}.g-ssn.r{right:calc(var(--mg) / 2 - 28px)}
+.g-ssn .sic{transform:scale(.85)}
+.g-slb{left:calc(var(--mg) / 2 - 18px);top:66vh;width:40px;height:32px}
+.g-slb .lbug{left:0;top:0;animation-duration:3s}
+@media(min-width:1480px){.g-wide{display:block}}
+@media(min-width:941px) and (max-width:1479px){.g-slim{display:block}.g-ssn.g-slim{display:flex}}
+/* ══ mặt đất: dấu chân trên đường mòn, sổ ghi chép, biển chỉ đường + ống nhòm, hồ sen có ếch, nấm, cờ, gốc cây có ốc sên ══ */
+#gnd{position:fixed;left:0;right:0;bottom:0;height:300px;z-index:1;pointer-events:none;overflow:hidden}
+.g-glow{position:absolute;left:0;right:0;bottom:30px;height:170px;background:linear-gradient(transparent,rgba(143,154,69,.3))}
+.g-hill{position:absolute;bottom:22px;height:70px;border-radius:50% 50% 0 0;border:3px solid rgba(43,53,80,.55);border-bottom:none;background:repeating-linear-gradient(-45deg,rgba(43,53,80,.08) 0 1.5px,transparent 1.5px 7px),#CAD5A4}
+.g-earth{position:absolute;left:0;right:0;bottom:0;height:34px;border-top:4px solid var(--line);
+ background:radial-gradient(ellipse 12px 5px at 30px 18px,rgba(107,69,41,.35) 0 60%,transparent 66%) 0 0/110px 34px,radial-gradient(circle at 80px 24px,rgba(107,69,41,.3) 0 3px,transparent 3.5px) 0 0/110px 34px,linear-gradient(#BFA97F,#A08760)}
+.g-earth::before{content:'';position:absolute;left:0;right:0;top:-15px;height:12px;background:radial-gradient(circle at 50% 100%,#7E9A4E 0 7px,transparent 7.5px) 0 0/13px 12px}
+.g-trail{position:absolute;left:0;right:0;bottom:36px;height:70px}
+.fp{position:absolute;width:11px;height:17px;opacity:0;animation:gStep 16s linear infinite}
+.fp::before{content:'';position:absolute;left:0;bottom:0;width:11px;height:13px;border-radius:50% 50% 45% 45%/60% 60% 40% 40%;background:rgba(107,69,41,.6)}
+.fp::after{content:'';position:absolute;left:1px;top:0;width:9px;height:4px;background:radial-gradient(circle,rgba(107,69,41,.6) 0 1.4px,transparent 1.8px) 0 0/3px 4px}
+@keyframes gStep{0%{opacity:0}2%{opacity:.9}45%{opacity:.9}60%,100%{opacity:0}}
+.g-chip{position:absolute;font-family:'Patrick Hand','Baloo 2',cursive;font-size:1rem;line-height:1.4;background:#FFFBF0;border:2.5px solid var(--line);border-radius:999px;padding:0 10px;white-space:nowrap;animation:gPopTxt 2.8s ease-in-out infinite}
+/* sổ tay ghi chép mở + bút chì đang viết */
+.g-book{position:absolute;left:1vw;bottom:30px;width:220px;height:170px}
+.bk{position:absolute;left:8px;bottom:6px;width:200px;height:100px;transform:perspective(420px) rotateX(26deg);transform-origin:50% 100%}
+.bk .cv{position:absolute;inset:-7px;background:#3E6B48;border:2.5px solid var(--line);border-radius:10px}
+.bk .pg{position:absolute;top:0;width:98px;height:100px;background:#FFFBF0;border:2.5px solid var(--line);background-image:linear-gradient(rgba(74,105,160,.22) 1px,transparent 1px);background-size:100% 12px;background-position:0 6px}
+.bk .pg.l{left:0;border-radius:8px 2px 2px 8px}.bk .pg.r{left:100px;border-radius:2px 8px 8px 2px}
+.bk .pg .lf{position:absolute;left:30px;top:22px}
+.bk .tx{position:absolute;left:8px;top:6px;font-family:'Patrick Hand',cursive;font-size:12px;line-height:12px;color:var(--navy-d);white-space:nowrap}
+.pcl{position:absolute;left:150px;bottom:44px;width:84px;height:12px;border:2px solid var(--line);clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%);background:linear-gradient(90deg,#E9B8C1 0 12%,#B9B9C3 12% 19%,#4A69A0 19% 82%,#F3DDBE 82%);transform-origin:100% 50%;animation:gWrite .5s ease-in-out infinite alternate}
+@keyframes gWrite{from{transform:rotate(152deg) translateX(-4px)}to{transform:rotate(146deg) translateX(5px)}}
+.g-book .g-chip{left:40px;top:4px;color:var(--forest-d)}
+/* biển chỉ đường + ống nhòm treo */
+.g-sign{position:absolute;left:calc(1vw + 236px);bottom:30px;width:180px;height:220px}
+.g-sign .post{position:absolute;left:78px;bottom:0;width:14px;height:176px;background:repeating-linear-gradient(180deg,#8A6A45 0 10px,#76573A 10px 12px);border:2.5px solid var(--line);border-radius:3px}
+.g-sign .ar{position:absolute;height:28px;padding:0 20px 0 10px;font-family:'Patrick Hand',cursive;font-size:15px;line-height:24px;color:#FFFBF0;background:#6B4529;border:2.5px solid var(--line);clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);white-space:nowrap}
+.g-sign .ar.lt{padding:0 10px 0 20px;clip-path:polygon(12% 0,100% 0,100% 100%,12% 100%,0 50%);background:#2C5A35}
+.bino{position:absolute;left:30px;top:118px;width:64px;height:56px;transform-origin:50% -18px;animation:gSw 2.2s ease-in-out infinite alternate}
+.bino .st{position:absolute;left:8px;top:-22px;width:48px;height:36px;border:3px solid #8E3F52;border-bottom:none;border-radius:50% 50% 0 0}
+.bino .tb{position:absolute;top:8px;width:24px;height:38px;border-radius:6px;background:linear-gradient(90deg,#22386A,#5A79B0 50%,#22386A);border:2.5px solid var(--line)}
+.bino .tb.l{left:2px}.bino .tb.r{right:2px}
+.bino .tb::after{content:'';position:absolute;left:1px;right:1px;bottom:-7px;height:10px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#E6F0FA,#7EA1C8);border:2px solid var(--line)}
+.bino .br{position:absolute;left:24px;top:16px;width:16px;height:12px;background:var(--line);border-radius:3px}
+.g-sign .g-chip{left:96px;top:0;color:var(--rose-d)}
+/* hồ sen + ếch nhảy */
+.g-pond{position:absolute;left:39vw;bottom:22px;width:290px;height:170px}
+.pw{position:absolute;left:0;bottom:0;width:290px;height:64px;border-radius:50%;border:3.5px solid var(--line);overflow:hidden;
+ background:repeating-linear-gradient(0deg,rgba(255,255,255,.2) 0 2px,transparent 2px 9px),radial-gradient(ellipse at 50% 40%,#A9C8E0,#6489B6 70%,#4A69A0)}
+.rip{position:absolute;width:60px;height:16px;border:2px solid rgba(255,255,255,.8);border-radius:50%;animation:gRip 2.8s ease-out infinite}
+@keyframes gRip{0%{transform:scale(.2);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.pad{position:absolute;width:58px;height:20px;border-radius:50%;border:2.5px solid var(--line);background:conic-gradient(from 70deg,transparent 0 30deg,#7FA35B 30deg)}
+.lotus{position:absolute;width:30px;height:30px}
+.reed{position:absolute;bottom:20px;width:4px;height:var(--h,70px);background:#5E8A44;border-radius:2px;transform-origin:50% 100%;animation:gSway 2s ease-in-out infinite alternate}
+.reed::after{content:'';position:absolute;left:-4px;top:0;width:12px;height:24px;border-radius:6px;background:#7A5232;border:2px solid var(--line)}
+.frog{position:absolute;left:24px;bottom:28px;width:56px;height:44px;z-index:3;animation:gJump 5s ease-in-out infinite}
+@keyframes gJump{0%,22%{transform:translate(0,0) scaleX(1)}32%{transform:translate(78px,-74px) scaleX(1)}42%,60%{transform:translate(156px,0) scaleX(1)}61%,72%{transform:translate(156px,0) scaleX(-1)}82%{transform:translate(78px,-74px) scaleX(-1)}92%,100%{transform:translate(0,0) scaleX(-1)}}
+.frog .bd{position:absolute;left:5px;bottom:0;width:46px;height:28px;border-radius:50% 50% 40% 40%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 30%,#B4D78C,#5E9A4B 70%);border:2.5px solid var(--line);z-index:2}
+.frog .ey{position:absolute;top:2px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 55% 55%,#1f2333 0 3px,#fff 3.5px);border:2.5px solid var(--line);z-index:3}
+.frog .ey.l{left:9px}.frog .ey.r{left:31px}
+.frog .mo{position:absolute;left:18px;bottom:7px;width:20px;height:7px;border-bottom:2.5px solid var(--line);border-radius:0 0 50% 50%;z-index:3}
+.frog .ck{position:absolute;bottom:9px;width:8px;height:5px;border-radius:50%;background:rgba(194,117,131,.75);z-index:3}
+.frog .lg{position:absolute;bottom:-3px;width:18px;height:10px;border-radius:50%;background:#5E9A4B;border:2.5px solid var(--line);z-index:1}
+.g-pond .g-chip{left:12px;top:0;color:var(--forest-d);animation-delay:-1.2s}
+/* nấm + hoa dại */
+.g-msh{position:absolute;left:64vw;bottom:30px;width:180px;height:110px}
+.msh{position:absolute;bottom:0;width:var(--w);height:calc(var(--w) * .55 + 20px)}
+.msh .cap{position:absolute;left:0;top:0;width:var(--w);height:calc(var(--w) * .55);border-radius:50% 50% 12% 12%/90% 90% 10% 10%;border:2.5px solid var(--line);z-index:2;
+ background:radial-gradient(circle at 30% 45%,#fff 0 3px,transparent 3.5px),radial-gradient(circle at 66% 32%,#fff 0 2.5px,transparent 3px),radial-gradient(circle at 52% 70%,#fff 0 2px,transparent 2.5px),var(--c)}
+.msh .stm{position:absolute;left:32%;bottom:0;width:36%;height:24px;background:#FFFBF0;border:2.5px solid var(--line);border-radius:4px 4px 7px 7px}
+.wf{position:absolute;bottom:0;width:30px;height:var(--h,70px);transform-origin:50% 100%;animation:gSway 1.8s ease-in-out infinite alternate}
+.wf::before{content:'';position:absolute;left:14px;top:24px;bottom:0;width:2.5px;background:#4E7A3A}
+/* cờ câu lạc bộ thám hiểm */
+.g-flag{position:absolute;right:calc(1vw + 172px);bottom:30px;width:140px;height:200px}
+.g-flag .pole{position:absolute;left:10px;bottom:0;width:7px;height:180px;background:#8A6A45;border:2px solid var(--line);border-radius:3px}
+.g-flag .pole::before{content:'';position:absolute;left:-5px;top:-12px;width:13px;height:13px;border-radius:50%;background:#FED7AA;border:2px solid var(--line)}
+.g-flag .fg{position:absolute;left:17px;top:12px;width:118px;height:62px;border:3px solid var(--line);background:linear-gradient(135deg,#2C5A35,#4E8A57 60%,#3E6B48);clip-path:polygon(0 0,100% 0,86% 50%,100% 100%,0 100%);transform-origin:0 50%;animation:gFlag 1.6s ease-in-out infinite alternate;
+ display:grid;place-items:center;padding-right:14px;text-align:center;font-family:'Patrick Hand',cursive;font-size:15px;line-height:1.05;color:#FFFBF0}
+@keyframes gFlag{from{transform:skewY(-4deg) scaleX(.95)}to{transform:skewY(4deg) scaleX(1)}}
+.g-flag .lf{position:absolute;left:44px;bottom:6px}
+/* gốc cây + ốc sên */
+.g-stump{position:absolute;right:1vw;bottom:30px;width:150px;height:170px}
+.stp{position:absolute;left:20px;bottom:0;width:104px;height:70px;background:repeating-linear-gradient(90deg,#8A6A45 0 8px,#76573A 8px 10px);border:3px solid var(--line);border-radius:6px 6px 10px 10px}
+.stp .top{position:absolute;left:-3px;right:-3px;top:-18px;height:30px;border-radius:50%;border:3px solid var(--line);background:repeating-radial-gradient(circle,#ECD5AC 0 4px,#C9A276 4px 6px)}
+.snail{position:absolute;left:30px;bottom:74px;width:56px;height:36px;animation:gSnail 9s ease-in-out infinite alternate}
+@keyframes gSnail{from{transform:translateX(-8px)}to{transform:translateX(30px)}}
+.snail .sb{position:absolute;left:0;bottom:0;width:54px;height:10px;border-radius:10px 14px 4px 4px;background:#E2D2AE;border:2.5px solid var(--line)}
+.snail .sh{position:absolute;left:8px;bottom:6px;width:30px;height:28px;border-radius:50%;border:2.5px solid var(--line);background:repeating-radial-gradient(circle at 45% 50%,#C27583 0 3px,#F2CBD2 3px 6px);z-index:2}
+.snail .an{position:absolute;bottom:8px;width:2px;height:14px;background:var(--line);transform-origin:50% 100%}
+.snail .an::after{content:'';position:absolute;left:-2.5px;top:-4px;width:7px;height:7px;border-radius:50%;background:var(--line)}
+.g-stump .g-chip{left:4px;top:0;color:var(--navy-d);animation-delay:-2s}
+@media(max-width:1479px){.g-stump .g-chip{display:none}}
+@media(max-width:1180px){.g-flag{display:none}.g-msh{left:auto;right:calc(1vw + 170px)}}
+@media(max-width:940px){#gnd{height:190px}.g-sign,.g-msh,.g-hill,.g-book{display:none}.g-pond{left:auto;right:calc(1vw + 140px);transform:scale(.7);transform-origin:50% 100%}}
+@media(prefers-reduced-motion:reduce){#kit *,#gnd *{animation:none!important}}
+/* ── sticky note ── */
+.note{position:sticky;top:0;z-index:50;padding:6px 14px;text-align:center;
+ background:linear-gradient(90deg,#24502E,#3E6B48 24%,#22386A 52%,#3B4F7E 74%,#8E3F52 100%);box-shadow:0 4px 0 var(--line)}
+.note .in{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;justify-content:center;height:calc(.95rem * 1.45 * 2);overflow:hidden}
+.note .tg{flex:none;background:#FFF6E6;color:#22386A;font-weight:900;font-size:.8rem;padding:3px 12px;border:3px solid #22386A;border-radius:999px;white-space:nowrap;box-shadow:2px 2px 0 #FED7AA}
+.note .tx{color:#fff;font-weight:800;font-size:.95rem;line-height:1.45;text-shadow:0 1px 4px rgba(0,0,0,.45);transition:opacity .25s}
+/* ── compact header ── */
+header{position:relative;z-index:10;max-width:1240px;margin:8px auto 6px;background:var(--card);
+ border:4px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--forest);
+ padding:5px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+header h1{font-family:'Baloo 2',cursive;font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:800;color:var(--forest-d);line-height:1.25;white-space:nowrap}
+header h1 .p1{font-family:'Baloo 2',cursive;font-size:.72rem;vertical-align:middle;background:var(--rose);color:#fff;padding:1px 9px;margin-left:8px;border:3px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line)}
+header .by{font-size:.8rem;color:var(--dim);font-weight:800;margin-top:1px}
+header .by b{color:var(--rose-d)}
+.hright{display:flex;align-items:center;gap:10px}
+.chips{display:grid;grid-template-columns:auto auto;gap:4px 6px}
+.chip{font-family:'Baloo 2',cursive;font-weight:800;font-size:.74rem;line-height:1.1;padding:2px 9px;border:3px double currentColor;border-radius:7px;white-space:nowrap;text-align:center;letter-spacing:.4px;
+ background:rgba(255,251,240,.95);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);transform:rotate(-1.5deg);opacity:.95}
+.chip:nth-child(even){transform:rotate(1.5deg)}
+.chip.c1{color:var(--forest-d)}.chip.c2{color:var(--navy-d)}.chip.c3{color:var(--olive-d)}.chip.c4{color:var(--rose-d)}
+.gauge{position:relative;background:radial-gradient(circle at 35% 30%,#FFFFFF,#F1E6CF 55%,#D9C49C);border:4px solid var(--forest-d);border-radius:50%;width:58px;height:58px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--line);flex:none}
+.gauge::before{content:'🧭';position:absolute;top:-12px;right:-9px;font-size:15px}
+.gauge .num{font-family:'Baloo 2',cursive;font-size:1rem;color:var(--navy-d);font-weight:800;line-height:1}
+.gauge .lbl{font-size:.55rem;font-weight:900;color:var(--rose-d);text-transform:uppercase}
+@media(max-width:1180px){header{flex-wrap:wrap}header h1{white-space:normal}}
+/* ── layout ── */
+.main{position:relative;z-index:5;max-width:1240px;margin:0 auto;display:flex;gap:18px;padding:4px 16px 0;align-items:flex-start}
+.lp,.rp{max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px}
+.lp{flex:0 0 48%}
+.rp{flex:1;min-width:0}
+.lp::-webkit-scrollbar,.rp::-webkit-scrollbar{width:9px}
+.lp::-webkit-scrollbar-thumb,.rp::-webkit-scrollbar-thumb{background:#CDB894;border-radius:6px;border:2px solid var(--forest)}
+.slbl{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--forest-d);margin-bottom:8px;display:flex;align-items:center;gap:10px;
+ background:rgba(255,252,243,.96);border-radius:999px;padding:1px 14px;border:3px solid var(--line)}
+.slbl::after{content:'';flex:1;height:8px;border-radius:8px;background:repeating-linear-gradient(90deg,#4E8A57 0 10px,#C27583 10px 20px,#4A69A0 20px 30px,#8F9A45 30px 40px,#FED7AA 40px 50px)}
+@media(max-width:940px){.main{flex-direction:column;padding-bottom:210px}.lp{flex:1 1 auto;width:100%}.lp,.rp{max-height:none!important}}
+/* ── công cụ highlight ── */
+.hlbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;background:#111827;border-radius:14px 14px 0 0;padding:7px 8px 7px 12px;box-shadow:0 4px 10px rgba(17,24,39,.22)}
+.hlbar .ht{color:#fff;font-weight:900;font-size:.74rem;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.hlgrp{display:flex;align-items:center;gap:4px;background:#1F2937;border:1px solid #374151;border-radius:999px;padding:3px 4px;flex-wrap:wrap}
+.hlb{display:inline-flex;align-items:center;gap:5px;border:none;border-radius:999px;padding:4px 8px 4px 6px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.74rem;line-height:1.2;cursor:pointer;transition:transform .12s,filter .12s;white-space:nowrap}
+.hlb:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.hlb:active{transform:scale(.95)}
+.hlb .dt{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid rgba(0,0,0,.22)}
+.hlb.y{background:#FEF08A;color:#713F12}.hlb.y .dt{background:#FACC15}
+.hlb.g{background:#BBF7D0;color:#14532D}.hlb.g .dt{background:#22C55E}
+.hlb.p{background:#FBCFE8;color:#831843}.hlb.p .dt{background:#EC4899}
+.hlb.b{background:#BAE6FD;color:#0C4A6E}.hlb.b .dt{background:#0EA5E9}
+.hlb.er{background:#E5E7EB;color:#374151;padding:4px 9px}
+.hldv{display:inline-block;width:1px;height:18px;background:#4B5563;margin:0 2px}
+.hltip{display:flex;gap:9px;align-items:flex-start;background:#FEF9C3;border:2px solid #FDE68A;border-top:none;border-radius:0 0 14px 14px;padding:9px 13px;margin-bottom:12px;font-size:.92rem;line-height:1.6;color:#713F12;font-weight:700}
+.hltip .ic{font-size:1.15rem;line-height:1.4}
+.hltip b{color:#92400E}
+.hltip.ping{animation:tipPing .6s ease}
+@keyframes tipPing{0%,100%{transform:none}30%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+#hlPop{position:fixed;z-index:65;display:none;align-items:center;gap:6px;background:#111827;border-radius:999px;padding:6px 8px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#hlPop.on{display:flex}
+#hlPop::after{content:'';position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:none;border-top-color:#111827}
+#hlPop.below::after{bottom:auto;top:-6px;border:6px solid transparent;border-top:none;border-bottom-color:#111827}
+#hlPop button{width:24px;height:24px;border-radius:50%;border:2px solid #fff;cursor:pointer;padding:0;transition:transform .12s}
+#hlPop button:hover{transform:scale(1.15)}
+#hlPop .y{background:#FACC15}#hlPop .g{background:#22C55E}#hlPop .p{background:#EC4899}#hlPop .b{background:#0EA5E9}
+#hlPop .er{background:#E5E7EB;border-color:#9CA3AF;font-size:13px;display:grid;place-items:center}
+mark.uhl{color:inherit;border-radius:5px;padding:1px 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lp mark.uhl{cursor:pointer}mark.uhl.pick{outline:2px dashed #111827;outline-offset:2px}
+mark.uhl-y{background:#FFF27A}mark.uhl-g{background:#B9F6D3}mark.uhl-p{background:#FFC7E3}mark.uhl-b{background:#C3E6FF}
+@media(max-width:940px){.hlbar{top:58px}}
+/* ── passage cards: trang nhật ký có băng dính ── */
+.pc{position:relative;background:var(--card);border:4px solid var(--edge);border-radius:16px;padding:26px 18px 14px;margin:20px 0 26px;box-shadow:6px 6px 0 rgba(43,53,80,.18);
+ background-image:linear-gradient(90deg,transparent 30px,rgba(194,117,131,.25) 30px 32px,transparent 32px),linear-gradient(rgba(74,105,160,.07) 1px,transparent 1px);background-size:100% 100%,100% 30px}
+.pc::before,.pc::after{content:'';position:absolute;bottom:-11px;width:84px;height:22px;background:rgba(254,215,170,.85);border-left:2px dashed rgba(255,255,255,.85);border-right:2px dashed rgba(255,255,255,.85);box-shadow:0 1px 2px rgba(80,60,30,.15);z-index:3}
+.pc::before{left:14px;transform:rotate(-6deg)}.pc::after{right:14px;transform:rotate(5deg);background:rgba(194,117,131,.35)}
+.pc .stamp{position:absolute;top:-22px;right:18px;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#F7EEDC);
+ border:4px dashed currentColor;display:grid;place-items:center;font-size:24px;box-shadow:3px 3px 0 var(--line)}
+.lvl{position:absolute;top:-15px;left:18px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.85rem;line-height:1.2;background:#FFF6E6;color:var(--navy-d);border:3px double var(--navy-d);border-radius:8px;padding:3px 12px;box-shadow:3px 3px 0 var(--navy-d);transform:rotate(-2deg)}
+.ptitle{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.pins{font-size:.92rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:10px;line-height:1.6}
+.pblk{border-left:7px solid;border-radius:12px;padding:12px 14px 4px;margin:16px 0;position:relative}
+.pblk .em{position:absolute;top:-13px;right:10px;font-size:1.2rem;background:#FFFBF0;border:3px solid var(--line);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;box-shadow:2px 2px 0 var(--line)}
+.pblk .ptag{position:absolute;top:-12px;left:12px;font-family:'Baloo 2',cursive;font-size:.74rem;font-weight:800;line-height:1.2;color:#fff;background:var(--line);border-radius:999px;padding:2px 10px}
+.paragraph{font-size:1.16rem;line-height:1.95;margin-bottom:10px;text-align:justify}
+.paragraph b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.bk-forest{background:#D5E8D2;color:#24502E}.bk-rose{background:#F5D8DE;color:#8E3F52}.bk-navy{background:#D8E2F3;color:#22386A}
+.bk-olive{background:#E8ECC6;color:#4F5A1C}.bk-sepia{background:#F1E1CC;color:#6B4529}
+.btr{font-family:'Baloo 2',cursive;font-size:.85rem;background:linear-gradient(135deg,#F7EEDB,#E6F0DF 50%,#FBE6D6);border:3px solid var(--forest);color:var(--ink);
+ padding:5px 16px;border-radius:999px;cursor:pointer;transition:.15s;font-weight:800;display:block;margin:6px 0 12px;box-shadow:3px 3px 0 var(--forest)}
+.btr:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--forest)}
+.translation{display:none;margin-bottom:12px;font-size:1rem;line-height:1.8;color:#3A352C;background:#FFF9EC;border-left:4px solid var(--navy);border-radius:0 12px 12px 0;padding:10px 14px;font-style:italic}
+.gl{margin-top:12px;background:var(--card);border:3px solid var(--edge);border-radius:12px;overflow:hidden}
+.gl h3{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#fff;margin:0;padding:8px 14px}
+table.gtb{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.95rem}
+.gtb tr{border-top:1px dotted var(--edge)}
+.gtb tr:nth-child(even){background:#F8F0E0}
+.gtb td,.gtb th{padding:7px 12px;text-align:left;vertical-align:top}
+.gtb th{font-weight:800;font-size:.82rem;color:var(--dim)}
+.gtb .gw{font-weight:900;color:var(--forest-d)}
+.gtb .gp{color:var(--rose-d);font-weight:700;font-size:.86rem}
+/* ── quiz cards ── */
+.sec{position:relative;background:rgba(255,252,243,.97);border-radius:16px;padding:16px;margin:14px 0 18px;box-shadow:6px 6px 0 rgba(43,53,80,.18);border:4px solid var(--edge)}
+.sec::before{content:'';position:absolute;left:50%;top:-11px;width:90px;height:22px;margin-left:-45px;background:rgba(254,215,170,.85);border-left:2px dashed rgba(255,255,255,.85);border-right:2px dashed rgba(255,255,255,.85);transform:rotate(-3deg)}
+.sech{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;margin-bottom:2px}
+.secs{font-size:.88rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:12px;line-height:1.55}
+.q{background:#FFFEF8;border:2px solid #E9DCC2;border-left:7px solid var(--forest);border-radius:14px;padding:14px;margin-bottom:14px}
+.q .qt{font-weight:800;font-size:1.08rem;line-height:1.75}
+.q .qt b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.qn{display:inline-block;background:var(--qc,var(--forest));color:#fff;min-width:38px;text-align:center;border:2px solid var(--line);border-radius:999px;padding:2px 9px;margin-right:9px;
+ font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;line-height:1.3;vertical-align:1px;box-shadow:2px 2px 0 var(--line);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}
+.ob{background:#fff;color:var(--ink);border:2px solid #E2D5BA;border-radius:12px;padding:11px 13px;
+ font-family:'Nunito';font-weight:800;font-size:1rem;cursor:pointer;text-align:left;line-height:1.5;transition:.14s;box-shadow:0 3px 0 #E2D5BA}
+.ob:hover:not(.dn){transform:translateY(-2px);border-color:var(--qc,var(--forest))}
+.ob.dn{cursor:default}
+.ob.ok{background:var(--good-bg);border-color:var(--good);color:#0b6b3c;box-shadow:0 3px 0 #9fe3bd}
+.ob.no{background:var(--bad-bg);border-color:var(--bad);color:#a31832;box-shadow:0 3px 0 #f7bac5}
+.ex{display:none;margin-top:12px;background:#fff;border:2px solid #E9DCC2;border-radius:12px;padding:14px;font-size:.98rem;line-height:1.85}
+.ex.on{display:block;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.shk{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* ── explanation content ── */
+.vnt{margin-bottom:10px;padding:9px 13px;border-radius:12px;background:#EEF5E8;border-left:5px solid var(--forest);font-weight:700;line-height:1.7}
+.ex ol{margin:0;padding-left:22px}
+.ex ol>li{margin:10px 0;line-height:1.75;padding-left:4px}
+.ex ol>li::marker{font-weight:900;color:var(--rose-d)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.og{grid-template-columns:1fr}}
+.grid2>div{border:2px solid #E2D5BA;border-radius:12px;padding:8px 11px;background:#FFFCF5;line-height:1.7;font-size:.97rem}
+.grid2>div.gk{border-color:var(--good);background:var(--good-bg);box-shadow:0 0 0 3px rgba(27,156,90,.14)}
+.p-word{color:#2F5FA8;font-weight:800}
+.hl-green{color:#11924E;font-weight:900}
+.hl-red{color:#D8334A;font-weight:900}
+.wt{display:inline-block;margin:0 3px;padding:0 7px;border-radius:6px;font-size:.78em;font-weight:700;background:rgba(107,69,41,.12);color:#6B4529}
+.p-phonetic{padding:0 6px;border-radius:6px;background:#E9EEF8;color:#3B4F8C;font-weight:700;font-family:'Segoe UI','Lucida Sans Unicode','Arial Unicode MS',sans-serif}
+.p-mean{color:#9A4B3C;font-weight:700}
+.p-grammar{display:inline;line-height:1.95;padding:3px 8px 3px 2px;border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hx0{background:#FFF3B0}.hx1{background:#D6ECFF}.hx2{background:#FFDDEE}
+.hx3{background:#DDF7D0}.hx4{background:#EBDFFF}.hx5{background:#FFE4F3}
+.qe0{color:#1D4ED8;font-weight:800}.qe1{color:#C2185B;font-weight:800}.qe2{color:#0F8A5F;font-weight:800}.qe3{color:#7C3AED;font-weight:800}.qe4{color:#B4236E;font-weight:800}.qe5{color:#0E7490;font-weight:800}
+.frame{margin-top:10px;padding:10px 13px;border-radius:14px;background:#FFFCF5;border:2px dashed var(--edge);line-height:1.75}
+.frame i{color:var(--dim)}
+.dk{margin-top:12px;padding:11px 13px;border-radius:14px;background:#F1F5EA;border-left:5px solid var(--forest)}
+.dict{margin-top:7px;display:flex;flex-wrap:wrap;gap:8px}
+.dict a{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:999px;font-size:.9rem;font-weight:800;text-decoration:none;color:#fff;transition:transform .15s;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.dict a:hover{transform:translateY(-2px)}
+.dict a.d0{background:linear-gradient(135deg,#C27583,#4A69A0)}.dict a.d1{background:linear-gradient(135deg,#3E7A4A,#4A69A0)}
+.dict a.d2{background:linear-gradient(135deg,#8F9A45,#2C5A35)}.dict a.d3{background:linear-gradient(135deg,#8E3F52,#A87C55)}
+.say{margin-top:7px;font-size:.9rem;color:var(--dim)}
+/* ── submit / modal ── */
+.sw{text-align:center;padding:12px 0 8px}
+.sbtn{font-family:'Baloo 2',cursive;font-size:1.08rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#2C5A35,#3E6B48 45%,#22386A);border:4px solid var(--line);
+ padding:12px 34px;border-radius:999px;cursor:pointer;transition:.15s;box-shadow:5px 5px 0 #FED7AA}
+.sbtn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #FED7AA}
+.foot{text-align:center;margin:10px 0 14px;font-size:.92rem;color:var(--ink);font-weight:800;line-height:1.7;
+ background:rgba(255,252,243,.97);border:3px solid var(--line);border-radius:14px;padding:10px 16px;box-shadow:4px 4px 0 #CDB894}
+.foot b{color:var(--rose-d)}
+.ov{display:none;position:fixed;inset:0;z-index:100;background:rgba(43,53,80,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.mb{position:relative;background:var(--card);border:4px solid var(--line);border-radius:20px;padding:26px 28px;max-width:460px;width:100%;
+ text-align:center;box-shadow:7px 7px 0 #CDB894;animation:popin .3s ease}
+@keyframes popin{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.mb h2{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;color:var(--forest-d);margin-bottom:14px}
+.mb input{width:100%;font-family:'Nunito';font-size:1rem;font-weight:700;padding:12px 14px;background:#fff;border:2.5px solid var(--edge);border-radius:12px;color:var(--ink);text-align:center;outline:none;margin-bottom:10px}
+.mb input:focus{border-color:var(--forest)}
+.err{color:var(--bad);font-size:.85rem;font-weight:800;margin-bottom:8px;display:none}
+.err.show{display:block}
+.rname{font-size:1.05rem;font-weight:800;color:var(--rose-d);margin-bottom:6px}
+.rscore{font-family:'Baloo 2',cursive;font-size:2.6rem;font-weight:800;color:var(--forest-d);line-height:1;margin:6px 0}
+.rs10{font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:9px}
+.rgif{width:190px;margin:10px auto;display:block;border:3px solid var(--line);box-shadow:4px 4px 0 #CDB894;border-radius:12px}
+.rcmt{font-size:.96rem;line-height:1.75;background:#FFF9EC;border:2.5px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:12px 0}
+.bcl{font-family:'Nunito';font-size:.88rem;font-weight:800;background:transparent;border:2.5px solid var(--edge);color:var(--ink);padding:10px 24px;border-radius:12px;cursor:pointer}
+.cn{position:fixed;top:-16px;z-index:200;pointer-events:none;animation:cf 2.4s forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(108vh) rotate(700deg);opacity:0}}
+
+/* trang luôn có thanh kéo: kéo xuống thì khung bài lên cao, lộ cảnh đường mòn động phía dưới */
+@media(min-width:941px){body{height:auto!important;overflow:visible!important;overflow-x:clip!important}}
+/* lời nhắc đổi nội dung thì không kéo lệch trang: khung bài luôn sát thanh nhắc */
+html,body{overflow-anchor:none}
+</style>
+<style>/*touchscroll*/@media (hover:none),(pointer:coarse){html,body{overflow-y:auto!important;height:auto!important;-webkit-overflow-scrolling:touch}.lp,.rp{max-height:none!important;overflow:visible!important}.main{padding-bottom:42px!important;align-items:flex-start}}</style>
+</head>
+<body>
+<div id="kit">
+ <div class="g-wide g-cmp"><div class="cmp" id="cmp1"></div><span class="clab">EXPLORER'S COMPASS</span></div>
+ <div class="g-wide g-mag" id="mag"></div>
+ <div class="g-wide g-wch"><div class="wch" id="wch1"></div></div>
+ <div class="g-wide g-sns"><div class="snc" id="snc"></div></div>
+ <div class="g-slim g-scmp"><div class="g-mini" style="transform:scale(.316)"><div class="cmp" id="cmp2"></div></div></div>
+ <div class="g-slim g-swch"><div class="g-mini" style="transform:scale(.3)"><div class="wch" id="wch2"></div></div></div>
+ <div class="g-slim g-ssn l" id="ssnL"></div>
+ <div class="g-slim g-ssn r" id="ssnR"></div>
+ <div class="g-slim g-slb" id="slb"></div>
+ <div class="g-balw"><div class="bal"><i class="env"></i><i class="rop l"></i><i class="rop r"></i><i class="bsk"></i><span class="lbl">sketch No. 6</span></div></div>
+</div>
+<div id="gnd">
+ <div class="g-glow"></div>
+ <i class="g-hill" style="left:28vw;width:180px"></i><i class="g-hill" style="left:76vw;width:140px;height:52px"></i>
+ <div class="g-trail" id="trail"></div>
+ <div class="g-book"><div class="bk"><i class="cv"></i><div class="pg l"><span class="tx">No. 32 - 41</span><i class="lf" style="--s:34px;--t:-20deg"></i></div><div class="pg r"><span class="tx">Day 1: leaves,<br>birds, a frog,<br>a ladybug,<br>water cycle!</span></div></div><i class="pcl"></i><span class="g-chip">FIELD NOTES</span></div>
+ <div class="g-sign"><i class="post"></i>
+  <span class="ar" style="left:84px;top:22px">NATURE PARK</span>
+  <span class="ar lt" style="right:96px;top:56px">POND</span>
+  <span class="ar" style="left:84px;top:90px;background:#22386A">TRAIL</span>
+  <div class="bino"><i class="st"></i><i class="tb l"></i><i class="tb r"></i><i class="br"></i></div>
+  <span class="g-chip">FOLLOW THE TRAIL!</span></div>
+ <div class="g-pond" id="pond"><span class="g-chip">RIBBIT!</span></div>
+ <div class="g-msh" id="msh"></div>
+ <div class="g-flag"><i class="pole"></i><div class="fg">EXPLORERS<br>CLUB</div><i class="lf" style="--s:22px;--t:30deg"></i></div>
+ <div class="g-stump"><div class="snail"><i class="an" style="left:44px;transform:rotate(14deg)"></i><i class="an" style="left:50px;transform:rotate(30deg)"></i><i class="sb"></i><i class="sh"></i></div><div class="stp"><i class="top"></i></div><span class="g-chip">SLOW AND STEADY!</span></div>
+ <div class="g-earth"></div>
+</div>
+
+<div class="note"><div class="in">
+ <span class="tg">🧭 MS NHẮN</span>
+ <span class="tx" id="msTx">🧭 Chào nhà thám hiểm lớp 8! Explorer's Journal có 15 câu (1 → 15) về các dân tộc Việt Nam — xỏ giày, đeo ba lô, chinh phục trọn 15 cột mốc nào! 🔥</span>
+</div></div>
+
+<header>
+ <div>
+  <h1>🧭 Explorer's Journal Reading · Câu 1 → 15<span class="p1">15 câu</span></h1>
+  <div class="by">MS Chí Nên · ☎️ <b>0852639652</b> · Khoá tiếng Anh lớp 1 → 12 · English 8 · Unit 4 Test</div>
+ </div>
+ <div class="hright">
+  <div class="chips">
+   <span class="chip c1">🧭 EXPLORER'S JOURNAL</span>
+   <span class="chip c2">📝 UNIT 4 TEST · P4</span>
+   <span class="chip c3">🍃 2 PAGE · 15 CÂU</span>
+   <span class="chip c4">✏️ HIGHLIGHT</span>
+  </div>
+  <div><span id="sc" style="display:none"></span><div class="gauge"><div class="num" id="lv">0/15</div><div class="lbl">Điểm</div></div></div>
+ </div>
+</header>
+
+<div class="main">
+<div class="lp">
+ <div class="hlbar" id="hlBar">
+  <span class="ht">✏️ CÔNG CỤ HIGHLIGHT:</span>
+  <div class="hlgrp">
+   <button type="button" class="hlb y" onclick="hlApply('y')"><i class="dt"></i>Vàng</button>
+   <button type="button" class="hlb g" onclick="hlApply('g')"><i class="dt"></i>Xanh lá</button>
+   <button type="button" class="hlb p" onclick="hlApply('p')"><i class="dt"></i>Hồng</button>
+   <button type="button" class="hlb b" onclick="hlApply('b')"><i class="dt"></i>Xanh</button>
+   <span class="hldv"></span>
+   <button type="button" class="hlb er" onclick="hlErase()">🧽 Tẩy tô</button>
+  </div>
+ </div>
+ <div class="hltip" id="hlTip"><span class="ic">💡</span><div><b>Cách dùng Highlight:</b> Bôi đen (quét chuột) đoạn chữ trong bài đọc → Nhấn nút màu trên thanh công cụ màu đen ở trên (hoặc nút nổi ngay tại vị trí bôi đen) để tô màu tức thì!<br><b>Đổi màu / xoá:</b> Bấm thẳng vào chữ đã tô → chọn màu mới hoặc 🧽 để xoá, không cần bôi đen lại.</div></div>
+
+ <div class="slbl">📖 Bài đọc</div>
+
+ <div class="pc" style="border-color:var(--forest);color:var(--forest)">
+  <div class="lvl">PAGE 1</div>
+  <div class="stamp">🐘</div>
+  <div class="ptitle" style="color:var(--forest-d)">PAGE 1 · The M'Nong People</div>
+  <div class="pins">Read the passage and choose the best option for each numbered blank (1 → 8).</div>
+  <div class="pblk" style="border-color:var(--forest);background:#EAF2E4;color:var(--ink)">
+   <div class="em">🏘️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">There are nine sub-groups that are <b class="bk-forest">(1) ______</b> by the ethnic minority M'Nong, such as Bru Dang, Preh, Ger, Nong, Prang, PJam, Kuyenh, Chil Bu Nor, and M'Nong Bu Dang, with a combined estimated population of 105,300.</div>
+   <button class="btr" onclick="toggleTranslation('trans1')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans1">Có chín nhóm nhỏ được (1) ______ bởi dân tộc thiểu số M'Nông, như Bru Đăng, Preh, Ger, Nông, Prâng, Pjam, Kuyênh, Chil Bu Nor và M'Nông Bu Đăng, với tổng dân số ước tính khoảng 105.300 người.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--rose);background:#F9E9EC;color:var(--ink)">
+   <div class="em">🗺️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">They are concentrated <b class="bk-rose">(2) ______</b> southern parts of the provinces of Binh Phuoc and Dak Lak and in parts of Lam Dong.</div>
+   <button class="btr" onclick="toggleTranslation('trans2')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans2">Họ tập trung (2) ______ khu vực phía nam của các tỉnh Bình Phước và Đắk Lắk, và ở một số vùng thuộc Lâm Đồng.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--navy);background:#E7EDF7;color:var(--ink)">
+   <div class="em">🛖</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">They live in houses built on <b class="bk-navy">(3) ______</b> or level with the ground, and each village usually has dozens of households.</div>
+   <button class="btr" onclick="toggleTranslation('trans3')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans3">Họ sống trong những ngôi nhà dựng trên (3) ______ hoặc nằm ngang mặt đất, và mỗi làng thường có hàng chục hộ gia đình.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--olive);background:#F1F3DE;color:var(--ink)">
+   <div class="em">👩‍👧</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">Matriarchy is observed and the children <b class="bk-olive">(4) ______</b> the family name of their mother. The wife holds the key position in <b class="bk-olive">(5) ______</b> household.</div>
+   <button class="btr" onclick="toggleTranslation('trans4')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans4">Chế độ mẫu hệ được duy trì và con cái (4) ______ họ của mẹ. Người vợ giữ vị trí then chốt trong (5) ______ gia đình.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sepia);background:#F6ECDF;color:var(--ink)">
+   <div class="em">🔥</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">This group likes to have many children, <b class="bk-sepia">(6) ______</b> daughters, and speaks a language traced to the Mon-Khmer Group. The M'Nong use the slash-and-burn method of <b class="bk-sepia">(7) ______</b>.</div>
+   <button class="btr" onclick="toggleTranslation('trans5')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans5">Nhóm này thích có nhiều con, (6) ______ con gái, và nói một ngôn ngữ có nguồn gốc từ nhóm Môn-Khmer. Người M'Nông dùng phương pháp chặt và đốt trong (7) ______.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--forest);background:#EAF2E4;color:var(--ink)">
+   <div class="em">🐘</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">The M'Nong in Ban Don are well known for their elephant hunting and domestication. Women handle the weaving of cotton cloth, <b class="bk-forest">(8) ______</b> the men work on basketry.</div>
+   <button class="btr" onclick="toggleTranslation('trans6')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans6">Người M'Nông ở Bản Đôn nổi tiếng với nghề săn bắt và thuần dưỡng voi. Phụ nữ đảm nhận việc dệt vải bông, (8) ______ đàn ông làm nghề đan lát.</div>
+  </div>
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--forest-d),var(--olive))">📚 Glossary — PAGE 1</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">sub-group</td><td class="gp">Noun</td><td>nhóm nhỏ, nhánh (trong một dân tộc)</td></tr>
+    <tr><td class="gw">ethnic minority</td><td class="gp">Noun phrase</td><td>dân tộc thiểu số</td></tr>
+    <tr><td class="gw">estimated</td><td class="gp">Adjective</td><td>ước tính, ước lượng</td></tr>
+    <tr><td class="gw">be concentrated in</td><td class="gp">Verb phrase</td><td>tập trung ở (một vùng)</td></tr>
+    <tr><td class="gw">stilt house</td><td class="gp">Noun phrase</td><td>nhà sàn</td></tr>
+    <tr><td class="gw">household</td><td class="gp">Noun</td><td>hộ gia đình</td></tr>
+    <tr><td class="gw">matriarchy</td><td class="gp">Noun</td><td>chế độ mẫu hệ</td></tr>
+    <tr><td class="gw">slash-and-burn</td><td class="gp">Adjective</td><td>phát nương làm rẫy (chặt và đốt)</td></tr>
+    <tr><td class="gw">domestication</td><td class="gp">Noun</td><td>sự thuần dưỡng (động vật)</td></tr>
+    <tr><td class="gw">weaving</td><td class="gp">Noun</td><td>nghề dệt vải</td></tr>
+    <tr><td class="gw">basketry</td><td class="gp">Noun</td><td>nghề đan lát (rổ, rá, gùi)</td></tr>
+   </table>
+  </div>
+ </div>
+
+ <div class="pc" style="border-color:var(--navy);color:var(--navy)">
+  <div class="lvl">PAGE 2</div>
+  <div class="stamp">🌏</div>
+  <div class="ptitle" style="color:var(--navy-d)">PAGE 2 · A Multiethnic Country</div>
+  <div class="pins">Read the passage and choose the correct answer to each question (9 → 15).</div>
+  <div class="pblk" style="border-color:var(--navy);background:#E7EDF7;color:var(--ink)">
+   <div class="em">🌏</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Vietnam is a multiethnic country with 54 ethnic groups. The Viet (Kinh) people account for 87% of the country's population and mainly inhabit the Red River delta, the central coastal delta, the Mekong delta and major cities.</div>
+   <button class="btr" onclick="toggleTranslation('trans7')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans7">Việt Nam là một quốc gia đa dân tộc với 54 dân tộc. Người Việt (Kinh) chiếm 87% dân số cả nước và chủ yếu sinh sống ở đồng bằng sông Hồng, đồng bằng ven biển miền Trung, đồng bằng sông Cửu Long và các thành phố lớn.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--olive);background:#F1F3DE;color:var(--ink)">
+   <div class="em">⛰️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">The other 53 ethnic minority groups, totaling over 8 million people, are scattered over mountain areas spreading from the North to the South.</div>
+   <button class="btr" onclick="toggleTranslation('trans8')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans8">53 dân tộc thiểu số còn lại, tổng cộng hơn 8 triệu người, sống rải rác trên các vùng núi trải dài từ Bắc vào Nam.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sepia);background:#F6ECDF;color:var(--ink)">
+   <div class="em">👥</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Among ethnic minorities, the most populated are Tay, Thai, Muong, Hoa, Khmer and Nung, with a population of around 1 million each, while the least populated are Brau, Ro Mam and O Du, with several hundred people each.</div>
+   <button class="btr" onclick="toggleTranslation('trans9')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans9">Trong các dân tộc thiểu số, đông dân nhất là Tày, Thái, Mường, Hoa, Khmer và Nùng, mỗi dân tộc khoảng 1 triệu người, còn ít dân nhất là Brâu, Rơ Măm và Ơ Đu, mỗi dân tộc chỉ vài trăm người.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--forest);background:#EAF2E4;color:var(--ink)">
+   <div class="em">🌾</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">The main economic activity of most ethnic peoples is wet rice cultivation. A number of ethnic minorities had mastered some farming techniques. They grew rice plants in swamped paddy fields and carried out irrigation.</div>
+   <button class="btr" onclick="toggleTranslation('trans10')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans10">Hoạt động kinh tế chính của hầu hết các dân tộc là trồng lúa nước. Một số dân tộc thiểu số đã thành thạo một vài kỹ thuật canh tác. Họ trồng lúa trên những thửa ruộng ngập nước và làm thủy lợi.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--rose);background:#F9E9EC;color:var(--ink)">
+   <div class="em">🎭</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">Others go hunting, fishing, collecting and live a semi-nomadic life. Each group has its own culture that is diverse and special. Beliefs and religions of the Vietnamese ethnic minority groups are also disparate from each other.</div>
+   <button class="btr" onclick="toggleTranslation('trans11')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans11">Những dân tộc khác thì săn bắt, đánh cá, hái lượm và sống bán du mục. Mỗi dân tộc có nền văn hoá riêng, đa dạng và đặc sắc. Tín ngưỡng và tôn giáo của các dân tộc thiểu số Việt Nam cũng rất khác nhau.</div>
+  </div>
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--navy-d),var(--rose))">📚 Glossary — PAGE 2</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">multiethnic</td><td class="gp">Adjective</td><td>đa dân tộc</td></tr>
+    <tr><td class="gw">account for</td><td class="gp">Verb phrase</td><td>chiếm (bao nhiêu phần trăm)</td></tr>
+    <tr><td class="gw">inhabit</td><td class="gp">Verb</td><td>sinh sống, cư trú</td></tr>
+    <tr><td class="gw">delta</td><td class="gp">Noun</td><td>đồng bằng (châu thổ)</td></tr>
+    <tr><td class="gw">scattered</td><td class="gp">Adjective</td><td>rải rác, phân tán</td></tr>
+    <tr><td class="gw">populated</td><td class="gp">Adjective</td><td>có dân cư (most populated: đông dân nhất)</td></tr>
+    <tr><td class="gw">cultivation</td><td class="gp">Noun</td><td>sự trồng trọt, canh tác</td></tr>
+    <tr><td class="gw">master</td><td class="gp">Verb</td><td>thành thạo, nắm vững</td></tr>
+    <tr><td class="gw">swamped</td><td class="gp">Adjective</td><td>ngập nước, sình lầy</td></tr>
+    <tr><td class="gw">paddy field</td><td class="gp">Noun phrase</td><td>ruộng lúa</td></tr>
+    <tr><td class="gw">irrigation</td><td class="gp">Noun</td><td>sự tưới tiêu, thủy lợi</td></tr>
+    <tr><td class="gw">semi-nomadic</td><td class="gp">Adjective</td><td>bán du mục</td></tr>
+    <tr><td class="gw">diverse</td><td class="gp">Adjective</td><td>đa dạng</td></tr>
+    <tr><td class="gw">disparate</td><td class="gp">Adjective</td><td>khác biệt hẳn nhau</td></tr>
+   </table>
+  </div>
+ </div>
+</div>
+
+<div class="rp">
+ <div class="slbl">🎯 15 câu hỏi</div>
+ <div id="app"></div>
+ <div class="sw"><button class="sbtn" onclick="openName()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button></div>
+ <div class="foot">🧭 Bài tập của <b>MS Chí Nên</b> · Đăng ký khoá tiếng Anh lớp 1 → 12: <b>☎️ 0852639652</b> để được trải nghiệm hệ thống web học tập đẹp, sinh động — chấm điểm tự động, giải chi tiết từng câu, mỗi buổi học là một chuyến thám hiểm thú vị!</div>
+</div>
+</div>
+
+<div id="hlPop">
+ <button type="button" class="y" title="Vàng" onclick="hlApply('y')"></button>
+ <button type="button" class="g" title="Xanh lá" onclick="hlApply('g')"></button>
+ <button type="button" class="p" title="Hồng" onclick="hlApply('p')"></button>
+ <button type="button" class="b" title="Xanh" onclick="hlApply('b')"></button>
+ <button type="button" class="er" title="Tẩy tô" onclick="hlErase()">🧽</button>
+</div>
+
+<div class="ov" id="ovN"><div class="mb">
+ <h2>📮 Con ghi tên vào đây nhé!</h2>
+ <input id="nIn" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off" maxlength="50">
+ <div class="err" id="nEm">⚠️ Con chưa nhập tên kìa! Nhập tên rồi mới xem điểm được nha.</div>
+ <button class="sbtn" style="margin-top:12px;font-size:1rem;padding:11px 26px" onclick="showResult()">🚀 Xem kết quả</button>
+</div></div>
+
+<div class="ov" id="ovR"><div class="mb" style="max-width:480px">
+ <div class="rname" id="rn"></div>
+ <div class="rscore"><span id="rSc">0</span>/<span id="rTt">0</span></div>
+ <div class="rs10">🎓 Quy đổi: <span id="r10">0</span>/10 điểm</div>
+ <img class="rgif" id="rGif" src="" alt="">
+ <div class="rcmt" id="rMs"></div>
+ <button class="bcl" onclick="closeR()">Đóng &amp; xem lại bài</button>
+</div></div>
+
+<script>
+/* ══ sổ tay nhà thám hiểm: dựng cảnh ══ */
+function rnd(a,b){return a+Math.random()*(b-a)}
+var LEAF=[['#B4D08A','#3E7A4A'],['#C9CF8A','#6F7A2E'],['#E7B7BF','#9A4B5C'],['#D9B68C','#7A5232'],['#A9C2E0','#3B5A8C']];
+var FLC=['#C27583','#E9A3B0','#7F9BCB','#B9C46A','#FED7AA'];
+function LF(s,t,k){var c=LEAF[k%LEAF.length];return '<i class="lf" style="--s:'+s+'px;--t:'+t+'deg;--a:'+c[0]+';--b:'+c[1]+'"></i>'}
+function FL(k){return '<i class="flw" style="--c:'+FLC[k%FLC.length]+'"></i>'}
+function CMP(){return '<div class="rose"><i class="b"></i><i class="a"></i></div><i class="ndl"></i><i class="hub"></i><b class="n">N</b><b class="e">E</b><b class="s">S</b><b class="w">W</b>'}
+function WCH(){return '<i class="chn"></i><i class="bow"></i><i class="crn"></i><div class="cs"><div class="fc2"><b style="left:calc(50% - 8px);top:7px">XII</b><b style="right:7px;top:calc(50% - 7px)">III</b><b style="left:calc(50% - 5px);bottom:6px">VI</b><b style="left:7px;top:calc(50% - 7px)">IX</b><i class="hd h"></i><i class="hd m"></i><i class="hd s"></i><i class="pv"></i></div></div>'}
+function LBUG(){return '<div class="lbug"><i class="sh"></i><i class="hd"></i></div>'}
+var ICON={
+ eye:function(){var l='';[18,27,36].forEach(function(x,k){l+='<i class="ls" style="left:'+x+'px;transform:rotate('+(k-1)*22+'deg)"></i>'});return '<div class="sic i-eye"><div class="ew">'+l+'<div class="w"><i class="ir"></i></div></div></div>'},
+ ear:function(){return '<div class="sic i-ear"><i class="e"></i><i class="wv" style="left:42px"></i><i class="wv" style="left:48px;animation-delay:-.7s"></i></div>'},
+ hand:function(){var f='';[[16,18],[25,22],[34,21],[43,16]].forEach(function(a){f+='<i class="fg" style="left:'+a[0]+'px;top:'+(23-a[1])+'px;height:'+a[1]+'px"></i>'});return '<div class="sic i-hand"><div class="hw">'+f+'<i class="th"></i><i class="pm"></i></div></div>'},
+ nose:function(){return '<div class="sic i-nose"><i class="ns"></i><i class="sm"></i><i class="sm" style="left:24px;animation-delay:-1s"></i>'+FL(0)+'</div>'}};
+function SN(k,lb){return '<div class="sn">'+ICON[k]()+'<span class="lb">'+lb+'</span></div>'}
+function BF(c,tag,rot){return '<div class="bf" style="--c:'+c+';--rot:'+rot+'deg"><i class="w l"></i><i class="w r"></i><i class="bd"></i>'+(tag?'<span class="tg">'+tag+'</span>':'')+'</div>'}
+(function(){
+ var kit=document.getElementById('kit'),h='<div class="g-rail"><i class="g-rod"></i>',i;
+ /* dây thừng treo thẻ mẫu lá ép, hoa ép */
+ for(i=0;i<24;i++){var inner=i%2?FL(i>>1):LF(24+(i%3)*3,-20+(i%4)*12,i>>1);
+  h+='<div class="g-hp" style="left:'+(20+i*110)+'px;animation-delay:-'+rnd(0,3).toFixed(1)+'s;--l:'+(14+(i%3)*9)+'px"><i class="str"></i><i class="pin"></i><div class="spec" style="--r:'+(-4+(i%5)*2)+'deg">'+inner+'<span class="no">No. '+(i+1)+'</span></div></div>'}
+ h+='</div>';
+ /* đàn chim bút chì bay ngang dải trên */
+ for(i=0;i<6;i++){h+='<div class="g-bird" style="top:'+rnd(24,40).toFixed(0)+'vh;animation-duration:'+rnd(24,40).toFixed(0)+'s;animation-delay:-'+rnd(0,40).toFixed(0)+'s"><div class="bd2" style="transform:scale('+rnd(.7,1.2).toFixed(2)+')"><i class="l"></i><i class="r"></i></div></div>'}
+ function side(i,w){var f=rnd(.08,.92).toFixed(2);return (i%2?'right':'left')+':max(3px,calc((var(--mg) - '+w+'px) * '+f+'))'}
+ /* lá ép rơi nhẹ hai bên lề */
+ for(i=0;i<16;i++){h+='<div class="g-fall" style="'+side(i,30)+';animation-duration:'+rnd(13,22).toFixed(1)+'s;animation-delay:-'+rnd(0,22).toFixed(1)+'s">'+LF(rnd(16,24).toFixed(0),rnd(-40,40).toFixed(0),i)+'</div>'}
+ for(i=0;i<6;i++){h+='<div class="g-fall" style="left:'+rnd(5,95).toFixed(1)+'vw;animation-duration:'+rnd(16,26).toFixed(1)+'s;animation-delay:-'+rnd(0,26).toFixed(1)+'s;opacity:.85">'+LF(16,rnd(-40,40).toFixed(0),i+2)+'</div>'}
+ /* bướm có nhãn mẫu vật */
+ var BFS=[['#C27583','No. 3 ROSEWING'],['#7F9BCB','No. 8 BLUE INK'],['#B9C46A','No. 11 OLIVE TIP'],['#FED7AA','No. 14 PEACH'],['#E9A3B0',''],['#8FB585','']];
+ BFS.forEach(function(b,k){var wide=k<4;
+  h+='<div class="g-bfw'+(wide?' g-wide':'')+'" style="'+(k%2?'right':'left')+':calc(var(--mg) / 2 - '+(wide?[-90,40,-110,-60][k]:23)+'px);top:'+(wide?[64,64,36,28][k]:[30,70][k-4])+'vh;--d:'+rnd(12,18).toFixed(1)+'s;--x1:'+(k%2?-50:50)+'px;--y1:-30px;--x2:'+(k%2?-20:20)+'px;--y2:-70px;--x3:'+(k%2?30:-30)+'px;--y3:-36px">'+BF(b[0],b[1],k%2?12:-12)+'</div>'});
+ kit.insertAdjacentHTML('afterbegin',h);
+ /* la bàn, đồng hồ quả quýt, kính lúp soi bọ rùa, thẻ năm giác quan */
+ document.getElementById('cmp1').innerHTML=CMP();
+ document.getElementById('cmp2').innerHTML=CMP();
+ document.getElementById('wch1').innerHTML=WCH();
+ document.getElementById('wch2').innerHTML=WCH();
+ document.getElementById('mag').innerHTML=LF(105,-45,0).replace('class="lf"','class="lf" ')+LBUG()+'<div class="mgl"><i class="lens"></i><i class="hdl"></i></div><span class="clab" style="bottom:-6px">LADYBUG · No. 12</span>';
+ var big=document.querySelector('#mag .lf');big.style.position='absolute';big.style.left='58px';big.style.top='26px';
+ document.getElementById('snc').innerHTML='<span class="tt">MY SENSES</span>'+SN('eye','SEE')+SN('ear','HEAR')+SN('hand','TOUCH')+SN('nose','SMELL');
+ document.getElementById('ssnL').innerHTML=ICON.eye()+ICON.ear();
+ document.getElementById('ssnR').innerHTML=ICON.hand()+ICON.nose();
+ document.getElementById('slb').innerHTML=LBUG();
+ /* dấu chân uốn lượn theo đường mòn */
+ var t='',N=46;
+ for(i=0;i<N;i++){var x=1+i*(98/N),y=26+16*Math.sin(i*.42),sl=Math.atan(16*.42*Math.cos(i*.42)/(98/N*13.66))*180/Math.PI,off=i%2?7:-7;
+  t+='<i class="fp" style="left:'+x.toFixed(2)+'vw;bottom:'+(y+off).toFixed(1)+'px;transform:rotate('+(90-sl).toFixed(1)+'deg);animation-delay:'+(i*16/N).toFixed(2)+'s"></i>'}
+ document.getElementById('trail').innerHTML=t;
+ /* hồ sen: lá sen, hoa sen, gợn sóng, cây sậy, chú ếch nhảy */
+ var p='<div class="pw"><i class="rip" style="left:40px;top:22px"></i><i class="rip" style="left:150px;top:30px;animation-delay:-1.1s"></i><i class="rip" style="left:220px;top:16px;animation-delay:-2s"></i></div>';
+ [[22,14],[104,30],[180,12]].forEach(function(a,k){p+='<i class="pad" style="left:'+a[0]+'px;bottom:'+a[1]+'px;transform:rotate('+(k*25-10)+'deg)"></i>'});
+ p+='<div class="lotus" style="left:236px;bottom:30px">'+FL(1)+'</div>';
+ [[-6,64],[4,86],[272,74],[282,56]].forEach(function(a,k){p+='<i class="reed" style="left:'+a[0]+'px;--h:'+a[1]+'px;animation-delay:-'+(k*.5)+'s"></i>'});
+ p+='<div class="frog"><i class="lg" style="left:-4px"></i><i class="lg" style="right:-4px"></i><i class="bd"></i><i class="ey l"></i><i class="ey r"></i><i class="ck" style="left:9px"></i><i class="ck" style="right:9px"></i><i class="mo"></i></div>';
+ document.getElementById('pond').insertAdjacentHTML('afterbegin',p);
+ /* nấm + hoa dại */
+ var m='';[[0,48,'#C27583'],[56,34,'#A87C55'],[132,40,'#8E3F52']].forEach(function(a){m+='<div class="msh" style="left:'+a[0]+'px;--w:'+a[1]+'px;--c:'+a[2]+'"><i class="cap"></i><i class="stm"></i></div>'});
+ [[96,78,2],[112,58,0],[160,66,3]].forEach(function(a,k){m+='<div class="wf" style="left:'+a[0]+'px;--h:'+a[1]+'px;animation-delay:-'+(k*.6)+'s">'+FL(a[2])+'</div>'});
+ document.getElementById('msh').innerHTML=m;
+})();
+
+/* ══ âm thanh ══ */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function ding(){var c=ac();if(!c)return;var t=c.currentTime;[988,1318.5,1975.5].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(c.destination);var s=t+i*0.08;g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(.12,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.32);o.start(s);o.stop(s+.34)})}
+var DUCK_URL='https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Ti%E1%BA%BFng%20V%E1%BB%8Bt%20k%C3%AAu%20meme%20mp3.mp3';
+function buzz(){try{var a=new Audio(DUCK_URL);a.volume=.75;a.play().catch(function(){})}catch(e){}}
+function conf(){var cs=['#4E8A57','#C27583','#4A69A0','#8F9A45','#FED7AA','#A87C55'];
+ for(var i=0;i<50;i++){var d=document.createElement('div');d.className='cn';
+  d.style.cssText='left:'+(Math.random()*100)+'vw;width:10px;height:10px;border-radius:'+(i%2?'50%':'2px')+';background:'+cs[i%6]+';opacity:.95';
+  document.body.appendChild(d);(function(d){setTimeout(function(){d.remove()},2500)})(d)}}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function toggleTranslation(id){
+ var el=document.getElementById(id);
+ if(el.style.display==='block'){el.style.display='none';}else{el.style.display='block';}
+}
+
+/* ══ lời giải ══ */
+function OPT(w,pos,ipa,vi,ok){return {w:w,pos:pos||'',ipa:ipa||'',vi:vi,ok:ok?1:0}}
+function grid2(opts){
+ return '<div class="grid2">'+opts.map(function(o){
+  var cls=o.ok?'hl-green':'p-word';
+  var pos=o.pos?' <span class="wt">'+o.pos+'</span>':'';
+  var ipa=o.ipa?' <span class="p-phonetic">/'+o.ipa+'/</span>':'';
+  return '<div'+(o.ok?' class="gk"':'')+'>'+(o.ok?'✅ ':'')+'<span class="'+cls+'">'+o.w+'</span>'+pos+ipa+'<br>= <span class="p-mean">'+o.vi+'</span></div>';
+ }).join('')+'</div>';
+}
+var hxI=0;
+function ln(txt){
+ var cls='hx'+(hxI++%6),qeI=0;
+ txt=txt.replace(/"([^"]+)"/g,function(m,p1){return '<span class="qe'+(qeI++%6)+'">"'+p1+'"</span>'});
+ return '<span class="p-grammar '+cls+'">▸ '+txt+'</span>';
+}
+function lines(a){return a.map(ln).join('<br>')}
+function DICT(w,i){
+ var slug=w.trim().toLowerCase().replace(/\s+/g,'-');
+ return '<a class="d'+(i%4)+'" href="https://dictionary.cambridge.org/vi/dictionary/english/'+slug+'" target="_blank" rel="noopener">🔊 Cambridge · '+w+'</a>';
+}
+function render(q){
+ hxI=0;
+ var shown=MAP[q.id].map(function(w){return q.opts.find(function(o){return o.w===w})});
+ var lab='Nghĩa của '+shown.length+' phương án:';
+ var html='<div class="vnt">💬 Dịch: '+q.vnt+'</div><ol>'+
+  '<li><b>'+lab+'</b>'+grid2(shown)+'</li>'+
+  '<li><span class="hl-green">✅ TẠI SAO ĐÚNG?</span><br>'+lines(q.why)+'</li>'+
+  '<li><span class="hl-red">❌ TẠI SAO SAI?</span><br>'+lines(q.bad)+'</li></ol>'+
+  '<div class="frame">🔍 <i>'+q.ev+'</i><br>👉 <span class="p-mean">'+q.evvi+'</span></div>';
+ if(q.dict&&q.dict.length){
+  html+='<div class="dk"><b>🔊 Tra từ điển Cambridge:</b><br>Con bấm vào đây để nghe phát âm chuẩn và đọc theo cho hay nhé:'+
+   '<div class="dict">'+q.dict.map(DICT).join('')+'</div>'+
+   '<div class="say">👉 Nếu trang chưa hiện đúng từ, con gõ từ đó vào ô tìm kiếm, bấm loa 🔊 nghe và đọc theo.</div></div>';
+ }
+ return html;
+}
+
+/* ══ câu hỏi ══ */
+var QS=[
+{id:1,part:1,col:'forest',text:`There are nine sub-groups that are <b>(1) ______</b> by the ethnic minority M'Nong, such as Bru Dang, Preh, Ger, Nong, Prang, PJam, Kuyenh, Chil Bu Nor, and M'Nong Bu Dang.`,
+ opts:[OPT(`ordered`,`V3`,`ˈɔːdəd`,`được ra lệnh; được sắp xếp`),OPT(`symbolized`,`V3`,`ˈsɪmbəlaɪzd`,`được tượng trưng (bằng một biểu tượng)`),OPT(`expressed`,`V3`,`ɪkˈsprest`,`được bày tỏ (cảm xúc, ý kiến)`),OPT(`represented`,`V3`,`ˌreprɪˈzentɪd`,`được đại diện, được thể hiện`,1)],
+ vnt:`Có chín nhóm nhỏ thuộc dân tộc thiểu số M'Nông (được dân tộc M'Nông đại diện), như Bru Đăng, Preh, Ger, Nông, Prâng, Pjam, Kuyênh, Chil Bu Nor và M'Nông Bu Đăng.`,
+ why:[`Bước 1: Chỗ trống nằm trong cấu trúc "are ______ by", tức là câu bị động "be + V3 + by". Cả 4 phương án đều là V3, nên con phải chọn theo NGHĨA.`,
+  `Bước 2: Chủ ngữ là "nine sub-groups" (chín nhóm nhỏ), phía sau là "the ethnic minority M'Nong" (dân tộc thiểu số M'Nông). Câu đang nói chín nhóm nhỏ này cùng thuộc về, cùng làm nên dân tộc M'Nông.`,
+  `Bước 3: "represent" nghĩa là đại diện, thể hiện. "sub-groups represented by the M'Nong" là những nhóm nhỏ được dân tộc M'Nông bao gồm và đại diện.`,
+  `Bước 4: Chọn "represented". Phát súng mở màn đã trúng đích, giữ lửa cho câu tiếp theo nhé!`],
+ bad:[`"ordered" (được ra lệnh, được sắp xếp): dân tộc M'Nông không "ra lệnh" cho các nhóm nhỏ, nghĩa không hợp.`,
+  `"symbolized" (được tượng trưng): dùng khi một hình ảnh thể hiện một ý nghĩa, ví dụ "Peace is symbolized by a dove"; không dùng cho các nhóm người thuộc một dân tộc.`,
+  `"expressed" (được bày tỏ): dùng cho cảm xúc, ý kiến, ví dụ "His feelings were expressed in a letter"; nhóm người thì không "được bày tỏ".`],
+ ev:`There are nine sub-groups that are represented by the ethnic minority M'Nong, such as Bru Dang, Preh, Ger, Nong, Prang, PJam, Kuyenh, Chil Bu Nor, and M'Nong Bu Dang, with a combined estimated population of 105,300.`,
+ evvi:`Có chín nhóm nhỏ thuộc dân tộc thiểu số M'Nông, như Bru Đăng, Preh, Ger, Nông, Prâng, Pjam, Kuyênh, Chil Bu Nor và M'Nông Bu Đăng, với tổng dân số ước tính khoảng 105.300 người.`,
+ dict:[`order`,`symbolize`,`express`,`represent`,`minority`]},
+{id:2,part:1,col:'rose',text:`They are concentrated <b>(2) ______</b> southern parts of the provinces of Binh Phuoc and Dak Lak and in parts of Lam Dong.`,
+ opts:[OPT(`on`,`prep`,`ɒn`,`trên (một bề mặt)`),OPT(`in`,`prep`,`ɪn`,`ở, trong (một vùng, khu vực)`,1),OPT(`for`,`prep`,`fɔː`,`cho, dành cho`),OPT(`at`,`prep`,`æt`,`tại (một điểm nhỏ, cụ thể)`)],
+ vnt:`Họ tập trung ở khu vực phía nam của các tỉnh Bình Phước và Đắk Lắk, và ở một số vùng thuộc Lâm Đồng.`,
+ why:[`Bước 1: Cụm cố định là "be concentrated in + nơi chốn": tập trung ở một khu vực nào đó.`,
+  `Bước 2: Sau chỗ trống là "southern parts of the provinces" (các vùng phía nam của các tỉnh). Đây là một VÙNG rộng có ranh giới, nên dùng "in".`,
+  `Bước 3: Manh mối nằm ngay trong câu: vế sau viết "and in parts of Lam Dong". Hai vế song song, vế sau là "in parts" thì vế trước cũng là "in southern parts".`,
+  `Bước 4: Chọn "in". Đọc tới cuối câu là đáp án tự lộ diện, quá đã!`],
+ bad:[`"on" dùng cho bề mặt hoặc tên đường, ví dụ "on the table", "on Le Loi Street"; không dùng cho vùng đất của một tỉnh.`,
+  `"for" (cho, dành cho) không chỉ nơi chốn; "concentrated for southern parts" là sai.`,
+  `"at" dùng cho một điểm nhỏ, cụ thể, ví dụ "at the bus stop", "at school"; "southern parts of the provinces" là cả một vùng rộng lớn.`],
+ ev:`They are concentrated in southern parts of the provinces of Binh Phuoc and Dak Lak and in parts of Lam Dong.`,
+ evvi:`Họ tập trung ở khu vực phía nam của các tỉnh Bình Phước và Đắk Lắk, và ở một số vùng thuộc Lâm Đồng.`,
+ dict:[`on`,`in`,`for`,`at`,`concentrated`,`province`]},
+{id:3,part:1,col:'navy',text:`They live in houses built on <b>(3) ______</b> or level with the ground, and each village usually has dozens of households.`,
+ opts:[OPT(`bricks`,`n`,`brɪks`,`những viên gạch`),OPT(`slabs`,`n`,`slæbz`,`những tấm phiến (đá, bê tông)`),OPT(`stilts`,`n`,`stɪlts`,`những cây cột chống (của nhà sàn)`,1),OPT(`stones`,`n`,`stəʊnz`,`những hòn đá`)],
+ vnt:`Họ sống trong những ngôi nhà dựng trên cột (nhà sàn) hoặc nằm ngang mặt đất (nhà trệt), và mỗi làng thường có hàng chục hộ gia đình.`,
+ why:[`Bước 1: Chỗ trống đứng sau "built on" (được dựng trên) và cần một danh từ số nhiều.`,
+  `Bước 2: Liên từ "or" nối hai kiểu nhà đối lập: kiểu thứ nhất dựng trên một thứ gì đó, kiểu thứ hai "level with the ground" (nằm ngang mặt đất, tức nhà trệt).`,
+  `Bước 3: Đối lập với nhà nằm sát đất là nhà được nâng cao khỏi mặt đất bằng các cây cột: nhà sàn. Tiếng Anh gọi là "houses built on stilts" hay "stilt houses".`,
+  `Bước 4: Chọn "stilts". Nhà sàn Tây Nguyên đã hiện ra trước mắt con rồi, tuyệt vời!`],
+ bad:[`"bricks" (gạch) là vật liệu xây tường, ta nói "built of bricks" chứ không nói "built on bricks"; lại không tạo ý đối lập với "level with the ground".`,
+  `"slabs" (tấm phiến đá, bê tông) đặt sát mặt đất, nên nhà trên phiến đá vẫn nằm ngang mặt đất, mất ý đối lập của "or".`,
+  `"stones" (đá) cũng chỉ là vật liệu xây dựng; nhà kê trên đá không phải một kiểu nhà khác hẳn nhà trệt như câu yêu cầu.`],
+ ev:`They live in houses built on stilts or level with the ground, and each village usually has dozens of households.`,
+ evvi:`Họ sống trong những ngôi nhà sàn hoặc nhà trệt, và mỗi làng thường có hàng chục hộ gia đình.`,
+ dict:[`brick`,`slab`,`stilt`,`stone`,`household`]},
+{id:4,part:1,col:'olive',text:`Matriarchy is observed and the children <b>(4) ______</b> the family name of their mother.`,
+ opts:[OPT(`take`,`v`,`teɪk`,`lấy, mang (tên, họ)`,1),OPT(`give`,`v`,`ɡɪv`,`cho, đưa`),OPT(`catch`,`v`,`kætʃ`,`bắt, chụp lấy`),OPT(`hold`,`v`,`həʊld`,`cầm, nắm, giữ`)],
+ vnt:`Chế độ mẫu hệ được duy trì và con cái lấy họ của mẹ.`,
+ why:[`Bước 1: "Matriarchy" là chế độ mẫu hệ: người mẹ, người phụ nữ đứng đầu gia đình, dòng họ tính theo bên mẹ.`,
+  `Bước 2: Trong chế độ mẫu hệ, con cái mang họ của mẹ. Câu cần một động từ nghĩa là "lấy, mang" họ.`,
+  `Bước 3: Cách nói cố định là "take someone's name" hay "take the family name of someone": lấy, mang họ của ai. Ví dụ: "She took her husband's name."`,
+  `Bước 4: Chọn "take". Con nắm chắc cả kiến thức văn hoá lẫn ngôn ngữ rồi đó!`],
+ bad:[`"give" (cho): con cái không "cho" họ của mẹ; người mẹ mới là người truyền họ cho con.`,
+  `"catch" (bắt, chụp lấy): dùng cho vật bay tới hoặc con vật, ví dụ "catch a ball", "catch fish"; không đi với "family name".`,
+  `"hold" (cầm, giữ): "hold the family name" không phải cách nói tự nhiên để chỉ việc mang họ; câu sau dùng "holds" cho "the key position", không phải cho họ tên.`],
+ ev:`Matriarchy is observed and the children take the family name of their mother.`,
+ evvi:`Chế độ mẫu hệ được duy trì và con cái lấy họ của mẹ.`,
+ dict:[`take`,`give`,`catch`,`hold`,`matriarchy`]},
+{id:5,part:1,col:'olive',text:`The wife holds the key position in <b>(5) ______</b> household.`,
+ opts:[OPT(`the`,`art`,`ðə`,`mạo từ xác định: chỉ thứ đã rõ là cái nào`,1),OPT(`an`,`art`,`ən`,`một (đứng trước nguyên âm)`),OPT(`many`,`det`,`ˈmeni`,`nhiều (đi với danh từ số nhiều)`),OPT(`some`,`det`,`sʌm`,`một vài, một ít`)],
+ vnt:`Người vợ giữ vị trí then chốt trong gia đình.`,
+ why:[`Bước 1: "household" (hộ gia đình) là danh từ đếm được SỐ ÍT, nên phía trước cần một mạo từ hoặc từ hạn định hợp với số ít.`,
+  `Bước 2: Người vợ giữ vị trí then chốt trong gia đình CỦA CHÍNH MÌNH, tức là gia đình đã rõ là gia đình nào, nên dùng mạo từ xác định "the".`,
+  `Bước 3: Câu trước vừa nói "the family name of their mother": cả đoạn đang tả nếp nhà người M'Nông, và "the household" chính là gia đình ấy.`,
+  `Bước 4: Chọn "the". Nhỏ mà có võ, mạo từ "the" đã bị con tóm gọn!`],
+ bad:[`"an" chỉ đứng trước từ bắt đầu bằng ÂM nguyên âm; "household" bắt đầu bằng phụ âm /h/ nên không thể là "an household".`,
+  `"many" (nhiều) phải đi với danh từ số nhiều, ví dụ "many households"; ở đây "household" là số ít.`,
+  `"some" đi với danh từ đếm được thường ở số nhiều, ví dụ "some households"; "some household" (một hộ nào đó không rõ) không hợp với ý người vợ trong chính gia đình mình.`],
+ ev:`Matriarchy is observed and the children take the family name of their mother. The wife holds the key position in the household.`,
+ evvi:`Chế độ mẫu hệ được duy trì và con cái lấy họ của mẹ. Người vợ giữ vị trí then chốt trong gia đình.`,
+ dict:[`the`,`an`,`many`,`some`,`household`]},
+{id:6,part:1,col:'sepia',text:`This group likes to have many children, <b>(6) ______</b> daughters, and speaks a language traced to the Mon-Khmer Group.`,
+ opts:[OPT(`special`,`adj`,`ˈspeʃl`,`đặc biệt, khác thường`),OPT(`especially`,`adv`,`ɪˈspeʃəli`,`đặc biệt là, nhất là`,1),OPT(`specially`,`adv`,`ˈspeʃəli`,`(làm) riêng cho, dành riêng cho một mục đích`),OPT(`especial`,`adj`,`ɪˈspeʃl`,`đặc biệt (từ trang trọng, rất ít dùng)`)],
+ vnt:`Nhóm này thích có nhiều con, nhất là con gái, và nói một ngôn ngữ có nguồn gốc từ nhóm Môn-Khmer.`,
+ why:[`Bước 1: Chỗ trống đứng sau dấu phẩy và trước "daughters", dùng để NHẤN MẠNH một phần nổi bật trong "many children" (nhiều con).`,
+  `Bước 2: Muốn nói "nhất là, đặc biệt là" để nêu bật một đối tượng trong cả nhóm, ta dùng trạng từ "especially". Ví dụ: "I love fruit, especially mangoes."`,
+  `Bước 3: Ghép lại: "many children, especially daughters" (nhiều con, nhất là con gái). Rất hợp với chế độ mẫu hệ ở câu trước: con gái được coi trọng.`,
+  `Bước 4: Chọn "especially". Bẫy anh em họ hàng "special, specially, especial" không làm khó được con!`],
+ bad:[`"special" là TÍNH TỪ (đặc biệt), phải đi với danh từ như "a special day"; nó không làm nhiệm vụ nhấn mạnh "nhất là" như ở đây.`,
+  `"specially" là trạng từ nhưng mang nghĩa "dành riêng cho một mục đích", ví dụ "a cake made specially for you"; không dùng để nêu bật một nhóm.`,
+  `"especial" là tính từ trang trọng, rất ít dùng, đứng trước danh từ như "of especial importance"; sai cả từ loại lẫn cách dùng.`],
+ ev:`This group likes to have many children, especially daughters, and speaks a language traced to the Mon-Khmer Group.`,
+ evvi:`Nhóm này thích có nhiều con, nhất là con gái, và nói một ngôn ngữ có nguồn gốc từ nhóm Môn-Khmer.`,
+ dict:[`special`,`especially`,`specially`,`especial`,`daughter`]},
+{id:7,part:1,col:'sepia',text:`The M'Nong use the slash-and-burn method of <b>(7) ______</b>.`,
+ opts:[OPT(`transport`,`n`,`ˈtrænspɔːt`,`sự vận chuyển, giao thông`),OPT(`working`,`n`,`ˈwɜːkɪŋ`,`sự làm việc (nói chung)`),OPT(`farming`,`n`,`ˈfɑːmɪŋ`,`việc làm nông, canh tác`,1),OPT(`researching`,`n`,`rɪˈsɜːtʃɪŋ`,`việc nghiên cứu`)],
+ vnt:`Người M'Nông sử dụng phương pháp canh tác phát nương làm rẫy (chặt và đốt).`,
+ why:[`Bước 1: "slash-and-burn" nghĩa đen là "chặt và đốt": chặt cây, đốt rừng để lấy đất trồng trọt, tức là phát nương làm rẫy.`,
+  `Bước 2: Đây là một cách làm NÔNG, nên "method of ______" phải là phương pháp của việc làm nông.`,
+  `Bước 3: "farming" là việc làm nông, canh tác. Cụm "the slash-and-burn method of farming" là phương pháp canh tác phát nương làm rẫy.`,
+  `Bước 4: Chọn "farming". Hiểu nghĩa từ khoá "slash-and-burn" là con chốt đáp án trong một giây!`],
+ bad:[`"transport" (giao thông, vận chuyển): chặt và đốt cây chẳng liên quan gì đến việc đi lại hay chở hàng.`,
+  `"working" (làm việc) quá chung chung; "method of working" không cho biết làm việc gì, trong khi "slash-and-burn" là thuật ngữ riêng của nông nghiệp.`,
+  `"researching" (nghiên cứu): người M'Nông chặt, đốt để trồng trọt trên nương rẫy, không phải để nghiên cứu.`],
+ ev:`The M'Nong use the slash-and-burn method of farming.`,
+ evvi:`Người M'Nông sử dụng phương pháp canh tác phát nương làm rẫy.`,
+ dict:[`transport`,`work`,`farming`,`research`,`method`]},
+{id:8,part:1,col:'forest',text:`Women handle the weaving of cotton cloth, <b>(8) ______</b> the men work on basketry.`,
+ opts:[OPT(`where`,`adv`,`weə`,`nơi mà, ở đâu`),OPT(`when`,`conj`,`wen`,`khi, lúc`),OPT(`which`,`pron`,`wɪtʃ`,`cái mà, cái nào`),OPT(`while`,`conj`,`waɪl`,`trong khi đó (nêu sự đối lập)`,1)],
+ vnt:`Phụ nữ đảm nhận việc dệt vải bông, trong khi đó đàn ông làm nghề đan lát.`,
+ why:[`Bước 1: Sau chỗ trống là một mệnh đề đầy đủ "the men work on basketry" (đàn ông làm nghề đan lát), nên cần một liên từ nối hai mệnh đề.`,
+  `Bước 2: Hai vế nói về hai giới làm hai việc KHÁC NHAU: phụ nữ dệt vải, đàn ông đan lát. Đây là ý so sánh, đối lập.`,
+  `Bước 3: "while" (trong khi đó) nối hai việc song song nhưng khác nhau. Ví dụ: "I like tea, while my sister likes coffee."`,
+  `Bước 4: Chọn "while". Chia việc rõ ràng như người M'Nông, con chia đúng đáp án luôn!`],
+ bad:[`"where" (nơi mà) cần một danh từ chỉ nơi chốn đứng trước, ví dụ "the village where they live"; "cotton cloth" không phải nơi chốn.`,
+  `"when" (khi) chỉ thời điểm: "dệt vải KHI đàn ông đan lát" là sai ý, câu không nói hai việc xảy ra cùng một lúc.`,
+  `"which" (cái mà) thay cho danh từ đứng trước, và phía sau phải thiếu chủ ngữ hoặc tân ngữ; ở đây "the men work on basketry" đã là mệnh đề đầy đủ.`],
+ ev:`The M'Nong in Ban Don are well known for their elephant hunting and domestication. Women handle the weaving of cotton cloth, while the men work on basketry.`,
+ evvi:`Người M'Nông ở Bản Đôn nổi tiếng với nghề săn bắt và thuần dưỡng voi. Phụ nữ đảm nhận việc dệt vải bông, trong khi đó đàn ông làm nghề đan lát.`,
+ dict:[`where`,`when`,`which`,`while`,`weave`,`basketry`]},
+{id:9,part:2,col:'navy',text:`How many ethnic groups are there in Vietnam?`,
+ opts:[OPT(`There are 54 ethnic groups in Vietnam.`,`câu`,``,`Có 54 dân tộc ở Việt Nam.`,1),OPT(`There are 53 ethnic groups in Vietnam.`,`câu`,``,`Có 53 dân tộc ở Việt Nam.`),OPT(`There are 87 ethnic groups in Vietnam.`,`câu`,``,`Có 87 dân tộc ở Việt Nam.`),OPT(`There are 8 ethnic groups in Vietnam.`,`câu`,``,`Có 8 dân tộc ở Việt Nam.`)],
+ vnt:`Ở Việt Nam có bao nhiêu dân tộc? → Có 54 dân tộc ở Việt Nam.`,
+ why:[`Bước 1: Từ khoá trong câu hỏi là "How many ethnic groups" (bao nhiêu dân tộc). Con tìm con số đi với "ethnic groups" trong Passage 2.`,
+  `Bước 2: Ngay câu đầu tiên: "Vietnam is a multiethnic country with 54 ethnic groups." (Việt Nam là quốc gia đa dân tộc với 54 dân tộc).`,
+  `Bước 3: Bài còn giúp con kiểm tra lại: 1 dân tộc Kinh cộng "The other 53 ethnic minority groups" (53 dân tộc thiểu số còn lại) đúng bằng 54.`,
+  `Bước 4: Chọn "There are 54 ethnic groups in Vietnam." Con số chuẩn xác, điểm số chắc tay!`],
+ bad:[`"53" chỉ là số dân tộc THIỂU SỐ: "The other 53 ethnic minority groups", chưa tính người Kinh.`,
+  `"87" là phần trăm dân số của người Kinh: "account for 87% of the country's population", không phải số dân tộc.`,
+  `"8" là số dân (hơn 8 triệu người) của các dân tộc thiểu số: "totaling over 8 million people".`],
+ ev:`Vietnam is a multiethnic country with 54 ethnic groups.`,
+ evvi:`Việt Nam là một quốc gia đa dân tộc với 54 dân tộc.`,
+ dict:[`ethnic`,`multiethnic`,`group`]},
+{id:10,part:2,col:'navy',text:`Where do the Kinh people mostly live?`,
+ opts:[OPT(`In mountain areas spreading from the North to the South.`,`cụm`,``,`Ở các vùng núi trải dài từ Bắc vào Nam.`),OPT(`In the Red River delta, the central coastal delta, the Mekong delta and major cities.`,`cụm`,``,`Ở đồng bằng sông Hồng, đồng bằng ven biển miền Trung, đồng bằng sông Cửu Long và các thành phố lớn.`,1),OPT(`In swamped paddy fields and forests.`,`cụm`,``,`Ở những thửa ruộng ngập nước và trong rừng.`),OPT(`Mostly in Ban Don.`,`cụm`,``,`Chủ yếu ở Bản Đôn.`)],
+ vnt:`Người Kinh chủ yếu sống ở đâu? → Ở đồng bằng sông Hồng, đồng bằng ven biển miền Trung, đồng bằng sông Cửu Long và các thành phố lớn.`,
+ why:[`Bước 1: Từ khoá là "Kinh" và "mostly live" (chủ yếu sống). Con tìm chữ "Kinh" trong Passage 2, thấy ở câu thứ hai.`,
+  `Bước 2: "The Viet (Kinh) people account for 87% of the country's population and mainly inhabit the Red River delta, the central coastal delta, the Mekong delta and major cities."`,
+  `Bước 3: Từ đồng nghĩa: "mostly" giống "mainly" (chủ yếu), "live" giống "inhabit" (sinh sống). Phần nơi chốn khớp y hệt phương án đúng.`,
+  `Bước 4: Chọn "In the Red River delta, the central coastal delta, the Mekong delta and major cities." Bắt được cặp từ đồng nghĩa là con lên trình rồi!`],
+ bad:[`"In mountain areas spreading from the North to the South." là nơi sống của 53 dân tộc thiểu số: "are scattered over mountain areas".`,
+  `"In swamped paddy fields and forests." sai: "swamped paddy fields" là nơi một số dân tộc thiểu số trồng lúa; bài không nói người Kinh sống ở đó, cũng không nhắc tới "forests".`,
+  `"Mostly in Ban Don." sai: Bản Đôn là nơi người M'Nông ở Passage 1 nổi tiếng với nghề săn voi.`],
+ ev:`The Viet (Kinh) people account for 87% of the country's population and mainly inhabit the Red River delta, the central coastal delta, the Mekong delta and major cities.`,
+ evvi:`Người Việt (Kinh) chiếm 87% dân số cả nước và chủ yếu sinh sống ở đồng bằng sông Hồng, đồng bằng ven biển miền Trung, đồng bằng sông Cửu Long và các thành phố lớn.`,
+ dict:[`inhabit`,`delta`,`mainly`,`coastal`]},
+{id:11,part:2,col:'sepia',text:`What is the population of the Tay?`,
+ opts:[OPT(`Over 8 million`,`cụm`,``,`Hơn 8 triệu người`),OPT(`Around 105,300`,`cụm`,``,`Khoảng 105.300 người`),OPT(`Several hundred`,`cụm`,``,`Vài trăm người`),OPT(`Around 1 million`,`cụm`,``,`Khoảng 1 triệu người`,1)],
+ vnt:`Dân số của người Tày là bao nhiêu? → Khoảng 1 triệu người.`,
+ why:[`Bước 1: Từ khoá là "Tay" (người Tày). Con dò Passage 2, thấy tên "Tay" ở câu nói về các dân tộc thiểu số đông dân nhất.`,
+  `Bước 2: "Among ethnic minorities, the most populated are Tay, Thai, Muong, Hoa, Khmer and Nung, with a population of around 1 million each".`,
+  `Bước 3: Chữ "each" (mỗi dân tộc) cho biết RIÊNG người Tày cũng có khoảng 1 triệu người.`,
+  `Bước 4: Chọn "Around 1 million". Một chữ "each" nhỏ xíu mà giữ trọn điểm cho con!`],
+ bad:[`"Over 8 million" là TỔNG dân số của cả 53 dân tộc thiểu số: "totaling over 8 million people".`,
+  `"Around 105,300" là dân số của người M'Nông ở Passage 1, không phải người Tày.`,
+  `"Several hundred" là dân số của các dân tộc ít người nhất: "Brau, Ro Mam and O Du, with several hundred people each".`],
+ ev:`Among ethnic minorities, the most populated are Tay, Thai, Muong, Hoa, Khmer and Nung, with a population of around 1 million each.`,
+ evvi:`Trong các dân tộc thiểu số, đông dân nhất là Tày, Thái, Mường, Hoa, Khmer và Nùng, mỗi dân tộc khoảng 1 triệu người.`,
+ dict:[`population`,`populated`,`million`]},
+{id:12,part:2,col:'sepia',text:`Which ethnic groups have the smallest population?`,
+ opts:[OPT(`Tay, Thai, Muong`,`cụm`,``,`Tày, Thái, Mường`),OPT(`Brau, Ro Mam, O Du`,`cụm`,``,`Brâu, Rơ Măm, Ơ Đu`,1),OPT(`Hoa, Khmer, Nung`,`cụm`,``,`Hoa, Khmer, Nùng`),OPT(`Bru Dang, Preh, Ger`,`cụm`,``,`Bru Đăng, Preh, Ger (các nhóm nhỏ của người M'Nông)`)],
+ vnt:`Những dân tộc nào có dân số ít nhất? → Brâu, Rơ Măm, Ơ Đu.`,
+ why:[`Bước 1: "the smallest population" (dân số ít nhất) có nghĩa giống "the least populated" (ít dân nhất) trong bài.`,
+  `Bước 2: Con dò Passage 2: "while the least populated are Brau, Ro Mam and O Du, with several hundred people each".`,
+  `Bước 3: Mỗi dân tộc này chỉ có vài trăm người, ít hơn rất nhiều so với các dân tộc khoảng 1 triệu người.`,
+  `Bước 4: Chọn "Brau, Ro Mam, O Du". Con đã săn trúng cặp từ trái nghĩa "most" và "least" rồi đó!`],
+ bad:[`"Tay, Thai, Muong" là các dân tộc ĐÔNG dân nhất: "the most populated are Tay, Thai, Muong", ngược hẳn với câu hỏi.`,
+  `"Hoa, Khmer, Nung" cũng nằm trong nhóm đông dân nhất, khoảng 1 triệu người mỗi dân tộc.`,
+  `"Bru Dang, Preh, Ger" là các nhóm nhỏ của người M'Nông ở Passage 1; Passage 2 không hề nói họ ít dân nhất.`],
+ ev:`Among ethnic minorities, the most populated are Tay, Thai, Muong, Hoa, Khmer and Nung, with a population of around 1 million each, while the least populated are Brau, Ro Mam and O Du, with several hundred people each.`,
+ evvi:`Trong các dân tộc thiểu số, đông dân nhất là Tày, Thái, Mường, Hoa, Khmer và Nùng, mỗi dân tộc khoảng 1 triệu người, còn ít dân nhất là Brâu, Rơ Măm và Ơ Đu, mỗi dân tộc chỉ vài trăm người.`,
+ dict:[`least`,`populated`,`population`]},
+{id:13,part:2,col:'forest',text:`What do most ethnic peoples mainly live on?`,
+ opts:[OPT(`Elephant hunting and domestication.`,`cụm`,``,`Săn bắt và thuần dưỡng voi.`),OPT(`Basketry and weaving.`,`cụm`,``,`Đan lát và dệt vải.`),OPT(`Wet rice cultivation.`,`cụm`,``,`Trồng lúa nước.`,1),OPT(`Slash-and-burn farming.`,`cụm`,``,`Canh tác phát nương làm rẫy.`)],
+ vnt:`Hầu hết các dân tộc chủ yếu sống nhờ vào nghề gì? → Trồng lúa nước.`,
+ why:[`Bước 1: "live on something" là sống nhờ vào cái gì, tức là kiếm sống bằng nghề gì. Từ khoá: "most ethnic peoples" (hầu hết các dân tộc).`,
+  `Bước 2: Câu đầu đoạn 2 của Passage 2: "The main economic activity of most ethnic peoples is wet rice cultivation."`,
+  `Bước 3: "main economic activity" (hoạt động kinh tế chính) chính là nghề để sống, và cụm "most ethnic peoples" khớp đúng từng chữ với câu hỏi.`,
+  `Bước 4: Chọn "Wet rice cultivation." Cánh đồng lúa nước vừa tặng con thêm một điểm vàng!`],
+ bad:[`"Elephant hunting and domestication." chỉ là nghề nổi tiếng của người M'Nông ở Bản Đôn (Passage 1), không phải của hầu hết các dân tộc.`,
+  `"Basketry and weaving." là nghề thủ công của đàn ông và phụ nữ M'Nông ở Passage 1, không phải hoạt động kinh tế chính của "most ethnic peoples".`,
+  `"Slash-and-burn farming." là cách làm nông của người M'Nông ở Passage 1; Passage 2 nói hầu hết các dân tộc trồng lúa nước.`],
+ ev:`The main economic activity of most ethnic peoples is wet rice cultivation.`,
+ evvi:`Hoạt động kinh tế chính của hầu hết các dân tộc là trồng lúa nước.`,
+ dict:[`cultivation`,`economic`,`activity`]},
+{id:14,part:2,col:'rose',text:`Do the ethnic minority groups have the same culture, religion and belief?`,
+ opts:[OPT(`Yes, they do.`,`câu`,``,`Có, họ giống nhau.`),OPT(`No, they don't.`,`câu`,``,`Không, họ không giống nhau.`,1),OPT(`They share the same religion but different beliefs.`,`câu`,``,`Họ có chung tôn giáo nhưng khác tín ngưỡng.`),OPT(`They share the same culture but different religions.`,`câu`,``,`Họ có chung văn hoá nhưng khác tôn giáo.`)],
+ vnt:`Các dân tộc thiểu số có cùng văn hoá, tôn giáo và tín ngưỡng không? → Không, họ không giống nhau.`,
+ why:[`Bước 1: Câu hỏi nhắc tới ba thứ: "culture" (văn hoá), "religion" (tôn giáo), "belief" (tín ngưỡng). Con tìm cả ba ở cuối Passage 2.`,
+  `Bước 2: Về văn hoá: "Each group has its own culture that is diverse and special." Cụm "its own" (của riêng mình) cho thấy văn hoá mỗi dân tộc một khác.`,
+  `Bước 3: Về tôn giáo và tín ngưỡng: "Beliefs and religions of the Vietnamese ethnic minority groups are also disparate from each other." Từ "disparate" nghĩa là khác biệt hẳn nhau.`,
+  `Bước 4: Cả ba đều KHÁC nhau, nên câu trả lời là "No, they don't." Con đọc trọn vẹn, không bỏ sót chữ nào!`],
+ bad:[`"Yes, they do." trái ngược với "its own" và "disparate" trong bài.`,
+  `"They share the same religion but different beliefs." sai vì bài nói cả "Beliefs and religions" đều "disparate" (khác nhau), không có tôn giáo chung.`,
+  `"They share the same culture but different religions." sai vì "Each group has its own culture", văn hoá không hề giống nhau.`],
+ ev:`Each group has its own culture that is diverse and special. Beliefs and religions of the Vietnamese ethnic minority groups are also disparate from each other.`,
+ evvi:`Mỗi dân tộc có nền văn hoá riêng, đa dạng và đặc sắc. Tín ngưỡng và tôn giáo của các dân tộc thiểu số Việt Nam cũng rất khác nhau.`,
+ dict:[`culture`,`religion`,`belief`,`disparate`]},
+{id:15,part:2,col:'rose',text:`What is the culture of each ethnic group like?`,
+ opts:[OPT(`It is similar and simple.`,`câu`,``,`Nó giống nhau và đơn giản.`),OPT(`It is ordered and expressed.`,`câu`,``,`Nó được sắp xếp và được bày tỏ.`),OPT(`It is disparate and poor.`,`câu`,``,`Nó khác biệt và nghèo nàn.`),OPT(`It is diverse and special.`,`câu`,``,`Nó đa dạng và đặc sắc.`,1)],
+ vnt:`Văn hoá của mỗi dân tộc như thế nào? → Nó đa dạng và đặc sắc.`,
+ why:[`Bước 1: Câu hỏi "What is ______ like?" dùng để hỏi một thứ như thế nào, nên câu trả lời cần tính từ miêu tả.`,
+  `Bước 2: Từ khoá là "culture" và "each ethnic group". Con tìm thấy ở gần cuối Passage 2: "Each group has its own culture that is diverse and special."`,
+  `Bước 3: Hai tính từ miêu tả văn hoá là "diverse" (đa dạng) và "special" (đặc sắc), khớp nguyên văn với phương án đúng.`,
+  `Bước 4: Chọn "It is diverse and special." Về đích trọn vẹn 15 cột mốc, cô tự hào về con!`],
+ bad:[`"It is similar and simple." ngược nghĩa: "similar" (giống nhau) trái với "its own", còn "simple" (đơn giản) trái với "special".`,
+  `"It is ordered and expressed." mượn từ của Câu 1 ra làm bẫy; bài không hề dùng hai từ này để miêu tả văn hoá.`,
+  `"It is disparate and poor." sai: trong bài "disparate" miêu tả tín ngưỡng và tôn giáo, còn "poor" (nghèo nàn) hoàn toàn không có trong bài.`],
+ ev:`Each group has its own culture that is diverse and special.`,
+ evvi:`Mỗi dân tộc có nền văn hoá riêng, đa dạng và đặc sắc.`,
+ dict:[`diverse`,`special`,`similar`,`disparate`]}
+];
+QS.forEach(function(q){q.options=q.opts.map(function(o){return o.w});q.correct=q.opts.filter(function(o){return o.ok})[0].w});
+
+/* ══ dựng trang ══ */
+var TOTAL=QS.length,answered=0,score=0,done={},MAP={};
+var TINT={forest:'#EAF2E4',rose:'#F9E9EC',navy:'#E7EDF7',olive:'#F1F3DE',sepia:'#F6ECDF'};
+var SECINFO={
+ 1:{c:'forest',t:"🐘 PAGE 1 · The M'Nong People — Câu 1 → 8",s:"Read the passage and choose the best option for each numbered blank."},
+ 2:{c:'navy',t:"🌏 PAGE 2 · A Multiethnic Country — Câu 9 → 15",s:"Read the passage and choose the correct answer to each question."}};
+var app=document.getElementById('app'),secs={};
+[1,2].forEach(function(p){var s=document.createElement('div');s.className='sec';s.dataset.part=p;s.style.borderColor='var(--'+SECINFO[p].c+')';
+ s.innerHTML='<div class="sech" style="color:var(--'+SECINFO[p].c+'-d)">'+SECINFO[p].t+'</div><div class="secs">'+SECINFO[p].s+'</div>';
+ secs[p]=s;app.appendChild(s)});
+QS.forEach(function(q){
+ var so=q.tf?q.options.slice():shuffle(q.options);
+ MAP[q.id]=so;
+ var card=document.createElement('div');
+ card.className='q';card.id='c'+q.id;
+ card.style.setProperty('--qc','var(--'+q.col+')');
+ card.style.borderLeftColor='var(--'+q.col+')';
+ card.style.background=TINT[q.col];
+ card.innerHTML='<div class="qt"><span class="qn">'+q.id+'</span>'+q.text.replace(/<b>/g,'<b class="bk-'+q.col+'">')+'</div>'+
+  '<div class="og" id="o'+q.id+'">'+so.map(function(o,i){return '<button class="ob" onclick="pick('+q.id+','+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'}).join('')+'</div>'+
+  '<div class="ex" id="e'+q.id+'"></div>';
+ secs[q.part].appendChild(card);
+});
+
+function pick(qid,i){
+ if(done[qid])return;done[qid]=true;answered++;
+ var q=QS.find(function(x){return x.id===qid});
+ var so=MAP[qid],bs=document.getElementById('o'+qid).children;
+ var ok=so[i]===q.correct;
+ for(var k=0;k<bs.length;k++){bs[k].classList.add('dn');
+  if(so[k]===q.correct)bs[k].classList.add('ok');else if(k===i)bs[k].classList.add('no')}
+ document.getElementById('e'+qid).innerHTML=render(q);
+ document.getElementById('e'+qid).classList.add('on');
+ if(ok){score++;ding();conf()}
+ else{buzz();var c=document.getElementById('c'+qid);c.classList.add('shk');setTimeout(function(){c.classList.remove('shk')},430)}
+ bump();
+}
+function bump(){document.getElementById('lv').textContent=score+'/'+TOTAL;document.getElementById('sc').textContent=score+'/'+TOTAL}
+
+/* ══ khung đọc vừa màn hình: chừa ~95px đáy cho cảnh đường mòn ══ */
+function fitPanels(){var m=document.querySelector('.main'),ps=document.querySelectorAll('.lp,.rp');if(!m||!ps.length)return;
+ if(window.innerWidth<=940){ps.forEach(function(e){e.style.maxHeight=''});m.style.paddingBottom='';return}
+ var n=document.querySelector('.note'),nh=n?n.offsetHeight:0,h=Math.max(320,window.innerHeight-nh-104);
+ ps.forEach(function(e){e.style.maxHeight=h+'px'});
+ var pb=parseFloat(getComputedStyle(m).paddingBottom)||0,top=ps[0].getBoundingClientRect().top+window.scrollY,want=Math.max(40,top-nh-8),extra=document.documentElement.scrollHeight-window.innerHeight-pb;
+ m.style.paddingBottom=Math.max(0,want-extra)+'px'}
+window.addEventListener('resize',fitPanels);window.addEventListener('load',fitPanels);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitPanels);
+fitPanels();
+
+/* ══ nộp bài ══ */
+function openName(){
+ if(answered<TOTAL){alert('Con ơi, con còn '+(TOTAL-answered)+' câu chưa khám phá kìa! Hoàn thành hết rồi mới nộp bài nhé!');return;}
+ document.getElementById('ovN').classList.add('on');setTimeout(function(){document.getElementById('nIn').focus()},150);
+}
+document.getElementById('nIn').addEventListener('keydown',function(e){if(e.key==='Enter')showResult()});
+function showResult(){
+ var i=document.getElementById('nIn'),n=i.value.trim();
+ if(!n){document.getElementById('nEm').classList.add('show');i.focus();return}
+ document.getElementById('nEm').classList.remove('show');
+ document.getElementById('ovN').classList.remove('on');
+ var pct=score/TOTAL,ten=(pct*10).toFixed(2),g,m,gif;
+ document.getElementById('rn').textContent='Học viên: '+n;
+ if(score===TOTAL){g='🏆 CẮM CỜ ĐIỂM 10 TUYỆT ĐỐI, '+n+'!';m='Con đi trọn '+TOTAL+' cột mốc không lạc một bước nào — đúng chuẩn nhà thám hiểm lớp 8! MS Chí Nên rất tự hào về con! 🌟 ☎️ 0852639652.';gif='https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'}
+ else if(pct>=.8){g='👏 SẮP TỚI ĐỈNH NÚI RỒI, '+n+'!';m='Chỉ còn một chút nữa là tròn điểm 10 — xem lại lời giải câu trượt, bài kiểm tra Unit 4 của con chắc chắn bứt phá! ☎️ 0852639652.';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else if(pct>=.6){g='💪 ĐÃ VƯỢT NỬA ĐƯỜNG MÒN, '+n+'!';m='Con đã qua ngưỡng an toàn rồi đó. Mở lời giải từng câu, chép từ mới vào sổ tay thám hiểm là chuyến đi sau sẽ dễ hơn nhiều!';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else{g='🌱 XỎ GIÀY ĐI CHUYẾN MỚI NÀO, '+n+'!';m='Đừng buồn con nhé. Nhà thám hiểm nào cũng từng lạc đường — xem lời giải của cô, ghi chép từ mới, rồi làm lại nha, Ms tin con sẽ làm tốt hơn! 💪';gif='https://media.giphy.com/media/l378giAZgxPw3eO52/giphy.gif'}
+ document.getElementById('rSc').textContent=score;
+ document.getElementById('rTt').textContent=TOTAL;
+ document.getElementById('r10').textContent=ten;
+ document.getElementById('rGif').src=gif;
+ document.getElementById('rMs').innerHTML='<b>'+g+'</b><br>'+m;
+ document.getElementById('ovR').classList.add('on');
+ if(pct>=.6){conf();ding()}
+}
+function closeR(){document.getElementById('ovR').classList.remove('on')}
+
+/* ══ lời nhắc — đổi theo phần đang làm (khung nhắc giữ cố định 2 dòng) ══ */
+var GEN=[
+ '🧭 Chào nhà thám hiểm lớp 8! Explorer\'s Journal có 15 câu (1 → 15) về các dân tộc Việt Nam — xỏ giày, đeo ba lô, chinh phục trọn 15 cột mốc nào! 🔥',
+ '🚨 LƯU Ý TỪ MS MAI AN: Cuộn câu hỏi đến đâu làm đến đó! TỰ GIÁC tra từ mới bằng Google Dịch/Từ điển Cambridge, tuyệt đối KHÔNG chọn bừa. Đọc kỹ giải thích và GHI CHÉP từ mới vào vở thì tiếng Anh mới thực sự giỏi lên. Tránh làm qua loa chống đối! 📝',
+ '✏️ Mẹo highlight: bôi đen manh mối trong bài rồi bấm màu — tô xanh lá từ khoá câu hỏi, tô hồng chỗ trống, đáp án hiện rõ như dưới kính lúp! 🔎',
+ '🔥 Đúng liên tục là đống lửa nhà rông cháy rực — giữ chuỗi thật dài, thắp sáng cả cao nguyên!',
+ '💪 Lớp 8 là năm bứt tốc — sai câu nào mổ xẻ câu đó, lời giải của cô chính là tấm bản đồ dẫn con về đích!',
+ '🦆 Chọn sai là chú vịt kêu quạc quạc — cười một cái, đọc lời giải rồi lao sang câu sau, không chùn bước! 🐸',
+ '🏆 Bài kiểm tra Unit 4 lớp 8 đang chờ phía trước — luyện thật chắc hôm nay, vào phòng thi con sẽ tự tin như già làng dẫn đường! 🗺️',
+ '☎️ Đăng ký khoá tiếng Anh lớp 1 → 12 cùng MS Chí Nên — 0852639652 — mỗi buổi học là một chuyến thám hiểm, điểm số leo cao từng ngày!'];
+var PMSG={
+ 1:['🐘 PAGE 1 · The M\'Nong People! 8 chỗ trống là 8 cột mốc trên đường lên cao nguyên — đọc trọn cả câu, săn manh mối, cắm cờ từng câu! 🔥',
+    '🛖 Lửa nhà sàn đã đỏ rực — soi kĩ từng chữ quanh chỗ trống, chốt đáp án chắc tay như thợ săn voi Bản Đôn!'],
+ 2:['🌏 PAGE 2 · A Multiethnic Country! 54 dân tộc anh em, 7 câu đọc hiểu đang chờ — dò từ khoá, đáp án luôn nằm sẵn trong bài! 🔥',
+    '🔭 Hướng ống nhòm vào con số và tên dân tộc — đối chiếu từng chữ, không để cái bẫy nào lọt qua mắt nhà thám hiểm lớp 8!']};
+var curP=0,mk=0,msEl=document.getElementById('msTx');
+function fitMsg(){var box=msEl.parentNode;msEl.style.fontSize='';var fs=parseFloat(getComputedStyle(msEl).fontSize),k=0;
+ while(msEl.offsetHeight>box.clientHeight+1&&fs>10&&k<20){fs-=.5;k++;msEl.style.fontSize=fs+'px'}}
+function showMsg(t){msEl.style.opacity=0;setTimeout(function(){
+ var de=document.documentElement,atEnd=window.scrollY>0&&window.scrollY>=de.scrollHeight-window.innerHeight-2;
+ msEl.innerHTML=t;fitMsg();msEl.style.opacity=1;fitPanels();
+ if(atEnd)window.scrollTo(0,de.scrollHeight)},250)}
+fitMsg();
+setInterval(function(){var list=(PMSG[curP]||[]).concat(GEN);mk=(mk+1)%list.length;showMsg(list[mk])},5200);
+function whichPart(){
+ var rp=document.querySelector('.rp'),r=rp.getBoundingClientRect(),mid=Math.max(r.top,0)+Math.min(r.height,window.innerHeight)*0.45,p=1;
+ [1,2].forEach(function(k){if(secs[k].getBoundingClientRect().top<mid)p=k});
+ if(p!==curP){curP=p;mk=0;showMsg(PMSG[p][0])}
+}
+document.querySelector('.rp').addEventListener('scroll',whichPart,{passive:true});
+window.addEventListener('scroll',whichPart,{passive:true});
+window.addEventListener('resize',fitMsg);
+
+/* ══ công cụ highlight: chỉ tô trong bài đọc (.paragraph, .translation ở khung trái) ══ */
+var HL={saved:null,t:null,target:null,gid:0},hlPop=document.getElementById('hlPop');
+function hlGroup(g){return Array.prototype.slice.call(document.querySelectorAll('.lp mark.uhl[data-g="'+g+'"]'))}
+function hlUnpick(){document.querySelectorAll('mark.uhl.pick').forEach(function(m){m.classList.remove('pick')});HL.target=null}
+function hlShowGroup(){
+ var ms=hlGroup(HL.target);if(!ms.length){hlUnpick();hlHide();return}
+ var L=1e9,T=1e9,R=-1e9,B=-1e9;
+ ms.forEach(function(m){var b=m.getBoundingClientRect();if(!b.width&&!b.height)return;L=Math.min(L,b.left);T=Math.min(T,b.top);R=Math.max(R,b.right);B=Math.max(B,b.bottom)});
+ if(R<L){hlHide();return}
+ hlShow({getBoundingClientRect:function(){return {left:L,top:T,right:R,bottom:B,width:R-L,height:B-T}}});
+}
+function hlZone(n){var e=n&&(n.nodeType===1?n:n.parentNode);return e&&e.closest?e.closest('.lp .paragraph,.lp .translation'):null}
+function hlNodes(r){
+ var root=r.commonAncestorContainer;if(root.nodeType!==1)root=root.parentNode;
+ var out=[],w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;
+ while((n=w.nextNode())){
+  if(!r.intersectsNode(n))continue;
+  var z=hlZone(n);if(!z||!z.getClientRects().length)continue;
+  var s=n===r.startContainer?r.startOffset:0,e=n===r.endContainer?r.endOffset:n.length;
+  if(e>s)out.push([n,s,e]);
+ }
+ return out;
+}
+function hlRange(){
+ var sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed)return null;
+ var r=sel.getRangeAt(0),lp=document.querySelector('.lp');
+ if(!lp.contains(r.commonAncestorContainer))return null;
+ var L=hlNodes(r);if(!L.some(function(x){return x[0].nodeValue.slice(x[1],x[2]).trim()}))return null;
+ return r;
+}
+function hlIsMark(e){return e&&e.nodeName==='MARK'&&e.classList.contains('uhl')}
+function hlPaint(r,cls){
+ var L=hlNodes(r),zones=[],g=cls?String(++HL.gid):'';
+ L.forEach(function(x){
+  var n=x[0],s=x[1],e=x[2];
+  if(e<n.length)n.splitText(e);
+  if(s>0)n=n.splitText(s);
+  var z=hlZone(n);if(zones.indexOf(z)<0)zones.push(z);
+  var p=n.parentNode;
+  if(hlIsMark(p)){
+   var host=p.parentNode,ref=p.nextSibling,aft=null,put=n;
+   if(n.nextSibling){aft=document.createElement('mark');aft.className=p.className;if(p.dataset.g)aft.dataset.g=p.dataset.g;while(n.nextSibling)aft.appendChild(n.nextSibling)}
+   if(cls){put=document.createElement('mark');put.className='uhl uhl-'+cls;put.dataset.g=g;put.appendChild(n)}
+   host.insertBefore(put,ref);
+   if(aft)host.insertBefore(aft,put.nextSibling);
+   if(!p.firstChild)host.removeChild(p);
+  }else if(cls){
+   var m=document.createElement('mark');m.className='uhl uhl-'+cls;m.dataset.g=g;p.insertBefore(m,n);m.appendChild(n);
+  }
+ });
+ zones.forEach(function(z){if(z){z.querySelectorAll('mark.uhl').forEach(function(m){if(!m.textContent)m.remove()});z.normalize()}});
+}
+function hlDone(){HL.saved=null;hlUnpick();try{window.getSelection().removeAllRanges()}catch(e){}hlHide()}
+function hlApply(cls){
+ if(HL.target&&!hlRange()){hlGroup(HL.target).forEach(function(m){m.className='uhl uhl-'+cls});hlDone();return}
+ var r=HL.saved||hlRange();
+ if(!r){HL.saved=null;hlHide();var t=document.getElementById('hlTip');t.classList.remove('ping');void t.offsetWidth;t.classList.add('ping');return}
+ hlPaint(r,cls);hlDone();
+}
+function hlErase(){
+ if(HL.target&&!hlRange()){hlGroup(HL.target).forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()});hlDone();return}
+ var r=HL.saved||hlRange();
+ if(r){hlPaint(r,null)}
+ else{document.querySelectorAll('mark.uhl').forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()})}
+ hlDone();
+}
+function hlHide(){hlPop.classList.remove('on','below')}
+function hlShow(r){
+ var b=r.getBoundingClientRect();if(!b.width&&!b.height){hlHide();return}
+ hlPop.classList.add('on');
+ var w=hlPop.offsetWidth,h=hlPop.offsetHeight,note=document.querySelector('.note'),nb=note?note.getBoundingClientRect().bottom:0;
+ var x=Math.max(6,Math.min(window.innerWidth-w-6,b.left+b.width/2-w/2)),y=b.top-h-10,below=false;
+ if(y<nb+6){y=b.bottom+10;below=true}
+ hlPop.style.left=x+'px';hlPop.style.top=y+'px';hlPop.classList.toggle('below',below);
+}
+function hlCheck(){clearTimeout(HL.t);HL.t=setTimeout(function(){var r=hlRange();if(r){hlUnpick();hlShow(r)}else if(HL.target)hlShowGroup();else hlHide()},90)}
+document.addEventListener('click',function(e){
+ var t=e.target;if(t.closest&&t.closest('#hlPop,.hlbar'))return;
+ var m=t.closest?t.closest('.lp mark.uhl'):null;
+ if(m&&!hlRange()){
+  if(!m.dataset.g)m.dataset.g=String(++HL.gid);
+  hlUnpick();HL.target=m.dataset.g;hlGroup(HL.target).forEach(function(x){x.classList.add('pick')});hlShowGroup();
+ }else if(HL.target){hlUnpick();hlHide()}
+});
+function hlKeep(e){var r=hlRange();if(r)HL.saved=r.cloneRange();if(e.type==='mousedown')e.preventDefault()}
+document.querySelectorAll('.hlbar button,#hlPop button').forEach(function(b){
+ b.addEventListener('pointerdown',function(){var r=hlRange();HL.saved=r?r.cloneRange():null});
+ b.addEventListener('mousedown',hlKeep);
+ b.addEventListener('touchstart',hlKeep,{passive:true});
+});
+document.addEventListener('mouseup',hlCheck);
+document.addEventListener('touchend',hlCheck);
+document.addEventListener('selectionchange',hlCheck);
+window.addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+document.querySelector('.lp').addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+fitPanels();
+</script>
+<style>/*streak*/
+#stkRow{display:flex;align-items:center;flex:0 0 auto;margin:0 4px}#stkRow.in{align-self:center;margin:0 0 0 8px}#stkRow.in .bar,#stkRow.in .nx,#stkRow.in .lbl{display:none!important}#stkRow.in #stkP{flex-direction:row!important;gap:6px;padding:4px 10px 4px 8px;position:static}#stkRow.in .fl,#stkRow.in .n{position:static;line-height:1}
+#stkRow.fixed{position:fixed;left:10px;bottom:12px;z-index:60}
+#stkP{display:flex;align-items:center;gap:6px;padding:2px 10px 2px 7px;border-radius:999px;background:#FDF2F8;border:2px solid #F9A8D4;font-family:'Baloo 2','Nunito',sans-serif;
+ font-weight:700;color:#9D174D;font-size:.92rem;transition:transform .25s;white-space:nowrap}
+#stkP .fl{display:inline-block;position:static;font-size:1.1rem;transition:font-size .3s;transform-origin:50% 90%}
+#stkP.hot .fl{animation:stkFl .5s ease-in-out infinite alternate}@keyframes stkFl{from{transform:scale(1) rotate(-6deg)}to{transform:scale(1.25) rotate(6deg)}}
+#stkP.pop{transform:scale(1.15)}#stkP.cold{filter:grayscale(.6);opacity:.85}
+#stkP .n{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:linear-gradient(135deg,#F472B6,#A855F7);color:#fff;font-size:.9rem}
+#stkP .bar{width:54px;height:6px;border-radius:99px;background:#FBCFE8;overflow:hidden}#stkP .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#EC4899,#A855F7);transition:width .3s}
+#stkP .nx{font-size:.78rem;color:#BE185D}
+#stkToast{position:fixed;left:50%;top:38%;z-index:70;transform:translate(-50%,-50%) scale(.4);opacity:0;pointer-events:none;text-align:center;padding:18px 26px;border-radius:26px;
+ background:linear-gradient(135deg,#FDF2F8,#F5F3FF);border:4px solid #F9A8D4;box-shadow:0 18px 40px rgba(0,0,0,.25);font-family:'Baloo 2','Nunito',sans-serif;color:#9D174D;max-width:86vw;transition:all .35s cubic-bezier(.2,1.6,.4,1)}
+#stkToast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}#stkToast b{display:block;font-size:2.3rem;line-height:1.15}#stkToast span{font-weight:700;font-size:1.05rem}
+#stkToast.soft{background:linear-gradient(135deg,#EFF6FF,#F5F3FF);border-color:#93C5FD;color:#1E3A8A}#stkToast.soft b{font-size:1.6rem}
+.stkSpark{position:fixed;z-index:69;pointer-events:none;font-size:26px;animation:stkSp 1.2s ease-out forwards}
+@keyframes stkSp{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3) rotate(240deg)}}
+@media(max-width:700px){#stkP .bar,#stkP .nx,#stkP .lbl{display:none}#stkP{padding:2px 7px 2px 5px}#stkToast b{font-size:1.8rem}}
+@media (prefers-reduced-motion:reduce){#stkP.hot .fl,.stkSpark{animation:none}}
+</style>
+<script>/*streak*/(function(){
+ const $=id=>document.getElementById(id),num=el=>{const m=(el.textContent||'').match(/(\d+)\s*\/\s*(\d+)/);return m?[+m[1],+m[2]]:[0,0]};
+ let get=null,anchor=null,mode='after';const sc=$('scoreChip'),pg=$('progChip');
+ if(sc&&pg){get=()=>{const s=num(sc),a=num(pg);return [a[0],s[0],a[1]]};anchor=sc}
+ else{try{if(typeof answered!=='undefined'&&typeof score!=='undefined'){get=()=>[answered,score,typeof TOTAL!=='undefined'?TOTAL:0];anchor=$('sc')&&$('sc').parentElement}}catch(e){}
+  if(!get)try{if(typeof done==='object'&&done&&$('lv')){get=()=>{const v=Object.values(done);return [v.length,v.filter(x=>x===true).length,typeof QS!=='undefined'?QS.length:0]};anchor=$('lv').closest('.gauge')||$('lv');mode='in'}}catch(e){}}
+ if(!get)return;
+ const row=document.createElement('div');row.id='stkRow';
+ row.innerHTML='<div id="stkP" class="cold" title="Số câu đúng liên tiếp"><span class="fl">🔥</span><span class="lbl">Chuỗi đúng</span><span class="n" id="stkN">0</span><span class="bar"><i id="stkB"></i></span><span class="nx" id="stkX">→ 3</span></div>';
+ if(!anchor){row.className='fixed';document.body.appendChild(row)}else if(mode==='in'){row.className='in';anchor.insertAdjacentElement('afterend',row)}else anchor.insertAdjacentElement('afterend',row);
+ const toast=document.createElement('div');toast.id='stkToast';document.body.appendChild(toast);
+ const P=document.getElementById('stkP'),N=document.getElementById('stkN'),B=document.getElementById('stkB'),X=document.getElementById('stkX');
+ let cur=0,best=0,[lastA,lastS]=get(),tmr=null;
+ const NEXT=n=>n<3?3:n<5?5:n<10?10:(Math.floor(n/5)+1)*5,LOW=n=>n<3?0:n<5?3:n<10?5:Math.floor(n/5)*5;
+ const PRAISE={3:['🔥 3 câu liền!','Con đang vào guồng rồi đó!'],5:['🔥🔥 5 câu liền!','Siêu đỉnh luôn — cô thấy con tập trung lắm!'],10:['🌟 10 câu liền!','Không ai cản nổi con nữa rồi!'],
+  15:['🏆 15 câu liền!','Con là ngôi sao của lớp đó!'],20:['👑 20 câu liền!','Tuyệt vời — cô tự hào về con lắm!']};
+ const OOPS=['Không sao đâu con — mình bắt đầu chuỗi mới nhé! 💪','Đọc lời giải rồi làm tiếp, chuỗi mới đang chờ con! 🌱','Sai một câu là học thêm một điều — cố lên con! 🌈','Hít một hơi thật sâu, câu sau con sẽ làm được! ⭐'];
+ function say(t,sub,soft){toast.className=soft?'soft':'';toast.innerHTML='<b>'+t+'</b><span>'+sub+'</span>';void toast.offsetWidth;toast.classList.add('show');clearTimeout(tmr);tmr=setTimeout(()=>toast.classList.remove('show'),soft?1600:2000)}
+ function burst(){const E=['🔥','⭐','✨','🎉','💗','🌟'];for(let i=0;i<16;i++){const s=document.createElement('div');s.className='stkSpark';s.textContent=E[i%E.length];
+  const a=Math.random()*Math.PI*2,r=120+Math.random()*160;s.style.cssText='left:50%;top:38%;--x:'+Math.cos(a)*r+'px;--y:'+Math.sin(a)*r+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),1300)}}
+ function paint(){N.textContent=cur;const lo=LOW(cur),hi=NEXT(cur);B.style.width=Math.min(100,(cur-lo)/(hi-lo)*100)+'%';X.textContent='→ '+hi;
+  P.classList.toggle('cold',cur===0);P.classList.toggle('hot',cur>=3);P.classList.add('pop');setTimeout(()=>P.classList.remove('pop'),250);
+  P.querySelector('.fl').style.fontSize=(1.1+Math.min(cur,15)*.03)+'rem'}
+ function check(){const [a,s,tot]=get();if(a===lastA)return;const dA=a-lastA,dS=s-lastS;lastA=a;lastS=s;if(dA<=0)return;
+  if(dS>=dA){const before=cur;cur+=dA;best=Math.max(best,cur);paint();
+   const hit=Object.keys(PRAISE).map(Number).filter(m=>before<m&&cur>=m).pop()||(cur>=25&&Math.floor(cur/5)>Math.floor(before/5)?cur-cur%5:0);
+   if(hit){const p=PRAISE[hit]||['🚀 '+hit+' câu liền!','Con đang bay cao lắm rồi!'];say(p[0],p[1]);burst()}}
+  else{const had=cur;cur=0;paint();if(had>=3)say('Chuỗi '+had+' câu — giỏi lắm!',OOPS[Math.floor(Math.random()*OOPS.length)],true)}
+  if(tot&&a>=tot)setTimeout(()=>{say('🏅 Chuỗi dài nhất: '+best+' câu',best>=5?'Con làm bài thật tuyệt vời!':'Lần sau mình thử phá kỷ lục này nhé!');if(best>=5)burst()},2400)}
+ setInterval(check,250);
+})();</script>
+<style>/* chuỗi đúng: đổi màu theo sổ tay thám hiểm */
+body #stkP{background:#FBF3E4;border-color:#C27583;color:#8E3F52}
+body #stkP .n{background:linear-gradient(135deg,#C27583,#4A69A0)}
+body #stkP .bar{background:#F1DCC9}body #stkP .bar i{background:linear-gradient(90deg,#8E3F52,#2C5A35)}
+body #stkP .nx{color:#8E3F52}
+body #stkToast{background:linear-gradient(135deg,#FFF8EA,#EEF4E6);border-color:#C27583;color:#8E3F52}
+</style>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<style>/*namegate*/.ngTag{display:block;margin:2px auto 8px;padding:8px 12px;border-radius:14px;background:#F5F3FF;border:2px dashed #C4B5FD;font-weight:800;color:#4C1D95;line-height:1.6;font-size:.95rem;text-align:center}
+.ngTag small{font-weight:700;color:#6D28D9}
+#ngClock{position:fixed;left:10px;bottom:10px;z-index:90;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid #C4B5FD;font:800 .9rem inherit;color:#5B21B6;box-shadow:0 4px 12px rgba(0,0,0,.12);pointer-events:none}</style>
+<div id="ngClock">⏱ 00:00</div>
+<script>/*namegate*/(function(){
+var T0=Date.now(),TEND=0,clk=document.getElementById('ngClock');
+function mmss(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function dur(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m?m+' phút ':'')+s+' giây';}
+function esc(s){return String(s).replace(/[<>&]/g,'');}
+function clean(s){s=(s||'');try{s=s.normalize('NFC')}catch(e){}return s.replace(/[​-‏⁠﻿]/g,'').replace(/\s+/g,' ').trim();}
+function stamp(){var d=new Date(),p=function(n){return(n<10?'0':'')+n};return p(d.getHours())+':'+p(d.getMinutes())+' · '+p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear();}
+setInterval(function(){if(!TEND&&clk)clk.textContent='⏱ '+mmss(Date.now()-T0);},1000);
+var orig=window.showResult;if(typeof orig!=='function')return;
+window.showResult=function(){var i=document.getElementById('nIn'),v=clean(i&&i.value);if(i)i.value=v;
+  orig.apply(this,arguments);
+  var ov=document.getElementById('ovR'),rn=document.getElementById('rn');if(!v||!ov||!ov.classList.contains('on')||!rn)return;
+  if(!TEND)TEND=Date.now();if(clk)clk.textContent='⏱ '+mmss(TEND-T0)+' ✔';
+  rn.innerHTML='<span class="ngTag">👤 '+esc(v)+'<br>⏱ Làm bài trong <b>'+dur(TEND-T0)+'</b><br><small>⏰ Nộp lúc '+stamp()+'<br>📘 '+esc(document.title.split('|')[0].trim())+'</small></span>';};
+})();</script>
+<script>/*attempts*/(function(){
+var KEY='att:'+decodeURIComponent(location.pathname),done=false;
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function save(a){try{localStorage.setItem(KEY,JSON.stringify(a.slice(-20)))}catch(e){}}
+function fmt(d){var p=function(n){return(n<10?'0':'')+n};return p(d.getDate())+'/'+p(d.getMonth()+1);}
+function durOf(tag){var m=(tag.textContent||'').match(/Làm bài trong\s*((?:\d+\s*phút\s*)?\d+\s*giây)/);return m?m[1].replace(/\s+/g,' '):'';}
+function score(){var a=document.getElementById('resScore');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rS');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rSc');var b=document.getElementById('rTt');if(a)return a.textContent.trim()+'/'+(b?b.textContent.trim():'?');return '?';}
+function add(tag){
+  if(tag.querySelector('.ngAtt'))return;
+  var a=load();
+  if(!done){done=true;a.push({s:score(),t:Date.now(),d:durOf(tag)});save(a);}
+  var k=a.length,prev=a.slice(Math.max(0,k-6),k-1);
+  var d=document.createElement('div');d.className='ngAtt';
+  d.style.cssText='display:block;margin-top:6px;padding-top:6px;border-top:2px dashed #DDD6FE';
+  d.innerHTML='🔁 <b>Lần nộp thứ '+k+'</b> trên máy này'+(prev.length?'<br><small>'+prev.map(function(x,i){return 'Lần '+(k-prev.length+i)+': <b>'+x.s+'</b>'+(x.d?' · ⏱ làm trong <b>'+x.d+'</b>':'')+' · '+fmt(new Date(x.t))}).join('<br>')+'</small>':'');
+  tag.appendChild(d);
+}
+function check(){var t=document.getElementById('ngTag')||document.querySelector('#rn .ngTag');if(t&&t.textContent.trim())add(t);}
+new MutationObserver(check).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>

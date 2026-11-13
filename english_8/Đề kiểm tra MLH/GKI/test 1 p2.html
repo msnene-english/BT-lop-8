@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌻 Bài Tập Đọc Hiểu - MS Chí Nên</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Theme tái sử dụng NGUYÊN PALETTE & cơ chế trang trí từ "week 3 p2.html" (ocean/sky), chỉ đổi icon/nội dung cho đúng chủ đề Self-care & Peer Pressure */
+        :root{--ink:#032b3a;--dim:#0e7490;--clay:#0284c7;--sun:#ffd166;--sky:#7dd3fc;
+         --good:#2a9d8f;--bad:#e5383b;--card:#f0fbff;--pan:#f0fbff;
+         --pw:#c1121f;--pm:#1d6fb8;--pg:#6a4c93}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{overflow-x:hidden}
+        body{font-family:'Baloo 2','Segoe UI',sans-serif;font-weight:700;color:var(--ink);min-height:100vh;overflow:hidden;
+         background:linear-gradient(-45deg,#7dd3fc,#38bdf8,#0284c7,#ffd166,#7dd3fc);background-size:400% 400%;animation:bg 18s ease infinite}
+        @keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+         background:repeating-radial-gradient(circle at 50% 130%,rgba(255,255,255,.32) 0 4px,transparent 4px 34px),
+          radial-gradient(rgba(255,255,255,.45) 3px,transparent 3.2px);
+         background-size:200px 100px,50px 50px}
+        .sky{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+        .sky i{position:absolute;font-size:32px;opacity:.5;animation:fly linear infinite;font-style:normal;
+         filter:drop-shadow(0 4px 6px rgba(0,0,0,.15))}
+        @keyframes fly{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-26px) rotate(8deg)}}
+        /* ── ocean strip: bạn bè / lời nhắn trôi qua, tái dùng đúng cơ chế sóng-bọt-thuyền ── */
+        #ocean{position:fixed;left:0;right:0;bottom:0;height:74px;z-index:1;pointer-events:none;overflow:hidden}
+        #ocean .wave{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,132,199,0) 0%,rgba(56,189,248,.55) 35%,rgba(2,132,199,.85) 100%)}
+        #ocean .foam{position:absolute;left:0;right:0;top:12px;height:8px;opacity:.6;
+         background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.6) 0 14px,transparent 14px 34px)}
+        #ocean .boat{position:absolute;bottom:10px;font-size:28px;animation:sail linear infinite;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2))}
+        @keyframes sail{0%{transform:translateX(112vw)}100%{transform:translateX(-16vw)}}
+        @media(max-width:820px){#ocean{height:56px}#ocean .boat{font-size:22px}}
+        .wrap{position:relative;z-index:2;max-width:1500px;margin:0 auto;padding:8px 14px 90px}
+        /* ── thanh nhắc nhở ── */
+        .note{position:sticky;top:0;z-index:40;margin:0 -14px 12px;padding:10px 14px;
+         background:linear-gradient(90deg,var(--clay),var(--dim));box-shadow:0 5px 20px rgba(2,132,199,.35);
+         border-bottom:3px solid var(--ink)}
+        .note .in{display:flex;align-items:center;gap:10px;max-width:1470px;margin:0 auto}
+        .note .tg{flex:none;background:#fff;color:var(--clay);font-weight:900;font-size:.9rem;padding:4px 14px;
+         border-radius:20px;white-space:nowrap;border:2px solid var(--ink)}
+        .note .tx{flex:1;min-width:0;color:#fff;font-weight:800;font-size:1.05rem;line-height:1.5;transition:opacity .25s;
+         text-shadow:1px 1px 0 rgba(0,0,0,.2)}
+        /* ── header ── */
+        .hd{background:var(--pan);border:4px solid var(--ink);border-radius:22px;padding:20px 18px;text-align:center;
+         margin-bottom:14px;box-shadow:7px 7px 0 rgba(2,132,199,.3)}
+        .hd h1{font-family:'Baloo 2';font-weight:800;font-size:clamp(22px,4.6vw,36px);line-height:1.3;
+         color:#fff;-webkit-text-stroke:1.7px var(--ink);text-shadow:3px 3px 0 var(--clay),4px 4px 0 rgba(0,0,0,.15)}
+        .hd .by{display:inline-block;margin-top:11px;background:linear-gradient(135deg,var(--dim),var(--clay));color:#fff;
+         font-weight:900;font-size:1.05rem;padding:8px 18px;border-radius:20px;border:2.5px solid var(--ink)}
+        .hd p{margin-top:10px;font-size:1.05rem;font-weight:800;color:var(--dim);line-height:1.7}
+        .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+        @media(max-width:940px){.split{grid-template-columns:1fr}}
+        .container{display:flex;height:calc(100vh - 230px);min-height:420px;gap:16px}
+        @media(max-width:940px){.container{display:block;height:auto}}
+        .panel{flex:1;overflow-y:auto;background:var(--pan);border:4px solid var(--ink);border-radius:22px;
+         padding:16px;box-shadow:7px 7px 0 rgba(2,132,199,.25)}
+        @media(max-width:940px){.panel{margin-bottom:16px}}
+        .panel::-webkit-scrollbar{width:8px}
+        .panel::-webkit-scrollbar-track{background:#e0f6ff;border-radius:10px}
+        .panel::-webkit-scrollbar-thumb{background:var(--clay);border-radius:10px}
+        .letter{background:var(--card);color:var(--ink);border:4px solid var(--ink);border-radius:22px;overflow:hidden;
+         box-shadow:7px 7px 0 rgba(2,132,199,.28);margin-bottom:16px}
+        .letter .edge{height:11px;background:repeating-linear-gradient(90deg,var(--clay) 0 22px,var(--sun) 22px 44px)}
+        .letter .bd{padding:17px 19px 22px}
+        .stamp{float:right;width:82px;height:82px;margin:0 0 8px 12px;border-radius:20px;
+         background:linear-gradient(135deg,#e0f6ff,var(--sun));border:3px solid var(--ink);display:grid;place-items:center;
+         text-align:center;font-size:28px;line-height:1.1;color:var(--dim);box-shadow:4px 4px 0 rgba(0,0,0,.15)}
+        .stamp b{display:block;font-weight:800;font-size:.6rem;letter-spacing:.6px;color:var(--dim)}
+        .letter h2{font-family:'Baloo 2';font-weight:800;font-size:1.5rem;color:var(--clay);line-height:1.32;margin-bottom:5px}
+        .letter .sub{font-size:1.02rem;font-weight:900;color:var(--pw);font-style:italic;margin-bottom:13px}
+        .letter p{font-size:1.18rem;font-weight:700;line-height:1.95;margin-bottom:9px}
+        .letter b{color:var(--clay);font-weight:900}
+        .tbtn{display:inline-block;margin:3px 0 11px;background:linear-gradient(135deg,var(--dim),var(--clay));color:#fff;
+         border:2.5px solid var(--ink);border-radius:20px;padding:8px 20px;font-family:'Baloo 2';font-weight:800;font-size:1rem;
+         cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:.14s}
+        .tbtn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+        .tvi{display:none;background:#e0f6ff;border-left:6px solid var(--clay);border-radius:0 14px 14px 0;padding:11px 14px;
+         margin-bottom:11px;font-size:1.05rem;font-weight:700;line-height:1.85;color:#063b52}
+        .tvi.on{display:block;animation:pop .3s}
+        @keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+        .gl{margin-top:15px;background:var(--card);border:4px solid var(--ink);border-radius:20px;overflow:hidden;
+         box-shadow:5px 5px 0 rgba(2,132,199,.22)}
+        .gl h3{font-family:'Baloo 2';font-weight:800;font-size:1.1rem;color:#fff;background:linear-gradient(90deg,var(--clay),var(--dim));
+         margin:0;padding:10px 15px}
+        .gtb{width:100%;table-layout:fixed;border-collapse:collapse;font-size:1rem}
+        .gtb col.c1{width:22%}.gtb col.c2{width:22%}.gtb col.c3{width:12%}.gtb col.c4{width:44%}
+        .gtb tr{border-top:2px solid #bae6fd}
+        .gtb tr:nth-child(even){background:#e0f6ff}
+        .gtb td{padding:9px 10px;vertical-align:top;line-height:1.6;word-wrap:break-word;overflow-wrap:break-word}
+        .gtb .gw{color:var(--pw);font-weight:900}
+        .gtb .gp{color:var(--clay);font-style:italic;font-weight:600;font-size:.9rem}
+        .gtb .gt{color:var(--pg);font-weight:900;text-align:center;font-size:.9rem}
+        .gtb .gm{color:#0a6e45;font-weight:800}
+        .sec-title{font-family:'Baloo 2';font-weight:800;color:var(--clay);font-size:1.15rem;margin-bottom:12px;line-height:1.4;text-align:center}
+        .question-block{background:#fff;border:3px solid var(--ink);border-left:8px solid var(--dim);
+         border-radius:16px;padding:14px 15px;margin-bottom:13px;box-shadow:4px 4px 0 rgba(2,132,199,.18)}
+        .question-text{font-weight:900;font-size:1.1rem;color:var(--ink);line-height:1.75;margin-bottom:12px}
+        .qn{display:inline-block;background:linear-gradient(135deg,var(--dim),var(--clay));color:#fff;min-width:34px;
+         text-align:center;border-radius:8px;padding:3px 9px;margin-right:9px;font-weight:900;font-size:.95rem;
+         border:2px solid var(--ink)}
+        .options-grid{display:flex;flex-direction:column;gap:9px}
+        .option-btn{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:14px;padding:13px 14px;
+         font-family:'Baloo 2';font-weight:800;font-size:1.04rem;cursor:pointer;text-align:left;line-height:1.5;
+         white-space:normal;transition:.14s;box-shadow:3px 3px 0 var(--ink)}
+        .option-btn:hover:not(.disabled){transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);background:#e0f6ff}
+        .option-btn.disabled{cursor:default;pointer-events:none;opacity:1}
+        .option-btn.correct{background:#c9f7d8;border-color:var(--good);color:#0a6e45;box-shadow:3px 3px 0 var(--good)}
+        .option-btn.wrong{background:#ffdde1;border-color:var(--bad);color:#a31832;box-shadow:3px 3px 0 var(--bad)}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+        .shake{animation:shake .42s}
+        /* ═══ Khung Giải Thích Chuẩn Nhà (exp-box / grid2 / hx0-5) ═══ */
+        .explanation-box{display:none;margin-top:11px}
+        .exp-box{background:#fffdf7;border:3px dashed var(--ink);border-radius:16px;padding:14px;
+         font-size:1.02rem;font-weight:700;line-height:1.85;color:var(--ink)}
+        .exp-box h4{color:var(--dim);margin-bottom:9px;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+        .vnt{font-style:italic;color:#063b52;margin-bottom:10px;padding-bottom:8px;border-bottom:2px dashed #bae6fd;font-weight:700}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}
+        @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+        .grid2>div{background:#e0f6ff;border:2px solid #bae6fd;border-radius:10px;padding:7px 10px;font-size:.94rem;font-weight:700}
+        .wt{background:var(--pg);color:#fff;font-weight:900;border-radius:6px;padding:1px 7px;font-size:.74em;margin:0 3px}
+        .p-word{font-weight:900;color:var(--pw)}
+        .p-phonetic{font-style:italic;color:var(--pm);background:#eef5ff;padding:1px 6px;border-radius:4px}
+        .p-mean{font-weight:800;color:#0a6e45}
+        .p-grammar{background:var(--clay);padding:2px 7px;border-radius:6px;font-weight:900;color:#fff}
+        .hl-green{background:#c9f7d8;color:#0a6e45;padding:2px 9px;border-radius:14px;font-weight:900;display:inline-block;margin-bottom:4px}
+        .hl-red{background:#ffdde1;color:#a31832;padding:2px 9px;border-radius:14px;font-weight:900;display:inline-block;margin-top:9px;margin-bottom:4px}
+        .hx{display:block;margin:6px 0;padding:7px 10px;border-radius:10px}
+        .hx0{background:#FFF3B0}.hx1{background:#D6ECFF}.hx2{background:#FFDDEE}
+        .hx3{background:#DDF7D0}.hx4{background:#EBDFFF}.hx5{background:#FFE4CC}
+        .ar{color:var(--dim);font-weight:900}
+        .dlk{display:inline-block;margin:2px 4px 2px 0;background:#e0f6ff;border:1.5px solid var(--clay);
+         border-radius:12px;padding:2px 9px;font-size:.82em;font-weight:800;color:#0e5a7a;text-decoration:none}
+        .dlk:hover{background:var(--clay);color:#fff}
+        .sbtn{display:block;width:100%;max-width:560px;margin:24px auto 0;
+         background:linear-gradient(135deg,#ffd166,#38bdf8);background-size:200% 200%;animation:bg 6s ease infinite;
+         color:#063b52;border:4px solid var(--ink);border-radius:20px;padding:18px;font-family:'Baloo 2';font-weight:800;font-size:1.3rem;
+         cursor:pointer;box-shadow:6px 6px 0 rgba(2,132,199,.35)}
+        .ov{position:fixed;inset:0;background:rgba(3,43,58,.55);backdrop-filter:blur(4px);display:none;place-items:center;z-index:99;padding:16px}
+        .ov.on{display:grid}
+        #resultModal{display:none;position:fixed;inset:0;background:rgba(3,43,58,.55);backdrop-filter:blur(4px);
+         z-index:1000;justify-content:center;align-items:center;padding:16px}
+        .modal-content{background:var(--card);color:var(--ink);border-radius:22px;padding:24px;max-width:440px;width:100%;text-align:center;
+         border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(2,132,199,.35)}
+        .modal-content input{width:100%;padding:13px;border-radius:14px;border:2.5px solid var(--ink);font-family:'Baloo 2';
+         font-weight:800;font-size:1.14rem;text-align:center;outline:none;color:var(--ink);margin:11px 0}
+        .modal-content input:focus{border-color:var(--clay);background:#e0f6ff}
+        .score-display{font-family:'Baloo 2';font-weight:800;font-size:2.6rem;color:var(--clay);margin:10px 0}
+        .score-10{display:inline-block;margin-top:9px;background:var(--ink);color:#fff;font-weight:900;
+         padding:8px 20px;border-radius:14px;font-size:1.18rem;margin-bottom:12px}
+        .comment{font-size:1.12rem;font-weight:700;line-height:1.82;margin-top:11px;color:var(--clay);margin-bottom:18px}
+        .meme-img{width:100%;border-radius:14px;margin:11px 0}
+        .foot{text-align:center;margin-top:24px;font-size:1.06rem;color:#063b52;font-weight:900;line-height:1.8}
+        #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+    </style>
+</head>
+<body>
+<div class="sky" id="sky"></div>
+<div id="ocean"><div class="wave"></div><div class="foam"></div></div>
+<canvas id="confetti-canvas"></canvas>
+<div class="wrap">
+
+<div class="note"><div class="in">
+  <span class="tg">🌻 MS NHẮN</span>
+  <span class="tx" id="msTx">🌻 Chào các con lớp 8! MS Chí Nên cùng làm bài đọc hiểu về Thời gian cho bản thân &amp; Áp lực bạn bè nhé.</span>
+</div></div>
+
+<div class="hd">
+  <h1>📖 ĐỀ KIỂM TRA GIỮA KÌ · READING<br>Time for Yourself &amp; Peer Pressure</h1>
+  <div class="by">🌻 Giáo viên tạo: MS Chí Nên &nbsp;·&nbsp; ☎️ 0852639652 để đăng ký khoá học tiếng Anh <b>từ lớp 1 đến lớp 12</b></div>
+  <p><b>10 câu</b> (15-24): 6 câu điền từ (cloze) &amp; 4 câu đọc hiểu<br>
+  <i>Mỗi đoạn văn có nút mở bản dịch riêng nhé!</i></p>
+</div>
+
+<div class="container">
+    <!-- BÊN TRÁI: BÀI ĐỌC -->
+    <div class="panel left-panel">
+
+        <!-- PASSAGE 1 -->
+        <div class="letter">
+          <div class="edge"></div>
+          <div class="bd">
+            <div class="stamp">🧘<b>SELF-CARE</b></div>
+            <h2>Passage 1: Time for Yourself</h2>
+            <div class="sub">Đọc đoạn văn rồi chọn đáp án đúng nhất điền vào chỗ trống (15-20)</div>
+
+            <p>Being connected to people is important for your happiness and well-being, (15)___ it's also helpful to balance social time with taking time for yourself. Learning to be alone is a great opportunity to get to know yourself better. It can help you (16)___ a better understanding of who you are. The better you know yourself, the more likely you are to do things that you love, learn things that interest you, and spend time (17)___ people who make you feel good.</p>
+            <button class="tbtn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+            <div class="tvi">Kết nối với mọi người là điều quan trọng đối với hạnh phúc và sức khỏe của bạn, (15)___ việc cân bằng thời gian xã hội với việc dành thời gian cho bản thân cũng rất hữu ích. Học cách ở một mình là một cơ hội tuyệt vời để hiểu rõ bản thân mình hơn. Nó có thể giúp bạn (16)___ một sự hiểu biết tốt hơn về việc bạn là ai. Càng hiểu rõ bản thân, bạn càng có nhiều khả năng làm những điều mình yêu thích, học những điều khiến bạn quan tâm và dành thời gian (17)___ những người khiến bạn cảm thấy tốt đẹp.</div>
+
+            <p>Time for yourself is also a great way to recharge your energy. Do (18)___ feels relaxing to you, whether it's reading a book, watching TV, playing a game, or going for a (19)___. Taking this time to recharge might also make being with others more (20)___, since you've had time to rest and have more energy to devote to friends or group activities.</p>
+            <button class="tbtn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+            <div class="tvi">Dành thời gian cho bản thân cũng là một cách tuyệt vời để nạp lại năng lượng. Hãy làm (18)___ khiến bạn cảm thấy thư giãn, cho dù đó là đọc sách, xem TV, chơi game hay đi (19)___. Dành thời gian này để nạp năng lượng cũng có thể làm cho việc ở bên những người khác trở nên (20)___ hơn, vì bạn đã có thời gian nghỉ ngơi và có nhiều năng lượng hơn để cống hiến cho bạn bè hoặc các hoạt động nhóm.</div>
+
+            <div class="gl"><h3>📚 Vocabulary - Passage 1</h3>
+              <table class="gtb"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+                <tr><td class="gw">well-being</td><td class="gp">/ˌwel ˈbiː.ɪŋ/</td><td class="gt">(n)</td><td class="gm">sự hạnh phúc, khỏe mạnh</td></tr>
+                <tr><td class="gw">balance</td><td class="gp">/ˈbæl.əns/</td><td class="gt">(v/n)</td><td class="gm">cân bằng, sự cân bằng</td></tr>
+                <tr><td class="gw">opportunity</td><td class="gp">/ˌɒp.əˈtʃuː.nə.ti/</td><td class="gt">(n)</td><td class="gm">cơ hội</td></tr>
+                <tr><td class="gw">understanding</td><td class="gp">/ˌʌn.dəˈstæn.dɪŋ/</td><td class="gt">(n)</td><td class="gm">sự hiểu biết, thấu hiểu</td></tr>
+                <tr><td class="gw">interest</td><td class="gp">/ˈɪn.trəst/</td><td class="gt">(v/n)</td><td class="gm">làm quan tâm, sự thích thú</td></tr>
+                <tr><td class="gw">recharge</td><td class="gp">/ˌriːˈtʃɑːdʒ/</td><td class="gt">(v)</td><td class="gm">nạp lại (năng lượng)</td></tr>
+                <tr><td class="gw">relaxing</td><td class="gp">/rɪˈlæk.sɪŋ/</td><td class="gt">(adj)</td><td class="gm">mang lại cảm giác thư giãn</td></tr>
+                <tr><td class="gw">devote</td><td class="gp">/dɪˈvəʊt/</td><td class="gt">(v)</td><td class="gm">cống hiến, dành hết cho</td></tr>
+                <tr><td class="gw">activity</td><td class="gp">/ækˈtɪv.ə.ti/</td><td class="gt">(n)</td><td class="gm">hoạt động</td></tr>
+                <tr><td class="gw">energy</td><td class="gp">/ˈen.ə.dʒi/</td><td class="gt">(n)</td><td class="gm">năng lượng</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSAGE 2 -->
+        <div class="letter">
+          <div class="edge"></div>
+          <div class="bd">
+            <div class="stamp">👫<b>PEER TALK</b></div>
+            <h2>Passage 2: Peer Pressure</h2>
+            <div class="sub">Đọc đoạn văn rồi trả lời các câu hỏi đọc hiểu (21-24)</div>
+
+            <p>Peer pressure happens when people around you try to make you act differently. Your friends and people your age can <b>influence</b> what you say or do. Sometimes, you might feel you must be like them to fit in. Your classmates might encourage you to skip class or break school rules. You could feel forced to wear certain clothes just to be cool.</p>
+            <button class="tbtn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+            <div class="tvi">Áp lực đồng trang lứa xảy ra khi những người xung quanh cố gắng làm bạn hành xử khác đi. Bạn bè và những người cùng tuổi có thể <b>ảnh hưởng</b> đến những gì bạn nói hoặc làm. Đôi khi, bạn có thể cảm thấy mình phải giống họ để hòa nhập. Các bạn cùng lớp có thể khuyến khích bạn trốn học hoặc vi phạm nội quy trường học. Bạn có thể cảm thấy bị ép buộc phải mặc một số loại quần áo nhất định chỉ để trông ngầu hơn.</div>
+
+            <p>Peer pressure isn't always negative, as it can also push you toward good things. Friends might inspire you to study harder for better grades. They could encourage you to join sports teams or try healthy activities. Teenagers usually feel peer pressure more strongly than other age groups do. Young people care a lot about what their friends think of them. They want to belong to groups and feel accepted.</p>
+            <button class="tbtn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+            <div class="tvi">Áp lực đồng trang lứa không phải lúc nào cũng tiêu cực, vì nó cũng có thể thúc đẩy bạn hướng tới những điều tốt đẹp. Bạn bè có thể truyền cảm hứng cho bạn học tập chăm chỉ hơn để đạt điểm cao hơn. Họ có thể khuyến khích bạn tham gia các đội thể thao hoặc thử các hoạt động lành mạnh. Thanh thiếu niên thường cảm nhận áp lực đồng trang lứa mạnh mẽ hơn so với các nhóm tuổi khác. Những người trẻ rất quan tâm đến những gì bạn bè nghĩ về họ. Họ muốn thuộc về các nhóm và cảm thấy được chấp nhận.</div>
+
+            <p>It's important to handle peer pressure in healthy ways. You should learn to say no when you feel uncomfortable about something. Good friends will respect your choices and not force you to change. Talking to parents or teachers can help when peer pressure becomes too much. And remember, your opinions and feelings matter more than others' expectations.</p>
+            <button class="tbtn" onclick="toggleTranslate(this)">Mở dịch đoạn này 🌟</button>
+            <div class="tvi">Điều quan trọng là phải xử lý áp lực đồng trang lứa theo những cách lành mạnh. Bạn nên học cách nói không khi cảm thấy không thoải mái về điều gì đó. Những người bạn tốt sẽ tôn trọng lựa chọn của bạn và không ép buộc bạn phải thay đổi. Nói chuyện với cha mẹ hoặc giáo viên có thể giúp ích khi áp lực đồng trang lứa trở nên quá lớn. Và hãy nhớ rằng, ý kiến và cảm xúc của bạn quan trọng hơn những kỳ vọng của người khác.</div>
+
+            <div class="gl"><h3>📚 Vocabulary - Passage 2</h3>
+              <table class="gtb"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+                <tr><td class="gw">peer pressure</td><td class="gp">/ˈpɪə ˌpreʃ.ər/</td><td class="gt">(n phr)</td><td class="gm">áp lực đồng trang lứa</td></tr>
+                <tr><td class="gw">influence</td><td class="gp">/ˈɪn.flu.əns/</td><td class="gt">(v/n)</td><td class="gm">ảnh hưởng, sự tác động</td></tr>
+                <tr><td class="gw">encourage</td><td class="gp">/ɪnˈkʌr.ɪdʒ/</td><td class="gt">(v)</td><td class="gm">khuyến khích, động viên</td></tr>
+                <tr><td class="gw">negative</td><td class="gp">/ˈneg.ə.tɪv/</td><td class="gt">(adj)</td><td class="gm">tiêu cực</td></tr>
+                <tr><td class="gw">inspire</td><td class="gp">/ɪnˈspaɪər/</td><td class="gt">(v)</td><td class="gm">truyền cảm hứng</td></tr>
+                <tr><td class="gw">accept</td><td class="gp">/əkˈsept/</td><td class="gt">(v)</td><td class="gm">chấp nhận</td></tr>
+                <tr><td class="gw">handle</td><td class="gp">/ˈhæn.dl/</td><td class="gt">(v)</td><td class="gm">xử lý, giải quyết</td></tr>
+                <tr><td class="gw">uncomfortable</td><td class="gp">/ʌnˈkʌmf.tə.bl/</td><td class="gt">(adj)</td><td class="gm">không thoải mái</td></tr>
+                <tr><td class="gw">respect</td><td class="gp">/rɪˈspekt/</td><td class="gt">(v/n)</td><td class="gm">tôn trọng, sự tôn trọng</td></tr>
+                <tr><td class="gw">expectation</td><td class="gp">/ˌek.spekˈteɪ.ʃən/</td><td class="gt">(n)</td><td class="gm">sự mong đợi, kỳ vọng</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- BÊN PHẢI: BÀI TẬP TRẮC NGHIỆM -->
+    <div class="panel right-panel">
+        <div class="sec-title">✏️ Trả lời câu hỏi (15-24)</div>
+        <div id="quiz-container"><!-- JavaScript will render questions here --></div>
+    </div>
+</div>
+
+<button class="sbtn" onclick="openSubmitModal()">🎯 Nộp Bài Nhận Điểm Nào!</button>
+<div class="foot">🌻 Made with love — MS Chí Nên · ☎️ 0852639652 để đăng ký khoá học từ lớp 1 đến lớp 12</div>
+</div>
+
+<!-- Modal Kết Quả -->
+<div id="resultModal">
+    <div class="modal-content" id="modal-body">
+        <h2 style="color:var(--dim); font-weight:800; margin-bottom: 10px;">Nhập tên của con nhé!</h2>
+        <input type="text" id="studentName" placeholder="Ví dụ: Công chúa Elsa, Người Nhện...">
+        <button class="sbtn" style="padding: 15px 30px; font-size: 1.05rem; margin-top:0;" onclick="calculateScore()">Xem Phép Thuật! ✨</button>
+    </div>
+</div>
+
+<script>
+    // --- DỮ LIỆU CÂU HỎI & GIẢI THÍCH (chuẩn exp-box / grid2 / hx0-5, từng dòng tách riêng, màu xoay vòng) ---
+    const quizData = [
+        // PASSAGE 1: CLOZE TEST
+        {
+            id: 15,
+            question: "Câu 15: Select the best answer.",
+            options: ["for", "but", "or", "so"],
+            correct: "but",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Kết nối với mọi người rất quan trọng, <b>nhưng</b> việc cân bằng thời gian cho bản thân cũng hữu ích.</div>
+                    <div class="grid2">
+                        <div><span class="p-word">for</span> <span class="wt">conj</span> <span class="p-mean">vì, cho</span></div>
+                        <div><span class="hl-green">but</span> <span class="wt">conj</span> <span class="p-mean">nhưng</span></div>
+                        <div><span class="p-word">or</span> <span class="wt">conj</span> <span class="p-mean">hoặc</span></div>
+                        <div><span class="p-word">so</span> <span class="wt">conj</span> <span class="p-mean">vì vậy, cho nên</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Mệnh đề trước nói kết nối với người khác <b>quan trọng</b>, mệnh đề sau nói dành thời gian cho <b>bản thân</b> cũng hữu ích <span class="ar">→</span> hai ý mang sắc thái <span class="p-grammar">bổ sung có đối lập nhẹ</span>.</span>
+                    <span class="hx hx1">▸ Liên từ <span class="p-word">but</span> dùng để nối hai ý như vậy: "quan trọng A, NHƯNG B cũng cần".</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ <span class="p-word">so</span> chỉ quan hệ nguyên nhân - kết quả, hai mệnh đề ở đây không phải nhân-quả.</span>
+                    <span class="hx hx3">▸ <span class="p-word">or</span> mang nghĩa lựa chọn "cái này hoặc cái kia", nhưng câu không yêu cầu chọn một trong hai.</span>
+                    <span class="hx hx4">▸ <span class="p-word">for</span> mang nghĩa "vì, bởi" (chỉ lý do), không khớp logic của câu.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/but" target="_blank" rel="noopener">🔊 Cambridge · but</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/balance" target="_blank" rel="noopener">🔊 Cambridge · balance</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 16,
+            question: "Câu 16: Select the best answer.",
+            options: ["prefer", "update", "develop", "focus"],
+            correct: "develop",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Nó có thể giúp bạn <b>phát triển</b> một sự hiểu biết tốt hơn về việc bạn là ai.</div>
+                    <div class="grid2">
+                        <div><span class="p-word">prefer</span> <span class="wt">v</span> <span class="p-mean">thích hơn</span></div>
+                        <div><span class="p-word">update</span> <span class="wt">v</span> <span class="p-mean">cập nhật</span></div>
+                        <div><span class="hl-green">develop</span> <span class="wt">v</span> <span class="p-mean">phát triển, hình thành</span></div>
+                        <div><span class="p-word">focus</span> <span class="wt">v</span> <span class="p-mean">tập trung</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Đây là kiểm tra sự kết hợp từ (collocation): <span class="p-grammar">develop an understanding of sth</span> = <span class="p-mean">phát triển/hình thành sự hiểu biết về cái gì</span>.</span>
+                    <span class="hx hx1">▸ "It can help you <span class="p-word">develop</span> a better understanding of who you are" = Nó giúp bạn phát triển sự hiểu biết tốt hơn về bản thân.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ <span class="p-word">prefer</span> (thích hơn) và <span class="p-word">update</span> (cập nhật) không đi được với tân ngữ "understanding" trong ngữ cảnh này.</span>
+                    <span class="hx hx3">▸ <span class="p-word">focus</span> phải đi kèm giới từ "on" (focus ON sth), không đứng trực tiếp trước danh từ như vậy.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/develop" target="_blank" rel="noopener">🔊 Cambridge · develop</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/understanding" target="_blank" rel="noopener">🔊 Cambridge · understanding</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 17,
+            question: "Câu 17: Select the best answer.",
+            options: ["with", "of", "to", "at"],
+            correct: "with",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Bạn càng có nhiều khả năng dành thời gian <b>cùng với</b> những người khiến bạn cảm thấy tốt đẹp.</div>
+                    <div class="grid2">
+                        <div><span class="hl-green">with</span> <span class="wt">prep</span> <span class="p-mean">với, cùng với</span></div>
+                        <div><span class="p-word">of</span> <span class="wt">prep</span> <span class="p-mean">của</span></div>
+                        <div><span class="p-word">to</span> <span class="wt">prep</span> <span class="p-mean">đến, tới</span></div>
+                        <div><span class="p-word">at</span> <span class="wt">prep</span> <span class="p-mean">tại, ở</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Cụm cố định quen thuộc: <span class="p-grammar">spend time with somebody</span> = <span class="p-mean">dành thời gian cùng với ai đó</span>.</span>
+                    <span class="hx hx1">▸ "The better you know yourself, the more likely you are to spend time <span class="p-word">with</span> people who make you feel good" = dành thời gian với những người khiến bạn cảm thấy tốt.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ Động từ "spend time" khi đi cùng danh từ chỉ người luôn bắt buộc dùng giới từ "with".</span>
+                    <span class="hx hx3">▸ Dùng <span class="p-word">of</span>, <span class="p-word">to</span>, hay <span class="p-word">at</span> đều sai hoàn toàn về ngữ pháp trong cụm này.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/spend" target="_blank" rel="noopener">🔊 Cambridge · spend</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 18,
+            question: "Câu 18: Select the best answer.",
+            options: ["whoever", "wherever", "however", "whatever"],
+            correct: "whatever",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Hãy làm <b>bất cứ điều gì</b> khiến bạn cảm thấy thư giãn.</div>
+                    <div class="grid2">
+                        <div><span class="p-word">whoever</span> <span class="wt">pron</span> <span class="p-mean">bất cứ ai</span></div>
+                        <div><span class="p-word">wherever</span> <span class="wt">adv</span> <span class="p-mean">bất cứ nơi đâu</span></div>
+                        <div><span class="p-word">however</span> <span class="wt">adv</span> <span class="p-mean">tuy nhiên / dù bằng cách nào</span></div>
+                        <div><span class="hl-green">whatever</span> <span class="wt">pron</span> <span class="p-mean">bất cứ điều gì, thứ gì</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Phía sau khoảng trống là ví dụ về các SỰ VẬT/HOẠT ĐỘNG: "reading a book, watching TV, playing a game, or going for a walk" <span class="ar">→</span> cần đại từ chỉ vật <span class="p-word">whatever</span>.</span>
+                    <span class="hx hx1">▸ "Do <span class="p-word">whatever</span> feels relaxing to you" = Hãy làm bất cứ điều gì khiến bạn thấy thư giãn.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ <span class="p-word">whoever</span> chỉ dùng cho NGƯỜI, không hợp ở đây.</span>
+                    <span class="hx hx3">▸ <span class="p-word">wherever</span> chỉ dùng cho NƠI CHỐN.</span>
+                    <span class="hx hx4">▸ <span class="p-word">however</span> chỉ CÁCH THỨC hoặc sự nhượng bộ, không chỉ sự vật.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/whatever" target="_blank" rel="noopener">🔊 Cambridge · whatever</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/relaxing" target="_blank" rel="noopener">🔊 Cambridge · relaxing</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 19,
+            question: "Câu 19: Select the best answer.",
+            options: ["dance", "walk", "sleep", "jump"],
+            correct: "walk",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Hãy làm bất cứ điều gì khiến bạn thấy thư giãn, chẳng hạn như đọc sách, xem TV, chơi game, hay đi (dạo).</div>
+                    <div class="grid2">
+                        <div><span class="p-word">dance</span> <span class="wt">n</span> <span class="p-mean">buổi/cuộc nhảy múa</span></div>
+                        <div><span class="hl-green">walk</span> <span class="wt">n</span> <span class="p-mean">cuộc đi dạo, đi bộ</span></div>
+                        <div><span class="p-word">sleep</span> <span class="wt">n</span> <span class="p-mean">giấc ngủ</span></div>
+                        <div><span class="p-word">jump</span> <span class="wt">n</span> <span class="p-mean">cú nhảy</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Cụm cố định rất phổ biến: <span class="p-grammar">go for a walk</span> = <span class="p-mean">đi dạo, đi tản bộ</span> — một hoạt động thư giãn điển hình.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx1">▸ Người bản xứ không dùng "go for a dance", "go for a sleep" hay "go for a jump" như cụm cố định chỉ hoạt động thư giãn thường ngày.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/walk" target="_blank" rel="noopener">🔊 Cambridge · walk</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 20,
+            question: "Câu 20: Select the best answer.",
+            options: ["enjoyable", "enjoy", "enjoyment", "enjoyably"],
+            correct: "enjoyable",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Dành thời gian để nạp lại năng lượng cũng có thể làm cho việc ở cùng người khác trở nên <b>thú vị</b> hơn.</div>
+                    <div class="grid2">
+                        <div><span class="hl-green">enjoyable</span> <span class="wt">adj</span> <span class="p-mean">thú vị, mang lại niềm vui</span></div>
+                        <div><span class="p-word">enjoy</span> <span class="wt">v</span> <span class="p-mean">thưởng thức, thích thú</span></div>
+                        <div><span class="p-word">enjoyment</span> <span class="wt">n</span> <span class="p-mean">sự thích thú, niềm vui</span></div>
+                        <div><span class="p-word">enjoyably</span> <span class="wt">adv</span> <span class="p-mean">một cách thú vị</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Cấu trúc: <span class="p-grammar">make + Object + Adjective</span> = <span class="p-mean">làm cho ai/cái gì trở nên như thế nào</span>.</span>
+                    <span class="hx hx1">▸ Trong "make being with others more ____", tân ngữ là cụm V-ing "being with others" <span class="ar">→</span> cần một TÍNH TỪ đứng sau <span class="ar">→</span> <span class="p-word">enjoyable</span>.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ Vị trí này không thể dùng động từ <span class="p-word">enjoy</span>, danh từ <span class="p-word">enjoyment</span> hay trạng từ <span class="p-word">enjoyably</span> vì vi phạm cấu trúc "make + O + adj".</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/enjoyable" target="_blank" rel="noopener">🔊 Cambridge · enjoyable</a>
+                    </div>
+                </div>
+            `
+        },
+
+        // PASSAGE 2: READING COMPREHENSION
+        {
+            id: 21,
+            question: "Câu 21: What is peer pressure?",
+            options: [
+                "The feeling of wanting to have influence on friends",
+                "The pressure to act in a certain way from people your age",
+                "The expectation to look stylish at school",
+                "The pressure of making your own decisions"
+            ],
+            correct: "The pressure to act in a certain way from people your age",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Áp lực đồng trang lứa là gì?</div>
+                    <div class="grid2">
+                        <div><span class="p-word">The feeling of wanting to have influence on friends</span> — <span class="p-mean">Cảm giác muốn có sức ảnh hưởng lên bạn bè</span></div>
+                        <div><span class="hl-green">The pressure to act in a certain way from people your age</span> — <span class="p-mean">Áp lực phải hành động theo một cách nhất định từ người cùng tuổi</span></div>
+                        <div><span class="p-word">The expectation to look stylish at school</span> — <span class="p-mean">Kỳ vọng phải trông phong cách ở trường</span></div>
+                        <div><span class="p-word">The pressure of making your own decisions</span> — <span class="p-mean">Áp lực của việc tự đưa ra quyết định</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Dẫn chứng ở câu đầu bài: "Peer pressure happens when people around you try to <b>make you act differently</b>."</span>
+                    <span class="hx hx1">▸ "Your friends and <b>people your age</b> can influence what you say or do" <span class="ar">→</span> khớp đúng với định nghĩa "áp lực hành động theo cách nhất định từ người cùng tuổi".</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ Ý "muốn có ảnh hưởng lên bạn bè" ngược chiều bản chất — chính BẠN bị ảnh hưởng, không phải bạn đi ảnh hưởng người khác.</span>
+                    <span class="hx hx3">▸ Ý "trông phong cách" chỉ là MỘT ví dụ rất nhỏ trong bài, không phải định nghĩa bao quát.</span>
+                    <span class="hx hx4">▸ Ý "tự đưa ra quyết định" sai vì áp lực này đến từ NGƯỜI KHÁC (bạn bè), không phải từ bản thân.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/peer-pressure" target="_blank" rel="noopener">🔊 Cambridge · peer pressure</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/influence" target="_blank" rel="noopener">🔊 Cambridge · influence</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 22,
+            question: 'Câu 22: The word "influence" in the passage is closest in meaning to ________.',
+            options: ["change", "support", "motivate", "affect"],
+            correct: "affect",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Từ "influence" trong đoạn văn có nghĩa gần nhất với từ ________.</div>
+                    <div class="grid2">
+                        <div><span class="p-word">change</span> <span class="wt">v</span> <span class="p-mean">thay đổi</span></div>
+                        <div><span class="p-word">support</span> <span class="wt">v</span> <span class="p-mean">ủng hộ, hỗ trợ</span></div>
+                        <div><span class="p-word">motivate</span> <span class="wt">v</span> <span class="p-mean">thúc đẩy, tạo động lực</span></div>
+                        <div><span class="hl-green">affect</span> <span class="wt">v</span> <span class="p-mean">ảnh hưởng, tác động đến</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ <span class="p-word">influence</span> <span class="p-phonetic">/ˈɪn.flu.əns/</span> = <span class="p-mean">tác động lên suy nghĩ/hành động của ai đó</span>.</span>
+                    <span class="hx hx1">▸ Từ mang nghĩa tương đồng nhất và có thể thay thế trực tiếp trong câu này là <span class="p-word">affect</span>.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI</span>
+                    <span class="hx hx2">▸ <span class="p-word">change</span> (thay đổi) chưa chắc đã bao hàm nghĩa "ảnh hưởng/tác động".</span>
+                    <span class="hx hx3">▸ <span class="p-word">support</span> và <span class="p-word">motivate</span> mang sắc thái TÍCH CỰC, trong khi "influence" ở đây mô tả sự ép buộc phải hòa nhập (fit in), có thể mang tính tiêu cực.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/influence" target="_blank" rel="noopener">🔊 Cambridge · influence</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/affect" target="_blank" rel="noopener">🔊 Cambridge · affect</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 23,
+            question: "Câu 23: All of the following are good ways to handle peer pressure EXCEPT ________.",
+            options: [
+                "saying no when feeling uncomfortable",
+                "talking to parents or teachers",
+                "choosing friends who respect your choices",
+                "changing yourself to fit in"
+            ],
+            correct: "changing yourself to fit in",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Tất cả những điều sau đây đều là cách tốt để đối phó áp lực đồng trang lứa, NGOẠI TRỪ ________. (Tìm ý SAI/không phải cách tốt)</div>
+                    <div class="grid2">
+                        <div><span class="p-word">saying no when feeling uncomfortable</span> — <span class="p-mean">nói không khi cảm thấy không thoải mái</span></div>
+                        <div><span class="p-word">talking to parents or teachers</span> — <span class="p-mean">nói chuyện với cha mẹ hoặc giáo viên</span></div>
+                        <div><span class="p-word">choosing friends who respect your choices</span> — <span class="p-mean">chọn bạn biết tôn trọng quyết định của mình</span></div>
+                        <div><span class="hl-green">changing yourself to fit in</span> — <span class="p-mean">thay đổi bản thân để hòa nhập</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG</span>
+                    <span class="hx hx0">▸ Đoạn cuối bài: "your opinions and feelings matter more than others' expectations" <span class="ar">→</span> ý kiến của BẠN quan trọng hơn kỳ vọng người khác.</span>
+                    <span class="hx hx1">▸ Bạn tốt "not force you to change" (không ép bạn thay đổi) <span class="ar">→</span> <span class="p-word">thay đổi bản thân chỉ để hòa nhập</span> là điều TIÊU CỰC, không phải cách đối phó tốt.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI (ba ý này ĐỀU CÓ trong bài — là cách tốt)</span>
+                    <span class="hx hx2">▸ "learn to say no when you feel uncomfortable" — có trong bài.</span>
+                    <span class="hx hx3">▸ "Good friends will respect your choices" — có trong bài.</span>
+                    <span class="hx hx4">▸ "Talking to parents or teachers can help" — có trong bài.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/uncomfortable" target="_blank" rel="noopener">🔊 Cambridge · uncomfortable</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/respect" target="_blank" rel="noopener">🔊 Cambridge · respect</a>
+                    </div>
+                </div>
+            `
+        },
+        {
+            id: 24,
+            question: "Câu 24: According to the passage, which of the following statements is NOT true?",
+            options: [
+                "Studying harder to get good grades is a negative effect of peer pressure.",
+                "Peer pressure can encourage you to engage in healthy activities.",
+                "Teenagers are more likely to experience peer pressure than other groups.",
+                "You don't have to sacrifice your feelings to satisfy others."
+            ],
+            correct: "Studying harder to get good grades is a negative effect of peer pressure.",
+            explain: `
+                <div class="exp-box"><h4>⚡ MS Chí Nên giải thích</h4>
+                    <div class="vnt">💬 Dịch: Theo đoạn văn, nhận định nào sau đây KHÔNG ĐÚNG?</div>
+                    <div class="grid2">
+                        <div><span class="hl-green">Studying harder to get good grades is a negative effect of peer pressure.</span> — <span class="p-mean">Học chăm hơn để điểm cao là ảnh hưởng TIÊU CỰC của áp lực đồng trang lứa</span></div>
+                        <div><span class="p-word">Peer pressure can encourage you to engage in healthy activities.</span> — <span class="p-mean">Áp lực đồng trang lứa có thể khuyến khích hoạt động lành mạnh</span></div>
+                        <div><span class="p-word">Teenagers are more likely to experience peer pressure than other groups.</span> — <span class="p-mean">Thanh thiếu niên dễ bị áp lực này hơn nhóm khác</span></div>
+                        <div><span class="p-word">You don't have to sacrifice your feelings to satisfy others.</span> — <span class="p-mean">Không cần hy sinh cảm xúc để làm hài lòng người khác</span></div>
+                    </div>
+                    <span class="hl-green">✅ TẠI SAO ĐÚNG (câu này SAI so với bài → chính là đáp án NOT true)</span>
+                    <span class="hx hx0">▸ Đoạn 2: "Peer pressure isn't always negative, as it can also push you toward good things. Friends might <b>inspire</b> you to study harder for better grades" <span class="ar">→</span> học giỏi hơn là ảnh hưởng TÍCH CỰC (positive), không phải tiêu cực.</span>
+                    <span class="hl-red">❌ TẠI SAO SAI (ba ý còn lại ĐỀU ĐÚNG với bài đọc)</span>
+                    <span class="hx hx1">▸ "encourage you to join sports teams or try healthy activities" (đoạn 2) <span class="ar">→</span> đúng.</span>
+                    <span class="hx hx2">▸ "Teenagers usually feel peer pressure more strongly" (đoạn 2) <span class="ar">→</span> đúng.</span>
+                    <span class="hx hx3">▸ "your opinions and feelings matter more" (đoạn 3) <span class="ar">→</span> đúng.</span>
+                    <div style="margin-top:10px">
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/negative" target="_blank" rel="noopener">🔊 Cambridge · negative</a>
+                        <a class="dlk" href="https://dictionary.cambridge.org/vi/dictionary/english/inspire" target="_blank" rel="noopener">🔊 Cambridge · inspire</a>
+                    </div>
+                </div>
+            `
+        }
+    ];
+
+    // --- THUẬT TOÁN SHUFFLE MƯỢT MÀ ---
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // --- WEB AUDIO API (ÂM THANH TƯƠNG TÁC) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Âm thanh sai: tiếng vịt kêu meme (chuẩn nhà)
+    const DUCK_URL = 'https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Ti%E1%BA%BFng%20V%E1%BB%8Bt%20k%C3%AAu%20meme%20mp3.mp3';
+    function playDuck() {
+        try {
+            const a = new Audio(DUCK_URL);
+            a.volume = 0.75;
+            a.play().catch(function(){});
+        } catch (e) {}
+    }
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (type === 'correct') {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+            gainNode.gain.setValueAtTime(0.6, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+            fireConfetti();
+        } else {
+            playDuck();
+        }
+    }
+
+    // --- HIỆU ỨNG PHÁO HOA BÙNG NỔ ---
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+
+    function fireConfetti() {
+        for(let i=0; i<80; i++) {
+            particles.push({
+                x: canvas.width/2, y: canvas.height/2 + 100,
+                vx: (Math.random() - 0.5) * 25, vy: (Math.random() - 1) * 25 - 5,
+                color: `hsl(${Math.random()*360}, 100%, 60%)`,
+                size: Math.random() * 10 + 5,
+                rot: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 10
+            });
+        }
+    }
+
+    function renderConfetti() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        for(let i=0; i<particles.length; i++) {
+            let p = particles[i];
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            ctx.restore();
+
+            p.x += p.vx; p.y += p.vy; p.vy += 0.6; // Trọng lực rơi
+            p.rot += p.rotSpeed;
+            if(p.y > canvas.height + 50) { particles.splice(i, 1); i--; }
+        }
+        requestAnimationFrame(renderConfetti);
+    }
+    renderConfetti();
+
+    // --- RENDER CÂU HỎI (Nút bấm chỉ hiển thị Tiếng Anh) ---
+    const quizContainer = document.getElementById('quiz-container');
+    let userAnswers = {};
+
+    quizData.forEach((item) => {
+        const qBlock = document.createElement('div');
+        qBlock.className = 'question-block';
+
+        let html = `
+            <div class="question-text"><span class="qn">${item.id}</span>${item.question.replace(/^Câu\s*\d+:\s*/, '')}</div>
+            <div class="options-grid" id="options-${item.id}">
+        `;
+
+        let renderOptions = shuffleArray(item.options.slice());
+
+        renderOptions.forEach(optText => {
+            html += `<button class="option-btn" onclick="checkAnswer(this, ${item.id}, '${optText.replace(/'/g, "\\'")}', '${item.correct.replace(/'/g, "\\'")}')">
+                        ${optText}
+                     </button>`;
+        });
+
+        html += `</div>
+                 <div class="explanation-box" id="expl-${item.id}">
+                    ${item.explain}
+                 </div>`;
+        qBlock.innerHTML = html;
+        quizContainer.appendChild(qBlock);
+    });
+
+    // --- LOGIC CHECK ĐÁP ÁN THÔNG MINH ---
+    function checkAnswer(btn, qId, selectedText, correctText) {
+        const grid = document.getElementById(`options-${qId}`);
+        const buttons = grid.querySelectorAll('.option-btn');
+        const explBox = document.getElementById(`expl-${qId}`);
+
+        buttons.forEach(b => b.classList.add('disabled'));
+
+        if (selectedText === correctText) {
+            btn.classList.add('correct');
+            playSound('correct');
+            userAnswers[qId] = true;
+        } else {
+            btn.classList.add('wrong');
+            btn.classList.add('shake');
+            playSound('wrong');
+            userAnswers[qId] = false;
+            // Tự động tìm và bôi xanh nút đáp án đúng
+            buttons.forEach(b => {
+                if(b.innerHTML.trim() === correctText) b.classList.add('correct');
+            });
+        }
+
+        // Mở khóa phần giải thích chi tiết
+        explBox.style.display = 'block';
+    }
+
+    // --- LOGIC DỊCH ĐOẠN VĂN ---
+    function toggleTranslate(btn) {
+        const transBox = btn.nextElementSibling;
+        transBox.classList.toggle('on');
+        btn.textContent = transBox.classList.contains('on') ? 'Đóng phần dịch ❌' : 'Mở dịch đoạn này 🌟';
+    }
+
+    // --- LOGIC NỘP BÀI & SHOW POPUP ĐIỂM ---
+    function openSubmitModal() {
+        if(Object.keys(userAnswers).length < quizData.length) {
+            alert("MS Chí Nên nhắc: Chà chà, con vẫn còn câu chưa làm xong kìa! Kéo lên kiểm tra lại nhé!");
+            return;
+        }
+        document.getElementById('resultModal').style.display = 'flex';
+    }
+
+    function calculateScore() {
+        const name = document.getElementById('studentName').value.trim();
+        if(!name) {
+            alert("Con yêu, hãy nhập tên để cô biết ai đang làm bài xuất sắc thế này nhé!");
+            return;
+        }
+
+        let score = 0;
+        for (let key in userAnswers) {
+            if (userAnswers[key]) score++;
+        }
+
+        let total = quizData.length;
+        let scale10 = ((score / total) * 10).toFixed(2);
+
+        let gifUrl = "";
+        let comment = "";
+
+        let percentage = score / total;
+        if (percentage === 1) {
+            gifUrl = "https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif";
+            comment = `Woooow! 10 điểm không có nhưng! MS Chí Nên tự hào về ${name} vô cùng! Con đúng là một thiên tài tiếng Anh! 💖🌟`;
+        } else if (percentage >= 0.6) {
+            gifUrl = "https://media.giphy.com/media/bKBM7H63PIykM/giphy.gif";
+            comment = `Rất đỉnh ${name} ơi! Con nắm bài khá chắc đấy. Cố gắng cẩn thận hơn một chút xíu nữa là đạt điểm tối đa nha! 🔥💪`;
+        } else {
+            gifUrl = "https://media.giphy.com/media/3o6wrvdHFbwBrUFenu/giphy.gif";
+            comment = `Đừng buồn nhé ${name}! Bài hôm nay hơi lắt léo một tí. Con hãy đọc kỹ phần giải thích siêu chi tiết của cô bên dưới để giỏi hơn mỗi ngày nhé! Cô tin con! 🌻`;
+        }
+
+        const modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = `
+            <h2 style="color:var(--dim); font-weight:800;">Bảng Điểm Của ${name}</h2>
+            <div class="score-display">${score} / ${total} câu</div>
+            <div class="score-10">Quy ra thang 10: ${scale10} điểm</div>
+            <img src="${gifUrl}" class="meme-img" alt="Meme feedback">
+            <div class="comment">"${comment}"</div>
+            <button class="sbtn" style="padding: 12px 20px; font-size: 1rem; margin: 10px auto 8px; display:inline-block; width:auto;" onclick="location.reload()">Làm Lại Bài</button>
+            <button class="sbtn" style="padding: 12px 20px; font-size: 1rem; margin: 0 auto; display:inline-block; width:auto; background:#a4b0be; color:#06202b;" onclick="document.getElementById('resultModal').style.display='none'">Xem Lại Lỗi Sai</button>
+        `;
+    }
+
+    // --- NỀN ICON BAY (TOPIC: TỰ CHĂM SÓC BẢN THÂN & BẠN BÈ) — tái dùng cơ chế .sky i / fly ---
+    (function(){
+        var e = ['🧘‍♂️','💬','👫','🌻','✨','☕'], s = document.getElementById('sky'), h = '';
+        for (var i = 0; i < 16; i++) {
+            h += '<i style="left:' + (Math.random()*98) + '%;top:' + (Math.random()*96) + '%;animation-duration:' + (9+Math.random()*10) + 's;animation-delay:' + (Math.random()*6) + 's">' + e[i%e.length] + '</i>';
+        }
+        s.innerHTML = h;
+    })();
+
+    // --- DẢI DƯỚI CHÂN MÀN HÌNH: BẠN BÈ TRÒ CHUYỆN TRÔI QUA — tái dùng cơ chế #ocean .boat / sail ---
+    (function(){
+        var boats = ['💬','👫','🌻','💬','👭','🧘'], box = document.getElementById('ocean'), h = '';
+        for (var i = 0; i < boats.length; i++) {
+            var dur = (14 + Math.random()*10).toFixed(1), delay = (-(Math.random()*20)).toFixed(1), size = 22 + Math.random()*10;
+            h += '<span class="boat" style="bottom:' + (6+Math.random()*10) + 'px;font-size:' + size.toFixed(0) + 'px;animation-duration:' + dur + 's;animation-delay:' + delay + 's">' + boats[i] + '</span>';
+        }
+        box.insertAdjacentHTML('beforeend', h);
+    })();
+
+    // --- LỜI NHẮC CỦA MS — tự đổi mỗi 4.2 giây (tái dùng cơ chế .note .tx) ---
+    var MSNH = [
+        '🌻 Chào các con lớp 8! MS Chí Nên cùng làm bài đọc hiểu về Thời gian cho bản thân &amp; Áp lực bạn bè nhé.',
+        '📖 Mỗi đoạn văn đều có nút mở bản dịch. Con thử tự đọc và đoán nghĩa trước, rồi mới mở ra xem nha.',
+        '🌱 Làm sai một câu không sao cả con ơi. Sai rồi sửa lại mới là cách học giỏi nhất đó!',
+        '💬 Nhìn các icon bay phía trên và dòng chữ trôi phía dưới cho vui mắt nè, con tập trung đọc bài tiếp nhé!',
+        '📚 Bảng từ vựng cuối mỗi đoạn có phiên âm và nghĩa tiếng Việt đầy đủ. Con đọc to lên vài lần cho nhớ nhé.',
+        '🦆 Cẩn thận nhé — chọn sai là nghe thấy tiếng vịt kêu "quạc quạc" đó!',
+        '☎️ Cô rất vui vì con chăm chỉ luyện tập. Đăng ký khoá tiếng Anh lớp 1-12 cùng MS Chí Nên: 0852639652.'
+    ];
+    (function(){
+        var el = document.getElementById('msTx'), k = 0;
+        el.innerHTML = MSNH[0];
+        setInterval(function(){
+            k = (k+1) % MSNH.length;
+            el.style.opacity = 0;
+            setTimeout(function(){ el.innerHTML = MSNH[k]; el.style.opacity = 1; }, 250);
+        }, 4200);
+    })();
+</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>
