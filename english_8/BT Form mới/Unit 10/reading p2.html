@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐠 E8 UNIT 10 · COMMUNICATION IN THE FUTURE — Reading Ex 3 | MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--sea1:#00d1c1;--sea2:#00a3b0;--sea3:#036c8a;--sea4:#013f5c;
+ --sand:#fffaf0;--ink:#0d3b45;--gold:#ffb703;--coral:#ff6b5b;--good:#1fa565;--bad:#e6455c;--dim:#3f7a86}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;
+ background:linear-gradient(180deg,#bff0ea 0%,var(--sea1) 24%,var(--sea2) 52%,var(--sea3) 78%,var(--sea4) 100%)}
+body::before{content:'';position:fixed;top:0;left:50%;width:220%;height:60%;z-index:0;transform:translateX(-50%);opacity:.2;
+ background:repeating-conic-gradient(from 0deg at 50% 0%,#fff 0deg 4deg,transparent 4deg 14deg);animation:ray 9s linear infinite}
+@keyframes ray{0%,100%{opacity:.12}50%{opacity:.26}}
+.sky{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.sky i{position:absolute;font-size:26px;opacity:.5;animation:fly linear infinite;font-style:normal}
+@keyframes fly{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(20px,-24px) rotate(6deg)}}
+.sky b{position:absolute;border-radius:50%;filter:blur(70px);opacity:.32;animation:fly 19s ease-in-out infinite}
+.wrap{position:relative;z-index:2;max-width:1500px;margin:0 auto;padding:8px 14px 70px}
+/* ── thanh nhac nho ── */
+.note{position:sticky;top:0;z-index:40;margin:0 -14px 12px;padding:9px 14px;
+ background:linear-gradient(90deg,var(--coral),var(--gold),var(--sea1));box-shadow:0 5px 18px rgba(1,63,92,.4)}
+.note .in{display:flex;align-items:center;gap:10px;max-width:1470px;margin:0 auto}
+.note .tg{flex:none;background:var(--sea4);color:var(--gold);font-weight:900;font-size:.82rem;padding:3px 14px;border-radius:999px;white-space:nowrap}
+.note .tx{flex:1;min-width:0;color:#013f5c;font-weight:800;font-size:1rem;line-height:1.55;transition:opacity .25s}
+/* ── header ── */
+.hd{background:var(--sand);border:3px dashed var(--coral);border-radius:22px;padding:18px;text-align:center;
+ margin-bottom:14px;box-shadow:0 12px 30px rgba(1,63,92,.35)}
+.hd h1{font-family:'Baloo 2','Nunito';font-weight:800;font-size:clamp(21px,4.6vw,34px);line-height:1.32;color:var(--sea4)}
+.hd .by{display:inline-block;margin-top:10px;background:linear-gradient(135deg,var(--coral),var(--gold));color:#fff;
+ font-weight:900;font-size:.95rem;padding:6px 16px;border-radius:999px}
+.hd p{margin-top:9px;font-size:.97rem;font-weight:700;color:var(--dim);line-height:1.7}
+.bar{display:flex;align-items:center;gap:10px;background:var(--sand);border-radius:16px;padding:9px 15px;
+ margin-bottom:14px;font-weight:900;font-size:1.04rem;box-shadow:0 8px 20px rgba(1,63,92,.28)}
+.bar .tr{flex:1;height:12px;background:#e0f4f2;border-radius:99px;overflow:hidden}
+.bar .fb{height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sea1));transition:width .4s}
+/* ── split ── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:940px){.split{grid-template-columns:1fr}}
+.pane{position:sticky;top:64px;max-height:calc(100vh - 82px);overflow-y:auto}
+@media(max-width:940px){.pane{position:static;max-height:none}}
+.letter{background:var(--sand);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(1,63,92,.32);border:2px solid #ffe3cf}
+.letter .edge{height:9px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--sea1),var(--sea3))}
+.letter .bd{padding:16px 18px 20px}
+.stamp{float:right;width:78px;height:78px;margin:0 0 8px 12px;border-radius:50%;
+ background:radial-gradient(circle at 35% 30%,#eafffb,#c9f3ee);border:2px solid var(--sea1);display:grid;place-items:center;
+ text-align:center;font-size:27px;line-height:1.15;color:var(--sea4)}
+.stamp b{display:block;font-family:'Baloo 2';font-size:.58rem;font-weight:700;letter-spacing:.8px;color:#c0392b}
+.letter h2{font-family:'Baloo 2','Nunito';font-weight:700;font-size:1.26rem;color:var(--sea4);line-height:1.35;margin-bottom:4px}
+.letter .sub{font-size:.88rem;font-weight:800;color:var(--coral);font-style:italic;margin-bottom:12px}
+.letter p{font-size:1.06rem;line-height:1.95;margin-bottom:8px}
+.letter b{color:var(--sea4)}
+.bl{display:inline;background:#fff0c2;border-bottom:3px solid var(--gold);border-radius:6px;padding:1px 9px;
+ font-weight:900;color:#8a5a00}
+.bl.ok{background:#d8f8e9;border-color:var(--good);color:#0b6b47}
+.tbtn{display:inline-block;margin:2px 0 10px;background:linear-gradient(135deg,var(--sea1),var(--sea3));color:#fff;
+ border:none;border-radius:999px;padding:6px 16px;font-family:'Nunito';font-weight:900;font-size:.85rem;
+ cursor:pointer;box-shadow:0 4px 12px rgba(0,163,176,.4)}
+.tvi{display:none;background:#e6f9f7;border-left:5px solid var(--sea1);border-radius:0 12px 12px 0;padding:9px 13px;
+ margin-bottom:10px;font-size:1.01rem;line-height:1.85;color:#014154;font-weight:700}
+.tvi.on{display:block}
+/* ── BANG TU VUNG KE O RO ── */
+.gl{margin-top:14px;background:var(--sand);border:2px solid var(--sea3);border-radius:16px;padding:0;overflow:hidden}
+.gl h3{font-family:'Baloo 2','Nunito';font-weight:700;font-size:1.06rem;color:#fff;background:var(--sea3);margin:0;padding:8px 14px}
+.gtb{width:100%;border-collapse:collapse;font-size:.99rem}
+.gtb tr{border-top:1px solid #d8ece9}
+.gtb tr:nth-child(even){background:#f1fbf9}
+.gtb td{padding:7px 12px;vertical-align:top;line-height:1.6}
+.gtb .gw{color:var(--sea4);font-weight:900;white-space:nowrap}
+.gtb .gp{color:#8a6a3a;font-style:italic;white-space:nowrap;font-size:.93rem}
+.gtb .gt{color:#c0392b;font-weight:800;text-align:center;white-space:nowrap;font-size:.93rem}
+.gtb .gm{color:#0b6b47;font-weight:800}
+@media(max-width:620px){.gtb .gp{display:none}}
+.p-word{color:var(--sea4);font-weight:900}
+.p-phonetic{color:#8a6a3a;font-style:italic}
+.p-mean{color:#0b6b47;font-weight:800}
+.p-grammar{color:#c0392b;font-weight:800}
+.hl-green{background:#d8f8e9;color:#0b6b47;padding:1px 7px;border-radius:5px;font-weight:900}
+.hl-red{background:#ffe1e6;color:#a31832;padding:1px 7px;border-radius:5px;font-weight:900}
+/* ── cau hoi ── */
+.sec{background:var(--sand);border-radius:20px;padding:15px;margin-bottom:14px;box-shadow:0 12px 30px rgba(1,63,92,.3);border:2px solid #e0f4f2}
+.sec>h3{font-family:'Baloo 2','Nunito';font-weight:700;color:var(--sea3);font-size:1.08rem;margin-bottom:10px;line-height:1.4}
+.q{background:#fffaf0;border:2px solid #ffe9cf;border-left:6px solid var(--coral);border-radius:14px;padding:12px 13px;margin-bottom:12px}
+.q .qt{font-weight:800;font-size:1.07rem;line-height:1.85}
+.qn{display:inline-block;background:linear-gradient(135deg,var(--coral),var(--gold));color:#fff;min-width:32px;
+ text-align:center;border-radius:8px;padding:1px 8px;margin-right:8px;font-weight:900;font-size:.9rem}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:560px){.og{grid-template-columns:1fr}}
+.ob{background:#fff;color:var(--ink);border:2px solid #e0e8e6;border-radius:12px;padding:11px 12px;
+ font-family:'Nunito';font-weight:800;font-size:1.04rem;cursor:pointer;text-align:left;line-height:1.55;
+ transition:.14s;box-shadow:0 3px 0 #e0e8e6}
+.ob:hover:not(.dn){transform:translateY(-2px);border-color:var(--sea1)}
+.ob.dn{cursor:default}
+.ob.ok{background:#d8f8e9;border-color:var(--good);color:#0b6b47;box-shadow:0 3px 0 #9fe3c6}
+.ob.no{background:#ffe1e6;border-color:var(--bad);color:#a31832;box-shadow:0 3px 0 #f7bac5}
+.ex{display:none;margin-top:10px;background:#fff;border:2px solid #e0f4f2;border-radius:14px;padding:12px;
+ font-size:1.02rem;line-height:1.85}
+.ex.on{display:block;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.kb{background:#d8f8e9;border:2px solid var(--good);border-radius:10px;padding:7px 12px;font-weight:900;color:#0b6b47;margin-bottom:8px}
+.stp{background:#fffaf0;border:1px solid #ffe9cf;border-radius:10px;padding:9px 12px;margin-bottom:7px}
+.stp .l{display:inline-block;background:linear-gradient(135deg,var(--sea1),var(--sea3));color:#fff;padding:2px 11px;
+ border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.4px;margin-bottom:5px}
+.op4{background:#fff;border:1px solid #e0e8e6;border-radius:9px;padding:6px 10px;margin-bottom:5px;font-size:1rem}
+.op4.rt{background:#d8f8e9;border-color:var(--good)}
+.op4 b{color:var(--sea4)}.op4.rt b{color:#0b6b47}
+.wr{background:#fff0f3;border:1px solid #f7c6d0;border-radius:9px;padding:6px 10px;margin-bottom:5px;font-size:1rem}
+.wr b{color:#a31832}
+.shk{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.sbtn{display:block;width:100%;max-width:560px;margin:22px auto 0;
+ background:linear-gradient(135deg,var(--coral),var(--gold),var(--sea1));background-size:200% 200%;animation:ray 6s ease infinite;
+ color:#013f5c;border:none;border-radius:18px;padding:16px;font-family:'Baloo 2','Nunito';font-weight:800;font-size:1.15rem;
+ cursor:pointer;box-shadow:0 10px 26px rgba(1,63,92,.4)}
+.ov{position:fixed;inset:0;background:rgba(1,30,45,.82);backdrop-filter:blur(4px);display:none;place-items:center;z-index:99;padding:16px}
+.ov.on{display:grid}
+.mb{background:var(--sand);color:var(--ink);border-radius:24px;padding:22px;max-width:430px;width:100%;text-align:center;
+ border:3px solid var(--coral);box-shadow:0 20px 48px rgba(1,30,45,.5)}
+.mb h2{font-family:'Baloo 2','Nunito';color:var(--sea4);font-weight:800;font-size:1.22rem;margin-bottom:10px}
+.mb input{width:100%;padding:12px;border-radius:12px;border:2px solid #e0e8e6;font-family:'Nunito';
+ font-weight:800;font-size:1.03rem;text-align:center;outline:none;color:var(--ink)}
+.mb .em{display:none;color:var(--bad);font-weight:800;font-size:.9rem;margin-top:7px}
+.mb .em.on{display:block}
+.mb img{width:100%;border-radius:14px;margin:10px 0}
+.mb .rs{font-family:'Baloo 2';font-weight:800;font-size:2.3rem;color:var(--coral)}
+.mb .t10{display:inline-block;margin-top:8px;background:linear-gradient(135deg,var(--sea1),var(--sea3));color:#fff;
+ font-weight:900;padding:6px 18px;border-radius:999px;font-size:1.06rem}
+.mb .rm{font-size:1rem;line-height:1.75;margin-top:10px;font-weight:700;color:var(--dim)}
+.foot{text-align:center;margin-top:22px;font-size:.92rem;color:#eafffb;font-weight:800;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="sky" id="sky"></div>
+<div class="wrap">
+
+<div class="note"><div class="in">
+  <span class="tg">📮 MS NHẮN</span>
+  <span class="tx" id="msTx">Ms tin con làm được bài này.</span>
+</div></div>
+
+<div class="hd">
+  <h1>🐠 COMMUNICATION IN THE FUTURE<br>READING — EXERCISE 3 (① &amp; ②)</h1>
+  <div class="by">🐢 Giáo viên tạo: MS Chí Nên &nbsp;·&nbsp; ☎️ 0852639652 để đăng ký khoá học tiếng Anh</div>
+  <p><b>12 câu</b> · Hai đoạn văn dự đoán tương lai giao tiếp, mỗi đoạn 6 chỗ trống<br>
+  <i>Bên trái là bài đọc chia thành từng đoạn nhỏ, mỗi đoạn có nút mở bản dịch riêng.</i></p>
+</div>
+
+<div class="bar">🎟️ <span id="sc">0</span>/<span id="tt">0</span>
+  <div class="tr"><div class="fb" id="fb"></div></div><span id="md" style="font-size:1.3rem">💪</span></div>
+
+<div id="app"></div>
+
+<button class="sbtn" onclick="openName()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button>
+<div class="foot">🐠 Made with love for Communication in the Future — MS Chí Nên · ☎️ 0852639652</div>
+</div>
+
+<div class="ov" id="ovN"><div class="mb">
+  <h2>📮 Con ghi tên lên phong bì nhé!</h2>
+  <input id="nIn" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off" maxlength="50">
+  <div class="em" id="nEm">⚠️ Con chưa nhập tên kìa! Nhập tên rồi mới xem điểm được nha.</div>
+  <button class="sbtn" style="margin-top:14px;font-size:1rem;padding:12px" onclick="showResult()">🚀 Xem kết quả</button>
+</div></div>
+
+<div class="ov" id="ovR"><div class="mb">
+  <div style="font-size:2.6rem" id="rEmo">🎉</div>
+  <h2 id="rGr"></h2>
+  <img id="rGif" alt="ket qua">
+  <div class="rs"><span id="rSc">0</span>/<span id="rTt">0</span></div>
+  <div class="t10">🎓 Quy đổi: <span id="r10">0</span>/10 điểm</div>
+  <div class="rm" id="rMs"></div>
+  <button class="sbtn" style="margin-top:14px;font-size:1rem;padding:12px" onclick="location.reload()">🔄 Làm lại</button>
+</div></div>
+
+<script>
+/* ══ nen bay ══ */
+(function(){var e=['🐠','🐡','🐢','🦀','🐬','🌊','🐙','⭐','📖','🐚'],s=document.getElementById('sky'),h='';
+ h+='<b style="left:-6%;top:6%;width:46vw;height:46vw;background:#00D1C1"></b>'+'<b style="right:-8%;top:32%;width:42vw;height:42vw;background:#FF6B5B;animation-duration:23s"></b>'+'<b style="left:22%;bottom:-12%;width:48vw;height:48vw;background:#036C8A;animation-duration:27s"></b>';for(var i=0;i<18;i++)h+='<i style="left:'+(Math.random()*98)+'%;top:'+(Math.random()*96)+'%;animation-duration:'+(9+Math.random()*10)+'s;animation-delay:'+(Math.random()*6)+'s">'+e[i%e.length]+'</i>';
+ s.innerHTML=h})();
+
+/* ══ am thanh ══ */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function ding(){var c=ac();if(!c)return;var t=c.currentTime;[880,1174.7,1567.9].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(c.destination);var s=t+i*0.09;g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(.22,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.34);o.start(s);o.stop(s+.36)})}
+function buzz(){var c=ac();if(!c)return;var t=c.currentTime;[[300,0],[250,.15],[200,.3]].forEach(function(p){var o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.value=p[0];o.connect(g);g.connect(c.destination);var s=t+p[1];g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(.15,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.15);o.start(s);o.stop(s+.16)})}
+function conf(){var cs=['#F2B03C','#D63A2F','#1F5FA8','#7BE0A8','#FFE9B8'];
+ for(var i=0;i<60;i++){var d=document.createElement('div');
+  d.style.cssText='position:fixed;top:-14px;width:9px;height:14px;z-index:98;pointer-events:none;left:'+(Math.random()*100)+'vw;background:'+cs[i%5]+';opacity:.9;transition:transform 2.2s linear,opacity 2.2s';
+  document.body.appendChild(d);(function(d){requestAnimationFrame(function(){d.style.transform='translateY(102vh) rotate('+(Math.random()*720)+'deg)';d.style.opacity=0});setTimeout(function(){d.remove()},2400)})(d)}}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+/* ══ helper du lieu ══ */
+var P=[];
+function pas(id,ic,ttl,sub,body,gloss,qs){P.push({id:id,ic:ic,ttl:ttl,sub:sub,body:body,gloss:gloss,qs:qs})}
+function W(w,ph,ty,vi){return '<div><span class="p-word">'+w+'</span> <span class="p-phonetic">'+ph+'</span> <span class="p-grammar">('+ty+')</span> = <span class="p-mean">'+vi+'</span></div>'}
+function OP(en,ty,vi,ok){return '<div class="op4'+(ok?' rt':'')+'"><b>'+(ok?'✔ ':'')+en+'</b> <span class="p-grammar">('+ty+')</span> ➔ <span class="p-mean">'+vi+'</span></div>'}
+function WR(o,why){return '<div class="wr"><b>✗ '+o+'</b> — '+why+'</div>'}
+function E5(key,de,ops,why,wrong,ev,evvi){
+ return '<div class="kb">✅ Đáp án: '+key+'</div>'+
+ '<div class="stp"><span class="l">BƯỚC 1 · DỊCH CẢ CÂU CHỨA CHỖ TRỐNG</span><br>'+de+'</div>'+
+ '<div class="stp"><span class="l">BƯỚC 2 · NGUYÊN VĂN, TỪ LOẠI &amp; NGHĨA CỦA TỪNG LỰA CHỌN</span>'+ops+'</div>'+
+ '<div class="stp"><span class="l">BƯỚC 3 · TẠI SAO ĐÁP ÁN NÀY ĐÚNG</span><br>'+why+'</div>'+
+ '<div class="stp"><span class="l">BƯỚC 4 · TẠI SAO CÁC PHƯƠNG ÁN KIA SAI</span>'+wrong+'</div>'+
+ '<div class="stp"><span class="l">BƯỚC 5 · BẰNG CHỨNG TRONG BÀI</span><br>🔍 <i>'+ev+'</i><br>👉 '+evvi+'</div>'}
+function Q(n,ans,opts,ex,st){return {n:n,ans:ans,opts:opts,ex:ex,st:st}}
+function T(en,vi){return en+'<button class="tbtn" onclick="tg(this)">Mở dịch đoạn này 🌟</button><div class="tvi">'+vi+'</div>'}
+function tg(b){var d=b.nextElementSibling;d.classList.toggle('on');b.textContent=d.classList.contains('on')?'Ẩn bản dịch 🙈':'Mở dịch đoạn này 🌟'}
+function B(id,n){return '<span class="bl" id="bl_'+id+'_'+n+'">('+n+') _____</span>'}
+function W(w,ph,ty,vi){return '<tr><td class="gw">'+w+'</td><td class="gp">'+ph+'</td><td class="gt">'+ty+'</td><td class="gm">'+vi+'</td></tr>'}
+
+/* ═════════ EX 3.1 — COMMUNICATION TECHNOLOGY IN 2050 ═════════ */
+pas('A','🐠','COMMUNICATION TECHNOLOGY IN 2050','Ex 3 ① — Chọn đáp án đúng nhất cho mỗi chỗ trống (6 câu)',
+ '<div class="stamp">🐠<b>2050</b></div>'+
+ T('<p><b>COMMUNICATION TECHNOLOGY IN 2050</b></p><p>In the future, people will communicate in amazing new ways. Students will study their lessons '+B('A',1)+' hologram devices and smart glasses in their classrooms. These technologies will make learning more exciting and interactive than today.</p>',
+   'CÔNG NGHỆ GIAO TIẾP NĂM 2050. Trong tương lai, con người sẽ giao tiếp theo những cách mới đầy kinh ngạc. Học sinh sẽ học bài bằng cách dùng các thiết bị hình chiếu ba chiều và kính thông minh ngay trong lớp học. Những công nghệ này sẽ khiến việc học trở nên thú vị và tương tác hơn nhiều so với hiện nay.')+
+ T('<p>By 2050, while students are studying at home, they will be attending virtual classrooms. Teachers will be using 3D projections '+B('A',2)+' they can show complex ideas clearly.</p>', 'Đến năm 2050, trong khi học sinh học tại nhà, họ sẽ tham gia các lớp học ảo. Giáo viên sẽ dùng hình chiếu 3D vì nhờ đó họ có thể trình bày những ý tưởng phức tạp một cách rõ ràng.')+
+ T('<p>Students from different countries will be learning together without traveling.</p>', 'Học sinh từ nhiều quốc gia khác nhau sẽ học cùng nhau mà không cần phải di chuyển.')+
+ T('<p>'+B('A',3)+', traditional phones will disappear completely. Everyone will wear smart devices that translate languages instantly.</p>',
+   'Do đó, điện thoại truyền thống sẽ biến mất hoàn toàn. Mọi người sẽ đeo các thiết bị thông minh có thể dịch ngôn ngữ ngay lập tức.')+
+ T('<p>When people meet someone foreign, their earphones will automatically translate the whole '+B('A',4)+' into their language. This will help everyone understand each other better.</p>',
+   'Khi gặp một người nước ngoài, tai nghe của họ sẽ tự động dịch toàn bộ các lượt trò chuyện sang ngôn ngữ của họ. Điều này sẽ giúp mọi người hiểu nhau tốt hơn.')+
+ T('<p>Social media will become very '+B('A',5)+' from today. People will share experiences using virtual reality.</p>', 'Mạng xã hội sẽ trở nên rất khác so với hiện nay. Con người sẽ chia sẻ trải nghiệm bằng thực tế ảo.')+
+ T('<p>Friends will feel like they’re together even when they’re thousands of miles apart. Families will have hologram dinners where everyone appears at the same virtual table.</p>', 'Bạn bè sẽ cảm thấy như đang ở cùng nhau ngay cả khi cách xa hàng ngàn dặm. Các gia đình sẽ có những bữa tối bằng hình chiếu ba chiều, nơi mọi người cùng xuất hiện tại một bàn ăn ảo.')+
+ T('<p>Schools are already preparing students for this future. Children now learn coding and digital skills.</p>', 'Các trường học đã đang chuẩn bị cho học sinh bước vào tương lai này. Trẻ em ngày nay học lập trình và các kỹ năng số.')+
+ T('<p>They practice using new communication apps regularly. Being ready for future technology makes students feel more '+B('A',6)+' about tomorrow.</p>', 'Chúng thực hành sử dụng các ứng dụng giao tiếp mới thường xuyên. Việc sẵn sàng cho công nghệ tương lai khiến học sinh cảm thấy tự tin hơn về ngày mai.')+
+ T('<p>The future of communication looks truly amazing!</p>', 'Tương lai của giao tiếp trông thật sự đáng kinh ngạc!'),
+ W('hologram device','/ˈhɒləɡræm dɪˈvaɪs/','np','thiết bị hình chiếu ba chiều')+
+ W('interactive','/ˌɪntərˈæktɪv/','adj','có tính tương tác')+
+ W('virtual classroom','/ˈvɜːtʃuəl ˈklɑːsruːm/','np','lớp học ảo')+
+ W('3D projection','/θriː diː prəˈdʒekʃn/','np','hình chiếu ba chiều')+
+ W('complex idea','/ˈkɒmpleks aɪˈdɪə/','np','ý tưởng phức tạp')+
+ W('disappear','/ˌdɪsəˈpɪə(r)/','v','biến mất')+
+ W('earphone','/ˈɪəfəʊn/','n','tai nghe')+
+ W('virtual reality','/ˈvɜːtʃuəl riˈæləti/','np','thực tế ảo')+
+ W('coding','/ˈkəʊdɪŋ/','n','lập trình')+
+ W('digital skill','/ˈdɪdʒɪtl skɪl/','np','kỹ năng số'),
+[
+Q(1,'using',['to use','using','use','used'],E5('using',
+ 'Học sinh sẽ học bài bằng cách dùng các thiết bị hình chiếu ba chiều và kính thông minh.',
+ OP('to use','động từ nguyên thể có to','để dùng')+OP('using','danh động từ (V-ing chỉ cách thức)','bằng cách dùng',1)+
+ OP('use','động từ nguyên thể không to','dùng')+OP('used','động từ quá khứ','đã dùng'),
+ 'Chỗ trống diễn tả PHƯƠNG TIỆN, CÁCH THỨC học sinh học bài (học bằng cách nào). Đây là mệnh đề phân từ V-ing chỉ cách thức, đứng ngay sau <i>study their lessons</i> để bổ sung thông tin về công cụ được dùng.',
+ WR('to use','to-infinitive thường chỉ MỤC ĐÍCH (học ĐỂ làm gì), không phải cách thức đang được nhấn mạnh ở đây')+
+ WR('use','là động từ nguyên thể, không đứng được ngay sau một cụm danh từ để bổ nghĩa theo cách này')+
+ WR('used','là quá khứ đơn, không hợp với câu đang chia ở thì tương lai <i>will study</i>'),
+ 'Students will study their lessons using hologram devices and smart glasses in their classrooms.',
+ 'Học sinh sẽ học bài bằng cách dùng các thiết bị hình chiếu ba chiều và kính thông minh ngay trong lớp học.')),
+Q(2,'because',['so','because','although','but'],E5('because',
+ 'Giáo viên sẽ dùng hình chiếu 3D vì nhờ đó họ có thể trình bày ý tưởng phức tạp một cách rõ ràng.',
+ OP('so','liên từ chỉ kết quả','vì vậy, cho nên')+OP('because','liên từ chỉ nguyên nhân','bởi vì',1)+
+ OP('although','liên từ chỉ sự nhượng bộ','mặc dù')+OP('but','liên từ chỉ sự đối lập','nhưng'),
+ 'Vế sau chỗ trống <i>they can show complex ideas clearly</i> chính là LÝ DO vì sao giáo viên chọn dùng hình chiếu 3D. Liên từ nêu nguyên nhân chuẩn xác là <b>because</b>.',
+ WR('so','chỉ dùng để nêu KẾT QUẢ của một nguyên nhân đã nói trước, nhưng ở đây vế sau là lý do, không phải kết quả')+
+ WR('although','tạo ra ý nhượng bộ, trái ngược, không hợp với việc nêu lý do tại sao lại chọn dùng hình chiếu')+
+ WR('but','chỉ sự đối lập giữa hai vế, nhưng hai vế ở đây không hề mâu thuẫn với nhau'),
+ 'Teachers will be using 3D projections because they can show complex ideas clearly.',
+ 'Giáo viên sẽ dùng hình chiếu 3D vì nhờ đó họ có thể trình bày những ý tưởng phức tạp một cách rõ ràng.')),
+Q(3,'Therefore',['Therefore','Moreover','However','Meanwhile'],E5('Therefore',
+ 'Do đó, điện thoại truyền thống sẽ biến mất hoàn toàn.',
+ OP('Therefore','trạng từ liên kết chỉ kết quả','do đó, vì vậy',1)+OP('Moreover','trạng từ liên kết chỉ bổ sung','hơn nữa')+
+ OP('However','trạng từ liên kết chỉ đối lập','tuy nhiên')+OP('Meanwhile','trạng từ liên kết chỉ đồng thời','trong khi đó'),
+ 'Đoạn trước đã cho thấy công nghệ ảo (lớp học ảo, hình chiếu 3D) đang thay thế hoàn toàn cách giao tiếp và học tập truyền thống. Đây chính là KẾT QUẢ tất yếu tiếp theo: điện thoại kiểu cũ cũng không còn cần thiết nữa, nên dùng <b>Therefore</b>.',
+ WR('Moreover','chỉ dùng để bổ sung thêm một ý CÙNG CHIỀU, không diễn tả được quan hệ nhân quả giữa hai đoạn')+
+ WR('However','báo hiệu sự tương phản, nhưng ý “điện thoại biến mất” không hề trái ngược với đoạn trước, mà là hệ quả tiếp nối')+
+ WR('Meanwhile','chỉ hai việc xảy ra song song cùng lúc, không diễn tả được quan hệ nguyên nhân – kết quả'),
+ 'Therefore, traditional phones will disappear completely.',
+ 'Do đó, điện thoại truyền thống sẽ biến mất hoàn toàn.')),
+Q(4,'conversations',['conversations','conversation','converse','conversational'],E5('conversations',
+ 'Tai nghe sẽ tự động dịch toàn bộ các lượt trò chuyện sang ngôn ngữ của họ.',
+ OP('conversations','danh từ số nhiều','các cuộc trò chuyện, các lượt trao đổi',1)+OP('conversation','danh từ số ít','một cuộc trò chuyện')+
+ OP('converse','động từ','trò chuyện, đối thoại')+OP('conversational','tính từ','thuộc về giao tiếp, mang tính đàm thoại'),
+ 'Chỗ trống đứng sau <b>the whole</b> và cần là một DANH TỪ để tai nghe có thể dịch. Vì một buổi gặp gỡ thường gồm rất nhiều lượt nói qua lại giữa hai người, tác giả dùng danh từ số nhiều <b>conversations</b> để nhấn mạnh toàn bộ các lượt trao đổi ấy được dịch hết, không sót lượt nào.',
+ WR('conversation','ở dạng số ít chỉ nói tới MỘT cuộc trò chuyện, trong khi ý của câu là dịch TOÀN BỘ mọi lượt trao đổi liên tục')+
+ WR('converse','là động từ, không đứng sau <i>the whole</i> để làm tân ngữ của <i>translate</i> được')+
+ WR('conversational','là tính từ, cần thêm một danh từ khác đứng sau nó mới hoàn chỉnh được câu'),
+ 'Their earphones will automatically translate the whole conversations into their language.',
+ 'Tai nghe của họ sẽ tự động dịch toàn bộ các lượt trò chuyện sang ngôn ngữ của họ.')),
+Q(5,'different',['differ','different','difference','differently'],E5('different',
+ 'Mạng xã hội sẽ trở nên rất khác so với hiện nay.',
+ OP('differ','động từ','khác nhau')+OP('different','tính từ','khác biệt',1)+
+ OP('difference','danh từ','sự khác biệt')+OP('differently','trạng từ','một cách khác'),
+ 'Cấu trúc <b>become + tính từ</b> = trở nên như thế nào. Chỗ trống đứng ngay sau động từ liên kết <b>become</b> nên cần một TÍNH TỪ, và <b>different</b> đúng nghĩa “khác biệt” khớp với cụm <i>from today</i> ngay sau đó.',
+ WR('differ','là động từ, không đứng sau <i>become</i> theo cấu trúc tính từ này')+
+ WR('difference','là danh từ; nếu dùng thì câu phải viết lại thành <i>become a difference</i>, sai hẳn nghĩa gốc')+
+ WR('differently','là trạng từ, chỉ bổ nghĩa cho động từ, không đứng sau <i>become</i> để làm vị ngữ tính từ'),
+ 'Social media will become very different from today.',
+ 'Mạng xã hội sẽ trở nên rất khác so với hiện nay.')),
+Q(6,'confident',['confide','confidence','confident','confidently'],E5('confident',
+ 'Việc sẵn sàng cho công nghệ tương lai khiến học sinh cảm thấy tự tin hơn về ngày mai.',
+ OP('confide','động từ','thổ lộ, tin tưởng giao phó')+OP('confidence','danh từ','sự tự tin')+
+ OP('confident','tính từ','tự tin',1)+OP('confidently','trạng từ','một cách tự tin'),
+ 'Cấu trúc <b>feel + tính từ</b> = cảm thấy như thế nào. Chỗ trống đứng sau động từ <b>feel</b> (qua từ so sánh <i>more</i>) nên cần TÍNH TỪ, và <b>confident</b> = tự tin, đúng nghĩa với việc chuẩn bị sẵn sàng cho tương lai.',
+ WR('confide','là động từ hoàn toàn khác nghĩa (thổ lộ bí mật), không hợp ngữ cảnh')+
+ WR('confidence','là danh từ; muốn dùng phải viết lại thành <i>feel more confidence</i> lệch chuẩn, trong khi <i>more confident</i> mới đúng cấu trúc tính từ so sánh')+
+ WR('confidently','là trạng từ, chỉ bổ nghĩa cho động từ chỉ hành động (như <i>speak confidently</i>), không đứng sau <i>feel</i> để làm vị ngữ tính từ'),
+ 'Being ready for future technology makes students feel more confident about tomorrow.',
+ 'Việc sẵn sàng cho công nghệ tương lai khiến học sinh cảm thấy tự tin hơn về ngày mai.'))
+]);
+
+/* ═════════ EX 3.2 — THE FUTURE OF GLOBAL COMMUNICATION ═════════ */
+pas('B','🐢','THE FUTURE OF GLOBAL COMMUNICATION','Ex 3 ② — Chọn đáp án đúng nhất cho mỗi chỗ trống (6 câu)',
+ '<div class="stamp">🐢<b>GLOBAL</b></div>'+
+ T('<p><b>THE FUTURE OF GLOBAL COMMUNICATION</b></p><p>Communication technology is changing rapidly. Scientists predict that by 2040, people will use '+B('B',1)+' universal translation device that fits in their ear. This tiny device will help everyone talk to anyone in the world without language barriers.</p>',
+   'TƯƠNG LAI CỦA GIAO TIẾP TOÀN CẦU. Công nghệ giao tiếp đang thay đổi nhanh chóng. Các nhà khoa học dự đoán rằng đến năm 2040, con người sẽ dùng một thiết bị dịch ngôn ngữ đa năng vừa khít trong tai. Thiết bị nhỏ bé này sẽ giúp mọi người nói chuyện được với bất kỳ ai trên thế giới mà không gặp rào cản ngôn ngữ.')+
+ T('<p>Ten years ago, video calls '+B('B',2)+' slow and unclear. Today, they work perfectly.</p>', 'Mười năm trước, các cuộc gọi video còn chậm và không rõ nét. Ngày nay, chúng hoạt động hoàn hảo.')+
+ T('<p>In the future, hologram calls will replace video calls completely. You will see your friends appearing right in your room as 3D images.</p>', 'Trong tương lai, các cuộc gọi bằng hình chiếu ba chiều sẽ thay thế hoàn toàn cuộc gọi video. Bạn sẽ thấy bạn bè mình xuất hiện ngay trong phòng như những hình ảnh 3D.')+
+ T('<p>Many technology '+B('B',3)+' are developing brain-to-computer communication systems. These systems will allow people '+B('B',4)+' messages just by thinking.</p>', 'Nhiều nhóm công nghệ đang phát triển các hệ thống giao tiếp giữa não bộ và máy tính. Những hệ thống này sẽ cho phép con người gửi tin nhắn chỉ bằng suy nghĩ.')+
+ T('<p>You won’t need to type or speak anymore. Your thoughts will appear as text on your friend’s screen immediately.</p>', 'Bạn sẽ không cần phải gõ chữ hay nói ra nữa. Suy nghĩ của bạn sẽ hiện thành chữ trên màn hình của bạn mình ngay lập tức.')+
+ T('<p>Schools will change their teaching methods. Students will learn '+B('B',5)+' at home and at school through virtual reality experiences.</p>', 'Các trường học sẽ thay đổi phương pháp giảng dạy. Học sinh sẽ học liên tục cả ở nhà và ở trường qua các trải nghiệm thực tế ảo.')+
+ T('<p>They will visit ancient Rome or explore the ocean floor without leaving their classroom. Teachers will communicate with students using AI assistants that understand every student’s learning style.</p>', 'Họ sẽ ghé thăm La Mã cổ đại hoặc khám phá đáy đại dương mà không cần rời khỏi lớp học. Giáo viên sẽ giao tiếp với học sinh bằng các trợ lý AI hiểu được phong cách học của từng em.')+
+ T('<p>Social media will also transform completely. Instead of posting photos, people will share full virtual reality experiences.</p>', 'Mạng xã hội cũng sẽ biến đổi hoàn toàn. Thay vì đăng ảnh, con người sẽ chia sẻ toàn bộ trải nghiệm thực tế ảo.')+
+ T('<p>Friends can experience your vacation '+B('B',6)+' in real time as if they were there with you. The future of communication will make the world feel much smaller and more connected.</p>', 'Bạn bè có thể trải nghiệm trực tiếp kỳ nghỉ của bạn theo thời gian thực, như thể họ đang ở đó cùng bạn. Tương lai của giao tiếp sẽ khiến thế giới cảm thấy nhỏ bé hơn và gắn kết hơn nhiều.'),
+ W('universal','/ˌjuːnɪˈvɜːsl/','adj','đa năng, mang tính phổ quát')+
+ W('translation device','/trænsˈleɪʃn dɪˈvaɪs/','np','thiết bị dịch ngôn ngữ')+
+ W('language barrier','/ˈlæŋɡwɪdʒ ˈbæriə(r)/','np','rào cản ngôn ngữ')+
+ W('hologram call','/ˈhɒləɡræm kɔːl/','np','cuộc gọi bằng hình chiếu ba chiều')+
+ W('brain-to-computer','/breɪn tuː kəmˈpjuːtə/','np','giữa não bộ và máy tính')+
+ W('immediately','/ɪˈmiːdiətli/','adv','ngay lập tức')+
+ W('ancient','/ˈeɪnʃənt/','adj','cổ đại')+
+ W('ocean floor','/ˈəʊʃn flɔː(r)/','np','đáy đại dương')+
+ W('learning style','/ˈlɜːnɪŋ staɪl/','np','phong cách học')+
+ W('in real time','/ɪn rɪəl taɪm/','phr','theo thời gian thực')+
+ W('connected','/kəˈnektɪd/','adj','được kết nối, gắn kết'),
+[
+Q(1,'a',['a','an','the','some'],E5('a',
+ 'Con người sẽ dùng một thiết bị dịch ngôn ngữ đa năng vừa khít trong tai.',
+ OP('a','mạo từ không xác định','một (trước âm phụ âm)',1)+OP('an','mạo từ không xác định','một (trước âm nguyên âm)')+
+ OP('the','mạo từ xác định','cái, chiếc đã xác định')+OP('some','từ hạn định','một vài, một ít'),
+ '<b>Universal</b> tuy viết bắt đầu bằng chữ cái U nhưng được PHÁT ÂM là /ˌjuːnɪˈvɜːsl/ — mở đầu bằng âm bán nguyên âm /j/ (như trong <i>you</i>), tức là âm PHỤ ÂM về mặt ngữ âm. Vì vậy mạo từ đi trước nó phải là <b>a</b>, giống như <i>a university, a uniform</i>.',
+ WR('an','chỉ dùng trước âm NGUYÊN ÂM thật (ví dụ <i>an umbrella</i>), còn <i>universal</i> lại mở đầu bằng âm /j/ nên không dùng <i>an</i>')+
+ WR('the','sẽ hàm ý một thiết bị CỤ THỂ đã được nhắc tới trước đó, nhưng đây là lần đầu thiết bị này được giới thiệu')+
+ WR('some','dùng cho danh từ không đếm được hoặc số nhiều, không hợp với danh từ đếm được số ít <i>device</i> ở đây'),
+ 'Scientists predict that by 2040, people will use a universal translation device that fits in their ear.',
+ 'Các nhà khoa học dự đoán rằng đến năm 2040, con người sẽ dùng một thiết bị dịch ngôn ngữ đa năng vừa khít trong tai.')),
+Q(2,'were',['are','were','had been','having been'],E5('were',
+ 'Mười năm trước, các cuộc gọi video còn chậm và không rõ nét.',
+ OP('are','hiện tại đơn','là (hiện tại)')+OP('were','quá khứ đơn','là (quá khứ)',1)+
+ OP('had been','quá khứ hoàn thành','đã từng là')+OP('having been','phân từ hoàn thành','đã từng là (dạng phân từ)'),
+ 'Cụm <b>Ten years ago</b> là mốc thời gian trong QUÁ KHỨ, nên động từ to be phải chia ở thì quá khứ đơn: <b>were</b>. Câu sau đối lập bằng <i>Today, they work perfectly</i> — hiện tại đơn — cho thấy đây là phép so sánh quá khứ với hiện tại.',
+ WR('are','là hiện tại đơn, không hợp với mốc thời gian quá khứ <i>ten years ago</i>')+
+ WR('had been','là quá khứ hoàn thành, dùng khi có một mốc quá khứ khác xảy ra SAU nó để so sánh, nhưng câu này chỉ đơn giản kể lại một trạng thái ở quá khứ')+
+ WR('having been','là dạng phân từ, không thể làm động từ chính của câu'),
+ 'Ten years ago, video calls were slow and unclear.',
+ 'Mười năm trước, các cuộc gọi video còn chậm và không rõ nét.')),
+Q(3,'teams',['team','team’s','teams','teaming'],E5('teams',
+ 'Nhiều nhóm công nghệ đang phát triển các hệ thống giao tiếp giữa não bộ và máy tính.',
+ OP('team','danh từ số ít','một nhóm')+OP('team’s','danh từ sở hữu','của nhóm')+
+ OP('teams','danh từ số nhiều','các nhóm',1)+OP('teaming','danh động từ','đang hợp thành nhóm'),
+ 'Từ <b>Many</b> (nhiều) luôn đi với DANH TỪ SỐ NHIỀU, và động từ theo sau là <b>are developing</b> (số nhiều), nên chủ ngữ phải là <b>teams</b>: nhiều nhóm công nghệ khác nhau.',
+ WR('team','là danh từ số ít, không khớp với <i>Many</i> và với động từ số nhiều <i>are</i>')+
+ WR('team’s','là dạng sở hữu, cần có danh từ khác đứng sau nó, không tự làm chủ ngữ được')+
+ WR('teaming','là danh động từ, không đi sau <i>Many</i> theo cách này và cũng không khớp với động từ <i>are developing</i> phía sau'),
+ 'Many technology teams are developing brain-to-computer communication systems.',
+ 'Nhiều nhóm công nghệ đang phát triển các hệ thống giao tiếp giữa não bộ và máy tính.')),
+Q(4,'to send',['send','sending','to send','sent'],E5('to send',
+ 'Những hệ thống này sẽ cho phép con người gửi tin nhắn chỉ bằng suy nghĩ.',
+ OP('send','động từ nguyên thể không to','gửi')+OP('sending','danh động từ','việc gửi')+
+ OP('to send','động từ nguyên thể có to','để gửi',1)+OP('sent','động từ quá khứ','đã gửi'),
+ 'Cấu trúc cố định là <b>allow somebody to do something</b> = cho phép ai làm gì. Ở đây <i>allow people</i> + <b>to send</b> messages, đúng công thức <b>allow + O + to V</b>.',
+ WR('send','thiếu chữ <i>to</i>; sau <i>allow + tân ngữ</i> luôn phải có to-infinitive, không dùng động từ nguyên thể trần')+
+ WR('sending','là danh động từ, không đúng cấu trúc cố định của động từ <i>allow</i>')+
+ WR('sent','là dạng quá khứ, không đứng được sau <i>allow people</i> theo cấu trúc này'),
+ 'These systems will allow people to send messages just by thinking.',
+ 'Những hệ thống này sẽ cho phép con người gửi tin nhắn chỉ bằng suy nghĩ.')),
+Q(5,'continuously',['continue','continuous','continuously','continuation'],E5('continuously',
+ 'Học sinh sẽ học liên tục cả ở nhà và ở trường qua các trải nghiệm thực tế ảo.',
+ OP('continue','động từ','tiếp tục')+OP('continuous','tính từ','liên tục (bổ nghĩa cho danh từ)')+
+ OP('continuously','trạng từ','một cách liên tục (bổ nghĩa cho động từ)',1)+OP('continuation','danh từ','sự tiếp diễn'),
+ 'Chỗ trống bổ nghĩa cho ĐỘNG TỪ <b>learn</b> (học như thế nào), nên cần một TRẠNG TỪ. <b>Continuously</b> = một cách liên tục, đúng vị trí ngữ pháp và khớp với ý “cả ở nhà và ở trường” — không hề bị gián đoạn.',
+ WR('continue','là động từ, không bổ nghĩa được cho một động từ khác theo cách này')+
+ WR('continuous','là tính từ, chỉ bổ nghĩa được cho danh từ như <i>a continuous process</i>, không bổ nghĩa cho động từ')+
+ WR('continuation','là danh từ, không đứng sau động từ <i>learn</i> để bổ nghĩa cho nó'),
+ 'Students will learn continuously at home and at school through virtual reality experiences.',
+ 'Học sinh sẽ học liên tục cả ở nhà và ở trường qua các trải nghiệm thực tế ảo.')),
+Q(6,'directly',['direct','directer','directly','directness'],E5('directly',
+ 'Bạn bè có thể trải nghiệm trực tiếp kỳ nghỉ của bạn theo thời gian thực.',
+ OP('direct','tính từ / động từ','trực tiếp (tính từ) / chỉ đạo (động từ)')+OP('directer','sai chính tả','(không phải dạng so sánh hợp lệ của direct)')+
+ OP('directly','trạng từ','một cách trực tiếp (bổ nghĩa cho động từ)',1)+OP('directness','danh từ','tính trực tiếp, thẳng thắn'),
+ 'Chỗ trống bổ nghĩa cho ĐỘNG TỪ <b>experience</b> (trải nghiệm như thế nào), nên cần một TRẠNG TỪ. <b>Directly</b> = trực tiếp, khớp với cụm <i>in real time as if they were there with you</i> ngay sau đó — nhấn mạnh cảm giác như đang chứng kiến ngay tại chỗ.',
+ WR('direct','là tính từ hoặc động từ, không bổ nghĩa được cho động từ <i>experience</i> ở vị trí này')+
+ WR('directer','không phải dạng so sánh chuẩn của <i>direct</i> (so sánh hơn đúng phải là <i>more direct</i>), nên không tồn tại trong tiếng Anh chuẩn')+
+ WR('directness','là danh từ, không đứng sau động từ để bổ nghĩa cho nó'),
+ 'Friends can experience your vacation directly in real time as if they were there with you.',
+ 'Bạn bè có thể trải nghiệm trực tiếp kỳ nghỉ của bạn theo thời gian thực, như thể họ đang ở đó cùng bạn.'))
+]);
+
+/* ══ DUNG TRANG ══ */
+var TOTAL=0;P.forEach(function(p){TOTAL+=p.qs.length});
+var answered=0,score=0,done={},MAP={};
+var app=document.getElementById('app');
+P.forEach(function(p,pi){
+ var d=document.createElement('div');d.className='split';
+ var qh='';
+ p.qs.forEach(function(q,qi){
+  var gid=p.id+'_'+q.n;
+  var so=shuffle(q.opts);
+  qh+='<div class="q" id="c_'+gid+'"><div class="qt"><span class="qn">'+q.n+'</span>'+(q.st||'Chọn từ đúng cho chỗ trống ('+q.n+')')+'</div>'+
+   '<div class="og" id="o_'+gid+'">'+so.map(function(o,i){
+     return '<button class="ob" onclick="pick(\''+gid+'\','+pi+','+qi+','+i+')">'+o+'</button>'}).join('')+'</div>'+
+   '<div class="ex" id="e_'+gid+'">'+q.ex+'</div></div>';
+  MAP[gid]=so;
+ });
+ d.innerHTML='<div class="pane"><div class="letter"><div class="edge"></div><div class="bd">'+
+   '<h2>'+p.ic+' '+p.ttl+'</h2><div class="sub">'+p.sub+'</div>'+p.body+
+   '<div class="gl"><h3>📖 BẢNG TỪ VỰNG CẦN NHỚ</h3><table class="gtb">'+p.gloss+'</table></div></div></div></div>'+
+   '<div><div class="sec"><h3>'+p.ic+' '+p.sub+'</h3>'+qh+'</div></div>';
+ app.appendChild(d);
+});
+document.getElementById('tt').textContent=TOTAL;
+
+function pick(gid,pi,qi,i){
+ if(done[gid])return;done[gid]=true;answered++;
+ var q=P[pi].qs[qi],so=MAP[gid],bs=document.getElementById('o_'+gid).children;
+ var ok=so[i]===q.ans;
+ for(var k=0;k<bs.length;k++){bs[k].classList.add('dn');
+  if(so[k]===q.ans)bs[k].classList.add('ok');else if(k===i)bs[k].classList.add('no')}
+ var bl=document.getElementById('bl_'+gid);
+ if(bl){bl.textContent=q.ans==='no article'?'( '+q.n+' ) ∅':'('+q.n+') '+q.ans;bl.classList.add('ok')}
+ document.getElementById('e_'+gid).classList.add('on');
+ if(ok){score++;ding();conf()}
+ else{buzz();var c=document.getElementById('c_'+gid);c.classList.add('shk');setTimeout(function(){c.classList.remove('shk')},430)}
+ bump();
+}
+function bump(){document.getElementById('sc').textContent=score;
+ document.getElementById('fb').style.width=(answered/TOTAL*100)+'%';
+ var p=answered?score/answered:1;
+ document.getElementById('md').textContent=p>=.9?'🤩':p>=.7?'😃':p>=.5?'🙂':'💪'}
+
+/* ══ nop bai ══ */
+function openName(){document.getElementById('ovN').classList.add('on');setTimeout(function(){document.getElementById('nIn').focus()},150)}
+document.getElementById('nIn').addEventListener('keydown',function(e){if(e.key==='Enter')showResult()});
+function showResult(){
+ var i=document.getElementById('nIn'),n=i.value.trim();
+ if(!n){document.getElementById('nEm').classList.add('on');i.focus();return}
+ document.getElementById('nEm').classList.remove('on');
+ document.getElementById('ovN').classList.remove('on');
+ var pct=score/TOTAL,ten=(pct*10).toFixed(2),e,g,m,gif;
+ if(score===TOTAL){e='🏆';g='🌟 XUẤT SẮC TUYỆT ĐỐI, '+n+'!';m='Con đúng trọn vẹn cả '+TOTAL+' câu. Ms rất tự hào về con!';gif='https://media.giphy.com/media/g9582DNuQppxC/giphy.gif'}
+ else if(pct>=.8){e='🎉';g='👏 GIỎI LẮM, '+n+'!';m='Con nắm bài rất chắc. Đọc lại vài câu sai để lần sau trọn điểm nhé!';gif='https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'}
+ else if(pct>=.6){e='🙌';g='💪 KHÁ RỒI ĐẤY, '+n+'!';m='Con đã qua ngưỡng an toàn. Mở phần giải thích từng bước ra đọc, con sẽ lên nhanh lắm.';gif='https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif'}
+ else{e='🤗';g='🌱 CỐ LÊN NHÉ, '+n+'!';m='Đừng buồn con. Con hãy đọc kỹ lời giải, chép cấu trúc vào vở rồi làm lại — Ms tin con sẽ khác hẳn.';gif='https://media.giphy.com/media/l4pTsNgkyKQPzsxRm/giphy.gif'}
+ document.getElementById('rEmo').textContent=e;
+ document.getElementById('rGr').textContent=g;
+ document.getElementById('rMs').textContent=m+' ☎️ Đăng ký khoá học cùng MS Chí Nên: 0852639652.';
+ document.getElementById('rGif').src=gif;
+ document.getElementById('rSc').textContent=score;
+ document.getElementById('rTt').textContent=TOTAL;
+ document.getElementById('r10').textContent=ten;
+ document.getElementById('ovR').classList.add('on');
+ if(pct>=.6){conf();ding()}
+}
+
+/* ══ loi nhac cua Ms — tu doi 4.2 giay ══ */
+var MSNH=[
+ '💛 Ms để bảng nhắn này ở đây suốt bài, không phải để giục con, mà để con nhớ rằng có một cô giáo đang mong con học cho tử tế.',
+ '📜 Bên trái là bài đọc, bên phải là câu hỏi. Con hãy đọc trọn cả đoạn rồi mới chọn, đừng vội nhìn mỗi chỗ trống.',
+ '🌟 Mỗi đoạn Ms đều để một nút mở bản dịch. Con thử tự hiểu trước, rồi mới mở ra đối chiếu — như vậy mới thật sự tiến bộ.',
+ '🌱 Sai một câu không làm con kém đi chút nào đâu. Nó chỉ chỉ cho con thấy chỗ mình chưa chắc. Ms thích học sinh <b>dám sai rồi sửa</b>.',
+ '🕯 Phần giải thích là chỗ Ms ngồi viết lâu nhất. Câu nào đúng con cũng hãy mở ra đọc, vì <b>đúng do hiểu</b> khác hẳn <b>đúng do may</b>.',
+ '🖋 Xin con mở vở ra chép lại những câu mình làm sai. Ms dạy nhiều khoá rồi và thấy rất rõ: <b>bạn nào chịu ghi, bạn ấy đi xa</b>.',
+ '📖 Bảng từ vựng ở cuối mỗi lá thư có phiên âm và từ loại đầy đủ. Con đọc to lên vài lượt, tay chép, miệng đọc thì từ mới ở lại lâu.',
+ '🐢 Làm chậm mà chắc vẫn hơn bấm cho hết bài. Mười lăm phút con chịu khó hôm nay sẽ quay lại thành điểm số của con ngày mai.',
+ '🤝 Chỗ nào chưa hiểu cứ hỏi Ms nhé. Không có câu hỏi nào là ngớ ngẩn cả, chỉ có thắc mắc giữ im trong lòng mới đáng lo.',
+ '☎️ Con và phụ huynh muốn học cùng <b>MS Chí Nên</b> thì gọi <b>0852639652</b> — khoá tiếng Anh <b>cấp 1 đến cấp 3</b>, câu nào cũng có lời giải riêng và dịch nghĩa đầy đủ.'
+];
+(function(){var e=document.getElementById('msTx'),k=0;e.innerHTML=MSNH[0];
+ setInterval(function(){k=(k+1)%MSNH.length;e.style.opacity=0;
+  setTimeout(function(){e.innerHTML=MSNH[k];e.style.opacity=1},250)},4200)})();
+</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>
