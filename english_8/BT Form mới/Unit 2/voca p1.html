@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌾 Rice Field Words — Unit 2 Voca p1 | MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Lobster&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF6E0;--ink:#3B2E12;--ink2:#6E5C34;--hl:#D9771F;--line:#6DAA2C;--glow:rgba(255,255,255,.3);--birdc:#3B2E12;--ffc:#FFD84D;--c1:#D9771F;--c2:#6DAA2C;--c3:#6E5C34;--a1:linear-gradient(135deg,#F6B24B,#D9771F);--a2:linear-gradient(135deg,#9BD35A,#5E9E23);--a3:linear-gradient(135deg,#6FC7E8,#2E97C4);--a4:linear-gradient(135deg,#F28C8C,#D94B5B);--rainbow:linear-gradient(90deg,#F6B24B,#9BD35A,#6FC7E8,#F28C8C);--title:linear-gradient(90deg,#D9771F,#5E9E23 35%,#2E97C4 70%,#D94B5B);--rmbbg:#FFF8E6;--shadow:rgba(30,30,60,.18);--cardline:#EFE3C4;--optline:#E6D7AE;--focus:rgba(217,119,31,.28);--expbg:linear-gradient(150deg,#FFFBEF,#fff 55%,#F3FBE8);--modalbg:linear-gradient(160deg,#FFFBEF,#fff 45%,#F3FBE8);--rg1:#D9771F;--rg2:#5E9E23;
+  --ok:#12A366;--ok-bg:#DCF8EA;--no:#E5486F;--no-bg:#FFE3EA;}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',sans-serif;font-size:19px;font-weight:500;line-height:1.7;color:var(--ink);background:var(--bg);min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+.wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 16px 120px}
+.deco{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+@media(prefers-reduced-motion:reduce){.deco *,.bgmove{animation:none!important}}
+
+/* ── thanh trên ── */
+.topbar{position:sticky;top:0;z-index:50;padding:10px 0 12px;margin-bottom:10px}
+.topbar-in{padding:10px 14px;border-radius:24px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border:3px solid #fff;box-shadow:0 10px 28px var(--shadow)}
+.prog-row{display:flex;align-items:center;gap:12px}
+.pbar{flex:1;height:16px;border-radius:99px;background:rgba(0,0,0,.06);overflow:hidden}
+.pfill{height:100%;width:0;border-radius:99px;transition:width .6s cubic-bezier(.3,1.4,.5,1);background:var(--rainbow)}
+.pchip{flex:none;padding:2px 14px;border-radius:99px;font-weight:700;font-size:1.02rem;color:#fff;background:var(--a1)}
+.pchip.s2{background:var(--a3)}
+.rmb{display:flex;align-items:center;gap:10px;margin-top:9px;padding:8px 12px;border-radius:16px;font-size:1rem;line-height:1.55;background:var(--rmbbg)}
+.rmb .ic{flex:none;font-size:1.6rem;animation:bob 2.4s ease-in-out infinite}
+#rmbTxt{flex:1;animation:fadeUp .5s ease}
+#rmbTxt b{color:var(--hl)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.rmb-min{flex:none;width:32px;height:32px;border:none;border-radius:10px;font-weight:800;font-size:1.1rem;color:#fff;background:var(--a1)}
+.rmb.mini #rmbTxt{display:none}
+.rmb.mini::after{content:'Lời nhắc của cô (bấm + để mở)';flex:1;opacity:.8}
+
+/* ── hero ── */
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:24px;margin:6px 0 20px;border-radius:34px;background:rgba(255,255,255,.8);backdrop-filter:blur(8px);border:4px solid #fff;box-shadow:0 16px 44px var(--shadow)}
+.hero-txt{flex:1 1 320px}
+.kick{display:inline-block;padding:1px 14px;border-radius:99px;font-weight:700;font-size:.98rem;color:#fff;background:var(--a2)}
+.hero h1{font-size:clamp(1.9rem,5.4vw,2.8rem);font-weight:800;line-height:1.15;margin:8px 0 6px;background:var(--title);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:1.04rem;color:var(--ink2)}
+.tag{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:99px;font-weight:700;font-size:1rem;color:var(--hl);background:var(--rmbbg);border:2px solid #fff}
+.heroart{flex:none;width:200px;height:170px;margin:0 auto}
+
+/* ── tiêu đề phần ── */
+.sec{display:flex;align-items:center;gap:14px;margin:30px 0 16px;padding:14px 18px;border-radius:24px;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border:3px solid #fff;box-shadow:0 6px 18px var(--shadow)}
+.sec .si{flex:none;width:58px;height:58px;display:grid;place-items:center;font-size:1.7rem;border-radius:20px;background:var(--a2);box-shadow:inset 0 -5px 0 rgba(0,0,0,.12),0 5px 12px var(--shadow)}
+.sec:nth-of-type(2n) .si{background:var(--a3)}
+.sec h2{font-size:1.28rem;font-weight:800;line-height:1.3}
+.sec p{font-size:1rem;color:var(--ink2)}
+.sec p b{color:var(--hl)}
+.sec .cnt{flex:none;margin-left:auto;padding:2px 12px;border-radius:99px;font-weight:700;background:var(--rmbbg);color:var(--hl)}
+
+/* ── thẻ câu hỏi ── */
+.card{position:relative;margin-bottom:18px;padding:18px 18px 16px;border-radius:28px;background:rgba(255,255,255,.93);border:4px solid var(--cardline);box-shadow:0 8px 0 var(--cardline),0 16px 30px var(--shadow)}
+.card .top{display:flex;align-items:flex-start;gap:11px;margin-bottom:6px}
+.qn{flex:none;min-width:44px;height:44px;display:grid;place-items:center;padding:0 8px;font-weight:800;font-size:1.1rem;color:#fff;border-radius:16px;background:var(--qc,var(--a1));box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.qt{flex:1;font-size:1.18rem;font-weight:600;line-height:1.8;padding-top:4px}
+.blank{display:inline-block;min-width:90px;border-bottom:3px dashed var(--line);margin:0 4px;vertical-align:-4px}
+.hw{display:inline-block;margin:0 3px;padding:0 10px;border-radius:99px;font-size:.98rem;font-weight:700;color:var(--hl);background:var(--rmbbg);line-height:1.6}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:18px;border:3px solid var(--optline);background:#fff;
+  font-size:1.1rem;font-weight:600;color:var(--ink);text-align:left;box-shadow:0 4px 0 var(--optline);transition:transform .15s,box-shadow .15s}
+.opt::after{content:'';position:absolute;left:10px;right:10px;top:4px;height:35%;border-radius:12px;background:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,0));pointer-events:none}
+.opt:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--optline)}
+.opt .l{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;font-weight:800;font-size:.95rem;color:#fff;background:var(--a2)}
+.opt.good{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 4px 0 #9ED9BD}.opt.good .l{background:var(--ok)}
+.opt.bad{border-color:var(--no);background:var(--no-bg);box-shadow:0 4px 0 #F5AFC0}.opt.bad .l{background:var(--no)}
+.opt.dim{opacity:.5}.opt:disabled{cursor:default;transform:none}
+.fline{font-size:1.18rem;font-weight:600;line-height:2.3}
+.fi{width:210px;max-width:100%;margin:0 4px;padding:3px 10px;text-align:center;font-family:inherit;font-size:1.12rem;font-weight:700;color:var(--ink);
+  border:none;border-bottom:3px dashed var(--line);border-radius:12px 12px 0 0;background:var(--rmbbg);outline:none;transition:all .2s}
+.fi:focus{background:#fff;border-bottom-style:solid;box-shadow:0 0 0 3px var(--focus)}
+.fi.ok{color:var(--ok);background:var(--ok-bg);border-bottom:3px solid var(--ok)}
+.fi.no{color:var(--no);background:var(--no-bg);border-bottom:3px solid var(--no);text-decoration:line-through}
+.fi.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.fix{display:inline-block;margin-left:3px;padding:0 10px;border-radius:99px;font-size:1rem;font-weight:700;color:#fff;background:var(--ok);line-height:1.6}
+.fb{display:block;margin-top:8px;font-size:1.02rem;font-weight:700}
+.fb.tip{color:var(--ink2);font-weight:500;font-size:.95rem}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}.fb.part{color:#C27A00}
+.ansbox{display:inline-block;margin-left:4px;padding:0 10px;border-radius:10px;background:var(--ok-bg);color:var(--ok)}
+
+/* ── nối câu ── */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.match{grid-template-columns:1fr}}
+.mcol{padding:12px;border-radius:26px;background:rgba(255,255,255,.88);border:4px solid var(--cardline);box-shadow:0 8px 0 var(--cardline)}
+.mcol h3{font-size:1.05rem;font-weight:800;color:var(--hl);margin:0 4px 8px}
+.mb{width:100%;display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:9px 12px;border-radius:16px;border:3px solid var(--optline);background:#fff;text-align:left;
+  font-size:1.05rem;font-weight:600;color:var(--ink);box-shadow:0 3px 0 var(--optline);transition:transform .15s}
+.mb:hover{transform:translateY(-2px)}
+.mb .k{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:12px;font-weight:800;color:#fff;background:var(--a2)}
+.mb.a .k{background:var(--a3)}
+.mb.sel{border-color:var(--line);background:var(--rmbbg);transform:scale(1.02)}
+.mb.good{border-color:var(--ok);background:var(--ok-bg)}.mb.good .k{background:var(--ok)}
+.mb.bad{border-color:var(--no);background:var(--no-bg);animation:shake .4s ease}
+.mb:disabled{cursor:default;transform:none}
+.mexp{display:none;margin:-2px 0 10px;padding:9px 12px;border-radius:14px;font-size:.98rem;line-height:1.65;background:var(--expbg);border:2px dashed var(--optline)}
+.mexp.show{display:block;animation:fadeUp .4s ease}
+.mexp b.pair{color:var(--ok)}
+
+/* ── lời giải (giữ nội dung gốc, trình bày lại) ── */
+.expl{display:none;margin-top:12px}
+.expl.show{display:block;animation:fadeUp .45s ease}
+.exp-box{padding:13px 14px;border-radius:22px;font-size:1.02rem;line-height:1.7;background:var(--expbg);border:3px dashed var(--optline)}
+.exp-box h4{font-size:1.02rem;font-weight:800;color:var(--hl);margin-bottom:8px}
+.exp-box>div{margin-bottom:8px!important;padding:9px 13px;border-radius:14px;background:rgba(255,255,255,.9);border-left:6px solid var(--a3)}
+.exp-box>div:nth-of-type(2){border-left-color:var(--a2)}
+.exp-box>div:nth-of-type(3){border-left-color:var(--ok)}
+.exp-box>div:nth-of-type(4){border-left-color:var(--no);background:#FFF4F7}
+.exp-box>div:last-child{margin-bottom:0!important}
+.exp-box>div>b:first-child{color:var(--hl)}
+.p-word{font-weight:700;color:var(--hl)}
+.p-mean{color:var(--ink2)}
+.p-phonetic{color:#2E7BD6;font-weight:600}
+.p-grammar,.mexp .p-grammar{padding:0 7px;border-radius:7px;font-weight:700;background:#FFF1C4;color:#8A5A00}
+.hl-green{padding:0 7px;border-radius:7px;font-weight:700;background:var(--ok-bg);color:var(--ok)}
+.hl-red{padding:0 7px;border-radius:7px;font-weight:700;background:var(--no-bg);color:var(--no)}
+
+/* ── kết quả ── */
+.pop{position:fixed;z-index:999;pointer-events:none;font-size:22px;animation:pop 1.1s ease-out forwards}
+@keyframes pop{0%{opacity:1;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--r))}}
+.btn{padding:12px 34px;border:none;border-radius:99px;font-size:1.15rem;font-weight:800;color:#fff;background:var(--a1);box-shadow:inset 0 -5px 0 rgba(0,0,0,.15),0 6px 16px var(--shadow);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.b2{background:var(--a3)}
+.finish{text-align:center;margin:30px 0 10px}
+.foot{text-align:center;margin-top:24px;font-size:1rem;color:var(--ink2)}
+.foot b{color:var(--hl)}
+.ov{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(60,40,80,.32);backdrop-filter:blur(6px)}
+.ov.show{display:flex}
+.modal{width:100%;max-width:430px;max-height:92vh;overflow:auto;padding:26px 22px 22px;text-align:center;border-radius:30px;background:var(--modalbg);border:4px solid #fff;box-shadow:0 20px 50px rgba(90,50,130,.3);animation:fadeUp .4s ease}
+.modal .em{font-size:3.3rem;line-height:1.1}
+.modal .big{font-size:2.8rem;font-weight:800;background:var(--title);-webkit-background-clip:text;background-clip:text;color:transparent}
+.modal .ten{font-size:1.18rem;font-weight:800;color:var(--hl);margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:7px 14px;margin:6px 0;border-radius:14px;background:rgba(255,255,255,.85);font-size:1.02rem}
+.row b{color:var(--hl)}
+.modal .note{margin:12px 0 14px;font-size:1.02rem;color:var(--ink2)}
+@media(max-width:600px){body{font-size:18px}.hero{padding:18px 14px}.heroart{width:170px;height:145px}.card{padding:14px 11px}.qt,.fline{font-size:1.1rem}.fi{width:170px}}
+
+/* ══════════ THEME ══════════ */
+/* ══════════ CHIM · BƯỚM · ONG ══════════ */
+.fauna{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.flock{position:absolute;left:0;width:150px;height:80px;animation:flyAcross linear infinite}
+.flock .bird{position:absolute;width:30px;height:16px;animation:glide 3s ease-in-out infinite alternate}
+.flock .bird svg{width:100%;height:100%;overflow:visible;animation:flap .42s ease-in-out infinite alternate;transform-origin:50% 60%}
+@keyframes flyAcross{from{transform:translateX(-200px)}to{transform:translateX(calc(100vw + 60px))}}
+@keyframes glide{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(-.35)}}
+.flock.rev{animation-name:flyBack}.flock.rev .bird svg{transform:scaleX(-1)}
+@keyframes flyBack{from{transform:translateX(calc(100vw + 60px))}to{transform:translateX(-200px)}}
+.bfly{position:absolute;width:44px;height:38px;animation:var(--path) var(--dur) ease-in-out infinite}
+.bfly svg{width:100%;height:100%;overflow:visible}
+.bfly .wl,.bfly .wr{animation:wing .28s ease-in-out infinite alternate}
+.bfly .wl{transform-origin:22px 19px}.bfly .wr{transform-origin:22px 19px}
+@keyframes wing{from{transform:scaleX(1)}to{transform:scaleX(.18)}}
+.bee{position:absolute;width:40px;height:32px;animation:var(--path) var(--dur) ease-in-out infinite}
+.bee .in{width:100%;height:100%;animation:buzz .35s ease-in-out infinite alternate}
+.bee svg{width:100%;height:100%;overflow:visible}
+.bee .bw{animation:bw .06s linear infinite alternate;transform-origin:20px 12px}
+@keyframes bw{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes buzz{from{transform:translate(0,0) rotate(-6deg)}to{transform:translate(2px,-3px) rotate(6deg)}}
+@keyframes p1{0%{transform:translate(-8vw,70vh)}20%{transform:translate(18vw,48vh)}40%{transform:translate(35vw,62vh)}60%{transform:translate(58vw,30vh)}80%{transform:translate(80vw,50vh)}100%{transform:translate(108vw,22vh)}}
+@keyframes p2{0%{transform:translate(106vw,40vh) scaleX(-1)}25%{transform:translate(78vw,64vh) scaleX(-1)}50%{transform:translate(52vw,36vh) scaleX(-1)}75%{transform:translate(24vw,72vh) scaleX(-1)}100%{transform:translate(-10vw,46vh) scaleX(-1)}}
+@keyframes p3{0%{transform:translate(4vw,20vh)}25%{transform:translate(90vw,34vh)}50%{transform:translate(70vw,82vh)}75%{transform:translate(10vw,60vh)}100%{transform:translate(4vw,20vh)}}
+@keyframes p4{0%{transform:translate(92vw,86vh)}20%{transform:translate(66vw,70vh)}45%{transform:translate(84vw,40vh)}70%{transform:translate(30vw,26vh)}100%{transform:translate(92vw,86vh)}}
+@keyframes p5{0%{transform:translate(-6vw,88vh)}30%{transform:translate(30vw,76vh)}55%{transform:translate(48vw,90vh)}80%{transform:translate(74vw,74vh)}100%{transform:translate(106vw,84vh)}}
+@media(prefers-reduced-motion:reduce){.fauna{display:none}}
+
+
+.fauna{z-index:1}
+.flock .bird svg path{fill:var(--birdc)!important}
+.flock .bird svg{filter:drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 12px var(--glow))}
+.bfly svg{filter:drop-shadow(0 0 6px rgba(255,255,255,.9)) drop-shadow(0 0 16px var(--glow))}
+.bee svg{filter:drop-shadow(0 0 6px rgba(255,240,150,.95)) drop-shadow(0 0 14px rgba(255,210,80,.7))}
+.sec,.card,.topbar-in,.hero,.wbox,.cols .col{box-shadow:0 0 0 2px rgba(255,255,255,.55),0 0 28px var(--glow),0 14px 34px rgba(5,0,30,.4)!important}
+.foot{color:#F1EAFF}.foot b{color:#FFD970}
+.p-ph,.p-phonetic{font-family:'Segoe UI','Lucida Sans Unicode','Arial Unicode MS',sans-serif;color:#2E7BD6;font-weight:700}
+.vi-note{display:block}.p-mean{color:var(--ink2)}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-bottom:18px}
+.qgrid .card{margin:0;text-align:center}
+.qgrid .card .top{justify-content:center}
+.qgrid .card.opened{grid-column:1/-1;text-align:left}
+.qgrid .card.opened .top{justify-content:flex-start}
+.pic{display:flex;justify-content:center;margin:2px 0 4px}
+.pic svg{width:92px;height:92px;filter:drop-shadow(0 4px 8px rgba(40,20,90,.2))}
+.partial{font-size:1.6rem;font-weight:900;letter-spacing:3px;color:var(--ink)}
+.partial .gap{color:var(--hl);text-shadow:0 0 10px var(--glow)}
+.cword{font-size:1.5rem;font-weight:900;color:var(--ink)}
+.qgrid .opts{grid-template-columns:1fr 1fr}
+.qgrid .opt{justify-content:center;font-size:1.4rem;font-weight:900}
+.qgrid .opt .l{display:none}
+.qgrid .qt{padding-top:0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+.col{padding:12px;border-radius:22px;background:rgba(255,255,255,.9);min-height:80px}
+.col-t{font-weight:900;font-size:1.15rem;color:var(--hl);margin-bottom:6px;text-align:center}
+.col-in{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.cw{padding:3px 12px;border-radius:99px;font-weight:800;font-size:1rem;color:#fff;background:var(--a4)}.cw.bad{background:var(--no)}
+.wline{display:flex;align-items:stretch;margin-top:8px;border-radius:16px;overflow:hidden;border:3px solid var(--optline);background:#fff;transition:all .2s}
+.wline:focus-within{border-color:var(--line);box-shadow:0 0 0 4px var(--focus)}
+.wline.ok{border-color:var(--ok);background:var(--ok-bg)}.wline.no{border-color:var(--no);background:var(--no-bg)}
+.wline.shake{animation:shake .4s ease}
+.wline .px{flex:none;display:flex;align-items:center;padding:0 14px;font-weight:800;color:#fff;background:var(--a1)}
+.wi{flex:1;min-width:0;padding:10px 12px;border:none;outline:none;background:transparent;font-family:inherit;font-size:1.15rem;font-weight:700;color:var(--ink);text-align:inherit}
+.qgrid .card .wi{text-align:center}
+.wline.ok .wi{color:var(--ok)}.wline.no .wi{color:var(--no)}
+.cue{display:inline-block;padding:4px 14px;border-radius:12px;background:var(--rmbbg);font-weight:800}
+.eg{margin:-4px 0 14px;padding:10px 16px;border-radius:18px;font-size:1.05rem;background:rgba(255,255,255,.92);border:3px dashed var(--line)}
+.wbox{position:relative;margin:4px 0 20px;padding:16px 16px 18px;border-radius:28px;border:4px solid transparent;
+  background:linear-gradient(#FFFDF6,#FFFDF6) padding-box,linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c1)) border-box;background-size:100% 100%,300% 300%;animation:wbGlow 6s linear infinite}
+@keyframes wbGlow{to{background-position:0 0,300% 0}}
+.wb-t{font-weight:900;font-size:1.15rem;letter-spacing:2px;color:var(--hl);text-align:center;margin-bottom:10px}
+.wb-t small{display:block;letter-spacing:0;font-weight:600;font-size:.9rem;color:var(--ink2)}
+.wb-in{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.wchip{padding:7px 18px;border:none;border-radius:16px;font-size:1.12rem;font-weight:800;color:#fff;background:var(--a1);box-shadow:0 4px 0 rgba(0,0,0,.18),0 0 14px var(--glow);transition:transform .15s}
+.wchip:nth-child(2n){background:var(--a2)}.wchip:nth-child(3n){background:var(--a3)}
+.wchip:hover{transform:translateY(-3px) scale(1.05)}
+.wchip.used{opacity:.4;text-decoration:line-through;transform:none}
+.dict{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
+.dict a{display:inline-flex;align-items:center;gap:5px;padding:4px 13px;border-radius:99px;font-size:.95rem;font-weight:800;text-decoration:none;color:#fff;background:var(--a1);transition:transform .15s}
+.dict a:hover{transform:translateY(-2px)}
+.say{margin-top:6px;font-size:.95rem;color:var(--ink2)}
+.exp-box>div.dk{border-left-color:#FFC04D;background:#FFFBEF}
+.tw{position:absolute;animation:tw 2.6s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.5);opacity:.3}50%{transform:scale(1.15);opacity:1}}
+.ff{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--ffc);box-shadow:0 0 10px 4px var(--ffc),0 0 24px 8px var(--glow);
+  animation:ffMove var(--d) ease-in-out infinite alternate,ffBlink var(--b) ease-in-out infinite}
+@keyframes ffMove{0%{transform:translate(0,0)}33%{transform:translate(var(--x1),var(--y1))}66%{transform:translate(var(--x2),var(--y2))}100%{transform:translate(var(--x3),var(--y3))}}
+@keyframes ffBlink{0%,100%{opacity:.25}50%{opacity:1}}
+
+.cue{display:inline-block;padding:5px 14px;border-radius:12px;background:var(--rmbbg);font-weight:800;letter-spacing:.2px;line-height:1.6}
+.orig{font-weight:700}
+.kw{display:inline-block;margin-left:6px;padding:1px 12px;border-radius:99px;font-weight:900;color:#fff;background:var(--a2);letter-spacing:.5px}
+.wline{display:flex;align-items:stretch;margin-top:10px;border-radius:14px;overflow:hidden;border:3px solid var(--optline);background:#fff;transition:all .2s}
+.wline:focus-within{border-color:var(--line);box-shadow:0 0 0 4px var(--focus)}
+.wline.ok{border-color:var(--ok);background:var(--ok-bg)}.wline.no{border-color:var(--no);background:var(--no-bg)}
+.wline.shake{animation:shake .4s ease}
+.wline .px{flex:none;display:flex;align-items:center;padding:0 14px;font-weight:800;color:#fff;background:var(--a1)}
+.wi{flex:1;min-width:0;width:100%;padding:11px 14px;border:none;outline:none;background:transparent;font-family:inherit;font-size:1.1rem;font-weight:700;color:var(--ink)}
+.wline.ok .wi{color:var(--ok)}.wline.no .wi{color:var(--no)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tile{padding:6px 14px;font-family:inherit;font-size:1.04rem;font-weight:800;cursor:pointer;border-radius:10px;border:2px solid var(--optline);background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--optline);transition:transform .12s,opacity .2s}
+.tile:hover{transform:translateY(-2px)}.tile.used{opacity:.2;pointer-events:none}
+.tile.clr{color:var(--hl);border-style:dashed}
+.opened .tiles{display:none}
+.ask{display:block;font-size:.98rem;color:var(--ink2);font-weight:700;margin-bottom:6px}
+.dlg{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.dlg .ln{padding:6px 12px;border-radius:12px;background:var(--rmbbg);font-size:1.04rem;line-height:1.55}
+.dlg .ln.fx{background:transparent;font-style:italic;color:var(--ink2);padding:2px 12px}
+.dlg .ln b{display:inline-grid;place-items:center;width:28px;height:28px;margin-right:6px;border-radius:50%;color:#fff;background:var(--a2)}
+.para{margin:4px 0 8px;padding:10px 14px;border-radius:12px;background:#fff;border:2px dashed var(--optline);line-height:1.7;font-size:1.04rem}
+.gap{color:var(--hl);font-style:normal}
+.opt{text-align:left}
+.exp-box .wvoc{margin-top:4px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.8);border:1.5px solid #E6E1F4;line-height:1.75}
+.exp-box .ansline{margin-top:6px;padding:6px 12px;border-radius:10px;background:#E4F8EC;border-left:5px solid #11924E}
+.exp-box .ansline b{color:#11924E}
+.exp-box .addw{display:inline-block;margin:2px 3px;padding:0 9px;border-radius:7px;font-weight:800;background:#FFF0A6;color:#6A4A00;border:1.5px dashed #E0B400}
+.exp-box .frame{margin-top:6px;padding:6px 10px;border-radius:14px;background:#fff;border:2px dashed #D9DEEA}
+.exp-box .fl{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed rgba(0,0,0,.1)}.exp-box .fl:last-child{border-bottom:none}
+.exp-box .fl .no{flex:none;min-width:40px;height:30px;display:grid;place-items:center;border-radius:9px;font-weight:800;color:#fff;background:var(--a1);font-size:.85rem}
+.exp-box .fl .no.fx{background:var(--a3)}
+.exp-box .fl .en{display:block;font-weight:700}.exp-box .fl .vi{display:block;color:#B5532E;font-style:italic}
+body{background:#FDF1CF}
+.farm{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(180deg,#9FDBFF 0%,#D8F1FF 40%,#FFF3CF 62%)}
+.farm svg{position:absolute;inset:0;width:100%;height:100%}
+.farm .sunR{position:absolute;left:7vw;top:6vh;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#FFF6B8,#FFC23A 70%);box-shadow:0 0 70px 24px rgba(255,194,58,.5)}
+.sway{animation:swayR 3.4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:bottom center}@keyframes swayR{from{transform:skewX(-4deg)}to{transform:skewX(4deg)}}
+.hero h1{font-family:'Lobster',cursive!important}
+.card{border-radius:24px;box-shadow:0 12px 26px rgba(120,80,20,.16)!important;border-top:6px solid #E7C24C}
+.foot{color:#3B2E12}
+
+.flt{position:fixed;z-index:0;pointer-events:none;bottom:-80px;animation:fltUp linear infinite;will-change:transform}
+@keyframes fltUp{0%{transform:translate(0,0) rotate(0);opacity:0}8%{opacity:.9}25%{transform:translate(28px,-28vh) rotate(40deg)}50%{transform:translate(-22px,-58vh) rotate(-30deg)}
+ 75%{transform:translate(26px,-86vh) rotate(30deg)}92%{opacity:.85}100%{transform:translate(0,-118vh) rotate(0);opacity:0}}
+.fall{position:fixed;z-index:0;pointer-events:none;top:-30px;width:9px;height:16px;border-radius:3px;animation:fallDn linear infinite}
+@keyframes fallDn{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(40px,55vh) rotate(360deg)}100%{transform:translate(-20px,112vh) rotate(720deg)}}
+.flyx{position:fixed;z-index:0;pointer-events:none;animation:flyX linear infinite}
+@keyframes flyX{0%{transform:translate(-12vw,0)}25%{transform:translate(22vw,-4vh)}50%{transform:translate(55vw,2vh)}75%{transform:translate(85vw,-5vh)}100%{transform:translate(115vw,0)}}
+.bubi{display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95),rgba(255,255,255,.35) 60%,rgba(255,255,255,.15));border:2px solid rgba(255,255,255,.9);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+@media (prefers-reduced-motion:reduce){.flt,.fall,.flyx{animation:none;display:none}}
+
+body{font-size:20px}
+.qt,.opt,.exp-box,.sec p,#rmbTxt{font-size:1.12rem!important}
+.sec h2{font-size:1.3rem!important}
+.opt u,.qt u{text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-color:var(--hl);font-weight:900}
+.kind{display:block;margin-bottom:6px;font-size:.92rem;font-weight:900;color:var(--hl);letter-spacing:.3px}
+.reg{display:flex;align-items:center;gap:14px;margin:4px 0 22px;padding:16px 20px;border-radius:24px;font-size:1.08rem;line-height:1.6;color:#fff;position:relative;z-index:1;
+  background:linear-gradient(120deg,var(--rg1),var(--rg2));box-shadow:0 12px 28px rgba(0,0,0,.18);border:3px solid rgba(255,255,255,.7)}
+.reg-ic{flex:none;width:58px;height:58px;display:grid;place-items:center;border-radius:50%;font-size:1.9rem;background:rgba(255,255,255,.25);animation:ring 1.6s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:rotate(0)}10%,30%{transform:rotate(-14deg)}20%,40%{transform:rotate(14deg)}50%{transform:rotate(0)}}
+.reg-ph{display:inline-block;padding:2px 14px;border-radius:99px;background:#fff;color:var(--rg2);font-weight:900;font-size:1.15em;letter-spacing:.5px}
+.reg-sub{font-size:.95em;opacity:.95}
+/* thanh tiến độ: giữ 2 dòng như cũ nhưng gọn hơn một chút */
+.topbar{padding:6px 0 8px!important;margin-bottom:8px!important}
+.topbar-in{padding:7px 12px!important;border-radius:20px!important}
+.topbar-in .pbar{height:12px!important}
+.topbar-in .pchip{font-size:.92rem!important;padding:1px 12px!important}
+.topbar-in .rmb{margin-top:6px!important;padding:5px 10px!important;gap:8px!important}
+.topbar-in .rmb .ic{font-size:1.25rem!important}
+.topbar-in #rmbTxt{font-size:.98rem!important;line-height:1.45}
+.topbar-in .rmb-min{width:28px!important;height:28px!important;font-size:1rem!important}
+@media(max-width:600px){.topbar-in #rmbTxt{font-size:.9rem!important}}
+
+.edw{font-size:1.9rem;font-weight:900;letter-spacing:.5px;color:var(--ink)}.edw u{text-decoration-thickness:3px;text-underline-offset:5px;color:var(--hl)}
+.opt u{text-decoration-thickness:2px;text-underline-offset:3px;color:var(--hl);font-weight:900}
+
+.ansline{margin-top:4px;padding:6px 10px;border-radius:6px;background:rgba(26,158,95,.1)}
+
+.exp-box .ar{color:#E8590C;font-weight:900}
+.exp-box .p-grammar{line-height:1.95}.exp-box li>.p-grammar,.exp-box .mexp .p-grammar{background:none!important}
+.exp-box .p-grammar .p-grammar .hx,.exp-box .hl-green .hx,.exp-box .hl-red .hx{background:transparent;padding:0}.exp-box ol li{margin-bottom:6px}
+.exp-box .hx{padding:3px 1px;border-radius:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.exp-box .hx0{background:#FFF3B0}.exp-box .hx1{background:#D6ECFF}.exp-box .hx2{background:#FFDDEE}
+.exp-box .hx3{background:#DDF7D0}.exp-box .hx4{background:#EBDFFF}.exp-box .hx5{background:#FFE4CC}
+.exp-box .qe{font-weight:800}
+.exp-box .qe0{color:#1D4ED8}.exp-box .qe1{color:#C2185B}.exp-box .qe2{color:#0F8A5F}.exp-box .qe3{color:#7C3AED}.exp-box .qe4{color:#D9480F}.exp-box .qe5{color:#0E7490}
+
+</style>
+<style id="footfix">.foot{display:block;width:fit-content;max-width:94%;margin:26px auto 12px!important;padding:12px 20px;border-radius:18px;background:rgba(255,255,255,.95)!important;box-shadow:0 6px 18px rgba(0,0,0,.14);border:2px solid rgba(0,0,0,.06);color:#1F2440!important;font-weight:800!important;font-size:1.1rem!important;line-height:1.7;text-align:center}.foot b,.foot *{color:#D6336C!important;font-weight:900!important}</style>
+<style id="u4exp">
+.exp-box .vnt{margin-bottom:10px;padding:9px 13px;border-radius:12px;background:#FFF6DC;border-left:5px solid #F5A300;font-weight:600;line-height:1.7}
+.exp-box ol{margin:0;padding-left:24px}
+.exp-box ol>li{margin:10px 0;line-height:1.75;padding-left:4px}
+.exp-box ol>li::marker{font-weight:800;color:var(--hl)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+.grid2>div{padding:8px 11px;border-radius:12px;background:rgba(255,255,255,.92);border:1.5px solid #E6E1F4;line-height:1.6}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+.exp-box .p-word{color:#1E6FD9;font-weight:800;background:none;padding:0}
+.exp-box .hl-green{color:#11924E;font-weight:900;background:none;padding:0}
+.exp-box .hl-red{color:#D8334A;font-weight:900;background:none;padding:0}
+.exp-box .wt{display:inline-block;margin:0 3px;padding:0 7px;border-radius:6px;font-size:.8em;font-weight:700;background:rgba(110,100,160,.13);color:#5B5480}
+.exp-box .p-phonetic{padding:0 6px;border-radius:6px;background:#F1E8FF;color:#7A3FC8;font-weight:700;font-family:'Segoe UI','Lucida Sans Unicode',sans-serif}
+.exp-box .p-mean{color:#B5532E;font-weight:700}
+.exp-box .p-grammar{text-decoration:none;color:inherit;font-weight:600;padding:1px 6px;border-radius:7px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.exp-box ol>li>.p-grammar.why{background:linear-gradient(90deg,#E6F8EE,#F2FBF6);line-height:1.95}
+.exp-box ol>li>.p-grammar.bad{background:linear-gradient(90deg,#FFEEF1,#FFF6F7);line-height:1.95}
+.exp-box .p-grammar .p-grammar,.exp-box .p-gram{font-weight:800;color:#3A2F55;padding:1px 6px;border-radius:7px;background:#FFF0A6}
+.exp-box .p-grammar .p-grammar:nth-of-type(4n+2),.exp-box .p-gram:nth-of-type(4n+2){background:#D4ECFF}
+.exp-box .p-grammar .p-grammar:nth-of-type(4n+3),.exp-box .p-gram:nth-of-type(4n+3){background:#FFD6EA}
+.exp-box .p-grammar .p-grammar:nth-of-type(4n),.exp-box .p-gram:nth-of-type(4n){background:#DDF5C6}
+.exp-box .hl-red{background:#FFE0E4;padding:0 5px;border-radius:6px}
+.exp-box li .hl-green{background:#D9F7E6;padding:0 5px;border-radius:6px}
+.exp-box .frame{margin-top:6px;padding:6px 10px;border-radius:14px;background:#fff;border:2px dashed #E6D7C2}
+.exp-box .fl{display:flex;gap:9px;align-items:flex-start;padding:6px 4px;border-bottom:1px dashed rgba(0,0,0,.1)}.exp-box .fl:last-child{border-bottom:none}
+.exp-box .fl .no{flex:none;min-width:34px;height:30px;display:grid;place-items:center;border-radius:10px;font-weight:800;color:#fff;background:var(--a1);font-size:.85rem}
+.exp-box .fl .en{display:block;font-weight:700}.exp-box .fl .vi{display:block;color:#B5532E;font-style:italic}
+</style>
+</head>
+<body>
+<div class="farm" id="farm"><div class="sunR"></div><svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M0 520 Q200 470 420 505 T820 490 T1200 500 V800 H0 Z" fill="#B7D96A"/><path class="sway" d="M0 590 Q260 545 560 580 T1200 570 V800 H0 Z" fill="#E7C24C"/><path class="sway" d="M0 660 Q300 620 640 655 T1200 640 V800 H0 Z" fill="#D9A62E" style="animation-delay:-1.5s"/><path d="M0 730 Q320 700 660 728 T1200 715 V800 H0 Z" fill="#C88A22"/><g transform="translate(980 452)"><rect x="-6" y="0" width="12" height="70" fill="#8B5E34"/><g><path d="M0 0 L60 -14 L60 14 Z M0 0 L-14 -60 L14 -60 Z M0 0 L-60 14 L-60 -14 Z M0 0 L14 60 L-14 60 Z" fill="#fff" stroke="#8B5E34" stroke-width="3"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="9s" repeatCount="indefinite"/></g><circle r="7" fill="#8B5E34"/></g><g transform="translate(160 520)"><ellipse cx="0" cy="0" rx="46" ry="26" fill="#6B6B78"/><circle cx="46" cy="-10" r="18" fill="#6B6B78"/><path d="M40 -26 q-12 -12 -22 -6 M52 -26 q12 -12 22 -6" stroke="#EEE" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="-34" y="18" width="9" height="26" fill="#55555F"/><rect x="20" y="18" width="9" height="26" fill="#55555F"/></g></svg></div>
+<div class="deco" id="deco"></div>
+
+<div class="wrap">
+  <div class="topbar"><div class="topbar-in">
+    <div class="prog-row">
+      <div class="pchip" id="scoreChip">⭐ 0</div>
+      <div class="pbar"><div class="pfill" id="pfill"></div></div>
+      <div class="pchip s2" id="progChip">0</div>
+    </div>
+    <div class="rmb" id="rmbBox"><span class="ic" id="rmbIc">⭐</span><span id="rmbTxt">…</span>
+      <button class="rmb-min" id="rmbMin" title="Thu gọn lời nhắc" onclick="toggleRmb()">–</button></div>
+  </div></div>
+
+  <div class="hero">
+    <div class="hero-txt">
+      <span class="kick">🌾 UNIT 2 · LIFE IN THE COUNTRYSIDE · VOCA p1 · 32 CÂU</span>
+      <h1>Rice Field Words</h1>
+      <div class="sub">Chọn đáp án đúng nhất — từ vựng làng quê &amp; so sánh (32 câu)</div>
+      <div class="tag">👩‍🏫 MS Chí Nên · ☎️ 0852639652 · Khoá tiếng Anh lớp 1 → 12</div>
+    </div>
+    <svg class="heroart" viewBox="0 0 200 170" aria-hidden="true"><rect x="18" y="14" width="164" height="142" rx="34" fill="#FFF3D0"/><g><path d="M52 128 Q58 80 64 52" stroke="#6DAA2C" stroke-width="4" fill="none"/><ellipse cx="64" cy="52" rx="7" ry="16" fill="#E7B53B" transform="rotate(20 64 52)"/><path d="M80 128 Q86 80 92 52" stroke="#6DAA2C" stroke-width="4" fill="none"/><ellipse cx="92" cy="52" rx="7" ry="16" fill="#E7B53B" transform="rotate(10 92 52)"/><path d="M108 128 Q114 80 120 52" stroke="#6DAA2C" stroke-width="4" fill="none"/><ellipse cx="120" cy="52" rx="7" ry="16" fill="#E7B53B" transform="rotate(-8 120 52)"/><path d="M136 128 Q142 80 148 52" stroke="#6DAA2C" stroke-width="4" fill="none"/><ellipse cx="148" cy="52" rx="7" ry="16" fill="#E7B53B" transform="rotate(-18 148 52)"/><animateTransform attributeName="transform" type="rotate" values="-6 100 128;6 100 128;-6 100 128" dur="2.4s" repeatCount="indefinite"/></g><text x="100" y="152" text-anchor="middle" font-family="Quicksand" font-size="14" font-weight="700" fill="#D9771F">VOCA p1</text></svg>
+  </div>
+
+  <div class="reg"><div class="reg-ic">📞</div><div><b>ĐĂNG KÝ KHOÁ HỌC TIẾNG ANH LỚP 1 → 12</b> cùng <b>MS Chí Nên</b> — <span class="reg-ph">☎️ 0852639652</span><br><span class="reg-sub">✨ Trải nghiệm hệ thống bài tập web độc lạ · chấm tự động · giải chi tiết siêu đẹp · học vui, hiểu sâu, nhớ lâu!</span></div></div>
+  <div id="quiz"></div>
+
+  <div class="finish"><button class="btn" onclick="showFinal()">🌾 Nộp bài &amp; xem kết quả</button></div>
+  <div class="foot">Bài tập của <b>MS Chí Nên</b> · Đăng ký khoá tiếng Anh lớp 1 → 12: <b>☎️ 0852639652</b> để được trải nghiệm hệ thống web học tập đẹp, sinh động — chấm điểm tự động, giải chi tiết từng câu, học vui mỗi ngày!</div>
+</div>
+
+<div class="ov" id="resOv"><div class="modal">
+  <div class="em" id="resEm">🏆</div>
+  <div class="big" id="resScore">0</div>
+  <div class="ten" id="resTen">0 / 10 điểm</div>
+  <div id="resBreak"></div>
+  <div class="note" id="resNote"></div>
+  <button class="btn" onclick="document.getElementById('resOv').classList.remove('show')">📖 Xem lại bài</button>
+  <div style="height:10px"></div>
+  <button class="btn b2" onclick="location.reload()">🔄 Làm lại từ đầu</button>
+</div></div>
+
+<script>
+const POP_EMOJI=["🌾", "🐃", "🌻", "⭐", "🪁", "🐓"];
+const FINAL_MSG=[["🏆", "Xuất sắc! Cả cánh đồng lúa đang vỗ tay cho con — giới từ chuẩn, giao tiếp tự tin! Cô tự hào về con lắm!"], ["🌟", "Rất tốt! Con xem lại vài câu sai và chép vào vở nhé."], ["💪", "Khá rồi đó! Con đọc kỹ phần giải thích từng câu rồi làm lại một lượt nha."], ["💖", "Đừng nản nhé con! Đọc kỹ giải thích rồi làm lại — lần sau chắc chắn tiến bộ. Cô tin con!"]];
+(function(){const H=document.getElementById('farm')||document.body,small=innerWidth<600,E=["🌾", "🌻", "🐤", "🦆", "🪁", "🍃", "🐝", "🌼"];
+  for(let i=0;i<(small?8:16);i++){const f=document.createElement('div');f.className='flt';const z=22+Math.random()*20;f.textContent=E[i%E.length];f.style.cssText='left:'+(2+Math.random()*96)+'%;font-size:'+z+'px;'+''+'animation-duration:'+(14+Math.random()*16).toFixed(1)+'s;animation-delay:-'+(Math.random()*30).toFixed(1)+'s';H.appendChild(f);}
+  const Fy=["🐦", "🦅", "🐦"];Fy.forEach((e,i)=>{const b=document.createElement('div');b.className='flyx';b.textContent=e;b.style.cssText='top:'+(8+i*9)+'vh;font-size:'+(26+i*4)+'px;animation-duration:'+(24+i*8)+'s;animation-delay:-'+(i*7)+'s';H.appendChild(b);});
+})();
+
+/* ═══════════ TỪ ĐIỂN — 1 HÀM DÙNG CHUNG, TỰ CHÈN TỪ VÀO LINK ═══════════
+   Mặc định Cambridge; từ nào không có mục riêng trên Cambridge thì thêm vào OXFORD_ONLY để tự chuyển sang Oxford Learner's. */
+const OXFORD_ONLY=[];
+function DICT(w){
+  const slug=w.trim().toLowerCase().replace(/\s+/g,'-'),ox=OXFORD_ONLY.indexOf(w)>-1;
+  const url=ox?'https://www.oxfordlearnersdictionaries.com/definition/english/'+slug:'https://dictionary.cambridge.org/vi/dictionary/english/'+slug;
+  return '<a class="'+(ox?'ox':'')+'" href="'+url+'" target="_blank" rel="noopener">🔊 '+(ox?"Oxford Learner's":'Cambridge')+' · '+w+'</a>';
+}
+function withDict(q){return q.dict?q.explain.replace(/<\/div>\s*$/,'<div class="dk"><b>🔊 Tra từ điển Cambridge:</b><br>Con hãy bấm vào đây — cô đã trích sẵn link cho con nghe '+(q.dict.length>1?'từng từ':'từ “'+q.dict[0]+'”')+' rồi đó, con nhớ bấm loa 🔊 nghe và đọc theo cho chuẩn nhé:'+
+  '<div class="dict">'+q.dict.map(DICT).join('')+'</div><div class="say">👉 Nếu trang chưa hiện đúng từ, con <b>gõ từ đó vào ô tìm kiếm</b>, bấm loa 🔊 nghe người bản xứ đọc và <b>đọc theo</b>.</div></div></div>'):q.explain}
+let lastFi=null;
+document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classList.contains('fi'))lastFi=e.target;});
+function wordBox(ws){return '<div class="wbox"><div class="wb-t">✨ WORD BOX <small>— bấm vào từ để điền vào ô trống đang chọn (nhớ đổi dạng số nhiều nếu cần)</small></div><div class="wb-in">'+
+  ws.map(w=>'<button class="wchip" data-w="'+w+'" onclick="pickWord(this)">'+w+'</button>').join('')+'</div></div>';}
+function pickWord(b){let t=(lastFi&&!lastFi.readOnly)?lastFi:[...document.querySelectorAll('.fi')].find(x=>!x.readOnly&&!x.value.trim());if(!t)return;t.value=b.dataset.w;t.focus();try{sPop()}catch(e){}}
+function markUsed(w){document.querySelectorAll('.wchip').forEach(c=>{if(c.dataset.w.toLowerCase()===String(w).toLowerCase())c.classList.add('used')});}
+(function(){let A=null;const play=function(){try{if(!A){A=new Audio('https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Ti%E1%BA%BFng%20V%E1%BB%8Bt%20k%C3%AAu%20meme%20mp3.mp3');A.preload='auto';}const a=A.cloneNode();a.volume=.85;a.play().catch(function(){});}catch(e){}};window.sBAD=play;try{sBAD=play}catch(e){}addEventListener('load',function(){window.sBAD=play;try{sBAD=play}catch(e){}});})();
+
+
+/* ═══════════ ÂM THANH & HIỆU ỨNG ═══════════ */
+let AC=null;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,t0,dur,type,vol){const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+t0;
+  o.type=type;o.frequency.value=f;o.connect(g);g.connect(c.destination);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0008,t+dur);o.start(t);o.stop(t+dur+.05);}
+function sOK(){[660,880,1175,1320].forEach((f,i)=>tone(f,i*.07,.42,'sine',.13))}
+function sBAD(){tone(330,0,.25,'triangle',.12);tone(247,.14,.35,'triangle',.12)}
+function sPop(){tone(900+Math.random()*300,0,.08,'sine',.06)}
+function sWin(){[523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*.1,.5,'sine',.13))}
+document.addEventListener('click',()=>{try{ac()}catch(e){}},{once:true});
+function burst(el,n){const E=POP_EMOJI;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='pop';d.textContent=E[i%E.length];const a=-Math.PI/2+(Math.random()-.5)*2.8,dist=60+Math.random()*110;
+    d.style.cssText='left:'+(cx-11)+'px;top:'+(cy-11)+'px;--dx:'+(Math.cos(a)*dist).toFixed(0)+'px;--dy:'+(Math.sin(a)*dist).toFixed(0)+'px;--r:'+((Math.random()-.5)*120).toFixed(0)+'deg;animation-delay:'+(Math.random()*.15).toFixed(2)+'s';
+    document.body.appendChild(d);setTimeout(()=>d.remove(),1400);}}
+
+/* ═══════════ LỜI NHẮC LỚP 6 — XOAY 4.2s ═══════════ */
+const RMB=[["🌾", "Chào con — học sinh <b>LỚP 8</b>! Ra đồng lúa ôn từ vựng làng quê — <b>32 câu</b>, làm chậm mà chắc nhé!"], ["🌾", "Từ vựng Unit 2: <b>harvest, load / unload, herd, milk, dry, plough, pick</b> · cattle, paddy field, orchard, combine harvester, buffalo-drawn cart."], ["⚖️", "So sánh hơn của trạng từ: <b>more slowly / more carefully</b> (-ly dài) · <b>harder, faster, earlier</b> · bất quy tắc: <b>well → better, badly → worse, far → farther</b>."], ["💛", "Sai câu nào, con chép lại vào vở và đọc to 3 lần nhé!"], ["🦆", "Cẩn thận nhé — chọn sai là <b>chú vịt kêu “quạc quạc”</b> đó!"], ["☎️", "Đăng ký khoá tiếng Anh <b>lớp 1 → 12</b> cùng <b>MS Chí Nên — ☎️ 0852639652</b> — web bài tập độc lạ, giải chi tiết siêu đẹp!"]];
+(function(){const t=document.getElementById('rmbTxt'),ic=document.getElementById('rmbIc');let k=0;
+  function go(){t.style.animation='none';void t.offsetWidth;t.style.animation='';t.innerHTML=RMB[k][1];ic.textContent=RMB[k][0];k=(k+1)%RMB.length;}
+  go();setInterval(go,4200);})();
+function toggleRmb(){const b=document.getElementById('rmbBox'),m=document.getElementById('rmbMin');
+  b.classList.toggle('mini');const mini=b.classList.contains('mini');m.textContent=mini?'+':'–';m.title=mini?'Mở lời nhắc':'Thu gọn lời nhắc';}
+
+/* ═══════════ DỮ LIỆU (trích nguyên văn đề, đáp án & lời giải gốc) ═══════════ */
+const SECS=[{"type": "mcq", "icon": "🌾", "short": "Choose", "title": "Choose the best answer (câu 1 – 32)", "desc": "Bấm chọn đáp án đúng — giải thích hiện ngay.", "items": [{"text": "The farmers in this village are ________ and hospitable.", "opts": ["slowly", "hard-working", "hardly", "badly"], "correct": 1, "dict": ["slowly", "hard-working", "hardly", "badly"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Những người nông dân ở ngôi làng này vừa _____ vừa hiếu khách.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>hard-working<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˌhɑːdˈwɜːkɪŋ/<\/span> = <span class='p-mean'>chăm chỉ<\/span><\/div>\n <div><span class='p-word'>slowly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈsləʊli/<\/span> = <span class='p-mean'>một cách chậm chạp<\/span><\/div>\n <div><span class='p-word'>hardly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈhɑːdli/<\/span> = <span class='p-mean'>hầu như không<\/span><\/div>\n <div><span class='p-word'>badly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈbædli/<\/span> = <span class='p-mean'>một cách tệ<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Sau <b class=\"qe qe0\">\"are\"<\/b> và đứng song song với tính từ <b class=\"qe qe1\">\"hospitable\"<\/b> nên cần một tính từ <span class=\"ar\">→<\/span> <b class=\"qe qe2\">\"hard-working\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">slowly, hardly, badly đều là trạng từ (-ly), không bổ nghĩa cho người sau <b class=\"qe qe3\">\"are\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 1}, {"text": "Lucy dances ________ than Mary does.", "opts": ["beautiful", "beautifully", "more beautifully", "more beautiful"], "correct": 2, "dict": ["beautiful", "beautifully"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Lucy nhảy _____ Mary.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>more beautifully<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈbjuːtɪfli/<\/span> = <span class='p-mean'>đẹp hơn (cách nhảy)<\/span><\/div>\n <div><span class='p-word'>beautiful<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈbjuːtɪfl/<\/span> = <span class='p-mean'>đẹp<\/span><\/div>\n <div><span class='p-word'>beautifully<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈbjuːtɪfli/<\/span> = <span class='p-mean'>một cách đẹp<\/span><\/div>\n <div><span class='p-word'>more beautiful<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/mɔː(r) ˈbjuːtɪfl/<\/span> = <span class='p-mean'>đẹp hơn<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Bổ nghĩa cho động từ <b class=\"qe qe0\">\"dances\"<\/b> cần trạng từ; có <b class=\"qe qe1\">\"than\"<\/b> nên dùng so sánh hơn của trạng từ dài: more + beautifully.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">beautiful / more beautiful là tính từ; beautifully thiếu <b class=\"qe qe2\">\"more\"<\/b> để so sánh.<\/span><\/span><\/li><\/ol><\/div>", "num": 2}, {"text": "After an hour of walking between the green paddy ________, we finally reached the village entrance.", "opts": ["places", "fields", "yards", "courts"], "correct": 1, "dict": ["place", "field", "yard", "court"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Sau một giờ đi bộ giữa những _____ lúa xanh, cuối cùng chúng tôi cũng đến cổng làng.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>fields<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/fiːldz/<\/span> = <span class='p-mean'>cánh đồng<\/span><\/div>\n <div><span class='p-word'>places<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈpleɪsɪz/<\/span> = <span class='p-mean'>địa điểm<\/span><\/div>\n <div><span class='p-word'>yards<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/jɑːdz/<\/span> = <span class='p-mean'>sân<\/span><\/div>\n <div><span class='p-word'>courts<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/kɔːts/<\/span> = <span class='p-mean'>sân (tòa/thể thao)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Cụm từ cố định <b class=\"qe qe0\">\"paddy fields\"<\/b> = ruộng lúa.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">places, yards, courts không kết hợp với <b class=\"qe qe1\">\"paddy\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 3}, {"text": "We can enjoy the fresh air and beauty in the ________.", "opts": ["city", "factory", "countryside", "gas station"], "correct": 2, "dict": ["city", "factory", "countryside", "gas", "station"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Chúng ta có thể tận hưởng không khí trong lành và vẻ đẹp ở _____.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>countryside<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈkʌntrisaɪd/<\/span> = <span class='p-mean'>vùng quê<\/span><\/div>\n <div><span class='p-word'>city<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈsɪti/<\/span> = <span class='p-mean'>thành phố<\/span><\/div>\n <div><span class='p-word'>factory<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈfæktri/<\/span> = <span class='p-mean'>nhà máy<\/span><\/div>\n <div><span class='p-word'>gas station<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ɡæs ˈsteɪʃn/<\/span> = <span class='p-mean'>trạm xăng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Không khí trong lành + vẻ đẹp thiên nhiên hợp với <b class=\"qe qe0\">\"countryside\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">city, factory, gas station thường ô nhiễm, trái với <b class=\"qe qe1\">\"fresh air\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 4}, {"text": "The small bamboo forest ________ the entrance to the village makes it picturesque.", "opts": ["at", "in", "on", "to"], "correct": 0, "dict": [], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Khóm tre nhỏ _____ cổng làng làm cho nơi đây nên thơ.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>at<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/æt/<\/span> = <span class='p-mean'>tại (một điểm)<\/span><\/div>\n <div><span class='p-word'>in<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/ɪn/<\/span> = <span class='p-mean'>bên trong<\/span><\/div>\n <div><span class='p-word'>on<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/ɒn/<\/span> = <span class='p-mean'>trên<\/span><\/div>\n <div><span class='p-word'>to<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/tə/<\/span> = <span class='p-mean'>đến<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"at the entrance\"<\/b> = ngay tại lối vào (một vị trí điểm).<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">in/on/to không dùng với <b class=\"qe qe1\">\"entrance\"<\/b> theo nghĩa vị trí điểm này.<\/span><\/span><\/li><\/ol><\/div>", "num": 5}, {"text": "Alice met Aly's family at his house ________ the early morning.", "opts": ["on", "at", "in", "about"], "correct": 2, "dict": [], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Alice gặp gia đình Aly ở nhà cậu ấy _____ buổi sáng sớm.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>in<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/ɪn/<\/span> = <span class='p-mean'>vào (buổi)<\/span><\/div>\n <div><span class='p-word'>on<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/ɒn/<\/span> = <span class='p-mean'>vào (ngày)<\/span><\/div>\n <div><span class='p-word'>at<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/æt/<\/span> = <span class='p-mean'>vào (giờ)<\/span><\/div>\n <div><span class='p-word'>about<\/span> <span class='wt'>prep<\/span> <span class='p-phonetic'>/əˈbaʊt/<\/span> = <span class='p-mean'>về / khoảng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"in the (early) morning\"<\/b> = vào buổi sáng <span class=\"ar\">→<\/span> dùng <b class=\"qe qe1\">\"in\"<\/b> với các buổi trong ngày.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">on dùng cho ngày, at dùng cho giờ/at night, about nghĩa khác.<\/span><\/span><\/li><\/ol><\/div>", "num": 6}, {"text": "I am ________ on visiting my grandparents' on the weekend.", "opts": ["fond", "keen", "interested", "bored"], "correct": 1, "dict": ["fond", "keen", "interested", "bored"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Tôi rất _____ chuyện về thăm ông bà vào cuối tuần.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>keen<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/kiːn/<\/span> = <span class='p-mean'>háo hức / mê<\/span><\/div>\n <div><span class='p-word'>fond<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/fɒnd/<\/span> = <span class='p-mean'>yêu thích (of)<\/span><\/div>\n <div><span class='p-word'>interested<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈɪntrəstɪd/<\/span> = <span class='p-mean'>hứng thú (in)<\/span><\/div>\n <div><span class='p-word'>bored<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/bɔːd/<\/span> = <span class='p-mean'>chán (with)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Giới từ <b class=\"qe qe0\">\"on\"<\/b> trong câu khớp với cụm <b class=\"qe qe1\">\"be keen ON st\"<\/b> = rất thích làm gì.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">fond of, interested in, bored with — không đi với <b class=\"qe qe2\">\"on\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 7}, {"text": "She walked ________ than other people on the street because she got up late.", "opts": ["quickly", "quick", "quickest", "more quickly"], "correct": 3, "dict": ["quickly", "quick", "quickest"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Cô ấy đi _____ những người khác trên phố vì dậy muộn. <b>(Câu gốc có cả \"quicker\" lẫn \"more quickly\" đều đúng → cô đổi \"quicker\" thành \"quickest\" để chỉ còn 1 đáp án.)<\/b><\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>more quickly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈkwɪkli/<\/span> = <span class='p-mean'>nhanh hơn<\/span><\/div>\n <div><span class='p-word'>quickly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈkwɪkli/<\/span> = <span class='p-mean'>một cách nhanh<\/span><\/div>\n <div><span class='p-word'>quick<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/kwɪk/<\/span> = <span class='p-mean'>nhanh<\/span><\/div>\n <div><span class='p-word'>quickest<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈkwɪkɪst/<\/span> = <span class='p-mean'>nhanh nhất<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Bổ nghĩa cho <b class=\"qe qe0\">\"walked\"<\/b> cần trạng từ; có <b class=\"qe qe1\">\"than\"<\/b> nên dùng so sánh hơn: more + quickly.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">quickly thiếu <b class=\"qe qe2\">\"more\"<\/b>; quick là tính từ; quickest là so sánh nhất (không đi với than).<\/span><\/span><\/li><\/ol><\/div>", "num": 8}, {"text": "His sister plays badminton ________ than I do.", "opts": ["best", "better", "good", "well"], "correct": 1, "dict": ["best", "better", "well"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Chị ấy chơi cầu lông _____ tôi.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>better<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈbetə(r)/<\/span> = <span class='p-mean'>giỏi hơn<\/span><\/div>\n <div><span class='p-word'>best<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/best/<\/span> = <span class='p-mean'>giỏi nhất<\/span><\/div>\n <div><span class='p-word'>good<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ɡʊd/<\/span> = <span class='p-mean'>giỏi/tốt<\/span><\/div>\n <div><span class='p-word'>well<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/wel/<\/span> = <span class='p-mean'>một cách giỏi<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">So sánh hơn của trạng từ <b class=\"qe qe0\">\"well\"<\/b> là dạng bất quy tắc <b class=\"qe qe1\">\"better\"<\/b>; có <b class=\"qe qe2\">\"than\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">best là so sánh nhất; good là tính từ; well chưa ở dạng so sánh.<\/span><\/span><\/li><\/ol><\/div>", "num": 9}, {"text": "Russia is a ________ country with a lot of natural resources.", "opts": ["vast", "envious", "cultivable", "far"], "correct": 0, "dict": ["vast", "envious", "cultivable", "far"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Nga là một quốc gia _____ với nhiều tài nguyên thiên nhiên.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>vast<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/vɑːst/<\/span> = <span class='p-mean'>rộng lớn<\/span><\/div>\n <div><span class='p-word'>envious<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈenviəs/<\/span> = <span class='p-mean'>ghen tị<\/span><\/div>\n <div><span class='p-word'>cultivable<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈkʌltɪvəbl/<\/span> = <span class='p-mean'>có thể canh tác<\/span><\/div>\n <div><span class='p-word'>far<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/fɑː(r)/<\/span> = <span class='p-mean'>xa<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"a vast country\"<\/b> = một đất nước rộng lớn, hợp ngữ cảnh nhiều tài nguyên.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">envious (cảm xúc người), cultivable, far không hợp tả quy mô đất nước ở đây.<\/span><\/span><\/li><\/ol><\/div>", "num": 10}, {"text": "Farmers often leave the rice in the sun to ________.", "opts": ["damp", "wet", "warm", "dry"], "correct": 3, "dict": ["damp", "wet", "warm", "dry"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Nông dân thường để lúa ngoài nắng cho _____.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>dry<\/span> <span class='wt'>v/adj<\/span> <span class='p-phonetic'>/draɪ/<\/span> = <span class='p-mean'>khô / làm khô<\/span><\/div>\n <div><span class='p-word'>damp<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/dæmp/<\/span> = <span class='p-mean'>ẩm<\/span><\/div>\n <div><span class='p-word'>wet<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/wet/<\/span> = <span class='p-mean'>ướt<\/span><\/div>\n <div><span class='p-word'>warm<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/wɔːm/<\/span> = <span class='p-mean'>ấm<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Phơi nắng để lúa khô <span class=\"ar\">→<\/span> <b class=\"qe qe0\">\"to dry\"<\/b> (sau <b class=\"qe qe1\">\"to\"<\/b> là động từ).<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">damp/wet (ẩm, ướt) trái nghĩa; warm không phải mục đích phơi lúa.<\/span><\/span><\/li><\/ol><\/div>", "num": 11}, {"text": "They ________ the buffalo-drawn cart with hay.", "opts": ["built", "hugged", "loaded", "milked"], "correct": 2, "dict": ["built", "hugged", "loaded", "milked"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Họ _____ rơm lên chiếc xe trâu kéo.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>loaded<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/ˈləʊdɪd/<\/span> = <span class='p-mean'>chất (hàng) lên<\/span><\/div>\n <div><span class='p-word'>built<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/bɪlt/<\/span> = <span class='p-mean'>xây dựng<\/span><\/div>\n <div><span class='p-word'>hugged<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/hʌɡd/<\/span> = <span class='p-mean'>ôm<\/span><\/div>\n <div><span class='p-word'>milked<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/mɪlkt/<\/span> = <span class='p-mean'>vắt sữa<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Cấu trúc <b class=\"qe qe0\">\"load something with hay\"<\/b> = chất rơm lên xe.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">built, hugged, milked không hợp nghĩa với <b class=\"qe qe1\">\"cart with hay\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 12}, {"text": "Farmers always need extra help with the ________.", "opts": ["accident", "harvest", "explosion", "cattle"], "correct": 1, "dict": ["accident", "harvest", "explosion", "cattle"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Nông dân luôn cần thêm người giúp trong _____.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>harvest<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈhɑːvɪst/<\/span> = <span class='p-mean'>vụ thu hoạch<\/span><\/div>\n <div><span class='p-word'>accident<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈæksɪdənt/<\/span> = <span class='p-mean'>tai nạn<\/span><\/div>\n <div><span class='p-word'>explosion<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ɪkˈspləʊʒn/<\/span> = <span class='p-mean'>vụ nổ<\/span><\/div>\n <div><span class='p-word'>cattle<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈkætl/<\/span> = <span class='p-mean'>gia súc<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"help with the harvest\"<\/b> = giúp thu hoạch — cụm rất phổ biến trong đời sống nông thôn.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">accident, explosion mang nghĩa tiêu cực; <b class=\"qe qe1\">\"cattle\"<\/b> số nhiều cần <b class=\"qe qe2\">\"the cattle\"<\/b> nhưng không hợp <b class=\"qe qe3\">\"extra help with\"<\/b> tự nhiên bằng harvest.<\/span><\/span><\/li><\/ol><\/div>", "num": 13}, {"text": "My uncle raises a herd of ________ on his farm.", "opts": ["cattle", "fruit", "countryside", "village"], "correct": 0, "dict": ["cattle", "fruit", "countryside", "village"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Chú tôi nuôi một đàn _____ trong trang trại.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>cattle<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈkætl/<\/span> = <span class='p-mean'>gia súc (trâu bò)<\/span><\/div>\n <div><span class='p-word'>fruit<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/fruːt/<\/span> = <span class='p-mean'>trái cây<\/span><\/div>\n <div><span class='p-word'>countryside<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈkʌntrisaɪd/<\/span> = <span class='p-mean'>vùng quê<\/span><\/div>\n <div><span class='p-word'>village<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈvɪlɪdʒ/<\/span> = <span class='p-mean'>ngôi làng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Cụm <b class=\"qe qe0\">\"a herd of cattle\"<\/b> = một đàn gia súc.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">fruit, countryside, village không phải con vật để dùng <b class=\"qe qe1\">\"a herd of\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 14}, {"text": "You should explain ________ for everyone.", "opts": ["clearly", "clear", "clearer", "clearest"], "correct": 0, "dict": ["clearly", "clear", "clearer", "clearest"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Em nên giải thích _____ cho mọi người.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>clearly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈklɪəli/<\/span> = <span class='p-mean'>một cách rõ ràng<\/span><\/div>\n <div><span class='p-word'>clear<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/klɪə(r)/<\/span> = <span class='p-mean'>rõ ràng<\/span><\/div>\n <div><span class='p-word'>clearer<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈklɪərə(r)/<\/span> = <span class='p-mean'>rõ hơn<\/span><\/div>\n <div><span class='p-word'>clearest<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈklɪərɪst/<\/span> = <span class='p-mean'>rõ nhất<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Bổ nghĩa cho động từ <b class=\"qe qe0\">\"explain\"<\/b> cần trạng từ <span class=\"ar\">→<\/span> <b class=\"qe qe1\">\"clearly\"<\/b>.<\/span><br>▸ <span class=\"hx hx1\">Không có <b class=\"qe qe2\">\"than\"<\/b> nên không so sánh.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx2\">clear là tính từ; clearer/clearest là so sánh hơn/nhất, không hợp câu.<\/span><\/span><\/li><\/ol><\/div>", "num": 15}, {"text": "Life in the village is ________.", "opts": ["peace", "peacefully", "peaceful", "more peacefully"], "correct": 2, "dict": ["peace", "peacefully", "peaceful"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Cuộc sống ở làng quê thật _____.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>peaceful<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈpiːsfl/<\/span> = <span class='p-mean'>yên bình<\/span><\/div>\n <div><span class='p-word'>peace<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/piːs/<\/span> = <span class='p-mean'>hòa bình<\/span><\/div>\n <div><span class='p-word'>peacefully<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈpiːsfəli/<\/span> = <span class='p-mean'>một cách yên bình<\/span><\/div>\n <div><span class='p-word'>more peacefully<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈpiːsfəli/<\/span> = <span class='p-mean'>yên bình hơn<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Sau động từ <b class=\"qe qe0\">\"to be (is)\"<\/b> cần tính từ làm vị ngữ <span class=\"ar\">→<\/span> <b class=\"qe qe1\">\"peaceful\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">peace là danh từ; peacefully / more peacefully là trạng từ, không đứng sau <b class=\"qe qe2\">\"is\"<\/b> tả chủ ngữ.<\/span><\/span><\/li><\/ol><\/div>", "num": 16}, {"text": "A boat is ________ than a plane.", "opts": ["slower", "slowest", "more slow", "more slower"], "correct": 0, "dict": ["slower", "slowest", "slow"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Thuyền thì _____ máy bay.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>slower<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈsləʊə(r)/<\/span> = <span class='p-mean'>chậm hơn<\/span><\/div>\n <div><span class='p-word'>slowest<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈsləʊɪst/<\/span> = <span class='p-mean'>chậm nhất<\/span><\/div>\n <div><span class='p-word'>more slow<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(sai dạng)<\/span><\/div>\n <div><span class='p-word'>more slower<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(sai kép)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"slow\"<\/b> là tính từ ngắn (1 âm tiết) <span class=\"ar\">→<\/span> so sánh hơn thêm <b class=\"qe qe1\">\"-er\"<\/b>: slower + than.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">slowest là so sánh nhất; <b class=\"qe qe2\">\"more slow\"<\/b> và <b class=\"qe qe3\">\"more slower\"<\/b> đều sai vì tính từ ngắn không dùng <b class=\"qe qe4\">\"more\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 17}, {"text": "My sister dances ________ than me.", "opts": ["gooder", "weller", "better", "more good"], "correct": 2, "dict": ["better"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Chị tôi nhảy _____ tôi.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>better<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈbetə(r)/<\/span> = <span class='p-mean'>giỏi/hay hơn<\/span><\/div>\n <div><span class='p-word'>gooder<\/span> <span class='wt'>—<\/span> = <span class='p-mean'>(không tồn tại)<\/span><\/div>\n <div><span class='p-word'>weller<\/span> <span class='wt'>—<\/span> = <span class='p-mean'>(không tồn tại)<\/span><\/div>\n <div><span class='p-word'>more good<\/span> <span class='wt'>—<\/span> = <span class='p-mean'>(sai dạng)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">So sánh hơn của good/well là dạng bất quy tắc <b class=\"qe qe0\">\"better\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">gooder, weller, more good đều là dạng so sánh sai, không tồn tại.<\/span><\/span><\/li><\/ol><\/div>", "num": 18}, {"text": "This road is ________ than that road.", "opts": ["narrower", "narrow", "the most narrow", "more narrower"], "correct": 0, "dict": ["narrower", "narrow"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Con đường này _____ con đường kia.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>narrower<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈnærəʊə(r)/<\/span> = <span class='p-mean'>hẹp hơn<\/span><\/div>\n <div><span class='p-word'>narrow<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈnærəʊ/<\/span> = <span class='p-mean'>hẹp<\/span><\/div>\n <div><span class='p-word'>the most narrow<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ðə məʊst ˈnærəʊ/<\/span> = <span class='p-mean'>hẹp nhất<\/span><\/div>\n <div><span class='p-word'>more narrower<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(sai kép)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Tính từ 2 âm tiết tận cùng <b class=\"qe qe0\">\"-ow\"<\/b> theo quy tắc tính từ ngắn <span class=\"ar\">→<\/span> thêm <b class=\"qe qe1\">\"-er\"<\/b>: narrower + than.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">narrow chưa so sánh; <b class=\"qe qe2\">\"the most narrow\"<\/b> là so sánh nhất; <b class=\"qe qe3\">\"more narrower\"<\/b> thừa <b class=\"qe qe4\">\"more\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 19}, {"text": "He drives ________ his brother.", "opts": ["more careful than", "more carefully", "more carefully than", "as careful as"], "correct": 2, "dict": ["careful", "carefully"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Anh ấy lái xe _____ anh trai mình.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>more carefully than<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈkeəfəli ðæn/<\/span> = <span class='p-mean'>cẩn thận hơn<\/span><\/div>\n <div><span class='p-word'>more careful than<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/mɔː(r) ˈkeəfl ðæn/<\/span> = <span class='p-mean'>cẩn thận hơn (tính từ)<\/span><\/div>\n <div><span class='p-word'>more carefully<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈkeəfəli/<\/span> = <span class='p-mean'>cẩn thận hơn (thiếu than)<\/span><\/div>\n <div><span class='p-word'>as careful as<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/æz ˈkeəfl æz/<\/span> = <span class='p-mean'>cẩn thận bằng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Bổ nghĩa cho <b class=\"qe qe0\">\"drives\"<\/b> cần trạng từ + so sánh hơn đầy đủ: more carefully than.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\"><b class=\"qe qe1\">\"more careful than\"<\/b> dùng tính từ; <b class=\"qe qe2\">\"more carefully\"<\/b> thiếu <b class=\"qe qe3\">\"than\"<\/b>; <b class=\"qe qe4\">\"as careful as\"<\/b> dùng tính từ và sai cấu trúc cho động từ.<\/span><\/span><\/li><\/ol><\/div>", "num": 20}, {"text": "Things in the city are ________ than in the country.", "opts": ["more modern", "moderner", "more moderner", "modern"], "correct": 0, "dict": ["modern"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Mọi thứ ở thành phố thì _____ so với ở nông thôn.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>more modern<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/mɔː(r) ˈmɒdn/<\/span> = <span class='p-mean'>hiện đại hơn<\/span><\/div>\n <div><span class='p-word'>moderner<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(sai cấu tạo)<\/span><\/div>\n <div><span class='p-word'>more moderner<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(so sánh kép – sai)<\/span><\/div>\n <div><span class='p-word'>modern<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈmɒdn/<\/span> = <span class='p-mean'>hiện đại<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"modern\"<\/b> có 2 âm tiết <span class=\"ar\">→<\/span> so sánh hơn dùng <b class=\"qe qe1\">\"more + modern\"<\/b>; câu có <b class=\"qe qe2\">\"than\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\"><b class=\"qe qe3\">\"moderner\"<\/b>/<b class=\"qe qe4\">\"more moderner\"<\/b> sai cấu tạo; <b class=\"qe qe5\">\"modern\"<\/b> chưa ở dạng so sánh.<\/span><\/span><\/li><\/ol><\/div>", "num": 21}, {"text": "The farmers are busy ________ their crops.", "opts": ["harvesting", "to harvest", "harvest", "harvested"], "correct": 0, "dict": ["harvesting", "harvest", "harvested"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Những người nông dân đang bận _____ mùa màng.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>harvesting<\/span> <span class='wt'>V-ing<\/span> <span class='p-phonetic'>/ˈhɑːvɪstɪŋ/<\/span> = <span class='p-mean'>thu hoạch<\/span><\/div>\n <div><span class='p-word'>to harvest<\/span> <span class='wt'>to-V<\/span> <span class='p-phonetic'>/tə ˈhɑːvɪst/<\/span> = <span class='p-mean'>để thu hoạch<\/span><\/div>\n <div><span class='p-word'>harvest<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/ˈhɑːvɪst/<\/span> = <span class='p-mean'>thu hoạch (nguyên thể)<\/span><\/div>\n <div><span class='p-word'>harvested<\/span> <span class='wt'>V-ed<\/span> <span class='p-phonetic'>/ˈhɑːvɪstɪd/<\/span> = <span class='p-mean'>đã thu hoạch<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Cấu trúc <b class=\"qe qe0\">\"be busy + V-ing\"<\/b> = bận làm gì <span class=\"ar\">→<\/span> busy harvesting.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">Sau <b class=\"qe qe1\">\"busy\"<\/b> không dùng to-V hay nguyên thể/quá khứ.<\/span><\/span><\/li><\/ol><\/div>", "num": 22}, {"text": "I can't understand what you are saying. Can you speak a bit ________?", "opts": ["more slowly", "slower", "slow", "slowest"], "correct": 0, "dict": ["slowly", "slower", "slow", "slowest"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Mình không hiểu bạn đang nói gì. Bạn nói _____ một chút được không?<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>more slowly<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/mɔː(r) ˈsləʊli/<\/span> = <span class='p-mean'>chậm hơn (cách nói)<\/span><\/div>\n <div><span class='p-word'>slower<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈsləʊə(r)/<\/span> = <span class='p-mean'>chậm hơn (tính từ)<\/span><\/div>\n <div><span class='p-word'>slow<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/sləʊ/<\/span> = <span class='p-mean'>chậm<\/span><\/div>\n <div><span class='p-word'>slowest<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈsləʊɪst/<\/span> = <span class='p-mean'>chậm nhất<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Bổ nghĩa cho động từ <b class=\"qe qe0\">\"speak\"<\/b> cần trạng từ; so sánh hơn của <b class=\"qe qe1\">\"slowly\"<\/b> <span class=\"ar\">→<\/span> <b class=\"qe qe2\">\"more slowly\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\"><b class=\"qe qe3\">\"slower\"<\/b> là so sánh hơn của tính từ (không bổ nghĩa cho động từ); <b class=\"qe qe4\">\"slow\"<\/b>/<b class=\"qe qe5\">\"slowest\"<\/b> không phải so sánh hơn của trạng từ.<\/span><\/span><\/li><\/ol><\/div>", "num": 23}, {"text": "Every afternoon they went to the park to ________ the ducks with their favourite food.", "opts": ["feed", "raise", "catch", "milk"], "correct": 0, "dict": ["feed", "raise", "catch", "milk"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Chiều nào họ cũng ra công viên để _____ vịt bằng món ăn yêu thích của chúng.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>feed<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/fiːd/<\/span> = <span class='p-mean'>cho ăn<\/span><\/div>\n <div><span class='p-word'>raise<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/reɪz/<\/span> = <span class='p-mean'>nuôi (gây giống)<\/span><\/div>\n <div><span class='p-word'>catch<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/kætʃ/<\/span> = <span class='p-mean'>bắt<\/span><\/div>\n <div><span class='p-word'>milk<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/mɪlk/<\/span> = <span class='p-mean'>vắt sữa<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"feed the ducks with food\"<\/b> = cho vịt ăn bằng thức ăn.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">raise/catch/milk không hợp với <b class=\"qe qe1\">\"cho ăn bằng món ăn yêu thích\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 24}, {"text": "It's ________ when fruits are all ripe and local people ________ them in the orchard.", "opts": ["harvest time / pick", "harvest / choose", "life / decide", "harvest time / plant"], "correct": 0, "dict": ["harvest", "time", "pick", "plant"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Đó là _____ khi trái cây chín và người dân địa phương _____ chúng trong vườn.<\/div>\n <div class=\"fix\">🔧 Sửa đề: Đáp án D gốc \"harvest time / gather\" cũng đúng (gather = thu hái) → có 2 đáp án đúng. Đã đổi \"gather\" → \"plant\" (không ai \"trồng\" quả đã chín) để chỉ còn 1 đáp án.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>harvest time / pick<\/span> = <span class='p-mean'>mùa thu hoạch / hái<\/span><\/div>\n <div><span class='p-word'>harvest / choose<\/span> = <span class='p-mean'>thu hoạch / lựa chọn<\/span><\/div>\n <div><span class='p-word'>life / decide<\/span> = <span class='p-mean'>cuộc sống / quyết định<\/span><\/div>\n <div><span class='p-word'>harvest time / plant<\/span> = <span class='p-mean'>mùa thu hoạch / trồng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"harvest time\"<\/b> = mùa thu hoạch; <b class=\"qe qe1\">\"pick fruit\"<\/b> = hái trái cây trong vườn.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">choose/decide sai nghĩa; <b class=\"qe qe2\">\"plant\"<\/b> = trồng (không trồng quả đã chín).<\/span><\/span><\/li><\/ol><\/div>", "num": 25}, {"text": "In those days when I was at high school, I often helped my parents to ________ crops at harvest time.", "opts": ["gather", "save", "harm", "all are correct"], "correct": 0, "dict": ["gather", "save", "harm"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Hồi còn học cấp ba, tôi thường giúp bố mẹ _____ mùa màng vào vụ thu hoạch.<\/div>\n <div class=\"fix\">🔧 Sửa đề: Bản gốc có \"collect\" (cũng tạm dùng được) trùng nghĩa với \"gather\" → 2 đáp án đúng và làm cho \"all are correct\" gây nhầm. Đã đổi \"collect\" → \"harm\" (làm hại – sai nghĩa) để chỉ còn 1 đáp án.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>gather<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/ˈɡæðə(r)/<\/span> = <span class='p-mean'>thu hoạch, gặt hái<\/span><\/div>\n <div><span class='p-word'>save<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/seɪv/<\/span> = <span class='p-mean'>cứu / giữ lại<\/span><\/div>\n <div><span class='p-word'>harm<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/hɑːm/<\/span> = <span class='p-mean'>làm hại<\/span><\/div>\n <div><span class='p-word'>all are correct<\/span> = <span class='p-mean'>tất cả đều đúng<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"gather crops\"<\/b> = thu hoạch/gặt hái mùa màng.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">save = cứu; harm = làm hại; <b class=\"qe qe1\">\"all are correct\"<\/b> sai vì các từ kia không cùng nghĩa thu hoạch.<\/span><\/span><\/li><\/ol><\/div>", "num": 26}, {"text": "When I was a boy, my granddad used to ________ fish from the pond behind his house.", "opts": ["catch", "hold", "pick", "feed"], "correct": 0, "dict": ["catch", "hold", "pick", "feed"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Khi tôi còn nhỏ, ông tôi thường _____ cá ở cái ao sau nhà.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>catch<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/kætʃ/<\/span> = <span class='p-mean'>bắt / câu<\/span><\/div>\n <div><span class='p-word'>hold<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/həʊld/<\/span> = <span class='p-mean'>cầm, giữ<\/span><\/div>\n <div><span class='p-word'>pick<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/pɪk/<\/span> = <span class='p-mean'>hái, nhặt<\/span><\/div>\n <div><span class='p-word'>feed<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/fiːd/<\/span> = <span class='p-mean'>cho ăn<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"catch fish from the pond\"<\/b> = bắt/câu cá ở ao.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">hold/pick/feed không hợp với <b class=\"qe qe1\">\"cá từ ao\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 27}, {"text": "After cutting rice from the field, farmers ________ it in the sun for 2 or 3 days.", "opts": ["dry", "drain", "bake", "plough"], "correct": 0, "dict": ["dry", "drain", "bake", "plough"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Sau khi cắt lúa ngoài đồng, nông dân _____ nó dưới nắng 2–3 ngày.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>dry<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/draɪ/<\/span> = <span class='p-mean'>phơi khô<\/span><\/div>\n <div><span class='p-word'>drain<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/dreɪn/<\/span> = <span class='p-mean'>thoát nước, làm cạn<\/span><\/div>\n <div><span class='p-word'>bake<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/beɪk/<\/span> = <span class='p-mean'>nướng (lò)<\/span><\/div>\n <div><span class='p-word'>plough<\/span> <span class='wt'>v<\/span> <span class='p-phonetic'>/plaʊ/<\/span> = <span class='p-mean'>cày<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"dry rice in the sun\"<\/b> = phơi lúa cho khô dưới nắng.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">drain/bake/plough không hợp với <b class=\"qe qe1\">\"phơi nắng cho khô\"<\/b>.<\/span><\/span><\/li><\/ol><\/div>", "num": 28}, {"text": "Duong Lam is one of ________ ancient villages in Ha Noi.", "opts": ["the most", "more", "most", "the more"], "correct": 0, "dict": [], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Đường Lâm là một trong _____ ngôi làng cổ nhất ở Hà Nội.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>the most<\/span> = <span class='p-mean'>nhất (so sánh nhất)<\/span><\/div>\n <div><span class='p-word'>more<\/span> = <span class='p-mean'>hơn (so sánh hơn)<\/span><\/div>\n <div><span class='p-word'>most<\/span> = <span class='p-mean'>nhất (thiếu \"the\")<\/span><\/div>\n <div><span class='p-word'>the more<\/span> = <span class='p-mean'>(sai cấu trúc)<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Cấu trúc <b class=\"qe qe0\">\"one of the most + adj + Ns\"<\/b> = một trong những … nhất.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\"><b class=\"qe qe1\">\"one of the…\"<\/b> đòi hỏi so sánh nhất có <b class=\"qe qe2\">\"the\"<\/b>; more/most/the more không hợp.<\/span><\/span><\/li><\/ol><\/div>", "num": 29}, {"text": "Farmers in this village use a ________ to harvest their rice.", "opts": ["combine harvester", "cow", "truck", "buffalo"], "correct": 0, "dict": ["combine", "harvester", "cow", "truck", "buffalo"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Nông dân làng này dùng _____ để thu hoạch lúa.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>combine harvester<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˌkɒmbaɪn ˈhɑːvɪstə(r)/<\/span> = <span class='p-mean'>máy gặt đập liên hợp<\/span><\/div>\n <div><span class='p-word'>cow<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/kaʊ/<\/span> = <span class='p-mean'>con bò<\/span><\/div>\n <div><span class='p-word'>truck<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/trʌk/<\/span> = <span class='p-mean'>xe tải<\/span><\/div>\n <div><span class='p-word'>buffalo<\/span> <span class='wt'>n<\/span> <span class='p-phonetic'>/ˈbʌfələʊ/<\/span> = <span class='p-mean'>con trâu<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Dùng để <b class=\"qe qe0\">\"thu hoạch lúa\"<\/b> <span class=\"ar\">→<\/span> máy gặt đập liên hợp (combine harvester).<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">trâu/bò dùng để cày; xe tải dùng để chở, không phải để gặt.<\/span><\/span><\/li><\/ol><\/div>", "num": 30}, {"text": "It is ________ in the city than it is in the country.", "opts": ["noisier", "noisily", "more noisier", "noisy"], "correct": 0, "dict": ["noisier", "noisily", "noisy"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Ở thành phố _____ hơn ở nông thôn.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>noisier<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈnɔɪziə(r)/<\/span> = <span class='p-mean'>ồn ào hơn<\/span><\/div>\n <div><span class='p-word'>noisily<\/span> <span class='wt'>adv<\/span> <span class='p-phonetic'>/ˈnɔɪzɪli/<\/span> = <span class='p-mean'>một cách ồn ào<\/span><\/div>\n <div><span class='p-word'>more noisier<\/span> <span class='wt'>adj<\/span> = <span class='p-mean'>(so sánh kép – sai)<\/span><\/div>\n <div><span class='p-word'>noisy<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈnɔɪzi/<\/span> = <span class='p-mean'>ồn ào<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\">Sau <b class=\"qe qe0\">\"is\"<\/b> cần tính từ; <b class=\"qe qe1\">\"noisy\"<\/b> tận cùng -y <span class=\"ar\">→<\/span> so sánh hơn <b class=\"qe qe2\">\"noisier\"<\/b>; có <b class=\"qe qe3\">\"than\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\">noisily là trạng từ; <b class=\"qe qe4\">\"more noisier\"<\/b> so sánh kép; <b class=\"qe qe5\">\"noisy\"<\/b> chưa so sánh.<\/span><\/span><\/li><\/ol><\/div>", "num": 31}, {"text": "The English test was ________ than I thought it would be.", "opts": ["easier", "the easier", "more easy", "easiest"], "correct": 0, "dict": ["easier", "easiest"], "explain": "<div class=\"exp-box\"><h4>⚡ GIẢI THÍCH CHI TIẾT<\/h4><div class=\"vnt\">💬 Dịch: Bài kiểm tra Tiếng Anh _____ hơn tôi tưởng.<\/div><ol>\n <li>Phân tích đáp án:<div class=\"grid2\">\n <div><span class='hl-green'>easier<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈiːziə(r)/<\/span> = <span class='p-mean'>dễ hơn<\/span><\/div>\n <div><span class='p-word'>the easier<\/span> = <span class='p-mean'>(thừa \"the\")<\/span><\/div>\n <div><span class='p-word'>more easy<\/span> = <span class='p-mean'>(sai cấu tạo)<\/span><\/div>\n <div><span class='p-word'>easiest<\/span> <span class='wt'>adj<\/span> <span class='p-phonetic'>/ˈiːziɪst/<\/span> = <span class='p-mean'>dễ nhất<\/span><\/div><\/div><\/li>\n <li><span class=\"hl-green\">✅ TẠI SAO ĐÚNG?<\/span> <span class='p-grammar'><span class=\"hx hx0\"><b class=\"qe qe0\">\"easy\"<\/b> tận cùng -y <span class=\"ar\">→<\/span> so sánh hơn <b class=\"qe qe1\">\"easier\"<\/b>; có <b class=\"qe qe2\">\"than\"<\/b>.<\/span><\/span><\/li>\n <li><span class=\"hl-red\">❌ TẠI SAO SAI?<\/span> <span class='p-grammar'><span class=\"hx hx1\"><b class=\"qe qe3\">\"the easier\"<\/b>/<b class=\"qe qe4\">\"more easy\"<\/b> sai cấu tạo; <b class=\"qe qe5\">\"easiest\"<\/b> là so sánh nhất.<\/span><\/span><\/li><\/ol><\/div>", "num": 32}], "shuffle": true}];
+
+/* ═══════════ CHẤM ĐIỂM ═══════════ */
+function norm(v){
+  let s=(v||'').toLowerCase().replace(/[‘’ʼ`´]/g,"'");
+  s=s.replace(/\bwon't\b/g,'will not').replace(/\bcan't\b/g,'can not').replace(/\bcannot\b/g,'can not').replace(/n't\b/g,' not')
+     .replace(/\bi'm\b/g,'i am').replace(/'re\b/g,' are').replace(/\b(it|that|what|there|where|who|he|she|here|how|this)'s (?=(?:(?:just|already|never|ever|not|recently|always|only|finally|nearly|almost|still) )*(?:been|gone|got|gotten|done|had|seen|arrived|made|taken|known|lived|left|come|become|eaten|written|given|told|found|bought|met|won|lost|started|finished|visited|worked|tried|stayed|travelled|traveled|moved|tasted|booked|attended|ridden|played|joined|learned|learnt|read|heard|broken|chosen|forgotten|spent|sent|taught|thought|brought|kept|slept|swum|flown|driven|grown|shown|spoken|stolen|worn|begun|run|sung|drunk|cooked|watched|used|called|helped|changed|decided|completed|enrolled|applied|climbed|explored)\b)/g,'$1 has ').replace(/\b(it|he|she|there|what|that|here)'s\b/g,'$1 is')
+     .replace(/-/g,' ').replace(/neighborhood/g,'neighbourhood').replace(/\bhanoi\b/g,'ha noi').replace(/\bcentre\b/g,'center');
+  return s.replace(/[.,!?;:"]/g,' ').replace(/\s+/g,' ').trim();
+}
+const L='ABCD',TINT=['var(--a1)','var(--a2)','var(--a3)','var(--a4)'];
+let TOTAL=0,score=0,answered=0;const secScore=[],secTotal=[],done={};
+function shuffleArray(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function refresh(){
+  document.getElementById('scoreChip').textContent='⭐ '+score+'/'+TOTAL;
+  document.getElementById('progChip').textContent=answered+'/'+TOTAL;
+  document.getElementById('pfill').style.width=(answered/TOTAL*100)+'%';
+}
+function gain(si,n){score+=n;secScore[si]+=n;}
+function effect(ok,el,big){try{if(ok){sOK();burst(el,big?18:12)}else sBAD();}catch(e){}}
+const hintify=s=>s.replace(/\(([^)]+)\)/g,'<span class="hw">($1)</span>');
+(function(){
+  const Q=document.getElementById('quiz');
+  SECS.forEach((S,si)=>{
+    secScore[si]=0;
+    const tot=S.type==='fill'?S.items.reduce((a,q)=>a+q.ans.length,0):S.type==='match'?S.Q.length:S.items.length;
+    secTotal[si]=tot;TOTAL+=tot;
+    const Q0=Q;
+    Q0.insertAdjacentHTML('beforeend','<div class="sec"><div class="si">'+S.icon+'</div><div><h2>'+S.title+'</h2><p>'+S.desc+'</p></div></div>');
+    if(S.box)Q0.insertAdjacentHTML('beforeend',wordBox(S.box));
+    if(S.cols)Q0.insertAdjacentHTML('beforeend','<div class="cols">'+S.cols.map((t,j)=>'<div class="col"><div class="col-t">'+t+'</div><div class="col-in" id="col'+si+'_'+j+'"></div></div>').join('')+'</div>');
+    const QQ=S.grid?(()=>{const g=document.createElement('div');g.className='qgrid';Q0.appendChild(g);return g})():Q0;
+    if(S.type==='mcq')S.items.forEach((q,i)=>{
+      if(S.shuffle){const ix=shuffleArray(q.opts.map((_,j)=>j));q.opts=ix.map(j=>q.opts[j]);q.correct=ix.indexOf(q.correct);}
+      const k=si+'_'+i,c=document.createElement('div');c.className='card';c.style.setProperty('--qc',TINT[i%4]);
+      c.innerHTML='<div class="top"><div class="qn">'+(q.num||i+1)+'</div><div class="qt">'+q.text.replace(/_{3,}/g,'<span class="blank"></span>')+'</div></div>'+
+        '<div class="opts">'+q.opts.map((o,j)=>'<button class="opt" data-j="'+j+'"><span class="l">'+L[j]+'</span><span>'+o+'</span></button>').join('')+'</div>'+
+        '<span class="fb tip" id="f'+k+'">👆 Bấm chọn là hiện đáp án ngay</span><div class="expl" id="e'+k+'">'+withDict(q)+'</div>';
+      QQ.appendChild(c);
+      c.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+        if(done[k])return;done[k]=1;answered++;const j=+b.dataset.j,ok=j===q.correct;
+        c.querySelectorAll('.opt').forEach(x=>{x.disabled=true;const jj=+x.dataset.j;x.classList.add(jj===q.correct?'good':jj===j?'bad':'dim');});
+        const f=document.getElementById('f'+k);f.className='fb '+(ok?'ok':'no');
+        f.innerHTML=ok?'✅ Chính xác! Giỏi quá!':'❌ Chưa đúng — đáp án là <span class="ansbox">'+L[q.correct]+'. '+q.opts[q.correct]+'</span>. Xem giải thích bên dưới nhé!';
+        document.getElementById('e'+k).classList.add('show');c.classList.add('opened');if(ok)gain(si,1);refresh();effect(ok,b);
+        if(S.cols)document.getElementById('col'+si+'_'+q.correct).insertAdjacentHTML('beforeend','<span class="cw '+(ok?'good':'bad')+'">'+q.word+(ok?' ✓':'')+'</span>');
+      });
+    });
+    if(S.type==='fill')S.items.forEach((q,i)=>{
+      const k=si+'_'+i,c=document.createElement('div');c.className='card';c.style.setProperty('--qc',TINT[i%4]);
+      let h='',n=q.ans.length;
+      q.parts.forEach((p,j)=>{h+=hintify(p);if(j<n)h+='<input class="fi" id="i'+k+'_'+j+'" placeholder="…" autocomplete="off" spellcheck="false" autocapitalize="off" enterkeyhint="done">';});
+      c.innerHTML='<div class="top"><div class="qn">'+(q.num||i+1)+'</div><div class="fline">'+h+'</div></div>'+
+        '<span class="fb tip" id="f'+k+'">⌨️ '+(n>1?'Gõ đủ '+n+' ô rồi nhấn <b>Enter</b>':'Gõ xong nhấn <b>Enter</b>')+' là hiện đáp án</span><div class="expl" id="e'+k+'">'+withDict(q)+'</div>';
+      QQ.appendChild(c);
+      const ins=[...c.querySelectorAll('.fi')];
+      ins.forEach(el=>el.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();
+        const empty=ins.filter(x=>!x.value.trim());
+        if(!empty.length){checkFill(si,i,k,ins);return}
+        if(el.value.trim())empty[0].focus();else{el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}}));
+    });
+    if(S.type==='write')S.items.forEach((q,i)=>{
+      const k=si+'_'+i,c=document.createElement('div');c.className='card';c.style.setProperty('--qc',TINT[i%4]);
+      c.innerHTML='<div class="top"><div class="qn">'+(q.num||i+1)+'</div><div class="qt">'+q.cue+'</div></div>'+
+        '<div class="wline">'+(q.pre?'<span class="px">'+q.pre+'</span>':'')+
+        '<input class="wi" id="i'+k+'" placeholder="'+(q.pre?'gõ tiếp — hoặc gõ lại cả câu':'gõ cả câu hoàn chỉnh vào đây…')+'" autocomplete="off" spellcheck="false" autocapitalize="off" enterkeyhint="done"></div>'+
+        (q.tiles?'<div class="tiles">'+q.tiles.map(w=>'<button class="tile">'+w+'</button>').join('')+'<button class="tile clr">⌫ Xoá</button></div>':'')+
+        '<span class="fb tip" id="f'+k+'">'+(q.tiles?'👆 Bấm đủ các ô từ là tự chấm — hoặc tự gõ cả câu rồi nhấn <b>Enter</b>':'⌨️ Gõ xong nhấn <b>Enter</b> là hiện đáp án')+'</span><div class="expl" id="e'+k+'">'+withDict(q)+'</div>';
+      QQ.appendChild(c);
+      const inp=c.querySelector('.wi'),tl=[...c.querySelectorAll('.tile:not(.clr)')];
+      tl.forEach(t=>t.onclick=()=>{if(done[k])return;try{sPop()}catch(e){}t.classList.add('used');
+        inp.value=(inp.value.trim()?inp.value.trim()+' ':'')+t.textContent;if(tl.every(x=>x.classList.contains('used')))checkWrite(si,i,k,inp,c);});
+      const cl=c.querySelector('.clr');if(cl)cl.onclick=()=>{if(done[k])return;inp.value='';tl.forEach(x=>x.classList.remove('used'));};
+      inp.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();
+        if(!inp.value.trim()){const l=c.querySelector('.wline');l.classList.remove('shake');void l.offsetWidth;l.classList.add('shake');return}checkWrite(si,i,k,inp,c);});
+    });
+    if(S.type==='match'){
+      const box=document.createElement('div');box.className='match';
+      box.innerHTML='<div class="mcol"><h3>❓ Questions</h3>'+S.Q.map(q=>'<button class="mb q" data-q="'+q.id+'"><span class="k">'+q.id+'</span><span>'+q.text+'</span></button><div class="mexp" id="mx'+q.id+'"></div>').join('')+'</div>'+
+        '<div class="mcol"><h3>💬 Answers</h3>'+S.A.map(a=>'<button class="mb a" data-a="'+a.letter+'"><span class="k">'+a.letter+'</span><span>'+a.text+'</span></button>').join('')+'</div>';
+      QQ.appendChild(box);
+      let selQ=null;
+      box.querySelectorAll('.mb.q').forEach(b=>b.onclick=()=>{
+        if(b.disabled)return;box.querySelectorAll('.mb.q').forEach(x=>x.classList.remove('sel'));
+        if(selQ===b.dataset.q){selQ=null;return}selQ=b.dataset.q;b.classList.add('sel');try{sPop()}catch(e){}});
+      box.querySelectorAll('.mb.a').forEach(b=>b.onclick=()=>{
+        if(!selQ||b.disabled)return;const qb=box.querySelector('.mb.q[data-q="'+selQ+'"]'),ok=S.C[selQ]===b.dataset.a;
+        if(ok){qb.classList.remove('sel');qb.classList.add('good');b.classList.add('good');qb.disabled=b.disabled=true;answered++;gain(si,1);
+          const mx=document.getElementById('mx'+selQ);mx.innerHTML='<b class="pair">'+selQ+' → '+b.dataset.a+'</b> &nbsp;'+S.E[selQ];mx.classList.add('show');
+          refresh();effect(true,b);selQ=null;}
+        else{[qb,b].forEach(x=>{x.classList.remove('bad');void x.offsetWidth;x.classList.add('bad');setTimeout(()=>x.classList.remove('bad'),500)});effect(false,b);}
+      });
+    }
+  });
+  refresh();
+})();
+function checkFill(si,i,k,ins){
+  if(done[k])return;done[k]=1;const q=SECS[si].items[i];let good=0;
+  ins.forEach((el,j)=>{const ok=q.ans[j].map(norm).indexOf(norm(el.value))>-1;el.readOnly=true;el.classList.add(ok?'ok':'no');
+    if(ok){good++;markUsed(q.ans[j][0]);}else el.insertAdjacentHTML('afterend','<span class="fix">'+q.ans[j][0]+'</span>');});
+  answered+=q.ans.length;gain(si,good);
+  const f=document.getElementById('f'+k),n=q.ans.length;
+  f.className='fb '+(good===n?'ok':good?'part':'no');
+  f.innerHTML=good===n?'✅ Chính xác! Giỏi quá!':good?'🔶 Đúng '+good+'/'+n+' ô — xem giải thích bên dưới nhé!':'❌ Chưa đúng — đáp án đã hiện ngay cạnh ô, xem giải thích bên dưới nhé!';
+  document.getElementById('e'+k).classList.add('show');refresh();effect(good===n,ins[ins.length-1]);
+}
+function checkWrite(si,i,k,inp,c){
+  if(done[k])return;done[k]=1;answered++;const q=SECS[si].items[i],A=q.acc.map(norm);
+  const ok=A.indexOf(norm(inp.value))>-1||(q.pre&&A.indexOf(norm(q.pre+' '+inp.value))>-1);
+  inp.readOnly=true;c.querySelector('.wline').classList.add(ok?'ok':'no');c.classList.add('opened');if(ok)gain(si,1);
+  const f=document.getElementById('f'+k);f.className='fb '+(ok?'ok':'no');
+  f.innerHTML=ok?'✅ Chính xác! Giỏi quá!':'❌ Chưa đúng — đáp án: <span class="ansbox">'+q.show+'</span>';
+  document.getElementById('e'+k).classList.add('show');refresh();effect(ok,inp);
+}
+function showFinal(){
+  const pct=TOTAL?score/TOTAL:0,M=FINAL_MSG;let i=pct>=.9?0:pct>=.7?1:pct>=.5?2:3;
+  document.getElementById('resEm').textContent=M[i][0];
+  document.getElementById('resScore').textContent=score+'/'+TOTAL;
+  document.getElementById('resTen').textContent='⭐ '+(pct*10).toFixed(1)+' / 10 điểm';
+  document.getElementById('resBreak').innerHTML=SECS.map((S,si)=>'<div class="row"><span>'+S.icon+' '+S.short+'</span><b>'+secScore[si]+'/'+secTotal[si]+'</b></div>').join('');
+  document.getElementById('resNote').innerHTML=M[i][1]+'<br><small>Đã làm '+answered+'/'+TOTAL+' câu</small>';
+  document.getElementById('resOv').classList.add('show');
+  try{if(pct>=.5){sWin();burst(document.querySelector('#resOv .modal'),30)}}catch(e){}
+}
+</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<style>/*namegate*/#ngOv{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.55);padding:16px}
+#ngOv.show{display:flex}#ngBox{width:min(420px,100%);background:#fff;border-radius:24px;padding:24px 22px;box-shadow:0 20px 50px rgba(0,0,0,.3);text-align:center;font-family:inherit;border:4px solid #C4B5FD}
+#ngBox h3{margin:0 0 6px;font-size:1.35rem;color:#5B21B6}#ngBox p{margin:0 0 14px;color:#475569;line-height:1.5}
+#ngName{width:100%;box-sizing:border-box;font:700 1.1rem inherit;padding:12px 14px;border-radius:14px;border:3px solid #DDD6FE;outline:none;text-align:center}
+#ngName:focus{border-color:#8B5CF6}#ngErr{color:#E11D48;font-weight:800;min-height:1.4em;margin:6px 0}
+#ngBox button{border:0;border-radius:999px;padding:12px 26px;font:900 1.05rem inherit;color:#fff;cursor:pointer;background:linear-gradient(135deg,#8B5CF6,#EC4899);box-shadow:0 4px 0 rgba(0,0,0,.18)}
+#ngBox .ngx{background:#E2E8F0;color:#334155;margin-left:6px}.ngTag{display:block;margin:4px 0 8px;padding:8px 12px;border-radius:14px;background:#F5F3FF;border:2px dashed #C4B5FD;font-weight:800;color:#4C1D95;line-height:1.55}
+#ngClock{position:fixed;left:10px;bottom:10px;z-index:9990;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid #C4B5FD;font:800 .9rem inherit;color:#5B21B6;box-shadow:0 4px 12px rgba(0,0,0,.12);pointer-events:none}</style>
+<div id="ngClock">⏱ 00:00</div>
+<div id="ngOv"><div id="ngBox"><h3>✍️ Nhập họ và tên của con</h3><p>Cô cần biết tên con để chấm bài. Con nhập <b>đầy đủ họ tên</b> rồi bấm <b>Nộp bài</b> nhé!</p>
+<input id="ngName" placeholder="VD: Nguyễn Minh Anh" autocomplete="off" maxlength="40"><div id="ngErr"></div>
+<button type="button" id="ngOk">🚀 Nộp bài</button><button type="button" class="ngx" id="ngCancel">Làm tiếp</button></div></div>
+<script>/*namegate*/(function(){
+var T0=Date.now(),TEND=0,clk=document.getElementById('ngClock');
+function mmss(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function dur(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m?m+' phút ':'')+s+' giây';}
+setInterval(function(){if(!TEND&&clk)clk.textContent='⏱ '+mmss(Date.now()-T0);},1000);
+function clean(s){s=(s||'');try{s=s.normalize('NFC')}catch(e){}return s.replace(/[​-‏⁠﻿]/g,'').replace(/\s+/g,' ').trim();}
+function full(v){return v.length>=4&&v.split(' ').length>=2&&/\p{L}/u.test(v);}
+function stamp(){var d=new Date(),p=function(n){return(n<10?'0':'')+n};return p(d.getHours())+':'+p(d.getMinutes())+' · '+p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear();}
+function tagHTML(who){if(!TEND)TEND=Date.now();if(clk)clk.textContent='⏱ '+mmss(TEND-T0)+' ✔';
+  return '👤 '+who.replace(/[<>&]/g,'')+'<br>⏱ Làm bài trong <b>'+dur(TEND-T0)+'</b><br><small>⏰ Nộp lúc '+stamp()+' · '+document.title.split('|')[0].trim().replace(/[<>&]/g,'')+'</small>';}
+function putTag(anchor,who,before){if(!anchor)return;var t=document.getElementById('ngTag');if(!t){t=document.createElement('div');t.id='ngTag';t.className='ngTag';
+  if(before)anchor.parentNode.insertBefore(t,anchor);else anchor.appendChild(t);}t.innerHTML=tagHTML(who);}
+window.__ngTag=putTag;window.__ngFull=full;window.__ngClean=clean;
+var orig=window.showFinal;
+if(typeof orig==='function'&&document.getElementById('resOv')){
+  var ov=document.getElementById('ngOv'),inp=document.getElementById('ngName'),err=document.getElementById('ngErr'),who='';
+  var run=function(){orig();putTag(document.getElementById('resNote'),who,true);};
+  window.showFinal=function(){if(who){run();return;}ov.classList.add('show');err.textContent='';setTimeout(function(){inp.focus()},50);};
+  var ok=function(){var v=clean(inp.value);if(!full(v)){err.textContent='⚠️ Con nhập đầy đủ họ và tên nhé (ít nhất 2 chữ).';inp.focus();return;}who=v;ov.classList.remove('show');run();};
+  document.getElementById('ngOk').onclick=ok;document.getElementById('ngCancel').onclick=function(){ov.classList.remove('show')};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();ok();}});
+}
+var ds=window.doSubmit,nin=document.getElementById('nin');
+if(typeof ds==='function'&&nin){
+  window.doSubmit=function(){var v=clean(nin.value);var wr=document.getElementById('nwr');
+    if(v&&!full(v)){nin.classList.add('er');if(wr){wr.textContent='⚠️ Con ghi đầy đủ họ và tên nhé (ít nhất 2 chữ)!';wr.classList.add('on');}setTimeout(function(){nin.classList.remove('er')},460);return;}
+    nin.value=v;ds.apply(this,arguments);if(!v)return;
+    var rm=document.getElementById('rm');var box=rm&&rm.querySelector('.box');if(box){var big=box.querySelector('.big')||box.firstElementChild;putTag(big&&big.nextSibling?big.nextSibling:box.lastChild,v,true);}};
+}
+})();</script>
+<script>/*attempts*/(function(){
+var KEY='att:'+decodeURIComponent(location.pathname),done=false;
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function save(a){try{localStorage.setItem(KEY,JSON.stringify(a.slice(-20)))}catch(e){}}
+function fmt(d){var p=function(n){return(n<10?'0':'')+n};return p(d.getDate())+'/'+p(d.getMonth()+1);}
+function durOf(tag){var m=(tag.textContent||'').match(/Làm bài trong\s*((?:\d+\s*phút\s*)?\d+\s*giây)/);return m?m[1].replace(/\s+/g,' '):'';}
+function score(){var a=document.getElementById('resScore');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rS');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rSc');var b=document.getElementById('rTt');if(a)return a.textContent.trim()+'/'+(b?b.textContent.trim():'?');return '?';}
+function add(tag){
+  if(tag.querySelector('.ngAtt'))return;
+  var a=load();
+  if(!done){done=true;a.push({s:score(),t:Date.now(),d:durOf(tag)});save(a);}
+  var k=a.length,prev=a.slice(Math.max(0,k-6),k-1);
+  var d=document.createElement('div');d.className='ngAtt';
+  d.style.cssText='display:block;margin-top:6px;padding-top:6px;border-top:2px dashed #DDD6FE';
+  d.innerHTML='🔁 <b>Lần nộp thứ '+k+'</b> trên máy này'+(prev.length?'<br><small>'+prev.map(function(x,i){return 'Lần '+(k-prev.length+i)+': <b>'+x.s+'</b>'+(x.d?' · ⏱ làm trong <b>'+x.d+'</b>':'')+' · '+fmt(new Date(x.t))}).join('<br>')+'</small>':'');
+  tag.appendChild(d);
+}
+function check(){var t=document.getElementById('ngTag')||document.querySelector('#rn .ngTag');if(t&&t.textContent.trim())add(t);}
+new MutationObserver(check).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>
