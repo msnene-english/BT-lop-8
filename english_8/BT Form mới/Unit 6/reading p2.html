@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗺️ Unit 6 Reading p2 — English 8 | MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --ink:#26304A;--dim:#5B6480;
+ --mint:#20B486;--mint-d:#0D7556;
+ --pink:#EC4899;--pink-d:#BE185D;
+ --sky:#2A9DF4;--sky-d:#1565B8;
+ --lilac:#8B5CF6;--lilac-d:#5B21B6;
+ --sea:#0EA5B7;--sea-d:#0B6E7A;
+ --card:#FFFFFF;--edge:#CDE9F7;
+ --good:#1B9C5A;--good-bg:#DDF7E6;
+ --bad:#E0503C;--bad-bg:#FFE6E0;
+ --line:#26304A;
+ --mg:max(0px,calc((100vw - 1240px) / 2));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;
+ background:radial-gradient(circle at 8% 26%,rgba(42,157,244,.13) 0 150px,transparent 151px),radial-gradient(circle at 92% 34%,rgba(236,72,153,.11) 0 190px,transparent 191px),
+ radial-gradient(circle at 50% 90%,rgba(32,180,134,.12) 0 240px,transparent 241px),radial-gradient(rgba(139,92,246,.13) 2px,transparent 2.6px) 0 0/28px 28px,
+ linear-gradient(180deg,#DDF1FF 0%,#EFFCF7 42%,#FFF0F8 74%,#F3EDFF 100%);background-attachment:fixed}
+/* ══ Food Map Express: mây, đèn lồng, bản đồ chữ S, tàu nhỏ, hải đăng, nón lá, thuyền giấy, tim hơi nóng ══ */
+#lab{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.cld{position:absolute;left:0;width:var(--w);height:calc(var(--w) * .32);border-radius:999px;background:#fff;box-shadow:0 6px 0 rgba(42,157,244,.10);animation:cldX linear infinite}
+.cld::before{content:'';position:absolute;left:16%;bottom:38%;width:42%;height:125%;border-radius:50%;background:#fff}
+.cld::after{content:'';position:absolute;left:48%;bottom:28%;width:32%;height:100%;border-radius:50%;background:#fff}
+@keyframes cldX{from{transform:translateX(-22vw)}to{transform:translateX(112vw)}}
+.garl{position:absolute;left:0;top:54px;width:2800px;height:110px}
+.swag{position:absolute;top:0;width:140px;height:26px;border-bottom:3px solid #F9A8D4;border-radius:0 0 70px 70px/0 0 26px 26px}
+.hang{position:absolute;top:-2px;width:28px;transform-origin:50% 0;animation:swing 3s ease-in-out infinite alternate}
+.hang .str{display:block;margin:0 auto;width:2px;height:var(--l);background:#A78BFA}
+@keyframes swing{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.lant{display:block;position:relative;width:24px;height:30px;margin:4px auto 0;border-radius:45%;
+ background:repeating-linear-gradient(90deg,transparent 0 5px,rgba(255,255,255,.4) 5px 6px),radial-gradient(circle at 40% 35%,#fff 0 7%,var(--c) 45%);box-shadow:0 0 14px var(--c)}
+.lant::before{content:'';position:absolute;left:6px;right:6px;top:-4px;height:5px;border-radius:2px;background:#5B21B6}
+.lant::after{content:'';position:absolute;left:10px;bottom:-12px;width:4px;height:10px;border-radius:2px;background:#FDE047;box-shadow:0 -3px 0 #5B21B6}
+.hat{display:block;position:relative;width:var(--s,40px);height:calc(var(--s,40px) * .44);clip-path:polygon(50% 0,100% 100%,0 100%);
+ background:linear-gradient(180deg,transparent 0 72%,#EC4899 72% 80%,transparent 80%),repeating-linear-gradient(90deg,#F7EBC5 0 5px,#E6D59C 5px 6px)}
+.boat{display:block;position:relative;width:var(--s,40px);height:calc(var(--s,40px) * .64);filter:drop-shadow(0 0 1.4px #1565B8)}
+.boat::before{content:'';position:absolute;left:0;right:0;bottom:0;height:44%;background:#fff;clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
+.boat::after{content:'';position:absolute;left:27%;width:46%;bottom:44%;height:58%;background:linear-gradient(90deg,#DBEFFF 50%,#fff 50%);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.hrtc{display:block;width:14px;height:13px;background:var(--c,#F472B6);clip-path:path('M7 13 L1.2 7.2 A3.4 3.4 0 0 1 7 2.6 A3.4 3.4 0 0 1 12.8 7.2 Z')}
+.fsl{position:absolute;animation:drift ease-in-out infinite alternate}
+.fsl>.hat,.fsl>.boat{animation:tilt 3.4s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateY(-18px)}to{transform:translateY(22px)}}
+@keyframes tilt{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.fem{position:absolute;font-size:22px;animation:drift ease-in-out infinite alternate;filter:drop-shadow(0 3px 4px rgba(38,48,74,.18))}
+.uph{position:absolute;bottom:-30px;animation:uphUp linear infinite}
+@keyframes uphUp{0%{transform:translate(0,0) scale(.6);opacity:0}10%{opacity:.9}100%{transform:translate(18px,-105vh) scale(1.15);opacity:0}}
+.spk{position:absolute;width:16px;height:16px;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.4);opacity:.25}50%{transform:scale(1.15);opacity:1}}
+/* bản đồ chữ S bên lề trái */
+.vnmap{position:absolute;--mw:clamp(50px,calc(var(--mg) - 18px),230px);left:calc(var(--mg) / 2 - var(--mw) / 2);top:15vh;width:var(--mw)}
+.vnmap svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(3px 4px 0 rgba(38,48,74,.16))}
+.vnmap .mt{display:none;margin:0 auto 6px;width:max-content;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:#fff;background:linear-gradient(90deg,#EC4899,#8B5CF6);
+ border:3px solid var(--line);border-radius:999px;padding:0 14px;box-shadow:3px 3px 0 var(--line)}
+.vnmap .mlb{display:none;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;fill:#5B21B6;paint-order:stroke;stroke:#fff;stroke-width:3.5px}
+.vnmap .pr{transform-box:fill-box;transform-origin:center;animation:prP 2s ease-out infinite}
+@keyframes prP{from{transform:scale(.5);opacity:.95}to{transform:scale(2.3);opacity:0}}
+.vnmap .fp{transform-box:fill-box;transform-origin:50% 100%;animation:fpop 7.2s ease-in-out infinite}
+@keyframes fpop{0%,4%{transform:scale(0)}10%{transform:scale(1.2)}14%,42%{transform:scale(1)}48%,100%{transform:scale(0)}}
+.vnmap .wvs{animation:wvX 3s ease-in-out infinite alternate}
+@keyframes wvX{to{transform:translateX(-6px)}}
+.vnmap .bob{transform-box:fill-box;transform-origin:50% 100%;animation:bobS 2.4s ease-in-out infinite alternate}
+@keyframes bobS{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+/* hải đăng bên lề phải */
+.lth{position:absolute;right:calc(var(--mg) / 2 - 23px);top:18vh;width:46px;height:150px;transform-origin:50% 0}
+.lth .tw{position:absolute;left:8px;bottom:20px;width:30px;height:94px;clip-path:polygon(24% 0,76% 0,100% 100%,0 100%);background:repeating-linear-gradient(180deg,#fff 0 15px,#F472B6 15px 30px)}
+.lth .door{position:absolute;left:19px;bottom:20px;width:8px;height:13px;border-radius:5px 5px 0 0;background:#5B21B6}
+.lth .gal{position:absolute;left:5px;bottom:112px;width:36px;height:6px;border-radius:3px;background:#8B5CF6;border:2px solid var(--line)}
+.lth .lamp{position:absolute;left:12px;bottom:117px;width:22px;height:16px;border-radius:3px;background:#FEF9C3;border:2px solid var(--line);animation:lmp 1.6s ease-in-out infinite alternate}
+@keyframes lmp{from{box-shadow:0 0 6px 2px rgba(253,224,71,.5)}to{box-shadow:0 0 18px 8px rgba(253,224,71,.85)}}
+.lth .roof{position:absolute;left:9px;bottom:131px;width:28px;height:15px;clip-path:polygon(50% 0,100% 100%,0 100%);background:#5B21B6}
+.lth .beam{position:absolute;left:23px;bottom:122px;width:78px;height:30px;transform-origin:0 50%;background:linear-gradient(90deg,rgba(254,249,195,.95),rgba(254,249,195,0));clip-path:polygon(0 42%,100% 0,100% 100%,0 58%);animation:beam 5s linear infinite}
+@keyframes beam{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.lth .rock{position:absolute;left:-6px;right:-6px;bottom:6px;height:20px;border-radius:50% 50% 30% 30%;background:linear-gradient(180deg,#C4B5FD,#8B5CF6);border:2px solid var(--line)}
+.lth .wvs{position:absolute;left:-26px;right:-26px;bottom:-4px;height:16px;overflow:hidden}
+.lth .wvs i{position:absolute;left:0;width:200%;height:16px;background:radial-gradient(circle at 10px 16px,transparent 9px,#7CC4F5 10px 13px,transparent 14px) 0 0/20px 16px repeat-x;animation:wvL 2.4s linear infinite}
+.lth .wvs i+i{top:5px;opacity:.7;animation-duration:3.4s;animation-direction:reverse}
+@keyframes wvL{to{transform:translateX(-20px)}}
+/* đồ trang trí hẹp cho màn 1366 */
+.slim{position:absolute;top:64vh}
+.sbowl{left:calc(var(--mg) / 2 - 26px);width:52px;height:80px}
+.bowl{position:absolute;width:var(--bw,70px);height:calc(var(--bw,70px) * .62)}
+.bowl .bw{position:absolute;left:0;right:0;bottom:0;height:72%;border-radius:0 0 50% 50%/0 0 100% 100%;background:linear-gradient(180deg,#fff 0 46%,var(--rim,#BAE6FD) 46% 62%,#fff 62%);border:3px solid var(--line);border-top:none}
+.bowl .tp{position:absolute;left:-3px;right:-3px;top:2px;height:32%;border-radius:50%;background:radial-gradient(circle at 30% 50%,#4ADE80 0 7%,transparent 8%),radial-gradient(circle at 66% 40%,#F9A8D4 0 9%,transparent 10%),repeating-linear-gradient(170deg,#FFF6D8 0 3px,#F5E3AE 3px 5px);border:3px solid var(--line)}
+.bowl .ck{position:absolute;right:6%;top:-40%;width:5px;height:80%;border-radius:3px;background:#8B5CF6;transform:rotate(22deg);transform-origin:50% 100%}
+.bowl .ck+.ck{right:16%;transform:rotate(30deg);background:#A78BFA}
+.bowl .sh{position:absolute;bottom:70%;animation:shUp 3s ease-out infinite}
+@keyframes shUp{0%{transform:translate(0,0) scale(.5);opacity:0}20%{opacity:.95}100%{transform:translate(8px,-46px) scale(1.2);opacity:0}}
+.slotus{right:calc(var(--mg) / 2 - 26px);width:52px;height:70px}
+.lotus{position:absolute;width:44px;height:30px;animation:bobL 2.6s ease-in-out infinite alternate}
+@keyframes bobL{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+.lotus i{position:absolute;left:16px;bottom:0;width:12px;height:26px;border-radius:50% 50% 50% 50%/70% 70% 30% 30%;background:linear-gradient(180deg,#F472B6,#FBCFE8);border:1.5px solid #BE185D;transform-origin:50% 100%}
+.lotus i:nth-child(1){transform:rotate(-56deg)}.lotus i:nth-child(2){transform:rotate(-28deg)}.lotus i:nth-child(3){transform:rotate(0)}.lotus i:nth-child(4){transform:rotate(28deg)}.lotus i:nth-child(5){transform:rotate(56deg)}
+.pad{position:absolute;width:52px;height:16px;border-radius:50%;background:conic-gradient(from 80deg,#4ADE80 0 330deg,transparent 330deg);border:2px solid #0D7556}
+/* nhân vật bên lề (màn hình rộng) */
+.mch{position:absolute;display:none}
+.mc-bowl{right:calc(var(--mg) / 2 - 80px);top:46vh;width:160px;height:170px}
+.mc-bowl .bowl{left:5px;bottom:10px;--bw:150px;--rim:#C4B5FD}
+.mc-bowl .face{position:absolute;left:50%;bottom:22px;width:60px;height:30px;margin-left:-30px;z-index:3}
+.eye{position:absolute;top:0;width:10px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 2px,#26304A 2.6px);animation:blink 4s infinite}
+.eye.l{left:8px}.eye.r{right:8px}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.mouth{position:absolute;left:50%;top:13px;width:22px;height:11px;margin-left:-11px;border:3px solid #26304A;border-top:none;border-radius:0 0 22px 22px;background:#EC4899}
+.blush{position:absolute;top:12px;width:11px;height:6px;border-radius:50%;background:rgba(244,114,182,.75)}
+.blush.l{left:-6px}.blush.r{right:-6px}
+.mc-bowl .ndl{position:absolute;left:92px;top:8px;width:30px;height:70px;animation:lift 2.2s ease-in-out infinite}
+@keyframes lift{0%,100%{transform:translateY(22px)}50%{transform:translateY(0)}}
+.mc-bowl .ndl b{position:absolute;bottom:0;width:4px;height:52px;border-radius:2px;background:repeating-linear-gradient(180deg,#FFF6D8 0 4px,#F5E3AE 4px 6px);border:1px solid #D9C27A}
+.mc-bowl .ndl b:nth-child(1){left:8px}.mc-bowl .ndl b:nth-child(2){left:14px}.mc-bowl .ndl b:nth-child(3){left:20px}
+.mc-bowl .ndl em{position:absolute;top:0;width:5px;height:76px;border-radius:3px;background:#8B5CF6;transform:rotate(-8deg)}
+.mc-bowl .ndl em{left:4px}.mc-bowl .ndl em+em{left:22px;transform:rotate(8deg);background:#A78BFA}
+.mc-bowl .tag{position:absolute;left:8px;top:18px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.9rem;color:#fff;background:var(--pink);border:3px solid var(--line);border-radius:999px;padding:0 10px;box-shadow:2px 2px 0 var(--line);animation:tagB 1.8s ease-in-out infinite alternate}
+@keyframes tagB{from{transform:rotate(-6deg)}to{transform:rotate(6deg) translateY(-4px)}}
+@media(min-width:1480px){.mch{display:block}.slim{display:none}.lth{transform:scale(1.55)}.vnmap .mt,.vnmap .mlb{display:block}.vnmap{top:12vh}}
+/* ══ dải đất dưới cùng: núi, ruộng bậc thang, bàn phở, xe bánh mì, ao sen, đường ray, tàu, xe máy ══ */
+#ground{position:fixed;left:0;right:0;bottom:0;height:300px;z-index:1;pointer-events:none;overflow:hidden}
+.mtn i{position:absolute;bottom:22px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.mtn .m1{left:-2vw;width:260px;height:210px;background:linear-gradient(180deg,#C4B5FD,#A5B4FC)}
+.mtn .m2{left:9vw;width:220px;height:170px;background:linear-gradient(180deg,#BAE6FD,#93C5FD)}
+.mtn .m3{left:18vw;width:180px;height:120px;background:linear-gradient(180deg,#DDD6FE,#C4B5FD)}
+.terr{position:absolute;left:0;bottom:22px;width:min(330px,26vw);height:150px}
+.terr i{position:absolute;right:0;height:44px;border-radius:140px 140px 0 0/40px 40px 0 0;border-top:3px solid #0D7556;
+ background:linear-gradient(180deg,#D7F4FF 0 5px,transparent 5px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(13,117,86,.28) 9px 11px) 0 8px/100% 10px no-repeat,var(--c)}
+.road{position:absolute;left:0;right:0;bottom:0;height:24px;background:radial-gradient(circle,#F9A8D4 0 2px,transparent 2.6px) 0 3px/34px 18px,linear-gradient(180deg,#8DE3B9 0 6px,#6FCF9E 6px)}
+.rail{position:absolute;left:0;right:0;bottom:6px;height:12px;border-top:3px solid #6D5BA8;border-bottom:3px solid #6D5BA8;background:repeating-linear-gradient(90deg,#B9A7E6 0 7px,transparent 7px 22px)}
+.tbl{position:absolute;left:calc(26vw + 20px);bottom:22px;width:220px;height:86px}
+.tbl .top{position:absolute;left:0;right:0;top:42px;height:12px;border-radius:6px;background:repeating-linear-gradient(90deg,#FBCFE8 0 14px,#fff 14px 28px);border:3px solid var(--line)}
+.tbl .lg{position:absolute;top:52px;width:8px;height:34px;background:#8B5CF6;border:2px solid var(--line)}
+.tbl .lg.l{left:14px}.tbl .lg.r{right:14px}
+.tbl .bowl{bottom:41px}
+.cartb{position:absolute;right:calc(2vw + 250px);bottom:22px;width:150px;height:150px}
+.cartb .aw{position:absolute;left:0;right:0;top:0;height:28px;border-radius:10px 10px 0 0;background:repeating-linear-gradient(90deg,#F472B6 0 18px,#fff 18px 36px);border:3px solid var(--line)}
+.cartb .aw::after{content:'';position:absolute;left:-3px;right:-3px;top:100%;height:10px;background:radial-gradient(circle at 9px 0,#F472B6 8px,transparent 9px) 0 0/36px 10px repeat-x,radial-gradient(circle at 27px 0,#fff 8px,transparent 9px) 0 0/36px 10px repeat-x}
+.cartb .pl{position:absolute;top:28px;width:6px;height:50px;background:#8B5CF6;border:2px solid var(--line)}
+.cartb .pl.l{left:10px}.cartb .pl.r{right:10px}
+.cartb .gl{position:absolute;left:6px;right:6px;top:66px;height:30px;border:3px solid var(--line);border-bottom:none;border-radius:8px 8px 0 0;background:rgba(219,239,255,.85);overflow:hidden}
+.bgt{position:absolute;bottom:3px;width:46px;height:13px;border-radius:50%;border:2px solid #9A6B2F;background:repeating-linear-gradient(115deg,transparent 0 7px,rgba(255,255,255,.55) 7px 9px),linear-gradient(180deg,#F6DB9A,#E2B65A)}
+.cartb .bx{position:absolute;left:6px;right:6px;top:96px;height:38px;border:3px solid var(--line);border-radius:0 0 8px 8px;background:linear-gradient(180deg,#A78BFA,#7C3AED);display:grid;place-items:center}
+.cartb .bx b{font-family:'Baloo 2',cursive;font-weight:800;font-size:.85rem;color:#fff;letter-spacing:1px;text-shadow:0 1px 0 #26304A}
+.wh{position:absolute;bottom:0;width:22px;height:22px;border-radius:50%;border:3px solid var(--line);background:conic-gradient(#fff 0 25%,#7DD3FC 25% 50%,#fff 50% 75%,#7DD3FC 75%);animation:rot 1s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.cartb .wh.l{left:18px}.cartb .wh.r{right:18px}
+.pond{position:absolute;right:2vw;bottom:20px;width:236px;height:80px}
+.pond .wt{position:absolute;left:0;right:0;bottom:0;height:46px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#BAE6FD,#7DD3FC 70%,#38BDF8);border:3px solid #1565B8}
+.pond .rp2{position:absolute;bottom:14px;width:30px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.9);animation:ripS 2.4s ease-out infinite}
+@keyframes ripS{from{transform:scale(.3);opacity:1}to{transform:scale(1.8);opacity:0}}
+.pond .pad{bottom:16px}
+.pond .lotus{bottom:24px}
+.pond .boat{position:absolute;bottom:22px;animation:sail 9s ease-in-out infinite alternate}
+@keyframes sail{from{transform:translateX(0) rotate(-4deg)}to{transform:translateX(110px) rotate(4deg)}}
+.runner{position:absolute;left:0;bottom:12px;animation:runX 26s linear infinite;z-index:3}
+.runner.r2{animation:runBack 30s linear infinite;animation-delay:-13s;bottom:2px}
+@keyframes runX{from{transform:translateX(-280px)}to{transform:translateX(calc(100vw + 280px))}}
+@keyframes runBack{from{transform:translateX(calc(100vw + 120px))}to{transform:translateX(-160px)}}
+.train{width:236px;height:70px}
+.car,.eng{position:absolute;bottom:8px;border:3px solid var(--line);border-radius:10px}
+.car{width:64px;height:40px;display:flex;gap:4px;align-items:flex-start;justify-content:center;padding-top:5px}
+.car.c1{left:0;background:linear-gradient(180deg,#A7F3D0,#34D399)}.car.c2{left:72px;background:linear-gradient(180deg,#DDD6FE,#A78BFA)}
+.car .win{width:20px;height:17px;border-radius:5px;background:#fff;border:2px solid var(--line);font-size:11px;line-height:13px;text-align:center}
+.eng{left:144px;width:82px;height:46px;background:linear-gradient(180deg,#7DD3FC,#2A9DF4);border-radius:10px 18px 10px 10px}
+.eng .cab{position:absolute;left:4px;top:-20px;width:36px;height:22px;border:3px solid var(--line);border-bottom:none;border-radius:8px 8px 0 0;background:#F9A8D4}
+.eng .cab::after{content:'';position:absolute;left:8px;top:4px;width:16px;height:12px;border-radius:4px;background:#fff;border:2px solid var(--line)}
+.eng .chim{position:absolute;right:14px;top:-18px;width:14px;height:18px;border:3px solid var(--line);border-bottom:none;border-radius:4px 4px 0 0;background:#8B5CF6}
+.eng .face{position:absolute;right:6px;top:10px;width:34px;height:24px}
+.eng .eye{width:7px;height:9px}.eng .eye.l{left:3px}.eng .eye.r{right:5px}
+.eng .mouth{top:11px;width:14px;height:7px;margin-left:-8px;border-width:2px}
+.puf{position:absolute;right:16px;top:-30px;animation:pufU 2.2s ease-out infinite}
+@keyframes pufU{0%{transform:translate(0,0) scale(.4);opacity:0}20%{opacity:1}100%{transform:translate(-26px,-46px) scale(1.4);opacity:0}}
+.puf.w{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid rgba(38,48,74,.18)}
+.train .wh{bottom:-6px;width:18px;height:18px;border-width:2.5px}
+.vespa{width:96px;height:96px}
+.vespa .rider{position:absolute;left:34px;bottom:30px;width:26px;height:34px;border-radius:12px 12px 4px 4px;background:#F472B6;border:3px solid var(--line);animation:bobS .5s ease-in-out infinite alternate}
+.vespa .head{position:absolute;left:3px;top:-22px;width:20px;height:20px;border-radius:50%;background:#FDE2CF;border:3px solid var(--line)}
+.vespa .nh{position:absolute;left:-12px;top:-14px;width:48px;height:18px;clip-path:polygon(50% 0,100% 100%,0 100%);background:repeating-linear-gradient(90deg,#F7EBC5 0 4px,#E6D59C 4px 5px)}
+.vespa .bd{position:absolute;left:10px;bottom:12px;width:76px;height:26px;border-radius:30px 14px 14px 30px;background:linear-gradient(180deg,#C4B5FD,#8B5CF6);border:3px solid var(--line)}
+.vespa .hb{position:absolute;left:6px;bottom:30px;width:6px;height:30px;border-radius:3px;background:var(--line);transform:rotate(-14deg)}
+.vespa .bk{position:absolute;left:62px;bottom:36px;width:28px;height:16px;border:3px solid var(--line);border-radius:2px 2px 8px 8px;background:repeating-linear-gradient(90deg,#FDE68A 0 4px,#FACC15 4px 6px)}
+.vespa .bk .bgt{left:-4px;bottom:10px;width:34px;height:10px;transform:rotate(-12deg)}
+.vespa .wh{bottom:0}.vespa .wh.l{left:6px}.vespa .wh.r{right:6px}
+@media(max-width:1480px){.tbl{left:calc(24vw + 10px)}}
+@media(max-width:940px){#ground{height:190px}.vnmap,.lth,.slim,.mch,.cartb,.mtn,.tbl{display:none}.terr{width:46vw}}
+@media(prefers-reduced-motion:reduce){#lab *,#ground *{animation:none!important}}
+/* ── sticky note ── */
+.note{position:sticky;top:0;z-index:50;padding:6px 14px;text-align:center;
+ background:linear-gradient(90deg,#1F8FE0,#38BDF8 18%,#8B5CF6 42%,#EC4899 66%,#14B8A6 90%);box-shadow:0 4px 0 var(--line)}
+.note .in{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;justify-content:center;min-height:calc(.95rem * 1.45 * 2)}
+@media(min-width:941px){.note .in{height:calc(.95rem * 1.45 * 2);overflow:hidden}}
+.note .tg{flex:none;background:#FFE4F0;color:#9D174D;font-weight:900;font-size:.8rem;padding:3px 12px;border:3px solid #9D174D;border-radius:999px;white-space:nowrap;box-shadow:2px 2px 0 #9D174D}
+.note .tx{color:#fff;font-weight:800;font-size:.95rem;line-height:1.45;text-shadow:0 1px 4px rgba(0,0,0,.45);transition:opacity .25s}
+/* ── compact header ── */
+header{position:relative;z-index:10;max-width:1240px;margin:8px auto 6px;background:var(--card);
+ border:4px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--pink);
+ padding:5px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+header h1{font-family:'Baloo 2',cursive;font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:800;color:var(--sky-d);line-height:1.25;white-space:nowrap}
+header h1 .p1{font-family:'Baloo 2',cursive;font-size:.72rem;vertical-align:middle;background:var(--pink);color:#fff;padding:1px 9px;margin-left:8px;border:3px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line)}
+header .by{font-size:.8rem;color:var(--dim);font-weight:800;margin-top:1px}
+header .by b{color:var(--pink-d)}
+.hright{display:flex;align-items:center;gap:10px}
+.chips{display:grid;grid-template-columns:auto auto;gap:5px 8px}
+.chip{font-family:'Baloo 2',cursive;font-weight:800;font-size:.74rem;line-height:1.1;padding:2px 9px;border:2.5px dashed currentColor;border-radius:8px;background:#fff;
+ box-shadow:0 0 0 2px #fff,0 0 0 4px currentColor;white-space:nowrap;text-align:center;letter-spacing:.3px}
+.chip.c1{color:var(--mint-d);transform:rotate(-3deg)}.chip.c2{color:var(--pink-d);transform:rotate(2deg)}.chip.c3{color:var(--sky-d);transform:rotate(2deg)}.chip.c4{color:var(--lilac-d);transform:rotate(-2deg)}
+.gauge{position:relative;background:radial-gradient(circle at 35% 30%,#FFFFFF,#C7F2E2 55%,#7DD3FC);border:4px solid #1565B8;border-radius:50%;width:58px;height:58px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--line);flex:none}
+.gauge::before{content:'🍜';position:absolute;top:-12px;right:-9px;font-size:15px}
+.gauge .num{font-family:'Baloo 2',cursive;font-size:1rem;color:#0B3A6E;font-weight:800;line-height:1}
+.gauge .lbl{font-size:.55rem;font-weight:900;color:#BE185D;text-transform:uppercase}
+@media(max-width:1180px){header{flex-wrap:wrap}header h1{white-space:normal}}
+/* ── layout ── */
+.main{position:relative;z-index:5;max-width:1240px;margin:0 auto;display:flex;gap:18px;padding:4px 16px 0;align-items:flex-start}
+.lp,.rp{max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px}
+.lp{flex:0 0 48%}
+.rp{flex:1;min-width:0}
+.lp::-webkit-scrollbar,.rp::-webkit-scrollbar{width:9px}
+.lp::-webkit-scrollbar-thumb,.rp::-webkit-scrollbar-thumb{background:#F9A8D4;border-radius:6px;border:2px solid var(--sky)}
+.slbl{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--sky-d);margin-bottom:8px;display:flex;align-items:center;gap:10px;
+ background:rgba(255,255,255,.94);border-radius:999px;padding:1px 14px;border:3px solid var(--line)}
+.slbl::after{content:'';flex:1;height:8px;border-radius:8px;background:repeating-linear-gradient(90deg,#2A9DF4 0 10px,#EC4899 10px 20px,#20B486 20px 30px,#8B5CF6 30px 40px,#7DD3FC 40px 50px)}
+@media(max-width:940px){.main{flex-direction:column;padding-bottom:210px}.lp{flex:1 1 auto;width:100%}.lp,.rp{max-height:none!important}}
+/* ── passage cards ── */
+.pc{position:relative;background:var(--card);border:4px solid var(--edge);border-radius:18px;padding:26px 18px 14px;margin:20px 0 22px;box-shadow:6px 6px 0 rgba(38,48,74,.18)}
+.pc .stamp{position:absolute;top:-22px;right:18px;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#EAF6FF);
+ border:4px solid currentColor;display:grid;place-items:center;font-size:24px;box-shadow:3px 3px 0 var(--line)}
+.lvl{position:absolute;top:-16px;left:18px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.85rem;line-height:1.2;background:#fff;color:var(--c);border:2.5px dashed var(--c);
+ border-radius:8px;padding:3px 12px;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--c);transform:rotate(-3deg);letter-spacing:.5px}
+.ptitle{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.pins{font-size:.92rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:10px;line-height:1.6}
+.pblk{border-left:7px solid;border-radius:12px;padding:12px 14px 4px;margin:16px 0;position:relative}
+.pblk .em{position:absolute;top:-13px;right:10px;font-size:1.2rem;background:#fff;border:3px solid var(--line);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;box-shadow:2px 2px 0 var(--line)}
+.pblk .ptag{position:absolute;top:-12px;left:12px;font-family:'Baloo 2',cursive;font-size:.74rem;font-weight:800;line-height:1.2;color:#fff;background:var(--line);border-radius:999px;padding:2px 10px}
+.paragraph{font-size:1.16rem;line-height:1.95;margin-bottom:10px;text-align:justify}
+.paragraph b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.bk-mint{background:#CFF7E6;color:#0D7556}.bk-pink{background:#FFD6EA;color:#BE185D}.bk-sky{background:#D4EBFF;color:#1565B8}
+.bk-lilac{background:#E8DEFF;color:#5B21B6}.bk-sea{background:#CCF3F7;color:#0B6E7A}
+.btr{font-family:'Baloo 2',cursive;font-size:.85rem;background:linear-gradient(135deg,#FFC9E3,#E6D9FF 50%,#B8E2FF);border:3px solid var(--pink);color:#26304A;
+ padding:5px 16px;border-radius:999px;cursor:pointer;transition:.15s;font-weight:800;display:block;margin:6px 0 12px;box-shadow:3px 3px 0 var(--pink)}
+.btr:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--pink)}
+.translation{display:none;margin-bottom:12px;font-size:1rem;line-height:1.8;color:#3A3550;background:#F5FAFF;border-left:4px solid var(--sky);border-radius:0 12px 12px 0;padding:10px 14px;font-style:italic}
+.gl{margin-top:12px;background:var(--card);border:3px solid var(--edge);border-radius:12px;overflow:hidden}
+.gl h3{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#fff;margin:0;padding:8px 14px}
+table.gtb{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.95rem}
+.gtb tr{border-top:1px dotted var(--edge)}
+.gtb tr:nth-child(even){background:#F3F9FF}
+.gtb td,.gtb th{padding:7px 12px;text-align:left;vertical-align:top}
+.gtb th{font-weight:800;font-size:.82rem;color:var(--dim)}
+.gtb .gw{font-weight:900;color:var(--sky-d)}
+.gtb .gp{color:var(--pink-d);font-weight:700;font-size:.86rem}
+/* ── quiz cards ── */
+.sec{background:rgba(255,255,255,.96);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:6px 6px 0 rgba(38,48,74,.18);border:4px solid var(--edge)}
+.sech{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;margin-bottom:2px}
+.secs{font-size:.88rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:12px;line-height:1.55}
+.q{background:#FFFEFA;border:2px solid #DCEBF7;border-left:7px solid var(--sky);border-radius:14px;padding:14px;margin-bottom:14px}
+.q .qt{font-weight:800;font-size:1.08rem;line-height:1.75}
+.q .qt b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.q .task{display:block;margin:2px 0 4px;font-size:.88rem;font-weight:800;color:var(--dim);font-style:italic}
+.q .ctx{display:block;font-weight:700}
+.qn{display:inline-block;background:var(--qc,var(--sky));color:#fff;min-width:38px;text-align:center;border:2px solid var(--line);border-radius:999px;padding:2px 9px;margin-right:9px;
+ font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;line-height:1.3;vertical-align:1px;box-shadow:2px 2px 0 var(--line);text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}
+.ob{background:#fff;color:var(--ink);border:2px solid #D3E4F4;border-radius:12px;padding:11px 13px;
+ font-family:'Nunito';font-weight:800;font-size:1rem;cursor:pointer;text-align:left;line-height:1.5;transition:.14s;box-shadow:0 3px 0 #D3E4F4}
+.ob:hover:not(.dn){transform:translateY(-2px);border-color:var(--qc,var(--sky))}
+.ob.dn{cursor:default}
+.ob.ok{background:var(--good-bg);border-color:var(--good);color:#0b6b3c;box-shadow:0 3px 0 #9fe3bd}
+.ob.no{background:var(--bad-bg);border-color:var(--bad);color:#a31832;box-shadow:0 3px 0 #f7bac5}
+.ex{display:none;margin-top:12px;background:#fff;border:2px solid #DCEBF7;border-radius:12px;padding:14px;font-size:.98rem;line-height:1.85}
+.ex.on{display:block;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.shk{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* ── explanation content ── */
+.vnt{margin-bottom:10px;padding:9px 13px;border-radius:12px;background:#EAF6FF;border-left:5px solid var(--sky);font-weight:700;line-height:1.7}
+.ex ol{margin:0;padding-left:22px}
+.ex ol>li{margin:10px 0;line-height:1.75;padding-left:4px}
+.ex ol>li::marker{font-weight:900;color:var(--pink-d)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.og{grid-template-columns:1fr}}
+.grid2>div{border:2px solid #D3E4F4;border-radius:12px;padding:8px 11px;background:#FAFCFF;line-height:1.7;font-size:.97rem}
+.grid2>div.gk{border-color:var(--good);background:var(--good-bg);box-shadow:0 0 0 3px rgba(27,156,90,.14)}
+.p-word{color:#1E6FD9;font-weight:800}
+.hl-green{color:#11924E;font-weight:900}
+.hl-red{color:#D8334A;font-weight:900}
+.wt{display:inline-block;margin:0 3px;padding:0 7px;border-radius:6px;font-size:.78em;font-weight:700;background:rgba(110,100,160,.14);color:#5B5480}
+.p-phonetic{padding:0 6px;border-radius:6px;background:#F1E8FF;color:#7A3FC8;font-weight:700;font-family:'Segoe UI','Lucida Sans Unicode','Arial Unicode MS',sans-serif}
+.p-mean{color:#B5532E;font-weight:700}
+.p-grammar{display:inline;line-height:1.95;padding:3px 8px 3px 2px;border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hx0{background:#FFF3B0}.hx1{background:#D6ECFF}.hx2{background:#FFDDEE}
+.hx3{background:#DDF7D0}.hx4{background:#EBDFFF}.hx5{background:#D5F5F8}
+.qe0{color:#1D4ED8;font-weight:800}.qe1{color:#C2185B;font-weight:800}.qe2{color:#0F8A5F;font-weight:800}.qe3{color:#7C3AED;font-weight:800}.qe4{color:#A21CAF;font-weight:800}.qe5{color:#0E7490;font-weight:800}
+.frame{margin-top:10px;padding:10px 13px;border-radius:14px;background:#fff;border:2px dashed var(--edge);line-height:1.75}
+.frame i{color:var(--dim)}
+.dk{margin-top:12px;padding:11px 13px;border-radius:14px;background:#F5F0FF;border-left:5px solid var(--lilac)}
+.dict{margin-top:7px;display:flex;flex-wrap:wrap;gap:8px}
+.dict a{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:999px;font-size:.9rem;font-weight:800;text-decoration:none;color:#fff;transition:transform .15s;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.dict a:hover{transform:translateY(-2px)}
+.dict a.d0{background:linear-gradient(135deg,#FF4D8D,#A855F7)}.dict a.d1{background:linear-gradient(135deg,#22B573,#2FA3EE)}
+.dict a.d2{background:linear-gradient(135deg,#2FA3EE,#6A7BFF)}.dict a.d3{background:linear-gradient(135deg,#8F6BFF,#FF4D8D)}
+.say{margin-top:7px;font-size:.9rem;color:var(--dim)}
+/* ── submit / modal ── */
+.sw{text-align:center;padding:12px 0 8px}
+.sbtn{font-family:'Baloo 2',cursive;font-size:1.08rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#2A9DF4,#EC4899 50%,#8B5CF6);border:4px solid var(--line);
+ padding:12px 34px;border-radius:999px;cursor:pointer;transition:.15s;box-shadow:5px 5px 0 #F9A8D4}
+.sbtn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #F9A8D4}
+.foot{text-align:center;margin:10px 0 14px;font-size:.92rem;color:var(--ink);font-weight:800;line-height:1.7;
+ background:rgba(255,255,255,.96);border:3px solid var(--line);border-radius:14px;padding:10px 16px;box-shadow:4px 4px 0 #7DD3FC}
+.foot b{color:var(--pink-d)}
+.ov{display:none;position:fixed;inset:0;z-index:100;background:rgba(38,48,74,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.mb{position:relative;background:var(--card);border:4px solid var(--line);border-radius:20px;padding:26px 28px;max-width:460px;width:100%;
+ text-align:center;box-shadow:7px 7px 0 #F9A8D4;animation:popin .3s ease}
+@keyframes popin{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.mb h2{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;color:var(--sky-d);margin-bottom:14px}
+.mb input{width:100%;font-family:'Nunito';font-size:1rem;font-weight:700;padding:12px 14px;background:#fff;border:2.5px solid var(--edge);border-radius:12px;color:var(--ink);text-align:center;outline:none;margin-bottom:10px}
+.mb input:focus{border-color:var(--sky)}
+.err{color:var(--bad);font-size:.85rem;font-weight:800;margin-bottom:8px;display:none}
+.err.show{display:block}
+.rname{font-size:1.05rem;font-weight:800;color:var(--pink-d);margin-bottom:6px}
+.rscore{font-family:'Baloo 2',cursive;font-size:2.6rem;font-weight:800;color:var(--sky-d);line-height:1;margin:6px 0}
+.rs10{font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:9px}
+.rgif{width:190px;margin:10px auto;display:block;border:3px solid var(--line);box-shadow:4px 4px 0 #F9A8D4;border-radius:12px}
+.rcmt{font-size:.96rem;line-height:1.75;background:#EEF7FF;border:2.5px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:12px 0}
+.bcl{font-family:'Nunito';font-size:.88rem;font-weight:800;background:transparent;border:2.5px solid var(--edge);color:var(--ink);padding:10px 24px;border-radius:12px;cursor:pointer}
+.cn{position:fixed;top:-16px;z-index:200;pointer-events:none;animation:cf 2.4s forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(108vh) rotate(700deg);opacity:0}}
+
+/* trang luôn có thanh kéo: kéo xuống thì khung bài lên cao, lộ cảnh đường tàu ẩm thực phía dưới */
+@media(min-width:941px){body{height:auto!important;overflow:visible!important;overflow-x:clip!important}}
+/* lời nhắc đổi nội dung thì không kéo lệch trang: khung bài luôn sát thanh nhắc */
+html,body{overflow-anchor:none}
+
+/*hltool*/
+/* ── công cụ highlight ── */
+.hlbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;background:#111827;border-radius:14px 14px 0 0;padding:7px 8px 7px 12px;box-shadow:0 4px 10px rgba(17,24,39,.22)}
+.hlbar .ht{color:#fff;font-weight:900;font-size:.74rem;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.hlgrp{display:flex;align-items:center;gap:4px;background:#1F2937;border:1px solid #374151;border-radius:999px;padding:3px 4px;flex-wrap:wrap}
+.hlb{display:inline-flex;align-items:center;gap:5px;border:none;border-radius:999px;padding:4px 8px 4px 6px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.74rem;line-height:1.2;cursor:pointer;transition:transform .12s,filter .12s;white-space:nowrap}
+.hlb:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.hlb:active{transform:scale(.95)}
+.hlb .dt{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid rgba(0,0,0,.22)}
+.hlb.y{background:#FEF08A;color:#713F12}.hlb.y .dt{background:#FACC15}
+.hlb.g{background:#BBF7D0;color:#14532D}.hlb.g .dt{background:#22C55E}
+.hlb.p{background:#FBCFE8;color:#831843}.hlb.p .dt{background:#EC4899}
+.hlb.b{background:#BAE6FD;color:#0C4A6E}.hlb.b .dt{background:#0EA5E9}
+.hlb.er{background:#E5E7EB;color:#374151;padding:4px 9px}
+.hldv{display:inline-block;width:1px;height:18px;background:#4B5563;margin:0 2px}
+.hltip{display:flex;gap:9px;align-items:flex-start;background:#FEF9C3;border:2px solid #FDE68A;border-top:none;border-radius:0 0 14px 14px;padding:9px 13px;margin-bottom:12px;font-size:.92rem;line-height:1.6;color:#713F12;font-weight:700}
+.hltip .ic{font-size:1.15rem;line-height:1.4}
+.hltip b{color:#92400E}
+.hltip.ping{animation:tipPing .6s ease}
+@keyframes tipPing{0%,100%{transform:none}30%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+#hlPop{position:fixed;z-index:65;display:none;align-items:center;gap:6px;background:#111827;border-radius:999px;padding:6px 8px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#hlPop.on{display:flex}
+#hlPop::after{content:'';position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:none;border-top-color:#111827}
+#hlPop.below::after{bottom:auto;top:-6px;border:6px solid transparent;border-top:none;border-bottom-color:#111827}
+#hlPop button{width:24px;height:24px;border-radius:50%;border:2px solid #fff;cursor:pointer;padding:0;transition:transform .12s}
+#hlPop button:hover{transform:scale(1.15)}
+#hlPop .y{background:#FACC15}#hlPop .g{background:#22C55E}#hlPop .p{background:#EC4899}#hlPop .b{background:#0EA5E9}
+#hlPop .er{background:#E5E7EB;border-color:#9CA3AF;font-size:13px;display:grid;place-items:center}
+mark.uhl{color:inherit;border-radius:5px;padding:1px 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lp mark.uhl{cursor:pointer}mark.uhl.pick{outline:2px dashed #111827;outline-offset:2px}
+mark.uhl-y{background:#FFF27A}mark.uhl-g{background:#B9F6D3}mark.uhl-p{background:#FFC7E3}mark.uhl-b{background:#C3E6FF}
+@media(max-width:940px){.hlbar{top:58px}}
+</style>
+<style>/*touchscroll*/@media (hover:none),(pointer:coarse){html,body{overflow-y:auto!important;height:auto!important;-webkit-overflow-scrolling:touch}.lp,.rp{max-height:none!important;overflow:visible!important}.main{padding-bottom:42px!important;align-items:flex-start}}</style>
+</head>
+<body>
+<div id="lab">
+ <div class="vnmap">
+  <div class="mt">🗺️ FOOD MAP</div>
+  <svg viewBox="0 0 200 480" aria-hidden="true">
+   <defs>
+    <linearGradient id="gLand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C8F5E1"/><stop offset=".55" stop-color="#A3EBCB"/><stop offset="1" stop-color="#C2F0DC"/></linearGradient>
+    <radialGradient id="gSea" cx=".72" cy=".5" r=".62"><stop offset="0" stop-color="#BFE6FF"/><stop offset="1" stop-color="#BFE6FF" stop-opacity="0"/></radialGradient>
+   </defs>
+   <ellipse cx="150" cy="262" rx="92" ry="236" fill="url(#gSea)"/>
+   <g class="wvs" stroke="#7CC4F5" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M170 104 q6 -5 12 0 t12 0"/><path d="M188 246 q5 -4 10 0"/><path d="M178 420 q6 -5 12 0 t12 0"/><path d="M150 452 q5 -4 10 0 t10 0"/>
+   </g>
+   <path d="M60 12 C90 2 140 4 160 22 C172 36 150 58 132 70 C120 80 118 96 128 112 C140 132 150 150 156 172 C164 200 176 230 180 262 C184 296 176 330 162 356 C150 380 140 400 120 418 C100 436 80 448 62 470 C52 476 44 468 50 452 C56 430 50 412 40 398 C30 384 36 370 56 364 C80 356 102 350 118 336 C134 320 140 296 136 270 C132 240 120 214 106 190 C94 170 84 150 70 132 C58 118 40 110 30 92 C20 72 34 26 60 12 Z" fill="url(#gLand)" stroke="#0D7556" stroke-width="3.5" stroke-linejoin="round"/>
+   <g fill="#7FE0B8" stroke="#0D7556" stroke-width="1.3"><circle cx="188" cy="168" r="2.6"/><circle cx="194" cy="175" r="2"/><circle cx="184" cy="177" r="1.8"/><circle cx="190" cy="356" r="2.2"/><circle cx="196" cy="364" r="1.8"/><circle cx="185" cy="368" r="1.6"/></g>
+   <g stroke-linejoin="round"><path d="M28 72 L44 44 L60 72 Z" fill="#C4B5FD" stroke="#5B21B6" stroke-width="2"/><path d="M42 74 L60 36 L78 74 Z" fill="#A78BFA" stroke="#5B21B6" stroke-width="2"/><path d="M54 48 L60 36 L66 48 Q60 44 54 48 Z" fill="#fff"/></g>
+   <g stroke="#20B486" stroke-width="2.2" fill="none" stroke-linecap="round"><path d="M34 86 q14 -7 28 0"/><path d="M36 93 q16 -8 32 0"/><path d="M40 100 q16 -8 32 0"/></g>
+   <g transform="translate(186 292)" class="bob"><path d="M-3 0 L-2 -16 L2 -16 L3 0 Z" fill="#fff" stroke="#BE185D" stroke-width="1.4"/><path d="M-2.5 -5 H2.5 M-2.2 -10 H2.2" stroke="#F472B6" stroke-width="2"/><rect x="-3" y="-20" width="6" height="4" rx="1" fill="#FDE047" stroke="#5B21B6" stroke-width="1"/></g>
+   <g transform="translate(64 436)" class="bob"><ellipse cx="0" cy="4" rx="11" ry="3.5" fill="#4ADE80" stroke="#0D7556" stroke-width="1.2"/><path d="M0 2 Q-7 -2 -6 -9 Q-2 -6 0 2 Z M0 2 Q7 -2 6 -9 Q2 -6 0 2 Z M0 2 Q-2 -6 0 -12 Q2 -6 0 2 Z" fill="#F472B6" stroke="#BE185D" stroke-width="1"/></g>
+   <path id="rt" d="M92 72 C104 110 114 150 122 188 S138 212 142 222 C158 252 172 276 170 300 C166 338 138 368 112 386 C100 396 90 408 84 420" fill="none" stroke="#EC4899" stroke-width="3.4" stroke-dasharray="1 7" stroke-linecap="round"/>
+   <g transform="translate(92 72)"><circle class="pr" r="6" fill="none" stroke="#EC4899" stroke-width="2"/><circle r="6" fill="#EC4899" stroke="#fff" stroke-width="2.5"/><circle r="2" fill="#fff"/>
+    <g class="fp" style="animation-delay:0s"><g transform="translate(20 -22)"><circle r="13" fill="#fff" stroke="#8B5CF6" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🍜</text></g></g>
+    <text class="mlb" x="-14" y="22">Hà Nội · Phở</text></g>
+   <g transform="translate(122 188)"><circle class="pr" r="6" fill="none" stroke="#EC4899" stroke-width="2" style="animation-delay:-.4s"/><circle r="6" fill="#EC4899" stroke="#fff" stroke-width="2.5"/><circle r="2" fill="#fff"/>
+    <g class="fp" style="animation-delay:-6s"><g transform="translate(24 -12)"><circle r="13" fill="#fff" stroke="#2A9DF4" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🍲</text></g></g>
+    <text class="mlb" x="-11" y="4" text-anchor="end">Huế · Bún bò</text></g>
+   <g transform="translate(142 222)"><circle class="pr" r="6" fill="none" stroke="#EC4899" stroke-width="2" style="animation-delay:-.8s"/><circle r="6" fill="#EC4899" stroke="#fff" stroke-width="2.5"/><circle r="2" fill="#fff"/>
+    <g class="fp" style="animation-delay:-4.8s"><g transform="translate(25 2)"><circle r="13" fill="#fff" stroke="#20B486" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🍝</text></g></g>
+    <text class="mlb" x="-11" y="10" text-anchor="end">Hội An · Mì Quảng</text></g>
+   <g transform="translate(170 300)"><circle class="pr" r="6" fill="none" stroke="#EC4899" stroke-width="2" style="animation-delay:-1.2s"/><circle r="6" fill="#EC4899" stroke="#fff" stroke-width="2.5"/><circle r="2" fill="#fff"/>
+    <g class="fp" style="animation-delay:-3.6s"><g transform="translate(22 -20)"><circle r="13" fill="#fff" stroke="#EC4899" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🥞</text></g></g>
+    <text class="mlb" x="-11" y="4" text-anchor="end">Nha Trang · Bánh xèo</text></g>
+   <g transform="translate(112 386)"><circle class="pr" r="6" fill="none" stroke="#EC4899" stroke-width="2" style="animation-delay:-1.6s"/><circle r="6" fill="#EC4899" stroke="#fff" stroke-width="2.5"/><circle r="2" fill="#fff"/>
+    <g class="fp" style="animation-delay:-2.4s"><g transform="translate(24 -14)"><circle r="13" fill="#fff" stroke="#8B5CF6" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🥖</text></g></g>
+    <g class="fp" style="animation-delay:-1.2s"><g transform="translate(-26 -16)"><circle r="13" fill="#fff" stroke="#0EA5B7" stroke-width="2.5"/><text y="5" text-anchor="middle" font-size="15">🍚</text></g></g>
+    <text class="mlb" x="-10" y="24">Sài Gòn · Bánh mì, Cơm tấm</text></g>
+   <g>
+    <animateMotion dur="20s" repeatCount="indefinite" rotate="auto" path="M92 72 C104 110 114 150 122 188 S138 212 142 222 C158 252 172 276 170 300 C166 338 138 368 112 386 C100 396 90 408 84 420"/>
+    <g transform="translate(-15 -8)">
+     <rect x="0" y="3" width="11" height="9" rx="2.5" fill="#34D399" stroke="#26304A" stroke-width="1.6"/>
+     <rect x="13" y="0" width="16" height="12" rx="3" fill="#38BDF8" stroke="#26304A" stroke-width="1.6"/>
+     <rect x="23" y="-4" width="4" height="5" fill="#8B5CF6" stroke="#26304A" stroke-width="1.2"/>
+     <rect x="15" y="2" width="5" height="4" rx="1" fill="#fff"/>
+     <circle cx="3" cy="13" r="2" fill="#26304A"/><circle cx="8" cy="13" r="2" fill="#26304A"/><circle cx="17" cy="13" r="2" fill="#26304A"/><circle cx="25" cy="13" r="2" fill="#26304A"/>
+    </g>
+   </g>
+  </svg>
+ </div>
+ <div class="lth"><i class="beam"></i><i class="roof"></i><i class="lamp"></i><i class="gal"></i><i class="tw"></i><i class="door"></i><i class="rock"></i><div class="wvs"><i></i><i></i></div></div>
+ <div class="slim sbowl"><div class="bowl" style="--bw:52px;left:0;bottom:0"><i class="ck"></i><i class="ck"></i><div class="bw"></div><div class="tp"></div>
+  <i class="sh" style="left:8px"><i class="hrtc"></i></i><i class="sh" style="left:24px;animation-delay:-1s"><i class="hrtc" style="--c:#C084FC"></i></i><i class="sh" style="left:36px;animation-delay:-2s"><i class="hrtc"></i></i></div></div>
+ <div class="slim slotus"><i class="pad" style="left:0;bottom:4px"></i><div class="lotus" style="left:4px;bottom:10px"><i></i><i></i><i></i><i></i><i></i></div></div>
+ <div class="mch mc-bowl"><i class="tag">PHỞ ❤</i>
+  <div class="bowl"><div class="bw"></div><div class="tp"></div>
+   <i class="sh" style="left:30px"><i class="hrtc" style="transform:scale(1.5)"></i></i><i class="sh" style="left:62px;animation-delay:-1s"><i class="hrtc" style="--c:#C084FC;transform:scale(1.5)"></i></i><i class="sh" style="left:96px;animation-delay:-2s"><i class="hrtc" style="transform:scale(1.5)"></i></i>
+   <div class="face"><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i><i class="blush l"></i><i class="blush r"></i></div></div>
+  <div class="ndl"><b></b><b></b><b></b><em></em><em></em></div>
+ </div>
+</div>
+<div id="ground">
+ <div class="mtn"><i class="m1"></i><i class="m2"></i><i class="m3"></i></div>
+ <div class="terr"><i style="left:0;bottom:0;--c:#5ACB92"></i><i style="left:12%;bottom:34px;--c:#7DDCAB"></i><i style="left:26%;bottom:68px;--c:#9BE7BF"></i><i style="left:42%;bottom:102px;--c:#B9F0D2"></i></div>
+ <div class="tbl">
+  <div class="bowl" style="left:20px"><div class="bw"></div><div class="tp"></div><i class="ck"></i><i class="ck"></i>
+   <i class="sh" style="left:14px"><i class="hrtc"></i></i><i class="sh" style="left:32px;animation-delay:-1.2s"><i class="hrtc" style="--c:#C084FC"></i></i><i class="sh" style="left:48px;animation-delay:-2.2s"><i class="hrtc" style="--c:#38BDF8"></i></i></div>
+  <div class="bowl" style="left:120px;--rim:#FBCFE8"><div class="bw"></div><div class="tp"></div>
+   <i class="sh" style="left:16px;animation-delay:-.6s"><i class="hrtc"></i></i><i class="sh" style="left:40px;animation-delay:-1.8s"><i class="hrtc" style="--c:#C084FC"></i></i></div>
+  <div class="top"></div><i class="lg l"></i><i class="lg r"></i>
+ </div>
+ <div class="cartb"><div class="aw"></div><i class="pl l"></i><i class="pl r"></i>
+  <div class="gl"><i class="bgt" style="left:8px"></i><i class="bgt" style="left:50px;bottom:8px"></i><i class="bgt" style="left:86px"></i></div>
+  <div class="bx"><b>🥖 BÁNH MÌ</b></div><i class="wh l"></i><i class="wh r"></i></div>
+ <div class="pond"><div class="wt"></div><i class="rp2" style="left:40px"></i><i class="rp2" style="left:150px;animation-delay:-1.2s"></i>
+  <i class="pad" style="left:20px"></i><i class="pad" style="left:150px;width:44px"></i>
+  <div class="lotus" style="left:24px"><i></i><i></i><i></i><i></i><i></i></div><div class="lotus" style="left:152px;animation-delay:-1.3s"><i></i><i></i><i></i><i></i><i></i></div>
+  <i class="boat" style="--s:34px;left:70px"></i></div>
+ <div class="road"><div class="rail"></div></div>
+ <div class="runner"><div class="train">
+  <div class="car c1"><span class="win">🍜</span><span class="win">🥢</span></div>
+  <div class="car c2"><span class="win">🥖</span><span class="win">🍚</span></div>
+  <div class="eng"><i class="cab"></i><i class="chim"></i><div class="face"><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div></div>
+  <i class="puf w" style="left:196px"></i><i class="puf" style="left:200px;animation-delay:-.7s"><i class="hrtc"></i></i><i class="puf w" style="left:198px;animation-delay:-1.4s"></i>
+  <i class="wh" style="left:10px"></i><i class="wh" style="left:38px"></i><i class="wh" style="left:82px"></i><i class="wh" style="left:110px"></i><i class="wh" style="left:156px"></i><i class="wh" style="left:198px"></i>
+ </div></div>
+ <div class="runner r2"><div class="vespa"><i class="hb"></i><div class="bd"></div><div class="rider"><i class="head"></i><i class="nh"></i></div><div class="bk"><i class="bgt"></i></div><i class="wh l"></i><i class="wh r"></i></div></div>
+</div>
+
+<div class="note"><div class="in">
+ <span class="tg">🗺️ MS NHẮN</span>
+ <span class="tx" id="msTx">🗺️ Map Quest khởi hành, các chiến binh lớp 8! 2 chặng đọc hiểu, 10 câu (1 → 10) — chạy một mạch, cắm cờ điểm 10 nào! 🔥</span>
+</div></div>
+
+<header>
+ <div>
+  <h1>🗺️ Map Quest Reading · Câu 1 → 10<span class="p1">10 câu</span></h1>
+  <div class="by">MS Chí Nên · ☎️ <b>0852639652</b> · Khoá tiếng Anh lớp 1 → 12 · English 8 · Unit 6 · Reading p2</div>
+ </div>
+ <div class="hright">
+  <div class="chips">
+   <span class="chip c1">💞 STOP 1 · BLIND DATE</span>
+   <span class="chip c2">🏡 STOP 2 · FAMILY</span>
+  </div>
+  <div><span id="sc" style="display:none"></span><div class="gauge"><div class="num" id="lv">0/10</div><div class="lbl">Điểm</div></div></div>
+ </div>
+</header>
+
+<div class="main">
+<div class="lp">
+ <div class="hlbar" id="hlBar">
+  <span class="ht">✏️ CÔNG CỤ HIGHLIGHT:</span>
+  <div class="hlgrp">
+   <button type="button" class="hlb y" onclick="hlApply('y')"><i class="dt"></i>Vàng</button>
+   <button type="button" class="hlb g" onclick="hlApply('g')"><i class="dt"></i>Xanh lá</button>
+   <button type="button" class="hlb p" onclick="hlApply('p')"><i class="dt"></i>Hồng</button>
+   <button type="button" class="hlb b" onclick="hlApply('b')"><i class="dt"></i>Xanh</button>
+   <span class="hldv"></span>
+   <button type="button" class="hlb er" onclick="hlErase()">🧽 Tẩy tô</button>
+  </div>
+ </div>
+ <div class="hltip" id="hlTip"><span class="ic">💡</span><div><b>Cách dùng Highlight:</b> Bôi đen (quét chuột) đoạn chữ trong bài đọc → Nhấn nút màu trên thanh công cụ màu đen ở trên (hoặc nút nổi ngay tại vị trí bôi đen) để tô màu tức thì!<br><b>Đổi màu / xoá:</b> Bấm thẳng vào chữ đã tô → chọn màu mới hoặc 🧽 để xoá, không cần bôi đen lại.</div></div>
+
+ <div class="slbl">📖 Bài đọc</div>
+
+ <div class="pc" style="border-color:var(--pink);color:var(--pink)">
+  <div class="lvl" style="--c:var(--pink-d)">STOP 1</div>
+  <div class="stamp">💞</div>
+  <div class="ptitle" style="color:var(--pink-d)">STOP 1 · Tom and Rita's Blind Date</div>
+  <div class="pins">Passage 1. Read the passage and choose the correct answer A, B, C or D for questions 1 to 5.</div>
+
+  <div class="pblk" style="border-color:var(--mint);background:#E3FAF1;color:var(--ink)">
+   <div class="em">💞</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Tom and Rita went on a blind date last week. They met at a restaurant for dinner.</div>
+   <button class="btr" onclick="toggleTranslation('trans1')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans1">Tuần trước, Tom và Rita đã đi một buổi hẹn hò giấu mặt. Họ gặp nhau ở một nhà hàng để ăn tối.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEEF6;color:var(--ink)">
+   <div class="em">📅</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">At first, there was a small problem - the restaurant booked them for the wrong night! But they stayed and had a nice evening together.</div>
+   <button class="btr" onclick="toggleTranslation('trans2')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans2">Lúc đầu có một rắc rối nhỏ: nhà hàng đã đặt bàn cho họ nhầm buổi tối! Nhưng họ vẫn ở lại và có một buổi tối vui vẻ cùng nhau.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sky);background:#EAF5FF;color:var(--ink)">
+   <div class="em">🍝</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">During dinner, Tom and Rita talked about many things. They discussed food, their families, their jobs, and past dating experiences.</div>
+   <button class="btr" onclick="toggleTranslation('trans3')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans3">Trong bữa tối, Tom và Rita nói chuyện về rất nhiều thứ. Họ bàn về đồ ăn, gia đình, công việc và những lần hẹn hò trước đây.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F3EEFF;color:var(--ink)">
+   <div class="em">😊</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">Both of them found the conversation easy and enjoyable. Tom thought Rita was very friendly and kind. Rita also said Tom was a nice person and easy to talk to.</div>
+   <button class="btr" onclick="toggleTranslation('trans4')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans4">Cả hai đều thấy cuộc trò chuyện dễ dàng và thú vị. Tom nghĩ Rita rất thân thiện và tốt bụng. Rita cũng nói Tom là người dễ mến và dễ nói chuyện.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sea);background:#E2F8FA;color:var(--ink)">
+   <div class="em">🥤</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">After dinner, they went for a drink together. Everything seemed good, but there was no romantic feeling between them. They did not kiss goodbye.</div>
+   <button class="btr" onclick="toggleTranslation('trans5')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans5">Sau bữa tối, họ cùng đi uống nước. Mọi thứ có vẻ ổn, nhưng giữa họ không có cảm xúc lãng mạn nào. Họ không hôn tạm biệt.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FAF1;color:var(--ink)">
+   <div class="em">🚇</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">At the end of the night, there was another awkward moment with Tom's tube card at the barrier.</div>
+   <button class="btr" onclick="toggleTranslation('trans6')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans6">Cuối buổi tối, lại có thêm một khoảnh khắc ngượng ngùng với chiếc thẻ tàu điện ngầm của Tom ở cửa soát vé.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEEF6;color:var(--ink)">
+   <div class="em">🔢</div><span class="ptag">Paragraph 4</span>
+   <div class="paragraph">Later, both Tom and Rita gave the date 7 out of 10 points. Tom said he didn't feel any romance. Rita agreed.</div>
+   <button class="btr" onclick="toggleTranslation('trans7')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans7">Sau đó, cả Tom và Rita đều chấm buổi hẹn 7 trên 10 điểm. Tom nói anh không thấy chút lãng mạn nào. Rita cũng đồng ý.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sky);background:#EAF5FF;color:var(--ink)">
+   <div class="em">🐈</div><span class="ptag">Paragraph 5</span>
+   <div class="paragraph">However, the biggest problem appeared during their conversation. Tom told Rita he loves his cat very much and has one at home.</div>
+   <button class="btr" onclick="toggleTranslation('trans8')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans8">Tuy nhiên, vấn đề lớn nhất đã lộ ra trong lúc trò chuyện. Tom kể với Rita rằng anh rất yêu con mèo của mình và đang nuôi một con ở nhà.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F3EEFF;color:var(--ink)">
+   <div class="em">🤧</div><span class="ptag">Paragraph 5</span>
+   <div class="paragraph">Unfortunately, Rita is allergic to cats. She cannot be near them without feeling sick.</div>
+   <button class="btr" onclick="toggleTranslation('trans9')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans9">Không may là Rita bị dị ứng với mèo. Cô ấy không thể ở gần chúng mà không thấy khó chịu, phát ốm.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sea);background:#E2F8FA;color:var(--ink)">
+   <div class="em">🚪</div><span class="ptag">Paragraph 6</span>
+   <div class="paragraph">Rita decided not to meet Tom again. She explained her reason simply: "I would never want him to choose between me and his cat."</div>
+   <button class="btr" onclick="toggleTranslation('trans10')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans10">Rita quyết định không gặp lại Tom nữa. Cô giải thích lí do rất đơn giản: “Tôi sẽ không bao giờ muốn anh ấy phải chọn giữa tôi và con mèo của anh ấy.”</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FAF1;color:var(--ink)">
+   <div class="em">💔</div><span class="ptag">Paragraph 6</span>
+   <div class="paragraph">It was a good date, but not a love match.</div>
+   <button class="btr" onclick="toggleTranslation('trans11')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans11">Đó là một buổi hẹn hò tốt đẹp, nhưng họ không phải là một cặp đôi hợp nhau trong tình yêu.</div>
+  </div>
+
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--pink-d),var(--pink))">📚 Glossary — STOP 1</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">blind date</td><td class="gp">Noun phrase</td><td>buổi hẹn hò giấu mặt (chưa gặp nhau bao giờ)</td></tr>
+    <tr><td class="gw">book</td><td class="gp">Verb</td><td>đặt trước (bàn, phòng, vé)</td></tr>
+    <tr><td class="gw">discuss</td><td class="gp">Verb</td><td>thảo luận, bàn bạc</td></tr>
+    <tr><td class="gw">experience</td><td class="gp">Noun</td><td>trải nghiệm, kinh nghiệm</td></tr>
+    <tr><td class="gw">enjoyable</td><td class="gp">Adjective</td><td>thú vị, vui vẻ</td></tr>
+    <tr><td class="gw">romantic</td><td class="gp">Adjective</td><td>lãng mạn</td></tr>
+    <tr><td class="gw">awkward</td><td class="gp">Adjective</td><td>ngượng ngùng, khó xử</td></tr>
+    <tr><td class="gw">tube card</td><td class="gp">Noun phrase</td><td>thẻ đi tàu điện ngầm (ở London)</td></tr>
+    <tr><td class="gw">barrier</td><td class="gp">Noun</td><td>cửa chắn, cổng soát vé</td></tr>
+    <tr><td class="gw">romance</td><td class="gp">Noun</td><td>sự lãng mạn, chuyện tình cảm</td></tr>
+    <tr><td class="gw">allergic (to)</td><td class="gp">Adjective</td><td>bị dị ứng (với)</td></tr>
+    <tr><td class="gw">love match</td><td class="gp">Noun phrase</td><td>cặp đôi hợp nhau trong tình yêu</td></tr>
+   </table>
+  </div>
+ </div>
+
+ <div class="pc" style="border-color:var(--lilac);color:var(--lilac)">
+  <div class="lvl" style="--c:var(--lilac-d)">STOP 2</div>
+  <div class="stamp">🏡</div>
+  <div class="ptitle" style="color:var(--lilac-d)">STOP 2 · A Family Problem</div>
+  <div class="pins">Passage 2. Read the passage and choose the correct answer A, B, C or D for questions 6 to 10.</div>
+
+  <div class="pblk" style="border-color:var(--pink);background:#FFEEF6;color:var(--ink)">
+   <div class="em">✉️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">A doctor wrote to an advice column about a serious family problem. After her brother finished university, their father invited him to work in the family business.</div>
+   <button class="btr" onclick="toggleTranslation('trans12')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans12">Một nữ bác sĩ đã viết thư gửi một chuyên mục tư vấn về một vấn đề nghiêm trọng trong gia đình. Sau khi anh trai cô học xong đại học, bố của họ mời anh về làm việc trong công ty của gia đình.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sky);background:#EAF5FF;color:var(--ink)">
+   <div class="em">🏢</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Later, her father gave her brother 80% of the company. Now the business is worth several million pounds, and her brother can sell it and retire early. He is very rich and comfortable.</div>
+   <button class="btr" onclick="toggleTranslation('trans13')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans13">Sau đó, bố cô đã trao cho anh trai cô 80% công ty. Giờ đây công ty trị giá vài triệu bảng Anh, và anh trai cô có thể bán nó đi rồi nghỉ hưu sớm. Anh ấy rất giàu và sống thoải mái.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F3EEFF;color:var(--ink)">
+   <div class="em">🎓</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">The doctor's situation is very different. Her parents helped her pay for university fees and housing when she was younger.</div>
+   <button class="btr" onclick="toggleTranslation('trans14')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans14">Hoàn cảnh của nữ bác sĩ thì rất khác. Khi cô còn trẻ, bố mẹ đã giúp cô trả học phí đại học và tiền nhà ở.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sea);background:#E2F8FA;color:var(--ink)">
+   <div class="em">💸</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">However, she still has many money problems now. She struggles to pay her mortgage and her basic living costs every month. She feels this is very unfair.</div>
+   <button class="btr" onclick="toggleTranslation('trans15')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans15">Tuy nhiên, bây giờ cô vẫn gặp nhiều khó khăn về tiền bạc. Tháng nào cô cũng chật vật trả khoản vay mua nhà và các chi phí sinh hoạt cơ bản. Cô thấy điều này thật bất công.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FAF1;color:var(--ink)">
+   <div class="em">😠</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">When the doctor talks to her parents about the problem, they become angry. They call her ungrateful.</div>
+   <button class="btr" onclick="toggleTranslation('trans16')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans16">Khi nữ bác sĩ nói chuyện với bố mẹ về vấn đề này, họ nổi giận. Họ bảo cô là đứa vô ơn.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEEF6;color:var(--ink)">
+   <div class="em">⚖️</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">They say her brother deserves the business because he worked there for many years. The parents also remind her that they helped her with education and housing in the past.</div>
+   <button class="btr" onclick="toggleTranslation('trans17')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans17">Họ nói anh trai cô xứng đáng có công ty vì anh đã làm việc ở đó nhiều năm. Bố mẹ còn nhắc cô rằng ngày trước họ đã giúp cô chuyện học hành và nhà ở.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sky);background:#EAF5FF;color:var(--ink)">
+   <div class="em">🧠</div><span class="ptag">Paragraph 4</span>
+   <div class="paragraph">An expert psychotherapist gives important advice. She says the real problem is not just about money.</div>
+   <button class="btr" onclick="toggleTranslation('trans18')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans18">Một chuyên gia trị liệu tâm lí đưa ra lời khuyên quan trọng. Bà nói rằng vấn đề thật sự không chỉ nằm ở tiền bạc.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F3EEFF;color:var(--ink)">
+   <div class="em">💗</div><span class="ptag">Paragraph 4</span>
+   <div class="paragraph">The doctor feels her parents love and value her brother more than her. She feels like a "second-rate" child in the family. She connects her self-worth to what her parents give her.</div>
+   <button class="btr" onclick="toggleTranslation('trans19')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans19">Nữ bác sĩ cảm thấy bố mẹ yêu thương và coi trọng anh trai hơn cô. Cô thấy mình giống như đứa con “hạng hai” trong nhà. Cô gắn giá trị bản thân với những gì bố mẹ cho mình.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--sea);background:#E2F8FA;color:var(--ink)">
+   <div class="em">🗣️</div><span class="ptag">Paragraph 5</span>
+   <div class="paragraph">The expert suggests having an honest, brave conversation with her parents. She should talk about her feelings of exclusion and favouritism, not just the money.</div>
+   <button class="btr" onclick="toggleTranslation('trans20')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans20">Chuyên gia khuyên cô nên có một cuộc nói chuyện thật lòng và can đảm với bố mẹ. Cô nên nói về cảm giác bị gạt ra ngoài và bị đối xử thiên vị, chứ không chỉ nói chuyện tiền.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FAF1;color:var(--ink)">
+   <div class="em">💬</div><span class="ptag">Paragraph 5</span>
+   <div class="paragraph">She should say clearly how much this situation hurts her emotionally.</div>
+   <button class="btr" onclick="toggleTranslation('trans21')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans21">Cô nên nói rõ chuyện này làm cô tổn thương về tình cảm nhiều đến mức nào.</div>
+  </div>
+
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--lilac-d),var(--lilac))">📚 Glossary — STOP 2</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">advice column</td><td class="gp">Noun phrase</td><td>chuyên mục tư vấn (trên báo)</td></tr>
+    <tr><td class="gw">retire</td><td class="gp">Verb</td><td>nghỉ hưu</td></tr>
+    <tr><td class="gw">struggle</td><td class="gp">Verb</td><td>chật vật, vật lộn</td></tr>
+    <tr><td class="gw">mortgage</td><td class="gp">Noun</td><td>khoản vay thế chấp để mua nhà</td></tr>
+    <tr><td class="gw">unfair</td><td class="gp">Adjective</td><td>bất công, không công bằng</td></tr>
+    <tr><td class="gw">ungrateful</td><td class="gp">Adjective</td><td>vô ơn</td></tr>
+    <tr><td class="gw">deserve</td><td class="gp">Verb</td><td>xứng đáng</td></tr>
+    <tr><td class="gw">psychotherapist</td><td class="gp">Noun</td><td>chuyên gia trị liệu tâm lí</td></tr>
+    <tr><td class="gw">value</td><td class="gp">Verb</td><td>coi trọng, quý trọng</td></tr>
+    <tr><td class="gw">second-rate</td><td class="gp">Adjective</td><td>hạng hai, kém hơn</td></tr>
+    <tr><td class="gw">self-worth</td><td class="gp">Noun</td><td>giá trị bản thân</td></tr>
+    <tr><td class="gw">exclusion</td><td class="gp">Noun</td><td>sự bị gạt ra ngoài</td></tr>
+    <tr><td class="gw">favouritism</td><td class="gp">Noun</td><td>sự thiên vị</td></tr>
+   </table>
+  </div>
+ </div>
+</div>
+
+<div class="rp">
+ <div class="slbl">🎯 10 câu hỏi</div>
+ <div id="app"></div>
+ <div class="sw"><button class="sbtn" onclick="openName()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button></div>
+ <div class="foot">🗺️ Bài tập của <b>MS Chí Nên</b> · Đăng ký khoá tiếng Anh lớp 1 → 12: <b>☎️ 0852639652</b> để được trải nghiệm hệ thống web học tập đẹp, sinh động — chấm điểm tự động, giải chi tiết từng câu, mỗi bài là một chuyến Map Quest bứt phá điểm số!</div>
+</div>
+</div>
+
+<div class="ov" id="ovN"><div class="mb">
+ <h2>🎫 Con ghi tên lên vé tàu nhé!</h2>
+ <input id="nIn" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off" maxlength="50">
+ <div class="err" id="nEm">⚠️ Con chưa nhập tên kìa! Nhập tên rồi mới xem điểm được nha.</div>
+ <button class="sbtn" style="margin-top:12px;font-size:1rem;padding:11px 26px" onclick="showResult()">🚀 Xem kết quả</button>
+</div></div>
+
+<div class="ov" id="ovR"><div class="mb" style="max-width:480px">
+ <div class="rname" id="rn"></div>
+ <div class="rscore"><span id="rSc">0</span>/<span id="rTt">0</span></div>
+ <div class="rs10">🎓 Quy đổi: <span id="r10">0</span>/10 điểm</div>
+ <img class="rgif" id="rGif" src="" alt="">
+ <div class="rcmt" id="rMs"></div>
+ <button class="bcl" onclick="closeR()">Đóng &amp; xem lại bài</button>
+</div></div>
+
+<script>
+/* ══ cảnh Food Map Express: mây, đèn lồng, nón lá, thuyền giấy, tim hơi nóng, lấp lánh ══ */
+function rnd(a,b){return a+Math.random()*(b-a)}
+(function(){
+ var lab=document.getElementById('lab'),h='',i;
+ for(i=0;i<8;i++){var w=rnd(70,150).toFixed(0);
+  h+='<i class="cld" style="--w:'+w+'px;top:'+rnd(1,17).toFixed(1)+'vh;animation-duration:'+rnd(55,95).toFixed(0)+'s;animation-delay:-'+rnd(0,95).toFixed(0)+'s;opacity:'+rnd(.75,.98).toFixed(2)+'"></i>'}
+ var LC=['#F472B6','#A78BFA','#34D399','#38BDF8'];
+ h+='<div class="garl">';
+ for(i=0;i<20;i++){h+='<i class="swag" style="left:'+(i*140)+'px"></i><div class="hang" style="left:'+(i*140-14)+'px;animation-delay:-'+rnd(0,3).toFixed(1)+'s"><i class="str" style="--l:'+rnd(6,26).toFixed(0)+'px"></i><i class="lant" style="--c:'+LC[i%4]+'"></i></div>'}
+ h+='</div>';
+ /* vị trí trong lề: bên trái tránh bản đồ, bên phải rải đều */
+ function side(){var L=Math.random()<.5,f=L?(Math.random()<.5?rnd(.03,.14):rnd(.86,.97)):rnd(.04,.96);
+  return (L?'left':'right')+':calc(var(--mg) * '+f.toFixed(2)+' - 12px)'}
+ var IT=['<i class="hat" style="--s:42px"></i>','<i class="boat" style="--s:38px"></i>','<i class="hat" style="--s:34px"></i>','<i class="boat" style="--s:30px"></i>'];
+ for(i=0;i<12;i++){h+='<div class="fsl" style="'+side()+';top:'+rnd(18,74).toFixed(0)+'vh;animation-duration:'+rnd(3,6).toFixed(1)+'s;animation-delay:-'+rnd(0,5).toFixed(1)+'s">'+IT[i%4]+'</div>'}
+ var FE=['🍜','🥖','🍚','🥢','🍲','🌶️','🍤','🥥'];
+ for(i=0;i<10;i++){h+='<i class="fem" style="'+side()+';top:'+rnd(16,76).toFixed(0)+'vh;animation-duration:'+rnd(3,6).toFixed(1)+'s;animation-delay:-'+rnd(0,5).toFixed(1)+'s">'+FE[i%8]+'</i>'}
+ var HC=['#F472B6','#C084FC','#38BDF8','#34D399'];
+ for(i=0;i<16;i++){h+='<div class="uph" style="'+side()+';animation-duration:'+rnd(10,18).toFixed(1)+'s;animation-delay:-'+rnd(0,18).toFixed(1)+'s"><i class="hrtc" style="--c:'+HC[i%4]+'"></i></div>'}
+ var SC=['#34D399','#EC4899','#38BDF8','#8B5CF6','#FDE047','#F9A8D4'];
+ for(i=0;i<18;i++){h+='<i class="spk" style="'+side()+';top:'+rnd(12,82).toFixed(0)+'vh;background:'+SC[i%6]+';animation-delay:-'+rnd(0,2.4).toFixed(1)+'s"></i>'}
+ lab.insertAdjacentHTML('afterbegin',h);
+})();
+
+/* ══ âm thanh ══ */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function ding(){var c=ac();if(!c)return;var t=c.currentTime;[988,1318.5,1975.5].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(c.destination);var s=t+i*0.08;g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(.12,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.32);o.start(s);o.stop(s+.34)})}
+var DUCK_URL='https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Ti%E1%BA%BFng%20V%E1%BB%8Bt%20k%C3%AAu%20meme%20mp3.mp3';
+function buzz(){try{var a=new Audio(DUCK_URL);a.volume=.75;a.play().catch(function(){})}catch(e){}}
+function conf(){var cs=['#2A9DF4','#EC4899','#20B486','#8B5CF6','#7DD3FC','#F9A8D4'];
+ for(var i=0;i<50;i++){var d=document.createElement('div');d.className='cn';
+  d.style.cssText='left:'+(Math.random()*100)+'vw;width:10px;height:10px;border-radius:'+(i%2?'50%':'2px')+';background:'+cs[i%6]+';opacity:.95';
+  document.body.appendChild(d);(function(d){setTimeout(function(){d.remove()},2500)})(d)}}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function toggleTranslation(id){
+ var el=document.getElementById(id);
+ if(el.style.display==='block'){el.style.display='none';}else{el.style.display='block';}
+}
+
+/* ══ lời giải ══ */
+function OPT(w,pos,ipa,vi,ok){return {w:w,pos:pos||'',ipa:ipa||'',vi:vi,ok:ok?1:0}}
+function grid2(opts){
+ return '<div class="grid2">'+opts.map(function(o){
+  var cls=o.ok?'hl-green':'p-word';
+  var pos=o.pos?' <span class="wt">'+o.pos+'</span>':'';
+  var ipa=o.ipa?' <span class="p-phonetic">/'+o.ipa+'/</span>':'';
+  return '<div'+(o.ok?' class="gk"':'')+'>'+(o.ok?'✅ ':'')+'<span class="'+cls+'">'+o.w+'</span>'+pos+ipa+'<br>= <span class="p-mean">'+o.vi+'</span></div>';
+ }).join('')+'</div>';
+}
+var hxI=0;
+function ln(txt){
+ var cls='hx'+(hxI++%6),qeI=0;
+ txt=txt.replace(/"([^"]+)"/g,function(m,p1){return '<span class="qe'+(qeI++%6)+'">"'+p1+'"</span>'});
+ return '<span class="p-grammar '+cls+'">▸ '+txt+'</span>';
+}
+function lines(a){return a.map(ln).join('<br>')}
+function DICT(w,i){
+ var slug=w.trim().toLowerCase().replace(/\s+/g,'-');
+ return '<a class="d'+(i%4)+'" href="https://dictionary.cambridge.org/vi/dictionary/english/'+slug+'" target="_blank" rel="noopener">🔊 Cambridge · '+w+'</a>';
+}
+function render(q){
+ hxI=0;
+ var shown=MAP[q.id].map(function(w){return q.opts.find(function(o){return o.w===w})});
+ var lab='Nghĩa của '+shown.length+' phương án:';
+ var html='<div class="vnt">💬 Dịch: '+q.vnt+'</div><ol>'+
+  '<li><b>'+lab+'</b>'+grid2(shown)+'</li>'+
+  '<li><span class="hl-green">✅ TẠI SAO ĐÚNG?</span><br>'+lines(q.why)+'</li>'+
+  '<li><span class="hl-red">❌ TẠI SAO SAI?</span><br>'+lines(q.bad)+'</li></ol>'+
+  '<div class="frame">🔍 <i>'+q.ev+'</i><br>👉 <span class="p-mean">'+q.evvi+'</span></div>';
+ if(q.dict&&q.dict.length){
+  html+='<div class="dk"><b>🔊 Tra từ điển Cambridge:</b><br>Con bấm vào đây để nghe phát âm chuẩn và đọc theo cho hay nhé:'+
+   '<div class="dict">'+q.dict.map(DICT).join('')+'</div>'+
+   '<div class="say">👉 Nếu trang chưa hiện đúng từ, con gõ từ đó vào ô tìm kiếm, bấm loa 🔊 nghe và đọc theo.</div></div>';
+ }
+ return html;
+}
+
+/* ══ câu hỏi ══ */
+var QS=[
+{id:1,part:1,col:'pink',text:`Which of the following is the best title for the text?`,
+ opts:[OPT(`How to Have a Perfect Blind Date`,`cụm danh từ`,``,`Cách để có một buổi hẹn hò giấu mặt hoàn hảo`),OPT(`A Pleasant Date Without Romance`,`cụm danh từ`,``,`Một buổi hẹn hò dễ chịu nhưng không có sự lãng mạn`,1),OPT(`The Problems of Cat Allergies`,`cụm danh từ`,``,`Những rắc rối của bệnh dị ứng mèo`),OPT(`Finding True Love at a Restaurant`,`cụm danh từ`,``,`Tìm thấy tình yêu đích thực ở nhà hàng`)],
+ vnt:`Câu nào sau đây là tiêu đề phù hợp nhất cho bài đọc?`,
+ why:[`Bước 1: Hỏi tiêu đề thì con cần ý bao trùm CẢ bài, không chọn một chi tiết nhỏ ở một đoạn.`,
+  `Bước 2: Buổi hẹn diễn ra khá vui: hai người thấy cuộc nói chuyện "easy and enjoyable" và cùng chấm "7 out of 10 points".`,
+  `Bước 3: Nhưng "there was no romantic feeling between them", và câu kết bài là "It was a good date, but not a love match".`,
+  `Bước 4: Vui vẻ nhưng không lãng mạn → chọn "A Pleasant Date Without Romance" (pleasant = dễ chịu, vui vẻ). Chặng 1 mở màn cực đẹp!`],
+ bad:[`"How to Have a Perfect Blind Date" sai: bài kể lại một buổi hẹn chứ không hướng dẫn cách làm, và buổi hẹn cũng chẳng hoàn hảo vì có "a small problem" lẫn "another awkward moment".`,
+  `"The Problems of Cat Allergies" quá hẹp: chuyện dị ứng mèo chỉ nằm ở đoạn 5, không bao quát được cả bài.`,
+  `"Finding True Love at a Restaurant" ngược ý bài: hai người không tìm thấy tình yêu, bài khẳng định "not a love match".`],
+ ev:`Both of them found the conversation easy and enjoyable. It was a good date, but not a love match.`,
+ evvi:`Cả hai đều thấy cuộc trò chuyện dễ dàng và thú vị. Đó là một buổi hẹn hò tốt đẹp, nhưng họ không phải là một cặp đôi hợp nhau trong tình yêu.`,
+ dict:[`pleasant`,`romance`,`perfect`,`allergy`]},
+{id:2,part:1,col:'sky',text:`During the date, Tom and Rita talked about <b>______</b>.`,
+ opts:[OPT(`their pets and allergies only`,`cụm danh từ`,``,`chỉ nói về thú cưng và bệnh dị ứng của họ`),OPT(`why they don't like blind dates`,`mệnh đề`,``,`lí do họ không thích hẹn hò giấu mặt`),OPT(`food, family, work and past relationships`,`cụm danh từ`,``,`đồ ăn, gia đình, công việc và các mối quan hệ trước đây`,1),OPT(`their plans to meet again soon`,`cụm danh từ`,``,`kế hoạch sớm gặp lại nhau`)],
+ vnt:`Trong buổi hẹn, Tom và Rita đã nói chuyện về ______.`,
+ why:[`Bước 1: Từ khoá "During the date" khớp với "During dinner" ở đầu đoạn 2.`,
+  `Bước 2: Bài liệt kê rõ: "They discussed food, their families, their jobs, and past dating experiences".`,
+  `Bước 3: So từng ý: "food" = food, "families" = family, "jobs" = work, "past dating experiences" = past relationships (bài đổi cách nói nhưng cùng nghĩa).`,
+  `Bước 4: Khớp đủ cả 4 ý → chọn "food, family, work and past relationships". Mắt tinh như thám tử luôn!`],
+ bad:[`"their pets and allergies only" sai vì chữ "only": họ nói về "many things", không chỉ thú cưng và dị ứng.`,
+  `"why they don't like blind dates" sai: bài không hề nói hai người ghét hẹn hò giấu mặt.`,
+  `"their plans to meet again soon" ngược ý: cuối bài "Rita decided not to meet Tom again".`],
+ ev:`During dinner, Tom and Rita talked about many things. They discussed food, their families, their jobs, and past dating experiences.`,
+ evvi:`Trong bữa tối, Tom và Rita nói chuyện về rất nhiều thứ. Họ bàn về đồ ăn, gia đình, công việc và những lần hẹn hò trước đây.`,
+ dict:[`discuss`,`experience`,`relationship`]},
+{id:3,part:1,col:'lilac',text:`What was the biggest problem between Tom and Rita?`,
+ opts:[OPT(`The restaurant booked them for the wrong night.`,`câu`,``,`Nhà hàng đã đặt bàn cho họ nhầm buổi tối.`),OPT(`Tom's tube card didn't work at the barrier.`,`câu`,``,`Thẻ tàu điện ngầm của Tom không dùng được ở cửa soát vé.`),OPT(`They didn't enjoy their conversation together.`,`câu`,``,`Họ không thích cuộc trò chuyện với nhau.`),OPT(`Tom has a cat, and Rita is allergic to cats.`,`câu`,``,`Tom nuôi một con mèo, còn Rita lại bị dị ứng với mèo.`,1)],
+ vnt:`Vấn đề lớn nhất giữa Tom và Rita là gì?`,
+ why:[`Bước 1: Từ khoá "biggest problem" xuất hiện y nguyên ở đoạn 5: "However, the biggest problem appeared during their conversation".`,
+  `Bước 2: Câu ngay sau kể: "Tom told Rita he loves his cat very much and has one at home".`,
+  `Bước 3: Rồi bài viết tiếp: "Unfortunately, Rita is allergic to cats".`,
+  `Bước 4: Tom nuôi mèo, Rita dị ứng mèo → chọn "Tom has a cat, and Rita is allergic to cats." Bắt trúng từ khoá là thắng!`],
+ bad:[`"The restaurant booked them for the wrong night." chỉ là rắc rối nhỏ, bài gọi nó là "a small problem".`,
+  `"Tom's tube card didn't work at the barrier." chỉ là "another awkward moment" (một khoảnh khắc ngượng ngùng), không phải vấn đề lớn nhất.`,
+  `"They didn't enjoy their conversation together." ngược ý: cả hai thấy cuộc trò chuyện "easy and enjoyable".`],
+ ev:`However, the biggest problem appeared during their conversation. Tom told Rita he loves his cat very much and has one at home. Unfortunately, Rita is allergic to cats.`,
+ evvi:`Tuy nhiên, vấn đề lớn nhất đã lộ ra trong lúc trò chuyện. Tom kể với Rita rằng anh rất yêu con mèo của mình và đang nuôi một con ở nhà. Không may là Rita bị dị ứng với mèo.`,
+ dict:[`problem`,`allergic`,`barrier`]},
+{id:4,part:1,col:'sea',text:`The word <b>them</b> in paragraph 5 refers to:`,
+ opts:[OPT(`Tom and Rita`,`cụm danh từ`,``,`Tom và Rita`),OPT(`cats`,`n`,`kæts`,`những con mèo`,1),OPT(`drinks`,`n`,`drɪŋks`,`đồ uống`),OPT(`restaurants`,`n`,`ˈrestrɒnts`,`nhà hàng`)],
+ vnt:`Từ "them" trong đoạn 5 thay thế cho từ nào?`,
+ why:[`Bước 1: Câu chứa từ cần tìm là "She cannot be near them without feeling sick".`,
+  `Bước 2: "them" là đại từ số nhiều, dùng để thay cho một danh từ số nhiều vừa nhắc tới ngay trước đó.`,
+  `Bước 3: Câu ngay trước là "Unfortunately, Rita is allergic to cats", danh từ số nhiều gần nhất là "cats".`,
+  `Bước 4: Thử thay vào: "She cannot be near cats without feeling sick" (Cô ấy không thể ở gần mèo mà không thấy ốm), rất hợp nghĩa → chọn "cats". Chuẩn không cần chỉnh!`],
+ bad:[`"Tom and Rita" sai: chủ ngữ "She" chính là Rita, Rita không thể tự dị ứng với chính mình.`,
+  `"drinks" sai: đồ uống nằm ở đoạn 3 ("went for a drink"), không liên quan tới bệnh dị ứng ở đoạn 5.`,
+  `"restaurants" sai: nhà hàng chỉ nhắc ở đoạn 1, ở gần nhà hàng không làm Rita phát ốm.`],
+ ev:`Unfortunately, Rita is allergic to cats. She cannot be near them without feeling sick.`,
+ evvi:`Không may là Rita bị dị ứng với mèo. Cô ấy không thể ở gần chúng mà không thấy khó chịu, phát ốm.`,
+ dict:[`cat`,`drink`,`restaurant`,`sick`]},
+{id:5,part:1,col:'mint',text:`Why did Rita decide not to meet Tom again?`,
+ opts:[OPT(`Because she didn't like talking to him.`,`câu`,``,`Bởi vì cô ấy không thích nói chuyện với anh ấy.`),OPT(`Because the date only got 7 out of 10 points.`,`câu`,``,`Bởi vì buổi hẹn chỉ được 7 trên 10 điểm.`),OPT(`Because she didn't want Tom to choose between her and his cat.`,`câu`,``,`Bởi vì cô ấy không muốn Tom phải chọn giữa cô và con mèo của anh ấy.`,1),OPT(`Because Tom didn't want to kiss her goodbye.`,`câu`,``,`Bởi vì Tom không muốn hôn tạm biệt cô ấy.`)],
+ vnt:`Vì sao Rita quyết định không gặp lại Tom nữa?`,
+ why:[`Bước 1: Từ khoá "decide not to meet Tom again" nằm ở đầu đoạn 6: "Rita decided not to meet Tom again".`,
+  `Bước 2: Câu sau báo hiệu lí do: "She explained her reason simply", tức lí do nằm ngay trong lời Rita nói.`,
+  `Bước 3: Rita nói: "I would never want him to choose between me and his cat" (Tôi không bao giờ muốn anh ấy phải chọn giữa tôi và con mèo).`,
+  `Bước 4: "me" trong lời Rita chính là "her" trong đáp án → chọn "Because she didn't want Tom to choose between her and his cat." STOP 1 về đích rực lửa!`],
+ bad:[`"Because she didn't like talking to him." ngược ý: Rita nói Tom "easy to talk to" (dễ nói chuyện).`,
+  `"Because the date only got 7 out of 10 points." sai: điểm 7/10 chỉ là kết quả chấm, Rita không nêu nó làm lí do.`,
+  `"Because Tom didn't want to kiss her goodbye." sai: bài chỉ viết "They did not kiss goodbye", không nói Tom không muốn, và đó cũng không phải lí do Rita đưa ra.`],
+ ev:`Rita decided not to meet Tom again. She explained her reason simply: "I would never want him to choose between me and his cat."`,
+ evvi:`Rita quyết định không gặp lại Tom nữa. Cô giải thích lí do rất đơn giản: “Tôi sẽ không bao giờ muốn anh ấy phải chọn giữa tôi và con mèo của anh ấy.”`,
+ dict:[`choose`,`reason`,`decide`]},
+{id:6,part:2,col:'lilac',text:`According to the passage, what is the doctor's main problem?`,
+ opts:[OPT(`She doesn't have enough money for her house.`,`câu`,``,`Cô ấy không có đủ tiền cho ngôi nhà của mình.`),OPT(`She feels her parents don't value her as much as her brother.`,`câu`,``,`Cô ấy cảm thấy bố mẹ không coi trọng cô bằng anh trai.`,1),OPT(`She wants to work in the family business.`,`câu`,``,`Cô ấy muốn làm việc trong công ty của gia đình.`),OPT(`Her brother is going to retire early.`,`câu`,``,`Anh trai cô ấy sắp nghỉ hưu sớm.`)],
+ vnt:`Theo bài đọc, vấn đề chính của nữ bác sĩ là gì?`,
+ why:[`Bước 1: Hỏi "main problem" thì con tìm chỗ bài nói vấn đề THẬT SỰ, đó là lời chuyên gia ở đoạn 4.`,
+  `Bước 2: Chuyên gia nói: "the real problem is not just about money" (vấn đề thật sự không chỉ là tiền).`,
+  `Bước 3: Câu tiếp theo: "The doctor feels her parents love and value her brother more than her".`,
+  `Bước 4: Bố mẹ coi trọng anh trai hơn cô, tức là không coi trọng cô bằng anh → chọn "She feels her parents don't value her as much as her brother." Chặng 2 khởi động cực mạnh!`],
+ bad:[`"She doesn't have enough money for her house." chỉ là bề nổi: cô có "struggles to pay her mortgage", nhưng chuyên gia nói vấn đề "not just about money".`,
+  `"She wants to work in the family business." sai: bài không hề nói cô muốn về làm ở công ty gia đình.`,
+  `"Her brother is going to retire early." là chuyện của anh trai ("her brother can sell it and retire early"), không phải vấn đề của cô.`],
+ ev:`She says the real problem is not just about money. The doctor feels her parents love and value her brother more than her.`,
+ evvi:`Bà nói rằng vấn đề thật sự không chỉ nằm ở tiền bạc. Nữ bác sĩ cảm thấy bố mẹ yêu thương và coi trọng anh trai hơn cô.`,
+ dict:[`value`,`mortgage`,`retire`]},
+{id:7,part:2,col:'mint',text:`What did the doctor's parents give to her brother?`,
+ opts:[OPT(`Help with university fees only`,`cụm danh từ`,``,`chỉ giúp trả học phí đại học`),OPT(`A new house and mortgage support`,`cụm danh từ`,``,`một ngôi nhà mới và tiền hỗ trợ khoản vay mua nhà`),OPT(`80% of the family business`,`cụm danh từ`,``,`80% công ty của gia đình`,1),OPT(`Money for his retirement`,`cụm danh từ`,``,`tiền để anh ấy nghỉ hưu`)],
+ vnt:`Bố mẹ của nữ bác sĩ đã cho anh trai cô cái gì?`,
+ why:[`Bước 1: Từ khoá "brother" và "give" dẫn con về đoạn 1, nơi kể chuyện người anh.`,
+  `Bước 2: Bài viết: "Later, her father gave her brother 80% of the company".`,
+  `Bước 3: "the company" ở đây chính là "the family business" vừa nhắc ở câu trước ("invited him to work in the family business").`,
+  `Bước 4: → chọn "80% of the family business". Con số 80% là chìa khoá, nhìn thấy là chốt ngay!`],
+ bad:[`"Help with university fees only" sai: tiền học phí là bố mẹ giúp NỮ BÁC SĨ ("Her parents helped her pay for university fees"), không phải người anh.`,
+  `"A new house and mortgage support" sai: khoản vay mua nhà là của chính nữ bác sĩ ("She struggles to pay her mortgage"), bài không nói ai cho anh trai nhà mới.`,
+  `"Money for his retirement" sai: bố mẹ không đưa tiền nghỉ hưu; anh ấy tự "sell it and retire early" nhờ có công ty.`],
+ ev:`After her brother finished university, their father invited him to work in the family business. Later, her father gave her brother 80% of the company.`,
+ evvi:`Sau khi anh trai cô học xong đại học, bố của họ mời anh về làm việc trong công ty của gia đình. Sau đó, bố cô đã trao cho anh trai cô 80% công ty.`,
+ dict:[`company`,`business`,`retirement`]},
+{id:8,part:2,col:'pink',text:`When the doctor complains to her parents, they <b>______</b>.`,
+ opts:[OPT(`give her more money immediately`,`cụm động từ`,``,`cho cô thêm tiền ngay lập tức`),OPT(`say she is ungrateful`,`cụm động từ`,``,`nói rằng cô là người vô ơn`,1),OPT(`decide to sell the business`,`cụm động từ`,``,`quyết định bán công ty`),OPT(`ask her brother to share with her`,`cụm động từ`,``,`bảo anh trai chia sẻ với cô`)],
+ vnt:`Khi nữ bác sĩ phàn nàn với bố mẹ, họ ______.`,
+ why:[`Bước 1: "complains to her parents" khớp với câu mở đoạn 3: "When the doctor talks to her parents about the problem".`,
+  `Bước 2: Phản ứng của bố mẹ: "they become angry. They call her ungrateful".`,
+  `Bước 3: "call her ungrateful" (gọi cô là đứa vô ơn) cùng nghĩa với "say she is ungrateful" → chọn đáp án này. Đọc sắc như dao!`],
+ bad:[`"give her more money immediately" sai: bố mẹ "become angry" (nổi giận), không hề cho thêm tiền.`,
+  `"decide to sell the business" sai: người có thể bán công ty là anh trai ("her brother can sell it"), bố mẹ không quyết định bán.`,
+  `"ask her brother to share with her" ngược ý: bố mẹ còn bênh người anh, nói "her brother deserves the business".`],
+ ev:`When the doctor talks to her parents about the problem, they become angry. They call her ungrateful.`,
+ evvi:`Khi nữ bác sĩ nói chuyện với bố mẹ về vấn đề này, họ nổi giận. Họ bảo cô là đứa vô ơn.`,
+ dict:[`ungrateful`,`complain`,`deserve`]},
+{id:9,part:2,col:'sky',text:`According to the expert, what is the real problem?`,
+ opts:[OPT(`The doctor needs more money for her mortgage.`,`câu`,``,`Nữ bác sĩ cần thêm tiền để trả khoản vay mua nhà.`),OPT(`The brother worked harder than the doctor.`,`câu`,``,`Người anh đã làm việc chăm chỉ hơn nữ bác sĩ.`),OPT(`The doctor feels unloved and less valued by her parents.`,`câu`,``,`Nữ bác sĩ cảm thấy không được bố mẹ yêu thương và ít được coi trọng hơn.`,1),OPT(`The parents are too old to understand.`,`câu`,``,`Bố mẹ đã quá già để hiểu chuyện.`)],
+ vnt:`Theo chuyên gia, vấn đề thật sự là gì?`,
+ why:[`Bước 1: "the expert" chính là "An expert psychotherapist" ở đoạn 4, con đọc kĩ lời bà ấy.`,
+  `Bước 2: Chuyên gia nói: "the real problem is not just about money".`,
+  `Bước 3: Rồi giải thích: "The doctor feels her parents love and value her brother more than her" và cô thấy mình như đứa con 'second-rate' (hạng hai).`,
+  `Bước 4: Thấy mình ít được thương, ít được coi trọng hơn → chọn "The doctor feels unloved and less valued by her parents." Sắp cắm cờ rồi, giữ lửa nào!`],
+ bad:[`"The doctor needs more money for her mortgage." sai: chuyên gia nói rõ vấn đề "not just about money".`,
+  `"The brother worked harder than the doctor." sai: đó là lí lẽ của bố mẹ ("he worked there for many years"), không phải ý của chuyên gia.`,
+  `"The parents are too old to understand." sai: bài không hề nhắc tới tuổi của bố mẹ.`],
+ ev:`She says the real problem is not just about money. The doctor feels her parents love and value her brother more than her. She feels like a "second-rate" child in the family.`,
+ evvi:`Bà nói rằng vấn đề thật sự không chỉ nằm ở tiền bạc. Nữ bác sĩ cảm thấy bố mẹ yêu thương và coi trọng anh trai hơn cô. Cô thấy mình giống như đứa con “hạng hai” trong nhà.`,
+ dict:[`expert`,`psychotherapist`,`unloved`]},
+{id:10,part:2,col:'sea',text:`Which of the following is NOT true about the doctor?`,
+ opts:[OPT(`She received help with university fees and housing from her parents.`,`câu`,``,`Cô ấy đã được bố mẹ giúp tiền học phí đại học và tiền nhà ở.`),OPT(`She has problems paying her mortgage.`,`câu`,``,`Cô ấy gặp khó khăn khi trả khoản vay mua nhà.`),OPT(`Her parents never helped her at all.`,`câu`,``,`Bố mẹ chưa bao giờ giúp đỡ cô ấy chút nào.`,1),OPT(`She feels hurt by her parents' favouritism towards her brother.`,`câu`,``,`Cô ấy cảm thấy tổn thương vì bố mẹ thiên vị anh trai.`)],
+ vnt:`Điều nào sau đây KHÔNG đúng về nữ bác sĩ?`,
+ why:[`Bước 1: Câu hỏi có chữ "NOT true", nên con tìm câu SAI so với bài, ba câu còn lại đều đúng.`,
+  `Bước 2: Đoạn 2 viết: "Her parents helped her pay for university fees and housing when she was younger".`,
+  `Bước 3: Đoạn 3 còn nhắc lại: "they helped her with education and housing in the past".`,
+  `Bước 4: Bố mẹ đã giúp cô, vậy câu "Her parents never helped her at all" là SAI → chọn câu này. Cắm cờ điểm 10, chiến binh lớp 8 ơi!`],
+ bad:[`"She received help with university fees and housing from her parents." ĐÚNG với bài (đoạn 2: "helped her pay for university fees and housing"), nên không chọn.`,
+  `"She has problems paying her mortgage." ĐÚNG với bài (đoạn 2: "She struggles to pay her mortgage"), nên không chọn.`,
+  `"She feels hurt by her parents' favouritism towards her brother." ĐÚNG với bài (đoạn 5 nói về "favouritism" và "this situation hurts her emotionally"), nên không chọn.`],
+ ev:`Her parents helped her pay for university fees and housing when she was younger.`,
+ evvi:`Khi cô còn trẻ, bố mẹ đã giúp cô trả học phí đại học và tiền nhà ở.`,
+ dict:[`favouritism`,`housing`,`hurt`]}
+];
+QS.forEach(function(q){q.options=q.opts.map(function(o){return o.w});q.correct=q.opts.filter(function(o){return o.ok})[0].w});
+
+/* ══ dựng trang ══ */
+var TOTAL=QS.length,answered=0,score=0,done={},MAP={};
+var TINT={mint:'#E3FAF1',pink:'#FFEEF6',sky:'#EAF5FF',lilac:'#F3EEFF',sea:'#E2F8FA'};
+var SECINFO={
+ 1:{c:'pink',t:"💞 STOP 1 · Tom and Rita's Blind Date — Câu 1 → 5",s:"Passage 1. Read the passage and choose the correct answer A, B, C or D for questions 1 to 5."},
+ 2:{c:'lilac',t:"🏡 STOP 2 · A Family Problem — Câu 6 → 10",s:"Passage 2. Read the passage and choose the correct answer A, B, C or D for questions 6 to 10."}};
+var app=document.getElementById('app'),secs={};
+[1,2].forEach(function(p){var s=document.createElement('div');s.className='sec';s.dataset.part=p;s.style.borderColor='var(--'+SECINFO[p].c+')';
+ s.innerHTML='<div class="sech" style="color:var(--'+SECINFO[p].c+'-d)">'+SECINFO[p].t+'</div><div class="secs">'+SECINFO[p].s+'</div>';
+ secs[p]=s;app.appendChild(s)});
+QS.forEach(function(q){
+ var so=q.tf?q.options.slice():shuffle(q.options);
+ MAP[q.id]=so;
+ var card=document.createElement('div');
+ card.className='q';card.id='c'+q.id;
+ card.style.setProperty('--qc','var(--'+q.col+')');
+ card.style.borderLeftColor='var(--'+q.col+')';
+ card.style.background=TINT[q.col];
+ card.innerHTML='<div class="qt"><span class="qn">'+q.id+'</span>'+q.text.replace(/<b>/g,'<b class="bk-'+q.col+'">')+'</div>'+
+  '<div class="og" id="o'+q.id+'">'+so.map(function(o,i){return '<button class="ob" onclick="pick('+q.id+','+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'}).join('')+'</div>'+
+  '<div class="ex" id="e'+q.id+'"></div>';
+ secs[q.part].appendChild(card);
+});
+
+function pick(qid,i){
+ if(done[qid])return;done[qid]=true;answered++;
+ var q=QS.find(function(x){return x.id===qid});
+ var so=MAP[qid],bs=document.getElementById('o'+qid).children;
+ var ok=so[i]===q.correct;
+ for(var k=0;k<bs.length;k++){bs[k].classList.add('dn');
+  if(so[k]===q.correct)bs[k].classList.add('ok');else if(k===i)bs[k].classList.add('no')}
+ document.getElementById('e'+qid).innerHTML=render(q);
+ document.getElementById('e'+qid).classList.add('on');
+ if(ok){score++;ding();conf()}
+ else{buzz();var c=document.getElementById('c'+qid);c.classList.add('shk');setTimeout(function(){c.classList.remove('shk')},430)}
+ bump();
+}
+function bump(){document.getElementById('lv').textContent=score+'/'+TOTAL;document.getElementById('sc').textContent=score+'/'+TOTAL}
+
+/* ══ khung đọc vừa màn hình: chừa ~95px đáy cho cảnh đường tàu ẩm thực ══ */
+function fitPanels(){var m=document.querySelector('.main'),ps=document.querySelectorAll('.lp,.rp');if(!m||!ps.length)return;
+ if(window.innerWidth<=940){ps.forEach(function(e){e.style.maxHeight=''});m.style.paddingBottom='';return}
+ var n=document.querySelector('.note'),nh=n?n.offsetHeight:0,h=Math.max(320,window.innerHeight-nh-104);
+ ps.forEach(function(e){e.style.maxHeight=h+'px'});
+ var pb=parseFloat(getComputedStyle(m).paddingBottom)||0,top=ps[0].getBoundingClientRect().top+window.scrollY,want=Math.max(40,top-nh-8),extra=document.documentElement.scrollHeight-window.innerHeight-pb;
+ m.style.paddingBottom=Math.max(0,want-extra)+'px'}
+window.addEventListener('resize',fitPanels);window.addEventListener('load',fitPanels);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitPanels);
+fitPanels();
+
+/* ══ nộp bài ══ */
+function openName(){
+ if(answered<TOTAL){alert('Con ơi, còn '+(TOTAL-answered)+' câu chưa làm kìa! Hoàn thành hết các câu rồi mới nộp bài nhé!');return;}
+ document.getElementById('ovN').classList.add('on');setTimeout(function(){document.getElementById('nIn').focus()},150);
+}
+document.getElementById('nIn').addEventListener('keydown',function(e){if(e.key==='Enter')showResult()});
+function showResult(){
+ var i=document.getElementById('nIn'),n=i.value.trim();
+ if(!n){document.getElementById('nEm').classList.add('show');i.focus();return}
+ document.getElementById('nEm').classList.remove('show');
+ document.getElementById('ovN').classList.remove('on');
+ var pct=score/TOTAL,ten=(pct*10).toFixed(2),g,m,gif;
+ document.getElementById('rn').textContent='Học viên: '+n;
+ if(score===TOTAL){g='🏆 CẮM CỜ ĐIỂM 10, '+n+'!';m='Con chinh phục trọn '+TOTAL+' câu Map Quest không trượt câu nào — đúng chất chiến binh lớp 8! MS Chí Nên rất tự hào về con! 🌟 ☎️ 0852639652.';gif='https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'}
+ else if(pct>=.8){g='👏 SẮP CHẠM ĐỈNH RỒI, '+n+'!';m='Chỉ còn vài câu nữa là trọn vẹn — soi kĩ thêm những câu bẫy NOT, only, never là bài kiểm tra Unit 6 của con chắc chắn bứt phá! ☎️ 0852639652.';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else if(pct>=.6){g='💪 HÀNH TRÌNH ĐÃ VÀO GUỒNG, '+n+'!';m='Con đã qua hơn nửa chặng rồi đó. Mở lời giải từng câu ra xem lại, chép từ mới vào vở là chặng sau sẽ bứt tốc!';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else{g='🌱 LÀM LẠI CHẶNG MỚI NÀO, '+n+'!';m='Đừng buồn con nhé. Nhà thám hiểm nào cũng từng lạc đường — xem lời giải của cô, ghi chép từ mới, rồi bấm làm lại nha, Ms tin con sẽ làm tốt hơn! 💪';gif='https://media.giphy.com/media/l378giAZgxPw3eO52/giphy.gif'}
+ document.getElementById('rSc').textContent=score;
+ document.getElementById('rTt').textContent=TOTAL;
+ document.getElementById('r10').textContent=ten;
+ document.getElementById('rGif').src=gif;
+ document.getElementById('rMs').innerHTML='<b>'+g+'</b><br>'+m;
+ document.getElementById('ovR').classList.add('on');
+ if(pct>=.6){conf();ding()}
+}
+function closeR(){document.getElementById('ovR').classList.remove('on')}
+
+/* ══ lời nhắc — đổi theo phần đang làm ══ */
+var GEN=[
+ '🗺️ Map Quest khởi hành, các chiến binh lớp 8! 2 chặng đọc hiểu, 10 câu (1 → 10) — chạy một mạch, cắm cờ điểm 10 nào! 🔥',
+ '🚨 LƯU Ý TỪ MS MAI AN: Tự giác tra từ mới bằng Từ điển Cambridge/Google Dịch để hiểu thật rõ từng câu hỏi. Cấm lười suy nghĩ rồi bấm bừa! Đọc kĩ lời giải, ghi từ mới và cấu trúc vào vở — đó mới là cách giỏi lên thật sự! 🔥',
+ '✏️ Vũ khí bí mật: CÔNG CỤ HIGHLIGHT! Bôi đen câu chứa dẫn chứng rồi bấm màu để tô — dẫn chứng sáng rực là đáp án hiện ra, làm bài như dân chuyên lớp 8! ⚡',
+ '🔥 Đúng liên tục là chuỗi 🔥 bùng cháy — giữ nhịp thật đều, đừng để lửa tắt giữa đường nha! 🔥',
+ '🦆 Chọn sai thì chú vịt kêu quạc quạc — cười một cái, đọc lời giải rồi bật dậy chiến câu sau mạnh hơn! 💪',
+ '🏆 Bài kiểm tra Unit 6 lớp 8 đang chờ phía trước — mỗi câu luyện hôm nay là một viên gạch xây điểm 9, điểm 10 ngày thi! 🚀',
+ '☎️ Đăng ký khoá tiếng Anh lớp 1 → 12 cùng MS Chí Nên — 0852639652 — bứt phá điểm số, tự tin chinh phục mọi kì thi!'];
+var PMSG={
+ 1:['💞 STOP 1 · Blind Date của Tom và Rita! Buổi hẹn vui mà chẳng lãng mạn — săn đúng dẫn chứng, hạ gọn 5 câu nào! 🔥',
+    '🐈 Một chú mèo phá tan cả buổi hẹn — chiến binh lớp 8 đọc kĩ từng chi tiết, không để bẫy nào lọt qua! ⚡'],
+ 2:['🏡 STOP 2 · A Family Problem! Chuyện tiền bạc và tình thân — đọc thật sâu, chốt thật chắc 5 câu cuối! 🔥',
+    '🧠 Về đích tới nơi rồi — dồn hết sức, tô sáng dẫn chứng, cắm cờ điểm 10 thôi! 🏆']};
+var curP=0,mk=0,msEl=document.getElementById('msTx');
+function showMsg(t){msEl.style.opacity=0;setTimeout(function(){
+ var de=document.documentElement,atEnd=window.scrollY>0&&window.scrollY>=de.scrollHeight-window.innerHeight-2;
+ msEl.innerHTML=t;msEl.style.opacity=1;fitPanels();
+ if(atEnd)window.scrollTo(0,de.scrollHeight)},250)}
+setInterval(function(){var list=(PMSG[curP]||[]).concat(GEN);mk=(mk+1)%list.length;showMsg(list[mk])},5200);
+function whichPart(){
+ var rp=document.querySelector('.rp'),r=rp.getBoundingClientRect(),mid=Math.max(r.top,0)+Math.min(r.height,window.innerHeight)*0.45,p=1;
+ [1,2].forEach(function(k){if(secs[k].getBoundingClientRect().top<mid)p=k});
+ if(p!==curP){curP=p;mk=0;showMsg(PMSG[p][0])}
+}
+document.querySelector('.rp').addEventListener('scroll',whichPart,{passive:true});
+window.addEventListener('scroll',whichPart,{passive:true});
+</script>
+<style>/*streak*/
+#stkRow{display:flex;align-items:center;flex:0 0 auto;margin:0 4px}#stkRow.in{align-self:center;margin:0 0 0 8px}#stkRow.in .bar,#stkRow.in .nx,#stkRow.in .lbl{display:none!important}#stkRow.in #stkP{flex-direction:row!important;gap:6px;padding:4px 10px 4px 8px;position:static}#stkRow.in .fl,#stkRow.in .n{position:static;line-height:1}
+#stkRow.fixed{position:fixed;left:10px;bottom:12px;z-index:60}
+#stkP{display:flex;align-items:center;gap:6px;padding:2px 10px 2px 7px;border-radius:999px;background:#FFF0F7;border:2px solid #F9A8D4;font-family:'Baloo 2','Nunito',sans-serif;
+ font-weight:700;color:#9D174D;font-size:.92rem;transition:transform .25s;white-space:nowrap}
+#stkP .fl{display:inline-block;position:static;font-size:1.1rem;transition:font-size .3s;transform-origin:50% 90%}
+#stkP.hot .fl{animation:stkFl .5s ease-in-out infinite alternate}@keyframes stkFl{from{transform:scale(1) rotate(-6deg)}to{transform:scale(1.25) rotate(6deg)}}
+#stkP.pop{transform:scale(1.15)}#stkP.cold{filter:grayscale(.6);opacity:.85}
+#stkP .n{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:linear-gradient(135deg,#EC4899,#8B5CF6);color:#fff;font-size:.9rem}
+#stkP .bar{width:54px;height:6px;border-radius:99px;background:#FBCFE8;overflow:hidden}#stkP .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#EC4899,#8B5CF6);transition:width .3s}
+#stkP .nx{font-size:.78rem;color:#BE185D}
+#stkToast{position:fixed;left:50%;top:38%;z-index:70;transform:translate(-50%,-50%) scale(.4);opacity:0;pointer-events:none;text-align:center;padding:18px 26px;border-radius:26px;
+ background:linear-gradient(135deg,#FFF0F7,#F3EDFF);border:4px solid #F9A8D4;box-shadow:0 18px 40px rgba(0,0,0,.25);font-family:'Baloo 2','Nunito',sans-serif;color:#9D174D;max-width:86vw;transition:all .35s cubic-bezier(.2,1.6,.4,1)}
+#stkToast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}#stkToast b{display:block;font-size:2.3rem;line-height:1.15}#stkToast span{font-weight:700;font-size:1.05rem}
+#stkToast.soft{background:linear-gradient(135deg,#EFF6FF,#F5F3FF);border-color:#93C5FD;color:#1E3A8A}#stkToast.soft b{font-size:1.6rem}
+.stkSpark{position:fixed;z-index:69;pointer-events:none;font-size:26px;animation:stkSp 1.2s ease-out forwards}
+@keyframes stkSp{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3) rotate(240deg)}}
+@media(max-width:700px){#stkP .bar,#stkP .nx,#stkP .lbl{display:none}#stkP{padding:2px 7px 2px 5px}#stkToast b{font-size:1.8rem}}
+@media (prefers-reduced-motion:reduce){#stkP.hot .fl,.stkSpark{animation:none}}
+</style>
+<script>/*streak*/(function(){
+ const $=id=>document.getElementById(id),num=el=>{const m=(el.textContent||'').match(/(\d+)\s*\/\s*(\d+)/);return m?[+m[1],+m[2]]:[0,0]};
+ let get=null,anchor=null,mode='after';const sc=$('scoreChip'),pg=$('progChip');
+ if(sc&&pg){get=()=>{const s=num(sc),a=num(pg);return [a[0],s[0],a[1]]};anchor=sc}
+ else{try{if(typeof answered!=='undefined'&&typeof score!=='undefined'){get=()=>[answered,score,typeof TOTAL!=='undefined'?TOTAL:0];anchor=$('sc')&&$('sc').parentElement}}catch(e){}
+  if(!get)try{if(typeof done==='object'&&done&&$('lv')){get=()=>{const v=Object.values(done);return [v.length,v.filter(x=>x===true).length,typeof QS!=='undefined'?QS.length:0]};anchor=$('lv').closest('.gauge')||$('lv');mode='in'}}catch(e){}}
+ if(!get)return;
+ const row=document.createElement('div');row.id='stkRow';
+ row.innerHTML='<div id="stkP" class="cold" title="Số câu đúng liên tiếp"><span class="fl">🔥</span><span class="lbl">Chuỗi đúng</span><span class="n" id="stkN">0</span><span class="bar"><i id="stkB"></i></span><span class="nx" id="stkX">→ 3</span></div>';
+ if(!anchor){row.className='fixed';document.body.appendChild(row)}else if(mode==='in'){row.className='in';anchor.insertAdjacentElement('afterend',row)}else anchor.insertAdjacentElement('afterend',row);
+ const toast=document.createElement('div');toast.id='stkToast';document.body.appendChild(toast);
+ const P=document.getElementById('stkP'),N=document.getElementById('stkN'),B=document.getElementById('stkB'),X=document.getElementById('stkX');
+ let cur=0,best=0,[lastA,lastS]=get(),tmr=null;
+ const NEXT=n=>n<3?3:n<5?5:n<10?10:(Math.floor(n/5)+1)*5,LOW=n=>n<3?0:n<5?3:n<10?5:Math.floor(n/5)*5;
+ const PRAISE={3:['🔥 3 câu liền!','Con đang vào guồng rồi đó!'],5:['🔥🔥 5 câu liền!','Siêu đỉnh luôn — cô thấy con tập trung lắm!'],10:['🌟 10 câu liền!','Không ai cản nổi con nữa rồi!'],
+  15:['🏆 15 câu liền!','Con là ngôi sao của lớp đó!'],20:['👑 20 câu liền!','Tuyệt vời — cô tự hào về con lắm!']};
+ const OOPS=['Không sao đâu con — mình bắt đầu chuỗi mới nhé! 💪','Đọc lời giải rồi làm tiếp, chuỗi mới đang chờ con! 🌱','Sai một câu là học thêm một điều — cố lên con! 🌈','Hít một hơi thật sâu, câu sau con sẽ làm được! ⭐'];
+ function say(t,sub,soft){toast.className=soft?'soft':'';toast.innerHTML='<b>'+t+'</b><span>'+sub+'</span>';void toast.offsetWidth;toast.classList.add('show');clearTimeout(tmr);tmr=setTimeout(()=>toast.classList.remove('show'),soft?1600:2000)}
+ function burst(){const E=['🔥','⭐','✨','🎉','💛','🌟'];for(let i=0;i<16;i++){const s=document.createElement('div');s.className='stkSpark';s.textContent=E[i%E.length];
+  const a=Math.random()*Math.PI*2,r=120+Math.random()*160;s.style.cssText='left:50%;top:38%;--x:'+Math.cos(a)*r+'px;--y:'+Math.sin(a)*r+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),1300)}}
+ function paint(){N.textContent=cur;const lo=LOW(cur),hi=NEXT(cur);B.style.width=Math.min(100,(cur-lo)/(hi-lo)*100)+'%';X.textContent='→ '+hi;
+  P.classList.toggle('cold',cur===0);P.classList.toggle('hot',cur>=3);P.classList.add('pop');setTimeout(()=>P.classList.remove('pop'),250);
+  P.querySelector('.fl').style.fontSize=(1.1+Math.min(cur,15)*.03)+'rem'}
+ function check(){const [a,s,tot]=get();if(a===lastA)return;const dA=a-lastA,dS=s-lastS;lastA=a;lastS=s;if(dA<=0)return;
+  if(dS>=dA){const before=cur;cur+=dA;best=Math.max(best,cur);paint();
+   const hit=Object.keys(PRAISE).map(Number).filter(m=>before<m&&cur>=m).pop()||(cur>=25&&Math.floor(cur/5)>Math.floor(before/5)?cur-cur%5:0);
+   if(hit){const p=PRAISE[hit]||['🚀 '+hit+' câu liền!','Con đang bay cao lắm rồi!'];say(p[0],p[1]);burst()}}
+  else{const had=cur;cur=0;paint();if(had>=3)say('Chuỗi '+had+' câu — giỏi lắm!',OOPS[Math.floor(Math.random()*OOPS.length)],true)}
+  if(tot&&a>=tot)setTimeout(()=>{say('🏅 Chuỗi dài nhất: '+best+' câu',best>=5?'Con làm bài thật tuyệt vời!':'Lần sau mình thử phá kỷ lục này nhé!');if(best>=5)burst()},2400)}
+ setInterval(check,250);
+})();</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<div id="hlPop">
+ <button type="button" class="y" title="Vàng" onclick="hlApply('y')"></button>
+ <button type="button" class="g" title="Xanh lá" onclick="hlApply('g')"></button>
+ <button type="button" class="p" title="Hồng" onclick="hlApply('p')"></button>
+ <button type="button" class="b" title="Xanh" onclick="hlApply('b')"></button>
+ <button type="button" class="er" title="Tẩy tô" onclick="hlErase()">🧽</button>
+</div>
+<script>/*hltool*/
+/* ══ công cụ highlight: chỉ tô trong bài đọc (.paragraph, .translation ở khung trái) ══ */
+var HLT={saved:null,t:null,target:null,gid:0},hlPop=document.getElementById('hlPop');
+function hlGroup(g){return Array.prototype.slice.call(document.querySelectorAll('.lp mark.uhl[data-g="'+g+'"]'))}
+function hlUnpick(){document.querySelectorAll('mark.uhl.pick').forEach(function(m){m.classList.remove('pick')});HLT.target=null}
+function hlShowGroup(){
+ var ms=hlGroup(HLT.target);if(!ms.length){hlUnpick();hlHide();return}
+ var L=1e9,T=1e9,R=-1e9,B=-1e9;
+ ms.forEach(function(m){var b=m.getBoundingClientRect();if(!b.width&&!b.height)return;L=Math.min(L,b.left);T=Math.min(T,b.top);R=Math.max(R,b.right);B=Math.max(B,b.bottom)});
+ if(R<L){hlHide();return}
+ hlShow({getBoundingClientRect:function(){return {left:L,top:T,right:R,bottom:B,width:R-L,height:B-T}}});
+}
+function hlZone(n){var e=n&&(n.nodeType===1?n:n.parentNode);return e&&e.closest?e.closest('.lp .paragraph,.lp .translation'):null}
+function hlNodes(r){
+ var root=r.commonAncestorContainer;if(root.nodeType!==1)root=root.parentNode;
+ var out=[],w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;
+ while((n=w.nextNode())){
+  if(!r.intersectsNode(n))continue;
+  var z=hlZone(n);if(!z||!z.getClientRects().length)continue;
+  var s=n===r.startContainer?r.startOffset:0,e=n===r.endContainer?r.endOffset:n.length;
+  if(e>s)out.push([n,s,e]);
+ }
+ return out;
+}
+function hlRange(){
+ var sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed)return null;
+ var r=sel.getRangeAt(0),lp=document.querySelector('.lp');
+ if(!lp.contains(r.commonAncestorContainer))return null;
+ var L=hlNodes(r);if(!L.some(function(x){return x[0].nodeValue.slice(x[1],x[2]).trim()}))return null;
+ return r;
+}
+function hlIsMark(e){return e&&e.nodeName==='MARK'&&e.classList.contains('uhl')}
+function hlPaint(r,cls){
+ var L=hlNodes(r),zones=[],g=cls?String(++HLT.gid):'';
+ L.forEach(function(x){
+  var n=x[0],s=x[1],e=x[2];
+  if(e<n.length)n.splitText(e);
+  if(s>0)n=n.splitText(s);
+  var z=hlZone(n);if(zones.indexOf(z)<0)zones.push(z);
+  var p=n.parentNode;
+  if(hlIsMark(p)){
+   var host=p.parentNode,ref=p.nextSibling,aft=null,put=n;
+   if(n.nextSibling){aft=document.createElement('mark');aft.className=p.className;if(p.dataset.g)aft.dataset.g=p.dataset.g;while(n.nextSibling)aft.appendChild(n.nextSibling)}
+   if(cls){put=document.createElement('mark');put.className='uhl uhl-'+cls;put.dataset.g=g;put.appendChild(n)}
+   host.insertBefore(put,ref);
+   if(aft)host.insertBefore(aft,put.nextSibling);
+   if(!p.firstChild)host.removeChild(p);
+  }else if(cls){
+   var m=document.createElement('mark');m.className='uhl uhl-'+cls;m.dataset.g=g;p.insertBefore(m,n);m.appendChild(n);
+  }
+ });
+ zones.forEach(function(z){if(z){z.querySelectorAll('mark.uhl').forEach(function(m){if(!m.textContent)m.remove()});z.normalize()}});
+}
+function hlDone(){HLT.saved=null;hlUnpick();try{window.getSelection().removeAllRanges()}catch(e){}hlHide()}
+function hlApply(cls){
+ if(HLT.target&&!hlRange()){hlGroup(HLT.target).forEach(function(m){m.className='uhl uhl-'+cls});hlDone();return}
+ var r=HLT.saved||hlRange();
+ if(!r){HLT.saved=null;hlHide();var t=document.getElementById('hlTip');t.classList.remove('ping');void t.offsetWidth;t.classList.add('ping');return}
+ hlPaint(r,cls);hlDone();
+}
+function hlErase(){
+ if(HLT.target&&!hlRange()){hlGroup(HLT.target).forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()});hlDone();return}
+ var r=HLT.saved||hlRange();
+ if(r){hlPaint(r,null)}
+ else{document.querySelectorAll('mark.uhl').forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()})}
+ hlDone();
+}
+function hlHide(){hlPop.classList.remove('on','below')}
+function hlShow(r){
+ var b=r.getBoundingClientRect();if(!b.width&&!b.height){hlHide();return}
+ hlPop.classList.add('on');
+ var w=hlPop.offsetWidth,h=hlPop.offsetHeight,note=document.querySelector('.note'),nb=note?note.getBoundingClientRect().bottom:0;
+ var x=Math.max(6,Math.min(window.innerWidth-w-6,b.left+b.width/2-w/2)),y=b.top-h-10,below=false;
+ if(y<nb+6){y=b.bottom+10;below=true}
+ hlPop.style.left=x+'px';hlPop.style.top=y+'px';hlPop.classList.toggle('below',below);
+}
+function hlCheck(){clearTimeout(HLT.t);HLT.t=setTimeout(function(){var r=hlRange();if(r){hlUnpick();hlShow(r)}else if(HLT.target)hlShowGroup();else hlHide()},90)}
+document.addEventListener('click',function(e){
+ var t=e.target;if(t.closest&&t.closest('#hlPop,.hlbar'))return;
+ var m=t.closest?t.closest('.lp mark.uhl'):null;
+ if(m&&!hlRange()){
+  if(!m.dataset.g)m.dataset.g=String(++HLT.gid);
+  hlUnpick();HLT.target=m.dataset.g;hlGroup(HLT.target).forEach(function(x){x.classList.add('pick')});hlShowGroup();
+ }else if(HLT.target){hlUnpick();hlHide()}
+});
+function hlKeep(e){var r=hlRange();if(r)HLT.saved=r.cloneRange();if(e.type==='mousedown')e.preventDefault()}
+document.querySelectorAll('.hlbar button,#hlPop button').forEach(function(b){
+ b.addEventListener('pointerdown',function(){var r=hlRange();HLT.saved=r?r.cloneRange():null});
+ b.addEventListener('mousedown',hlKeep);
+ b.addEventListener('touchstart',hlKeep,{passive:true});
+});
+document.addEventListener('mouseup',hlCheck);
+document.addEventListener('touchend',hlCheck);
+document.addEventListener('selectionchange',hlCheck);
+window.addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+document.querySelector('.lp').addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+if(typeof fitPanels==='function')fitPanels();
+</script>
+<style>/*namegate*/.ngTag{display:block;margin:2px auto 8px;padding:8px 12px;border-radius:14px;background:#F5F3FF;border:2px dashed #C4B5FD;font-weight:800;color:#4C1D95;line-height:1.6;font-size:.95rem;text-align:center}
+.ngTag small{font-weight:700;color:#6D28D9}
+#ngClock{position:fixed;left:10px;bottom:10px;z-index:90;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid #C4B5FD;font:800 .9rem inherit;color:#5B21B6;box-shadow:0 4px 12px rgba(0,0,0,.12);pointer-events:none}</style>
+<div id="ngClock">⏱ 00:00</div>
+<script>/*namegate*/(function(){
+var T0=Date.now(),TEND=0,clk=document.getElementById('ngClock');
+function mmss(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function dur(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m?m+' phút ':'')+s+' giây';}
+function esc(s){return String(s).replace(/[<>&]/g,'');}
+function clean(s){s=(s||'');try{s=s.normalize('NFC')}catch(e){}return s.replace(/[​-‏⁠﻿]/g,'').replace(/\s+/g,' ').trim();}
+function stamp(){var d=new Date(),p=function(n){return(n<10?'0':'')+n};return p(d.getHours())+':'+p(d.getMinutes())+' · '+p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear();}
+setInterval(function(){if(!TEND&&clk)clk.textContent='⏱ '+mmss(Date.now()-T0);},1000);
+var orig=window.showResult;if(typeof orig!=='function')return;
+window.showResult=function(){var i=document.getElementById('nIn'),v=clean(i&&i.value);if(i)i.value=v;
+  orig.apply(this,arguments);
+  var ov=document.getElementById('ovR'),rn=document.getElementById('rn');if(!v||!ov||!ov.classList.contains('on')||!rn)return;
+  if(!TEND)TEND=Date.now();if(clk)clk.textContent='⏱ '+mmss(TEND-T0)+' ✔';
+  rn.innerHTML='<span class="ngTag">👤 '+esc(v)+'<br>⏱ Làm bài trong <b>'+dur(TEND-T0)+'</b><br><small>⏰ Nộp lúc '+stamp()+'<br>📘 '+esc(document.title.split('|')[0].trim())+'</small></span>';};
+})();</script>
+<script>/*attempts*/(function(){
+var KEY='att:'+decodeURIComponent(location.pathname),done=false;
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function save(a){try{localStorage.setItem(KEY,JSON.stringify(a.slice(-20)))}catch(e){}}
+function fmt(d){var p=function(n){return(n<10?'0':'')+n};return p(d.getDate())+'/'+p(d.getMonth()+1);}
+function durOf(tag){var m=(tag.textContent||'').match(/Làm bài trong\s*((?:\d+\s*phút\s*)?\d+\s*giây)/);return m?m[1].replace(/\s+/g,' '):'';}
+function score(){var a=document.getElementById('resScore');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rS');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rSc');var b=document.getElementById('rTt');if(a)return a.textContent.trim()+'/'+(b?b.textContent.trim():'?');return '?';}
+function add(tag){
+  if(tag.querySelector('.ngAtt'))return;
+  var a=load();
+  if(!done){done=true;a.push({s:score(),t:Date.now(),d:durOf(tag)});save(a);}
+  var k=a.length,prev=a.slice(Math.max(0,k-6),k-1);
+  var d=document.createElement('div');d.className='ngAtt';
+  d.style.cssText='display:block;margin-top:6px;padding-top:6px;border-top:2px dashed #DDD6FE';
+  d.innerHTML='🔁 <b>Lần nộp thứ '+k+'</b> trên máy này'+(prev.length?'<br><small>'+prev.map(function(x,i){return 'Lần '+(k-prev.length+i)+': <b>'+x.s+'</b>'+(x.d?' · ⏱ làm trong <b>'+x.d+'</b>':'')+' · '+fmt(new Date(x.t))}).join('<br>')+'</small>':'');
+  tag.appendChild(d);
+}
+function check(){var t=document.getElementById('ngTag')||document.querySelector('#rn .ngTag');if(t&&t.textContent.trim())add(t);}
+new MutationObserver(check).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>

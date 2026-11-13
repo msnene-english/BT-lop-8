@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧁 Unit 6 Test p4 — English 8 | MS Chí Nên</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --ink:#3B2A4A;--dim:#6B5B7B;
+ --pink:#F472B6;--pink-d:#BE185D;
+ --mint:#34D399;--mint-d:#047857;
+ --lilac:#A78BFA;--lilac-d:#6D28D9;
+ --blue:#60A5FA;--blue-d:#1D4ED8;
+ --butter:#EAB308;--butter-d:#854D0E;
+ --card:#FFFFFF;--edge:#F5D0FE;
+ --good:#1B9C5A;--good-bg:#DDF7E6;
+ --bad:#E0503C;--bad-bg:#FFE6E0;
+ --line:#4A3260;
+ --mg:max(0px,calc((100vw - 1240px) / 2));
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;
+ background:radial-gradient(circle,rgba(244,114,182,.16) 2px,transparent 2.6px) 0 0/30px 30px,
+ repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 46px,transparent 46px 92px),
+ linear-gradient(180deg,#FDE7F3 0%,#F3E8FF 42%,#E0F2FE 72%,#DCFCE7 100%);background-attachment:fixed}
+/* ══ căn bếp mộng mơ: dàn dụng cụ treo, mây, cửa sổ, bảng công thức, bếp trưởng quả trứng, tháp cupcake ══ */
+#kit{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.k-rail{position:absolute;left:0;right:0;top:46px;height:130px}
+.k-rod{position:absolute;left:-10px;right:-10px;top:0;height:11px;border-radius:6px;background:linear-gradient(180deg,#FBCFE8,#F9A8D4);border:3px solid var(--line)}
+.k-ut{position:absolute;top:7px;width:30px;transform-origin:50% 0;animation:kSw 3s ease-in-out infinite alternate}
+@keyframes kSw{from{transform:rotate(-11deg)}to{transform:rotate(11deg)}}
+.k-ut .hk{display:block;margin:0 auto;width:12px;height:9px;border:3px solid #9CA3AF;border-bottom:none;border-radius:10px 10px 0 0}
+.k-ut .hd{display:block;margin:0 auto;width:8px;height:34px;border-radius:4px;border:2px solid var(--line);background:var(--c)}
+.k-ut .tp{display:block;position:relative;margin:-2px auto 0}
+.k-sp .tp{width:20px;height:26px;border-radius:50%;border:2px solid var(--line);background:radial-gradient(circle at 35% 30%,#fff,#E5E7EB 60%,#C4CAD4)}
+.k-tn .tp{width:24px;height:28px;border-radius:4px 4px 10px 10px;border:2px solid var(--line);background:repeating-linear-gradient(90deg,#EEF0F4 0 4px,#A3AAB6 4px 6px)}
+.k-wk .tp{width:22px;height:36px;border:3px solid #9AA3B2;border-radius:50% 50% 50% 50%/35% 35% 65% 65%}
+.k-wk .tp::before{content:'';position:absolute;left:3px;right:3px;top:-3px;bottom:-3px;border:2px solid #9AA3B2;border-radius:inherit}
+.k-wk .tp::after{content:'';position:absolute;left:7px;width:2px;top:-3px;bottom:-3px;background:#9AA3B2}
+.k-ld .hd{height:44px}.k-ld .tp{width:28px;height:15px;border-radius:0 0 15px 15px;border:2px solid var(--line);background:linear-gradient(#EEF0F4,#C4CAD4)}
+.k-mg .hd{width:2px;height:16px;border:none;background:#9CA3AF}
+.k-mg .tp{width:26px;height:24px;border-radius:3px 3px 9px 9px;border:3px solid var(--line);background:var(--c)}
+.k-mg .tp::before{content:'';position:absolute;left:6px;top:6px;width:9px;height:8px;background:#fff;border-radius:50% 50% 0 50%;transform:rotate(45deg);opacity:.9}
+.k-mg .tp::after{content:'';position:absolute;right:-10px;top:4px;width:9px;height:11px;border:3px solid var(--line);border-left:none;border-radius:0 8px 8px 0}
+.k-cloud{position:absolute;left:0;width:var(--w);height:calc(var(--w) * .38);border-radius:999px;background:#fff;opacity:.92;box-shadow:0 4px 0 rgba(167,139,250,.25);animation:kCl linear infinite}
+.k-cloud::before{content:'';position:absolute;left:18%;top:-45%;width:38%;height:110%;border-radius:50%;background:#fff}
+.k-cloud::after{content:'';position:absolute;left:45%;top:-70%;width:42%;height:140%;border-radius:50%;background:#fff}
+@keyframes kCl{from{transform:translateX(-24vw)}to{transform:translateX(124vw)}}
+.k-ht{position:absolute;left:0;top:0;width:var(--s,12px);height:var(--s,12px);background:var(--c,#F9A8D4);transform:rotate(-45deg)}
+.k-ht::before,.k-ht::after{content:'';position:absolute;width:100%;height:100%;border-radius:50%;background:inherit}
+.k-ht::before{top:-50%;left:0}.k-ht::after{left:50%;top:0}
+.k-rise{position:absolute;bottom:-40px;animation:kRise linear infinite}
+@keyframes kRise{0%{transform:translate(0,0);opacity:0}8%{opacity:.9}30%{transform:translate(16px,-32vh)}60%{transform:translate(-14px,-66vh)}92%{opacity:.8}100%{transform:translate(8px,-112vh);opacity:0}}
+.k-spr{position:absolute;top:-20px;width:5px;height:14px;border-radius:3px;animation:kFall linear infinite}
+@keyframes kFall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(18px,56vh) rotate(360deg)}100%{transform:translate(-10px,114vh) rotate(720deg)}}
+.k-rc{position:absolute;width:32px;height:40px;border-radius:5px;border:2.5px solid var(--line);background:linear-gradient(#fff 0 9px,transparent 9px),repeating-linear-gradient(180deg,#fff 0 6px,#E9D5FF 6px 8px);box-shadow:2px 2px 0 rgba(74,50,96,.25);animation:kBob ease-in-out infinite alternate}
+.k-rc::before{content:'';position:absolute;left:4px;right:4px;top:2px;height:4px;border-radius:2px;background:var(--c,#F472B6)}
+.k-rc::after{content:'';position:absolute;right:-6px;bottom:3px;width:8px;height:15px;border-right:4px solid #10B981;border-bottom:4px solid #10B981;transform:rotate(40deg);animation:kTick 2.6s ease-in-out infinite}
+@keyframes kBob{from{transform:translateY(-14px) rotate(-8deg)}to{transform:translateY(16px) rotate(8deg)}}
+@keyframes kTick{0%,30%{opacity:0;transform:rotate(40deg) scale(.3)}45%,90%{opacity:1;transform:rotate(40deg) scale(1)}100%{opacity:0}}
+.k-st{position:absolute;width:16px;height:16px;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:kTw 2.4s ease-in-out infinite}
+@keyframes kTw{0%,100%{transform:scale(.4);opacity:.25}50%{transform:scale(1.15);opacity:1}}
+@keyframes kBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes kHop{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes kWave1{from{transform:rotate(130deg)}to{transform:rotate(165deg)}}
+@keyframes kWave2{from{transform:rotate(-130deg)}to{transform:rotate(-165deg)}}
+@keyframes kSway{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+@keyframes kRot{to{transform:rotate(360deg)}}
+/* nhân vật quả trứng */
+.k-eggc{position:relative;width:var(--w,34px);height:calc(var(--w,34px) * 1.3);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;border:3px solid var(--line);background:radial-gradient(circle at 35% 28%,#fff 0 30%,#FAFAF9 55%,#E7E5E4)}
+.k-eggc .ey{position:absolute;top:42%;width:14%;height:14%;border-radius:50%;background:var(--line);animation:kBlink 4s infinite}
+.k-eggc .ey.l{left:26%}.k-eggc .ey.r{right:26%}
+.k-eggc .mo{position:absolute;left:50%;top:60%;width:28%;height:13%;margin-left:-14%;border:2.5px solid var(--line);border-top:none;border-radius:0 0 20px 20px;background:#FB7185}
+.k-eggc .bl{position:absolute;top:57%;width:16%;height:9%;border-radius:50%;background:rgba(244,114,182,.6)}
+.k-eggc .bl.l{left:9%}.k-eggc .bl.r{right:9%}
+/* cupcake */
+.k-cup{position:relative;display:block;width:var(--s,34px);height:calc(var(--s,34px) * 1.15)}
+.k-cup .ln{position:absolute;left:10%;right:10%;bottom:0;height:46%;clip-path:polygon(0 0,100% 0,86% 100%,14% 100%);background:repeating-linear-gradient(90deg,var(--lc,#F472B6) 0 4px,#FFE4F1 4px 8px)}
+.k-cup .fr{position:absolute;left:0;right:0;bottom:40%;height:48%;border-radius:50% 50% 40% 40%/70% 70% 30% 30%;border:2px solid var(--line);
+ background:radial-gradient(circle,#F472B6 0 1.4px,transparent 1.9px) 0 0/7px 6px,radial-gradient(circle,#3B82F6 0 1.4px,transparent 1.9px) 3px 3px/8px 7px,radial-gradient(circle,#10B981 0 1.4px,transparent 1.9px) 5px 1px/9px 8px,var(--fc,#E9D5FF)}
+.k-cup .ch{position:absolute;left:50%;top:-4%;width:28%;height:24%;margin-left:-14%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 15%,#F43F5E 32%,#BE123C);border:2px solid var(--line)}
+/* cửa sổ có mây bay (màn hình rộng) */
+.k-wide,.k-slim{position:absolute;display:none}
+.k-win{left:calc(var(--mg) / 2 - 100px);top:19vh;width:200px;height:170px}
+.k-win .gls{position:absolute;left:16px;right:16px;top:8px;bottom:26px;border:7px solid #fff;outline:4px solid var(--line);border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#7DD3FC,#BAE6FD 60%,#E0F2FE);overflow:hidden}
+.k-win .sun{position:absolute;right:12px;top:10px;width:24px;height:24px;border-radius:50%;background:#FEF9C3;box-shadow:0 0 0 6px rgba(254,249,195,.55),0 0 22px #FEF08A}
+.k-win .xb,.k-win .yb{position:absolute;background:#fff}
+.k-win .xb{left:0;right:0;top:50%;height:6px;margin-top:-3px}.k-win .yb{top:0;bottom:0;left:50%;width:6px;margin-left:-3px}
+.k-wc{position:absolute;left:0;width:var(--w,58px);height:calc(var(--w,58px) * .38);border-radius:999px;background:#fff;animation:kWc 9s linear infinite}
+.k-wc::before{content:'';position:absolute;left:20%;top:-50%;width:42%;height:120%;border-radius:50%;background:#fff}
+@keyframes kWc{from{transform:translateX(-70px)}to{transform:translateX(190px)}}
+.k-cur{position:absolute;top:0;width:44px;height:120px;border:3px solid var(--line);background:radial-gradient(circle at 50% 0,#fff 0 4px,transparent 5px) 0 0/14px 14px,linear-gradient(180deg,#F9A8D4,#F472B6);transform-origin:50% 0;animation:kSway 3.4s ease-in-out infinite alternate}
+.k-cur.l{left:0;border-radius:6px 6px 30px 6px}.k-cur.r{right:0;border-radius:6px 6px 6px 30px;animation-delay:-1.7s}
+.k-win .sill{position:absolute;left:4px;right:4px;bottom:12px;height:16px;border-radius:6px;background:#C4B5FD;border:3px solid var(--line)}
+.k-win .pot{position:absolute;left:84px;bottom:26px;width:32px;height:26px;border-radius:4px 4px 10px 10px;background:#93C5FD;border:3px solid var(--line)}
+.k-win .stem{position:absolute;left:12px;bottom:22px;width:4px;height:30px;background:#10B981;transform-origin:50% 100%;animation:kSway 1.6s ease-in-out infinite alternate}
+.k-win .flw{position:absolute;left:3px;bottom:46px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#FEF08A 0 22%,transparent 24%),conic-gradient(#F472B6 0 60deg,#FBCFE8 60deg 120deg,#F472B6 120deg 180deg,#FBCFE8 180deg 240deg,#F472B6 240deg 300deg,#FBCFE8 300deg);border:2px solid var(--line);animation:kRot 6s linear infinite}
+/* bảng công thức có dấu tích */
+.k-brd{right:calc(var(--mg) / 2 - 100px);top:19vh;width:200px;height:160px;border:5px solid #C4B5FD;border-radius:16px;box-shadow:4px 4px 0 var(--line);
+ background:radial-gradient(circle,rgba(167,139,250,.28) 1px,transparent 1.6px) 0 0/8px 8px,#F5F3FF}
+.k-brd .t{position:absolute;left:0;right:0;top:4px;text-align:center;font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;letter-spacing:1px;color:var(--lilac-d)}
+.k-card{position:absolute;top:34px;width:52px;height:70px;border:2.5px solid var(--line);border-radius:6px;background:repeating-linear-gradient(180deg,#fff 0 9px,#FBCFE8 9px 11px);transform:rotate(var(--r));animation:kSway 3s ease-in-out infinite alternate}
+.k-card .pin{position:absolute;left:50%;top:-8px;width:13px;height:13px;margin-left:-6px;border-radius:50%;border:2px solid var(--line)}
+.k-card .tk{position:absolute;right:6px;bottom:10px;width:12px;height:22px;border-right:5px solid #10B981;border-bottom:5px solid #10B981;transform:rotate(40deg);animation:kTick 3.6s ease-in-out infinite}
+/* bếp trưởng quả trứng vẫy tay */
+.k-chef{left:calc(var(--mg) / 2 - 50px);top:52vh;width:100px;height:170px;animation:kHop 1.4s ease-in-out infinite}
+.k-chef .k-eggc{position:absolute;left:5px;top:40px;z-index:2}
+.k-hat{position:absolute;left:50%;top:6px;width:60px;height:44px;margin-left:-30px;z-index:3}
+.k-hat .pf{position:absolute;left:0;right:0;top:0;height:30px;border-radius:50% 50% 40% 40%;background:#fff;border:3px solid var(--line)}
+.k-hat .bd{position:absolute;left:9px;right:9px;bottom:0;height:18px;border-radius:4px;background:#fff;border:3px solid var(--line)}
+.k-arm{position:absolute;left:50%;top:98px;width:6px;height:46px;margin-left:-3px;background:var(--line);border-radius:4px;transform-origin:50% 0;z-index:1}
+.k-arm::after{content:'';position:absolute;bottom:-6px;left:-5px;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+.k-arm.l{animation:kWave1 .5s ease-in-out infinite alternate}.k-arm.r{animation:kWave2 .7s ease-in-out infinite alternate}
+.k-chef .ft{position:absolute;bottom:2px;width:22px;height:12px;border-radius:10px 10px 4px 4px;background:#F9A8D4;border:2px solid var(--line)}
+/* tháp cupcake */
+.k-stand{right:calc(var(--mg) / 2 - 75px);top:52vh;width:150px;height:190px}
+.k-stand .pole{position:absolute;left:72px;top:40px;width:7px;height:130px;background:#C4B5FD;border:2px solid var(--line);border-radius:4px}
+.k-stand .tr{position:absolute;height:12px;border-radius:50%;background:linear-gradient(#F5F3FF,#DDD6FE);border:3px solid var(--line)}
+.k-stand .cp{position:absolute;animation:kHop 1.6s ease-in-out infinite}
+.k-yum{position:absolute;font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;color:var(--pink-d);background:#fff;border:3px solid var(--line);border-radius:999px;padding:0 10px;line-height:1.5;animation:kPopTxt 2.6s ease-in-out infinite}
+@keyframes kPopTxt{0%,40%{transform:scale(0);opacity:0}50%{transform:scale(1.25);opacity:1}70%,85%{transform:scale(1);opacity:1}100%{transform:scale(.6);opacity:0}}
+/* bản thu gọn cho lề hẹp (1366) */
+.k-crock{left:calc(var(--mg) / 2 - 22px);top:30vh;width:44px;height:96px}
+.k-crock .jar{position:absolute;left:0;bottom:0;width:44px;height:48px;border:3px solid var(--line);border-radius:6px 6px 16px 16px;background:linear-gradient(180deg,#DDD6FE,#C4B5FD);z-index:2}
+.k-crock .jar::after{content:'';position:absolute;left:13px;top:13px;width:12px;height:12px;background:#F472B6;transform:rotate(-45deg);box-shadow:-6px 0 0 -0px #F472B6}
+.k-crock .u{position:absolute;bottom:30px;transform-origin:50% 100%;animation:kSway 1.8s ease-in-out infinite alternate}
+.k-crock .u .hd{display:block;margin:0 auto;width:6px;height:36px;border-radius:3px;border:2px solid var(--line);background:var(--c)}
+.k-crock .u .tp{display:block;margin:0 auto -2px;width:16px;height:20px;border-radius:50%;border:2px solid var(--line);background:#E5E7EB}
+.k-crock .u.w .tp{border-radius:50% 50% 50% 50%/65% 65% 35% 35%;background:repeating-linear-gradient(90deg,#fff 0 3px,#A3AAB6 3px 5px)}
+.k-crock .u.t .tp{border-radius:8px 8px 3px 3px;background:repeating-linear-gradient(90deg,#fff 0 3px,#A3AAB6 3px 5px)}
+.k-shk{right:calc(var(--mg) / 2 - 24px);top:30vh;width:48px;height:70px}
+.k-shk .s{position:absolute;bottom:0;width:22px;height:44px;border:3px solid var(--line);border-radius:10px 10px 6px 6px;animation:kHop .9s ease-in-out infinite}
+.k-shk .s::before{content:'';position:absolute;left:2px;right:2px;top:-9px;height:9px;border-radius:8px 8px 0 0;background:radial-gradient(circle,var(--line) 0 1.4px,transparent 1.8px) 0 0/6px 5px,#E5E7EB;border:2px solid var(--line);border-bottom:none}
+.k-shk .s .ey{position:absolute;top:14px;width:4px;height:5px;border-radius:50%;background:var(--line)}
+.k-shk .s .ey.l{left:4px}.k-shk .s .ey.r{right:4px}
+.k-shk .s .mo{position:absolute;left:6px;top:22px;width:8px;height:4px;border:2px solid var(--line);border-top:none;border-radius:0 0 8px 8px}
+.k-megg{left:calc(var(--mg) / 2 - 17px);top:64vh;animation:kHop 1s ease-in-out infinite}
+.k-mcup{right:calc(var(--mg) / 2 - 20px);top:64vh;animation:kHop 1.3s ease-in-out infinite}
+@media(min-width:1480px){.k-wide{display:block}}
+@media(min-width:941px) and (max-width:1479px){.k-slim{display:block}}
+/* ══ mặt bếp: tủ lạnh vẫy cửa, trứng nhảy vào bát, chảo trứng tráng, bánh kếp lật, máy trộn bột hồng, lò nướng cupcake ══ */
+#gnd{position:fixed;left:0;right:0;bottom:0;height:300px;z-index:1;pointer-events:none;overflow:hidden}
+.k-bsp{position:absolute;left:0;right:0;bottom:34px;height:150px;opacity:.75;
+ background:conic-gradient(#FCE7F3 25%,#fff 0 50%,#FCE7F3 0 75%,#fff 0) 0 0/30px 30px;-webkit-mask-image:linear-gradient(transparent,#000 55%);mask-image:linear-gradient(transparent,#000 55%)}
+.k-floor{position:absolute;left:0;right:0;bottom:0;height:34px;border-top:5px solid var(--line);background:conic-gradient(#F9A8D4 25%,#fff 0 50%,#F9A8D4 0 75%,#fff 0) 0 0/26px 26px}
+.k-floor::before{content:'';position:absolute;left:0;right:0;top:0;height:7px;background:#A7F3D0;border-bottom:3px solid var(--line)}
+.k-sh{position:absolute;animation:kSteam 3s ease-out infinite}
+@keyframes kSteam{0%{transform:translate(0,0) scale(.4);opacity:0}20%{opacity:.95}100%{transform:translate(var(--dx,8px),-86px) scale(1.25);opacity:0}}
+/* tủ lạnh */
+.k-frg{position:absolute;left:1vw;bottom:34px;width:112px;height:216px;perspective:520px}
+.k-frg .bx{position:absolute;inset:0;border:4px solid var(--line);border-radius:20px 20px 8px 8px;background:#DBEAFE}
+.k-frg .in{position:absolute;left:6px;right:6px;top:70px;bottom:8px;border-radius:6px;background:linear-gradient(#FFFDF2,#FEF9C3);box-shadow:inset 0 0 14px rgba(253,224,71,.6)}
+.k-frg .in .sh{position:absolute;left:0;right:0;height:4px;background:#BFDBFE}
+.k-frg .milk{position:absolute;left:10px;bottom:76px;width:22px;height:36px;border:2px solid var(--line);border-radius:3px;background:linear-gradient(#fff 0 40%,#93C5FD 40% 60%,#fff 60%)}
+.k-frg .milk::before{content:'';position:absolute;left:-2px;right:-2px;top:-10px;height:10px;background:#fff;border:2px solid var(--line);clip-path:polygon(0 100%,50% 0,100% 100%)}
+.k-frg .berry{position:absolute;bottom:80px;width:14px;height:16px;border-radius:50% 50% 50% 50%/40% 40% 60% 60%;background:radial-gradient(circle,#FEF9C3 0 1px,transparent 1.5px) 0 0/5px 5px,#F43F5E;border:2px solid var(--line)}
+.k-frg .cake{position:absolute;left:12px;bottom:12px;width:60px;height:30px;border:2px solid var(--line);border-radius:6px 6px 3px 3px;background:linear-gradient(#fff 0 30%,#F9A8D4 30% 55%,#FBCFE8 55%)}
+.k-frg .hand{position:absolute;right:4px;bottom:44px;width:20px;height:24px;border-radius:10px 10px 8px 8px;background:#fff;border:2px solid var(--line);transform-origin:50% 100%;animation:kSway .3s ease-in-out infinite alternate}
+.k-frg .fz{position:absolute;left:0;right:0;top:0;height:66px;border-bottom:4px solid var(--line);border-radius:16px 16px 0 0;background:linear-gradient(135deg,#BFDBFE,#93C5FD);z-index:3}
+.k-frg .fz .ey{position:absolute;top:22px;width:9px;height:12px;border-radius:50%;background:var(--line);animation:kBlink 3.6s infinite}
+.k-frg .fz .ey.l{left:34px}.k-frg .fz .ey.r{left:62px}
+.k-frg .fz .mo{position:absolute;left:44px;top:38px;width:18px;height:9px;border:3px solid var(--line);border-top:none;border-radius:0 0 18px 18px;background:#FB7185}
+.k-frg .dr{position:absolute;left:-4px;right:-4px;top:62px;bottom:-4px;border:4px solid var(--line);border-radius:0 0 8px 8px;background:linear-gradient(135deg,#BFDBFE,#93C5FD);transform-origin:0 50%;animation:kDoor 6s ease-in-out infinite;z-index:4}
+.k-frg .dr::before{content:'';position:absolute;right:10px;top:16px;width:8px;height:44px;border-radius:4px;background:#F472B6;border:2px solid var(--line)}
+.k-frg .dr .mag{position:absolute;width:12px;height:12px;transform:rotate(-45deg)}
+.k-frg .dr .mag::before,.k-frg .dr .mag::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:inherit}
+.k-frg .dr .mag::before{top:-6px;left:0}.k-frg .dr .mag::after{left:6px;top:0}
+@keyframes kDoor{0%,48%,100%{transform:rotateY(0)}56%{transform:rotateY(-72deg)}62%{transform:rotateY(-38deg)}68%{transform:rotateY(-72deg)}74%{transform:rotateY(-38deg)}82%{transform:rotateY(-72deg)}92%{transform:rotateY(0)}}
+/* trứng nhảy vào bát, phới lồng đánh trứng */
+.k-egs{position:absolute;left:calc(1vw + 128px);bottom:34px;width:220px;height:180px}
+.k-egs .egg{position:absolute;left:0;bottom:0;animation:kEggHop 4.5s ease-in-out infinite;opacity:0}
+@keyframes kEggHop{0%{transform:translate(0,0) rotate(0);opacity:0}6%{opacity:1}13%{transform:translate(20px,-26px)}20%{transform:translate(40px,0)}27%{transform:translate(60px,-26px)}34%{transform:translate(80px,0)}50%{transform:translate(118px,-92px) rotate(25deg)}62%{transform:translate(146px,-34px) rotate(70deg) scale(.75);opacity:1}68%,100%{transform:translate(146px,-14px) rotate(90deg) scale(.3);opacity:0}}
+.k-bowl{position:absolute;right:0;bottom:0;width:116px;height:60px;border:4px solid var(--line);border-top:none;border-radius:0 0 62px 62px;background:linear-gradient(180deg,#93C5FD,#60A5FA);z-index:3}
+.k-bowl::before{content:'';position:absolute;left:-12px;right:-12px;top:-12px;height:22px;border-radius:50%;border:4px solid var(--line);background:radial-gradient(ellipse at center,#FEF9C3 0 52%,#DBEAFE 54%)}
+.k-bowl::after{content:'';position:absolute;left:46px;top:26px;width:14px;height:14px;background:#FBCFE8;transform:rotate(-45deg);border-radius:3px}
+.k-whk{position:absolute;right:46px;bottom:34px;width:30px;height:100px;transform-origin:50% 100%;animation:kWhk .45s ease-in-out infinite alternate;z-index:2}
+@keyframes kWhk{from{transform:rotate(-20deg)}to{transform:rotate(18deg)}}
+.k-whk .hd{position:absolute;left:11px;top:0;width:9px;height:46px;border-radius:5px;background:#F472B6;border:2px solid var(--line)}
+.k-whk .lo{position:absolute;left:3px;top:42px;width:24px;height:46px;border:3px solid #8C95A5;border-radius:50% 50% 50% 50%/30% 30% 70% 70%;animation:kSpinX .3s linear infinite}
+.k-whk .lo::before{content:'';position:absolute;left:4px;right:4px;top:-3px;bottom:-3px;border:2px solid #8C95A5;border-radius:inherit}
+@keyframes kSpinX{0%{transform:scaleX(1)}50%{transform:scaleX(.25)}100%{transform:scaleX(1)}}
+.k-plop{position:absolute;right:40px;bottom:66px;width:22px;height:22px;background:#F9A8D4;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:kPlop 1.5s ease-out infinite;z-index:4}
+@keyframes kPlop{0%,30%{transform:scale(0);opacity:0}40%{transform:scale(1.3);opacity:1}70%,100%{transform:scale(.4) translateY(-20px);opacity:0}}
+/* chảo trứng tráng tự gập rồi trượt ra đĩa */
+.k-pan{position:absolute;left:29vw;bottom:34px;width:260px;height:170px}
+.k-stv{position:absolute;left:0;bottom:0;width:156px;height:22px;border:4px solid var(--line);border-radius:8px;background:linear-gradient(#E9D5FF,#C4B5FD)}
+.k-stv::before,.k-stv::after{content:'';position:absolute;top:3px;width:10px;height:10px;border-radius:50%;background:#F472B6;border:2px solid var(--line)}
+.k-stv::before{left:10px}.k-stv::after{right:10px}
+.k-flm{position:absolute;bottom:22px;width:12px;height:17px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff 0 20%,#93C5FD 42%,#A78BFA);transform-origin:50% 100%;animation:kFlm .22s ease-in-out infinite alternate}
+@keyframes kFlm{from{transform:scale(1,1)}to{transform:scale(.8,1.25)}}
+.k-pn{position:absolute;left:14px;bottom:38px;width:128px;height:24px;border:4px solid var(--line);border-top:none;border-radius:0 0 54px 54px/0 0 24px 24px;background:linear-gradient(#8B7FA8,#5B4E7A)}
+.k-pn::before{content:'';position:absolute;left:-7px;right:-7px;top:-7px;height:10px;border-radius:6px;background:#A79BC6;border:3px solid var(--line)}
+.k-pn .hdl{position:absolute;left:-84px;top:-6px;width:80px;height:13px;border-radius:7px;background:var(--pink);border:3px solid var(--line)}
+.k-omw{position:absolute;left:32px;bottom:62px;width:92px;height:18px;animation:kOmSl 7s ease-in-out infinite}
+.k-om{position:absolute;inset:0;perspective:200px}
+.k-om .a,.k-om .b{position:absolute;top:0;height:18px;width:46px;background:radial-gradient(circle,#F9A8D4 0 2.4px,transparent 3px) 4px 4px/14px 10px,radial-gradient(circle at 30% 40%,#FEFCE8,#FEF08A 75%);border:3px solid #D4B83A}
+.k-om .a{left:0;border-radius:18px 0 0 18px/9px 0 0 9px}
+.k-om .b{left:46px;border-radius:0 18px 18px 0/0 9px 9px 0;transform-origin:0 50%;animation:kOmF 7s ease-in-out infinite;z-index:2}
+@keyframes kOmF{0%,26%{transform:rotateY(0)}36%,91%{transform:rotateY(-180deg)}92%,100%{transform:rotateY(0)}}
+@keyframes kOmSl{0%,40%{transform:translate(0,0) rotate(0);opacity:1}52%{transform:translate(78px,-36px) rotate(14deg)}62%,86%{transform:translate(146px,48px) rotate(0)}90%{transform:translate(146px,48px);opacity:0}91%{transform:translate(0,0);opacity:0}100%{transform:translate(0,0);opacity:1}}
+.k-pl{position:absolute;bottom:0;height:16px;border-radius:50%;background:radial-gradient(ellipse at center,#fff 0 55%,#EDE9FE 57%);border:3px solid var(--line)}
+.k-pan .k-pl{left:166px;width:92px}
+.k-sizz{position:absolute;bottom:84px;width:8px;height:8px;border-radius:50%;border:2px solid #fff;animation:kSteam 1.4s ease-out infinite}
+/* bánh kếp lật */
+.k-pck{position:absolute;left:52vw;bottom:34px;width:130px;height:230px}
+.k-pck .k-pl{left:6px;width:118px}
+.k-stk{position:absolute;left:27px;bottom:10px;width:76px}
+.k-pc{display:block;width:76px;height:15px;margin-top:-4px;border-radius:50%;border:3px solid var(--line);background:var(--c)}
+.k-stk .cr{display:block;margin:0 auto -6px;width:34px;height:18px;border-radius:50% 50% 30% 30%;background:#fff;border:3px solid var(--line);position:relative}
+.k-stk .cr::after{content:'';position:absolute;left:9px;top:-12px;width:12px;height:13px;border-radius:50% 50% 50% 50%/40% 40% 60% 60%;background:#F43F5E;border:2px solid var(--line)}
+.k-fly{position:absolute;left:27px;bottom:94px;animation:kFlip 2.6s ease-in-out infinite}
+.k-fly .k-pc{margin:0}
+@keyframes kFlip{0%,14%{transform:translateY(0) rotateX(0)}50%{transform:translateY(-122px) rotateX(540deg)}86%,100%{transform:translateY(0) rotateX(1080deg)}}
+.k-flipw{position:absolute;left:78px;bottom:196px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.85rem;color:var(--lilac-d);background:#fff;border:3px solid var(--line);border-radius:999px;padding:0 8px;line-height:1.5;animation:kFlipW 2.6s ease-in-out infinite}
+@keyframes kFlipW{0%,38%{transform:scale(0);opacity:0}48%{transform:scale(1.2);opacity:1}62%{transform:scale(1);opacity:1}72%,100%{transform:scale(.5);opacity:0}}
+/* máy trộn bột hồng */
+.k-mix{position:absolute;right:calc(1vw + 178px);bottom:34px;width:150px;height:176px}
+.k-mix .bs{position:absolute;left:0;bottom:0;width:146px;height:18px;border-radius:9px;background:#C4B5FD;border:3px solid var(--line)}
+.k-mix .cl{position:absolute;left:12px;bottom:14px;width:32px;height:122px;border-radius:16px 16px 6px 6px;background:linear-gradient(90deg,#DDD6FE,#C4B5FD);border:3px solid var(--line)}
+.k-mix .hd{position:absolute;left:4px;top:18px;width:132px;height:46px;border-radius:26px 24px 18px 24px;background:linear-gradient(180deg,#E9D5FF,#C4B5FD);border:3px solid var(--line);animation:kVib .14s linear infinite alternate;z-index:2}
+.k-mix .hd::before{content:'';position:absolute;left:10px;right:16px;top:18px;height:7px;border-radius:4px;background:#F9A8D4}
+.k-mix .hd::after{content:'';position:absolute;left:14px;top:6px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+@keyframes kVib{from{transform:translateX(-1px) rotate(-.6deg)}to{transform:translateX(1px) rotate(.6deg)}}
+.k-mix .bt{position:absolute;left:96px;top:60px;width:12px;height:52px;border:3px solid #8C95A5;border-radius:6px 6px 50% 50%;animation:kSpinX .22s linear infinite;z-index:1}
+.k-mix .bw{position:absolute;left:62px;bottom:15px;width:82px;height:54px;border:4px solid var(--line);border-top:none;border-radius:0 0 42px 42px;background:linear-gradient(180deg,#F8FAFC,#CBD5E1);z-index:2}
+.k-mix .bat{position:absolute;left:-8px;right:-8px;top:-10px;height:20px;border-radius:50%;border:3px solid var(--line);
+ background:repeating-linear-gradient(100deg,#F472B6 0 9px,#FBCFE8 9px 18px,#fff 18px 23px);background-size:46px 100%;animation:kBat .5s linear infinite}
+@keyframes kBat{to{background-position:46px 0}}
+.k-mix .spl{position:absolute;top:96px;width:8px;height:8px;border-radius:50%;background:#F472B6;animation:kSpl 1.5s ease-out infinite;z-index:3}
+@keyframes kSpl{0%{transform:translate(0,0);opacity:0}15%{opacity:1}60%{transform:translate(var(--dx),-30px)}100%{transform:translate(calc(var(--dx) * 1.5),8px);opacity:0}}
+/* lò nướng bạc hà, cupcake bay lên, chuông "ding" */
+.k-ovn{position:absolute;right:1vw;bottom:34px;width:166px;height:240px}
+.k-ovn .bx{position:absolute;left:0;bottom:0;width:166px;height:152px;border:4px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#A7F3D0,#6EE7B7);z-index:2}
+.k-ovn .pnl{position:absolute;left:8px;right:8px;top:8px;height:28px;border-radius:10px;background:#ECFDF5;border:3px solid var(--line)}
+.k-ovn .dl{position:absolute;top:3px;width:17px;height:17px;border-radius:50%;border:2px solid var(--line);animation:kRot 3s linear infinite}
+.k-ovn .dl::after{content:'';position:absolute;left:5px;top:0;width:3px;height:7px;background:var(--line)}
+.k-ovn .tm{position:absolute;right:8px;top:3px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.7rem;line-height:16px;padding:0 5px;border-radius:5px;background:#4A3260;color:#A7F3D0;animation:kBlinkTm 1s steps(1) infinite}
+@keyframes kBlinkTm{50%{color:#F9A8D4}}
+.k-ovn .dr{position:absolute;left:12px;right:12px;top:46px;bottom:12px;border:4px solid var(--line);border-radius:12px;background:#F0FDFA}
+.k-ovn .dr::before{content:'';position:absolute;left:24px;right:24px;top:6px;height:8px;border-radius:4px;background:#F472B6;border:2px solid var(--line)}
+.k-ovn .gw{position:absolute;left:10px;right:10px;top:20px;bottom:8px;border:3px solid var(--line);border-radius:10px;background:radial-gradient(circle at 50% 75%,#FCE7F3,#F9A8D4 45%,#C084FC);animation:kGlow 1.5s ease-in-out infinite alternate;display:grid;place-items:center}
+@keyframes kGlow{from{filter:brightness(.92)}to{filter:brightness(1.15)}}
+.k-ovn .cr{position:absolute;bottom:126px;opacity:0;animation:kCupUp 4.5s ease-out infinite;z-index:1}
+@keyframes kCupUp{0%{transform:translateY(40px) scale(.6);opacity:0}18%{opacity:1}55%{transform:translateY(-52px) scale(1)}80%{transform:translateY(-70px) scale(1);opacity:1}100%{transform:translateY(-92px) scale(.9);opacity:0}}
+.k-bell{position:absolute;right:6px;bottom:150px;width:34px;height:26px;z-index:3;transform-origin:50% 100%;animation:kRing 1.5s ease-in-out infinite}
+.k-bell::before{content:'';position:absolute;left:3px;right:3px;bottom:5px;height:19px;border-radius:16px 16px 2px 2px;background:radial-gradient(circle at 35% 30%,#fff,#DDD6FE 60%,#A78BFA);border:3px solid var(--line)}
+.k-bell::after{content:'';position:absolute;left:0;right:0;bottom:0;height:7px;border-radius:3px;background:#F472B6;border:2px solid var(--line)}
+@keyframes kRing{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(-16deg)}72%{transform:rotate(16deg)}78%{transform:rotate(-10deg)}84%{transform:rotate(8deg)}}
+.k-ding{position:absolute;right:30px;bottom:178px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.9rem;color:var(--mint-d);background:#fff;border:3px solid var(--line);border-radius:999px;padding:0 9px;line-height:1.5;z-index:3;animation:kDing 1.5s ease-in-out infinite}
+@keyframes kDing{0%,58%{transform:scale(0);opacity:0}66%{transform:scale(1.25);opacity:1}86%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}
+@media(max-width:1180px){.k-mix{display:none}.k-pck{left:56vw}}
+@media(max-width:940px){#gnd{height:190px}.k-pck,.k-egs .egg:nth-child(n+3){display:none}.k-pan{left:auto;right:calc(1vw + 170px)}.k-egs{left:calc(1vw + 118px)}}
+@media(prefers-reduced-motion:reduce){#kit *,#gnd *{animation:none!important}}
+/* ── sticky note ── */
+.note{position:sticky;top:0;z-index:50;padding:6px 14px;text-align:center;
+ background:linear-gradient(90deg,#DB2777,#C026D3 22%,#7C3AED 46%,#2563EB 70%,#0D9488 94%);box-shadow:0 4px 0 var(--line)}
+.note .in{display:flex;align-items:center;gap:10px;max-width:1400px;margin:0 auto;justify-content:center;height:calc(.95rem * 1.45 * 2);overflow:hidden}
+.note .tg{flex:none;background:#FFE4F0;color:#9C1747;font-weight:900;font-size:.8rem;padding:3px 12px;border:3px solid #9C1747;border-radius:999px;white-space:nowrap;box-shadow:2px 2px 0 #9C1747}
+.note .tx{color:#fff;font-weight:800;font-size:.95rem;line-height:1.45;text-shadow:0 1px 4px rgba(0,0,0,.45);transition:opacity .25s}
+/* ── compact header ── */
+header{position:relative;z-index:10;max-width:1240px;margin:8px auto 6px;background:var(--card);
+ border:4px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--pink);
+ padding:5px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+header h1{font-family:'Baloo 2',cursive;font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:800;color:var(--pink-d);line-height:1.25;white-space:nowrap}
+header h1 .p1{font-family:'Baloo 2',cursive;font-size:.72rem;vertical-align:middle;background:var(--lilac);color:#fff;padding:1px 9px;margin-left:8px;border:3px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line)}
+header .by{font-size:.8rem;color:var(--dim);font-weight:800;margin-top:1px}
+header .by b{color:var(--pink-d)}
+.hright{display:flex;align-items:center;gap:10px}
+.chips{display:grid;grid-template-columns:auto auto;gap:4px 6px}
+.chip{font-family:'Baloo 2',cursive;font-weight:800;font-size:.74rem;line-height:1.1;padding:3px 9px;border:3px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line);white-space:nowrap;color:#fff;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.chip.c1{background:var(--pink)}.chip.c2{background:var(--blue)}.chip.c3{background:var(--mint)}.chip.c4{background:var(--lilac)}
+.gauge{position:relative;background:radial-gradient(circle at 35% 30%,#FFFFFF,#FBCFE8 55%,#F472B6);border:4px solid var(--pink-d);border-radius:50%;width:58px;height:58px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--line);flex:none}
+.gauge::before{content:'🧁';position:absolute;top:-12px;right:-9px;font-size:15px}
+.gauge .num{font-family:'Baloo 2',cursive;font-size:1rem;color:#6B0F3A;font-weight:800;line-height:1}
+.gauge .lbl{font-size:.55rem;font-weight:900;color:var(--lilac-d);text-transform:uppercase}
+@media(max-width:1180px){header{flex-wrap:wrap}header h1{white-space:normal}}
+/* ── layout ── */
+.main{position:relative;z-index:5;max-width:1240px;margin:0 auto;display:flex;gap:18px;padding:4px 16px 0;align-items:flex-start}
+.lp,.rp{max-height:calc(100vh - 240px);overflow-y:auto;padding-right:4px}
+.lp{flex:0 0 48%}
+.rp{flex:1;min-width:0}
+.lp::-webkit-scrollbar,.rp::-webkit-scrollbar{width:9px}
+.lp::-webkit-scrollbar-thumb,.rp::-webkit-scrollbar-thumb{background:#F9A8D4;border-radius:6px;border:2px solid var(--lilac)}
+.slbl{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--lilac-d);margin-bottom:8px;display:flex;align-items:center;gap:10px;
+ background:rgba(255,255,255,.94);border-radius:999px;padding:1px 14px;border:3px solid var(--line)}
+.slbl::after{content:'';flex:1;height:8px;border-radius:8px;background:repeating-linear-gradient(90deg,#F472B6 0 10px,#A78BFA 10px 20px,#60A5FA 20px 30px,#34D399 30px 40px,#FDE68A 40px 50px)}
+@media(max-width:940px){.main{flex-direction:column;padding-bottom:210px}.lp{flex:1 1 auto;width:100%}.lp,.rp{max-height:none!important}}
+/* ── passage cards ── */
+.pc{position:relative;background:var(--card);border:4px solid var(--edge);border-radius:18px;padding:26px 18px 14px;margin:20px 0 22px;box-shadow:6px 6px 0 rgba(74,50,96,.2)}
+.pc .stamp{position:absolute;top:-22px;right:18px;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#FDF2F8);
+ border:4px solid currentColor;display:grid;place-items:center;font-size:24px;box-shadow:3px 3px 0 var(--line)}
+.lvl{position:absolute;top:-15px;left:18px;font-family:'Baloo 2',cursive;font-weight:800;font-size:.85rem;line-height:1.2;background:#FBCFE8;color:#831843;border:3px solid #831843;border-radius:999px;padding:3px 12px;box-shadow:3px 3px 0 #831843}
+.ptitle{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.pins{font-size:.92rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:10px;line-height:1.6}
+.pblk{border-left:7px solid;border-radius:12px;padding:12px 14px 4px;margin:16px 0;position:relative}
+.pblk .em{position:absolute;top:-13px;right:10px;font-size:1.2rem;background:#fff;border:3px solid var(--line);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;box-shadow:2px 2px 0 var(--line)}
+.pblk .ptag{position:absolute;top:-12px;left:12px;font-family:'Baloo 2',cursive;font-size:.74rem;font-weight:800;line-height:1.2;color:#fff;background:var(--line);border-radius:999px;padding:2px 10px}
+.paragraph{font-size:1.16rem;line-height:1.95;margin-bottom:10px;text-align:justify}
+.paragraph b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.bk-pink{background:#FFD6EA;color:#9D174D}.bk-mint{background:#C9F7E3;color:#065F46}.bk-lilac{background:#E9DDFF;color:#5B21B6}
+.bk-blue{background:#D6E8FF;color:#1E40AF}.bk-butter{background:#FFF1A8;color:#854D0E}
+.btr{font-family:'Baloo 2',cursive;font-size:.85rem;background:linear-gradient(135deg,#FFC9DE,#E6D9FF 50%,#C7F0E0);border:3px solid var(--pink);color:#3B2A4A;
+ padding:5px 16px;border-radius:999px;cursor:pointer;transition:.15s;font-weight:800;display:block;margin:6px 0 12px;box-shadow:3px 3px 0 var(--pink)}
+.btr:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--pink)}
+.translation{display:none;margin-bottom:12px;font-size:1rem;line-height:1.8;color:#3A2F4A;background:#FDF7FF;border-left:4px solid var(--lilac);border-radius:0 12px 12px 0;padding:10px 14px;font-style:italic}
+.wbx{margin:4px 0 6px;padding:10px 12px 12px;border-radius:14px;border:3px dashed var(--lilac);background:#FBF8FF}
+.wbt{font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;color:var(--lilac-d);text-align:center;margin-bottom:8px;letter-spacing:.5px}
+.wbt small{font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;color:var(--dim);letter-spacing:0}
+.wbi{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.wc{padding:3px 14px;border-radius:999px;font-weight:900;font-size:1.05rem;color:#fff;border:2.5px solid var(--line);box-shadow:2px 2px 0 var(--line);text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.wc:nth-child(5n+1){background:var(--pink)}.wc:nth-child(5n+2){background:var(--lilac)}.wc:nth-child(5n+3){background:var(--blue)}.wc:nth-child(5n+4){background:var(--mint)}.wc:nth-child(5n){background:#FB7185}
+.gl{margin-top:12px;background:var(--card);border:3px solid var(--edge);border-radius:12px;overflow:hidden}
+.gl h3{font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#fff;margin:0;padding:8px 14px}
+table.gtb{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.95rem}
+.gtb tr{border-top:1px dotted var(--edge)}
+.gtb tr:nth-child(even){background:#FDF4FF}
+.gtb td,.gtb th{padding:7px 12px;text-align:left;vertical-align:top}
+.gtb th{font-weight:800;font-size:.82rem;color:var(--dim)}
+.gtb .gw{font-weight:900;color:var(--lilac-d)}
+.gtb .gp{color:var(--pink-d);font-weight:700;font-size:.86rem}
+/* ── quiz cards ── */
+.sec{background:rgba(255,255,255,.96);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:6px 6px 0 rgba(74,50,96,.2);border:4px solid var(--edge)}
+.sech{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;margin-bottom:2px}
+.secs{font-size:.88rem;color:var(--dim);font-style:italic;font-weight:700;margin-bottom:12px;line-height:1.55}
+.q{background:#FFFEFA;border:2px solid #EBDDF7;border-left:7px solid var(--lilac);border-radius:14px;padding:14px;margin-bottom:14px}
+.q .qt{font-weight:800;font-size:1.08rem;line-height:1.75}
+.q .qt b{padding:1px 6px;border-radius:7px;white-space:nowrap}
+.qn{display:inline-block;background:var(--qc,var(--lilac));color:#fff;min-width:38px;text-align:center;border:2px solid var(--line);border-radius:999px;padding:2px 9px;margin-right:9px;
+ font-family:'Baloo 2',cursive;font-weight:800;font-size:.95rem;line-height:1.3;vertical-align:1px;box-shadow:2px 2px 0 var(--line);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}
+.ob{background:#fff;color:var(--ink);border:2px solid #E4D4F4;border-radius:12px;padding:11px 13px;
+ font-family:'Nunito';font-weight:800;font-size:1rem;cursor:pointer;text-align:left;line-height:1.5;transition:.14s;box-shadow:0 3px 0 #E4D4F4}
+.ob:hover:not(.dn){transform:translateY(-2px);border-color:var(--qc,var(--lilac))}
+.ob.dn{cursor:default}
+.ob.ok{background:var(--good-bg);border-color:var(--good);color:#0b6b3c;box-shadow:0 3px 0 #9fe3bd}
+.ob.no{background:var(--bad-bg);border-color:var(--bad);color:#a31832;box-shadow:0 3px 0 #f7bac5}
+.ex{display:none;margin-top:12px;background:#fff;border:2px solid #EBDDF7;border-radius:12px;padding:14px;font-size:.98rem;line-height:1.85}
+.ex.on{display:block;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.shk{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* ── explanation content ── */
+.vnt{margin-bottom:10px;padding:9px 13px;border-radius:12px;background:#F5EEFF;border-left:5px solid var(--lilac);font-weight:700;line-height:1.7}
+.ex ol{margin:0;padding-left:22px}
+.ex ol>li{margin:10px 0;line-height:1.75;padding-left:4px}
+.ex ol>li::marker{font-weight:900;color:var(--pink-d)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.og{grid-template-columns:1fr}}
+.grid2>div{border:2px solid #E4D4F4;border-radius:12px;padding:8px 11px;background:#FCFAFF;line-height:1.7;font-size:.97rem}
+.grid2>div.gk{border-color:var(--good);background:var(--good-bg);box-shadow:0 0 0 3px rgba(27,156,90,.14)}
+.p-word{color:#1E6FD9;font-weight:800}
+.hl-green{color:#11924E;font-weight:900}
+.hl-red{color:#D8334A;font-weight:900}
+.wt{display:inline-block;margin:0 3px;padding:0 7px;border-radius:6px;font-size:.78em;font-weight:700;background:rgba(110,100,160,.14);color:#5B5480}
+.p-phonetic{padding:0 6px;border-radius:6px;background:#F1E8FF;color:#7A3FC8;font-weight:700;font-family:'Segoe UI','Lucida Sans Unicode','Arial Unicode MS',sans-serif}
+.p-mean{color:#B5532E;font-weight:700}
+.p-grammar{display:inline;line-height:1.95;padding:3px 8px 3px 2px;border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hx0{background:#FFF3B0}.hx1{background:#D6ECFF}.hx2{background:#FFDDEE}
+.hx3{background:#DDF7D0}.hx4{background:#EBDFFF}.hx5{background:#FFE4F3}
+.qe0{color:#1D4ED8;font-weight:800}.qe1{color:#C2185B;font-weight:800}.qe2{color:#0F8A5F;font-weight:800}.qe3{color:#7C3AED;font-weight:800}.qe4{color:#B4236E;font-weight:800}.qe5{color:#0E7490;font-weight:800}
+.frame{margin-top:10px;padding:10px 13px;border-radius:14px;background:#fff;border:2px dashed var(--edge);line-height:1.75}
+.frame i{color:var(--dim)}
+.dk{margin-top:12px;padding:11px 13px;border-radius:14px;background:#F5F0FF;border-left:5px solid var(--lilac)}
+.dict{margin-top:7px;display:flex;flex-wrap:wrap;gap:8px}
+.dict a{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:999px;font-size:.9rem;font-weight:800;text-decoration:none;color:#fff;transition:transform .15s;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.dict a:hover{transform:translateY(-2px)}
+.dict a.d0{background:linear-gradient(135deg,#F472B6,#A855F7)}.dict a.d1{background:linear-gradient(135deg,#10B981,#3B82F6)}
+.dict a.d2{background:linear-gradient(135deg,#3B82F6,#8B5CF6)}.dict a.d3{background:linear-gradient(135deg,#8B5CF6,#EC4899)}
+.say{margin-top:7px;font-size:.9rem;color:var(--dim)}
+/* ── submit / modal ── */
+.sw{text-align:center;padding:12px 0 8px}
+.sbtn{font-family:'Baloo 2',cursive;font-size:1.08rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#F472B6,#A855F7 50%,#3B82F6);border:4px solid var(--line);
+ padding:12px 34px;border-radius:999px;cursor:pointer;transition:.15s;box-shadow:5px 5px 0 #A7F3D0}
+.sbtn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #A7F3D0}
+.foot{text-align:center;margin:10px 0 14px;font-size:.92rem;color:var(--ink);font-weight:800;line-height:1.7;
+ background:rgba(255,255,255,.96);border:3px solid var(--line);border-radius:14px;padding:10px 16px;box-shadow:4px 4px 0 #F9A8D4}
+.foot b{color:var(--pink-d)}
+.ov{display:none;position:fixed;inset:0;z-index:100;background:rgba(74,50,96,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.mb{position:relative;background:var(--card);border:4px solid var(--line);border-radius:20px;padding:26px 28px;max-width:460px;width:100%;
+ text-align:center;box-shadow:7px 7px 0 #F9A8D4;animation:popin .3s ease}
+@keyframes popin{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.mb h2{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;color:var(--pink-d);margin-bottom:14px}
+.mb input{width:100%;font-family:'Nunito';font-size:1rem;font-weight:700;padding:12px 14px;background:#fff;border:2.5px solid var(--edge);border-radius:12px;color:var(--ink);text-align:center;outline:none;margin-bottom:10px}
+.mb input:focus{border-color:var(--lilac)}
+.err{color:var(--bad);font-size:.85rem;font-weight:800;margin-bottom:8px;display:none}
+.err.show{display:block}
+.rname{font-size:1.05rem;font-weight:800;color:var(--pink-d);margin-bottom:6px}
+.rscore{font-family:'Baloo 2',cursive;font-size:2.6rem;font-weight:800;color:var(--lilac-d);line-height:1;margin:6px 0}
+.rs10{font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:9px}
+.rgif{width:190px;margin:10px auto;display:block;border:3px solid var(--line);box-shadow:4px 4px 0 #F9A8D4;border-radius:12px}
+.rcmt{font-size:.96rem;line-height:1.75;background:#FDF4FF;border:2.5px dashed var(--edge);border-radius:14px;padding:12px 14px;margin:12px 0}
+.bcl{font-family:'Nunito';font-size:.88rem;font-weight:800;background:transparent;border:2.5px solid var(--edge);color:var(--ink);padding:10px 24px;border-radius:12px;cursor:pointer}
+.cn{position:fixed;top:-16px;z-index:200;pointer-events:none;animation:cf 2.4s forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(108vh) rotate(700deg);opacity:0}}
+
+/* trang luôn có thanh kéo: kéo xuống thì khung bài lên cao, lộ cảnh căn bếp động phía dưới */
+@media(min-width:941px){body{height:auto!important;overflow:visible!important;overflow-x:clip!important}}
+/* lời nhắc đổi nội dung thì không kéo lệch trang: khung bài luôn sát thanh nhắc */
+html,body{overflow-anchor:none}
+
+/*hltool*/
+/* ── công cụ highlight ── */
+.hlbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;background:#111827;border-radius:14px 14px 0 0;padding:7px 8px 7px 12px;box-shadow:0 4px 10px rgba(17,24,39,.22)}
+.hlbar .ht{color:#fff;font-weight:900;font-size:.74rem;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.hlgrp{display:flex;align-items:center;gap:4px;background:#1F2937;border:1px solid #374151;border-radius:999px;padding:3px 4px;flex-wrap:wrap}
+.hlb{display:inline-flex;align-items:center;gap:5px;border:none;border-radius:999px;padding:4px 8px 4px 6px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.74rem;line-height:1.2;cursor:pointer;transition:transform .12s,filter .12s;white-space:nowrap}
+.hlb:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.hlb:active{transform:scale(.95)}
+.hlb .dt{display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid rgba(0,0,0,.22)}
+.hlb.y{background:#FEF08A;color:#713F12}.hlb.y .dt{background:#FACC15}
+.hlb.g{background:#BBF7D0;color:#14532D}.hlb.g .dt{background:#22C55E}
+.hlb.p{background:#FBCFE8;color:#831843}.hlb.p .dt{background:#EC4899}
+.hlb.b{background:#BAE6FD;color:#0C4A6E}.hlb.b .dt{background:#0EA5E9}
+.hlb.er{background:#E5E7EB;color:#374151;padding:4px 9px}
+.hldv{display:inline-block;width:1px;height:18px;background:#4B5563;margin:0 2px}
+.hltip{display:flex;gap:9px;align-items:flex-start;background:#FEF9C3;border:2px solid #FDE68A;border-top:none;border-radius:0 0 14px 14px;padding:9px 13px;margin-bottom:12px;font-size:.92rem;line-height:1.6;color:#713F12;font-weight:700}
+.hltip .ic{font-size:1.15rem;line-height:1.4}
+.hltip b{color:#92400E}
+.hltip.ping{animation:tipPing .6s ease}
+@keyframes tipPing{0%,100%{transform:none}30%{transform:translateX(-5px)}60%{transform:translateX(5px)}}
+#hlPop{position:fixed;z-index:65;display:none;align-items:center;gap:6px;background:#111827;border-radius:999px;padding:6px 8px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#hlPop.on{display:flex}
+#hlPop::after{content:'';position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:none;border-top-color:#111827}
+#hlPop.below::after{bottom:auto;top:-6px;border:6px solid transparent;border-top:none;border-bottom-color:#111827}
+#hlPop button{width:24px;height:24px;border-radius:50%;border:2px solid #fff;cursor:pointer;padding:0;transition:transform .12s}
+#hlPop button:hover{transform:scale(1.15)}
+#hlPop .y{background:#FACC15}#hlPop .g{background:#22C55E}#hlPop .p{background:#EC4899}#hlPop .b{background:#0EA5E9}
+#hlPop .er{background:#E5E7EB;border-color:#9CA3AF;font-size:13px;display:grid;place-items:center}
+mark.uhl{color:inherit;border-radius:5px;padding:1px 0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lp mark.uhl{cursor:pointer}mark.uhl.pick{outline:2px dashed #111827;outline-offset:2px}
+mark.uhl-y{background:#FFF27A}mark.uhl-g{background:#B9F6D3}mark.uhl-p{background:#FFC7E3}mark.uhl-b{background:#C3E6FF}
+@media(max-width:940px){.hlbar{top:58px}}
+</style>
+<style>/*touchscroll*/@media (hover:none),(pointer:coarse){html,body{overflow-y:auto!important;height:auto!important;-webkit-overflow-scrolling:touch}.lp,.rp{max-height:none!important;overflow:visible!important}.main{padding-bottom:42px!important;align-items:flex-start}}</style>
+</head>
+<body>
+<div id="kit">
+ <div class="k-wide k-win"><div class="gls"><i class="sun"></i><i class="k-wc" style="top:14px"></i><i class="k-wc" style="top:50px;--w:44px;animation-delay:-4.5s"></i><i class="xb"></i><i class="yb"></i></div>
+  <i class="k-cur l"></i><i class="k-cur r"></i><i class="sill"></i><div class="pot"><i class="stem"></i><i class="flw"></i></div></div>
+ <div class="k-wide k-brd"><b class="t">MY RECIPES</b>
+  <div class="k-card" style="left:10px;--r:-7deg"><i class="pin" style="background:#F472B6"></i><i class="tk"></i></div>
+  <div class="k-card" style="left:72px;--r:4deg;animation-delay:-1s"><i class="pin" style="background:#60A5FA"></i><i class="tk" style="animation-delay:-1.2s"></i></div>
+  <div class="k-card" style="left:134px;--r:-3deg;animation-delay:-2s"><i class="pin" style="background:#34D399"></i><i class="tk" style="animation-delay:-2.4s"></i></div>
+ </div>
+ <div class="k-wide k-chef" id="chef"></div>
+ <div class="k-wide k-stand" id="stand"></div>
+ <div class="k-slim k-crock"><div class="u" style="left:2px;--c:#F472B6;transform:rotate(-14deg)"><i class="tp"></i><i class="hd"></i></div>
+  <div class="u w" style="left:14px;--c:#60A5FA;animation-delay:-.6s"><i class="tp"></i><i class="hd"></i></div>
+  <div class="u t" style="left:26px;--c:#34D399;animation-delay:-1.2s"><i class="tp"></i><i class="hd"></i></div><div class="jar"></div></div>
+ <div class="k-slim k-shk"><div class="s" style="left:0;background:#FBCFE8"><i class="ey l"></i><i class="ey r"></i><i class="mo"></i></div><div class="s" style="right:0;background:#BFDBFE;animation-delay:-.45s"><i class="ey l"></i><i class="ey r"></i><i class="mo"></i></div></div>
+ <div class="k-slim k-megg" id="megg"></div>
+ <div class="k-slim k-mcup" id="mcup"></div>
+</div>
+<div id="gnd">
+ <div class="k-bsp"></div>
+ <div class="k-frg"><div class="bx"><div class="in"><i class="sh" style="top:44px"></i><i class="sh" style="top:88px"></i><i class="milk"></i><i class="berry" style="left:40px"></i><i class="berry" style="left:58px;bottom:84px"></i><i class="cake"></i><i class="hand"></i></div></div>
+  <div class="fz"><i class="ey l"></i><i class="ey r"></i><i class="mo"></i></div>
+  <div class="dr"><i class="mag" style="left:16px;top:30px;background:#F472B6"></i><i class="mag" style="left:22px;top:70px;background:#A78BFA"></i><i class="mag" style="left:14px;top:108px;background:#34D399"></i></div></div>
+ <div class="k-egs" id="egs"><div class="k-whk"><i class="hd"></i><i class="lo"></i></div><div class="k-bowl"></div><i class="k-plop"></i></div>
+ <div class="k-pan"><div class="k-stv"></div><i class="k-flm" style="left:40px"></i><i class="k-flm" style="left:62px;animation-delay:-.1s"></i><i class="k-flm" style="left:84px;animation-delay:-.05s"></i><i class="k-flm" style="left:106px;animation-delay:-.15s"></i>
+  <div class="k-pn"><i class="hdl"></i></div>
+  <div class="k-omw"><div class="k-om"><i class="a"></i><i class="b"></i></div></div>
+  <i class="k-sizz" style="left:52px"></i><i class="k-sizz" style="left:94px;animation-delay:-.7s"></i>
+  <div class="k-sh" style="left:60px;bottom:96px"><i class="k-ht" style="--s:12px;--c:#F9A8D4"></i></div><div class="k-sh" style="left:96px;bottom:96px;--dx:-10px;animation-delay:-1.5s"><i class="k-ht" style="--s:10px;--c:#C4B5FD"></i></div>
+  <div class="k-pl"></div></div>
+ <div class="k-pck"><div class="k-pl"></div><div class="k-stk" id="stk"></div><div class="k-fly"><i class="k-pc" style="--c:#BFDBFE"></i></div><span class="k-flipw">FLIP!</span></div>
+ <div class="k-mix"><i class="bs"></i><i class="cl"></i><i class="bt"></i><div class="hd"></div><div class="bw"><i class="bat"></i></div>
+  <i class="spl" style="left:80px;--dx:-14px"></i><i class="spl" style="left:110px;--dx:14px;animation-delay:-.7s;background:#FBCFE8"></i>
+  <div class="k-sh" style="left:96px;bottom:110px;animation-delay:-.8s"><i class="k-ht" style="--s:10px;--c:#F472B6"></i></div></div>
+ <div class="k-ovn" id="ovn"><div class="bx"><div class="pnl"><i class="dl" style="left:8px;background:#F9A8D4"></i><i class="dl" style="left:30px;background:#C4B5FD;animation-delay:-1s"></i><i class="dl" style="left:52px;background:#93C5FD;animation-delay:-2s"></i><b class="tm">12:00</b></div>
+  <div class="dr"><div class="gw" id="ovg"></div></div></div><i class="k-bell"></i><span class="k-ding">DING!</span>
+  <div class="k-sh" style="left:30px;bottom:150px;animation-delay:-.4s"><i class="k-ht" style="--s:12px;--c:#F9A8D4"></i></div><div class="k-sh" style="left:70px;bottom:150px;--dx:-12px;animation-delay:-2s"><i class="k-ht" style="--s:10px;--c:#A7F3D0"></i></div></div>
+ <div class="k-floor"></div>
+</div>
+
+<div class="note"><div class="in">
+ <span class="tg">🧁 MS NHẮN</span>
+ <span class="tx" id="msTx">🧁 Chào đầu bếp lớp 8! Dream Kitchen hôm nay có 19 câu (1 → 19) — nếm trọn bữa ăn kiểu Pháp, chui xuống thị trấn dưới lòng đất Coober Pedy và ra lò điểm 10 thôi! 🔥</span>
+</div></div>
+
+<header>
+ <div>
+  <h1>🧁 Dream Kitchen Reading · Câu 1 → 19<span class="p1">19 câu</span></h1>
+  <div class="by">MS Chí Nên · ☎️ <b>0852639652</b> · Khoá tiếng Anh lớp 1 → 12 · English 8 · Unit 6: Lifestyles</div>
+ </div>
+ <div class="hright">
+  <div class="chips">
+   <span class="chip c1">🧁 DREAM KITCHEN</span>
+   <span class="chip c2">🥐 MEALS IN FRANCE</span>
+   <span class="chip c3">🧀 L'APÉRITIF</span>
+   <span class="chip c4">🏜️ COOBER PEDY</span>
+  </div>
+  <div><span id="sc" style="display:none"></span><div class="gauge"><div class="num" id="lv">0/19</div><div class="lbl">Điểm</div></div></div>
+ </div>
+</header>
+
+<div class="main">
+<div class="lp">
+ <div class="hlbar" id="hlBar">
+  <span class="ht">✏️ CÔNG CỤ HIGHLIGHT:</span>
+  <div class="hlgrp">
+   <button type="button" class="hlb y" onclick="hlApply('y')"><i class="dt"></i>Vàng</button>
+   <button type="button" class="hlb g" onclick="hlApply('g')"><i class="dt"></i>Xanh lá</button>
+   <button type="button" class="hlb p" onclick="hlApply('p')"><i class="dt"></i>Hồng</button>
+   <button type="button" class="hlb b" onclick="hlApply('b')"><i class="dt"></i>Xanh</button>
+   <span class="hldv"></span>
+   <button type="button" class="hlb er" onclick="hlErase()">🧽 Tẩy tô</button>
+  </div>
+ </div>
+ <div class="hltip" id="hlTip"><span class="ic">💡</span><div><b>Cách dùng Highlight:</b> Bôi đen (quét chuột) đoạn chữ trong bài đọc → Nhấn nút màu trên thanh công cụ màu đen ở trên (hoặc nút nổi ngay tại vị trí bôi đen) để tô màu tức thì!<br><b>Đổi màu / xoá:</b> Bấm thẳng vào chữ đã tô → chọn màu mới hoặc 🧽 để xoá, không cần bôi đen lại.</div></div>
+
+ <div class="slbl">📖 Bài đọc</div>
+
+ <div class="pc" style="border-color:var(--pink);color:var(--pink)">
+  <div class="lvl">PART 1</div>
+  <div class="stamp">🥐</div>
+  <div class="ptitle" style="color:var(--pink-d)">PART 1 · Meals in France</div>
+  <div class="pins">Part 1. Read the passage about meals in France. Choose the best answer for each numbered blank from 1 to 8.</div>
+
+  <div class="pblk" style="border-color:var(--pink);background:#FFEAF4;color:var(--ink)">
+   <div class="em">🥐</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">The French generally eat three meals a day. <i>Le petit déjeuner</i> is a light breakfast and usually <b class="bk-pink">(1) ______</b> of coffee or hot chocolate, fruit, cereals, bread or a croissant which is made of a flaky, butter-based pastry.</div>
+   <button class="btr" onclick="toggleTranslation('trans1')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans1">Người Pháp thường ăn ba bữa một ngày. Le petit déjeuner là bữa sáng nhẹ và thường (1) ______ cà phê hoặc sô-cô-la nóng, trái cây, ngũ cốc, bánh mì hoặc bánh sừng bò làm từ bột ngàn lớp nhiều bơ.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FBF1;color:var(--ink)">
+   <div class="em">🕛</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Lunch or <i>le déjeuner</i> takes <b class="bk-mint">(2) ______</b> between noon and 2 p.m. and is the main meal of the day. It usually begins with <i>hors d'oeuvre</i>, or <b class="bk-mint">(3) ______</b>.</div>
+   <button class="btr" onclick="toggleTranslation('trans2')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans2">Bữa trưa hay le déjeuner (2) ______ từ giữa trưa đến 2 giờ chiều và là bữa chính trong ngày. Bữa trưa thường bắt đầu bằng hors d'oeuvre, hay còn gọi là (3) ______.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F1EBFF;color:var(--ink)">
+   <div class="em">🍽️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Meat or fish follows, and the meal ends with cheese, fruit, or sometimes a dessert. The evening meal or <i>le dîner</i> is a time for the whole family to get <b class="bk-lilac">(4) ______</b> and talk about their day.</div>
+   <button class="btr" onclick="toggleTranslation('trans3')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans3">Tiếp theo là thịt hoặc cá, và bữa ăn kết thúc bằng phô mai, trái cây hoặc đôi khi là món tráng miệng. Bữa tối hay le dîner là lúc cả gia đình (4) ______ và trò chuyện về một ngày của mình.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--blue);background:#E6F1FF;color:var(--ink)">
+   <div class="em">🍮</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Depending on <b class="bk-blue">(5) ______</b> lunch was, dinner may have several courses and most dinners end with wine and a dessert of some sort.</div>
+   <button class="btr" onclick="toggleTranslation('trans4')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans4">Tuỳ vào bữa trưa (5) ______, bữa tối có thể có vài món và hầu hết các bữa tối kết thúc bằng rượu vang và một món tráng miệng nào đó.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--butter);background:#FFF9DB;color:var(--ink)">
+   <div class="em">🧀</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph"><i>L'Apéritif</i> is a national <b class="bk-butter">(6) ______</b> in France. It occurs before dinner where the family gathers about half an hour or so to <b class="bk-butter">(7) ______</b> a drink, a small appetizer, and conversation with family, friends, and neighbors.</div>
+   <button class="btr" onclick="toggleTranslation('trans5')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans5">L'Apéritif là một (6) ______ của cả nước Pháp. Nó diễn ra trước bữa tối, khi gia đình tụ họp khoảng nửa tiếng để (7) ______ đồ uống, một món khai vị nhỏ và trò chuyện với gia đình, bạn bè và hàng xóm.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEAF4;color:var(--ink)">
+   <div class="em">👨‍👩‍👧</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">It is an established <b class="bk-pink">(8) ______</b> activity which is enjoyed by people of all ages and forms an important part of home life.</div>
+   <button class="btr" onclick="toggleTranslation('trans6')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans6">Đó là một hoạt động (8) ______ lâu đời, được mọi lứa tuổi yêu thích và là một phần quan trọng của đời sống gia đình.</div>
+  </div>
+
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--pink-d),var(--pink))">📚 Glossary — PART 1</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">generally</td><td class="gp">Adverb</td><td>nói chung, thường thường</td></tr>
+    <tr><td class="gw">light</td><td class="gp">Adjective</td><td>nhẹ (bữa ăn ít món, ít no)</td></tr>
+    <tr><td class="gw">cereal</td><td class="gp">Noun</td><td>ngũ cốc (ăn sáng)</td></tr>
+    <tr><td class="gw">croissant</td><td class="gp">Noun</td><td>bánh sừng bò</td></tr>
+    <tr><td class="gw">flaky</td><td class="gp">Adjective</td><td>giòn, tách thành từng lớp mỏng</td></tr>
+    <tr><td class="gw">pastry</td><td class="gp">Noun</td><td>bột bánh nướng, bánh ngọt</td></tr>
+    <tr><td class="gw">noon</td><td class="gp">Noun</td><td>giữa trưa, 12 giờ trưa</td></tr>
+    <tr><td class="gw">follow</td><td class="gp">Verb</td><td>đến tiếp theo, theo sau</td></tr>
+    <tr><td class="gw">course</td><td class="gp">Noun</td><td>món (trong một bữa ăn nhiều món)</td></tr>
+    <tr><td class="gw">occur</td><td class="gp">Verb</td><td>xảy ra</td></tr>
+    <tr><td class="gw">gather</td><td class="gp">Verb</td><td>tụ họp</td></tr>
+    <tr><td class="gw">neighbor</td><td class="gp">Noun</td><td>hàng xóm</td></tr>
+    <tr><td class="gw">established</td><td class="gp">Adjective</td><td>lâu đời, đã thành nếp</td></tr>
+   <tr><td class="gw">hors d'oeuvre</td><td class="gp">n</td><td>món khai vị (tiếng Pháp)</td></tr>
+<tr><td class="gw">dessert</td><td class="gp">n</td><td>món tráng miệng</td></tr>
+</table>
+  </div>
+ </div>
+
+ <div class="pc" style="border-color:var(--blue);color:var(--blue)">
+  <div class="lvl" style="background:#BFDBFE;color:#1E3A8A;border-color:#1E3A8A;box-shadow:3px 3px 0 #1E3A8A">PART 2</div>
+  <div class="stamp">🏜️</div>
+  <div class="ptitle" style="color:var(--blue-d)">PART 2 · Life in Coober Pedy</div>
+  <div class="pins">Part 2. Read the passage about Coober Pedy. Decide whether statements 9 to 14 are True or False, then answer questions 15 to 19.</div>
+
+  <div class="pblk" style="border-color:var(--butter);background:#FFF9DB;color:var(--ink)">
+   <div class="em">🏜️</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Located in the vast Outback of South Australia is the town of Coober Pedy, but don't expect to find a city skyline or tall apartment buildings.</div>
+   <button class="btr" onclick="toggleTranslation('trans7')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans7">Nằm giữa vùng Outback (vùng hoang mạc nội địa) rộng lớn của Nam Úc là thị trấn Coober Pedy, nhưng đừng mong tìm thấy đường chân trời thành phố hay những toà chung cư cao tầng.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEAF4;color:var(--ink)">
+   <div class="em">🏠</div><span class="ptag">Paragraph 1</span>
+   <div class="paragraph">Because here, most of the roughly 2,500 residents live in underground houses, eat in underground restaurants and even worship in underground churches.</div>
+   <button class="btr" onclick="toggleTranslation('trans8')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans8">Bởi vì ở đây, phần lớn trong số khoảng 2.500 cư dân sống trong những ngôi nhà dưới lòng đất, ăn ở những nhà hàng dưới lòng đất và thậm chí đi lễ ở những nhà thờ dưới lòng đất.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FBF1;color:var(--ink)">
+   <div class="em">⛽</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">Coober Pedy has just two gas stations, two grocery stores, a post office, a liquor store, and a handful of hotels and shops catering to visitors.</div>
+   <button class="btr" onclick="toggleTranslation('trans9')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans9">Coober Pedy chỉ có hai trạm xăng, hai cửa hàng tạp hoá, một bưu điện, một cửa hàng bán rượu và một vài khách sạn, cửa hàng phục vụ du khách.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--lilac);background:#F1EBFF;color:var(--ink)">
+   <div class="em">🌕</div><span class="ptag">Paragraph 2</span>
+   <div class="paragraph">On the way into town, mounds of dirt discarded from the mines give it an almost lunar landscape. Signs warn visitors of open mine shafts throughout the area.</div>
+   <button class="btr" onclick="toggleTranslation('trans10')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans10">Trên đường vào thị trấn, những đống đất thải ra từ các khu mỏ khiến nơi đây có cảnh quan gần giống như trên mặt trăng. Biển báo cảnh báo du khách về những hầm mỏ để hở khắp khu vực.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--blue);background:#E6F1FF;color:var(--ink)">
+   <div class="em">🌡️</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">This part of the Outback receives little rainfall and temperatures have been recorded as high as 50 degrees Celsius. Because of this, an estimated 60 percent of Coober Pedy residents took inspiration from the mines and established their homes underground.</div>
+   <button class="btr" onclick="toggleTranslation('trans11')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans11">Vùng Outback này rất ít mưa và nhiệt độ từng được ghi nhận lên tới 50 độ C. Vì thế, ước tính 60 phần trăm cư dân Coober Pedy đã lấy cảm hứng từ các khu mỏ và dựng nhà dưới lòng đất.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--butter);background:#FFF9DB;color:var(--ink)">
+   <div class="em">⛏️</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">Each one is carefully dug out room by room. When more space is required, they can just continue digging, leading to some very spacious residences.</div>
+   <button class="btr" onclick="toggleTranslation('trans12')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans12">Mỗi ngôi nhà được đào cẩn thận từng phòng một. Khi cần thêm chỗ, họ chỉ việc đào tiếp, nhờ vậy có những ngôi nhà rất rộng rãi.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--pink);background:#FFEAF4;color:var(--ink)">
+   <div class="em">💡</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">Temperatures underground are a comfortable 19 to 25 degrees Celsius. The homes have working electricity, running cables back up to the surface along with pipes for fresh air.</div>
+   <button class="btr" onclick="toggleTranslation('trans13')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans13">Nhiệt độ dưới lòng đất dễ chịu, từ 19 đến 25 độ C. Những ngôi nhà có điện dùng bình thường, với dây cáp chạy ngược lên mặt đất cùng các ống dẫn không khí trong lành.</div>
+  </div>
+  <div class="pblk" style="border-color:var(--mint);background:#E3FBF1;color:var(--ink)">
+   <div class="em">♻️</div><span class="ptag">Paragraph 3</span>
+   <div class="paragraph">Items are often recycled as building materials can be hard to come by. In addition to underground homes, there are underground art galleries, restaurants and shops, as well as multiple underground churches.</div>
+   <button class="btr" onclick="toggleTranslation('trans14')">Mở dịch đoạn này 🌟</button>
+   <div class="translation" id="trans14">Đồ vật thường được tái chế vì vật liệu xây dựng có thể rất khó kiếm. Ngoài nhà ở dưới lòng đất, nơi đây còn có phòng tranh, nhà hàng và cửa hàng dưới lòng đất, cùng với nhiều nhà thờ dưới lòng đất.</div>
+  </div>
+
+  <div class="gl"><h3 style="background:linear-gradient(90deg,var(--blue-d),var(--blue))">📚 Glossary — PART 2</h3>
+   <table class="gtb"><tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th></tr>
+    <tr><td class="gw">vast</td><td class="gp">Adjective</td><td>rộng lớn, bao la</td></tr>
+    <tr><td class="gw">outback</td><td class="gp">Noun</td><td>vùng hoang mạc nội địa ở Úc</td></tr>
+    <tr><td class="gw">skyline</td><td class="gp">Noun</td><td>đường chân trời (bóng các toà nhà in trên nền trời)</td></tr>
+    <tr><td class="gw">resident</td><td class="gp">Noun</td><td>cư dân</td></tr>
+    <tr><td class="gw">worship</td><td class="gp">Verb</td><td>thờ cúng, đi lễ</td></tr>
+    <tr><td class="gw">grocery store</td><td class="gp">Noun phrase</td><td>cửa hàng tạp hoá</td></tr>
+    <tr><td class="gw">a handful of</td><td class="gp">Phrase</td><td>một ít, một vài</td></tr>
+    <tr><td class="gw">cater to</td><td class="gp">Phrasal verb</td><td>phục vụ (nhu cầu của ai)</td></tr>
+    <tr><td class="gw">mound</td><td class="gp">Noun</td><td>đống, gò (đất)</td></tr>
+    <tr><td class="gw">discard</td><td class="gp">Verb</td><td>vứt bỏ, thải ra</td></tr>
+    <tr><td class="gw">lunar</td><td class="gp">Adjective</td><td>thuộc về mặt trăng</td></tr>
+    <tr><td class="gw">mine shaft</td><td class="gp">Noun phrase</td><td>giếng mỏ, hầm mỏ</td></tr>
+    <tr><td class="gw">rainfall</td><td class="gp">Noun</td><td>lượng mưa</td></tr>
+    <tr><td class="gw">inspiration</td><td class="gp">Noun</td><td>nguồn cảm hứng</td></tr>
+    <tr><td class="gw">dig (dug)</td><td class="gp">Verb</td><td>đào</td></tr>
+    <tr><td class="gw">spacious</td><td class="gp">Adjective</td><td>rộng rãi</td></tr>
+    <tr><td class="gw">residence</td><td class="gp">Noun</td><td>nơi ở, nhà ở</td></tr>
+    <tr><td class="gw">cable</td><td class="gp">Noun</td><td>dây cáp</td></tr>
+    <tr><td class="gw">surface</td><td class="gp">Noun</td><td>bề mặt, mặt đất</td></tr>
+    <tr><td class="gw">recycle</td><td class="gp">Verb</td><td>tái chế</td></tr>
+    <tr><td class="gw">come by</td><td class="gp">Phrasal verb</td><td>kiếm được, có được</td></tr>
+   <tr><td class="gw">underground</td><td class="gp">adj, adv</td><td>dưới lòng đất (/ˌʌn.dəˈɡraʊnd/ - trọng âm chính âm tiết 3)</td></tr>
+</table>
+  </div>
+ </div>
+</div>
+
+<div class="rp">
+ <div class="slbl">🎯 19 câu hỏi</div>
+ <div id="app"></div>
+ <div class="sw"><button class="sbtn" onclick="openName()">🎯 NỘP BÀI TÍNH ĐIỂM &amp; XEM KẾT QUẢ</button></div>
+ <div class="foot">🧁 Bài tập của <b>MS Chí Nên</b> · Đăng ký khoá tiếng Anh lớp 1 → 12: <b>☎️ 0852639652</b> để được trải nghiệm hệ thống web học tập đẹp, sinh động — chấm điểm tự động, giải chi tiết từng câu, học vui như mỗi ngày bước vào căn bếp mộng mơ!</div>
+</div>
+</div>
+
+<div class="ov" id="ovN"><div class="mb">
+ <h2>📮 Con ghi tên vào đây nhé!</h2>
+ <input id="nIn" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off" maxlength="50">
+ <div class="err" id="nEm">⚠️ Con chưa nhập tên kìa! Nhập tên rồi mới xem điểm được nha.</div>
+ <button class="sbtn" style="margin-top:12px;font-size:1rem;padding:11px 26px" onclick="showResult()">🚀 Xem kết quả</button>
+</div></div>
+
+<div class="ov" id="ovR"><div class="mb" style="max-width:480px">
+ <div class="rname" id="rn"></div>
+ <div class="rscore"><span id="rSc">0</span>/<span id="rTt">0</span></div>
+ <div class="rs10">🎓 Quy đổi: <span id="r10">0</span>/10 điểm</div>
+ <img class="rgif" id="rGif" src="" alt="">
+ <div class="rcmt" id="rMs"></div>
+ <button class="bcl" onclick="closeR()">Đóng &amp; xem lại bài</button>
+</div></div>
+
+<script>
+/* ══ căn bếp mộng mơ: dàn dụng cụ treo, mây trôi, trái tim hơi nóng, rắc cốm, thẻ công thức, trứng nhảy, bánh kếp, cupcake ══ */
+function rnd(a,b){return a+Math.random()*(b-a)}
+var PC=['#F9A8D4','#A7F3D0','#C4B5FD','#93C5FD','#FDE68A','#FBCFE8'];
+function EGG(w){return '<div class="k-eggc" style="--w:'+w+'px"><i class="ey l"></i><i class="ey r"></i><i class="mo"></i><i class="bl l"></i><i class="bl r"></i></div>'}
+function CUP(s,fc,lc){return '<i class="k-cup" style="--s:'+s+'px;--fc:'+fc+';--lc:'+lc+'"><i class="ln"></i><i class="fr"></i><i class="ch"></i></i>'}
+(function(){
+ var kit=document.getElementById('kit'),h='<div class="k-rail"><i class="k-rod"></i>',i;
+ var UT=['k-sp','k-wk','k-tn','k-ld','k-mg'];
+ for(i=0;i<26;i++){h+='<div class="k-ut '+UT[i%5]+'" style="left:'+(24+i*104)+'px;--c:'+PC[i%6]+';animation-delay:-'+rnd(0,3).toFixed(1)+'s"><i class="hk"></i><i class="hd"></i><i class="tp"></i></div>'}
+ h+='</div>';
+ for(i=0;i<5;i++){h+='<i class="k-cloud" style="top:'+rnd(15,30).toFixed(0)+'vh;--w:'+rnd(70,120).toFixed(0)+'px;animation-duration:'+rnd(45,75).toFixed(0)+'s;animation-delay:-'+rnd(0,70).toFixed(0)+'s"></i>'}
+ /* vị trí lề trái / lề phải (co giãn theo độ rộng màn hình) */
+ function side(i,w){var f=rnd(.08,.92).toFixed(2);return (i%2?'right':'left')+':max(3px,calc((var(--mg) - '+w+'px) * '+f+'))'}
+ for(i=0;i<16;i++){h+='<div class="k-rise" style="'+side(i,26)+';animation-duration:'+rnd(11,19).toFixed(1)+'s;animation-delay:-'+rnd(0,19).toFixed(1)+'s"><i class="k-ht" style="--s:'+rnd(10,17).toFixed(0)+'px;--c:'+PC[(i+2)%6]+'"></i></div>'}
+ for(i=0;i<8;i++){h+='<i class="k-rise" style="left:'+rnd(5,95).toFixed(1)+'vw;animation-duration:'+rnd(14,22).toFixed(1)+'s;animation-delay:-'+rnd(0,22).toFixed(1)+'s"><i class="k-ht" style="--s:10px;--c:'+PC[i%6]+';opacity:.75"></i></i>'}
+ var SPC=['#F472B6','#A78BFA','#60A5FA','#34D399','#FDE047','#FB7185'];
+ for(i=0;i<24;i++){h+='<i class="k-spr" style="'+side(i,8)+';background:'+SPC[i%6]+';animation-duration:'+rnd(9,16).toFixed(1)+'s;animation-delay:-'+rnd(0,16).toFixed(1)+'s"></i>'}
+ for(i=0;i<8;i++){h+='<i class="k-rc" style="'+side(i,34)+';top:'+rnd(18,74).toFixed(0)+'vh;--c:'+SPC[i%6]+';animation-duration:'+rnd(2.6,4.4).toFixed(1)+'s;animation-delay:-'+rnd(0,3).toFixed(1)+'s"></i>'}
+ for(i=0;i<16;i++){h+='<i class="k-st" style="'+side(i,16)+';top:'+rnd(14,82).toFixed(0)+'vh;background:'+SPC[i%6]+';animation-delay:-'+rnd(0,2.4).toFixed(1)+'s"></i>'}
+ kit.insertAdjacentHTML('afterbegin',h);
+ /* bếp trưởng quả trứng */
+ document.getElementById('chef').innerHTML='<div class="k-hat"><i class="pf"></i><i class="bd"></i></div>'+EGG(88)+'<i class="k-arm l" style="margin-left:-38px"></i><i class="k-arm r" style="margin-left:34px"></i><i class="ft" style="left:22px"></i><i class="ft" style="left:56px"></i>';
+ /* tháp cupcake */
+ var st='<i class="pole"></i><i class="tr" style="left:30px;top:66px;width:92px"></i><i class="tr" style="left:6px;top:150px;width:140px"></i><span class="k-yum" style="left:92px;top:0">YUM!</span>';
+ [[48,22,'#FBCFE8','#F472B6',0],[78,22,'#BBF7D0','#34D399',-.4],[16,106,'#DDD6FE','#A78BFA',-.8],[56,106,'#BFDBFE','#60A5FA',-1.2],[96,106,'#FEF9C3','#F472B6',-.2]].forEach(function(c){
+  st+='<div class="cp" style="left:'+c[0]+'px;top:'+c[1]+'px;animation-delay:'+c[4]+'s">'+CUP(36,c[2],c[3])+'</div>'});
+ document.getElementById('stand').innerHTML=st;
+ document.getElementById('megg').innerHTML=EGG(34);
+ document.getElementById('mcup').innerHTML=CUP(40,'#FBCFE8','#A78BFA');
+ /* trứng nhảy vào bát */
+ var eg='';for(i=0;i<3;i++)eg+='<div class="egg" style="animation-delay:-'+(i*1.5)+'s">'+EGG(30)+'</div>';
+ document.getElementById('egs').insertAdjacentHTML('afterbegin',eg);
+ /* chồng bánh kếp pastel */
+ document.getElementById('stk').innerHTML='<i class="cr"></i>'+['#FBCFE8','#A7F3D0','#DDD6FE','#BFDBFE','#FBCFE8'].map(function(c){return '<i class="k-pc" style="--c:'+c+'"></i>'}).join('');
+ /* lò nướng: cupcake bay lên từ lò, một chiếc đang nướng sau cửa kính */
+ var ov='';[[16,'#FBCFE8','#F472B6',0],[64,'#BBF7D0','#34D399',-1.5],[112,'#DDD6FE','#A78BFA',-3]].forEach(function(c){ov+='<div class="cr" style="left:'+c[0]+'px;animation-delay:'+c[3]+'s">'+CUP(36,c[1],c[2])+'</div>'});
+ document.getElementById('ovn').insertAdjacentHTML('afterbegin',ov);
+ document.getElementById('ovg').innerHTML=CUP(30,'#FEF9C3','#F472B6');
+})();
+
+/* ══ âm thanh ══ */
+var AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function ding(){var c=ac();if(!c)return;var t=c.currentTime;[988,1318.5,1975.5].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(c.destination);var s=t+i*0.08;g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(.12,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+.32);o.start(s);o.stop(s+.34)})}
+var DUCK_URL='https://hoctienganhcungcomaianulis.github.io/homework/%E1%BA%A2nh_File%20nghe/Sound/Ti%E1%BA%BFng%20V%E1%BB%8Bt%20k%C3%AAu%20meme%20mp3.mp3';
+function buzz(){try{var a=new Audio(DUCK_URL);a.volume=.75;a.play().catch(function(){})}catch(e){}}
+function conf(){var cs=['#F472B6','#A78BFA','#60A5FA','#34D399','#FBCFE8','#FDE047'];
+ for(var i=0;i<50;i++){var d=document.createElement('div');d.className='cn';
+  d.style.cssText='left:'+(Math.random()*100)+'vw;width:10px;height:10px;border-radius:'+(i%2?'50%':'2px')+';background:'+cs[i%6]+';opacity:.95';
+  document.body.appendChild(d);(function(d){setTimeout(function(){d.remove()},2500)})(d)}}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function toggleTranslation(id){
+ var el=document.getElementById(id);
+ if(el.style.display==='block'){el.style.display='none';}else{el.style.display='block';}
+}
+
+/* ══ lời giải ══ */
+function OPT(w,pos,ipa,vi,ok){return {w:w,pos:pos||'',ipa:ipa||'',vi:vi,ok:ok?1:0}}
+function grid2(opts){
+ return '<div class="grid2">'+opts.map(function(o){
+  var cls=o.ok?'hl-green':'p-word';
+  var pos=o.pos?' <span class="wt">'+o.pos+'</span>':'';
+  var ipa=o.ipa?' <span class="p-phonetic">/'+o.ipa+'/</span>':'';
+  return '<div'+(o.ok?' class="gk"':'')+'>'+(o.ok?'✅ ':'')+'<span class="'+cls+'">'+o.w+'</span>'+pos+ipa+'<br>= <span class="p-mean">'+o.vi+'</span></div>';
+ }).join('')+'</div>';
+}
+var hxI=0;
+function ln(txt){
+ var cls='hx'+(hxI++%6),qeI=0;
+ txt=txt.replace(/"([^"]+)"/g,function(m,p1){return '<span class="qe'+(qeI++%6)+'">"'+p1+'"</span>'});
+ return '<span class="p-grammar '+cls+'">▸ '+txt+'</span>';
+}
+function lines(a){return a.map(ln).join('<br>')}
+function DICT(w,i){
+ var slug=w.trim().toLowerCase().replace(/\s+/g,'-');
+ return '<a class="d'+(i%4)+'" href="https://dictionary.cambridge.org/vi/dictionary/english/'+slug+'" target="_blank" rel="noopener">🔊 Cambridge · '+w+'</a>';
+}
+function render(q){
+ hxI=0;
+ var shown=MAP[q.id].map(function(w){return q.opts.find(function(o){return o.w===w})});
+ var lab='Nghĩa của '+shown.length+' phương án:';
+ var html='<div class="vnt">💬 Dịch: '+q.vnt+'</div><ol>'+
+  '<li><b>'+lab+'</b>'+grid2(shown)+'</li>'+
+  '<li><span class="hl-green">✅ TẠI SAO ĐÚNG?</span><br>'+lines(q.why)+'</li>'+
+  '<li><span class="hl-red">❌ TẠI SAO SAI?</span><br>'+lines(q.bad)+'</li></ol>'+
+  '<div class="frame">🔍 <i>'+q.ev+'</i><br>👉 <span class="p-mean">'+q.evvi+'</span></div>';
+ if(q.dict&&q.dict.length){
+  html+='<div class="dk"><b>🔊 Tra từ điển Cambridge:</b><br>Con bấm vào đây để nghe phát âm chuẩn và đọc theo cho hay nhé:'+
+   '<div class="dict">'+q.dict.map(DICT).join('')+'</div>'+
+   '<div class="say">👉 Nếu trang chưa hiện đúng từ, con gõ từ đó vào ô tìm kiếm, bấm loa 🔊 nghe và đọc theo.</div></div>';
+ }
+ return html;
+}
+
+/* ══ câu hỏi ══ */
+var TF=function(t){return [OPT(`True`,`adj`,`truː`,`Đúng`,t),OPT(`False`,`adj`,`fɔːls`,`Sai`,!t)]};
+var QS=[
+{id:1,part:1,col:'pink',text:`<i>Le petit déjeuner</i> is a light breakfast and usually <b>(1) ______</b> of coffee or hot chocolate, fruit, cereals, bread or a croissant which is made of a flaky, butter-based pastry.`,
+ opts:[OPT(`consists`,`v`,`kənˈsɪsts`,`bao gồm, gồm có (đi với "of": consist of)`,1),OPT(`contains`,`v`,`kənˈteɪnz`,`chứa, đựng bên trong`),OPT(`includes`,`v`,`ɪnˈkluːdz`,`bao gồm, có cả (không đi với "of")`),OPT(`comprises`,`v`,`kəmˈpraɪzɪz`,`gồm có (không đi với "of")`)],
+ vnt:`Le petit déjeuner là bữa sáng nhẹ và thường gồm có cà phê hoặc sô-cô-la nóng, trái cây, ngũ cốc, bánh mì hoặc bánh sừng bò làm từ bột ngàn lớp nhiều bơ.`,
+ why:[`Bước 1: Nhìn ngay sau chỗ trống: có giới từ "of" ("(1) ______ of coffee or hot chocolate").`,
+  `Bước 2: Trong 4 động từ, chỉ "consist" đi liền với "of": "consist of + danh từ" = bao gồm, gồm có.`,
+  `Bước 3: Chủ ngữ "Le petit déjeuner" là số ít, câu ở thì hiện tại đơn (có "usually") nên động từ thêm -s: "consists".`,
+  `Bước 4: "usually consists of coffee or hot chocolate, fruit, cereals" = thường gồm có cà phê hoặc sô-cô-la nóng, trái cây, ngũ cốc → chọn "consists". Bữa sáng kiểu Pháp đã lên mâm!`],
+ bad:[`"contains" (chứa) đi thẳng với tân ngữ: "contains coffee", không có "contains of".`,
+  `"includes" (bao gồm) cũng đi thẳng với tân ngữ: "includes coffee", không nói "includes of".`,
+  `"comprises" (gồm có) dùng "comprises coffee" hoặc "is comprised of"; "comprises of" là sai ngữ pháp.`],
+ ev:`Le petit déjeuner is a light breakfast and usually consists of coffee or hot chocolate, fruit, cereals, bread or a croissant which is made of a flaky, butter-based pastry.`,
+ evvi:`Le petit déjeuner là bữa sáng nhẹ và thường gồm có cà phê hoặc sô-cô-la nóng, trái cây, ngũ cốc, bánh mì hoặc bánh sừng bò làm từ bột ngàn lớp nhiều bơ.`,
+ dict:[`consist`,`contain`,`include`,`comprise`,`croissant`,`pastry`]},
+{id:2,part:1,col:'mint',text:`Lunch or <i>le déjeuner</i> takes <b>(2) ______</b> between noon and 2 p.m. and is the main meal of the day.`,
+ opts:[OPT(`part`,`n`,`pɑːt`,`phần, vai trò (take part in = tham gia)`),OPT(`through`,`prep`,`θruː`,`xuyên qua, qua`),OPT(`place`,`n`,`pleɪs`,`nơi chốn (take place = diễn ra)`,1),OPT(`aback`,`adv`,`əˈbæk`,`lùi lại (be taken aback = sửng sốt)`)],
+ vnt:`Bữa trưa hay le déjeuner diễn ra từ giữa trưa đến 2 giờ chiều và là bữa chính trong ngày.`,
+ why:[`Bước 1: Trước chỗ trống là động từ "takes", sau chỗ trống là mốc thời gian "between noon and 2 p.m." (từ trưa đến 2 giờ chiều).`,
+  `Bước 2: Cụm cố định "take place" = diễn ra, xảy ra (vào một thời gian, ở một nơi nào đó).`,
+  `Bước 3: "Lunch takes place between noon and 2 p.m." = Bữa trưa diễn ra từ trưa đến 2 giờ chiều, khớp hoàn toàn với ý nói về giờ ăn.`,
+  `Bước 4: Chọn "place". Bắt trúng collocation là ăn điểm gọn gàng!`],
+ bad:[`"part" chỉ dùng trong "take part in" = tham gia một hoạt động; bữa trưa không tự "tham gia" vào khung giờ nào cả.`,
+  `"through" không tạo cụm "take through" mang nghĩa diễn ra; ghép vào câu là vô nghĩa.`,
+  `"aback" chỉ dùng trong "be taken aback" = sửng sốt, bất ngờ; không hợp với chủ ngữ "Lunch".`],
+ ev:`Lunch or le déjeuner takes place between noon and 2 p.m. and is the main meal of the day.`,
+ evvi:`Bữa trưa hay le déjeuner diễn ra từ giữa trưa đến 2 giờ chiều và là bữa chính trong ngày.`,
+ dict:[`place`,`part`,`through`,`aback`]},
+{id:3,part:1,col:'lilac',text:`It usually begins with <i>hors d'oeuvre</i>, or <b>(3) ______</b>.`,
+ opts:[OPT(`entrees`,`n`,`ˈɒntreɪz`,`món chính (tiếng Anh Mỹ)`),OPT(`desserts`,`n`,`dɪˈzɜːts`,`món tráng miệng`),OPT(`servers`,`n`,`ˈsɜːvəz`,`người phục vụ`),OPT(`appetizers`,`n`,`ˈæpɪtaɪzəz`,`món khai vị`,1)],
+ vnt:`Bữa trưa thường bắt đầu bằng hors d'oeuvre, tức là các món khai vị.`,
+ why:[`Bước 1: Chữ "or" ở đây dùng để giải thích lại từ tiếng Pháp "hors d'oeuvre" bằng tiếng Anh (hay còn gọi là).`,
+  `Bước 2: Cụm "begins with" (bắt đầu bằng) cho biết đây là món ăn ĐẦU TIÊN của bữa.`,
+  `Bước 3: Món nhỏ ăn đầu bữa trong tiếng Anh gọi là "appetizers". Câu sau còn nói "Meat or fish follows" (thịt hoặc cá đến tiếp theo), tức món chính đến SAU.`,
+  `Bước 4: Chọn "appetizers". Mở màn bữa ăn thật đẹp rồi con!`],
+ bad:[`"entrees" (món chính) là thịt hoặc cá đến sau, không phải món mở đầu bữa.`,
+  `"desserts" (món tráng miệng) ăn ở CUỐI bữa: "the meal ends with cheese, fruit, or sometimes a dessert".`,
+  `"servers" (người phục vụ) là người, không phải món ăn để bữa trưa "begins with".`],
+ ev:`It usually begins with hors d'oeuvre, or appetizers. Meat or fish follows, and the meal ends with cheese, fruit, or sometimes a dessert.`,
+ evvi:`Bữa trưa thường bắt đầu bằng hors d'oeuvre, tức là các món khai vị. Tiếp theo là thịt hoặc cá, và bữa ăn kết thúc bằng phô mai, trái cây hoặc đôi khi là món tráng miệng.`,
+ dict:[`appetizer`,`entree`,`dessert`,`server`]},
+{id:4,part:1,col:'blue',text:`The evening meal or <i>le dîner</i> is a time for the whole family to get <b>(4) ______</b> and talk about their day.`,
+ opts:[OPT(`out`,`adv`,`aʊt`,`ra ngoài (get out = ra ngoài, thoát ra)`),OPT(`together`,`adv`,`təˈɡeðə`,`cùng nhau (get together = tụ họp, quây quần)`,1),OPT(`up`,`adv`,`ʌp`,`lên (get up = thức dậy)`),OPT(`back`,`adv`,`bæk`,`trở lại (get back = quay về)`)],
+ vnt:`Bữa tối hay le dîner là lúc cả gia đình quây quần bên nhau và trò chuyện về một ngày của mình.`,
+ why:[`Bước 1: Chỗ trống đứng sau "get" → đây là cụm động từ (phrasal verb) "get + tiểu từ".`,
+  `Bước 2: Chủ thể là "the whole family" (cả gia đình), sau đó họ "talk about their day" (trò chuyện về một ngày của mình), tức là mọi người phải Ở CÙNG MỘT CHỖ.`,
+  `Bước 3: "get together" = tụ họp, quây quần bên nhau, đúng với khung cảnh bữa tối gia đình.`,
+  `Bước 4: Chọn "together". Cả nhà sum vầy, điểm số của con cũng sum vầy luôn!`],
+ bad:[`"get out" = ra ngoài, rời đi; cả nhà đi ra ngoài thì không còn ngồi với nhau để ăn tối và trò chuyện.`,
+  `"get up" = thức dậy, đứng dậy; không liên quan đến bữa tối gia đình.`,
+  `"get back" = quay về, lấy lại; câu không nói ai đi đâu để quay về.`],
+ ev:`The evening meal or le dîner is a time for the whole family to get together and talk about their day.`,
+ evvi:`Bữa tối hay le dîner là lúc cả gia đình quây quần bên nhau và trò chuyện về một ngày của mình.`,
+ dict:[`together`,`out`,`up`,`back`]},
+{id:5,part:1,col:'butter',text:`Depending on <b>(5) ______</b> lunch was, dinner may have several courses and most dinners end with wine and a dessert of some sort.`,
+ opts:[OPT(`how long`,`cụm hỏi`,`haʊ lɒŋ`,`bao lâu (hỏi thời gian kéo dài)`),OPT(`how much`,`cụm hỏi`,`haʊ mʌtʃ`,`bao nhiêu (hỏi lượng không đếm được, giá tiền)`),OPT(`how big`,`cụm hỏi`,`haʊ bɪɡ`,`lớn cỡ nào, thịnh soạn đến đâu`,1),OPT(`how far`,`cụm hỏi`,`haʊ fɑː`,`bao xa (hỏi khoảng cách)`)],
+ vnt:`Tuỳ vào bữa trưa thịnh soạn đến đâu, bữa tối có thể có vài món và hầu hết các bữa tối kết thúc bằng rượu vang và một món tráng miệng nào đó.`,
+ why:[`Bước 1: Sau chỗ trống là "lunch was" → cần một cụm "how + tính từ" mô tả bữa trưa.`,
+  `Bước 2: Vế sau nói "dinner may have several courses" (bữa tối có thể có vài món) → số món của bữa tối phụ thuộc vào bữa trưa TO hay NHỎ.`,
+  `Bước 3: Người Anh nói "a big meal" = bữa ăn thịnh soạn, nên "how big lunch was" = bữa trưa thịnh soạn đến mức nào.`,
+  `Bước 4: Trưa ăn to thì tối ăn nhẹ, trưa ăn nhẹ thì tối nhiều món → chọn "how big". Logic chuẩn như đầu bếp lên thực đơn!`],
+ bad:[`"how long" hỏi bữa trưa kéo dài bao lâu; thời gian ăn không quyết định bữa tối có mấy món.`,
+  `"how much" đi với danh từ không đếm được hoặc giá tiền ("how much food", "how much it cost"); "how much lunch was" không đúng ý.`,
+  `"how far" hỏi khoảng cách; bữa trưa không có chuyện xa hay gần.`],
+ ev:`Depending on how big lunch was, dinner may have several courses and most dinners end with wine and a dessert of some sort.`,
+ evvi:`Tuỳ vào bữa trưa thịnh soạn đến đâu, bữa tối có thể có vài món và hầu hết các bữa tối kết thúc bằng rượu vang và một món tráng miệng nào đó.`,
+ dict:[`big`,`long`,`far`,`course`]},
+{id:6,part:2,col:'mint',text:`<i>L'Apéritif</i> is a national <b>(6) ______</b> in France.`,
+ opts:[OPT(`greeting`,`n`,`ˈɡriːtɪŋ`,`lời chào, cách chào hỏi`),OPT(`habit`,`n`,`ˈhæbɪt`,`thói quen (thường của một người)`),OPT(`festival`,`n`,`ˈfestɪvl`,`lễ hội (vào dịp đặc biệt)`),OPT(`custom`,`n`,`ˈkʌstəm`,`phong tục, tập quán`,1)],
+ vnt:`L'Apéritif là một phong tục của cả nước Pháp.`,
+ why:[`Bước 1: Trước chỗ trống có tính từ "national" (thuộc về cả quốc gia), sau đó là "in France".`,
+  `Bước 2: Các câu sau kể L'Apéritif diễn ra "before dinner" (trước bữa tối), là hoạt động "established" (lâu đời) và "enjoyed by people of all ages" (mọi lứa tuổi yêu thích).`,
+  `Bước 3: Nếp sinh hoạt lâu đời mà cả nước cùng làm gọi là "custom" (phong tục, tập quán). "a national custom" = một phong tục của cả quốc gia.`,
+  `Bước 4: Chọn "custom". Con vừa mở khoá một nét văn hoá Pháp rồi đó!`],
+ bad:[`"greeting" là lời chào; L'Apéritif là cùng nhau uống và ăn nhẹ trước bữa tối, không phải câu chào.`,
+  `"habit" là thói quen thường gắn với từng người ("my habit"); nó không diễn tả được một nét văn hoá chung lâu đời như "custom".`,
+  `"festival" là lễ hội vào một dịp đặc biệt trong năm; L'Apéritif diễn ra thường ngày "before dinner" nên không phải lễ hội.`],
+ ev:`L'Apéritif is a national custom in France.`,
+ evvi:`L'Apéritif là một phong tục của cả nước Pháp.`,
+ dict:[`custom`,`habit`,`greeting`,`festival`]},
+{id:7,part:2,col:'butter',text:`It occurs before dinner where the family gathers about half an hour or so to <b>(7) ______</b> a drink, a small appetizer, and conversation with family, friends, and neighbors.`,
+ opts:[OPT(`share`,`v`,`ʃeə`,`cùng nhau dùng, chia sẻ`,1),OPT(`divide`,`v`,`dɪˈvaɪd`,`chia ra, chia cắt`),OPT(`experience`,`v`,`ɪkˈspɪəriəns`,`trải qua, trải nghiệm`),OPT(`hold`,`v`,`həʊld`,`cầm, nắm; tổ chức`)],
+ vnt:`Nó diễn ra trước bữa tối, khi gia đình tụ họp khoảng nửa tiếng để cùng nhau thưởng thức đồ uống, một món khai vị nhỏ và trò chuyện với gia đình, bạn bè và hàng xóm.`,
+ why:[`Bước 1: Động từ cần điền có 3 tân ngữ cùng lúc: "a drink" (đồ uống), "a small appetizer" (món khai vị nhỏ) và "conversation" (cuộc trò chuyện).`,
+  `Bước 2: Mọi người "gathers" (tụ họp) cùng "family, friends, and neighbors" → họ CÙNG NHAU dùng đồ uống, món ăn và cùng trò chuyện.`,
+  `Bước 3: "share" = cùng nhau dùng, cùng nhau tận hưởng; "share a drink", "share a meal", "share a conversation" đều rất tự nhiên.`,
+  `Bước 4: Chọn "share". Một từ ôm trọn cả ba thứ, đỉnh của chóp!`],
+ bad:[`"divide" = chia tách thành nhiều phần; không ai "divide a conversation" (chia cắt cuộc trò chuyện).`,
+  `"experience" = trải qua một cảm giác, sự việc; "experience a drink" nghe gượng và không nói lên ý quây quần cùng nhau.`,
+  `"hold" có thể "hold a drink" (cầm cốc), nhưng "hold a small appetizer" (cầm món khai vị) không mang ý cùng nhau thưởng thức.`],
+ ev:`It occurs before dinner where the family gathers about half an hour or so to share a drink, a small appetizer, and conversation with family, friends, and neighbors.`,
+ evvi:`Nó diễn ra trước bữa tối, khi gia đình tụ họp khoảng nửa tiếng để cùng nhau thưởng thức đồ uống, một món khai vị nhỏ và trò chuyện với gia đình, bạn bè và hàng xóm.`,
+ dict:[`share`,`divide`,`experience`,`hold`]},
+{id:8,part:2,col:'pink',text:`It is an established <b>(8) ______</b> activity which is enjoyed by people of all ages and forms an important part of home life.`,
+ opts:[OPT(`sporting`,`adj`,`ˈspɔːtɪŋ`,`thuộc về thể thao`),OPT(`social`,`adj`,`ˈsəʊʃl`,`mang tính giao lưu, xã hội`,1),OPT(`outdoor`,`adj`,`ˈaʊtdɔː`,`ngoài trời`),OPT(`physical`,`adj`,`ˈfɪzɪkl`,`thuộc về thể chất, vận động`)],
+ vnt:`Đó là một hoạt động giao lưu lâu đời, được mọi lứa tuổi yêu thích và là một phần quan trọng của đời sống gia đình.`,
+ why:[`Bước 1: Chỗ trống đứng trước danh từ "activity" → cần một tính từ cho biết đây là loại hoạt động gì.`,
+  `Bước 2: Câu trước kể mọi người tụ họp để uống, ăn nhẹ và "conversation with family, friends, and neighbors" (trò chuyện với gia đình, bạn bè, hàng xóm).`,
+  `Bước 3: Hoạt động gặp gỡ, trò chuyện, gắn kết với người khác gọi là "social activity" (hoạt động giao lưu, mang tính xã hội).`,
+  `Bước 4: Chọn "social". Con đọc hiểu cả đoạn chứ không chỉ một câu, quá đỉnh!`],
+ bad:[`"sporting" (thể thao): ngồi uống và trò chuyện không phải môn thể thao.`,
+  `"outdoor" (ngoài trời): bài nói đây là "an important part of home life" (phần quan trọng của đời sống gia đình), không nói làm ngoài trời.`,
+  `"physical" (vận động thể chất): L'Apéritif là ăn uống, trò chuyện, không phải hoạt động rèn luyện cơ thể.`],
+ ev:`It is an established social activity which is enjoyed by people of all ages and forms an important part of home life.`,
+ evvi:`Đó là một hoạt động giao lưu lâu đời, được mọi lứa tuổi yêu thích và là một phần quan trọng của đời sống gia đình.`,
+ dict:[`social`,`sporting`,`outdoor`,`physical`]},
+{id:9,part:3,col:'lilac',tf:1,text:`Coober Pedy is surrounded by a city skyline and tall apartment buildings.`,
+ opts:TF(0),
+ vnt:`Coober Pedy được bao quanh bởi đường chân trời thành phố và những toà chung cư cao tầng.`,
+ why:[`Bước 1: Từ khoá: "city skyline" (đường chân trời thành phố) và "tall apartment buildings" (chung cư cao tầng).`,
+  `Bước 2: Đoạn đầu viết: "don't expect to find a city skyline or tall apartment buildings" (đừng mong tìm thấy đường chân trời thành phố hay chung cư cao tầng).`,
+  `Bước 3: "don't expect to find" nghĩa là ở đó KHÔNG có những thứ này; dân ở đây sống dưới lòng đất. Câu đề nói ngược lại.`,
+  `Bước 4: Chọn "False". Bẫy đầu tiên đã bị con bóc trần!`],
+ bad:[`"True" sai vì bài nói rõ đừng mong thấy "a city skyline or tall apartment buildings" ở Coober Pedy.`],
+ ev:`Located in the vast Outback of South Australia is the town of Coober Pedy, but don't expect to find a city skyline or tall apartment buildings.`,
+ evvi:`Nằm giữa vùng Outback rộng lớn của Nam Úc là thị trấn Coober Pedy, nhưng đừng mong tìm thấy đường chân trời thành phố hay những toà chung cư cao tầng.`,
+ dict:[`true`,`false`,`skyline`,`apartment`]},
+{id:10,part:3,col:'blue',tf:1,text:`Most of the residents of Coober Pedy spend their daily life underground.`,
+ opts:TF(1),
+ vnt:`Phần lớn cư dân Coober Pedy sinh hoạt hằng ngày dưới lòng đất.`,
+ why:[`Bước 1: Từ khoá: "Most of the residents" (phần lớn cư dân) và "daily life underground" (cuộc sống hằng ngày dưới lòng đất).`,
+  `Bước 2: Bài viết: "most of the roughly 2,500 residents live in underground houses, eat in underground restaurants and even worship in underground churches".`,
+  `Bước 3: Ở, ăn uống, thậm chí đi lễ đều dưới lòng đất → cuộc sống hằng ngày diễn ra dưới lòng đất; "most of the residents" khớp với "most of the roughly 2,500 residents".`,
+  `Bước 4: Chọn "True". Con đào trúng mạch bằng chứng rồi!`],
+ bad:[`"False" sai vì bài nói phần lớn cư dân sống, ăn uống và đi lễ "underground" (dưới lòng đất).`],
+ ev:`Because here, most of the roughly 2,500 residents live in underground houses, eat in underground restaurants and even worship in underground churches.`,
+ evvi:`Bởi vì ở đây, phần lớn trong số khoảng 2.500 cư dân sống trong những ngôi nhà dưới lòng đất, ăn ở những nhà hàng dưới lòng đất và thậm chí đi lễ ở những nhà thờ dưới lòng đất.`,
+ dict:[`true`,`false`,`resident`,`underground`,`worship`]},
+{id:11,part:3,col:'butter',tf:1,text:`There are many open mine shafts throughout the area.`,
+ opts:TF(1),
+ vnt:`Có nhiều hầm mỏ để hở khắp khu vực.`,
+ why:[`Bước 1: Từ khoá: "open mine shafts" (hầm mỏ để hở) và "throughout the area" (khắp khu vực).`,
+  `Bước 2: Bài viết: "Signs warn visitors of open mine shafts throughout the area" (Biển báo cảnh báo du khách về các hầm mỏ để hở khắp khu vực).`,
+  `Bước 3: Phải cắm biển cảnh báo khắp nơi tức là hầm mỏ hở có ở nhiều chỗ; cụm "throughout the area" giống hệt câu đề.`,
+  `Bước 4: Chọn "True". Mắt con tinh như thợ mỏ dò quặng!`],
+ bad:[`"False" sai vì bài nói rõ có biển cảnh báo về "open mine shafts throughout the area".`],
+ ev:`On the way into town, mounds of dirt discarded from the mines give it an almost lunar landscape. Signs warn visitors of open mine shafts throughout the area.`,
+ evvi:`Trên đường vào thị trấn, những đống đất thải ra từ các khu mỏ khiến nơi đây có cảnh quan gần giống như trên mặt trăng. Biển báo cảnh báo du khách về những hầm mỏ để hở khắp khu vực.`,
+ dict:[`true`,`false`,`mine`,`shaft`,`warn`]},
+{id:12,part:3,col:'pink',tf:1,text:`The residents live underground to avoid rainfall and cold temperature.`,
+ opts:TF(0),
+ vnt:`Cư dân sống dưới lòng đất để tránh mưa và nhiệt độ lạnh.`,
+ why:[`Bước 1: Từ khoá: lý do sống dưới lòng đất là "to avoid rainfall and cold temperature" (để tránh mưa và cái lạnh).`,
+  `Bước 2: Bài viết: "This part of the Outback receives little rainfall and temperatures have been recorded as high as 50 degrees Celsius" (vùng này ít mưa và nhiệt độ từng lên tới 50 độ C).`,
+  `Bước 3: Nơi đây ÍT mưa và rất NÓNG; ngay sau đó "Because of this" cho thấy người dân xuống lòng đất để tránh cái NÓNG, không phải tránh mưa và lạnh.`,
+  `Bước 4: Chọn "False". Một chữ "cold" mà lật ngược cả câu, con không bị lừa đâu!`],
+ bad:[`"True" sai vì bài nói vùng này "receives little rainfall" (ít mưa) và nóng tới "50 degrees Celsius", không hề lạnh.`],
+ ev:`This part of the Outback receives little rainfall and temperatures have been recorded as high as 50 degrees Celsius. Because of this, an estimated 60 percent of Coober Pedy residents took inspiration from the mines and established their homes underground.`,
+ evvi:`Vùng Outback này rất ít mưa và nhiệt độ từng được ghi nhận lên tới 50 độ C. Vì thế, ước tính 60 phần trăm cư dân Coober Pedy đã lấy cảm hứng từ các khu mỏ và dựng nhà dưới lòng đất.`,
+ dict:[`true`,`false`,`rainfall`,`temperature`,`avoid`]},
+{id:13,part:3,col:'mint',tf:1,text:`The temperatures underground are the same as the ones outside.`,
+ opts:TF(0),
+ vnt:`Nhiệt độ dưới lòng đất giống với nhiệt độ bên ngoài.`,
+ why:[`Bước 1: Từ khoá: "the same as" (giống như) nhiệt độ bên ngoài.`,
+  `Bước 2: Bên ngoài: "as high as 50 degrees Celsius". Dưới lòng đất: "Temperatures underground are a comfortable 19 to 25 degrees Celsius".`,
+  `Bước 3: 19 đến 25 độ C dễ chịu khác hẳn 50 độ C nóng bức → hai nơi KHÔNG giống nhau.`,
+  `Bước 4: Chọn "False". So sánh số liệu chuẩn như nhà khoa học!`],
+ bad:[`"True" sai vì dưới lòng đất chỉ "19 to 25 degrees Celsius" trong khi bên ngoài có thể lên tới "50 degrees Celsius".`],
+ ev:`This part of the Outback receives little rainfall and temperatures have been recorded as high as 50 degrees Celsius. Temperatures underground are a comfortable 19 to 25 degrees Celsius.`,
+ evvi:`Vùng Outback này rất ít mưa và nhiệt độ từng được ghi nhận lên tới 50 độ C. Nhiệt độ dưới lòng đất dễ chịu, từ 19 đến 25 độ C.`,
+ dict:[`true`,`false`,`temperature`,`comfortable`]},
+{id:14,part:3,col:'lilac',tf:1,text:`The residents often recycle items because it's hard to get building materials.`,
+ opts:TF(1),
+ vnt:`Cư dân thường tái chế đồ vật vì rất khó kiếm vật liệu xây dựng.`,
+ why:[`Bước 1: Từ khoá: "recycle items" (tái chế đồ vật) và lý do "hard to get building materials" (khó kiếm vật liệu xây dựng).`,
+  `Bước 2: Bài viết: "Items are often recycled as building materials can be hard to come by".`,
+  `Bước 3: "as" ở đây = "because" (bởi vì); "hard to come by" = khó kiếm được, cùng nghĩa với "hard to get".`,
+  `Bước 4: Chọn "True". Con nhận ra cách viết lại ý rất nhanh, quá xịn!`],
+ bad:[`"False" sai vì bài nói rõ đồ vật thường được tái chế vì vật liệu xây dựng "can be hard to come by" (khó kiếm).`],
+ ev:`Items are often recycled as building materials can be hard to come by.`,
+ evvi:`Đồ vật thường được tái chế vì vật liệu xây dựng có thể rất khó kiếm.`,
+ dict:[`true`,`false`,`recycle`,`material`]},
+{id:15,part:4,col:'blue',text:`Where is Coober Pedy?`,
+ opts:[OPT(`In the dense forests of North Australia.`,``,``,`Ở trong những khu rừng rậm phía Bắc nước Úc.`),
+  OPT(`In the vast Outback of South Australia.`,``,``,`Ở vùng Outback rộng lớn của Nam Úc.`,1),
+  OPT(`Near the coastal line of Sydney.`,``,``,`Gần đường bờ biển của Sydney.`),
+  OPT(`In the snowy mountains of New Zealand.`,``,``,`Trên những ngọn núi tuyết ở New Zealand.`)],
+ vnt:`Coober Pedy nằm ở đâu?`,
+ why:[`Bước 1: Câu hỏi "Where" hỏi về VỊ TRÍ, con tìm câu đầu tiên giới thiệu thị trấn.`,
+  `Bước 2: Bài viết: "Located in the vast Outback of South Australia is the town of Coober Pedy" (Nằm giữa vùng Outback rộng lớn của Nam Úc là thị trấn Coober Pedy).`,
+  `Bước 3: Phương án "In the vast Outback of South Australia" lặp lại đúng từng chữ → chọn phương án này. Định vị chuẩn như GPS!`],
+ bad:[`"In the dense forests of North Australia" sai cả hai chỗ: bài không nói rừng rậm, và là Nam Úc (South) chứ không phải Bắc Úc (North).`,
+  `"Near the coastal line of Sydney" sai vì bài không hề nhắc đến Sydney hay bờ biển; Outback là vùng nội địa khô hạn.`,
+  `"In the snowy mountains of New Zealand" sai vì Coober Pedy ở Úc, lại nóng tới 50 độ C, không có núi tuyết.`],
+ ev:`Located in the vast Outback of South Australia is the town of Coober Pedy, but don't expect to find a city skyline or tall apartment buildings.`,
+ evvi:`Nằm giữa vùng Outback rộng lớn của Nam Úc là thị trấn Coober Pedy, nhưng đừng mong tìm thấy đường chân trời thành phố hay những toà chung cư cao tầng.`,
+ dict:[`outback`,`vast`,`located`]},
+{id:16,part:4,col:'pink',text:`What gives Coober Pedy an almost lunar landscape?`,
+ opts:[OPT(`Mounds of dirt discarded from the mines.`,``,``,`Những đống đất thải ra từ các khu mỏ.`,1),
+  OPT(`The extreme lack of rainfall.`,``,``,`Sự thiếu mưa trầm trọng.`),
+  OPT(`The tall apartment buildings.`,``,``,`Những toà chung cư cao tầng.`),
+  OPT(`The underground art galleries.`,``,``,`Các phòng tranh dưới lòng đất.`)],
+ vnt:`Điều gì khiến Coober Pedy có cảnh quan gần giống như trên mặt trăng?`,
+ why:[`Bước 1: Từ khoá "lunar landscape" (cảnh quan như mặt trăng) nằm ở đoạn 2.`,
+  `Bước 2: Bài viết: "mounds of dirt discarded from the mines give it an almost lunar landscape".`,
+  `Bước 3: Chủ ngữ của động từ "give" chính là "mounds of dirt discarded from the mines" (những đống đất thải ra từ các khu mỏ) → đây là đáp án.`,
+  `Bước 4: Chọn "Mounds of dirt discarded from the mines". Con lần đúng chủ ngữ, quá chắc tay!`],
+ bad:[`"The extreme lack of rainfall" sai: chuyện ít mưa nằm ở đoạn sau để giải thích vì sao dân sống dưới đất, không phải lý do có cảnh quan mặt trăng.`,
+  `"The tall apartment buildings" sai vì bài nói ở đây không có chung cư cao tầng.`,
+  `"The underground art galleries" sai vì phòng tranh nằm dưới lòng đất, không tạo nên cảnh quan bên trên.`],
+ ev:`On the way into town, mounds of dirt discarded from the mines give it an almost lunar landscape.`,
+ evvi:`Trên đường vào thị trấn, những đống đất thải ra từ các khu mỏ khiến nơi đây có cảnh quan gần giống như trên mặt trăng.`,
+ dict:[`lunar`,`landscape`,`mound`,`discard`]},
+{id:17,part:4,col:'mint',text:`What do the residents do when they need more space for their house?`,
+ opts:[OPT(`They move to a new town.`,``,``,`Họ chuyển đến một thị trấn mới.`),
+  OPT(`They build another floor above ground.`,``,``,`Họ xây thêm một tầng trên mặt đất.`),
+  OPT(`They buy more building materials.`,``,``,`Họ mua thêm vật liệu xây dựng.`),
+  OPT(`They just continue digging.`,``,``,`Họ chỉ việc đào tiếp.`,1)],
+ vnt:`Cư dân làm gì khi họ cần thêm chỗ cho ngôi nhà của mình?`,
+ why:[`Bước 1: "need more space" (cần thêm chỗ) cùng nghĩa với "more space is required" trong bài.`,
+  `Bước 2: Bài viết: "When more space is required, they can just continue digging, leading to some very spacious residences".`,
+  `Bước 3: "they can just continue digging" = họ chỉ việc đào tiếp → chọn "They just continue digging". Đào đến đâu, điểm của con lên đến đó!`],
+ bad:[`"They move to a new town" sai: bài không nói ai chuyển đi nơi khác.`,
+  `"They build another floor above ground" sai: nhà ở đây được đào dưới lòng đất, không xây thêm tầng trên mặt đất.`,
+  `"They buy more building materials" sai: bài nói vật liệu xây dựng "can be hard to come by" (khó kiếm), và họ chỉ cần đào thêm.`],
+ ev:`Each one is carefully dug out room by room. When more space is required, they can just continue digging, leading to some very spacious residences.`,
+ evvi:`Mỗi ngôi nhà được đào cẩn thận từng phòng một. Khi cần thêm chỗ, họ chỉ việc đào tiếp, nhờ vậy có những ngôi nhà rất rộng rãi.`,
+ dict:[`dig`,`space`,`spacious`]},
+{id:18,part:4,col:'butter',text:`Do the underground homes have electricity?`,
+ opts:[OPT(`Yes, they do.`,``,``,`Có, những ngôi nhà đó có điện.`,1),
+  OPT(`No, they don't.`,``,``,`Không, những ngôi nhà đó không có điện.`)],
+ vnt:`Những ngôi nhà dưới lòng đất có điện không?`,
+ why:[`Bước 1: Câu hỏi bắt đầu bằng "Do" nên câu trả lời là "Yes" hoặc "No".`,
+  `Bước 2: Bài viết: "The homes have working electricity, running cables back up to the surface along with pipes for fresh air".`,
+  `Bước 3: "working electricity" = điện dùng bình thường → nhà có điện. Chủ ngữ số nhiều "the underground homes" nên trả lời ngắn là "Yes, they do."`,
+  `Bước 4: Chọn "Yes, they do." Đèn sáng rực dưới lòng đất và điểm của con cũng sáng rực!`],
+ bad:[`"No, they don't." sai vì bài nói rõ nhà có "working electricity" và cả dây cáp nối lên mặt đất.`],
+ ev:`The homes have working electricity, running cables back up to the surface along with pipes for fresh air.`,
+ evvi:`Những ngôi nhà có điện dùng bình thường, với dây cáp chạy ngược lên mặt đất cùng các ống dẫn không khí trong lành.`,
+ dict:[`electricity`,`cable`,`surface`]},
+{id:19,part:4,col:'lilac',text:`What are other underground buildings besides the homes?`,
+ opts:[OPT(`Only gas stations and post offices.`,``,``,`Chỉ có trạm xăng và bưu điện.`),
+  OPT(`Art galleries, restaurants, shops, and churches.`,``,``,`Phòng tranh, nhà hàng, cửa hàng và nhà thờ.`,1),
+  OPT(`Hospitals, schools, and cinemas.`,``,``,`Bệnh viện, trường học và rạp chiếu phim.`),
+  OPT(`There are no other underground buildings.`,``,``,`Không có công trình dưới lòng đất nào khác.`)],
+ vnt:`Ngoài nhà ở, còn có những công trình dưới lòng đất nào khác?`,
+ why:[`Bước 1: "besides the homes" (ngoài nhà ở) cùng nghĩa với "In addition to underground homes" ở câu cuối bài.`,
+  `Bước 2: Bài viết: "there are underground art galleries, restaurants and shops, as well as multiple underground churches".`,
+  `Bước 3: Phương án "Art galleries, restaurants, shops, and churches" liệt kê đủ 4 loại công trình đó → chọn phương án này. Về đích cực đẹp!`],
+ bad:[`"Only gas stations and post offices" sai: trạm xăng và bưu điện có được nhắc đến nhưng bài không nói chúng ở dưới lòng đất, chữ "Only" càng sai.`,
+  `"Hospitals, schools, and cinemas" sai vì bài không hề nhắc tới bệnh viện, trường học hay rạp chiếu phim.`,
+  `"There are no other underground buildings" sai vì bài kể ra cả phòng tranh, nhà hàng, cửa hàng và nhà thờ dưới lòng đất.`],
+ ev:`In addition to underground homes, there are underground art galleries, restaurants and shops, as well as multiple underground churches.`,
+ evvi:`Ngoài nhà ở dưới lòng đất, nơi đây còn có phòng tranh, nhà hàng và cửa hàng dưới lòng đất, cùng với nhiều nhà thờ dưới lòng đất.`,
+ dict:[`gallery`,`church`,`besides`]}
+];
+QS.forEach(function(q){q.options=q.opts.map(function(o){return o.w});q.correct=q.opts.filter(function(o){return o.ok})[0].w});
+
+/* ══ dựng trang ══ */
+var TOTAL=QS.length,answered=0,score=0,done={},MAP={};
+var TINT={pink:'#FFEAF4',mint:'#E3FBF1',lilac:'#F1EBFF',blue:'#E6F1FF',butter:'#FFF9DB'};
+var SECINFO={
+ 1:{c:'pink',t:"🥐 MEALS IN FRANCE · Paragraph 1 — Câu 1 → 5",s:"Part 1. Read the passage about meals in France. Choose the best answer for each numbered blank."},
+ 2:{c:'mint',t:"🧀 L'APÉRITIF · Paragraph 2 — Câu 6 → 8",s:"Part 1. Read about L'Apéritif. Choose the best answer for each numbered blank."},
+ 3:{c:'blue',t:"🏜️ COOBER PEDY · True or False — Câu 9 → 14",s:"Part 2. Read about life in Coober Pedy. Decide whether each statement is True or False."},
+ 4:{c:'lilac',t:"💬 COOBER PEDY · Questions — Câu 15 → 19",s:"Part 2. Answer the questions about Coober Pedy. Choose the best answer."}};
+var app=document.getElementById('app'),secs={};
+[1,2,3,4].forEach(function(p){var s=document.createElement('div');s.className='sec';s.dataset.part=p;s.style.borderColor='var(--'+SECINFO[p].c+')';
+ s.innerHTML='<div class="sech" style="color:var(--'+SECINFO[p].c+'-d)">'+SECINFO[p].t+'</div><div class="secs">'+SECINFO[p].s+'</div>';
+ secs[p]=s;app.appendChild(s)});
+QS.forEach(function(q){
+ var so=q.tf?q.options.slice():shuffle(q.options);
+ MAP[q.id]=so;
+ var card=document.createElement('div');
+ card.className='q';card.id='c'+q.id;
+ card.style.setProperty('--qc','var(--'+q.col+')');
+ card.style.borderLeftColor='var(--'+q.col+')';
+ card.style.background=TINT[q.col];
+ card.innerHTML='<div class="qt"><span class="qn">'+q.id+'</span>'+q.text.replace(/<b>/g,'<b class="bk-'+q.col+'">')+'</div>'+
+  '<div class="og" id="o'+q.id+'">'+so.map(function(o,i){return '<button class="ob" onclick="pick('+q.id+','+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'}).join('')+'</div>'+
+  '<div class="ex" id="e'+q.id+'"></div>';
+ secs[q.part].appendChild(card);
+});
+
+function pick(qid,i){
+ if(done[qid])return;done[qid]=true;answered++;
+ var q=QS.find(function(x){return x.id===qid});
+ var so=MAP[qid],bs=document.getElementById('o'+qid).children;
+ var ok=so[i]===q.correct;
+ for(var k=0;k<bs.length;k++){bs[k].classList.add('dn');
+  if(so[k]===q.correct)bs[k].classList.add('ok');else if(k===i)bs[k].classList.add('no')}
+ document.getElementById('e'+qid).innerHTML=render(q);
+ document.getElementById('e'+qid).classList.add('on');
+ if(ok){score++;ding();conf()}
+ else{buzz();var c=document.getElementById('c'+qid);c.classList.add('shk');setTimeout(function(){c.classList.remove('shk')},430)}
+ bump();
+}
+function bump(){document.getElementById('lv').textContent=score+'/'+TOTAL;document.getElementById('sc').textContent=score+'/'+TOTAL}
+
+/* ══ khung đọc vừa màn hình: chừa ~95px đáy cho cảnh căn bếp ══ */
+function fitPanels(){var m=document.querySelector('.main'),ps=document.querySelectorAll('.lp,.rp');if(!m||!ps.length)return;
+ if(window.innerWidth<=940){ps.forEach(function(e){e.style.maxHeight=''});m.style.paddingBottom='';return}
+ var n=document.querySelector('.note'),nh=n?n.offsetHeight:0,h=Math.max(320,window.innerHeight-nh-104);
+ ps.forEach(function(e){e.style.maxHeight=h+'px'});
+ var pb=parseFloat(getComputedStyle(m).paddingBottom)||0,top=ps[0].getBoundingClientRect().top+window.scrollY,want=Math.max(40,top-nh-8),extra=document.documentElement.scrollHeight-window.innerHeight-pb;
+ m.style.paddingBottom=Math.max(0,want-extra)+'px'}
+window.addEventListener('resize',fitPanels);window.addEventListener('load',fitPanels);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitPanels);
+fitPanels();
+
+/* ══ nộp bài ══ */
+function openName(){
+ if(answered<TOTAL){alert('Con ơi, con còn '+(TOTAL-answered)+' câu chưa nấu xong kìa! Hoàn thành hết rồi mới nộp bài nhé!');return;}
+ document.getElementById('ovN').classList.add('on');setTimeout(function(){document.getElementById('nIn').focus()},150);
+}
+document.getElementById('nIn').addEventListener('keydown',function(e){if(e.key==='Enter')showResult()});
+function showResult(){
+ var i=document.getElementById('nIn'),n=i.value.trim();
+ if(!n){document.getElementById('nEm').classList.add('show');i.focus();return}
+ document.getElementById('nEm').classList.remove('show');
+ document.getElementById('ovN').classList.remove('on');
+ var pct=score/TOTAL,ten=(pct*10).toFixed(2),g,m,gif;
+ document.getElementById('rn').textContent='Học viên: '+n;
+ if(score===TOTAL){g='🏆 RA LÒ ĐIỂM 10 NÓNG HỔI, '+n+'!';m='Con nấu trọn '+TOTAL+' câu mà không làm cháy món nào — đúng chuẩn siêu đầu bếp lớp 8! MS Chí Nên rất tự hào về con! 🌟 ☎️ 0852639652.';gif='https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif'}
+ else if(pct>=.8){g='👏 MÂM CỖ QUÁ NGON, '+n+'!';m='Chỉ còn vài món nữa là tròn điểm 10 — đọc kĩ thêm chút ở những câu dễ trượt là bài kiểm tra Unit 6 của con chắc chắn thơm phức! ☎️ 0852639652.';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else if(pct>=.6){g='💪 BẾP ĐÃ ĐỎ LỬA, '+n+'!';m='Con đã qua ngưỡng an toàn rồi đó. Mở lời giải từng câu ra xem lại, chép từ mới vào vở là mẻ bánh sau sẽ phồng đẹp hơn nhiều!';gif='https://media.giphy.com/media/3o7abGQa0p2EWzchcg/giphy.gif'}
+ else{g='🌱 NHÀO BỘT MẺ MỚI NÀO, '+n+'!';m='Đừng buồn con nhé. Đầu bếp nào cũng từng làm cháy bánh — xem lời giải của cô, ghi chép từ mới, rồi bấm làm lại nha, Ms tin con sẽ làm tốt hơn! 💪';gif='https://media.giphy.com/media/l378giAZgxPw3eO52/giphy.gif'}
+ document.getElementById('rSc').textContent=score;
+ document.getElementById('rTt').textContent=TOTAL;
+ document.getElementById('r10').textContent=ten;
+ document.getElementById('rGif').src=gif;
+ document.getElementById('rMs').innerHTML='<b>'+g+'</b><br>'+m;
+ document.getElementById('ovR').classList.add('on');
+ if(pct>=.6){conf();ding()}
+}
+function closeR(){document.getElementById('ovR').classList.remove('on')}
+
+/* ══ lời nhắc — đổi theo phần đang làm (khung nhắc giữ cố định 2 dòng) ══ */
+var GEN=[
+ "🧁 Chào đầu bếp lớp 8! Dream Kitchen hôm nay có 19 câu (1 → 19) — nếm trọn bữa ăn kiểu Pháp, chui xuống thị trấn dưới lòng đất Coober Pedy và ra lò điểm 10 thôi! 🔥",
+ "🚨 LƯU Ý TỪ MS MAI AN: Cuộn câu hỏi đến đâu làm đến đó! TỰ GIÁC tra từ mới bằng Google Dịch/Từ điển Cambridge, tuyệt đối KHÔNG chọn bừa. Đọc kỹ giải thích và GHI CHÉP từ mới vào vở thì tiếng Anh mới thực sự giỏi lên. Tránh làm qua loa chống đối! 📝",
+ "✏️ Mẹo xịn: bôi đen câu chứa bằng chứng rồi bấm màu trên thanh HIGHLIGHT — bấm lại chữ đã tô để đổi màu hoặc 🧽 tẩy. Bằng chứng tô sáng, đáp án chốt chắc như đinh đóng cột! 🔥",
+ "🔥 Đúng liên tục là chuỗi lửa bùng cháy — học sinh lớp 8 bản lĩnh giữ lửa thật đều tay, câu nào cũng vàng ươm thơm phức!",
+ "💪 Đầu bếp xịn nào cũng từng làm cháy một mẻ bánh — lỡ sai thì đọc kĩ lời giải, rồi lật mẻ sau thật đẹp!",
+ "🦆 Chọn sai là chú vịt kêu quạc quạc — cười thật tươi, xem lời giải rồi chiến tiếp câu sau mạnh hơn nhé!",
+ "🏆 Bài kiểm tra Unit 6 lớp 8 đang chờ — luyện chắc tay hôm nay, vào phòng thi con chỉ việc bưng mâm điểm 10 ra lò! 🧁",
+ "☎️ Đăng ký khoá tiếng Anh lớp 1 → 12 cùng MS Chí Nên — 0852639652 — học vui như bước vào căn bếp mộng mơ, điểm số thơm phức mỗi ngày!"];
+var PMSG={
+ 1:["🥐 MEALS IN FRANCE! 5 chỗ trống là 5 món trong thực đơn kiểu Pháp — lớp 8 rồi, chốt từng đáp án thật bản lĩnh, ra lò điểm 10 nào! 🔥",
+    "🍽️ Bữa sáng, bữa trưa, bữa tối — đầu bếp lớp 8 nấu đâu chắc đó, không món nào bị cháy! 💪"],
+ 2:["🧀 L'APÉRITIF! 3 chỗ trống về phong tục cả nước Pháp yêu thích — hiểu văn hoá là chốt đáp án ngọt như bánh sừng bò! 🔥",
+    "💬 Gia đình, bạn bè, hàng xóm quây quần — con quây quần luôn với điểm 10 nhé, sắp xong đoạn văn rồi!"],
+ 3:["🏜️ COOBER PEDY · True or False! 6 cái bẫy đang nấp dưới lòng đất — soi bằng chứng thật kĩ, không để bẫy nào lọt lưới! 🔥",
+    "🔍 Mắt tinh như thợ mỏ dò quặng — bình tĩnh săn bằng chứng, lửa chiến đấu của con đang cháy rực đấy!"],
+ 4:["💬 COOBER PEDY · Questions! 5 câu cuối — đào trúng mạch bằng chứng, bưng mâm điểm 10 ra lò thôi con! 🏆",
+    "🎉 Sắp về đích rồi! Giữ lửa thêm vài câu nữa, cả căn bếp mộng mơ đang chờ vỗ tay cho con! 🧁"]};
+var curP=0,mk=0,msEl=document.getElementById('msTx');
+function fitMsg(){var box=msEl.parentNode;msEl.style.fontSize='';var fs=parseFloat(getComputedStyle(msEl).fontSize),k=0;
+ while(msEl.offsetHeight>box.clientHeight+1&&fs>10&&k<20){fs-=.5;k++;msEl.style.fontSize=fs+'px'}}
+function showMsg(t){msEl.style.opacity=0;setTimeout(function(){
+ var de=document.documentElement,atEnd=window.scrollY>0&&window.scrollY>=de.scrollHeight-window.innerHeight-2;
+ msEl.innerHTML=t;fitMsg();msEl.style.opacity=1;fitPanels();
+ if(atEnd)window.scrollTo(0,de.scrollHeight)},250)}
+fitMsg();
+setInterval(function(){var list=(PMSG[curP]||[]).concat(GEN);mk=(mk+1)%list.length;showMsg(list[mk])},5200);
+function whichPart(){
+ var rp=document.querySelector('.rp'),r=rp.getBoundingClientRect(),mid=Math.max(r.top,0)+Math.min(r.height,window.innerHeight)*0.45,p=1;
+ [1,2,3,4].forEach(function(k){if(secs[k].getBoundingClientRect().top<mid)p=k});
+ if(p!==curP){curP=p;mk=0;showMsg(PMSG[p][0])}
+}
+document.querySelector('.rp').addEventListener('scroll',whichPart,{passive:true});
+window.addEventListener('scroll',whichPart,{passive:true});
+window.addEventListener('resize',fitMsg);
+</script>
+<style>/*streak*/
+#stkRow{display:flex;align-items:center;flex:0 0 auto;margin:0 4px}#stkRow.in{align-self:center;margin:0 0 0 8px}#stkRow.in .bar,#stkRow.in .nx,#stkRow.in .lbl{display:none!important}#stkRow.in #stkP{flex-direction:row!important;gap:6px;padding:4px 10px 4px 8px;position:static}#stkRow.in .fl,#stkRow.in .n{position:static;line-height:1}
+#stkRow.fixed{position:fixed;left:10px;bottom:12px;z-index:60}
+#stkP{display:flex;align-items:center;gap:6px;padding:2px 10px 2px 7px;border-radius:999px;background:#FDF2F8;border:2px solid #F9A8D4;font-family:'Baloo 2','Nunito',sans-serif;
+ font-weight:700;color:#9D174D;font-size:.92rem;transition:transform .25s;white-space:nowrap}
+#stkP .fl{display:inline-block;position:static;font-size:1.1rem;transition:font-size .3s;transform-origin:50% 90%}
+#stkP.hot .fl{animation:stkFl .5s ease-in-out infinite alternate}@keyframes stkFl{from{transform:scale(1) rotate(-6deg)}to{transform:scale(1.25) rotate(6deg)}}
+#stkP.pop{transform:scale(1.15)}#stkP.cold{filter:grayscale(.6);opacity:.85}
+#stkP .n{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:linear-gradient(135deg,#F472B6,#A855F7);color:#fff;font-size:.9rem}
+#stkP .bar{width:54px;height:6px;border-radius:99px;background:#FBCFE8;overflow:hidden}#stkP .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#EC4899,#A855F7);transition:width .3s}
+#stkP .nx{font-size:.78rem;color:#BE185D}
+#stkToast{position:fixed;left:50%;top:38%;z-index:70;transform:translate(-50%,-50%) scale(.4);opacity:0;pointer-events:none;text-align:center;padding:18px 26px;border-radius:26px;
+ background:linear-gradient(135deg,#FDF2F8,#F5F3FF);border:4px solid #F9A8D4;box-shadow:0 18px 40px rgba(0,0,0,.25);font-family:'Baloo 2','Nunito',sans-serif;color:#9D174D;max-width:86vw;transition:all .35s cubic-bezier(.2,1.6,.4,1)}
+#stkToast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}#stkToast b{display:block;font-size:2.3rem;line-height:1.15}#stkToast span{font-weight:700;font-size:1.05rem}
+#stkToast.soft{background:linear-gradient(135deg,#EFF6FF,#F5F3FF);border-color:#93C5FD;color:#1E3A8A}#stkToast.soft b{font-size:1.6rem}
+.stkSpark{position:fixed;z-index:69;pointer-events:none;font-size:26px;animation:stkSp 1.2s ease-out forwards}
+@keyframes stkSp{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3) rotate(240deg)}}
+@media(max-width:700px){#stkP .bar,#stkP .nx,#stkP .lbl{display:none}#stkP{padding:2px 7px 2px 5px}#stkToast b{font-size:1.8rem}}
+@media (prefers-reduced-motion:reduce){#stkP.hot .fl,.stkSpark{animation:none}}
+</style>
+<script>/*streak*/(function(){
+ const $=id=>document.getElementById(id),num=el=>{const m=(el.textContent||'').match(/(\d+)\s*\/\s*(\d+)/);return m?[+m[1],+m[2]]:[0,0]};
+ let get=null,anchor=null,mode='after';const sc=$('scoreChip'),pg=$('progChip');
+ if(sc&&pg){get=()=>{const s=num(sc),a=num(pg);return [a[0],s[0],a[1]]};anchor=sc}
+ else{try{if(typeof answered!=='undefined'&&typeof score!=='undefined'){get=()=>[answered,score,typeof TOTAL!=='undefined'?TOTAL:0];anchor=$('sc')&&$('sc').parentElement}}catch(e){}
+  if(!get)try{if(typeof done==='object'&&done&&$('lv')){get=()=>{const v=Object.values(done);return [v.length,v.filter(x=>x===true).length,typeof QS!=='undefined'?QS.length:0]};anchor=$('lv').closest('.gauge')||$('lv');mode='in'}}catch(e){}}
+ if(!get)return;
+ const row=document.createElement('div');row.id='stkRow';
+ row.innerHTML='<div id="stkP" class="cold" title="Số câu đúng liên tiếp"><span class="fl">🔥</span><span class="lbl">Chuỗi đúng</span><span class="n" id="stkN">0</span><span class="bar"><i id="stkB"></i></span><span class="nx" id="stkX">→ 3</span></div>';
+ if(!anchor){row.className='fixed';document.body.appendChild(row)}else if(mode==='in'){row.className='in';anchor.insertAdjacentElement('afterend',row)}else anchor.insertAdjacentElement('afterend',row);
+ const toast=document.createElement('div');toast.id='stkToast';document.body.appendChild(toast);
+ const P=document.getElementById('stkP'),N=document.getElementById('stkN'),B=document.getElementById('stkB'),X=document.getElementById('stkX');
+ let cur=0,best=0,[lastA,lastS]=get(),tmr=null;
+ const NEXT=n=>n<3?3:n<5?5:n<10?10:(Math.floor(n/5)+1)*5,LOW=n=>n<3?0:n<5?3:n<10?5:Math.floor(n/5)*5;
+ const PRAISE={3:['🔥 3 câu liền!','Con đang vào guồng rồi đó!'],5:['🔥🔥 5 câu liền!','Siêu đỉnh luôn — cô thấy con tập trung lắm!'],10:['🌟 10 câu liền!','Không ai cản nổi con nữa rồi!'],
+  15:['🏆 15 câu liền!','Con là ngôi sao của lớp đó!'],20:['👑 20 câu liền!','Tuyệt vời — cô tự hào về con lắm!']};
+ const OOPS=['Không sao đâu con — mình bắt đầu chuỗi mới nhé! 💪','Đọc lời giải rồi làm tiếp, chuỗi mới đang chờ con! 🌱','Sai một câu là học thêm một điều — cố lên con! 🌈','Hít một hơi thật sâu, câu sau con sẽ làm được! ⭐'];
+ function say(t,sub,soft){toast.className=soft?'soft':'';toast.innerHTML='<b>'+t+'</b><span>'+sub+'</span>';void toast.offsetWidth;toast.classList.add('show');clearTimeout(tmr);tmr=setTimeout(()=>toast.classList.remove('show'),soft?1600:2000)}
+ function burst(){const E=['🔥','⭐','✨','🎉','💗','🌟'];for(let i=0;i<16;i++){const s=document.createElement('div');s.className='stkSpark';s.textContent=E[i%E.length];
+  const a=Math.random()*Math.PI*2,r=120+Math.random()*160;s.style.cssText='left:50%;top:38%;--x:'+Math.cos(a)*r+'px;--y:'+Math.sin(a)*r+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),1300)}}
+ function paint(){N.textContent=cur;const lo=LOW(cur),hi=NEXT(cur);B.style.width=Math.min(100,(cur-lo)/(hi-lo)*100)+'%';X.textContent='→ '+hi;
+  P.classList.toggle('cold',cur===0);P.classList.toggle('hot',cur>=3);P.classList.add('pop');setTimeout(()=>P.classList.remove('pop'),250);
+  P.querySelector('.fl').style.fontSize=(1.1+Math.min(cur,15)*.03)+'rem'}
+ function check(){const [a,s,tot]=get();if(a===lastA)return;const dA=a-lastA,dS=s-lastS;lastA=a;lastS=s;if(dA<=0)return;
+  if(dS>=dA){const before=cur;cur+=dA;best=Math.max(best,cur);paint();
+   const hit=Object.keys(PRAISE).map(Number).filter(m=>before<m&&cur>=m).pop()||(cur>=25&&Math.floor(cur/5)>Math.floor(before/5)?cur-cur%5:0);
+   if(hit){const p=PRAISE[hit]||['🚀 '+hit+' câu liền!','Con đang bay cao lắm rồi!'];say(p[0],p[1]);burst()}}
+  else{const had=cur;cur=0;paint();if(had>=3)say('Chuỗi '+had+' câu — giỏi lắm!',OOPS[Math.floor(Math.random()*OOPS.length)],true)}
+  if(tot&&a>=tot)setTimeout(()=>{say('🏅 Chuỗi dài nhất: '+best+' câu',best>=5?'Con làm bài thật tuyệt vời!':'Lần sau mình thử phá kỷ lục này nhé!');if(best>=5)burst()},2400)}
+ setInterval(check,250);
+})();</script>
+<script>/*devclean*/(function(){
+var ZW=/[\u00AD\u034F\u061C\u115F\u1160\u17B4\u17B5\u180E\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g,
+    SP=/[\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\t]/g,
+    AP=/[\u2018\u2019\u201A\u201B\u2032\u2035\u02B9\u02BB\u02BC\u02BD\u02C8\u0060\u00B4\uFF07]/g,
+    DQ=/[\u201C\u201D\u201E\u201F\u2033\u2036\u00AB\u00BB\uFF02]/g,
+    DS=/[\u2010\u2011\u2012\u2212\uFE63\uFF0D]/g;
+function clean(v){if(!v)return v;var s=String(v);try{s=s.normalize('NFKC')}catch(e){}
+  return s.replace(ZW,'').replace(SP,' ').replace(AP,"'").replace(DQ,'"').replace(DS,'-').replace(/[\u0300-\u036f]/g,'').replace(/ {2,}/g,' ');}
+window.__devclean=clean;
+function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type=text],input[type=search],textarea');
+  for(var i=0;i<L.length;i++){var el=L[i];if(el===skip||el.readOnly||el.disabled)continue;var v=el.value,c=clean(v);if(c!==v)el.value=c;}}
+['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
+})();</script>
+<div id="hlPop">
+ <button type="button" class="y" title="Vàng" onclick="hlApply('y')"></button>
+ <button type="button" class="g" title="Xanh lá" onclick="hlApply('g')"></button>
+ <button type="button" class="p" title="Hồng" onclick="hlApply('p')"></button>
+ <button type="button" class="b" title="Xanh" onclick="hlApply('b')"></button>
+ <button type="button" class="er" title="Tẩy tô" onclick="hlErase()">🧽</button>
+</div>
+<script>/*hltool*/
+/* ══ công cụ highlight: chỉ tô trong bài đọc (.paragraph, .translation ở khung trái) ══ */
+var HLT={saved:null,t:null,target:null,gid:0},hlPop=document.getElementById('hlPop');
+function hlGroup(g){return Array.prototype.slice.call(document.querySelectorAll('.lp mark.uhl[data-g="'+g+'"]'))}
+function hlUnpick(){document.querySelectorAll('mark.uhl.pick').forEach(function(m){m.classList.remove('pick')});HLT.target=null}
+function hlShowGroup(){
+ var ms=hlGroup(HLT.target);if(!ms.length){hlUnpick();hlHide();return}
+ var L=1e9,T=1e9,R=-1e9,B=-1e9;
+ ms.forEach(function(m){var b=m.getBoundingClientRect();if(!b.width&&!b.height)return;L=Math.min(L,b.left);T=Math.min(T,b.top);R=Math.max(R,b.right);B=Math.max(B,b.bottom)});
+ if(R<L){hlHide();return}
+ hlShow({getBoundingClientRect:function(){return {left:L,top:T,right:R,bottom:B,width:R-L,height:B-T}}});
+}
+function hlZone(n){var e=n&&(n.nodeType===1?n:n.parentNode);return e&&e.closest?e.closest('.lp .paragraph,.lp .translation'):null}
+function hlNodes(r){
+ var root=r.commonAncestorContainer;if(root.nodeType!==1)root=root.parentNode;
+ var out=[],w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;
+ while((n=w.nextNode())){
+  if(!r.intersectsNode(n))continue;
+  var z=hlZone(n);if(!z||!z.getClientRects().length)continue;
+  var s=n===r.startContainer?r.startOffset:0,e=n===r.endContainer?r.endOffset:n.length;
+  if(e>s)out.push([n,s,e]);
+ }
+ return out;
+}
+function hlRange(){
+ var sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed)return null;
+ var r=sel.getRangeAt(0),lp=document.querySelector('.lp');
+ if(!lp.contains(r.commonAncestorContainer))return null;
+ var L=hlNodes(r);if(!L.some(function(x){return x[0].nodeValue.slice(x[1],x[2]).trim()}))return null;
+ return r;
+}
+function hlIsMark(e){return e&&e.nodeName==='MARK'&&e.classList.contains('uhl')}
+function hlPaint(r,cls){
+ var L=hlNodes(r),zones=[],g=cls?String(++HLT.gid):'';
+ L.forEach(function(x){
+  var n=x[0],s=x[1],e=x[2];
+  if(e<n.length)n.splitText(e);
+  if(s>0)n=n.splitText(s);
+  var z=hlZone(n);if(zones.indexOf(z)<0)zones.push(z);
+  var p=n.parentNode;
+  if(hlIsMark(p)){
+   var host=p.parentNode,ref=p.nextSibling,aft=null,put=n;
+   if(n.nextSibling){aft=document.createElement('mark');aft.className=p.className;if(p.dataset.g)aft.dataset.g=p.dataset.g;while(n.nextSibling)aft.appendChild(n.nextSibling)}
+   if(cls){put=document.createElement('mark');put.className='uhl uhl-'+cls;put.dataset.g=g;put.appendChild(n)}
+   host.insertBefore(put,ref);
+   if(aft)host.insertBefore(aft,put.nextSibling);
+   if(!p.firstChild)host.removeChild(p);
+  }else if(cls){
+   var m=document.createElement('mark');m.className='uhl uhl-'+cls;m.dataset.g=g;p.insertBefore(m,n);m.appendChild(n);
+  }
+ });
+ zones.forEach(function(z){if(z){z.querySelectorAll('mark.uhl').forEach(function(m){if(!m.textContent)m.remove()});z.normalize()}});
+}
+function hlDone(){HLT.saved=null;hlUnpick();try{window.getSelection().removeAllRanges()}catch(e){}hlHide()}
+function hlApply(cls){
+ if(HLT.target&&!hlRange()){hlGroup(HLT.target).forEach(function(m){m.className='uhl uhl-'+cls});hlDone();return}
+ var r=HLT.saved||hlRange();
+ if(!r){HLT.saved=null;hlHide();var t=document.getElementById('hlTip');t.classList.remove('ping');void t.offsetWidth;t.classList.add('ping');return}
+ hlPaint(r,cls);hlDone();
+}
+function hlErase(){
+ if(HLT.target&&!hlRange()){hlGroup(HLT.target).forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()});hlDone();return}
+ var r=HLT.saved||hlRange();
+ if(r){hlPaint(r,null)}
+ else{document.querySelectorAll('mark.uhl').forEach(function(m){var p=m.parentNode;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);p.normalize()})}
+ hlDone();
+}
+function hlHide(){hlPop.classList.remove('on','below')}
+function hlShow(r){
+ var b=r.getBoundingClientRect();if(!b.width&&!b.height){hlHide();return}
+ hlPop.classList.add('on');
+ var w=hlPop.offsetWidth,h=hlPop.offsetHeight,note=document.querySelector('.note'),nb=note?note.getBoundingClientRect().bottom:0;
+ var x=Math.max(6,Math.min(window.innerWidth-w-6,b.left+b.width/2-w/2)),y=b.top-h-10,below=false;
+ if(y<nb+6){y=b.bottom+10;below=true}
+ hlPop.style.left=x+'px';hlPop.style.top=y+'px';hlPop.classList.toggle('below',below);
+}
+function hlCheck(){clearTimeout(HLT.t);HLT.t=setTimeout(function(){var r=hlRange();if(r){hlUnpick();hlShow(r)}else if(HLT.target)hlShowGroup();else hlHide()},90)}
+document.addEventListener('click',function(e){
+ var t=e.target;if(t.closest&&t.closest('#hlPop,.hlbar'))return;
+ var m=t.closest?t.closest('.lp mark.uhl'):null;
+ if(m&&!hlRange()){
+  if(!m.dataset.g)m.dataset.g=String(++HLT.gid);
+  hlUnpick();HLT.target=m.dataset.g;hlGroup(HLT.target).forEach(function(x){x.classList.add('pick')});hlShowGroup();
+ }else if(HLT.target){hlUnpick();hlHide()}
+});
+function hlKeep(e){var r=hlRange();if(r)HLT.saved=r.cloneRange();if(e.type==='mousedown')e.preventDefault()}
+document.querySelectorAll('.hlbar button,#hlPop button').forEach(function(b){
+ b.addEventListener('pointerdown',function(){var r=hlRange();HLT.saved=r?r.cloneRange():null});
+ b.addEventListener('mousedown',hlKeep);
+ b.addEventListener('touchstart',hlKeep,{passive:true});
+});
+document.addEventListener('mouseup',hlCheck);
+document.addEventListener('touchend',hlCheck);
+document.addEventListener('selectionchange',hlCheck);
+window.addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+document.querySelector('.lp').addEventListener('scroll',function(){if(hlPop.classList.contains('on'))hlCheck()},{passive:true});
+if(typeof fitPanels==='function')fitPanels();
+</script>
+<style>/*namegate*/.ngTag{display:block;margin:2px auto 8px;padding:8px 12px;border-radius:14px;background:#F5F3FF;border:2px dashed #C4B5FD;font-weight:800;color:#4C1D95;line-height:1.6;font-size:.95rem;text-align:center}
+.ngTag small{font-weight:700;color:#6D28D9}
+#ngClock{position:fixed;left:10px;bottom:10px;z-index:90;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid #C4B5FD;font:800 .9rem inherit;color:#5B21B6;box-shadow:0 4px 12px rgba(0,0,0,.12);pointer-events:none}</style>
+<div id="ngClock">⏱ 00:00</div>
+<script>/*namegate*/(function(){
+var T0=Date.now(),TEND=0,clk=document.getElementById('ngClock');
+function mmss(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function dur(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60);s%=60;return (m?m+' phút ':'')+s+' giây';}
+function esc(s){return String(s).replace(/[<>&]/g,'');}
+function clean(s){s=(s||'');try{s=s.normalize('NFC')}catch(e){}return s.replace(/[​-‏⁠﻿]/g,'').replace(/\s+/g,' ').trim();}
+function stamp(){var d=new Date(),p=function(n){return(n<10?'0':'')+n};return p(d.getHours())+':'+p(d.getMinutes())+' · '+p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear();}
+setInterval(function(){if(!TEND&&clk)clk.textContent='⏱ '+mmss(Date.now()-T0);},1000);
+var orig=window.showResult;if(typeof orig!=='function')return;
+window.showResult=function(){var i=document.getElementById('nIn'),v=clean(i&&i.value);if(i)i.value=v;
+  orig.apply(this,arguments);
+  var ov=document.getElementById('ovR'),rn=document.getElementById('rn');if(!v||!ov||!ov.classList.contains('on')||!rn)return;
+  if(!TEND)TEND=Date.now();if(clk)clk.textContent='⏱ '+mmss(TEND-T0)+' ✔';
+  rn.innerHTML='<span class="ngTag">👤 '+esc(v)+'<br>⏱ Làm bài trong <b>'+dur(TEND-T0)+'</b><br><small>⏰ Nộp lúc '+stamp()+'<br>📘 '+esc(document.title.split('|')[0].trim())+'</small></span>';};
+})();</script>
+<script>/*attempts*/(function(){
+var KEY='att:'+decodeURIComponent(location.pathname),done=false;
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function save(a){try{localStorage.setItem(KEY,JSON.stringify(a.slice(-20)))}catch(e){}}
+function fmt(d){var p=function(n){return(n<10?'0':'')+n};return p(d.getDate())+'/'+p(d.getMonth()+1);}
+function durOf(tag){var m=(tag.textContent||'').match(/Làm bài trong\s*((?:\d+\s*phút\s*)?\d+\s*giây)/);return m?m[1].replace(/\s+/g,' '):'';}
+function score(){var a=document.getElementById('resScore');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rS');if(a)return a.textContent.replace(/\s+/g,'');
+  a=document.getElementById('rSc');var b=document.getElementById('rTt');if(a)return a.textContent.trim()+'/'+(b?b.textContent.trim():'?');return '?';}
+function add(tag){
+  if(tag.querySelector('.ngAtt'))return;
+  var a=load();
+  if(!done){done=true;a.push({s:score(),t:Date.now(),d:durOf(tag)});save(a);}
+  var k=a.length,prev=a.slice(Math.max(0,k-6),k-1);
+  var d=document.createElement('div');d.className='ngAtt';
+  d.style.cssText='display:block;margin-top:6px;padding-top:6px;border-top:2px dashed #DDD6FE';
+  d.innerHTML='🔁 <b>Lần nộp thứ '+k+'</b> trên máy này'+(prev.length?'<br><small>'+prev.map(function(x,i){return 'Lần '+(k-prev.length+i)+': <b>'+x.s+'</b>'+(x.d?' · ⏱ làm trong <b>'+x.d+'</b>':'')+' · '+fmt(new Date(x.t))}).join('<br>')+'</small>':'');
+  tag.appendChild(d);
+}
+function check(){var t=document.getElementById('ngTag')||document.querySelector('#rn .ngTag');if(t&&t.textContent.trim())add(t);}
+new MutationObserver(check).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();</script>
+<script>
+// Remove password lock completely - direct quiz access
+(function() {
+    function unlockNow() {
+        var pwIds = [
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+        ];
+        pwIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        modalEls.forEach(function(el) {
+            if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
+                el.style.setProperty('display', 'none', 'important');
+                try { el.remove(); } catch(e) {}
+            }
+        });
+
+        var mainIds = [
+            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
+        ];
+        mainIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
+                    el.style.setProperty('display', 'flex', 'important');
+                } else {
+                    el.style.setProperty('display', 'block', 'important');
+                }
+            }
+        });
+
+        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
+        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlockNow);
+    } else {
+        unlockNow();
+    }
+    setTimeout(unlockNow, 50);
+    setTimeout(unlockNow, 200);
+    setTimeout(unlockNow, 600);
+})();
+</script>
+
+</body>
+</html>
