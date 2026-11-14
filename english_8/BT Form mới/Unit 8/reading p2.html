@@ -648,37 +648,75 @@ function fix(skip){var L=document.querySelectorAll('input:not([type]),input[type
 ['pointerdown','mousedown','touchstart','click','change','focusout'].forEach(function(t){document.addEventListener(t,function(e){fix(t==='focusout'||t==='change'?null:e.target)},true)});
 document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)fix(null)},true);
 })();</script>
+<style id="ms-chi-nen-unlock-style">
+#passwordModal, #password-modal, #pwModal, #pw-modal, #pw-overlay,
+#lockModal, #passModal, #authModal, #auth-modal, #lockOverlay,
+#start-overlay, #intro-overlay, #start-screen,
+.password-modal, .lock-modal, .lock-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -9999 !important;
+}
+</style>
 <script>
 // Remove password lock completely - direct quiz access
 (function() {
+    var initDone = false;
+
+    function hideEl(el, hard) {
+        if (!el) return;
+        if (hard) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+            el.style.setProperty('z-index', '-9999', 'important');
+        } else {
+            el.style.display = 'none';
+        }
+        el.classList.remove('active', 'show', 'open', 'visible', 'flex');
+    }
+
     function unlockNow() {
         var pwIds = [
-            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay', 
-            'lockModal', 'passModal', 'authModal', 'auth-modal', 'nameModal', 'name-modal', 'nameInputModal'
+            'passwordModal', 'password-modal', 'pwModal', 'pw-modal', 'pw-overlay',
+            'lockModal', 'passModal', 'authModal', 'auth-modal', 'lockOverlay',
+            'start-overlay', 'intro-overlay', 'start-screen'
         ];
         pwIds.forEach(function(id) {
-            var el = document.getElementById(id);
-            if (el) {
-                el.style.setProperty('display', 'none', 'important');
-                try { el.remove(); } catch(e) {}
-            }
+            hideEl(document.getElementById(id), true);
         });
 
-        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal, .modal-overlay');
+        var modalEls = document.querySelectorAll('.password-modal, .lock-modal, .lock-overlay, #lockOverlay, #auth-modal');
         modalEls.forEach(function(el) {
             if (el.id !== 'resultModal' && el.id !== 'result-modal' && el.id !== 'scoreModal') {
-                el.style.setProperty('display', 'none', 'important');
-                try { el.remove(); } catch(e) {}
+                hideEl(el, true);
             }
         });
 
+        // Hide name-modal/nameModal only during page initialization (without deleting from DOM)
+        ['nameModal', 'name-modal', 'nameInputModal'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                hideEl(el, false);
+            }
+        });
+
+        var qo = document.getElementById('quiz-overlay');
+        if (qo && (typeof isStarted === 'undefined' || !isStarted)) {
+            qo.style.display = 'none';
+        }
+
         var mainIds = [
-            'mainContent', 'main-content', 'mainHeader', 'main-header', 
+            'mainContent', 'main-content', 'mainHeader', 'main-header',
             'app-container', 'app', 'quiz-wrapper', 'quizContainer', 'quiz-container', 'reading-content'
         ];
         mainIds.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
+                el.classList.remove('hidden', 'blur', 'blurred', 'locked');
                 if (id === 'main-content' || id.toLowerCase().includes('header') || el.classList.contains('main-container')) {
                     el.style.setProperty('display', 'flex', 'important');
                 } else {
@@ -687,19 +725,59 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===
             }
         });
 
-        if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
-        if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
-        if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
-        if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
-        if (typeof startQuiz === 'function') { try { startQuiz(); } catch(e){} }
-        if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
-        if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
-        if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
-        if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
-        if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
-        if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
-        if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
-        if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+        var qs = document.getElementById('quiz-screen');
+        if (qs) {
+            qs.classList.remove('hidden');
+            if (qs.classList.contains('flex-col')) {
+                qs.classList.add('flex');
+                qs.style.display = 'flex';
+            } else {
+                qs.style.display = 'block';
+            }
+        }
+
+        if (!initDone) {
+            initDone = true;
+
+            if (document.getElementById('start-overlay') && typeof startGame === 'function') {
+                var sn = document.getElementById('student-name') || document.getElementById('studentName');
+                if (sn && !sn.value.trim()) sn.value = 'Học sinh';
+            }
+            if (document.getElementById('name-modal') && typeof startQuiz === 'function') {
+                var sn2 = document.getElementById('student-name');
+                if (sn2 && !sn2.value.trim()) sn2.value = 'Học sinh';
+            }
+
+            if (typeof buildQuiz === 'function') { try { buildQuiz(); } catch(e){} }
+            if (typeof initQuiz === 'function') { try { initQuiz(); } catch(e){} }
+            if (typeof renderApp === 'function') { try { renderApp(); } catch(e){} }
+            if (typeof renderQuiz === 'function') { try { renderQuiz(); } catch(e){} }
+            if (typeof renderQuestions === 'function') {
+                try {
+                    var qc = document.getElementById('quiz-container') || document.getElementById('questions-container');
+                    if (!qc || qc.children.length === 0) renderQuestions();
+                } catch(e){}
+            }
+            if (typeof startQuiz === 'function' && (typeof isStarted === 'undefined' || !isStarted)) { try { startQuiz(); } catch(e){} }
+            if (typeof startGame === 'function') { try { startGame(); } catch(e){} }
+            if (typeof startTest === 'function') { try { startTest(); } catch(e){} }
+            if (typeof renderAllQuestions === 'function') { try { renderAllQuestions(); } catch(e){} }
+            if (typeof renderAll === 'function') { try { renderAll(); } catch(e){} }
+            if (typeof startApp === 'function') { try { startApp(); } catch(e){} }
+            if (typeof buildStarfield === 'function') { try { buildStarfield(); } catch(e){} }
+            if (typeof spawnFloats === 'function') { try { spawnFloats(); } catch(e){} }
+            if (typeof spawnFloaters === 'function') { try { spawnFloaters(); } catch(e){} }
+            if (typeof createFloatingBubbles === 'function') { try { createFloatingBubbles(); } catch(e){} }
+            if (typeof initAudio === 'function') { try { initAudio(); } catch(e){} }
+        } else {
+            // If window.onload cleared or didn't populate quiz-container earlier, ensure questions are rendered
+            if (typeof renderQuestions === 'function') {
+                try {
+                    var qc2 = document.getElementById('quiz-container') || document.getElementById('questions-container');
+                    if (qc2 && qc2.children.length === 0) renderQuestions();
+                } catch(e){}
+            }
+        }
     }
 
     if (document.readyState === 'loading') {
@@ -707,11 +785,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===
     } else {
         unlockNow();
     }
+    window.addEventListener('load', function() {
+        setTimeout(unlockNow, 20);
+        setTimeout(unlockNow, 200);
+        setTimeout(unlockNow, 600);
+    });
     setTimeout(unlockNow, 50);
     setTimeout(unlockNow, 200);
     setTimeout(unlockNow, 600);
+    setTimeout(unlockNow, 1100);
 })();
 </script>
-
 </body>
 </html>
